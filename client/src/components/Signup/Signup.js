@@ -466,7 +466,17 @@ const Signup = () => {
                                         )}
                                     </Box>
 
-                                    <Box className='check' style={{ display: 'flex' }}>
+                                    <Box  sx={{ display: 'flex',
+                                    paddingBottom: '1rem',
+                                    marginLeft: '-0.5rem',
+                                    color: '#202227',
+                                    fontFamily: 'Poppins',
+                                    fontSize: '1rem',
+                                    fontStyle: 'normal',
+                                    fontWeight: 400,
+                                    lineHeight: 'normal',
+
+                                 }}>
                                         <Checkbox id="agreeTerms" />
                                         <label htmlFor="agreeTerms" style={{ marginTop: "0.8rem" }}>
                                             By creating an account, I agree to our <span style={{
