@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Container, Grid, Typography, Checkbox, TextField, FormControl, InputLabel, NativeSelect, useMediaQuery, Button } from '@mui/material';
+import { Box, Container, Grid, Typography, Checkbox, TextField, FormControl, InputLabel, NativeSelect, useMediaQuery, Button, } from '@mui/material';
 import builder1 from "./Assets/pngs/builderPro1.png";
 import builder2 from "./Assets/pngs/builderpro22.png";
 import builder2Tab from "./Assets/pngs/builderpro2Tab.png";
@@ -8,16 +8,13 @@ import builder2Mob from "./Assets/pngs/builderpro2Mob.png";
 import downloadForMob from "./Assets/pngs/downloadForMob.png";
 import googlePlay from "./Assets/pngs/googlePlay.png";
 import appStore from "./Assets/pngs/appStore.png";
-import { Visibility, VisibilityOff } from '@material-ui/icons';
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "./Assets/svgs/GoogleLogo.svg"
 import { PhoneInput } from 'react-international-phone';
 import "react-international-phone/style.css";
 
 
-
-import "./Signup.css"
-
-const Signup = () => {
+const SignupComp = () => {
 
     const isLG = useMediaQuery("(min-width: 1280px)");
     const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
@@ -190,7 +187,7 @@ const Signup = () => {
                                     fontSize: { lg: '2.9375rem', md: "2rem", sm: "1.5rem" },
                                     fontStyle: 'normal',
                                     fontWeight: 400,
-                                    lineHeight: '4.25rem', // 144.681%
+                                    lineHeight: '4.25rem', 
                                 }}
                             >
                                 Construction Management
@@ -292,16 +289,7 @@ const Signup = () => {
                                     display: { lg: "none", md: "none", sm: "none", xs: "flex" },
 
                                 }}>
-                                    <Typography sx={{
-                                        color: '#4C8AB1',
-                                        textAlign: 'center',
-                                        fontFamily: 'GT Walsheim Trial',
-                                        fontSize: '2.1875rem',
-                                        fontStyle: 'normal',
-                                        fontWeight: 700,
-                                        lineHeight: 'normal',
-
-                                    }}>
+                                    <Typography sx={formHeadingStyle}>
                                         Signup
                                     </Typography>
                                     <img src={builder1} width={"20%"} alt="" />
@@ -314,59 +302,24 @@ const Signup = () => {
                                         marginBottom: "0.3rem",
                                     }}>
                                         <Box sx={{marginTop:"0.5rem"}}>
-                                            <label style={{
-                                                display: 'block',
-                                                marginBottom: '5px',
-                                                color: '#202227',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                            }} htmlFor="firstName">First name</label>
-                                            <input type="text" id="firstName" />
+                                            <label style={labelStyle} 
+                                                htmlFor="firstName">First name</label>
+                                            <input  type="text" id="firstName" style={inputStyle} />
                                         </Box>
                                         <Box sx={{marginTop:"0.5rem"}}>
-                                            <label style={{
-                                                display: 'block',
-                                                marginBottom: '5px',
-                                                color: '#202227',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                            }} htmlFor="lastName">Last name</label>
-                                            <input type="text" id="lastName" />
+                                            <label style={labelStyle} htmlFor="lastName">Last name</label>
+                                            <input type="text" id="lastName" style={inputStyle} />
                                         </Box>
                                     </Box>
 
                                     <Box sx={{marginTop:"0.5rem"}}>
-                                        <label style={{
-                                                display: 'block',
-                                                marginBottom: '5px',
-                                                color: '#202227',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                            }} htmlFor="email">Email address</label>
-                                        <input type="email" id="email" placeholder="workemail@gmail.com" />
+                                        <label style={labelStyle} htmlFor="email">Email address</label>
+                                        <input type="email" id="email" style={{...inputStyle, ...placeholderStyle}} placeholder="workemail@gmail.com" />
                                     </Box>
 
                                     <Box sx={{marginTop:"0.5rem"}}>
-                                        <label style={{
-                                                display: 'block',
-                                                marginBottom: '5px',
-                                                color: '#202227',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                            }} htmlFor="phone">Phone number</label>
-                                        {/* <input type="phone" id="phone" /> */}
+                                        <label style={labelStyle} htmlFor="phone">Phone number</label>
+                                     
 
                                         <PhoneInput
                                             style={customPhoneStyles}
@@ -380,32 +333,14 @@ const Signup = () => {
 
 
                                     <Box sx={{marginTop:"0.5rem"}}>
-                                        <label style={{
-                                                display: 'block',
-                                                marginBottom: '5px',
-                                                color: '#202227',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                            }} htmlFor="company">Company Name</label>
-                                        <input type="text" id="company" />
+                                        <label style={labelStyle} htmlFor="company">Company Name</label>
+                                        <input type="text" id="company" style={inputStyle}/>
                                     </Box>
 
 
 
                                     <Box sx={{marginTop:"0.5rem"}}>
-                                        <label style={{
-                                                display: 'block',
-                                                marginBottom: '5px',
-                                                color: '#202227',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                            }} htmlFor="password">Password</label>
+                                        <label style={labelStyle} htmlFor="password">Password</label>
 
                                         {!isMobile && (
                                             <Box sx={{
@@ -423,6 +358,7 @@ const Signup = () => {
 
                                         <Box style={{ position: 'relative' }}>
                                             <input
+                                            style={inputStyle}
                                                 type={passwordVisible ? 'text' : 'password'}
                                                 id="password"
                                                 value={password}
@@ -499,23 +435,8 @@ const Signup = () => {
                                         </label>
                                     </Box>
 
-                                    <Button sx={{
-                                        backgroundColor: '#FFAC00',
-                                        color: '#fff',
-                                        border: 'none',
-                                        padding: '0.9375rem 2.5rem', // Adjusted to match your original padding
-                                        fontSize: '16px',
-                                        borderRadius: { lg: '2.5rem', md: "2.5rem", sm: "2.5rem", xs: "0.5rem" },
-                                        cursor: 'pointer',
-                                        width: { lg: 'auto', md: "auto", sm: "auto", xs: "100%" },
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        textTransform: 'none',
-                                        gap: '0.625rem',
-                                        '&:hover': {
-                                            backgroundColor: '#FFAC00',
-                                        }
-                                    }} type="submit">Sign Up</Button>
+                                    <Button sx={SignupBtnStyle}
+                                     type="submit">Sign Up</Button>
                                     <Typography sx={{
                                         color: '#202227',
                                         fontFamily: 'GT Walsheim Trial',
@@ -550,53 +471,13 @@ const Signup = () => {
                                             }}
                                         />
                                         <Typography
-                                            sx={{
-                                                color: '#202227',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                                display: "flex",
-                                                justifyContent: "start",
-                                                marginTop: "-1.2rem",
-                                                position: 'absolute',
-                                                left: { lg: '30%', md: "30%", sm: "30%", xs: "50%" },
-                                                transform: 'translateX(-50%)',
-                                                backgroundColor: '#FFFFFF',
-                                                padding: '0 10px',
-                                            }}
+                                            sx={ContinuewithTextStyle}
                                         >
                                             {isMobile ? 'Or' : 'Or Continue with'}
                                         </Typography>
                                     </Box>
 
-                                    <Button sx={{
-
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        border: 'none',
-                                        gap: '0.3rem',
-                                        marginBottom: '1.5rem',
-                                        marginTop: '1.5rem',
-                                        borderRadius: '2.5rem',
-                                        border: '1px solid rgba(6, 32, 72, 0.11)',
-                                        background: '#FFF',
-                                        color: '#333',
-                                        fontFamily: 'GT Walsheim Trial',
-                                        fontSize: '1.25rem',
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal',
-                                        cursor: 'pointer',
-                                        width: { lg: 'auto', md: "auto", sm: "auto", xs: "100%" },
-
-                                        padding: '0.96875rem 1rem 0.96875rem 1rem',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        flexShrink: 0,
-                                        textTransform: 'none',
-                                    }} type="button"><GoogleLogo style={{ marginRight: "1rem" }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
+                                    <Button sx={googleBtnStyle} type="button"><GoogleLogo style={{ marginRight: "1rem" }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
                                 </form>
                             </Grid>
                             {/* </div> */}
@@ -657,34 +538,13 @@ const Signup = () => {
                                     gap: "1.5rem",
                                     // border: "2px solid red",
                                 }}>
-                                    <Typography sx={{
-                                        color: '#FFF',
-                                        fontFamily: 'GT Walsheim Trial',
-                                        fontSize: '1rem',
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal',
-                                    }}>
+                                    <Typography sx={hptLinksStyle}>
                                         Help
                                     </Typography>
-                                    <Typography sx={{
-                                        color: '#FFF',
-                                        fontFamily: 'GT Walsheim Trial',
-                                        fontSize: '1rem',
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal',
-                                    }}>
+                                    <Typography sx={hptLinksStyle}>
                                         Privacy
                                     </Typography>
-                                    <Typography sx={{
-                                        color: '#FFF',
-                                        fontFamily: 'GT Walsheim Trial',
-                                        fontSize: '1rem',
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal',
-                                    }}>
+                                    <Typography sx={hptLinksStyle}>
                                         Terms
                                     </Typography>
 
@@ -699,8 +559,25 @@ const Signup = () => {
         </div >
     );
 };
+   
 
 
+
+
+
+
+
+
+
+const formHeadingStyle = {
+      color: '#4C8AB1',
+    textAlign: 'center',
+    fontFamily: 'GT Walsheim Trial',
+    fontSize: '2.1875rem',
+    fontStyle: 'normal',
+    fontWeight: 700,
+    lineHeight: 'normal',
+}
 
 const customeInputStyles = { width: "100%", border: "none" };
 const customPhoneStyles = {
@@ -712,6 +589,109 @@ const customPhoneStyles = {
     padding: 6,
 };
 
+const inputStyle = {
+    width: '100%',
+    padding: '8px',
+    fontSize: '14px',
+    border: '1px solid #ccc',
+    borderRadius: '6px',
+    height: '1.5rem',
+    marginBottom: '10px',
+  };
+
+  const placeholderStyle = {
+    color: '#B8B8B8',
+    fontFamily: "GT Walsheim Trial",
+     fontSize: "1rem",
+    fontStyle: 'normal',
+    fontWeight: 400,
+  };
+
+  const labelStyle ={
+     display: 'block',
+     marginBottom: '5px',
+                 color: '#202227',
+     fontFamily: 'GT Walsheim Trial',
+    fontSize: '1rem',
+     fontStyle: 'normal',
+        fontWeight: 400,
+          lineHeight: 'normal',
+  }
+
+ const  hptLinksStyle = {
+     color: '#FFF',
+     fontFamily: 'GT Walsheim Trial',
+    fontSize: '1rem',
+     fontStyle: 'normal',
+    fontWeight: 400,
+     lineHeight: 'normal',
+  }
+
+  const googleBtnStyle = {
+   display: 'flex',
+ flexDirection: 'row',
+ border: 'none',
+ gap: '0.3rem',
+  marginBottom: '1.5rem',
+  marginTop: '1.5rem',
+  borderRadius: '2.5rem',
+ border: '1px solid rgba(6, 32, 72, 0.11)',
+ background: '#FFF',
+  color: '#333',
+  fontFamily: 'GT Walsheim Trial',
+  fontSize: '1.25rem',
+  fontStyle: 'normal',
+ fontWeight: 400,
+ lineHeight: 'normal',
+  cursor: 'pointer',
+  width: { lg: 'auto', md: "auto", sm: "auto", xs: "100%" },
+
+  padding: '0.96875rem 1rem 0.96875rem 1rem',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexShrink: 0,
+  textTransform: 'none',
+  }
+
+  const SignupBtnStyle = {
+  backgroundColor: '#FFAC00',
+color: '#fff',
+    border: 'none',
+    padding: '0.9375rem 2.5rem', // Adjusted to match your original padding
+    fontSize: '16px',
+    borderRadius: { lg: '2.5rem', md: "2.5rem", sm: "2.5rem", xs: "0.5rem" },
+     cursor: 'pointer',
+     width: { lg: 'auto', md: "auto", sm: "auto", xs: "100%" },
+    justifyContent: 'center',
+    alignItems: 'center',
+    textTransform: 'none',
+    gap: '0.625rem',
+     '&:hover': {
+         backgroundColor: '#FFAC00',
+     }
+  }
+
+
+  const ContinuewithTextStyle ={
+color: '#202227',
+fontFamily: 'GT Walsheim Trial',
+fontSize: '1rem',
+fontStyle: 'normal',
+fontWeight: 400,
+lineHeight: 'normal',
+display: "flex",
+ justifyContent: "start",
+marginTop: "-1.2rem",
+position: 'absolute',
+left: { lg: '30%', md: "30%", sm: "30%", xs: "50%" },
+transform: 'translateX(-50%)',
+backgroundColor: '#FFFFFF',
+padding: '0 10px',
+  }
+/* .MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiNativeSelect-icon.MuiNativeSelect-iconStandard.css-10bey84-MuiSvgIcon-root-MuiNativeSelect-icon {
+    color: #FFF;
+
+} */
 
 
 
@@ -719,7 +699,5 @@ const customPhoneStyles = {
 
 
 
-
-
-export default Signup;
+export default SignupComp;
 
