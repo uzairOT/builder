@@ -180,15 +180,7 @@ const SignupComp = () => {
                             }}
                         >
                             <Typography
-                                sx={{
-                                    color: '#FFF',
-                                    fontFamily: "GT Walsheim Trial",
-                                    marginTop: "4rem",
-                                    fontSize: { lg: '2.9375rem', md: "2rem", sm: "1.5rem" },
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    lineHeight: '4.25rem', 
-                                }}
+                                sx={firstHeading}                    
                             >
                                 Construction Management
                             </Typography>
@@ -197,27 +189,12 @@ const SignupComp = () => {
 
                             <Typography
                                 component="p"
-                                sx={{
-                                    color: 'rgba(255, 255, 255, 0.80)',
-                                    width: { lg: "31.125rem", md: "28rem", sm: "auto" },
-                                    fontFamily: '"GT Walsheim Trial"',
-                                    fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    lineHeight: 'normal',
-                                }}
+                                sx={secondHeading}
                             >
                                 On schedule. On budget. On the path to building better.
                             </Typography>
                             <Typography
-                                sx={{
-                                    color: '#FFF',
-                                    fontFamily: '"GT Walsheim Trial"',
-                                    fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    lineHeight: 'normal',
-                                }}
+                                sx={thirdHeading}
                             >
                                 Create an account
                             </Typography>
@@ -565,7 +542,34 @@ const SignupComp = () => {
 
 
 
+const firstHeading = {
+    color: '#FFF',
+    fontFamily: "GT Walsheim Trial",
+    marginTop: "4rem",
+    fontSize: { lg: '2.9375rem', md: "2rem", sm: "1.5rem" },
+    fontStyle: 'normal',
+    fontWeight: 400,
+    lineHeight: '4.25rem', 
+}
 
+const secondHeading = {
+     color: 'rgba(255, 255, 255, 0.80)',
+     width: { lg: "31.125rem", md: "28rem", sm: "auto" },
+    fontFamily: '"GT Walsheim Trial"',
+    fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
+    fontStyle: 'normal',
+    fontWeight: 400,
+    lineHeight: 'normal',
+}
+
+const thirdHeading = {
+       color: '#FFF',
+     fontFamily: '"GT Walsheim Trial"',
+    fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
+     fontStyle: 'normal',
+     fontWeight: 400,
+    lineHeight: 'normal',
+}
 
 
 
