@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Container, Grid, Typography, Checkbox, TextField, FormControl, InputLabel, NativeSelect, useMediaQuery, Button } from '@mui/material';
+import { Box, Container, Grid, Typography, Checkbox, TextField, FormControl, InputLabel, NativeSelect, useMediaQuery, Button, MenuItem, Select } from '@mui/material';
 import builder1 from "./Assets/pngs/builderPro1.png";
 import builder2 from "./Assets/pngs/builderpro22.png";
 import builder2Tab from "./Assets/pngs/builderpro2Tab.png";
@@ -8,16 +8,14 @@ import builder2Mob from "./Assets/pngs/builderpro2Mob.png";
 import downloadForMob from "./Assets/pngs/downloadForMob.png";
 import googlePlay from "./Assets/pngs/googlePlay.png";
 import appStore from "./Assets/pngs/appStore.png";
-import { Visibility, VisibilityOff } from '@material-ui/icons';
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "./Assets/svgs/GoogleLogo.svg"
 import { PhoneInput } from 'react-international-phone';
 import "react-international-phone/style.css";
+import YellowBtn from '../Ui/button';
 
 
-
-import "./Signup.css"
-
-const Signup = () => {
+const SignupComp = () => {
 
     const isLG = useMediaQuery("(min-width: 1280px)");
     const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
@@ -183,15 +181,7 @@ const Signup = () => {
                             }}
                         >
                             <Typography
-                                sx={{
-                                    color: '#FFF',
-                                    fontFamily: "GT Walsheim Trial",
-                                    marginTop: "4rem",
-                                    fontSize: { lg: '2.9375rem', md: "2rem", sm: "1.5rem" },
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    lineHeight: '4.25rem', // 144.681%
-                                }}
+                                sx={firstHeading}                    
                             >
                                 Construction Management
                             </Typography>
@@ -200,33 +190,18 @@ const Signup = () => {
 
                             <Typography
                                 component="p"
-                                sx={{
-                                    color: 'rgba(255, 255, 255, 0.80)',
-                                    width: { lg: "31.125rem", md: "28rem", sm: "auto" },
-                                    fontFamily: '"GT Walsheim Trial"',
-                                    fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    lineHeight: 'normal',
-                                }}
+                                sx={secondHeading}
                             >
                                 On schedule. On budget. On the path to building better.
                             </Typography>
                             <Typography
-                                sx={{
-                                    color: '#FFF',
-                                    fontFamily: '"GT Walsheim Trial"',
-                                    fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    lineHeight: 'normal',
-                                }}
+                                sx={thirdHeading}
                             >
                                 Create an account
                             </Typography>
                             <Box sx={{
                                 marginTop: "10rem",
-                                marginLeft: { lg: "1rem", md: "-1rem", sm: "-3rem" },
+                                marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
                                 display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center"
@@ -281,8 +256,8 @@ const Signup = () => {
 
                                 marginLeft: { lg: "6rem", md: "5rem", sm: "5rem", xs: "0rem" },
 
-                                borderRadius: '1.5rem',
-                                width: { lg: '80%', md: "70%", sm: "100%", xs: "100%" }
+                               borderRadius: {lg:'1.5rem',md:"1.5rem",sm:"1.5rem",xs:"0rem"},
+                                width: { lg: '70%', md: "70%", sm: "100%", xs: "100%" }
                             }}>
                                 <Box  sx={{                  
                                     gap: "7rem",
@@ -292,16 +267,7 @@ const Signup = () => {
                                     display: { lg: "none", md: "none", sm: "none", xs: "flex" },
 
                                 }}>
-                                    <Typography sx={{
-                                        color: '#4C8AB1',
-                                        textAlign: 'center',
-                                        fontFamily: 'GT Walsheim Trial',
-                                        fontSize: '2.1875rem',
-                                        fontStyle: 'normal',
-                                        fontWeight: 700,
-                                        lineHeight: 'normal',
-
-                                    }}>
+                                    <Typography sx={formHeadingStyle}>
                                         Signup
                                     </Typography>
                                     <img src={builder1} width={"20%"} alt="" />
@@ -310,63 +276,29 @@ const Signup = () => {
                                 <form style={{ marginTop: "1rem" }}>
                                     <Box  sx={{
                                         display: "flex",
-                                        gap: "7rem",
+                                        justifyContent:"space-between",
+                                        gap:"2rem",
                                         marginBottom: "0.3rem",
                                     }}>
                                         <Box sx={{marginTop:"0.5rem"}}>
-                                            <label style={{
-                                                display: 'block',
-                                                marginBottom: '5px',
-                                                color: '#202227',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                            }} htmlFor="firstName">First name</label>
-                                            <input type="text" id="firstName" />
+                                            <label style={labelStyle} 
+                                                htmlFor="firstName">First name</label>
+                                            <input  type="text" id="firstName" style={inputStyle} />
                                         </Box>
                                         <Box sx={{marginTop:"0.5rem"}}>
-                                            <label style={{
-                                                display: 'block',
-                                                marginBottom: '5px',
-                                                color: '#202227',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                            }} htmlFor="lastName">Last name</label>
-                                            <input type="text" id="lastName" />
+                                            <label style={labelStyle} htmlFor="lastName">Last name</label>
+                                            <input type="text" id="lastName" style={inputStyle} />
                                         </Box>
                                     </Box>
 
                                     <Box sx={{marginTop:"0.5rem"}}>
-                                        <label style={{
-                                                display: 'block',
-                                                marginBottom: '5px',
-                                                color: '#202227',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                            }} htmlFor="email">Email address</label>
-                                        <input type="email" id="email" placeholder="workemail@gmail.com" />
+                                        <label style={labelStyle} htmlFor="email">Email address</label>
+                                        <input type="email" id="email" style={{...inputStyle, ...placeholderStyle}} placeholder="workemail@gmail.com" />
                                     </Box>
 
                                     <Box sx={{marginTop:"0.5rem"}}>
-                                        <label style={{
-                                                display: 'block',
-                                                marginBottom: '5px',
-                                                color: '#202227',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                            }} htmlFor="phone">Phone number</label>
-                                        {/* <input type="phone" id="phone" /> */}
+                                        <label style={labelStyle} htmlFor="phone">Phone number</label>
+                                     
 
                                         <PhoneInput
                                             style={customPhoneStyles}
@@ -380,32 +312,14 @@ const Signup = () => {
 
 
                                     <Box sx={{marginTop:"0.5rem"}}>
-                                        <label style={{
-                                                display: 'block',
-                                                marginBottom: '5px',
-                                                color: '#202227',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                            }} htmlFor="company">Company Name</label>
-                                        <input type="text" id="company" />
+                                        <label style={labelStyle} htmlFor="company">Company Name</label>
+                                        <input type="text" id="company" style={inputStyle}/>
                                     </Box>
 
 
 
                                     <Box sx={{marginTop:"0.5rem"}}>
-                                        <label style={{
-                                                display: 'block',
-                                                marginBottom: '5px',
-                                                color: '#202227',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                            }} htmlFor="password">Password</label>
+                                        <label style={labelStyle} htmlFor="password">Password</label>
 
                                         {!isMobile && (
                                             <Box sx={{
@@ -423,6 +337,7 @@ const Signup = () => {
 
                                         <Box style={{ position: 'relative' }}>
                                             <input
+                                            style={inputStyle}
                                                 type={passwordVisible ? 'text' : 'password'}
                                                 id="password"
                                                 value={password}
@@ -432,7 +347,7 @@ const Signup = () => {
                                             <Box
                                                 style={{
                                                     position: 'absolute',
-                                                    top: '50%',
+                                                    top: '45%',
                                                     right: '10px',
                                                     transform: 'translateY(-50%)',
                                                     cursor: 'pointer',
@@ -444,7 +359,7 @@ const Signup = () => {
                                             >
                                                 {passwordVisible ? <VisibilityOff /> : <Visibility />}
                                                 {!isMobile && (
-                                                    <span style={{ marginLeft: '5px' }}>
+                                                    <span style={{ marginLeft: '5px', marginBottom:"3px" }}>
                                                         {passwordVisible ? 'Hide' : 'Show'}
                                                     </span>
                                                 )}
@@ -499,23 +414,8 @@ const Signup = () => {
                                         </label>
                                     </Box>
 
-                                    <Button sx={{
-                                        backgroundColor: '#FFAC00',
-                                        color: '#fff',
-                                        border: 'none',
-                                        padding: '0.9375rem 2.5rem', // Adjusted to match your original padding
-                                        fontSize: '16px',
-                                        borderRadius: { lg: '2.5rem', md: "2.5rem", sm: "2.5rem", xs: "0.5rem" },
-                                        cursor: 'pointer',
-                                        width: { lg: 'auto', md: "auto", sm: "auto", xs: "100%" },
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        textTransform: 'none',
-                                        gap: '0.625rem',
-                                        '&:hover': {
-                                            backgroundColor: '#FFAC00',
-                                        }
-                                    }} type="submit">Sign Up</Button>
+                                    <Button sx={YellowBtn}
+                                     type="submit">Sign Up</Button>
                                     <Typography sx={{
                                         color: '#202227',
                                         fontFamily: 'GT Walsheim Trial',
@@ -528,7 +428,7 @@ const Signup = () => {
                                         marginTop: "1rem"
                                     }}>
                                         Already have an account?{'\u00a0'} <span style={{
-                                            color: '#4C8AB1',
+                                          color: isMobile ? '#FFAC00' : '#4C8AB1',
                                             fontFamily: 'Poppins',
                                             fontSize: '1rem',
                                             fontStyle: 'normal',
@@ -550,53 +450,13 @@ const Signup = () => {
                                             }}
                                         />
                                         <Typography
-                                            sx={{
-                                                color: '#202227',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                                display: "flex",
-                                                justifyContent: "start",
-                                                marginTop: "-1.2rem",
-                                                position: 'absolute',
-                                                left: { lg: '30%', md: "30%", sm: "30%", xs: "50%" },
-                                                transform: 'translateX(-50%)',
-                                                backgroundColor: '#FFFFFF',
-                                                padding: '0 10px',
-                                            }}
+                                            sx={ContinuewithTextStyle}
                                         >
                                             {isMobile ? 'Or' : 'Or Continue with'}
                                         </Typography>
                                     </Box>
 
-                                    <Button sx={{
-
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        border: 'none',
-                                        gap: '0.3rem',
-                                        marginBottom: '1.5rem',
-                                        marginTop: '1.5rem',
-                                        borderRadius: '2.5rem',
-                                        border: '1px solid rgba(6, 32, 72, 0.11)',
-                                        background: '#FFF',
-                                        color: '#333',
-                                        fontFamily: 'GT Walsheim Trial',
-                                        fontSize: '1.25rem',
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal',
-                                        cursor: 'pointer',
-                                        width: { lg: 'auto', md: "auto", sm: "auto", xs: "100%" },
-
-                                        padding: '0.96875rem 1rem 0.96875rem 1rem',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        flexShrink: 0,
-                                        textTransform: 'none',
-                                    }} type="button"><GoogleLogo style={{ marginRight: "1rem" }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
+                                    <Button sx={googleBtnStyle} type="button"><GoogleLogo style={{ marginRight: "1rem" }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
                                 </form>
                             </Grid>
                             {/* </div> */}
@@ -604,8 +464,10 @@ const Signup = () => {
                                 display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
                                 flexDirection: "row",
                                 // border: "2px solid red",
-                                justifyContent: "space-around",
-                                width: "100%",
+                                justifyContent: "space-between",
+                                 marginLeft: { lg: "6rem", md: "5rem", sm: "5rem", xs: "0rem" },
+                                // marginRight: "2rem",
+                               width: { lg: '70%', md: "70%", sm: "100%", xs: "100%" },
                                 gap: "1rem"
 
                             }}>
@@ -614,39 +476,48 @@ const Signup = () => {
                                 <Box sx={{
                                     display: "flex",
                                     justifyContent: "flex-start",
-                                    marginTop: "0.5rem",
+                                 
                                     // border: "2px solid red",
 
                                     backgroundColor: "#4C8AB1",
 
-                                    select: {
-                                        backgroundColor: "#4C8AB1",
-                                        color: "#FFF",
-                                        fontFamily: "GT Walsheim Trial",
-                                        fontSize: "1rem",
-                                        fontStyle: "normal",
-                                        fontWeight: "400",
-                                        lineHeight: "normal",
-                                    },
+                                    
                                 }}>
 
-
-                                    <NativeSelect
-                                        sx={{
-
-
-                                        }}
-                                        defaultValue={1}
-                                        inputProps={{
-
-                                            // name: 'Laanguages',
-                                            // id: 'uncontrolled-native',
-                                        }}
-                                    >
-                                        <option value={1}>English (united States)</option>
-                                        <option value={2}>French (Franch)</option>
-                                        <option value={3}>Chinese (China)</option>
-                                    </NativeSelect>
+                             
+                                    <Select
+        defaultValue={1}
+        sx={{
+          '&.MuiSelect-selectMenu': {
+            paddingY: '12px', // Adjust padding to center text vertically
+          },
+          '& .MuiSelect-icon': {
+            color: 'white', // Set the arrow color to white
+          },
+          '&:before': {
+            border: 'none', // Hide the before border
+          },
+          '&:after': {
+            border: 'none', // Hide the after border
+          },
+          '&:hover:not(.Mui-disabled):before': {
+            border: 'none', // Hide the hover border
+          },
+        boxShadow: 'none',
+        '.MuiOutlinedInput-notchedOutline': { border: 0 },
+          color: 'white',
+          border:"none",
+          fontFamily: 'GT Walsheim Trial',
+          fontSize: '1rem',
+          fontStyle: 'normal',
+          fontWeight: '400',
+          lineHeight: 'normal',
+        }}
+      >
+        <MenuItem value={1}>English (United States)</MenuItem>
+        <MenuItem value={2}>French (French)</MenuItem>
+        <MenuItem value={3}>Chinese (China)</MenuItem>
+      </Select>
 
                                 </Box>
                                 <Box sx={{
@@ -657,34 +528,13 @@ const Signup = () => {
                                     gap: "1.5rem",
                                     // border: "2px solid red",
                                 }}>
-                                    <Typography sx={{
-                                        color: '#FFF',
-                                        fontFamily: 'GT Walsheim Trial',
-                                        fontSize: '1rem',
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal',
-                                    }}>
+                                    <Typography sx={hptLinksStyle}>
                                         Help
                                     </Typography>
-                                    <Typography sx={{
-                                        color: '#FFF',
-                                        fontFamily: 'GT Walsheim Trial',
-                                        fontSize: '1rem',
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal',
-                                    }}>
+                                    <Typography sx={hptLinksStyle}>
                                         Privacy
                                     </Typography>
-                                    <Typography sx={{
-                                        color: '#FFF',
-                                        fontFamily: 'GT Walsheim Trial',
-                                        fontSize: '1rem',
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal',
-                                    }}>
+                                    <Typography sx={hptLinksStyle}>
                                         Terms
                                     </Typography>
 
@@ -699,8 +549,52 @@ const Signup = () => {
         </div >
     );
 };
+   
 
 
+
+
+
+const firstHeading = {
+    color: '#FFF',
+    fontFamily: "GT Walsheim Trial",
+    marginTop: "4rem",
+    fontSize: { lg: '2.9375rem', md: "2rem", sm: "1.5rem" },
+    fontStyle: 'normal',
+    fontWeight: 400,
+    lineHeight: '4.25rem', 
+}
+
+const secondHeading = {
+     color: 'rgba(255, 255, 255, 0.80)',
+     width: { lg: "31.125rem", md: "28rem", sm: "auto" },
+    fontFamily: '"GT Walsheim Trial"',
+    fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
+    fontStyle: 'normal',
+    fontWeight: 400,
+    lineHeight: 'normal',
+}
+
+const thirdHeading = {
+       color: '#FFF',
+     fontFamily: '"GT Walsheim Trial"',
+    fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
+     fontStyle: 'normal',
+     fontWeight: 400,
+    lineHeight: 'normal',
+}
+
+
+
+const formHeadingStyle = {
+      color: '#4C8AB1',
+    textAlign: 'center',
+    fontFamily: 'GT Walsheim Trial',
+    fontSize: '2.1875rem',
+    fontStyle: 'normal',
+    fontWeight: 700,
+    lineHeight: 'normal',
+}
 
 const customeInputStyles = { width: "100%", border: "none" };
 const customPhoneStyles = {
@@ -712,6 +606,92 @@ const customPhoneStyles = {
     padding: 6,
 };
 
+const inputStyle = {
+    width: '100%',
+    padding: '8px',
+    fontSize: '14px',
+    border: '1px solid #ccc',
+    borderRadius: '6px',
+    height: '1.5rem',
+    marginBottom: '10px',
+  };
+
+  const placeholderStyle = {
+    color: '#B8B8B8',
+    fontFamily: "GT Walsheim Trial",
+     fontSize: "1rem",
+    fontStyle: 'normal',
+    fontWeight: 400,
+  };
+
+  const labelStyle ={
+     display: 'block',
+     marginBottom: '5px',
+                 color: '#202227',
+     fontFamily: 'GT Walsheim Trial',
+    fontSize: '1rem',
+     fontStyle: 'normal',
+        fontWeight: 400,
+          lineHeight: 'normal',
+  }
+
+ const  hptLinksStyle = {
+     color: '#FFF',
+     fontFamily: 'GT Walsheim Trial',
+    fontSize: '1rem',
+     fontStyle: 'normal',
+    fontWeight: 400,
+     lineHeight: 'normal',
+  }
+
+  const googleBtnStyle = {
+   display: 'flex',
+ flexDirection: 'row',
+ border: 'none',
+ gap: '0.3rem',
+  marginBottom: '1.5rem',
+  marginTop: '1.5rem',
+  borderRadius: '2.5rem',
+ border: '1px solid rgba(6, 32, 72, 0.11)',
+ background: '#FFF',
+  color: '#333',
+  fontFamily: 'GT Walsheim Trial',
+  fontSize: '1.25rem',
+  fontStyle: 'normal',
+ fontWeight: 400,
+ lineHeight: 'normal',
+  cursor: 'pointer',
+  width: { lg: 'auto', md: "auto", sm: "auto", xs: "100%" },
+
+  padding: '0.96875rem 1rem 0.96875rem 1rem',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexShrink: 0,
+  textTransform: 'none',
+  }
+
+
+
+  const ContinuewithTextStyle ={
+color: '#202227',
+fontFamily: 'GT Walsheim Trial',
+fontSize: '1rem',
+fontStyle: 'normal',
+fontWeight: 400,
+lineHeight: 'normal',
+display: "flex",
+ justifyContent: "start",
+marginTop: "-1.2rem",
+position: 'absolute',
+left: { lg: '30%', md: "30%", sm: "30%", xs: "50%" },
+transform: 'translateX(-50%)',
+backgroundColor: '#FFFFFF',
+padding: '0 10px',
+  }
+/* .MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiNativeSelect-icon.MuiNativeSelect-iconStandard.css-10bey84-MuiSvgIcon-root-MuiNativeSelect-icon {
+    color: #FFF;
+
+} */
 
 
 
@@ -719,7 +699,5 @@ const customPhoneStyles = {
 
 
 
-
-
-export default Signup;
+export default SignupComp;
 
