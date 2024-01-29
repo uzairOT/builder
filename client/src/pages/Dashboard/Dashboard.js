@@ -1,10 +1,12 @@
 import React from "react";
 import { Grid, Paper } from "@mui/material";
 import ProfileView from "../../components/Dashboard/ProfileView/ProfileView.js";
+import Navbar from "../../components/Navbar/Navbar.js";
 
 const Dashboard = () => {
   return (
     <>
+    <Navbar />
     <main>
       <Grid sx={themeStyle.dashboard} container spacing={1}>
         {/* Profile View */}
