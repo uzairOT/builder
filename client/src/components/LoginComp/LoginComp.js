@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Container, Grid, Typography, Checkbox, TextField, FormControl, InputLabel, NativeSelect, useMediaQuery, Button, MenuItem, Select } from '@mui/material';
-import builder1 from "./Assets/pngs/builderPro1.png";
-import builder2 from "./Assets/pngs/builderpro22.png";
-import builder2Tab from "./Assets/pngs/builderpro2Tab.png";
-import builder2Mob from "./Assets/pngs/builderpro2Mob.png";
-import downloadForMob from "./Assets/pngs/downloadForMob.png";
-import googlePlay from "./Assets/pngs/googlePlay.png";
-import appStore from "./Assets/pngs/appStore.png";
+import builder1 from "../SignupComp/Assets/pngs/builderPro1.png";
+import builder2 from "../SignupComp/Assets/pngs/builderpro22.png";
+import builder2Tab from "../SignupComp/Assets/pngs/builderpro2Tab.png";
+import builder2Mob from "../SignupComp/Assets/pngs/builderpro2Mob.png";
+import downloadForMob from "../SignupComp/Assets/pngs/downloadForMob.png";
+import googlePlay from "../SignupComp/Assets/pngs/googlePlay.png";
+import appStore from "../SignupComp/Assets/pngs/appStore.png";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { ReactComponent as GoogleLogo } from "./Assets/svgs/GoogleLogo.svg"
+import { ReactComponent as GoogleLogo } from "../SignupComp/Assets/svgs/GoogleLogo.svg"
 import { PhoneInput } from 'react-international-phone';
 import "react-international-phone/style.css";
-import YellowBtn from '../Ui/button';
 
 
-const SignupComp = () => {
+const LoginComp = () => {
 
     const isLG = useMediaQuery("(min-width: 1280px)");
     const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
@@ -253,87 +252,41 @@ const SignupComp = () => {
                                 alignItems: 'center',
                                 padding: '20px',
                                 paddingRight: "2rem",
+                                
 
                                 marginLeft: { lg: "6rem", md: "5rem", sm: "5rem", xs: "0rem" },
 
-                               borderRadius: {lg:'1.5rem',md:"1.5rem",sm:"1.5rem",xs:"0rem"},
+                                borderRadius: {lg:'1.5rem',md:"1.5rem",sm:"1.5rem",xs:"0rem"},
                                 width: { lg: '70%', md: "70%", sm: "100%", xs: "100%" }
                             }}>
                                 <Box  sx={{                  
                                     gap: "7rem",
-                                    marginBottom: "0.3rem",
+                                    marginBottom: "8rem",
                                     justifyContent: "space-evenly",
                                     marginTop: "1rem",
                                     display: { lg: "none", md: "none", sm: "none", xs: "flex" },
 
                                 }}>
                                     <Typography sx={formHeadingStyle}>
-                                        Signup
+                                        Login
                                     </Typography>
                                     <img src={builder1} width={"20%"} alt="" />
 
                                 </Box >
                                 <form style={{ marginTop: "1rem" }}>
-                                    <Box  sx={{
-                                        display: "flex",
-                                        justifyContent:"space-between",
-                                        gap:"2rem",
-                                        marginBottom: "0.3rem",
-                                    }}>
-                                        <Box sx={{marginTop:"0.5rem"}}>
-                                            <label style={labelStyle} 
-                                                htmlFor="firstName">First name</label>
-                                            <input  type="text" id="firstName" style={inputStyle} />
-                                        </Box>
-                                        <Box sx={{marginTop:"0.5rem"}}>
-                                            <label style={labelStyle} htmlFor="lastName">Last name</label>
-                                            <input type="text" id="lastName" style={inputStyle} />
-                                        </Box>
-                                    </Box>
+                            
 
                                     <Box sx={{marginTop:"0.5rem"}}>
                                         <label style={labelStyle} htmlFor="email">Email address</label>
                                         <input type="email" id="email" style={{...inputStyle, ...placeholderStyle}} placeholder="workemail@gmail.com" />
                                     </Box>
 
-                                    <Box sx={{marginTop:"0.5rem"}}>
-                                        <label style={labelStyle} htmlFor="phone">Phone number</label>
-                                     
-
-                                        <PhoneInput
-                                            style={customPhoneStyles}
-                                            defaultCountry="pk"
-                                            value={phone}
-                                            onChange={(phone) => setPhone(phone)}
-                                            inputStyle={customeInputStyles}
-                                            required
-                                        />
-                                    </Box>
-
-
-                                    <Box sx={{marginTop:"0.5rem"}}>
-                                        <label style={labelStyle} htmlFor="company">Company Name</label>
-                                        <input type="text" id="company" style={inputStyle}/>
-                                    </Box>
 
 
 
                                     <Box sx={{marginTop:"0.5rem"}}>
                                         <label style={labelStyle} htmlFor="password">Password</label>
 
-                                        {!isMobile && (
-                                            <Box sx={{
-                                                color: '#202227',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '0.75rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                                marginBottom: '0.5rem',
-                                            }}>
-                                                Use 8 or more characters with a mix of letters, numbers & symbols
-                                            </Box>
-                                        )}
 
                                         <Box style={{ position: 'relative' }}>
                                             <input
@@ -359,65 +312,48 @@ const SignupComp = () => {
                                             >
                                                 {passwordVisible ? <VisibilityOff /> : <Visibility />}
                                                 {!isMobile && (
-                                                    <span style={{ marginLeft: '5px', marginBottom:"3px" }}>
+                                                    <span style={{ marginLeft: '5px',  marginBottom:"3px" }}>
                                                         {passwordVisible ? 'Hide' : 'Show'}
                                                     </span>
                                                 )}
                                             </Box>
                                         </Box>
 
-                                        {isMobile && (
-                                            <Box sx={{
-                                                color: '#202227',
+                                     
+                                    </Box>
+
+                                          <Box  sx={{
+                                        display: "flex",
+                                        gap: "7rem",
+                                        marginBottom: {lg:"2rem",md:"2rem",sm:"2rem",xs:"3rem"}}}>
+                                        <Box  sx={{ display: 'flex' }}>
+                                            <Checkbox id="agreeTerms" />
+                                            <label htmlFor="agreeTerms" style={{ marginTop: "0.7rem" }}>
+                                                Remember Me
+
+                                            </label>
+                                        </Box>
+                                        <Box>
+                                            <Typography sx={{
+                                                color: isMobile ? '#FFAC00' : '#4C8AB1',
                                                 fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '0.75rem',
+                                                fontSize: '1rem',
                                                 fontStyle: 'normal',
                                                 fontWeight: 400,
                                                 lineHeight: 'normal',
-                                                marginBottom: '0.5rem',
+                                                textDecoration: 'underline',
+                                                marginTop: "1rem"
                                             }}>
-                                                Use 8 or more characters with a mix of letters, numbers & symbols
-                                            </Box>
-                                        )}
+                                                Forget Password ?
+                                            </Typography>
+                                        </Box>
                                     </Box>
 
-                                    <Box  sx={{ display: 'flex',
-                                    paddingBottom: '1rem',
-                                    marginLeft: '-0.5rem',
-                                    color: '#202227',
-                                    fontFamily: 'Poppins',
-                                    fontSize: '1rem',
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    lineHeight: 'normal',
-
-                                 }}>
-                                        <Checkbox id="agreeTerms" />
-                                        <label htmlFor="agreeTerms" style={{ marginTop: "0.8rem" }}>
-                                            By creating an account, I agree to our <span style={{
-                                                color: '#4C8AB1',
-                                                fontFamily: 'Poppins',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 600,
-                                                lineHeight: 'normal',
-                                                textDecorationLine: 'underline',
-                                            }}>Terms of use</span> and <span style={{
-                                                color: '#4C8AB1',
-                                                fontFamily: 'Poppins',
-                                                fontSize: '1rem',
-                                                fontStyle: 'normal',
-                                                fontWeight: 600,
-                                                lineHeight: 'normal',
-                                                textDecorationLine: 'underline',
-                                            }}>Privacy Policy</span>
-                                        </label>
-                                    </Box>
-
-                                    <Button sx={YellowBtn}
-                                     type="submit">Sign Up</Button>
+                                    <Button sx={SignupBtnStyle}
+                                     type="submit">{isMobile ? 'Login' : 'Log in with Email'}</Button>
                                     <Typography sx={{
                                         color: '#202227',
+                                        marginBottom:{ lg: '1rem', md: "1rem", sm: "1rem", xs: "2rem" },
                                         fontFamily: 'GT Walsheim Trial',
                                         fontSize: '1rem',
                                         fontStyle: 'normal',
@@ -427,8 +363,8 @@ const SignupComp = () => {
                                         justifyContent: { lg: "start", md: "start", sm: "start", xs: "center" },
                                         marginTop: "1rem"
                                     }}>
-                                        Already have an account?{'\u00a0'} <span style={{
-                                          color: isMobile ? '#FFAC00' : '#4C8AB1',
+                                        Don’t have an account?{'\u00a0'} <span style={{
+                                           color: isMobile ? '#FFAC00' : '#4C8AB1',
                                             fontFamily: 'Poppins',
                                             fontSize: '1rem',
                                             fontStyle: 'normal',
@@ -437,10 +373,10 @@ const SignupComp = () => {
                                             textDecorationLine: 'underline',
                                         }}>
 
-                                            Log in</span>
+                                            Sign up</span>
 
                                     </Typography>
-                                    <Box sx={{ position: 'relative', marginTop: '1.5rem' }}>
+                                    <Box sx={{ position: 'relative', marginTop: { lg: '2rem', md: "2rem", sm: "2rem", xs: "3rem" },  }}>
                                         <hr
                                             style={{
                                                 width: '100%',
@@ -464,11 +400,12 @@ const SignupComp = () => {
                                 display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
                                 flexDirection: "row",
                                 // border: "2px solid red",
-                                justifyContent: "space-between",
+                                 justifyContent: "space-between",
                                  marginLeft: { lg: "6rem", md: "5rem", sm: "5rem", xs: "0rem" },
                                 // marginRight: "2rem",
                                width: { lg: '70%', md: "70%", sm: "100%", xs: "100%" },
                                 gap: "1rem"
+
 
                             }}>
 
@@ -476,15 +413,18 @@ const SignupComp = () => {
                                 <Box sx={{
                                     display: "flex",
                                     justifyContent: "flex-start",
-                                 
+                                  
                                     // border: "2px solid red",
 
                                     backgroundColor: "#4C8AB1",
+                                    position:"relative",
+                                     border: 'none',
 
-                                    
+                                
                                 }}>
 
-                             
+
+                                    
                                     <Select
         defaultValue={1}
         sx={{
@@ -503,7 +443,7 @@ const SignupComp = () => {
           '&:hover:not(.Mui-disabled):before': {
             border: 'none', // Hide the hover border
           },
-        boxShadow: 'none',
+          boxShadow: 'none',
         '.MuiOutlinedInput-notchedOutline': { border: 0 },
           color: 'white',
           border:"none",
@@ -519,7 +459,14 @@ const SignupComp = () => {
         <MenuItem value={3}>Chinese (China)</MenuItem>
       </Select>
 
+
                                 </Box>
+
+
+
+
+
+
                                 <Box sx={{
                                     display: "flex",
                                     justifyContent: "center",
@@ -613,7 +560,7 @@ const inputStyle = {
     border: '1px solid #ccc',
     borderRadius: '6px',
     height: '1.5rem',
-    marginBottom: '10px',
+    marginBottom: { lg: '0.7rem', md: "0.7rem", sm: "0.7rem", xs: "1rem" },
   };
 
   const placeholderStyle = {
@@ -645,12 +592,12 @@ const inputStyle = {
   }
 
   const googleBtnStyle = {
+    marginBottom:{ lg: '2rem', md: "1rem", sm: "1rem", xs: "2rem" },
    display: 'flex',
  flexDirection: 'row',
  border: 'none',
  gap: '0.3rem',
-  marginBottom: '1.5rem',
-  marginTop: '1.5rem',
+  marginTop: { lg: '2rem', md: "1rem", sm: "1rem", xs: "3rem" },
   borderRadius: '2.5rem',
  border: '1px solid rgba(6, 32, 72, 0.11)',
  background: '#FFF',
@@ -670,10 +617,29 @@ const inputStyle = {
   textTransform: 'none',
   }
 
+  const SignupBtnStyle = {
+  backgroundColor: '#FFAC00',
+  marginBottom:{ lg: '1rem', md: "1rem", sm: "1rem", xs: "2rem" },
+color: '#fff',
+    border: 'none',
+    padding: '0.9375rem 2.5rem', // Adjusted to match your original padding
+    fontSize: '16px',
+    borderRadius: { lg: '2.5rem', md: "2.5rem", sm: "2.5rem", xs: "0.5rem" },
+     cursor: 'pointer',
+     width: { lg: 'auto', md: "auto", sm: "auto", xs: "100%" },
+    justifyContent: 'center',
+    alignItems: 'center',
+    textTransform: 'none',
+    gap: '0.625rem',
+     '&:hover': {
+         backgroundColor: '#FFAC00',
+     }
+  }
 
 
   const ContinuewithTextStyle ={
 color: '#202227',
+
 fontFamily: 'GT Walsheim Trial',
 fontSize: '1rem',
 fontStyle: 'normal',
@@ -699,5 +665,5 @@ padding: '0 10px',
 
 
 
-export default SignupComp;
+export default LoginComp;
 
