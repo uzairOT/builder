@@ -10,8 +10,9 @@ import googlePlay from "../SignupComp/Assets/pngs/googlePlay.png";
 import appStore from "../SignupComp/Assets/pngs/appStore.png";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "../SignupComp/Assets/svgs/GoogleLogo.svg"
-import { PhoneInput } from 'react-international-phone';
-import "react-international-phone/style.css";
+
+import YellowBtn from '../Ui/button';
+import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf"
 
 
 const LoginComp = () => {
@@ -102,7 +103,7 @@ const LoginComp = () => {
                     backgroundColor: showNewImage ? '#4C8AB1' : '#FFF',
                     transition: 'background-color 1s ease-in-out',
 
-                    // overflow: 'hidden',
+                    overflow: 'hidden',
 
                     // border: "2px solid black"
                 }}
@@ -254,10 +255,10 @@ const LoginComp = () => {
                                 paddingRight: "2rem",
                                 
 
-                                marginLeft: { lg: "6rem", md: "5rem", sm: "5rem", xs: "0rem" },
+                                marginLeft: { lg: "1rem", md: "1rem", sm: "0rem", xs: "0rem" },
 
                                 borderRadius: {lg:'1.5rem',md:"1.5rem",sm:"1.5rem",xs:"0rem"},
-                                width: { lg: '70%', md: "70%", sm: "100%", xs: "100%" }
+                                width: { lg: '80%', md: "90%", sm: "100%", xs: "100%" }
                             }}>
                                 <Box  sx={{                  
                                     gap: "7rem",
@@ -277,20 +278,20 @@ const LoginComp = () => {
                             
 
                                     <Box sx={{marginTop:"0.5rem"}}>
-                                        <label style={labelStyle} htmlFor="email">Email address</label>
-                                        <input type="email" id="email" style={{...inputStyle, ...placeholderStyle}} placeholder="workemail@gmail.com" />
+                                        <label style={{...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem"}} htmlFor="email">Email address</label>
+                                        <input type="email" id="email" style={{...inputStyle, ...placeholderStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} placeholder="workemail@gmail.com" />
                                     </Box>
 
 
 
 
-                                    <Box sx={{marginTop:"0.5rem"}}>
-                                        <label style={labelStyle} htmlFor="password">Password</label>
+                                    <Box sx={{marginTop:"0.5rem",width:"100%"}}>
+                                        <label style={{...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem", width:"100%"}} htmlFor="password">Password</label>
 
 
-                                        <Box style={{ position: 'relative' }}>
+                                        <Box sx={{ position: 'relative',  }}>
                                             <input
-                                            style={inputStyle}
+                                            style={{...inputStyle, height:"2.2rem", width:"100%"}}
                                                 type={passwordVisible ? 'text' : 'password'}
                                                 id="password"
                                                 value={password}
@@ -324,11 +325,13 @@ const LoginComp = () => {
 
                                           <Box  sx={{
                                         display: "flex",
-                                        gap: "7rem",
+                                        gap: { lg: "10rem", md: "5rem", sm: "3.5rem", xs: "5rem" },
                                         marginBottom: {lg:"2rem",md:"2rem",sm:"2rem",xs:"3rem"}}}>
                                         <Box  sx={{ display: 'flex' }}>
-                                            <Checkbox id="agreeTerms" />
-                                            <label htmlFor="agreeTerms" style={{ marginTop: "0.7rem" }}>
+                                            <Checkbox id="agreeTerms" sx={{'&.Mui-checked': {
+                                            color: '#4C8AB1',
+                                                   },}} />
+                                            <label htmlFor="agreeTerms" style={{ marginTop: "0.7rem", fontFamily: GTWalsheimTrial, fontSize: isMobile || isSM ? "0.8rem" : "1rem" }}>
                                                 Remember Me
 
                                             </label>
@@ -336,8 +339,8 @@ const LoginComp = () => {
                                         <Box>
                                             <Typography sx={{
                                                 color: isMobile ? '#FFAC00' : '#4C8AB1',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
+                                                fontFamily: GTWalsheimTrial,
+                                                fontSize: { lg: "1rem", md: "1rem", sm: "0.8rem", xs: "0.8rem" },
                                                 fontStyle: 'normal',
                                                 fontWeight: 400,
                                                 lineHeight: 'normal',
@@ -349,13 +352,13 @@ const LoginComp = () => {
                                         </Box>
                                     </Box>
 
-                                    <Button sx={SignupBtnStyle}
+                                    <Button sx={{...YellowBtn, width: { lg: '75%', md: "auto", sm: "auto", xs: "100%" },}}
                                      type="submit">{isMobile ? 'Login' : 'Log in with Email'}</Button>
                                     <Typography sx={{
                                         color: '#202227',
                                         marginBottom:{ lg: '1rem', md: "1rem", sm: "1rem", xs: "2rem" },
-                                        fontFamily: 'GT Walsheim Trial',
-                                        fontSize: '1rem',
+                                        fontFamily: GTWalsheimTrial,
+                                        fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.8rem" },
                                         fontStyle: 'normal',
                                         fontWeight: 400,
                                         lineHeight: 'normal',
@@ -365,8 +368,8 @@ const LoginComp = () => {
                                     }}>
                                         Don’t have an account?{'\u00a0'} <span style={{
                                            color: isMobile ? '#FFAC00' : '#4C8AB1',
-                                            fontFamily: 'Poppins',
-                                            fontSize: '1rem',
+                                            fontFamily: GTWalsheimTrial,
+                                            fontSize: isMobile ? "0.8rem" : "1rem",
                                             fontStyle: 'normal',
                                             fontWeight: 600,
                                             lineHeight: 'normal',
@@ -396,16 +399,15 @@ const LoginComp = () => {
                                 </form>
                             </Grid>
                             {/* </div> */}
-                            <Grid sx={{
+                         <Grid sx={{
                                 display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
                                 flexDirection: "row",
                                 // border: "2px solid red",
-                                 justifyContent: "space-between",
-                                 marginLeft: { lg: "6rem", md: "5rem", sm: "5rem", xs: "0rem" },
+                                justifyContent: "space-between",
+                                 marginLeft: { lg: "6rem", md: "2rem", sm: "0rem", xs: "0rem" },
                                 // marginRight: "2rem",
-                               width: { lg: '70%', md: "70%", sm: "100%", xs: "100%" },
-                                gap: "1rem"
-
+                               width: { lg: '80%', md: "100%", sm: "100%", xs: "100%" },
+                                gap: { lg: '1rem', md: "4rem", sm:"3rem" },
 
                             }}>
 
@@ -413,18 +415,15 @@ const LoginComp = () => {
                                 <Box sx={{
                                     display: "flex",
                                     justifyContent: "flex-start",
-                                  
+                                 
                                     // border: "2px solid red",
 
                                     backgroundColor: "#4C8AB1",
-                                    position:"relative",
-                                     border: 'none',
-
-                                
-                                }}>
-
 
                                     
+                                }}>
+
+                             
                                     <Select
         defaultValue={1}
         sx={{
@@ -443,7 +442,7 @@ const LoginComp = () => {
           '&:hover:not(.Mui-disabled):before': {
             border: 'none', // Hide the hover border
           },
-          boxShadow: 'none',
+        boxShadow: 'none',
         '.MuiOutlinedInput-notchedOutline': { border: 0 },
           color: 'white',
           border:"none",
@@ -459,14 +458,7 @@ const LoginComp = () => {
         <MenuItem value={3}>Chinese (China)</MenuItem>
       </Select>
 
-
                                 </Box>
-
-
-
-
-
-
                                 <Box sx={{
                                     display: "flex",
                                     justifyContent: "center",
@@ -504,7 +496,7 @@ const LoginComp = () => {
 
 const firstHeading = {
     color: '#FFF',
-    fontFamily: "GT Walsheim Trial",
+    fontFamily: GTWalsheimTrial,
     marginTop: "4rem",
     fontSize: { lg: '2.9375rem', md: "2rem", sm: "1.5rem" },
     fontStyle: 'normal',
@@ -515,7 +507,7 @@ const firstHeading = {
 const secondHeading = {
      color: 'rgba(255, 255, 255, 0.80)',
      width: { lg: "31.125rem", md: "28rem", sm: "auto" },
-    fontFamily: '"GT Walsheim Trial"',
+    fontFamily: GTWalsheimTrial,
     fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
     fontStyle: 'normal',
     fontWeight: 400,
@@ -524,7 +516,7 @@ const secondHeading = {
 
 const thirdHeading = {
        color: '#FFF',
-     fontFamily: '"GT Walsheim Trial"',
+     fontFamily: GTWalsheimTrial,
     fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
      fontStyle: 'normal',
      fontWeight: 400,
@@ -536,26 +528,16 @@ const thirdHeading = {
 const formHeadingStyle = {
       color: '#4C8AB1',
     textAlign: 'center',
-    fontFamily: 'GT Walsheim Trial',
+    fontFamily: GTWalsheimTrial,
     fontSize: '2.1875rem',
     fontStyle: 'normal',
     fontWeight: 700,
     lineHeight: 'normal',
 }
 
-const customeInputStyles = { width: "100%", border: "none" };
-const customPhoneStyles = {
-    borderRadius: "6px",
-    border: "1px solid #D8D8D8",
-    background: "#FFF",
-    width: "100%",
-    height: "2rem",
-    padding: 6,
-};
 
 const inputStyle = {
     width: '100%',
-    padding: '8px',
     fontSize: '14px',
     border: '1px solid #ccc',
     borderRadius: '6px',
@@ -565,7 +547,8 @@ const inputStyle = {
 
   const placeholderStyle = {
     color: '#B8B8B8',
-    fontFamily: "GT Walsheim Trial",
+    padding: '8px',
+    fontFamily: GTWalsheimTrial,
      fontSize: "1rem",
     fontStyle: 'normal',
     fontWeight: 400,
@@ -574,9 +557,9 @@ const inputStyle = {
   const labelStyle ={
      display: 'block',
      marginBottom: '5px',
-                 color: '#202227',
-     fontFamily: 'GT Walsheim Trial',
-    fontSize: '1rem',
+    color: '#202227',
+     fontFamily: GTWalsheimTrial,
+    fontSize: { lg: '1rem', md: "1rem", sm: "0.9rem", xs: "0.75rem" },
      fontStyle: 'normal',
         fontWeight: 400,
           lineHeight: 'normal',
@@ -584,7 +567,7 @@ const inputStyle = {
 
  const  hptLinksStyle = {
      color: '#FFF',
-     fontFamily: 'GT Walsheim Trial',
+     fontFamily: GTWalsheimTrial,
     fontSize: '1rem',
      fontStyle: 'normal',
     fontWeight: 400,
@@ -602,46 +585,29 @@ const inputStyle = {
  border: '1px solid rgba(6, 32, 72, 0.11)',
  background: '#FFF',
   color: '#333',
-  fontFamily: 'GT Walsheim Trial',
-  fontSize: '1.25rem',
+  fontFamily: GTWalsheimTrial,
+  fontSize: { lg: '1.25rem', md: "1.25rem", sm: "1.1rem", xs: "1rem" },
   fontStyle: 'normal',
  fontWeight: 400,
  lineHeight: 'normal',
   cursor: 'pointer',
   width: { lg: 'auto', md: "auto", sm: "auto", xs: "100%" },
 
-  padding: '0.96875rem 1rem 0.96875rem 1rem',
+ padding: {lg:'0.96875rem 2rem',md:'0.96875rem 1rem',sm:'0.8rem 1rem',xs:'0.96875rem 2rem'},
   justifyContent: 'center',
   alignItems: 'center',
   flexShrink: 0,
   textTransform: 'none',
   }
 
-  const SignupBtnStyle = {
-  backgroundColor: '#FFAC00',
-  marginBottom:{ lg: '1rem', md: "1rem", sm: "1rem", xs: "2rem" },
-color: '#fff',
-    border: 'none',
-    padding: '0.9375rem 2.5rem', // Adjusted to match your original padding
-    fontSize: '16px',
-    borderRadius: { lg: '2.5rem', md: "2.5rem", sm: "2.5rem", xs: "0.5rem" },
-     cursor: 'pointer',
-     width: { lg: 'auto', md: "auto", sm: "auto", xs: "100%" },
-    justifyContent: 'center',
-    alignItems: 'center',
-    textTransform: 'none',
-    gap: '0.625rem',
-     '&:hover': {
-         backgroundColor: '#FFAC00',
-     }
-  }
+
 
 
   const ContinuewithTextStyle ={
 color: '#202227',
 
-fontFamily: 'GT Walsheim Trial',
-fontSize: '1rem',
+fontFamily: GTWalsheimTrial,
+ fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.8rem" },
 fontStyle: 'normal',
 fontWeight: 400,
 lineHeight: 'normal',
@@ -654,10 +620,6 @@ transform: 'translateX(-50%)',
 backgroundColor: '#FFFFFF',
 padding: '0 10px',
   }
-/* .MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiNativeSelect-icon.MuiNativeSelect-iconStandard.css-10bey84-MuiSvgIcon-root-MuiNativeSelect-icon {
-    color: #FFF;
-
-} */
 
 
 
