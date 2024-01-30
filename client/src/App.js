@@ -1,17 +1,19 @@
 
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 // import Signup from "./pages/SignUp/Signup";
+import { Outlet } from 'react-router-dom';
 
 
 function App() {
   return (
-    <div className="App">
-       <BrowserRouter>
-        <Routes>
-          {/* <Route path="/" element= {<Signup />} /> */}
-          </Routes>
-     </BrowserRouter>
-    </div>
+//     <BrowserRouter>
+//     <Routes>
+     
+//       </Routes>
+//  </BrowserRouter>
+<>
+<Outlet />
+</>
   );
 }
 
