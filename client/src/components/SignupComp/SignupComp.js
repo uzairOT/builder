@@ -12,7 +12,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "./Assets/svgs/GoogleLogo.svg"
 import { PhoneInput } from 'react-international-phone';
 import "react-international-phone/style.css";
-import YellowBtn from '../Ui/button';
+import YellowBtn from '../UI/button';
 import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf"
 
 

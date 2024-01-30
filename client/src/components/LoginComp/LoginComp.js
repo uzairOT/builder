@@ -11,7 +11,7 @@ import appStore from "../SignupComp/Assets/pngs/appStore.png";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "../SignupComp/Assets/svgs/GoogleLogo.svg"
 
-import YellowBtn from '../Ui/button';
+import YellowBtn from '../UI/button';
 import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf"
 
 
@@ -568,7 +568,7 @@ const inputStyle = {
  const  hptLinksStyle = {
      color: '#FFF',
      fontFamily: GTWalsheimTrial,
-    fontSize: '1rem',
+    fontSize: { lg: '1rem', md: "0.9rem", sm: "0.8rem", },
      fontStyle: 'normal',
     fontWeight: 400,
      lineHeight: 'normal',
