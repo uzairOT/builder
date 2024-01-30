@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Box, Container, Grid, Typography, Checkbox, TextField, FormControl, InputLabel, NativeSelect, useMediaQuery, Button, MenuItem, Select } from '@mui/material';
-import builder1 from "./Assets/pngs/builderPro1.png";
-import builder2 from "./Assets/pngs/builderpro22.png";
-import builder2Tab from "./Assets/pngs/builderpro2Tab.png";
-import builder2Mob from "./Assets/pngs/builderpro2Mob.png";
+import builder1 from "./Assets/pngs/builderProYellowLogo.png";
+
 import downloadForMob from "./Assets/pngs/downloadForMob.png";
 import googlePlay from "./Assets/pngs/googlePlay.png";
 import appStore from "./Assets/pngs/appStore.png";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { ReactComponent as GoogleLogo } from "./Assets/svgs/GoogleLogo.svg"
+import { ReactComponent as GoogleLogo } from "./Assets/svgs/GoogleIcon.svg"
 import { PhoneInput } from 'react-international-phone';
 import "react-international-phone/style.css";
 import YellowBtn from '../UI/button';
 import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf"
+import "./Signup.css"
 
 
 const SignupComp = () => {
@@ -36,17 +34,8 @@ const SignupComp = () => {
 
 
 
-
-
-
-
-
-
     const [phone, setPhone] = useState('');
-    const [showImage, setShowImage] = useState(false);
-    const [showNewImage, setShowNewImage] = useState(false);
-    const [showSignupScreen, setShowSignupScreen] = useState(false);
-
+   
 
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [password, setPassword] = useState('');
@@ -54,108 +43,23 @@ const SignupComp = () => {
         setPasswordVisible(!passwordVisible);
     };
 
-    const getBuilderImage = () => {
-        // Get the current window width
-        const windowWidth = window.innerWidth;
-
-        // Choose the appropriate image based on the window width
-        if (windowWidth >= 900) {
-            return builder2; // Large screen view
-        } else if (windowWidth >= 600) {
-            return builder2Tab; // Tablet view
-        } else {
-            return builder2Mob; // Mobile view
-        }
-    };
-
-    useEffect(() => {
-        const timer1 = setTimeout(() => {
-            setShowImage(true);
-        }, 2000);
-        const timer2 = setTimeout(() => {
-            setShowNewImage(true);
-        }, 3000);
-        const timer3 = setTimeout(() => {
-            setShowSignupScreen(true);
-        }, 4500);
-
-        return () => {
-            clearTimeout(timer1);
-            clearTimeout(timer2);
-            clearTimeout(timer3);
-        };
-    }, []);
-
-
-
-
+    
 
     return (
-        <div className='Boxx'>
-            <Box
-                sx={{
-                    display: 'flex',
-                    // contain: "content",
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: { lg: '100vh', md: "100vh", sm: "100vh", xs: "100vh" },
-                    // height: "100%",
-                    width: '100wh',
-                    backgroundColor: showNewImage ? '#4C8AB1' : '#FFF',
-                    transition: 'background-color 1s ease-in-out',
-
-                    overflow: 'hidden',
-
-                    // border: "2px solid black"
-                }}
-            >
-                <Box
-                    sx={{
-                        transition: 'transform 1s ease-in-out, opacity 1s ease-in-out',
-                        transform: showImage ? 'scale(0.2)' : 'scale(1)',
-                        opacity: showNewImage ? 0 : 1,
-                        display: showNewImage ? 'none' : 'block',
-                    }}
-                >
-                    {showImage && (
-                        <img
-                            src={builder1}
-                            alt="Your Image"
-                            style={{ width: '100%', height: '100%' }}
-                        />
-                    )}
-                </Box>
-
-                <Box
-                    sx={{
-                        transition: 'transform 1s ease-in-out, opacity 1s ease-in-out',
-                        transform: showNewImage ? 'scale(1)' : 'scale(0.2)',
-                        opacity: showSignupScreen ? 0 : 1,
-                        display: showSignupScreen ? 'none' : 'block',
-
-                    }}
-                >
-                    {showNewImage && (
-                        <img
-                            src={getBuilderImage()}
-                            alt="Your New Image"
-                            style={{ width: '100%', height: '100%', overflow: "hidden" }}
-                        />
-                    )}
-                </Box>
-
-                {showSignupScreen && (
-                    <Grid
+                 <Grid
                         container
+                       
                         sx={{
                             padding: {
-                                lg: "0rem 3rem",
-                                md: "0rem 2rem",
+                                lg: "2rem 3rem",
+                                md: "1rem 2rem",
                                 sm: "1rem 2rem",
                                 xs: "0rem 0rem 0rem 0rem",
                             },
                             justifyContent:"center",
-                            alignItems:"center"
+                            alignItems:"center",
+                            backgroundColor:'#4C8AB1',
+                             marginTop: { lg: "-1rem", sm: "-4rem", xs: "auto" },
                             // paddingTop: { xs: "-10rem" }
                             // border: "2px solid red",
 
@@ -167,15 +71,15 @@ const SignupComp = () => {
                             container
                             lg={6}
                             md={6}
-                            sm={6}
+                            sm={12}
                             xs={12}
                             sx={{
                                 gap: { lg: "1.1rem", sm: "1rem", xs: "1rem" },
-                                alignItems: { lg: "start", md: "start", sm: "start", xs: "center" },
+                                alignItems: { lg: "start", md: "start", sm: "center", xs: "center" },
                                 justifyContent: {
                                     lg: "start",
                                     md: "start",
-                                    sm: "start",
+                                    sm: "center",
                                     xs: "center",
                                 },
                                 display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
@@ -205,7 +109,7 @@ const SignupComp = () => {
                             <Box sx={{
                                 marginTop: "15rem",
                                 marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
-                                display: "flex",
+                               display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
                                 justifyContent: "center",
                                 alignItems: "center"
                             }} >
@@ -213,7 +117,7 @@ const SignupComp = () => {
                             </Box>
                             <Box sx={{
 
-                                display: "flex",
+                                 display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
                                 justifyContent: "center",
                                 alignItems: "center",
                                 marginTop: "3rem",
@@ -228,7 +132,7 @@ const SignupComp = () => {
 
                             justifyContent="space-between"
                             xs={12}
-                            sm={6}
+                            sm={12}
                             md={6}
                             lg={6}
                             sx={{
@@ -258,7 +162,7 @@ const SignupComp = () => {
                                 paddingLeft:"2rem",
                                  paddingRight: { lg: "6rem", md: "3rem", sm: "2rem", xs: "2rem" },
 
-                                marginLeft: { lg: "6rem", md: "5rem", sm: "0rem", xs: "0rem" },
+                                marginLeft: { lg: "6rem", md: "2rem", sm: "0rem", xs: "0rem" },
 
                                borderRadius: {lg:'1.5rem',md:"1.5rem",sm:"1.5rem",xs:"0rem"},
                                 width: { lg: '80%', md: "90%", sm: "100%", xs: "100%" }
@@ -339,7 +243,7 @@ const SignupComp = () => {
                                                 fontStyle: 'normal',
                                                 fontWeight: 400,
                                                 lineHeight: 'normal',
-                                                marginBottom: '0.5rem',
+                                                marginBottom: '0.2rem',
                                             }}>
                                                 Use 8 or more characters with a mix of letters, numbers & symbols
                                             </Box>
@@ -357,7 +261,7 @@ const SignupComp = () => {
                                             <Box
                                                 style={{
                                                     position: 'absolute',
-                                                    top: '45%',
+                                                    top: '50%',
                                                     right: '10px',
                                                     transform: 'translateY(-50%)',
                                                     cursor: 'pointer',
@@ -369,7 +273,7 @@ const SignupComp = () => {
                                             >
                                                 {passwordVisible ? <VisibilityOff /> : <Visibility />}
                                                 {!isMobile && (
-                                                    <span style={{ marginLeft: '5px', marginBottom:"3px" }}>
+                                                    <span style={{ marginLeft: '5px',  }}>
                                                         {passwordVisible ? 'Hide' : 'Show'}
                                                     </span>
                                                 )}
@@ -385,6 +289,7 @@ const SignupComp = () => {
                                                 fontWeight: 400,
                                                 lineHeight: 'normal',
                                                 marginBottom: '0.5rem',
+                                                marginTop:"0.2rem"
                                             }}>
                                                 Use 8 or more characters with a mix of letters, numbers & symbols
                                             </Box>
@@ -481,6 +386,7 @@ const SignupComp = () => {
                                 // border: "2px solid red",
                                 justifyContent: "space-between",
                                  marginLeft: { lg: "6rem", md: "2rem", sm: "0rem", xs: "0rem" },
+                                 marginRight: { lg: "0rem", md: "4rem", sm: "0rem", xs: "0rem" },
                                 // marginRight: "2rem",
                                width: { lg: '80%', md: "70%", sm: "100%", xs: "100%" },
                                 gap: { lg: '1rem', md: "3rem", sm:"3rem" },
@@ -491,9 +397,10 @@ const SignupComp = () => {
                                 <Box sx={{
                                     display: "flex",
                                     justifyContent: "flex-start",
+
                                  
                                     // border: "2px solid red",
-
+                                     
                                     backgroundColor: "#4C8AB1",
 
                                     
@@ -554,14 +461,25 @@ const SignupComp = () => {
                                     </Typography>
 
                                 </Box>
+                        
                             </Grid>
 
+                            <Box sx={{
 
+                                 display: { lg: "none", md: "none", sm: "flex", xs: "none" },
+                                justifyContent: "center",
+                                alignItems: "center",
+                                marginTop: "1rem",
+                                marginLeft: { lg: "0rem", md: "-3rem", sm: "0rem" },
+                                gap: "1rem"
+                            }}>
+                                <img src={googlePlay} width={widthValue} alt="" />
+                                <img src={appStore} width={widthValue} alt="" />
+                            </Box>
                         </Grid>
                     </Grid>
-                )}
-            </Box>
-        </div >
+           
+ 
     );
 };
    
@@ -572,7 +490,9 @@ const SignupComp = () => {
 
 const firstHeading = {
     color: '#FFF',
-    fontFamily: GTWalsheimTrial,
+    // fontFamily: GTWalsheimTrial,
+    fontFamily: "GT Walsheim Trial",
+     display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
     marginTop: "4rem",
     fontSize: { lg: '2.9375rem', md: "2rem", sm: "1.5rem" },
     fontStyle: 'normal',
@@ -583,6 +503,7 @@ const firstHeading = {
 const secondHeading = {
      color: 'rgba(255, 255, 255, 0.80)',
      width: { lg: "31.125rem", md: "28rem", sm: "auto" },
+      display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
    fontFamily: GTWalsheimTrial,
     fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
     fontStyle: 'normal',
@@ -593,6 +514,7 @@ const secondHeading = {
 const thirdHeading = {
        color: '#FFF',
      fontFamily: GTWalsheimTrial,
+      display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
     fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
      fontStyle: 'normal',
      fontWeight: 400,
@@ -659,8 +581,8 @@ const inputStyle = {
 
  const  hptLinksStyle = {
      color: '#FFF',
+     fontSize: {lg:'1rem', md:"0.9rem", sm:"0.8rem"},
      fontFamily: GTWalsheimTrial,
-    fontSize: '1rem',
      fontStyle: 'normal',
     fontWeight: 400,
      lineHeight: 'normal',
