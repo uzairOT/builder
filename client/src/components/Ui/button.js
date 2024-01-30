@@ -3,7 +3,7 @@ import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b
 
 const YellowBtn = {
   backgroundColor: '#FFAC00',
-  color: '#fff',
+  color: '#ffffff',
   border: 'none',
   padding: '0.9rem 2.5rem',
    fontSize: { lg: '1.25rem', md: "1.25rem", sm: "1.1rem", xs: "1rem" },
