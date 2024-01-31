@@ -1,7 +1,10 @@
 import React from "react";
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Stack } from "@mui/material";
 import ProfileView from "../../components/Dashboard/ProfileView/ProfileView.js";
 import Navbar from "../../components/Navbar/Navbar.js";
+import WeatherView from "../../components/Dashboard/WeatherView/WeatherView.js";
+import ProgressCard from "../../components/Dashboard/ProgressCard/ProgressCard.js";
+import TaskCalenderView from "../../components/Dashboard/TaskCalenderView/TaskCalenderView.js";
 
 const Dashboard = () => {
   return (
@@ -15,11 +18,17 @@ const Dashboard = () => {
         </Grid>
         {/* Weather and Progress View */}
         <Grid item xs={12} sm={9} md={7}>
-          <Paper sx={themeStyle.dashboardViews}>Weather and Progress View</Paper>
+            <Grid item margin={1}><Paper><WeatherView /></Paper></Grid>
+            <Stack direction={{md:'column', lg:'row'}} margin={1}>
+              <Paper sx={themeStyle.progressCard} margin={1}><ProgressCard /></Paper>
+              <Paper sx={themeStyle.progressCard} margin={1}><ProgressCard /></Paper>
+            </Stack>
         </Grid>
         {/* Calender Tracker View */}
         <Grid item xs={12} sm={12} md={3}>
-          <Paper sx={themeStyle.dashboardViews}>Calender Tracker View</Paper>
+          <Paper sx={themeStyle.dashboardViews}>
+            <TaskCalenderView />
+          </Paper>
         </Grid>
       </Grid>
       </main>
@@ -33,9 +42,13 @@ const themeStyle = {
   dashboard: {
     backgroundColor: "#eff5ff",
     height: "100vh",
-    width: "100%",  
   },
   dashboardViews:{
     height: '100vh',
+  },
+  progressCard: {
+    height: "100%",
+    width: "100%",
+    margin: '1px'
   }
 };

@@ -1,0 +1,38 @@
+[
+    {
+        "title": "Burrow - Home Build",
+        "image": "C:/Users/Emanuel Robert/Desktop/BuilderProProject/builder/client/src/components/Dashboard/ProfileView/assets/images/project-profile-pic.jpg",
+        "adminName": "John Doe",
+        "clientName": "Jane Smith",
+        "jobRunningTotal": "$765.88",
+        "location": "St 34 Omaha",
+        "status": "Critical"
+    },
+    {
+        "title": "Elway - Kitchen Remodel",
+        "image": "/Images/project-profile-pic-1.jpg",
+        "adminName": "Alice Johnson",
+        "clientName": "Bob Williams",
+        "jobRunningTotal": "$500.00",
+        "location": "Main St",
+        "status": "High"
+    },
+    {
+        "title": "Frost - Basement Build",
+        "image": "/Images/project-profile-pic-2.jpg",
+        "adminName": "Sarah Thompson",
+        "clientName": "Michael Davis",
+        "jobRunningTotal": "$1200.50",
+        "location": "Elm St",
+        "status": "Medium"
+    },
+    {
+        "title": "Stibbs - Bathroom Remodel",
+        "image": "/Images/project-profile-pic-3.jpg",
+        "adminName": "David Wilson",
+        "clientName": "Emily Brown",
+        "jobRunningTotal": "$950.25",
+        "location": "Oak St",
+        "status": "Low"
+    }
+]
