@@ -15,9 +15,7 @@ const YellowBtn = {
   alignItems: 'center',
   textTransform: 'none',
   gap: '0.625rem',
-  '&:hover': {
-    backgroundColor: '#FFAC00',
-  },
+ 
   fontFamily: GTWalsheimTrial,
   lineHeight: 'normal',
 };
