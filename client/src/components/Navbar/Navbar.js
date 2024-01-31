@@ -13,6 +13,7 @@ const Navbar = () => {
     const [selectedTab, setSelectedTab] =useState(0);
     const theme = useTheme(); 
     const showHamburger = useMediaQuery(theme.breakpoints.down('lg'));
+    const responsiveButton = useMediaQuery(theme.breakpoints.up('sm'));
 
     const  handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
@@ -66,10 +67,9 @@ const Navbar = () => {
             <Tab label='Subscription' style={themeStyle.getTabColor(5)}/>
             <Tab label='Settings' style={themeStyle.getTabColor(6)}/>
             </Tabs>
-            <Box>
-              
-            <BuilderProButton backgroundColor={'#FFAC00'} variant={'contained'} Icon={BuilderProNavbarShare}>Share</BuilderProButton>
-            <BuilderProButton backgroundColor={'#4C8AB1'} variant={'outlined'} Icon={BuilderProNavbarLogout}>Logout</BuilderProButton>
+            <Box width={'100%'}>
+            <BuilderProButton backgroundColor={'#FFAC00'} variant={'contained'} Icon={BuilderProNavbarShare}>{ responsiveButton ? "Share" : ""}</BuilderProButton>
+            <BuilderProButton backgroundColor={'#4C8AB1'} variant={'outlined'} Icon={BuilderProNavbarLogout}>{ responsiveButton ? "Logout" : ""}</BuilderProButton>
             </Box>
         </Toolbar>
       </AppBar>
