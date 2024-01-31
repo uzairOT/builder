@@ -1,4 +1,4 @@
-import { AppBar, Tab, Tabs, Toolbar } from '@mui/material'
+import { AppBar, Box, Tab, Tabs, Toolbar } from '@mui/material'
 import {ReactComponent as BuilderProNavbarLogo} from './assets/svgs/builder-pro-logo-navbar.svg'
 import {ReactComponent as BuilderProNavbarShare} from './assets/svgs/builder-pro-navbar-share.svg'
 import {ReactComponent as BuilderProNavbarLogout} from './assets/svgs/builder-pro-navbar-logout.svg'
@@ -14,6 +14,7 @@ const Navbar = () => {
     const  handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
             }
+
     // Navbar styles
     const themeStyle = {
         navbar: {
@@ -24,15 +25,21 @@ const Navbar = () => {
         logo: {
             width: '130px',
             height: '69px',
-            marginLeft: '28px'
+            marginLeft: '20px'
         },
         tabs: {
-            margin: 'auto'
+            margin: 'auto',
+          
         },
         getTabColor: (tabIndex) => ({
-            fontFamily: `${GTWalsheimTrial}, sans-serif`,
-            color: selectedTab === tabIndex ? '#FFAC00' : ''
-        })
+            fontFamily: 'inherit',
+            color: selectedTab === tabIndex ? '#FFAC00' : '',
+            textTransform: 'capitalize',
+            fontSize: '15px',
+        }),
+        search: {
+          display: {xl: 'flex', lg:'none', md: 'none'},
+        }
     }
 
   return (
@@ -45,7 +52,9 @@ const Navbar = () => {
             <Tab label= 'Projects' style={themeStyle.getTabColor(1)}/>
             <Tab label= 'Reports' style={themeStyle.getTabColor(2)}/>
             <Tab label= 'Chat' style={themeStyle.getTabColor(3)}/>
+            <Box sx={themeStyle.search}>
             <SearchBar />
+            </Box>
             <Tab label='Subscription' style={themeStyle.getTabColor(5)}/>
             <Tab label='Settings' style={themeStyle.getTabColor(6)}/>
             </Tabs>

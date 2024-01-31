@@ -1,12 +1,11 @@
 import { Box, Typography } from '@mui/material'
 import React from 'react'
 import Profile from './Profile'
-import GTWalsheimTrial from './assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf';
 import ListProjects from './ListProjects';
 
 const ProfileView = () => {
   return (
-    <Box fontFamily={`${GTWalsheimTrial}, sans-serif`}>
+    <Box fontStyle={'GT-Walsheim-Regular-Trial, sans-serif'}>
       <Typography variant='h6' sx={themeStyle.title}>Dashboard</Typography>
       <Profile />
       <ListProjects />
@@ -22,7 +21,7 @@ const themeStyle = {
     fontSize: "25px",
     lineHeight: "normal",
     padding: 2,
-    fontFamily: 'inherit',
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     textAlign: "left",
   }
 }

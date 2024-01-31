@@ -3,31 +3,31 @@
         {
             "id": 1,
             "day": "Mon",
-            "icon": "/Images/rainy-sunny.png",
+            "icon": "./images/rainy-sunny.png",
             "temp": "18°"
         },
         {
             "id": 2,
             "day": "Tue",
-            "icon": "/Images/stormy-sunny.png",
+            "icon": "./images/stormy-sunny.png",
             "temp": "15°"
         },
         {
             "id": 3,
             "day": "Wed",
-            "icon": "/Images/rainy.png",
+            "icon": "./images/rainy.png",
             "temp": "12°"
         },
         {
             "id": 4,
             "day": "Thu",
-            "icon": "/Images/partly-cloudy.png",
+            "icon": "./images/partly-cloudy.png",
             "temp": "20°"
         },
         {
             "id": 5,
             "day": "Fri",
-            "icon": "/Images/rainy-storm.png",
+            "icon": "./images/rainy-storm.png",
             "temp": "9°"
         }
     ]
