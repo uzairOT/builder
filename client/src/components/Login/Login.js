@@ -9,7 +9,7 @@ import downloadForMob from "../Signup/Assets/pngs/downloadForMob.png";
 import googlePlay from "../Signup/Assets/pngs/googlePlay.png";
 import appStore from "../Signup/Assets/pngs/appStore.png";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { ReactComponent as GoogleLogo } from "../Signup/Assets/svgs/GoogleIcon.svg"
+import { ReactComponent as GoogleLogo } from "../Signup/Assets/svgs/GoogleIcon.svg";
 
 import YellowBtn from '../UI/button';
 import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf"
@@ -415,7 +415,7 @@ const Login = () => {
 
 const firstHeading = {
     color: '#FFF',
-    fontFamily: GTWalsheimTrial,
+    fontFamily: `${GTWalsheimTrial}, sans-serif`,
     marginTop: "4rem",
     fontSize: { lg: '2.9375rem', md: "2rem", sm: "1.5rem" },
     fontStyle: 'normal',
