@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
-import ProfileImage from "../../Ui/ProfilePic/ProfilePic";
+import ProfileImage from "../../UI/ProfilePic/ProfilePic";
 import UserImage from './assets/images/user-image.jpg'
 
 const Profile = () => {

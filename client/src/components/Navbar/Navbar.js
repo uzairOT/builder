@@ -3,8 +3,8 @@ import {ReactComponent as BuilderProNavbarLogo} from './assets/svgs/builder-pro-
 import {ReactComponent as BuilderProNavbarShare} from './assets/svgs/builder-pro-navbar-share.svg'
 import {ReactComponent as BuilderProNavbarLogout} from './assets/svgs/builder-pro-navbar-logout.svg'
 import React, { useState } from 'react'
-import SearchBar from '../Ui/SearchBar/SearchBar';
-import BuilderProButton from '../Ui/Button/BuilderProButton';
+import SearchBar from '../UI/SearchBar/SearchBar';
+import BuilderProButton from '../UI/Button/BuilderProButton';
 import GTWalsheimTrial from './assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf';
 
 const Navbar = () => {
