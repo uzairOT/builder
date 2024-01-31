@@ -75,6 +75,7 @@ const Login = () => {
                                 },
                                 display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
                                 flexDirection: "column",
+                                paddingLeft:"4rem"
 
                             }}
                         >
@@ -98,7 +99,7 @@ const Login = () => {
                               Log in to your account
                             </Typography>
                             <Box sx={{
-                                marginTop: "10rem",
+                                marginTop: "15rem",
                                  display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
                                 marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
                                 
@@ -150,11 +151,11 @@ const Login = () => {
                                 boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
                                 flexDirection: 'column',
                                 display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
+                                // justifyContent: 'center',
+                                // alignItems: 'center',
                                 padding: '20px',
-                                paddingLeft:"2rem",
-                                 paddingRight: { lg: "4rem", md: "2rem", sm: "2rem", xs: "2rem" },
+                                paddingLeft:"3.5rem",
+                                 paddingRight: { lg: "7rem", md: "2rem", sm: "2rem", xs: "2rem" },
 
                                 marginLeft: { lg: "3rem", md: "2rem", sm: "0rem", xs: "0rem" },
 
@@ -187,24 +188,14 @@ const Login = () => {
                                         <label style={{...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem"}} htmlFor="email">Email address</label>
                                         <input type="email" id="email" style={{...inputStyle, ...placeholderStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} placeholder="workemail@gmail.com" />
                                     </Box>
-
-
-
-
-                                    <Box sx={{marginTop:"0.5rem",width:"100%"}}>
-                                        <label style={{...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem", width:"100%"}} htmlFor="password">Password</label>
-
-
-                                        <Box sx={{ position: 'relative',  }}>
-                                            <input
-                                            style={{...inputStyle, height:"2.2rem", width:"100%"}}
-                                                type={passwordVisible ? 'text' : 'password'}
+                                    <Box sx={{marginTop:"0.5rem"}}>
+                                        <label style={{...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem"}} htmlFor="email">Password</label>
+  <Box sx={{ position: 'relative',  }}>
+                                        <input type="email" id="email" style={{...inputStyle, ...placeholderStyle, fontSize: isMobile ? "0.8rem" : "1rem" }}  type={passwordVisible ? 'text' : 'password'}
                                                 id="password"
                                                 value={password}
-                                                onChange={(e) => setPassword(e.target.value)}
-                                            />
-
-                                            <Box
+                                                onChange={(e) => setPassword(e.target.value)}  placeholder="" />
+                                                   <Box
                                                 style={{
                                                     position: 'absolute',
                                                     top: '50%',
@@ -224,14 +215,17 @@ const Login = () => {
                                                     </span>
                                                 )}
                                             </Box>
-                                        </Box>
-
-                                     
+                                            </Box>
                                     </Box>
+
+
+
+                       
 
                                           <Box  sx={{
                                     
                                         display: "flex",
+                                        justifyContent:"space-between",
                                         gap: { lg: "8rem", md: "5rem", sm: "3.5rem", xs: "5rem" },
                                         marginTop:{lg:"2rem",md:"2rem",sm:"2rem",xs:"0.5rem"},
                                         marginBottom: {lg:"2rem",md:"2rem",sm:"2rem",xs:"3rem"}}}>
@@ -261,7 +255,7 @@ const Login = () => {
                                         </Box>
                                     </Box>
 
-                                    <Button sx={{...YellowBtn, width: { lg: '75%', md: "auto", sm: "auto", xs: "100%" }, }}
+                                    <Button sx={{...YellowBtn, width: { lg: '19rem', md: "auto", sm: "auto", xs: "100%" }, }}
                                      type="submit">{isMobile ? 'Login' : 'Log in with Email'}</Button>
                                     <Typography sx={{
                                         color: '#202227',
@@ -300,11 +294,11 @@ const Login = () => {
                                         <Typography
                                             sx={ContinuewithTextStyle}
                                         >
-                                            {isMobile ? 'Or' : 'Or Continue with'}
+                                            {isMobile ? 'Or' : 'or continue with'}
                                         </Typography>
                                     </Box>
 
-                                    <Button sx={{...googleBtnStyle, marginTop:"2.5rem",  marginBottom:"3rem"}} type="button"><GoogleLogo style={{ marginRight: "1rem",  }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
+                                    <Button sx={{...googleBtnStyle, marginTop:"2.5rem",  marginBottom:"6.5rem"}} type="button"><GoogleLogo style={{ marginRight: "1rem",  }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
                                 </form>
                             </Grid>
                             {/* </div> */}
@@ -436,6 +430,7 @@ const secondHeading = {
 
 const thirdHeading = {
        color: '#FFF',
+       marginTop:"2rem",
      fontFamily: GTWalsheimTrial,
     fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
     display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
@@ -458,12 +453,13 @@ const formHeadingStyle = {
 
 
 const inputStyle = {
+    height: "2.5rem",
+    alignSelf: "stretch",
     width: '100%',
     fontSize: '14px',
     border: '1px solid #ccc',
-    borderRadius: '6px',
-    height: '1.5rem',
-    marginBottom: { lg: '0.7rem', md: "0.7rem", sm: "0.7rem", xs: "1rem" },
+    borderRadius: '0.75rem',
+    marginBottom: { lg: '1rem', md: "1rem", sm: "1rem", xs: "1rem" },
   };
 
   const placeholderStyle = {
@@ -477,7 +473,7 @@ const inputStyle = {
 
   const labelStyle ={
      display: 'block',
-     marginBottom: '5px',
+     marginBottom: '1rem',
     color: '#202227',
      fontFamily: GTWalsheimTrial,
     fontSize: { lg: '1rem', md: "1rem", sm: "0.9rem", xs: "0.75rem" },
@@ -528,7 +524,7 @@ const inputStyle = {
 color: '#202227',
 
 fontFamily: GTWalsheimTrial,
- fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.8rem" },
+ fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
 fontStyle: 'normal',
 fontWeight: 400,
 lineHeight: 'normal',
@@ -536,7 +532,7 @@ display: "flex",
  justifyContent: "start",
 marginTop: "-1.2rem",
 position: 'absolute',
-left: { lg: '30%', md: "30%", sm: "30%", xs: "50%" },
+left: { lg: '17%', md: "20%", sm: "30%", xs: "50%" },
 transform: 'translateX(-50%)',
 backgroundColor: '#FFFFFF',
 padding: '0 10px',
