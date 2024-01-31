@@ -84,6 +84,7 @@ const SignupComp = () => {
                                 },
                                 display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
                                 flexDirection: "column",
+                                paddingLeft:"4rem"
 
                             }}
                         >
@@ -107,7 +108,7 @@ const SignupComp = () => {
                                 Create an account
                             </Typography>
                             <Box sx={{
-                                marginTop: "15rem",
+                                marginTop: "19rem",
                                 marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
                                display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
                                 justifyContent: "center",
@@ -261,7 +262,7 @@ const SignupComp = () => {
                                             <Box
                                                 style={{
                                                     position: 'absolute',
-                                                    top: '50%',
+                                                    top: '40%',
                                                     right: '10px',
                                                     transform: 'translateY(-50%)',
                                                     cursor: 'pointer',
@@ -372,11 +373,11 @@ const SignupComp = () => {
                                         <Typography
                                             sx={ContinuewithTextStyle}
                                         >
-                                            {isMobile ? 'Or' : 'Or Continue with'}
+                                            {isMobile ? 'Or' : 'or continue with'}
                                         </Typography>
                                     </Box>
 
-                                    <Button sx={{...googleBtnStyle, marginBottom:"3rem", marginTop:"2rem"}} type="button"><GoogleLogo style={{ marginRight: "1rem" }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
+                                    <Button sx={{...googleBtnStyle, marginBottom:"6.4rem", marginTop:"2rem"}} type="button"><GoogleLogo style={{ marginRight: "1rem" }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
                                 </form>
                             </Grid>
                             {/* </div> */}
@@ -503,6 +504,7 @@ const firstHeading = {
 const secondHeading = {
      color: 'rgba(255, 255, 255, 0.80)',
      width: { lg: "31.125rem", md: "28rem", sm: "auto" },
+     marginTop:"1rem",
       display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
    fontFamily: GTWalsheimTrial,
     fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
@@ -514,6 +516,7 @@ const secondHeading = {
 const thirdHeading = {
        color: '#FFF',
      fontFamily: GTWalsheimTrial,
+     marginTop:"2rem",
       display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
     fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
      fontStyle: 'normal',
@@ -541,8 +544,10 @@ const customPhoneStyles = {
     border: "1px solid #D8D8D8",
     background: "#FFF",
     width: "100%",
-    height: "2rem",
-    padding: "6px",
+    height: "2.7rem",
+     alignSelf: "stretch",
+     paddingTop:"0.5rem",
+    padding: "0.5rem",
    
 
   
@@ -550,13 +555,13 @@ const customPhoneStyles = {
 
 const inputStyle = {
     width: '100%',
+      height: "2.5rem",
+       marginBottom: '1rem',
+    alignSelf: "stretch",
     padding: '8px',
     fontSize: '14px',
     border: '1px solid #ccc',
     borderRadius: '12px',
-     height: "1.6rem",
-    marginBottom: '10px',
-     marginBottom: { lg: '0.7rem', md: "0.7rem", sm: "0.7rem", xs: "1rem" },
   };
 
   const placeholderStyle = {
@@ -619,7 +624,7 @@ const inputStyle = {
   const ContinuewithTextStyle ={
 color: '#202227',
 fontFamily: GTWalsheimTrial,
- fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.8rem" },
+ fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
 fontStyle: 'normal',
 fontWeight: 400,
 lineHeight: 'normal',
@@ -627,7 +632,7 @@ display: "flex",
  justifyContent: "start",
 marginTop: "-1.2rem",
 position: 'absolute',
-left: { lg: '30%', md: "30%", sm: "30%", xs: "50%" },
+left: { lg: '17%', md: "20%", sm: "30%", xs: "50%" },
 transform: 'translateX(-50%)',
 backgroundColor: '#FFFFFF',
 padding: '0 10px',

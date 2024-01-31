@@ -10,7 +10,7 @@ const YellowBtn = {
   borderRadius: { lg: '2.5rem', md: '2.5rem', sm: '2.5rem', xs: '0.5rem' },
   cursor: 'pointer',
   width: { lg: 'auto', md: 'auto', sm: 'auto', xs: '100%' },
-  minWidth:"10rem",
+  maxWidth:"19.5rem",
   justifyContent: 'center',
   alignItems: 'center',
   textTransform: 'none',
