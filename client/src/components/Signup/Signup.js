@@ -555,8 +555,8 @@ const customPhoneStyles = {
 
 const inputStyle = {
     width: '100%',
-      height: "2.5rem",
-       marginBottom: '1rem',
+    height: "2.5rem",
+    marginBottom: '1rem',
     alignSelf: "stretch",
     padding: '8px',
     fontSize: '14px',
