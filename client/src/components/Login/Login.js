@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Container, Grid, Typography, Checkbox, TextField, FormControl, InputLabel, NativeSelect, useMediaQuery, Button, MenuItem, Select } from '@mui/material';
-import builder1 from "../SignupComp/Assets/pngs/builderPro1.png";
-import builder2 from "../SignupComp/Assets/pngs/builderpro22.png";
-import builder2Tab from "../SignupComp/Assets/pngs/builderpro2Tab.png";
-import builder2Mob from "../SignupComp/Assets/pngs/builderpro2Mob.png";
-import downloadForMob from "../SignupComp/Assets/pngs/downloadForMob.png";
-import googlePlay from "../SignupComp/Assets/pngs/googlePlay.png";
-import appStore from "../SignupComp/Assets/pngs/appStore.png";
+import builder1 from "../Signup/Assets/pngs/builderProYellowLogo.png";
+import builder2 from "../Signup/Assets/pngs/builderProWhiteLogo.png";
+import builder2Tab from "../Signup/Assets/pngs/builderProWhiteLogoTab.png";
+import builder2Mob from "../Signup/Assets/pngs/builderProWhiteLogoMob.png";
+import downloadForMob from "../Signup/Assets/pngs/downloadForMob.png";
+import googlePlay from "../Signup/Assets/pngs/googlePlay.png";
+import appStore from "../Signup/Assets/pngs/appStore.png";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { ReactComponent as GoogleLogo } from "../SignupComp/Assets/svgs/GoogleLogo.svg"
-import { PhoneInput } from 'react-international-phone';
-import "react-international-phone/style.css";
+import { ReactComponent as GoogleLogo } from "../Signup/Assets/svgs/GoogleIcon.svg";
+
+import YellowBtn from '../UI/button';
+import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf"
 
 
-const LoginComp = () => {
+const Login = () => {
 
     const isLG = useMediaQuery("(min-width: 1280px)");
     const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
@@ -32,127 +33,25 @@ const LoginComp = () => {
             ? "40%"
             : "100%"
 
-
-
-
-
-
-
-
-
-    const [phone, setPhone] = useState('');
-    const [showImage, setShowImage] = useState(false);
-    const [showNewImage, setShowNewImage] = useState(false);
-    const [showSignupScreen, setShowSignupScreen] = useState(false);
-
-
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [password, setPassword] = useState('');
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
     };
 
-    const getBuilderImage = () => {
-        // Get the current window width
-        const windowWidth = window.innerWidth;
-
-        // Choose the appropriate image based on the window width
-        if (windowWidth >= 900) {
-            return builder2; // Large screen view
-        } else if (windowWidth >= 600) {
-            return builder2Tab; // Tablet view
-        } else {
-            return builder2Mob; // Mobile view
-        }
-    };
-
-    useEffect(() => {
-        const timer1 = setTimeout(() => {
-            setShowImage(true);
-        }, 2000);
-        const timer2 = setTimeout(() => {
-            setShowNewImage(true);
-        }, 3000);
-        const timer3 = setTimeout(() => {
-            setShowSignupScreen(true);
-        }, 4500);
-
-        return () => {
-            clearTimeout(timer1);
-            clearTimeout(timer2);
-            clearTimeout(timer3);
-        };
-    }, []);
-
-
-
-
-
     return (
-        <div className='Boxx'>
-            <Box
-                sx={{
-                    display: 'flex',
-                    // contain: "content",
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: { lg: '100vh', md: "100vh", sm: "100vh", xs: "100vh" },
-                    // height: "100%",
-                    width: '100wh',
-                    backgroundColor: showNewImage ? '#4C8AB1' : '#FFF',
-                    transition: 'background-color 1s ease-in-out',
-
-                    // overflow: 'hidden',
-
-                    // border: "2px solid black"
-                }}
-            >
-                <Box
-                    sx={{
-                        transition: 'transform 1s ease-in-out, opacity 1s ease-in-out',
-                        transform: showImage ? 'scale(0.2)' : 'scale(1)',
-                        opacity: showNewImage ? 0 : 1,
-                        display: showNewImage ? 'none' : 'block',
-                    }}
-                >
-                    {showImage && (
-                        <img
-                            src={builder1}
-                            alt="Your Image"
-                            style={{ width: '100%', height: '100%' }}
-                        />
-                    )}
-                </Box>
-
-                <Box
-                    sx={{
-                        transition: 'transform 1s ease-in-out, opacity 1s ease-in-out',
-                        transform: showNewImage ? 'scale(1)' : 'scale(0.2)',
-                        opacity: showSignupScreen ? 0 : 1,
-                        display: showSignupScreen ? 'none' : 'block',
-
-                    }}
-                >
-                    {showNewImage && (
-                        <img
-                            src={getBuilderImage()}
-                            alt="Your New Image"
-                            style={{ width: '100%', height: '100%', overflow: "hidden" }}
-                        />
-                    )}
-                </Box>
-
-                {showSignupScreen && (
-                    <Grid
+      
+                        <Grid
                         container
                         sx={{
                             padding: {
-                                lg: "0rem 3rem",
-                                md: "0rem 2rem",
+                                lg: "4.5rem 3rem",
+                                md: "4.5rem 2rem",
                                 sm: "1rem 2rem",
-                                xs: "0rem 0rem 0rem 0rem",
+                                xs: "0rem 0rem",
                             },
-                            // paddingTop: { xs: "-10rem" }
+                            backgroundColor:'#4C8AB1',
+                            marginTop: { lg: "-1rem", sm: "-4rem", xs: "0rem" },
                             // border: "2px solid red",
 
 
@@ -163,19 +62,20 @@ const LoginComp = () => {
                             container
                             lg={6}
                             md={6}
-                            sm={6}
+                            sm={12}
                             xs={12}
                             sx={{
                                 gap: { lg: "1.1rem", sm: "1rem", xs: "1rem" },
-                                alignItems: { lg: "start", md: "start", sm: "start", xs: "center" },
+                                alignItems: { lg: "start", md: "start", sm: "center", xs: "center" },
                                 justifyContent: {
                                     lg: "start",
                                     md: "start",
-                                    sm: "start",
+                                    sm: "center",
                                     xs: "center",
                                 },
                                 display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
                                 flexDirection: "column",
+                                paddingLeft:"4rem"
 
                             }}
                         >
@@ -196,23 +96,25 @@ const LoginComp = () => {
                             <Typography
                                 sx={thirdHeading}
                             >
-                                Create an account
+                              Log in to your account
                             </Typography>
                             <Box sx={{
-                                marginTop: "10rem",
+                                marginTop: "15rem",
+                                 display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
                                 marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
-                                display: "flex",
+                                
                                 justifyContent: "center",
                                 alignItems: "center"
                             }} >
                                 <img src={downloadForMob} width={DoMobWidth} alt="" />
                             </Box>
-                            <Box sx={{
+                                <Box sx={{
 
-                                display: "flex",
+                               
+                                 display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
                                 justifyContent: "center",
                                 alignItems: "center",
-                                marginTop: "1rem",
+                                marginTop: "3rem",
                                 marginLeft: { lg: "0rem", md: "-3rem", sm: "-3rem" },
                                 gap: "1rem"
                             }}>
@@ -224,7 +126,7 @@ const LoginComp = () => {
 
                             justifyContent="space-between"
                             xs={12}
-                            sm={6}
+                            sm={12}
                             md={6}
                             lg={6}
                             sx={{
@@ -243,22 +145,28 @@ const LoginComp = () => {
                         >
 
                     
-                            <Grid item sx={{
+                    
+                              <Grid item sx={{
                                 backgroundColor: '#fff',
                                 boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
                                 flexDirection: 'column',
                                 display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
+                                // justifyContent: 'center',
+                                // alignItems: 'center',
                                 padding: '20px',
-                                paddingRight: "2rem",
-                                
+                                paddingLeft:"3.5rem",
+                                 paddingRight: { lg: "7rem", md: "2rem", sm: "2rem", xs: "2rem" },
 
-                                marginLeft: { lg: "6rem", md: "5rem", sm: "5rem", xs: "0rem" },
+                                marginLeft: { lg: "3rem", md: "2rem", sm: "0rem", xs: "0rem" },
 
-                                borderRadius: {lg:'1.5rem',md:"1.5rem",sm:"1.5rem",xs:"0rem"},
-                                width: { lg: '70%', md: "70%", sm: "100%", xs: "100%" }
+                               borderRadius: {lg:'1.5rem',md:"1.5rem",sm:"1.5rem",xs:"0rem"},
+                                width: { lg: '80%', md: "90%", sm: "100%", xs: "100%" }
                             }}>
+
+
+
+
+
                                 <Box  sx={{                  
                                     gap: "7rem",
                                     marginBottom: "8rem",
@@ -277,30 +185,20 @@ const LoginComp = () => {
                             
 
                                     <Box sx={{marginTop:"0.5rem"}}>
-                                        <label style={labelStyle} htmlFor="email">Email address</label>
-                                        <input type="email" id="email" style={{...inputStyle, ...placeholderStyle}} placeholder="workemail@gmail.com" />
+                                        <label style={{...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem"}} htmlFor="email">Email address</label>
+                                        <input type="email" id="email" style={{...inputStyle, ...placeholderStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} placeholder="workemail@gmail.com" />
                                     </Box>
-
-
-
-
                                     <Box sx={{marginTop:"0.5rem"}}>
-                                        <label style={labelStyle} htmlFor="password">Password</label>
-
-
-                                        <Box style={{ position: 'relative' }}>
-                                            <input
-                                            style={inputStyle}
-                                                type={passwordVisible ? 'text' : 'password'}
+                                        <label style={{...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem"}} htmlFor="email">Password</label>
+  <Box sx={{ position: 'relative',  }}>
+                                        <input type="email" id="email" style={{...inputStyle, ...placeholderStyle, fontSize: isMobile ? "0.8rem" : "1rem" }}  type={passwordVisible ? 'text' : 'password'}
                                                 id="password"
                                                 value={password}
-                                                onChange={(e) => setPassword(e.target.value)}
-                                            />
-
-                                            <Box
+                                                onChange={(e) => setPassword(e.target.value)}  placeholder="" />
+                                                   <Box
                                                 style={{
                                                     position: 'absolute',
-                                                    top: '45%',
+                                                    top: '50%',
                                                     right: '10px',
                                                     transform: 'translateY(-50%)',
                                                     cursor: 'pointer',
@@ -312,61 +210,69 @@ const LoginComp = () => {
                                             >
                                                 {passwordVisible ? <VisibilityOff /> : <Visibility />}
                                                 {!isMobile && (
-                                                    <span style={{ marginLeft: '5px',  marginBottom:"3px" }}>
+                                                    <span style={{ marginLeft: '5px', }}>
                                                         {passwordVisible ? 'Hide' : 'Show'}
                                                     </span>
                                                 )}
                                             </Box>
-                                        </Box>
-
-                                     
+                                            </Box>
                                     </Box>
 
+
+
+                       
+
                                           <Box  sx={{
+                                    
                                         display: "flex",
-                                        gap: "7rem",
+                                        justifyContent:"space-between",
+                                        gap: { lg: "8rem", md: "5rem", sm: "3.5rem", xs: "5rem" },
+                                        marginTop:{lg:"2rem",md:"2rem",sm:"2rem",xs:"0.5rem"},
                                         marginBottom: {lg:"2rem",md:"2rem",sm:"2rem",xs:"3rem"}}}>
                                         <Box  sx={{ display: 'flex' }}>
-                                            <Checkbox id="agreeTerms" />
-                                            <label htmlFor="agreeTerms" style={{ marginTop: "0.7rem" }}>
+                                            <Checkbox id="agreeTerms" sx={{'&.Mui-checked': {
+                                            color: '#4C8AB1',
+                                                   },}} />
+                                            <label htmlFor="agreeTerms" style={{whiteSpace: 'nowrap', marginTop: isMobile ? "1rem" : "0.9rem", fontFamily: GTWalsheimTrial, fontSize: isMobile || isSM ? "0.8rem" : "1rem" }}>
                                                 Remember Me
 
                                             </label>
                                         </Box>
                                         <Box>
                                             <Typography sx={{
+                                                whiteSpace: 'nowrap',
                                                 color: isMobile ? '#FFAC00' : '#4C8AB1',
-                                                fontFamily: 'GT Walsheim Trial',
-                                                fontSize: '1rem',
+                                                fontFamily: GTWalsheimTrial,
+                                                fontSize: { lg: "1rem", md: "1rem", sm: "0.8rem", xs: "0.8rem" },
                                                 fontStyle: 'normal',
                                                 fontWeight: 400,
                                                 lineHeight: 'normal',
                                                 textDecoration: 'underline',
-                                                marginTop: "1rem"
+                                                marginTop: "0.9rem"
                                             }}>
                                                 Forget Password ?
                                             </Typography>
                                         </Box>
                                     </Box>
 
-                                    <Button sx={SignupBtnStyle}
+                                    <Button sx={{...YellowBtn, width: { lg: '19rem', md: "auto", sm: "auto", xs: "100%" }, }}
                                      type="submit">{isMobile ? 'Login' : 'Log in with Email'}</Button>
                                     <Typography sx={{
                                         color: '#202227',
                                         marginBottom:{ lg: '1rem', md: "1rem", sm: "1rem", xs: "2rem" },
-                                        fontFamily: 'GT Walsheim Trial',
-                                        fontSize: '1rem',
+                                        fontFamily: GTWalsheimTrial,
+                                        fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.8rem" },
                                         fontStyle: 'normal',
                                         fontWeight: 400,
                                         lineHeight: 'normal',
                                         display: "flex",
                                         justifyContent: { lg: "start", md: "start", sm: "start", xs: "center" },
-                                        marginTop: "1rem"
+                                        marginTop: "1.5rem"
                                     }}>
                                         Don’t have an account?{'\u00a0'} <span style={{
                                            color: isMobile ? '#FFAC00' : '#4C8AB1',
-                                            fontFamily: 'Poppins',
-                                            fontSize: '1rem',
+                                            fontFamily: GTWalsheimTrial,
+                                            fontSize: isMobile ? "0.8rem" : "1rem",
                                             fontStyle: 'normal',
                                             fontWeight: 600,
                                             lineHeight: 'normal',
@@ -376,7 +282,7 @@ const LoginComp = () => {
                                             Sign up</span>
 
                                     </Typography>
-                                    <Box sx={{ position: 'relative', marginTop: { lg: '2rem', md: "2rem", sm: "2rem", xs: "3rem" },  }}>
+                                    <Box sx={{ position: 'relative', marginTop: { lg: '2.5rem', md: "2.5rem", sm: "2.5rem", xs: "3rem" },  }}>
                                         <hr
                                             style={{
                                                 width: '100%',
@@ -388,24 +294,24 @@ const LoginComp = () => {
                                         <Typography
                                             sx={ContinuewithTextStyle}
                                         >
-                                            {isMobile ? 'Or' : 'Or Continue with'}
+                                            {isMobile ? 'Or' : 'or continue with'}
                                         </Typography>
                                     </Box>
 
-                                    <Button sx={googleBtnStyle} type="button"><GoogleLogo style={{ marginRight: "1rem" }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
+                                    <Button sx={{...googleBtnStyle, marginTop:"2.5rem",  marginBottom:"6.5rem"}} type="button"><GoogleLogo style={{ marginRight: "1rem",  }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
                                 </form>
                             </Grid>
                             {/* </div> */}
-                            <Grid sx={{
+                         <Grid sx={{
                                 display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
                                 flexDirection: "row",
                                 // border: "2px solid red",
-                                 justifyContent: "space-between",
-                                 marginLeft: { lg: "6rem", md: "5rem", sm: "5rem", xs: "0rem" },
-                                // marginRight: "2rem",
-                               width: { lg: '70%', md: "70%", sm: "100%", xs: "100%" },
-                                gap: "1rem"
+                                justifyContent: "space-between",
+                                marginLeft: { lg: "3rem", md: "2rem", sm: "0rem", xs: "0rem" },
 
+                                // marginRight: "2rem",
+                               width: { lg: '80%', md: "100%", sm: "100%", xs: "100%" },
+                                gap: { lg: '1rem', md: "4rem", sm:"3rem" },
 
                             }}>
 
@@ -413,18 +319,15 @@ const LoginComp = () => {
                                 <Box sx={{
                                     display: "flex",
                                     justifyContent: "flex-start",
-                                  
+                                 
                                     // border: "2px solid red",
 
                                     backgroundColor: "#4C8AB1",
-                                    position:"relative",
-                                     border: 'none',
-
-                                
-                                }}>
-
 
                                     
+                                }}>
+
+                             
                                     <Select
         defaultValue={1}
         sx={{
@@ -443,7 +346,7 @@ const LoginComp = () => {
           '&:hover:not(.Mui-disabled):before': {
             border: 'none', // Hide the hover border
           },
-          boxShadow: 'none',
+        boxShadow: 'none',
         '.MuiOutlinedInput-notchedOutline': { border: 0 },
           color: 'white',
           border:"none",
@@ -459,14 +362,7 @@ const LoginComp = () => {
         <MenuItem value={3}>Chinese (China)</MenuItem>
       </Select>
 
-
                                 </Box>
-
-
-
-
-
-
                                 <Box sx={{
                                     display: "flex",
                                     justifyContent: "center",
@@ -487,13 +383,22 @@ const LoginComp = () => {
 
                                 </Box>
                             </Grid>
-
+               <Box sx={{
+                                display: { lg: "none", md: "none", sm: "flex", xs: "none" },
+                                justifyContent: "center",
+                                alignItems: "center",
+                                marginTop: "1rem",
+                                marginLeft: { lg: "0rem", md: "-3rem", sm: "0rem" },
+                                gap: "1rem"
+                            }}>
+                                <img src={googlePlay} width={widthValue} alt="" />
+                                <img src={appStore} width={widthValue} alt="" />
+                            </Box>
 
                         </Grid>
                     </Grid>
-                )}
-            </Box>
-        </div >
+  
+      
     );
 };
    
@@ -504,7 +409,7 @@ const LoginComp = () => {
 
 const firstHeading = {
     color: '#FFF',
-    fontFamily: "GT Walsheim Trial",
+    fontFamily: `${GTWalsheimTrial}, sans-serif`,
     marginTop: "4rem",
     fontSize: { lg: '2.9375rem', md: "2rem", sm: "1.5rem" },
     fontStyle: 'normal',
@@ -515,7 +420,8 @@ const firstHeading = {
 const secondHeading = {
      color: 'rgba(255, 255, 255, 0.80)',
      width: { lg: "31.125rem", md: "28rem", sm: "auto" },
-    fontFamily: '"GT Walsheim Trial"',
+     display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
+    fontFamily: GTWalsheimTrial,
     fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
     fontStyle: 'normal',
     fontWeight: 400,
@@ -524,8 +430,10 @@ const secondHeading = {
 
 const thirdHeading = {
        color: '#FFF',
-     fontFamily: '"GT Walsheim Trial"',
+       marginTop:"2rem",
+     fontFamily: GTWalsheimTrial,
     fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
+    display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
      fontStyle: 'normal',
      fontWeight: 400,
     lineHeight: 'normal',
@@ -536,36 +444,28 @@ const thirdHeading = {
 const formHeadingStyle = {
       color: '#4C8AB1',
     textAlign: 'center',
-    fontFamily: 'GT Walsheim Trial',
+    fontFamily: GTWalsheimTrial,
     fontSize: '2.1875rem',
     fontStyle: 'normal',
     fontWeight: 700,
     lineHeight: 'normal',
 }
 
-const customeInputStyles = { width: "100%", border: "none" };
-const customPhoneStyles = {
-    borderRadius: "6px",
-    border: "1px solid #D8D8D8",
-    background: "#FFF",
-    width: "100%",
-    height: "2rem",
-    padding: 6,
-};
 
 const inputStyle = {
+    height: "2.5rem",
+    alignSelf: "stretch",
     width: '100%',
-    padding: '8px',
     fontSize: '14px',
     border: '1px solid #ccc',
-    borderRadius: '6px',
-    height: '1.5rem',
-    marginBottom: { lg: '0.7rem', md: "0.7rem", sm: "0.7rem", xs: "1rem" },
+    borderRadius: '0.75rem',
+    marginBottom: { lg: '1rem', md: "1rem", sm: "1rem", xs: "1rem" },
   };
 
   const placeholderStyle = {
     color: '#B8B8B8',
-    fontFamily: "GT Walsheim Trial",
+    padding: '8px',
+    fontFamily: GTWalsheimTrial,
      fontSize: "1rem",
     fontStyle: 'normal',
     fontWeight: 400,
@@ -573,10 +473,10 @@ const inputStyle = {
 
   const labelStyle ={
      display: 'block',
-     marginBottom: '5px',
-                 color: '#202227',
-     fontFamily: 'GT Walsheim Trial',
-    fontSize: '1rem',
+     marginBottom: '1rem',
+    color: '#202227',
+     fontFamily: GTWalsheimTrial,
+    fontSize: { lg: '1rem', md: "1rem", sm: "0.9rem", xs: "0.75rem" },
      fontStyle: 'normal',
         fontWeight: 400,
           lineHeight: 'normal',
@@ -584,8 +484,8 @@ const inputStyle = {
 
  const  hptLinksStyle = {
      color: '#FFF',
-     fontFamily: 'GT Walsheim Trial',
-    fontSize: '1rem',
+     fontFamily: GTWalsheimTrial,
+    fontSize: { lg: '1rem', md: "0.9rem", sm: "0.8rem", },
      fontStyle: 'normal',
     fontWeight: 400,
      lineHeight: 'normal',
@@ -602,46 +502,29 @@ const inputStyle = {
  border: '1px solid rgba(6, 32, 72, 0.11)',
  background: '#FFF',
   color: '#333',
-  fontFamily: 'GT Walsheim Trial',
-  fontSize: '1.25rem',
+  fontFamily: GTWalsheimTrial,
+  fontSize: { lg: '1.25rem', md: "1.25rem", sm: "1.1rem", xs: "1rem" },
   fontStyle: 'normal',
  fontWeight: 400,
  lineHeight: 'normal',
   cursor: 'pointer',
   width: { lg: 'auto', md: "auto", sm: "auto", xs: "100%" },
 
-  padding: '0.96875rem 1rem 0.96875rem 1rem',
+ padding: {lg:'0.96875rem 2rem',md:'0.96875rem 1rem',sm:'0.8rem 1rem',xs:'0.96875rem 2rem'},
   justifyContent: 'center',
   alignItems: 'center',
   flexShrink: 0,
   textTransform: 'none',
   }
 
-  const SignupBtnStyle = {
-  backgroundColor: '#FFAC00',
-  marginBottom:{ lg: '1rem', md: "1rem", sm: "1rem", xs: "2rem" },
-color: '#fff',
-    border: 'none',
-    padding: '0.9375rem 2.5rem', // Adjusted to match your original padding
-    fontSize: '16px',
-    borderRadius: { lg: '2.5rem', md: "2.5rem", sm: "2.5rem", xs: "0.5rem" },
-     cursor: 'pointer',
-     width: { lg: 'auto', md: "auto", sm: "auto", xs: "100%" },
-    justifyContent: 'center',
-    alignItems: 'center',
-    textTransform: 'none',
-    gap: '0.625rem',
-     '&:hover': {
-         backgroundColor: '#FFAC00',
-     }
-  }
+
 
 
   const ContinuewithTextStyle ={
 color: '#202227',
 
-fontFamily: 'GT Walsheim Trial',
-fontSize: '1rem',
+fontFamily: GTWalsheimTrial,
+ fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
 fontStyle: 'normal',
 fontWeight: 400,
 lineHeight: 'normal',
@@ -649,15 +532,11 @@ display: "flex",
  justifyContent: "start",
 marginTop: "-1.2rem",
 position: 'absolute',
-left: { lg: '30%', md: "30%", sm: "30%", xs: "50%" },
+left: { lg: '17%', md: "20%", sm: "30%", xs: "50%" },
 transform: 'translateX(-50%)',
 backgroundColor: '#FFFFFF',
 padding: '0 10px',
   }
-/* .MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiNativeSelect-icon.MuiNativeSelect-iconStandard.css-10bey84-MuiSvgIcon-root-MuiNativeSelect-icon {
-    color: #FFF;
-
-} */
 
 
 
@@ -665,5 +544,5 @@ padding: '0 10px',
 
 
 
-export default LoginComp;
+export default Login;
 
