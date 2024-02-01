@@ -1,14 +1,13 @@
 @font-face {
   font-family: 'GT-Walsheim-Regular-Trial';
-  src: url(./assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf) format('opentype');
+  src: url(./pages/Dashboard/assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf) format('opentype');
 }
 
 body{
   font-family: 'GT-Walsheim-Regular-Trial', sans-serif;
 }
-
-.App {
-  text-align: center;
+.css-1wf8b0h-MuiTabs-flexContainer{
+  flex-wrap: wrap;
 }
 
 .App-logo {
