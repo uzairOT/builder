@@ -6,7 +6,7 @@ import Login from "./pages/Login/Login";
 
 function App() {
   return (
-    <div className="App">
+  
        <BrowserRouter>
         <Routes>
           <Route path="/" element= {<Signup />} />
@@ -14,7 +14,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
      </BrowserRouter>
-    </div>
+   
   );
 }
 
