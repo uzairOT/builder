@@ -1,0 +1,66 @@
+input,
+select {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    height: 1.5rem;
+    margin-bottom: 10px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+::placeholder {
+    color: var(--TextField-Text, #B8B8B8);
+    font-family: "GT Walsheim Trial";
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+}
+
+
+
+
+
+
+
+
+.login-link {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.hr-line {
+    margin: 20px 0;
+    text-align: start;
+    color: black;
+}
+
+
+
+.phone-input {
+    display: flex;
+    flex-direction: "row";
+
+}
+
+.react-international-phone-country-selector {
+    width: auto;
+    height: auto;
+}
+
+.css-bz5ng3-MuiInputBase-root-MuiInput-root {
+    border-bottom: "none"
+}
+
+
+
+.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiNativeSelect-icon.MuiNativeSelect-iconStandard.css-10bey84-MuiSvgIcon-root-MuiNativeSelect-icon {
+    color: #FFF;
+
+}

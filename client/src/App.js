@@ -1,16 +1,15 @@
-import './App.css';
-import Dashboard from './pages/Dashboard/Dashboard';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+// import Signup from "./pages/SignUp/Signup";
+import { Outlet } from 'react-router-dom';
+
 
 function App() {
   return (
-    <div className="App">
-        <BrowserRouter>
-        <Routes>
-         <Route path="/dashboard" element={<Dashboard />} />
-          </Routes>
-     </BrowserRouter>
-    </div>
+
+<>
+<Outlet />
+</>
   );
 }
 
