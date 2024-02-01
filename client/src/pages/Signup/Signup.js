@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import LoginComp from '../../components/Login/Login';
+import SignupComp from '../../components/Signup/Signup';
 import Splash from '../../components/Splash/Splash';
 
 function Signup() {
@@ -22,11 +22,10 @@ function Signup() {
   return (
     <div>
       {showSplash && <Splash />}
-      {showSignup && <LoginComp />}
+      {showSignup && <SignupComp />}
     </div>
   );
 }
 
 export default Signup;
-
 
