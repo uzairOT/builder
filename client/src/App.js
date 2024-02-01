@@ -6,11 +6,7 @@ import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
-//     <BrowserRouter>
-//     <Routes>
-     
-//       </Routes>
-//  </BrowserRouter>
+
 <>
 <Outlet />
 </>
