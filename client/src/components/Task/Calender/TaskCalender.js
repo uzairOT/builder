@@ -17,7 +17,7 @@ const TaskCalender = () => {
     const [events, setEvents] = useState([
         {
           start: moment().toDate(),
-          end: moment().add(1, "days").toDate(),
+          end: moment().add(1, "day").toDate(),
           title: "Title Test",
         },
       ]);

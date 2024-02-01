@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
+
 const calenderWrapper = styled.div`
   .rbc-button-link span {
-    white-space: 'preline';
+    white-space: 'pre-line';
   }
   .rbc-btn-group {
     background-color: #EDEDED !important;
@@ -40,9 +41,14 @@ const calenderWrapper = styled.div`
   }
   .rbc-header {
     border: 0 !important;
-    text-align: right !important;
+    text-align: center !important;
+    height: 45px;
+    color: #6A6A6A;
+    text-align: center;
+    font-size: 13px;
     span {
-      font-family: "muli-semi-bold";
+      font-family: Montserrat, sans-serif;
+      white-space: pre-line !important;
     }
   }
   .rbc-month-view {
