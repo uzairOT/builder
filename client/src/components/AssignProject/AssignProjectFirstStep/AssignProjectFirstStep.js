@@ -1,12 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function ProjStep1({ onNextStep }) {
+function AssignProjectFirstStep({ onNextStep }) {
   const navigate = useNavigate();
 
   const handleNextStep = () => {
     // Navigate to home page
-    navigate("/home");
+    navigate("/assignproject");
     // Trigger the next step in Home component
     onNextStep();
   };
@@ -20,4 +20,4 @@ function ProjStep1({ onNextStep }) {
   );
 }
 
-export default ProjStep1;
+export default AssignProjectFirstStep;
