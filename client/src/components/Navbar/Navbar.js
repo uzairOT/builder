@@ -5,7 +5,6 @@ import {ReactComponent as BuilderProNavbarLogout} from './assets/svgs/builder-pr
 import React, { useState } from 'react'
 import SearchBar from '../UI/SearchBar/SearchBar';
 import BuilderProButton from '../UI/Button/BuilderProButton';
-import GTWalsheimTrial from './assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf';
 import NavbarDrawer from './NavbarDrawer'
 
 const Navbar = () => {
@@ -67,7 +66,7 @@ const Navbar = () => {
             <Tab label='Subscription' style={themeStyle.getTabColor(5)}/>
             <Tab label='Settings' style={themeStyle.getTabColor(6)}/>
             </Tabs>
-            <Box width={'100%'}>
+            <Box display={'flex'}>
             <BuilderProButton backgroundColor={'#FFAC00'} variant={'contained'} Icon={BuilderProNavbarShare}>{ responsiveButton ? "Share" : ""}</BuilderProButton>
             <BuilderProButton backgroundColor={'#4C8AB1'} variant={'outlined'} Icon={BuilderProNavbarLogout}>{ responsiveButton ? "Logout" : ""}</BuilderProButton>
             </Box>

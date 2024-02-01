@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
 const calenderWrapper = styled.div`
+  .rbc-button-link span {
+    white-space: 'preline';
+  }
   .rbc-btn-group {
     background-color: #EDEDED !important;
     border-radius: 16px;

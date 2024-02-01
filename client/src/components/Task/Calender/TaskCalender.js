@@ -7,6 +7,8 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalenderWrapper from "./calender.style";
 import CustomToolbar from "./CustomToolbar";
+import formats from "./formats";
+
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
@@ -37,6 +39,7 @@ const TaskCalender = () => {
         toolbar: CustomToolbar,
 
       }),[])
+
   return (
 
         <div className="App">
@@ -52,6 +55,7 @@ const TaskCalender = () => {
             resizable
             style={{ height: "100vh" }}
             components={components}
+            formats={formats}
           />
           </CalenderWrapper>
         </div>
