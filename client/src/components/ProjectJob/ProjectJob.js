@@ -19,6 +19,9 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import builder1 from "../Signup/Assets/pngs/builderProYellowLogo.png";
+import {ReactComponent as ArrowDown} from "./Assets/svgs/ArrowDown.svg";
+import {ReactComponent as EditIcon} from "./Assets/svgs/EditIcon.svg";
+import {ReactComponent as DeleteIcon} from "./Assets/svgs/DeleteIcon.svg";
 import YellowBtn from "../UI/button";
 import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 import BottomCircle from "../UI/bottomCircle";
@@ -29,7 +32,7 @@ function ProjectJob() {
       container
       sx={{
         padding: {
-          lg: "4.5rem 3rem",
+          lg: "4.5rem 0rem",
           md: "4.5rem 2rem",
           sm: "1rem 2rem",
           xs: "0rem 0rem",
@@ -79,7 +82,92 @@ function ProjectJob() {
         </Box>
       </Grid>
 
+     
       <Grid
+        item
+        lg={12}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          marginTop: "6rem",
+          
+          backgroundColor: "#C0E0C2",
+        borderRadius: '0.5rem',
+
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            margin: "1rem 2rem",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+             
+            }}
+          >
+            <Typography
+      sx={{
+       ...blackHeading
+      }}
+    >
+       Phase 1
+    </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+              marginRight: "2.3rem", // Add marginRight instead of using gap
+            }}
+          >
+            <Typography
+      sx={{
+       ...blackHeading
+      }}
+    >
+         Total Price: 
+    </Typography>   
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "flex-end",
+              justifyContent:"space-evenly"
+            }}
+          >
+          <Typography
+      sx={{
+       ...blackHeading
+      }}
+    >
+       Time: &nbsp; Days:
+    </Typography>   
+    
+    
+          </Box>
+              <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "flex-end",
+            }}
+          >
+           <ArrowDown />
+           <EditIcon />
+           <DeleteIcon />
+          </Box>
+        </Box>
+      </Grid>
+       <Grid
         item
         lg={12}
         sx={{
@@ -87,7 +175,7 @@ function ProjectJob() {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: "12rem",
+          marginTop: "4rem",
         }}
       >
         <Box
@@ -147,54 +235,6 @@ function ProjectJob() {
           />
         </Box>
       </Grid>
-      <Grid
-        item
-        lg={12}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          marginTop: "4rem",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginTop: "12rem",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
-              marginRight: "2.3rem", // Add marginRight instead of using gap
-            }}
-          >
-            124312421
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
-              marginRight: "2.3rem", // Add marginRight instead of using gap
-            }}
-          >
-            QQqqqqqqqqqqqqqqqqqq
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "flex-end",
-            }}
-          >
-            ppppppppppppppp
-          </Box>
-        </Box>
-      </Grid>
     </Grid>
   );
 }
@@ -227,5 +267,14 @@ const redText = {
   lineHeight: "150%", // 1.3125rem
   letterSpacing: "-0.00875rem",
 };
+const blackHeading = {
+   fontFamily: GTWalsheimTrial,
+        color:"#4B4B4B",
+        fontSize: '20px',
+        fontWeight: 400,
+        lineHeight: '30px',
+        letterSpacing: '0em',
+        textAlign: 'left',
+}
 
 export default ProjectJob;
