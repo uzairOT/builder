@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+
 import {
   Box,
   Grid,
@@ -8,8 +8,8 @@ import {
 } from "@mui/material";
 
 import YellowBtn from "../../UI/button";
-import BottomCircle from "../../UI/bottomCircle";
 import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
+import FooterCircles from "../FooterCircles/FooterCircles";
 
 function Footer() {
   return (
@@ -52,35 +52,7 @@ function Footer() {
           Save as to start the Duplicate the Project with same line Item and
           Phases.
         </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            gap: "1rem",
-          }}
-        >
-          <Box
-            sx={{
-              ...BottomCircle,
-
-              marginTop: "1.5rem",
-            }}
-          />
-          <Box
-            sx={{
-              ...BottomCircle,
-              marginTop: "1.5rem",
-            }}
-          />
-          <Box
-            sx={{
-              ...BottomCircle,
-              width: "4rem",
-              backgroundColor: "#4C8AB1",
-              marginTop: "1.5rem",
-            }}
-          />
-        </Box>
+       <FooterCircles />
       </Grid>
     </div>
   )
