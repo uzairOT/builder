@@ -3,7 +3,7 @@ import React from 'react'
 import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 
 
-function StepTitles() {
+function StepTitles({Heading, stepHeading, stepDiscription,projectName}) {
   return (
        <Grid
         item
@@ -14,19 +14,22 @@ function StepTitles() {
           justifyContent: "center",
           alignItems: "center",
           marginTop: "4rem",
-          gap:"1.5rem"
+          gap:"1rem"
         }}
       >
 
 
-        <Typography sx={stepGeneralText}>
-Step 1 of 3
+        <Typography sx={{...stepGeneralText, marginBottom:"1.5rem"}}>
+{stepHeading}
         </Typography >
-        <Typography sx={{...stepGeneralText, fontSize: "3rem"}}>
-New Project
+        <Typography sx={{...stepGeneralText,...headingStyle }}>
+        {Heading}
         </Typography>
-        <Typography sx={{...stepGeneralText, color:"#202227", width:"50%"}}>
-Lorem ipsum dolor sit amet consectetur. Pretium aliquam egestas interdum varius sed at libero. Sed vestibulum vel platea accumsan in elit morbi eu erat. Purus non urna et purus. Libero nec nec quam pulvinar massa nulla et tincidunt.
+        <Typography sx={{...stepGeneralText, ...headingStyle, color:"#FFAC00"}}>
+        {projectName}
+        </Typography>
+        <Typography sx={{...stepGeneralText, color:"#202227", width:"60%", maxWidth:"44%"}}>
+          {stepDiscription}
         </Typography>
       </Grid>
   )
@@ -38,6 +41,9 @@ fontFamily: GTWalsheimTrial,
     letterSpacing: '0.01em',
     color: "#4C8AB1",
     textAlign: 'center'
+}
+const headingStyle = {
+fontSize: "3rem", maxWidth:"46rem"
 }
 
 

@@ -9,7 +9,7 @@ import {
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import builder1 from "../../Signup/Assets/pngs/builderProYellowLogo.png";
 
-function Header() {
+function Header({gap}) {
   return (
     <div>
        <Grid
@@ -22,8 +22,8 @@ function Header() {
           marginTop:"3.5rem"
         }}
       >
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <img src={builder1} width={"13%"} alt="" />
+        <Box sx={{ display: "flex", justifyContent: "space-between" }} gap={gap}>
+          <img src={builder1} width={"12%"} alt="" />
           <Button
             sx={{ height: "50%", marginTop: "2rem" }}
             startIcon={<ArrowBackIosIcon />}

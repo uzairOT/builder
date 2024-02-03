@@ -25,23 +25,35 @@ function AssignProjectFirstStep({ onNextStep }) {
 
   return (
  <>
-      <Header />
-      <StepTitles />
+  <Box
+      sx={{
+        display: "flex",
+        flexDirection:"column",
+        justifyContent:"center",
+        alignItems:"center",
+         // Set the height as needed
+        backgroundColor: "#4C8AB1",
+      }}
+    >
+     
+      <Box sx={{...buttonBox, ...whiteBox }}>       
+      <Header gap="25rem" 
+      />
+      <StepTitles Heading="New Project" stepHeading={"Step 1 of 3"} stepDiscription={"Lorem ipsum dolor sit amet consectetur. Pretium aliquam egestas interdum varius sed at libero. Sed vestibulum vel platea accumsan in elit morbi eu erat. Purus non urna et purus. Libero nec nec quam pulvinar massa nulla et tincidunt."}  />
       <StepBoxes />
       <StepForm />
       <Box sx={buttonBox}>
          <Button
             variant="outlined"
             sx={{...YellowBtn,  ...shallowButton,}}
+            onClick={handleNextStep}
           >
             Next
           </Button>
           </Box>
-      <FooterCircles />
-
-      <h1>Step 1</h1>
-      {/* Your Step 1 content goes here */}
-      <button onClick={handleNextStep}>Next Step</button>
+      <FooterCircles width1="4rem" background1="#4C8AB1" />
+      </Box>
+     </Box>
   </>
   );
 }
@@ -54,6 +66,9 @@ const buttonBox ={
           marginTop:"2rem"
 }
 
+const whiteBox ={
+background:"#FFF",width:"70%", margin:"2rem", padding:"2rem 2rem", borderRadius: '1rem', 
+}
 
 
 export default AssignProjectFirstStep;

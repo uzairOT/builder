@@ -52,7 +52,7 @@ function Footer() {
           Save as to start the Duplicate the Project with same line Item and
           Phases.
         </Typography>
-       <FooterCircles />
+       <FooterCircles width3="4rem" background3="#4C8AB1" />
       </Grid>
     </div>
   )

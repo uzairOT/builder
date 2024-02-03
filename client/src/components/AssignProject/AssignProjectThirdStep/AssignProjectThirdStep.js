@@ -20,7 +20,7 @@ function AssignProjectThirdStep({ onNextStep }) {
 
 <Header/>
 <AddPhaseView />
-<Footer />
+<Footer  />
 
 
       <h1>Step 3</h1>
