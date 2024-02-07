@@ -14,35 +14,20 @@ import FooterCircles from "../FooterCircles/FooterCircles";
 function Footer() {
   return (
     <div>
-         <Grid
+      <Grid
         item
         lg={12}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "4rem",
-        }}
+        sx={firstGrid}
       >
         <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: "2.3rem",
-          }}
+          sx={buttonBox}
         >
           <Button sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}>Done</Button>
           <Button
             variant="outlined"
             sx={{
               ...YellowBtn,
-              border: "1px solid #FFAC00",
-              background: "#FFF",
-              color: "#FFAC00",
-              "&:hover": {
-                background: "#FFF",
-              },
+              ...saveButton
             }}
           >
             Save as
@@ -52,10 +37,25 @@ function Footer() {
           Save as to start the Duplicate the Project with same line Item and
           Phases.
         </Typography>
-       <FooterCircles width3="4rem" background3="#4C8AB1" />
+        <FooterCircles width3="4rem" background3="#4C8AB1" />
       </Grid>
     </div>
   )
+}
+
+
+
+const firstGrid = {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  marginTop: "4rem",
+}
+const buttonBox = {
+  display: "flex",
+  justifyContent: "space-between",
+  gap: "2.3rem",
 }
 const redText = {
   color: "#BE1D1D",
@@ -67,4 +67,12 @@ const redText = {
   lineHeight: "150%", // 1.3125rem
   letterSpacing: "-0.00875rem",
 };
+const saveButton = {
+  border: "1px solid #FFAC00",
+  background: "#FFF",
+  color: "#FFAC00",
+  "&:hover": {
+    background: "#FFF",
+  },
+}
 export default Footer

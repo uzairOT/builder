@@ -16,14 +16,7 @@ function StepBoxes() {
 
   return (
     <Box
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: "2rem",
-        gap: "1.5rem"
-      }}
+      sx={firstBox}
     >
       {boxes.map((box, index) => (
         <Box
@@ -43,7 +36,14 @@ function StepBoxes() {
     </Box>
   );
 }
-
+const firstBox = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  marginTop: "2rem",
+  gap: "1.5rem"
+}
 const boxStyles = {
   width: "9.1875rem",
   height: "7.75rem",

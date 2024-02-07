@@ -1,8 +1,6 @@
 
 import React, { useState } from "react";
-import { Button, Box } from "@mui/material";
-
-
+import { Box } from "@mui/material";
 import Header from "../Header/Header";
 import ExistenceProjectStep1 from "../ExistenceProjectStep1/ExistenceProjectStep1";
 import ExistenceProjectStep2 from "../ExistenceProjectStep2/ExistenceProjectStep2";
@@ -27,6 +25,7 @@ function ExistingProject() {
             case -1:
                 return (
                     <div>
+
                         <AssignProject />
                     </div>
                 )
@@ -71,7 +70,6 @@ function ExistingProject() {
     return (
         <div>
             {renderExistenceStep()}
-
         </div>
     )
 }

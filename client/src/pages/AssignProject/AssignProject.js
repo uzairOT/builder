@@ -16,8 +16,6 @@ import StepBoxes from '../../components/AssignProject/StepBoxes/StepBoxes';
 
 
 import { useNavigate } from 'react-router-dom';
-import AssignNewProjectStep2 from '../../components/AssignProject/AssignNewProjectStep2/AssignNewProjectStep2';
-import ExistenceProjectStep1 from '../../components/AssignProject/ExistenceProjectStep1/ExistenceProjectStep1';
 import Header from '../../components/AssignProject/Header/Header';
 import NewProject from '../../components/AssignProject/NewProject/NewProject';
 import ExistingProject from '../../components/AssignProject/ExistingProject/ExistingProject';
@@ -34,6 +32,12 @@ function AssignProject() {
     setProjectType(value)
   };
 
+  const [step, setStep] = useState(0);
+  const handlePreviousStep = () => {
+    setStep(step - 1);
+  };
+
+
 
 
 
@@ -41,7 +45,7 @@ function AssignProject() {
     <>
 
       {projectType === null ? (<> <div>
-        <Header />
+        <Header handlePreviousStep={handlePreviousStep} />
         <StepTitles stepHeading={"Step 1 of 3"} Heading={"What projects is your team currently engaged in"} stepDiscription={"Lorem ipsum dolor sit amet consectetur. Pretium aliquam egestas interdum varius sed at libero. Sed vestibulum vel platea accumsan in elit morbi eu erat. Purus non urna et purus. Libero nec nec quam pulvinar massa nulla et tincidunt."} />
         <StepBoxes />
         <Box
@@ -63,12 +67,7 @@ function AssignProject() {
             variant="outlined"
             sx={{
               ...YellowBtn,
-              border: "1px solid #FFAC00",
-              background: "#FFF",
-              color: "#FFAC00",
-              "&:hover": {
-                background: "#FFF",
-              },
+              ...NewProjectButton
             }}
             onClick={() => handleProjectChange("New")}
           >
@@ -128,6 +127,15 @@ const buttonBox = {
   alignItems: "center",
   gap: "1.2rem",
   marginTop: "3rem"
+}
+
+const NewProjectButton = {
+  border: "1px solid #FFAC00",
+  background: "#FFF",
+  color: "#FFAC00",
+  "&:hover": {
+    background: "#FFF",
+  },
 }
 
 export default AssignProject

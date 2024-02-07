@@ -1,18 +1,9 @@
-
-
-
-
-
 import React, { useState } from "react";
 import {
   Box,
   Grid,
   Typography,
   Button,
-  FormControl,
-  FormLabel,
-  Select,
-  MenuItem,
   Table,
   TableHead,
   TableRow,
@@ -28,35 +19,24 @@ import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF6
 import actionButton from "../../UI/actionButton";
 import "./AddPhaseCard.css";
 
-const AddPhaseCard = ({ cardPhase, rows, onGridToggle,length }) => {
-  
-const handleArrowDownClick = () => {
-  onGridToggle(cardPhase.currentIndex, cardPhase.currentIndex + 1);
-};
+const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
 
-const handleArrowUpClick = () => {
-  onGridToggle(cardPhase.currentIndex, cardPhase.currentIndex - 1);
-};
+  const handleArrowDownClick = () => {
+    onGridToggle(cardPhase.currentIndex, cardPhase.currentIndex + 1);
+  };
+
+  const handleArrowUpClick = () => {
+    onGridToggle(cardPhase.currentIndex, cardPhase.currentIndex - 1);
+  };
   return (
     <div>
       <Grid
         item
         lg={12}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          marginTop: "2rem",
-          backgroundColor: `${cardPhase?.color}`,
-          borderRadius: "0.5rem",
-        }}
+        sx={{ ...firstGrid, backgroundColor: `${cardPhase?.color}`, }}
       >
         <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            margin: "1rem 6rem",
-          }}
+          sx={headingsBox}
         >
           <Box>
             <Typography sx={blackHeading}>Phase 1</Typography>
@@ -68,23 +48,18 @@ const handleArrowUpClick = () => {
             <Typography sx={blackHeading}>Time: &nbsp; Days:</Typography>
           </Box>
           <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "1rem",
-            }}
+            sx={phaseBox}
           >
             <>
               {cardPhase?.currentIndex === 0 ? (
                 <ArrowDown
                   style={{ marginRight: "1rem", cursor: "pointer" }}
-                 onClick={handleArrowDownClick}
+                  onClick={handleArrowDownClick}
                 />
               ) : cardPhase?.currentIndex === length - 1 ? (
                 <Arrowup
                   style={{ marginRight: "1rem", cursor: "pointer" }}
-                   onClick={handleArrowUpClick}
+                  onClick={handleArrowUpClick}
                 />
               ) : (
                 <>
@@ -94,7 +69,7 @@ const handleArrowUpClick = () => {
                   />
                   <Arrowup
                     style={{ marginRight: "1rem", cursor: "pointer" }}
-                     onClick={handleArrowUpClick}
+                    onClick={handleArrowUpClick}
                   />
                 </>
               )}
@@ -102,7 +77,7 @@ const handleArrowUpClick = () => {
             <EditIcon />
             <DeleteIcon />
             <Button
-              sx={{ ...actionButton, background: "#4C8AB1", marginTop: "0.5rem" }}
+              sx={{ ...actionButton, background: "#4C8AB1", marginTop: "0.7rem" }}
             >
               Add Line Item
             </Button>
@@ -110,12 +85,7 @@ const handleArrowUpClick = () => {
         </Box>
         <Grid
           item
-          sx={{
-            background: "#FBFBFB",
-            borderRadius: "1rem",
-            margin: "1rem 1rem",
-            padding: "2rem 2rem",
-          }}
+          sx={tableGrid}
         >
           <Typography sx={listOfLineText}>List of Line Items</Typography>
           <hr style={hrLine} />
@@ -171,7 +141,32 @@ const handleArrowUpClick = () => {
     </div>
   );
 };
-
+const firstGrid = {
+  display: "flex",
+  flexDirection: "column",
+  marginTop: "2rem",
+  borderRadius: "0.5rem",
+}
+const headingsBox = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  margin: "1rem 4rem 0rem",
+}
+const phaseBox = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "1rem",
+  marginBottom: "-1rem",
+  marginRight: "4rem"
+}
+const tableGrid = {
+  background: "#FBFBFB",
+  borderRadius: "1rem",
+  margin: "1rem 1rem",
+  padding: "2rem 2rem",
+}
 const blackHeading = {
   fontFamily: GTWalsheimTrial,
   color: "#4B4B4B",
@@ -187,7 +182,7 @@ const listOfLineText = {
   fontWeight: 400,
   fontSize: "1.25rem",
   lineHeight: "1.9rem",
-  paddingLeft: "0.5rem",
+  paddingLeft: "2rem",
   color: "#4C8AB1",
 };
 

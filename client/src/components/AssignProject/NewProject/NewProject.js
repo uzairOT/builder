@@ -1,12 +1,10 @@
 
 import React, { useState } from "react";
-import { Button } from "@mui/material";
 import AssignNewProjectStep2 from "../AssignNewProjectStep2/AssignNewProjectStep2";
 import AssignNewProjectStep3 from "../AssignNewProjectStep3/AssignNewProjectStep3";
 
 import Header from "../Header/Header";
 import AssignProject from "../../../pages/AssignProject/AssignProject";
-import Signup from "../../../pages/Signup/Signup";
 import { useNavigate } from "react-router-dom";
 
 function NewProject() {
