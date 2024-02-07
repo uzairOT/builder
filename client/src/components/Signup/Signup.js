@@ -20,7 +20,7 @@ import "react-international-phone/style.css";
 import YellowBtn from "../UI/button";
 import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 import "./Signup.css";
-import axios from 'axios';
+import axios from "axios";
 
 const SignupComp = () => {
   const isLG = useMediaQuery("(min-width: 1280px)");
@@ -30,8 +30,6 @@ const SignupComp = () => {
 
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
-
-
 
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -56,23 +54,22 @@ const SignupComp = () => {
     }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+    try {
+      const updatedFormData = { ...formData, phone };
 
-  try {
-    const updatedFormData = { ...formData, phone };
-
-    const response = await axios.post('http://192.168.18.147:8080/user/register', {data:updatedFormData});
-    console.log('Post request successful:', response.data);
-
-
-  } catch (error) {
-    // Handle any errors that occur during the request
-    console.error('Error making POST request:', error);
-  }
-};
-  
+      const response = await axios.post(
+        "http://192.168.18.147:8080/user/register",
+        { data: updatedFormData }
+      );
+      console.log("Post request successful:", response.data);
+    } catch (error) {
+      // Handle any errors that occur during the request
+      console.error("Error making POST request:", error);
+    }
+  };
 
   return (
     <Grid
@@ -214,7 +211,7 @@ const handleSubmit = async (e) => {
                   }}
                   htmlFor="firstName"
                 >
-                   First name
+                  First name
                 </label>
                 <input
                   type="text"
