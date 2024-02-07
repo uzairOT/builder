@@ -4,12 +4,12 @@ import Header from "../Header/Header"
 import AddPhaseView from "../AddPhaseView/AddPhaseView"
 import Footer from "../Footer/Footer"
 
-function AssignProjectThirdStep({ onNextStep }) {
+function AssignNewProjectStep3({ onNextStep }) {
   const navigate = useNavigate();
 
   const handleNextStep = () => {
     // Navigate to home page
-       navigate("/assignproject");
+    navigate("/assignproject");
 
     // Trigger the next step in Home component
     onNextStep();
@@ -18,16 +18,12 @@ function AssignProjectThirdStep({ onNextStep }) {
   return (
     <div >
 
-<Header/>
-<AddPhaseView />
-<Footer  />
+      <AddPhaseView />
+      <Footer />
 
 
-      <h1>Step 3</h1>
-      {/* Your Step 1 content goes here */}
-      <button onClick={handleNextStep}>Done</button>
     </div>
   );
 }
 
-export default AssignProjectThirdStep;
+export default AssignNewProjectStep3;

@@ -13,6 +13,7 @@ function FooterCircles({width1, background1,width3, background3, width2, backgro
             justifyContent: "center",
             alignItems: "center",
             marginTop: "4rem",
+            marginBottom:"2rem",
             gap: "1rem",
           }}
         >

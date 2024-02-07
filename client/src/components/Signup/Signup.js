@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Grid, Typography, Checkbox, TextField, FormControl, InputLabel, NativeSelect, useMediaQuery, Button, MenuItem, Select } from '@mui/material';
 import builder1 from "./Assets/pngs/builderProYellowLogo.png";
-
+import {useNavigate} from "react-router-dom"
 import downloadForMob from "./Assets/pngs/downloadForMob.png";
 import googlePlay from "./Assets/pngs/googlePlay.png";
 import appStore from "./Assets/pngs/appStore.png";
@@ -15,7 +15,10 @@ import "./Signup.css"
 
 
 const SignupComp = () => {
-
+    const Navigate = useNavigate()
+    const signUpHandler = () => {
+        Navigate("./assignproject")
+    }
     const isLG = useMediaQuery("(min-width: 1280px)");
     const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
     const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
@@ -335,7 +338,7 @@ const SignupComp = () => {
                                     </Box>
 
                                     <Button sx={{...YellowBtn, marginBottom:"1rem"}}
-                                     type="submit">Sign up</Button>
+                                     type="submit" onClick={signUpHandler}>Sign up</Button>
                                     <Typography sx={{
                                         color: '#202227',
                                         fontFamily: GTWalsheimTrial,
