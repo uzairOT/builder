@@ -1,16 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, MenuItem, Select, Stack } from "@mui/material";
 import SunnyWindy from "./assets/images/sunny-windy.png";
 import HumidityImg from './assets/images/humidity.png'
 import WindImg from './assets/images/wind.png'
+import {getFormattedWeatherData} from "../../../services/WeatherService";
 // import { WiHumidity, WiStrongWind } from 'react-icons/wi';
 
 const WeatherAppCurrentForecast = () => {
+
   const [temperatureUnit, setTemperatureUnit] = useState("celsius");
+  const [currentWeather, setCurrentWeather] = useState({})
 
   const handleUnitChange = (event) => {
     setTemperatureUnit(event.target.value);
   };
+
+useEffect(()=>{  
+    const fetchWeather = async () => {
+    try {
+      const data = await getFormattedWeatherData({lat: "33.6844", lon: "73.0479", units: 'Metric'});
+      console.log(data);
+      setCurrentWeather(data);} catch(error) { console.log(error); 
+      }
+  }
+  fetchWeather();}, [])
 
   return (
     <Box display={"flex"} flexDirection={"row-reverse"} justifyContent={'space-between'} width={'100%'}>
@@ -32,11 +45,11 @@ const WeatherAppCurrentForecast = () => {
 
           <Box  display={'flex'} flexDirection={'column'} justifyContent={'start'} alignItems={'flex-start'} width={"100%"}>
             <Typography sx={{...themeStyle.text, }} variant="h4">
-              {temperatureUnit === "celsius" ? "25°C" : "77°F"}
+              {currentWeather?.temp}
             </Typography>
             <Typography sx={{...themeStyle.text, fontSize: '13px'}}>Feels like: {' '}
             <span sx={{fontSize: '18px', display: 'inline'}}>
-            23°C
+            {currentWeather?.feels_like}°C
             </span>
             </Typography>
           </Box>
@@ -56,14 +69,14 @@ const WeatherAppCurrentForecast = () => {
         {/* Humidity */}
         <Stack display="flex" flexDirection={'column'} alignItems="center" pl={4} spacing={1}>
           <Box component={'img'} src={HumidityImg} alt="Humdity" />
-          <Typography sx={{...themeStyle.text}} variant="body2">60%</Typography>
+          <Typography sx={{...themeStyle.text}} variant="body2">{currentWeather?.humidity}%</Typography>
           <Typography sx={{...themeStyle.text}} variant="body2">Humidity</Typography>
         </Stack>
 
         {/* Wind Speed */}
         <Stack display="flex" flexDirection={'column'} alignItems="center" pl={6} spacing={1}>
           <Box component={'img'} src={WindImg} alt="Wind Speed" />
-          <Typography sx={{...themeStyle.text}} variant="body2">2km/h</Typography>
+          <Typography sx={{...themeStyle.text}} variant="body2">{currentWeather?.speed}km/h</Typography>
           <Typography sx={{...themeStyle.text}} variant="body2">Wind speed</Typography>
         </Stack>
       </Box>

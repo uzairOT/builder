@@ -1,18 +1,20 @@
 import { Box, Stack, Typography } from '@mui/material'
-import dailyForecast from './assets/data/dailyForecast.json'
 import React from 'react'
 import WeatherAppDailyForecast from './WeatherAppDailyForecast'
 import WeatherAppCurrentForecast from './WeatherAppCurrentForecast'
+import CircularProgress from '@mui/material/CircularProgress'
 
-const WeatherView = () => {
+const WeatherView = ({dailyForecast}) => {
+ 
   return (
     <Stack direction={{md:'column', lg: 'row'}} spacing={2} padding={2}>
     <Box flex={2}>
       <Typography style={themeStyle.title}>Good morning, Admin</Typography>
       <Stack direction="row" justifyContent={'space-evenly'} spacing={1} pl={2.5} pr={2.5}>
-     {dailyForecast.map( (forecast) => (
-      <WeatherAppDailyForecast key={forecast.id} forecast={forecast} />
-          ))}
+     {dailyForecast ?  dailyForecast.map( (forecast, index) => (
+      <WeatherAppDailyForecast key={index} forecast={forecast} />
+          )): <CircularProgress></CircularProgress>
+          }
       </Stack>
     </Box>
     <Box flex={1} display={"flex"} width={'100%'}>

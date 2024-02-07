@@ -1,11 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TaskCalender from '../../Task/Calender/TaskCalender'
+import { Box, Drawer, IconButton } from '@mui/material'
+import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
+import './styles/drawer.css'
 
-const TaskCalenderView = () => {
+const TaskCalenderView = ({dailyForecast}) => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+const toggleDrawer = () => {
+  setIsDrawerOpen(!isDrawerOpen);
+};
   return (
-    <div>
-        <TaskCalender />
-    </div>
+    <Box height={"100vh"} overflow='auto' display={'flex'} flexDirection={'column'}>
+      <Box display={''} sx={{ alignSelf: 'flex-start', marginBottom: '-64px', marginLeft: '-6px', paddingTop:'10px'}}>
+      <IconButton onClick={toggleDrawer} >
+          <ExpandCircleDownOutlinedIcon
+            style={{ transform: "rotate(90deg)", color: "#4C8AB1" }}
+            fontSize="small"
+          />
+          </IconButton>
+      </Box>
+        <TaskCalender dailyForecast={dailyForecast} sx={{flexGrow: 1}} isDrawerOpen={isDrawerOpen}/>
+        <Drawer open={isDrawerOpen} onClose={toggleDrawer} anchor="right">
+        <Box display={''} sx={{ alignSelf: 'flex-start', marginBottom: '-64px', marginLeft: '-6px', paddingTop:'10px'}}>
+      <IconButton onClick={toggleDrawer} >
+          <ExpandCircleDownOutlinedIcon
+            style={{ transform: "rotate(-90deg)", color: "#4C8AB1" }}
+            fontSize="small"
+          />
+          </IconButton>
+      </Box>
+           <TaskCalender dailyForecast={dailyForecast} isDrawerOpen={isDrawerOpen}/>
+    </Drawer>
+    </Box>
   )
 }
 

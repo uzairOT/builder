@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
-import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
-const CustomToolbar = (toolbar) => {
+const CustomToolbar = ({toolbar, setMonthEventView}) => {
   const [activeButton, setActiveButton] = useState("day");
-  console.log(toolbar);
-
+  const [activeMonthHeader, setActiveMonthHeader] = useState('');
   const goToDayView = (view) => {
     toolbar.onView(view);
     setActiveButton(view);
@@ -24,7 +22,11 @@ const CustomToolbar = (toolbar) => {
     toolbar.onNavigate(action);
 
   }
-
+  const handleMonthEventView = (monthEventView) =>{
+    console.log(monthEventView);
+    setMonthEventView(monthEventView)
+    setActiveMonthHeader(monthEventView); 
+  }
   // Styles
   const themeStyle = {
     toolbarTitle: {
@@ -63,11 +65,28 @@ const CustomToolbar = (toolbar) => {
         justifyContent: 'center',
         alignItems: 'center',
         lineHeight: '32px',
+    },
+    button:{
+      fontFamily: "inherit",
+      fontSize: "12px",
+      fontStyle: "normal",
+      fontWeight: 500,
+      border: "none",
+      backgroundColor: '#fff',
+      cursor: 'pointer',
+      padding: '0',
+      "&:hover": {
+        color: "#4C8AB1",
+      }
+    },
+    monthEventHeader:{
+      
     }
   };
   //
 
   return (
+    <>
     <div className="rbc-toolbar">
       <Stack
         direction={"row"}
@@ -75,14 +94,10 @@ const CustomToolbar = (toolbar) => {
         alignItems={"center"}
         width={"100%"}
         p={2}
+        pl={3}
+        mt={1}
       >
-        <Stack direction={"row"} spacing={0.5} alignItems={"center"}>
-          <ExpandCircleDownOutlinedIcon
-            style={{ transform: "rotate(90deg)", color: "#4C8AB1" }}
-            fontSize="small"
-          />
-          <Typography sx={themeStyle.toolbarTitle}>WorkOrder</Typography>
-        </Stack>
+          <Typography sx={themeStyle.toolbarTitle} pl={1}>WorkOrder</Typography>
         <Box element="div" style={themeStyle.toolbarButtonGroup}>
           <Button
             style={{
@@ -116,7 +131,7 @@ const CustomToolbar = (toolbar) => {
           </Button>
         </Box>
       </Stack>
-      <Stack width={"100%"}>
+      <Stack width={"100%"} direction={'row'} justifyContent={'space-between'}>
         <Stack direction={"row"} alignItems={"center"} spacing={2} pl={1}>
           <IconButton style={themeStyle.toolbarIcon} aria-label="Left Arrow Icon" onClick={()=>handleNavigate('PREV')}>
             <ArrowLeftIcon style={{ color: "#797979" }} />
@@ -126,8 +141,19 @@ const CustomToolbar = (toolbar) => {
             <ArrowRightIcon style={{ color: "#797979" }} />
           </IconButton>
         </Stack>
+        {toolbar.view === 'month' && <Stack direction={'row'} spacing={2} pr={1} justifyContent={'center'} alignItems={'center'}>
+          <button style={themeStyle.button} onClick={()=> {handleMonthEventView('tasks')}}>
+          <Typography fontSize={'10px'} style={{...themeStyle.monthEventHeader, color: activeMonthHeader === 'tasks' ? '#4C8AB1': '', textDecoration:  activeMonthHeader === 'tasks' ? 'underline': ''}}>Tasks</Typography>
+          </button>
+          <button style={themeStyle.button} onClick={()=> {handleMonthEventView('weather/notes')}}>
+          <Typography fontSize={'10px'} style={{...themeStyle.monthEventHeader,  color: activeMonthHeader === 'weather/notes' ? '#4C8AB1': '', textDecoration:  activeMonthHeader === 'weather/notes' ? 'underline': ''}}>Weather/notes</Typography>
+          </button>
+          
+        </Stack>}
       </Stack>
     </div>
+
+    </>
   );
 };
 

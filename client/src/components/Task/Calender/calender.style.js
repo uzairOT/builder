@@ -1,8 +1,19 @@
 import styled from "styled-components";
 
+
 const calenderWrapper = styled.div`
+.rbc-events-container{
+  width: 100%;
+}
+  .rbc-time-column {
+    height: 150% !important; 
+  }
+  .rbc-time-header{
+    border-right: 0;
+    margin-right: 0px !important;
+  }
   .rbc-button-link span {
-    white-space: 'preline';
+    white-space: 'pre-line';
   }
   .rbc-btn-group {
     background-color: #EDEDED !important;
@@ -28,21 +39,26 @@ const calenderWrapper = styled.div`
     }
   }
   .rbc-time-view {
-    border: 1px solid #dae5f0;
+    border: 0px solid #dae5f0;
     border-bottom: 0;
     .rbc-time-header-content {
       border: 0;
-      .rbc-time-header-cell {
-        border-bottom: 1px solid #dae5f0;
-        border-left: 1px solid #dae5f0;
+      padding-right: 12px;
+      .rbc-allday-cell {
+        height: 0px;
       }
     }
   }
   .rbc-header {
     border: 0 !important;
-    text-align: right !important;
+    text-align: center !important;
+    height: 45px;
+    color: #6A6A6A;
+    text-align: center;
+    font-size: 13px;
     span {
-      font-family: "muli-semi-bold";
+      font-family: Montserrat, sans-serif;
+      white-space: pre-line !important;
     }
   }
   .rbc-month-view {
@@ -55,8 +71,14 @@ const calenderWrapper = styled.div`
   .rbc-day-slot .rbc-time-slot {
     opacity: 0.5;
   }
+  .rbc-day-slot .rbc-event-label{
+    display: none;
+  }
   .rbc-time-gutter {
-    border-top: 1px solid #dae5f0;
+    border-top: 0px solid #dae5f0;
+  }
+  rbc-time-gutter rbc-time-column{
+
   }
   .rbc-timeslot-group {rbc-event
     min-height: 64px;
@@ -83,14 +105,16 @@ const calenderWrapper = styled.div`
   }
 
   .rbc-event {
-    border-radius: 4;
-    padding: 2px 10px;
-    min-height: 40px !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    // border-radius: 4;
+    //padding: 2px 10px;
+    padding:0px !important;
+    // min-height: 40px !important;
     background-color: white;
     color: black;
-    border: 1px solid #dae5f0;
-    border-radius: 6px;
-    border-right: 6px solid #563c91;
+    border: 0px;
+    // border-right: 6px solid #563c91;
     box-shadow: 0 0.46875rem 2.1875rem rgba(0, 0, 0, 0.03),
       0 0.9375rem 1.40625rem rgba(0, 0, 0, 0.03),
       0 0.25rem 0.53125rem rgba(0, 0, 0, 0.05),
