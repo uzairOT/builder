@@ -85,9 +85,10 @@ const SignupComp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData)
+    const data = { ...formData, phone };
+    console.log(data)
     try {
-      const res = await register({formData}).unwrap();
+      const res = await register({data}).unwrap();
       dispatch(setCredentials({ ...res }));
       // navigate('/');
     } catch (err) {
