@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from "react";
 import {
   Box,
-  Container,
   Grid,
   Typography,
   Checkbox,
-  TextField,
-  FormControl,
-  InputLabel,
-  NativeSelect,
   useMediaQuery,
   Button,
   MenuItem,
   Select,
 } from "@mui/material";
 import builder1 from "./Assets/pngs/builderProYellowLogo.png";
-
 import downloadForMob from "./Assets/pngs/downloadForMob.png";
 import googlePlay from "./Assets/pngs/googlePlay.png";
 import appStore from "./Assets/pngs/appStore.png";
@@ -26,6 +20,7 @@ import "react-international-phone/style.css";
 import YellowBtn from "../UI/button";
 import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 import "./Signup.css";
+import axios from 'axios';
 
 const SignupComp = () => {
   const isLG = useMediaQuery("(min-width: 1280px)");
@@ -36,13 +31,48 @@ const SignupComp = () => {
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
 
-  const [phone, setPhone] = useState("");
+
 
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [password, setPassword] = useState("");
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
+
+  const [phone, setPhone] = useState("");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    company: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target || e;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const updatedFormData = { ...formData, phone };
+
+    const response = await axios.post('http://192.168.18.147:8080/user/register', {data:updatedFormData});
+    console.log('Post request successful:', response.data);
+
+
+  } catch (error) {
+    // Handle any errors that occur during the request
+    console.error('Error making POST request:', error);
+  }
+};
+  
 
   return (
     <Grid
@@ -167,7 +197,7 @@ const SignupComp = () => {
             <Typography sx={formHeadingStyle}>Signup</Typography>
             <img src={builder1} width={"20%"} alt="" />
           </Box>
-          <form style={{ marginTop: "0.1rem" }}>
+          <form style={{ marginTop: "0.1rem" }} onSubmit={handleSubmit}>
             <Box
               sx={{
                 display: "flex",
@@ -184,9 +214,15 @@ const SignupComp = () => {
                   }}
                   htmlFor="firstName"
                 >
-                  First name
+                   First name
                 </label>
-                <input type="text" id="firstName" style={inputStyle} />
+                <input
+                  type="text"
+                  name="firstName"
+                  style={inputStyle}
+                  value={formData.firstName}
+                  onChange={handleChange}
+                />
               </Box>
               <Box sx={{ marginTop: "0.5rem" }}>
                 <label
@@ -198,7 +234,13 @@ const SignupComp = () => {
                 >
                   Last name
                 </label>
-                <input type="text" id="lastName" style={inputStyle} />
+                <input
+                  type="text"
+                  name="lastName"
+                  style={inputStyle}
+                  value={formData.lastName}
+                  onChange={handleChange}
+                />
               </Box>
             </Box>
 
@@ -214,7 +256,7 @@ const SignupComp = () => {
               </label>
               <input
                 type="email"
-                id="email"
+                name="email"
                 style={{
                   ...inputStyle,
                   ...placeholderStyle,
@@ -223,6 +265,8 @@ const SignupComp = () => {
                   fontSize: isMobile ? "0.8rem" : "1rem",
                 }}
                 placeholder="workemail@gmail.com"
+                value={formData.email}
+                onChange={handleChange}
               />
             </Box>
 
@@ -240,13 +284,14 @@ const SignupComp = () => {
               <PhoneInput
                 style={{ ...customPhoneStyles }}
                 defaultCountry="pk"
-                value={phone}
+                value={formData.phone}
                 onChange={(phone) => setPhone(phone)}
                 inputStyle={{ ...customeInputStyles }}
                 inputProps={{
                   border: "none",
                 }}
                 required
+                name="phone"
               />
             </Box>
 
@@ -260,7 +305,13 @@ const SignupComp = () => {
               >
                 Company Name
               </label>
-              <input type="text" id="company" style={inputStyle} />
+              <input
+                type="text"
+                name="company"
+                style={inputStyle}
+                value={formData.company}
+                onChange={handleChange}
+              />
             </Box>
 
             <Box sx={{ marginTop: "0.5rem" }}>
@@ -295,9 +346,9 @@ const SignupComp = () => {
                 <input
                   style={inputStyle}
                   type={passwordVisible ? "text" : "password"}
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
                 />
 
                 <Box
