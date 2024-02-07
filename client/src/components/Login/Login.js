@@ -209,7 +209,6 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder=""
                 />
-
                 <Box
                   style={{
                     position: "absolute",
@@ -475,7 +474,7 @@ const Login = () => {
 
 const firstHeading = {
   color: "#FFF",
-  fontFamily: `${GTWalsheimTrial}, sans-serif`,
+  fontFamily: GTWalsheimTrial,
   marginTop: "4rem",
   fontSize: { lg: "2.9375rem", md: "2rem", sm: "1.5rem" },
   fontStyle: "normal",
