@@ -7,7 +7,7 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalenderWrapper from "./calender.style";
 import CustomToolbar from "./CustomToolbar";
-import {formats} from "./Formats";
+import formats from "./Formats";
 import {CustomEventDay, CustomEventWeek, CustomEventWeekOnModal} from "./CustomEvent";
 
 
