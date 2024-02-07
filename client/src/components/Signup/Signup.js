@@ -23,6 +23,11 @@ import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b
 import "./Signup.css";
 import axios from "axios";
 
+import { useDispatch, useSelector } from 'react-redux';
+import { useRegisterMutation } from '../../redux/slices/usersApiSlice';
+import { setCredentials } from '../../redux/slices/authSlice';
+import { toast } from 'react-toastify';
+
 const SignupComp = () => {
   const isLG = useMediaQuery("(min-width: 1280px)");
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
@@ -46,6 +51,12 @@ const SignupComp = () => {
     company: "",
     password: "",
   });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [register, { isLoading }] = useRegisterMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
 
   const handleChange = (e) => {
     const { name, value } = e.target || e;
@@ -55,7 +66,7 @@ const SignupComp = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const hanleSubmit = async (e) => {
     e.preventDefault();
 
     try {
@@ -71,6 +82,19 @@ const SignupComp = () => {
       console.error("Error making POST request:", error);
     }
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData)
+    try {
+      const res = await register({formData}).unwrap();
+      dispatch(setCredentials({ ...res }));
+      // navigate('/');
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
+  };
+
 
   return (
     <Grid

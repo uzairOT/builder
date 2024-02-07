@@ -1,33 +1,9 @@
-// apiSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { fetchBaseQuery, createApi } from '@reduxjs/toolkit/query/react';
 
-const apiSlice = createSlice({
-  name: 'api',
-  initialState: {
-    userData: null,
-    loading: 'idle',
-    error: null,
-  },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchUserData.pending, (state) => {
-        state.loading = 'pending';
-      })
-      .addCase(fetchUserData.fulfilled, (state, action) => {
-        state.loading = 'fulfilled';
-        state.userData = action.payload;
-      })
-      .addCase(fetchUserData.rejected, (state, action) => {
-        state.loading = 'rejected';
-        state.error = action.error.message;
-      });
-  },
-});
-export const fetchUserData = createAsyncThunk('api/fetchUserData', async (userId) => {
-  const response = await fetch(`https://api.example.com/users/${userId}`);
-  const data = await response.json();
-  return data;
-});
+const baseQuery = fetchBaseQuery({ baseUrl: '' });
 
-export default apiSlice.reducer;
+export const apiSlice = createApi({
+  baseQuery,
+  tagTypes: ['User'],
+  endpoints: (builder) => ({}),
+});
