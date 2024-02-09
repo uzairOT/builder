@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SignupComp from '../../components/Signup/Signup';
 import Splash from '../../components/Splash/Splash';
-import ColorPicker from '../../components/dialogues/ColorPicker/ColorPicker';
 
 function Signup() {
   const [showSplash, setShowSplash] = useState(true);
