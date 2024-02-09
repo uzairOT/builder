@@ -40,7 +40,8 @@ const SignupComp = () => {
             : "100%"
 
 
-
+    const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
+    const linkResponsiveColor = { color: isMobile ? '#FFAC00' : '#4C8AB1' }
     const [phone, setPhone] = useState('');
 
 
@@ -116,23 +117,23 @@ const SignupComp = () => {
                     <form style={{ marginTop: "0.1rem" }}>
                         <Box sx={namesFieldBox}>
                             <Box sx={{ marginTop: "0.5rem" }}>
-                                <label style={{ ...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem" }}
+                                <label style={{ ...labelStyle, ...lableResponsiveFont }}
                                     htmlFor="firstName">First name</label>
                                 <input type="text" id="firstName" style={inputStyle} />
                             </Box>
                             <Box sx={{ marginTop: "0.5rem" }}>
-                                <label style={{ ...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} htmlFor="lastName">Last name</label>
+                                <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="lastName">Last name</label>
                                 <input type="text" id="lastName" style={inputStyle} />
                             </Box>
                         </Box>
 
                         <Box sx={{ marginTop: "0.5rem" }}>
-                            <label style={{ ...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} htmlFor="email">Email address</label>
-                            <input type="email" id="email" style={{ ...inputStyle, ...placeholderStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} placeholder="workemail@gmail.com" />
+                            <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="email">Email address</label>
+                            <input type="email" id="email" style={{ ...inputStyle, ...placeholderStyle, ...lableResponsiveFont }} placeholder="workemail@gmail.com" />
                         </Box>
 
                         <Box sx={{ marginTop: "0.5rem" }}>
-                            <label style={{ ...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} htmlFor="phone">Phone number</label>
+                            <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="phone">Phone number</label>
 
 
                             <PhoneInput
@@ -150,11 +151,11 @@ const SignupComp = () => {
                             />
                         </Box>
                         <Box sx={{ marginTop: "0.5rem" }}>
-                            <label style={{ ...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} htmlFor="company">Company Name</label>
+                            <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="company">Company Name</label>
                             <input type="text" id="company" style={inputStyle} />
                         </Box>
                         <Box sx={{ marginTop: "0.5rem" }}>
-                            <label style={{ ...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} htmlFor="password">Password</label>
+                            <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="password">Password</label>
 
                             {!isMobile && (
                                 <Box sx={subtitleStyle}>
@@ -194,7 +195,7 @@ const SignupComp = () => {
                         <Box sx={linkBox}>
                             <Checkbox id="agreeTerms" sx={checkBox} />
                             <label htmlFor="agreeTerms" style={checkBoxText}>
-                                By creating an account, I agree to our <Link style={{ ...linkStyle, fontSize: isMobile ? "0.8rem" : "1rem", }}>Terms of use</Link> and <Link style={{ ...linkStyle, fontSize: isMobile ? "0.8rem" : "1rem", }} >Privacy Policy</Link>
+                                By creating an account, I agree to our <Link style={{ ...linkStyle, ...lableResponsiveFont }}>Terms of use</Link> and <Link style={{ ...linkStyle, ...lableResponsiveFont }} >Privacy Policy</Link>
                             </label>
                         </Box>
 
@@ -203,8 +204,8 @@ const SignupComp = () => {
                         <Typography sx={alreadyHaveAccountTypo}>
                             Already have an account?{'\u00a0'} <Link style={{
                                 ...loginLink,
-                                color: isMobile ? '#FFAC00' : '#4C8AB1',
-                                fontSize: isMobile ? "0.8rem" : "1rem",
+                                ...linkResponsiveColor,
+                                ...lableResponsiveFont
                             }}>
 
                                 Log in</Link>

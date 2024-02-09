@@ -14,7 +14,6 @@ function FooterCircles({ width1, background1, width3, background3, width2, backg
             ...BottomCircle,
             width: width1 || BottomCircle.width,
             background: background1 || BottomCircle.background,
-            marginTop: "1.5rem",
           }}
         />
         <Box
@@ -22,7 +21,7 @@ function FooterCircles({ width1, background1, width3, background3, width2, backg
             ...BottomCircle,
             width: width2 || BottomCircle.width,
             background: background2 || BottomCircle.background,
-            marginTop: "1.5rem",
+
           }}
         />
         <Box
@@ -30,7 +29,6 @@ function FooterCircles({ width1, background1, width3, background3, width2, backg
             ...BottomCircle,
             width: width3 || BottomCircle.width,
             background: background3 || BottomCircle.background,
-            marginTop: "1.5rem",
           }}
         />
       </Box>

@@ -9,6 +9,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Checkbox
 } from "@mui/material";
 
 import { ReactComponent as ArrowDown } from "../Assets/svgs/ArrowDown.svg";
@@ -28,6 +29,10 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
   const handleArrowUpClick = () => {
     onGridToggle(cardPhase.currentIndex, cardPhase.currentIndex - 1);
   };
+
+
+
+
   return (
     <div>
       <Grid
@@ -89,12 +94,15 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
         >
           <Typography sx={listOfLineText}>List of Line Items</Typography>
           <hr style={hrLine} />
-          <Box sx={{ marginLeft: "0rem" }}>
+          <Box sx={{ marginLeft: "1rem" }}>
             <Table>
               <TableHead>
                 <TableRow>
+                  <TableCell>
+                    <Checkbox />
+                  </TableCell>
                   <TableCell
-                    sx={{ ...tableHeadings, width: "15%", paddingLeft: "4rem" }}
+                    sx={{ ...tableHeadings, width: "15%", paddingLeft: "1rem" }}
                   >
                     Line Item
                   </TableCell>
@@ -115,9 +123,11 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
 
               <TableBody>
                 {rows.map((row) => (
-                  <TableRow key={row.name}>
+                  <TableRow key={row.name} sx={{ paddingLeft: "4rem" }}>
+                    <TableCell>
+                      <Checkbox />
+                    </TableCell>
                     <TableCell
-                      sx={{ paddingLeft: "4rem" }}
                       component="th"
                       scope="row"
                     >

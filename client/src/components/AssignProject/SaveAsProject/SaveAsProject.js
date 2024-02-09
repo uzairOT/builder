@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../Header/Header'
 import {
   useMediaQuery,
-  Button, Box, Typography,
+  Button, Box, Typography, TextField, MenuItem
 } from "@mui/material";
 import "../StepForm/StepForm.css"
 import FooterCircles from '../FooterCircles/FooterCircles'
@@ -11,11 +11,38 @@ import YellowBtn from "../../UI/button";
 import shallowButton from "../../UI/shallowButton";
 import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf"
 import StepTitles from '../StepTitles/StepTitles';
-function SaveAsProject() {
+function SaveAsProject({ onSaveStep, onNextStep }) {
   const isMobile = useMediaQuery('(max-width:600px)');
+  const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
+  const Locations = [
+    {
+      value: 'Pakistan',
+      label: 'Pakistan',
+    },
+    {
+      value: 'India',
+      label: 'India',
+    },
+    {
+      value: 'England',
+      label: 'England',
+    },
+    {
+      value: 'Franch',
+      label: 'Franch',
+    },
+  ];
+
+
+  const handleDone = () => {
+
+    onSaveStep();
+    // onNextStep();
+  };
+
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <StepTitles Heading={"Save as Project with New Name"} />
       <Box sx={typoBox}>
         <Typography sx={typoText}>
@@ -26,10 +53,26 @@ function SaveAsProject() {
       <Box
         sx={formBox}
       >
-        <form style={{ marginTop: "0.1rem" }}>
-          <Box sx={{ marginTop: "0.5rem", width: "300%" }}>
-            <label style={{ ...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} htmlFor="email">Project Name</label>
-            <input className='placeholder' type="email" id="email" style={inputStyle} placeholder="e.g. Project name                                                                                                 0/50" />
+        <form style={formStyle}>
+          <Box sx={{ marginTop: "0.5rem", }}>
+            <label style={{ ...labelStyle, ...labelResponsiveFont }} htmlFor="email">Project Name</label>
+            <input className='placeholder' type="email" id="email" style={{ ...inputStyle, ...labelResponsiveFont }} placeholder="e.g. Project name                                                                                                             0/50" />
+          </Box>
+          <Box sx={{ marginTop: "0.2rem" }}>
+            <label style={{ ...labelStyle, ...labelResponsiveFont }} htmlFor="email">Location</label>
+            <TextField className='placeholder' sx={{ ...inputStyle, borderButtom: "none" }}
+
+
+              id="standard-select-currency"
+              select
+              variant="standard"
+            >
+              {Locations.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </Box>
         </form>
       </Box>
@@ -38,6 +81,7 @@ function SaveAsProject() {
         <Button
           variant="outlined"
           sx={{ ...YellowBtn, ...shallowButton, }}
+          onClick={handleDone}
         >
           Done
         </Button>
@@ -78,7 +122,6 @@ const inputStyle = {
   color: "#202227",
   fontFamily: GTWalsheimTrial,
   paddingLeft: "-1.5rem",
-  fontSize: isMobile ? "0.8rem" : "1rem"
 
 };
 const formBox = {
@@ -87,9 +130,11 @@ const formBox = {
   justifyContent: "center",
   alignItems: "center",
   marginTop: "1rem",
-  marginRight: "28rem",
   gap: "1.5rem"
 };
+const formStyle = {
+  marginTop: "0.1rem", width: "38%"
+}
 const typoBox = {
   display: "flex",
   flexDirection: "column",

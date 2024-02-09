@@ -29,11 +29,16 @@ const Login = () => {
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
 
+  const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
+  const linkResponsiveColor = { color: isMobile ? "#FFAC00" : "#4C8AB1", }
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
+
+
+
 
   return (
     <Grid
@@ -92,7 +97,7 @@ const Login = () => {
               <label
                 style={{
                   ...labelStyle,
-                  fontSize: isMobile ? "0.8rem" : "1rem",
+                  ...lableResponsiveFont
                 }}
                 htmlFor="email"
               >
@@ -104,7 +109,7 @@ const Login = () => {
                 style={{
                   ...inputStyle,
                   ...placeholderStyle,
-                  fontSize: isMobile ? "0.8rem" : "1rem",
+                  ...lableResponsiveFont
                 }}
                 placeholder="workemail@gmail.com"
               />
@@ -113,7 +118,7 @@ const Login = () => {
               <label
                 style={{
                   ...labelStyle,
-                  fontSize: isMobile ? "0.8rem" : "1rem",
+                  ...lableResponsiveFont
                 }}
                 htmlFor="email"
               >
@@ -124,7 +129,7 @@ const Login = () => {
                   style={{
                     ...inputStyle,
                     ...placeholderStyle,
-                    fontSize: isMobile ? "0.8rem" : "1rem",
+                    ...lableResponsiveFont
                   }}
                   type={passwordVisible ? "text" : "password"}
                   id="password"
@@ -163,14 +168,13 @@ const Login = () => {
                   htmlFor="agreeTerms"
                   style={{
                     ...checkBox,
-                    marginTop: isMobile ? "1rem" : "0.9rem",
-                    fontSize: isMobile || isSM ? "0.8rem" : "1rem",
+                    ...lableResponsiveFont
                   }}
                 >
                   Remember Me
                 </label>
               </Box>
-              <Box sx={{ ...forgetPassTypo, fontSize: isMobile ? "0.8rem" : "1rem", color: isMobile ? "#FFAC00" : "#4C8AB1", }}>
+              <Box sx={{ ...forgetPassTypo, ...lableResponsiveFont, ...linkResponsiveColor, }}>
                 <Link
                   style={{}}
                 >
@@ -182,7 +186,7 @@ const Login = () => {
             <Button
               sx={{
                 ...YellowBtn,
-                width: { lg: "19rem", md: "auto", sm: "auto", xs: "100%" },
+                ...loginButton
               }}
               type="submit"
             >
@@ -193,7 +197,7 @@ const Login = () => {
             >
               Don’t have an account?{"\u00a0"}{" "}
               <Link
-                style={{ ...signupLink, fontSize: isMobile ? "0.8rem" : "1rem", color: isMobile ? "#FFAC00" : "#4C8AB1", }}
+                style={{ ...signupLink, ...lableResponsiveFont, ...linkResponsiveColor }}
               >
                 Sign up
               </Link>
@@ -366,6 +370,7 @@ const linkBox = {
 const checkBox = {
   whiteSpace: "nowrap",
   fontFamily: GTWalsheimTrial,
+  marginTop: "1rem"
 
 }
 const forgetPassTypo = {
@@ -586,5 +591,9 @@ const ContinuewithTextStyle = {
   backgroundColor: "#FFFFFF",
   padding: "0 10px",
 };
+
+const loginButton = {
+  width: { lg: "19rem", md: "auto", sm: "auto", xs: "100%" },
+}
 
 export default Login;

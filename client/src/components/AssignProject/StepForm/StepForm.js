@@ -3,7 +3,7 @@ import { Box, Grid, TextField, useMediaQuery, MenuItem, } from '@mui/material';
 import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf"
 import "./StepForm.css"
 
-const currencies = [
+const Locations = [
   {
     value: 'Pakistan',
     label: 'Pakistan',
@@ -24,36 +24,22 @@ const currencies = [
 function StepForm() {
 
   const isMobile = useMediaQuery('(max-width:600px)');
+  const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
   return (
     <Grid
       item
       lg={12}
       sx={firstGrid}
     >
-      <form style={{ marginTop: "0.1rem" }}>
+      <form style={formStyle}>
         <Box sx={{ marginTop: "0.5rem", }}>
-          <label style={{ ...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} htmlFor="email">Project Name</label>
-          <input className='placeholder' type="email" id="email" style={{ ...inputStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} placeholder="e.g. Your Existing Project Name                                          0/50" />
-        </Box>
-        <Box sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          gap: "8rem",
-          marginBottom: "0.3rem",
-        }}>
-          <Box sx={{ marginTop: "0.2rem" }}>
-            <label style={{ ...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem" }}
-              htmlFor="firstName">Workdone</label>
-            <input className='placeholder' type="text" id="firstName" style={inputStyle} placeholder="Workdone" />
-          </Box>
-          <Box sx={{ marginTop: "0.2rem" }}>
-            <label style={{ ...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} htmlFor="lastName">Estimated Price</label>
-            <input className='placeholder' type="text" id="lastName" style={inputStyle} placeholder="Estimated Price" />
-          </Box>
+          <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="email">Project Name</label>
+          <input className='placeholder' type="email" id="email" style={{ ...inputStyle, ...lableResponsiveFont }} placeholder="e.g. Your Existing Project Name                                          0/50" />
         </Box>
 
+
         <Box sx={{ marginTop: "0.2rem" }}>
-          <label style={{ ...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} htmlFor="email">Location</label>
+          <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="email">Location</label>
           <TextField className='placeholder' sx={{ ...inputStyle, borderButtom: "none" }}
 
 
@@ -61,7 +47,7 @@ function StepForm() {
             select
             variant="standard"
           >
-            {currencies.map((option) => (
+            {Locations.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -69,12 +55,10 @@ function StepForm() {
           </TextField>
         </Box>
         <Box sx={{ marginTop: "0.2rem" }}>
-          <label style={{ ...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} htmlFor="email">Client Name</label>
+          <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="email">Client Name</label>
           <input className='placeholder' type="email" id="email" style={{
             ...inputStyle,
-            fontFamily: `'${GTWalsheimTrial}', sans-serif`,
-            paddingLeft: '-1.5rem',
-            fontSize: isMobile ? '0.8rem' : '1rem',
+            ...lableResponsiveFont
           }} placeholder="Enter Name here" />
         </Box>
       </form>
@@ -115,7 +99,34 @@ const inputStyle = {
   color: "#202227",
   fontFamily: GTWalsheimTrial,
   paddingLeft: "-1.5rem",
-
 };
+
+const formStyle = {
+  marginTop: "0.1rem", width: "240%"
+
+}
 export default StepForm
 
+
+
+
+
+
+
+
+{/* <Box sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "8rem",
+          marginBottom: "0.3rem",
+        }}>
+          <Box sx={{ marginTop: "0.2rem" }}>
+            <label style={{ ...labelStyle, ...lableResponsiveFont }}
+              htmlFor="firstName">Workdone</label>
+            <input className='placeholder' type="text" id="firstName" style={inputStyle} placeholder="Workdone" />
+          </Box>
+          <Box sx={{ marginTop: "0.2rem" }}>
+            <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="lastName">Estimated Price</label>
+            <input className='placeholder' type="text" id="lastName" style={inputStyle} placeholder="Estimated Price" />
+          </Box>
+        </Box> */}

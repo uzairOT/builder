@@ -8,7 +8,7 @@ import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF6
 const MAX_EMAIL_LENGTH = 50;
 function StepFormField() {
   const isMobile = useMediaQuery('(max-width:600px)');
-
+  const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
   const [email, setEmail] = useState('');
 
   const handleEmailChange = (event) => {
@@ -18,16 +18,7 @@ function StepFormField() {
     }
   };
 
-  const [text, setText] = useState('');
-  const maxCharacters = 50;
 
-  const handleChange = (event) => {
-    const inputText = event.target.value;
-    // Ensure the input doesn't exceed the maximum characters
-    if (inputText.length <= maxCharacters) {
-      setText(inputText);
-    }
-  };
 
 
 
@@ -51,7 +42,7 @@ function StepFormField() {
         sx={formBox}
       >
         <form style={{ marginTop: "0.1rem", }}>
-          <Box sx={{ ...buttonBox, gap: "23rem", paddingLeft: "25rem" }}>
+          <Box sx={buttonBox}>
 
 
 
@@ -63,7 +54,7 @@ function StepFormField() {
                   className='placeholder'
                   type="email"
                   id="email"
-                  style={{ ...inputStyle, fontFamily: GTWalsheimTrial, paddingLeft: "-1.5rem", fontSize: isMobile ? "0.8rem" : "1rem" }}
+                  style={{ ...inputStyle, ...lableResponsiveFont }}
                   placeholder={`e.g. abc@workmail.com`}
                   value={email}
                   onChange={handleEmailChange}
@@ -76,7 +67,7 @@ function StepFormField() {
 
 
 
-            <FormControl sx={{ m: 0, height: 60, minWidth: 180, borderRadius: 12 }}>
+            <FormControl sx={formControlStyle}>
               {!age && <InputLabel id="demo-controlled-open-select-label">Select Role</InputLabel>}
               <Select
                 labelId="demo-controlled-open-select-label"
@@ -111,11 +102,17 @@ const buttonBox = {
   flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",
-  gap: "3rem",
-  marginTop: "1rem"
+  marginTop: "1rem",
+  gap: "23rem",
+  paddingLeft: "25rem"
 }
 
-
+const formControlStyle = {
+  m: 0,
+  height: 60,
+  minWidth: 180,
+  borderRadius: 12
+}
 
 
 const inputStyle = {
@@ -127,7 +124,9 @@ const inputStyle = {
   fontSize: '14px',
   border: '1px solid #ccc',
   borderRadius: '12px',
-  color: "#202227"
+  color: "#202227",
+  fontFamily: GTWalsheimTrial,
+  paddingLeft: "-1.5rem",
 };
 const formBox = {
   display: "flex",
@@ -144,12 +143,5 @@ const counterTypo = {
   fontFamily: 'Inter',
   fontWeight: 500
 }
-const selectLable = {
-  padding: "0rem 1rem",
-  marginTop: "-0.5rem",
-  color: "#202227",
-  fontFamily: 'Inter',
-  fontWeight: 500
 
-}
 export default StepFormField

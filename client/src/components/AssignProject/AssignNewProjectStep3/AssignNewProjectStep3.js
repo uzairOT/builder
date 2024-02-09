@@ -6,19 +6,19 @@ import Footer from "../Footer/Footer"
 function AssignNewProjectStep3({ onNextStep }) {
   const navigate = useNavigate();
 
-  const handleNextStep = () => {
-    // Navigate to home page
-    navigate("/assignproject");
+  // const handleNextStep = () => {
+  //   // Navigate to home page
+  //   navigate("/assignproject");
 
-    // Trigger the next step in Home component
-    onNextStep();
-  };
+  //   // Trigger the next step in Home component
+  //   onNextStep();
+  // };
 
   return (
     <div >
 
-      <AddPhaseView />
-      <Footer />
+      <AddPhaseView onNextStep={onNextStep} />
+      {/* <Footer /> */}
 
 
     </div>

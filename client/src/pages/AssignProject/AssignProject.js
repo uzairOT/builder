@@ -4,9 +4,8 @@ import React, { useState } from 'react'
 
 import {
   useMediaQuery,
-  Button, Box, Typography,
+  Button, Box, Typography, TextField, MenuItem
 } from "@mui/material";
-
 
 import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 import FooterCircles from '../../components/AssignProject/FooterCircles/FooterCircles'
@@ -24,9 +23,10 @@ import ExistingProject from '../../components/AssignProject/ExistingProject/Exis
 function AssignProject() {
   const [projectType, setProjectType] = useState(null)
 
-
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate()
+  const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
+
 
   const handleProjectChange = (value) => {
     setProjectType(value)
@@ -36,6 +36,24 @@ function AssignProject() {
   const handlePreviousStep = () => {
     setStep(step - 1);
   };
+  const Locations = [
+    {
+      value: 'Pakistan',
+      label: 'Pakistan',
+    },
+    {
+      value: 'India',
+      label: 'India',
+    },
+    {
+      value: 'England',
+      label: 'England',
+    },
+    {
+      value: 'Franch',
+      label: 'Franch',
+    },
+  ];
 
 
 
@@ -48,13 +66,41 @@ function AssignProject() {
         <Header handlePreviousStep={handlePreviousStep} />
         <StepTitles stepHeading={"Step 1 of 3"} Heading={"What projects is your team currently engaged in"} stepDiscription={"Lorem ipsum dolor sit amet consectetur. Pretium aliquam egestas interdum varius sed at libero. Sed vestibulum vel platea accumsan in elit morbi eu erat. Purus non urna et purus. Libero nec nec quam pulvinar massa nulla et tincidunt."} />
         <StepBoxes />
-        <Box
+        {/* <Box
           sx={formBox}
         >
           <form style={{ marginTop: "0.1rem" }}>
             <Box sx={{ marginTop: "0.5rem", width: "300%" }}>
-              <label style={{ ...labelStyle, fontSize: isMobile ? "0.8rem" : "1rem" }} htmlFor="email">Project Name</label>
-              <input className='placeholder' type="email" id="email" style={{ ...inputStyle, fontFamily: GTWalsheimTrial, paddingLeft: "-1.5rem", fontSize: isMobile ? "0.8rem" : "1rem" }} placeholder="e.g. Project name                                                                                                 0/50" />
+              <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="email">Project Name</label>
+              <input className='placeholder' type="email" id="email" style={{ ...inputStyle, ...lableResponsiveFont }} placeholder="e.g. Project name                                                                                                 0/50" />
+            </Box>
+          </form>
+        </Box> */}
+
+
+        <Box
+          sx={formBox}
+        >
+          <form style={formStyle}>
+            <Box sx={{ marginTop: "0.5rem", }}>
+              <label style={{ ...labelStyle, ...labelResponsiveFont }} htmlFor="email">Project Name</label>
+              <input className='placeholder' type="email" id="email" style={{ ...inputStyle, ...labelResponsiveFont }} placeholder="e.g. Project name                                                                                                             0/50" />
+            </Box>
+            <Box sx={{ marginTop: "0.2rem" }}>
+              <label style={{ ...labelStyle, ...labelResponsiveFont }} htmlFor="email">Location</label>
+              <TextField className='placeholder' sx={{ ...inputStyle, borderButtom: "none" }}
+
+
+                id="standard-select-currency"
+                select
+                variant="standard"
+              >
+                {Locations.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Box>
           </form>
         </Box>
@@ -110,7 +156,9 @@ const inputStyle = {
   fontSize: '14px',
   border: '1px solid #ccc',
   borderRadius: '12px',
-  color: "#202227"
+  color: "#202227",
+  fontFamily: GTWalsheimTrial,
+  paddingLeft: "-1.5rem",
 };
 const formBox = {
   display: "flex",
@@ -118,9 +166,11 @@ const formBox = {
   justifyContent: "center",
   alignItems: "center",
   marginTop: "1rem",
-  marginRight: "28rem",
   gap: "1.5rem"
 };
+const formStyle = {
+  marginTop: "0.1rem", width: "38%"
+}
 const buttonBox = {
   display: "flex",
   justifyContent: "center",

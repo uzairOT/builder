@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 import {
   Box,
@@ -10,8 +12,16 @@ import {
 import YellowBtn from "../../UI/button";
 import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 import FooterCircles from "../FooterCircles/FooterCircles";
+import SaveAsProject from "../SaveAsProject/SaveAsProject";
 
-function Footer() {
+function Footer({ onNextStep }) {
+  const navigate = useNavigate()
+
+  const handleSaveAs = () => {
+
+    onNextStep();
+  };
+
   return (
     <div>
       <Grid
@@ -29,6 +39,7 @@ function Footer() {
               ...YellowBtn,
               ...saveButton
             }}
+            onClick={handleSaveAs}
           >
             Save as
           </Button>

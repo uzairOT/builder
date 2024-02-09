@@ -15,7 +15,7 @@ function ExistenceProjectStep3({ onNextStep }) {
         <div >
 
             <AddPhaseView />
-            <Footer />
+            {/* <Footer /> */}
 
 
         </div>
