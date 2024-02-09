@@ -22,11 +22,11 @@ function StepFormField() {
 
 
 
-  const [age, setAge] = useState('');
+  const [role, setRole] = useState('');
   const [open, setOpen] = useState(false);
 
   const handleChangess = (event) => {
-    setAge(event.target.value);
+    setRole(event.target.value);
   };
 
   const handleClose = () => {
@@ -68,15 +68,15 @@ function StepFormField() {
 
 
             <FormControl sx={formControlStyle}>
-              {!age && <InputLabel id="demo-controlled-open-select-label">Select Role</InputLabel>}
+              {!role && <InputLabel id="demo-controlled-open-select-label">Select Role</InputLabel>}
               <Select
                 labelId="demo-controlled-open-select-label"
                 id="demo-controlled-open-select"
                 open={open}
                 onClose={handleClose}
                 onOpen={handleOpen}
-                value={age}
-                label="Age"
+                value={role}
+                label="Role"
                 onChange={handleChangess}
                 sx={{ borderRadius: 3 }}
 

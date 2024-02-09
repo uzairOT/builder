@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { HexColorPicker, RgbaColorPicker, RgbaStringColorPicker } from "react-colorful";
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, } from '@mui/material';
-import "./ColorPicker.css";
+import { HexColorPicker, RgbaColorPicker, RgbaStringColorPicker, HexColorInput } from "react-colorful";
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Box } from '@mui/material';
+import "./ColorPickerElement.css";
 
-function ColorPicker() {
+function ColorPickerElement() {
 
     const [open, setOpen] = useState(false);
+    const [color, setColor] = useState("#aabbcc");
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -52,13 +53,25 @@ function ColorPicker() {
                         <h2>Select Color</h2>
                         <section className="custom-pointers example">
                             {/* <RgbaColorPicker /> */}
-                            <RgbaStringColorPicker />
+                            <RgbaStringColorPicker color={color} onChange={setColor} />
+
+                            <Box sx={{ display: "flex" }} >
+                                <HexColorInput color={color} onChange={setColor} />
+
+                            </Box>
+                            <Box sx={{
+                                height: "2rem",
+                                width: "2rem",
+                                background: color
+                            }} />
+
                         </section>
                     </DialogContent>
                     <DialogActions>
                         <Button type="submit">Add Phase</Button>
                     </DialogActions>
                 </Dialog>
+
             </>
 
         </div>
@@ -68,4 +81,4 @@ function ColorPicker() {
     )
 }
 
-export default ColorPicker
+export default ColorPickerElement
