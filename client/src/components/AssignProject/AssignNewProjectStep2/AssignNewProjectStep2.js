@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FooterCircles from "../FooterCircles/FooterCircles";
 import YellowBtn from "../../UI/button";
-import Header from "../Header/Header";
 import StepTitles from "../StepTitles/StepTitles";
 import AttachFileSharpIcon from "@mui/icons-material/AttachFileSharp";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -12,13 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addUser,updateUserEmail, updateUserRole,selectUsers } from '../../../redux/slices/projectFormSlice';
 
 import {
-  useMediaQuery,
-  Button,
-  Box,
-  Typography,
-  TextField,
-  MenuItem,
-  selectClasses,
+  Button, Box,
 } from "@mui/material";
 import StepFormField from "../StepFormField/StepFormField";
 

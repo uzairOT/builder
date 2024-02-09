@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useAssignProjectMutation } from "../../../redux/slices/usersApiSlice";
 
@@ -7,8 +9,16 @@ import { selectProjectForm } from "../../../redux/slices/projectFormSlice";
 import YellowBtn from "../../UI/button";
 import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 import FooterCircles from "../FooterCircles/FooterCircles";
+import SaveAsProject from "../SaveAsProject/SaveAsProject";
 
-function Footer() {
+function Footer({ onNextStep }) {
+  const navigate = useNavigate()
+
+  const handleSaveAs = () => {
+
+    onNextStep();
+  };
+
   const [assignProject, { isLoading }] = useAssignProjectMutation();
 
   const FormData = useSelector(selectProjectForm);
@@ -24,20 +34,10 @@ function Footer() {
       <Grid
         item
         lg={12}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "4rem",
-        }}
+        sx={firstGrid}
       >
         <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: "2.3rem",
-          }}
+          sx={buttonBox}
         >
           <Button
             onClick={handleDoneClick}
@@ -49,13 +49,9 @@ function Footer() {
             variant="outlined"
             sx={{
               ...YellowBtn,
-              border: "1px solid #FFAC00",
-              background: "#FFF",
-              color: "#FFAC00",
-              "&:hover": {
-                background: "#FFF",
-              },
+              ...saveButton
             }}
+            onClick={handleSaveAs}
           >
             Save as
           </Button>
@@ -65,9 +61,29 @@ function Footer() {
           Phases.
         </Typography>
         <FooterCircles width3="4rem" background3="#4C8AB1" />
+        <FooterCircles width3="4rem" background3="#4C8AB1" />
       </Grid>
     </div>
   );
+}
+
+
+
+
+
+
+
+const firstGrid = {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  marginTop: "4rem",
+}
+const buttonBox = {
+  display: "flex",
+  justifyContent: "space-between",
+  gap: "2.3rem",
 }
 const redText = {
   color: "#BE1D1D",
@@ -79,4 +95,12 @@ const redText = {
   lineHeight: "150%", // 1.3125rem
   letterSpacing: "-0.00875rem",
 };
+const saveButton = {
+  border: "1px solid #FFAC00",
+  background: "#FFF",
+  color: "#FFAC00",
+  "&:hover": {
+    background: "#FFF",
+  },
+}
 export default Footer;

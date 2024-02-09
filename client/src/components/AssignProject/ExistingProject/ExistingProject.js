@@ -1,17 +1,25 @@
 
 import React, { useState } from "react";
-import { Button, Box } from "@mui/material";
-
-
+import { Box } from "@mui/material";
 import Header from "../Header/Header";
 import ExistenceProjectStep1 from "../ExistenceProjectStep1/ExistenceProjectStep1";
 import ExistenceProjectStep2 from "../ExistenceProjectStep2/ExistenceProjectStep2";
 import ExistenceProjectStep3 from "../ExistenceProjectStep3/ExistenceProjectStep3";
 import AssignProject from "../../../pages/AssignProject/AssignProject"
+import SaveAsProject from "../SaveAsProject/SaveAsProject";
+import Footer from "../Footer/Footer";
+import AssignNewProjectStep3 from "../AssignNewProjectStep3/AssignNewProjectStep3";
 
 function ExistingProject() {
 
+
     const [step, setStep] = useState(0);
+
+
+
+    const onSaveStep = () => {
+        setStep(1);
+    };
 
 
     const onNextStep = () => {
@@ -22,11 +30,14 @@ function ExistingProject() {
         setStep(step - 1);
     };
 
+
+
     const renderExistenceStep = () => {
         switch (step) {
             case -1:
                 return (
                     <div>
+
                         <AssignProject />
                     </div>
                 )
@@ -61,7 +72,16 @@ function ExistingProject() {
                 return (
                     <div>
                         <Header handlePreviousStep={handlePreviousStep} />
-                        <ExistenceProjectStep3 onNextStep={onNextStep} />
+                        {/* <ExistenceProjectStep3 onNextStep={onNextStep} /> */}
+                        <AssignNewProjectStep3 onNextStep={onNextStep} />
+                        <Footer onNextStep={onNextStep} />
+                    </div>
+                );
+            case 3:
+                return (
+                    <div>
+                        <Header handlePreviousStep={handlePreviousStep} />
+                        <SaveAsProject onSaveStep={onSaveStep} />
                     </div>
                 );
             default:
@@ -71,7 +91,6 @@ function ExistingProject() {
     return (
         <div>
             {renderExistenceStep()}
-
         </div>
     )
 }
