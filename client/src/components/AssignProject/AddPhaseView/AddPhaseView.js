@@ -145,22 +145,6 @@ const handleGridToggle = (currentIndex, previousIndex) => {
   );
 }
 
-const dummyData = [
-  {
-    id: 1,
-    lineItem: 'Item 1',
-    description: 'Description 1',
-    unit: 'Unit 1',
-    margin: 'Margin 1',
-    quantity: 10,
-    unitPrice: 5.99,
-    total: 59.9,
-    start: 'Start 1',
-    end: 'End 1',
-    notes: 'Notes 1',
-  },
-  // Add more dummy data as needed
-];
 
 function createData(name, calories, fat, carbs, protein, calorie, fa, carb, protei) {
   return { name, calories, fat, carbs, protein, calorie, fa, carb, protei };
@@ -173,43 +157,5 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9, 159, 6.0, 24, 4.0),
 ];
 
-
-
-const cardPhase = [
-  {
-    id: 1,
-    currentIndex: 0,
-    previousIndex:-1,
-    // color:"#C0E0C2"
-    color:"red"
-  
-  },
-    {
-    id: 2,
-    currentIndex: 1,
-    previousIndex:0,
-    //  color:"#FFE3E3"
-    color:"blue"
-  
-  },
-    {
-    id: 3,
-    currentIndex: 2,
-    previousIndex:1,
-    //  color:"#C0E0C2"
-    color:"green"
-  
-  },
-   {
-    id: 4,
-    currentIndex: 3,
-    previousIndex:2,
-    //  color:"#FFE3E3"
-    color:"black"
-  
-  },
-  
-
-];
 
 export default AddPhaseView;

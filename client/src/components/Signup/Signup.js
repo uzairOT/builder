@@ -55,7 +55,6 @@ const SignupComp = () => {
   const navigate = useNavigate();
 
   const [register, { isLoading }] = useRegisterMutation();
-
   const { userInfo } = useSelector((state) => state.auth);
 
   const handleChange = (e) => {
@@ -66,22 +65,6 @@ const SignupComp = () => {
     }));
   };
 
-  const hanleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const updatedFormData = { ...formData, phone };
-
-      const response = await axios.post(
-        "http://192.168.18.147:8080/user/register",
-        { data: updatedFormData }
-      );
-      console.log("Post request successful:", response.data);
-    } catch (error) {
-      // Handle any errors that occur during the request
-      console.error("Error making POST request:", error);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -89,8 +72,9 @@ const SignupComp = () => {
     console.log(data)
     try {
       const res = await register({data}).unwrap();
-      dispatch(setCredentials({ ...res }));
-      // navigate('/');
+      console.log(res.user);
+      dispatch(setCredentials(res.user));
+      navigate('/assignproject');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }

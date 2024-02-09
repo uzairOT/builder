@@ -7,6 +7,8 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import Signup from "./pages/Signup/Signup"
 import Login from "./pages/Login/Login"
+// import Dashboard from "./pages/"
+import AssignProject from "./pages/AssignProject/AssignProject"
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -22,6 +24,7 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />} />
       <Route path="" element={<PrivateRoute />}>
         <Route path="/chat" element={<Chat />} />
+        <Route path="/assignproject" element= {<AssignProject />} />
       </Route>
     </Route>
   )

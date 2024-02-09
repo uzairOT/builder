@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
-import { Typography, Box } from '@mui/material';
+import React, { useState } from "react";
+import { Typography, Box } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectProjectForm,
+  setBuildType,
+} from "../../../redux/slices/projectFormSlice";
 
 function StepBoxes() {
-  const [selectedBox, setSelectedBox] = useState(0); // Initialize with 0 (index of "Remodel")
+  const [selectedBox, setSelectedBox] = useState(0);
+  const dispatch = useDispatch();
 
   const handleBoxClick = (index) => {
     setSelectedBox(index);
+    const value = boxes[index].name;
+    dispatch(setBuildType(value));
   };
-
   const boxes = [
-    { label: 'Remodel', background: '#4C8AB1' },
-    { label: 'New build', background: '#4C8AB1' },
-    { label: 'Commercial', background: '#4C8AB1' }
+    { label: "Remodel", background: "#4C8AB1", name: "remodel" },
+    { label: "New build", background: "#4C8AB1", name: "newbuild" },
+    { label: "Commercial", background: "#4C8AB1", name: "commercial" },
   ];
 
   return (
@@ -22,7 +29,7 @@ function StepBoxes() {
         justifyContent: "center",
         alignItems: "center",
         marginTop: "2rem",
-        gap: "1.5rem"
+        gap: "1.5rem",
       }}
     >
       {boxes.map((box, index) => (
@@ -35,9 +42,7 @@ function StepBoxes() {
           }}
           onClick={() => handleBoxClick(index)}
         >
-          <Typography sx={boxText}>
-            {box.label}
-          </Typography>
+          <Typography sx={boxText}>{box.label}</Typography>
         </Box>
       ))}
     </Box>
@@ -54,13 +59,13 @@ const boxStyles = {
   justifyContent: "center",
   alignItems: "center",
   textAlign: "center",
-  cursor: "pointer"
+  cursor: "pointer",
 };
 
 const boxText = {
-  fontFamily: 'Inter',
+  fontFamily: "Inter",
   fontWeight: 500,
-  fontSize: '1.1rem'
+  fontSize: "1.1rem",
 };
 
 export default StepBoxes;

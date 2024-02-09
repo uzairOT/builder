@@ -6,23 +6,15 @@ import { setCredentials } from '../../redux/slices/authSlice';
 import { toast } from 'react-toastify';
 import {
   Box,
-  Container,
   Grid,
   Typography,
   Checkbox,
-  TextField,
-  FormControl,
-  InputLabel,
-  NativeSelect,
   useMediaQuery,
   Button,
   MenuItem,
   Select,
 } from "@mui/material";
 import builder1 from "../Signup/Assets/pngs/builderProYellowLogo.png";
-import builder2 from "../Signup/Assets/pngs/builderProWhiteLogo.png";
-import builder2Tab from "../Signup/Assets/pngs/builderProWhiteLogoTab.png";
-import builder2Mob from "../Signup/Assets/pngs/builderProWhiteLogoMob.png";
 import downloadForMob from "../Signup/Assets/pngs/downloadForMob.png";
 import googlePlay from "../Signup/Assets/pngs/googlePlay.png";
 import appStore from "../Signup/Assets/pngs/appStore.png";
@@ -33,7 +25,7 @@ import YellowBtn from "../UI/button";
 import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 
 const Login = () => {
-  const isLG = useMediaQuery("(min-width: 1280px)");
+
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -72,7 +64,7 @@ const Login = () => {
       const res = await login({ email, password }).unwrap();
       console.log(res)
       dispatch(setCredentials({ ...res }));
-      // navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }

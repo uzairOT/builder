@@ -23,6 +23,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    assignProject: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/assignproject`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -30,4 +37,5 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useRegisterMutation,
+  useAssignProjectMutation,
 } = userApiSlice;

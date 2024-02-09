@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useAssignProjectMutation } from "../../../redux/slices/usersApiSlice";
 
-import {
-  Box,
-  Grid,
-  Typography,
-  Button,
-} from "@mui/material";
-
+import { Box, Grid, Typography, Button } from "@mui/material";
+import { selectProjectForm } from "../../../redux/slices/projectFormSlice";
 import YellowBtn from "../../UI/button";
 import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 import FooterCircles from "../FooterCircles/FooterCircles";
 
 function Footer() {
+  const [assignProject, { isLoading }] = useAssignProjectMutation();
+
+  const FormData = useSelector(selectProjectForm);
+  const handleDoneClick = async () => {
+    console.log(FormData);
+
+    const res = await assignProject(FormData).unwrap();
+    console.log(res);
+  };
+
   return (
     <div>
-         <Grid
+      <Grid
         item
         lg={12}
         sx={{
@@ -32,7 +39,12 @@ function Footer() {
             gap: "2.3rem",
           }}
         >
-          <Button sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}>Done</Button>
+          <Button
+            onClick={handleDoneClick}
+            sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}
+          >
+            Done
+          </Button>
           <Button
             variant="outlined"
             sx={{
@@ -52,10 +64,10 @@ function Footer() {
           Save as to start the Duplicate the Project with same line Item and
           Phases.
         </Typography>
-       <FooterCircles width3="4rem" background3="#4C8AB1" />
+        <FooterCircles width3="4rem" background3="#4C8AB1" />
       </Grid>
     </div>
-  )
+  );
 }
 const redText = {
   color: "#BE1D1D",
@@ -67,4 +79,4 @@ const redText = {
   lineHeight: "150%", // 1.3125rem
   letterSpacing: "-0.00875rem",
 };
-export default Footer
+export default Footer;
