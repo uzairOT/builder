@@ -14,6 +14,7 @@ import SaveAsProject from "../SaveAsProject/SaveAsProject";
 function Footer({ onNextStep }) {
   const navigate = useNavigate()
 
+  
   const handleSaveAs = () => {
 
     onNextStep();
@@ -21,9 +22,12 @@ function Footer({ onNextStep }) {
 
   const [assignProject, { isLoading }] = useAssignProjectMutation();
 
-  const FormData = useSelector(selectProjectForm);
+  const Data = useSelector(selectProjectForm);
   const handleDoneClick = async () => {
-    console.log(FormData);
+   const userdata =  JSON.parse(localStorage.getItem('userInfo'))
+   const userId = userdata.id
+    const FormData = { ...Data,userId  };
+    console.log(userdata.id);
 
     const res = await assignProject(FormData).unwrap();
     console.log(res);

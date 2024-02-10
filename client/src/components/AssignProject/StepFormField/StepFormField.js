@@ -1,15 +1,23 @@
-import React , {useState} from 'react'
+import React, { useState } from "react";
 import {
- useMediaQuery,
-  Button, Box, Typography, TextField, MenuItem, selectClasses, InputLabel, Select, FormControl
+  useMediaQuery,
+  Button,
+  Box,
+  Typography,
+  TextField,
+  MenuItem,
+  selectClasses,
+  InputLabel,
+  Select,
+  FormControl,
 } from "@mui/material";
-import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf"
-;
+import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 const MAX_EMAIL_LENGTH = 50;
-function StepFormField() {
-     const isMobile = useMediaQuery('(max-width:600px)');
-
-    const [email, setEmail] = useState('');
+function StepFormField({ index, email, role, onUpdateEmail, onUpdateRole, onRemoveUser }) {
+  
+  const isMobile = useMediaQuery("(max-width:600px)");
+  const [open, setOpen] = useState(false);
+ 
 
   const handleEmailChange = (event) => {
     const { value } = event.target;
@@ -18,7 +26,6 @@ function StepFormField() {
       onUpdateEmail(event.target.value);
     }
   };
-
 
 
 
@@ -106,51 +113,56 @@ function StepFormField() {
 }
 
 const buttonBox = {
-            display: "flex",
-            flexDirection:"row",
-            justifyContent: "center",
-            alignItems:"center",
-            gap: "3rem",
-            marginTop:"1rem"
-}
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "3rem",
+  marginTop: "1rem",
+};
 const buttonLnks = {
-fontFamily:"Inter",fontWeight:500, height: "50%", marginTop: "2rem", textTransform:"none", color:"#4C8AB1"
-}
-
-
+  fontFamily: "Inter",
+  fontWeight: 500,
+  height: "50%",
+  marginTop: "2rem",
+  textTransform: "none",
+  color: "#4C8AB1",
+};
 
 const inputStyle = {
-     width: "250%", // Set width to 100% for responsiveness
-    height: "2rem",
-    marginBottom: '1rem',
-    alignSelf: "center",
-    padding: '8px',
-    fontSize: '14px',
-    border: '1px solid #ccc',
-    borderRadius: '12px',
-    color:"#202227"
-  };
+  width: "250%", // Set width to 100% for responsiveness
+  height: "2rem",
+  marginBottom: "1rem",
+  alignSelf: "center",
+  padding: "8px",
+  fontSize: "14px",
+  border: "1px solid #ccc",
+  borderRadius: "12px",
+  color: "#202227",
+};
 const formBox = {
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
   marginTop: "1rem",
-  marginRight:"28rem",
-  gap: "1.5rem"
+  marginRight: "28rem",
+  gap: "1.5rem",
 };
 const counterTypo = {
-position: 'absolute', right: '-18rem', bottom: '2rem', fontSize: '0.8rem',  
-color: "#B8B8B8",
-    fontFamily: 'Inter',
-    fontWeight:500
-}
+  position: "absolute",
+  right: "-18rem",
+  bottom: "2rem",
+  fontSize: "0.8rem",
+  color: "#B8B8B8",
+  fontFamily: "Inter",
+  fontWeight: 500,
+};
 const selectLable = {
-padding:"0rem 1rem",
-marginTop:"-0.5rem",
-color: "#202227",
-    fontFamily: 'Inter',
-    fontWeight:500
-
-}
-export default StepFormField
+  padding: "0rem 1rem",
+  marginTop: "-0.5rem",
+  color: "#202227",
+  fontFamily: "Inter",
+  fontWeight: 500,
+};
+export default StepFormField;
