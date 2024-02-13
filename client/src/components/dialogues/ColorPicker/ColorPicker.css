@@ -1,0 +1,12 @@
+/* Custom poiners */
+.custom-pointers .react-colorful__saturation-pointer {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+}
+
+.custom-pointers .react-colorful__hue-pointer,
+.custom-pointers .react-colorful__alpha-pointer {
+    width: 16px;
+    border-radius: 3px;
+}

@@ -6,8 +6,10 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import Signup from "./pages/Signup/Signup";
-import Login from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup"
+import Login from "./pages/Login/Login"
+import AssignProject from "./pages/AssignProject/AssignProject"
+
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -24,6 +26,7 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />} />
       <Route path="" element={<PrivateRoute />}>
         <Route path="/chat" element={<Chat />} />
+        <Route path="/assignproject" element= {<AssignProject />} />
       </Route>
     </Route>
   )
