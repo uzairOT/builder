@@ -66,16 +66,6 @@ function AssignProject() {
         <Header handlePreviousStep={handlePreviousStep} />
         <StepTitles stepHeading={"Step 1 of 3"} Heading={"What projects is your team currently engaged in"} stepDiscription={"Lorem ipsum dolor sit amet consectetur. Pretium aliquam egestas interdum varius sed at libero. Sed vestibulum vel platea accumsan in elit morbi eu erat. Purus non urna et purus. Libero nec nec quam pulvinar massa nulla et tincidunt."} />
         <StepBoxes />
-        {/* <Box
-          sx={formBox}
-        >
-          <form style={{ marginTop: "0.1rem" }}>
-            <Box sx={{ marginTop: "0.5rem", width: "300%" }}>
-              <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="email">Project Name</label>
-              <input className='placeholder' type="email" id="email" style={{ ...inputStyle, ...lableResponsiveFont }} placeholder="e.g. Project name                                                                                                 0/50" />
-            </Box>
-          </form>
-        </Box> */}
 
 
         <Box

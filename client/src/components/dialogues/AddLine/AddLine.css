@@ -1,0 +1,9 @@
+/* Remove border-bottom for the before pseudo-element */
+.css-uhyr2s-MuiInputBase-root-MuiInput-root:not(.Mui-disabled, .Mui-error)::before {
+    border-bottom: none !important;
+}
+
+/* Remove border-bottom for the after pseudo-element */
+.css-uhyr2s-MuiInputBase-root-MuiInput-root::after {
+    border-bottom: none !important;
+}

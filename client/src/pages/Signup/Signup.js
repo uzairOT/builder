@@ -3,6 +3,7 @@ import SignupComp from '../../components/Signup/Signup';
 import Splash from '../../components/Splash/Splash';
 
 
+
 function Signup() {
   const [showSplash, setShowSplash] = useState(true);
   const [showSignup, setShowSignup] = useState(false);
@@ -24,7 +25,6 @@ function Signup() {
     <div>
       {showSplash && <Splash />}
       {showSignup && <SignupComp />}
-
     </div>
   );
 }

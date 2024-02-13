@@ -3,8 +3,7 @@ import {
   useMediaQuery,
   Box, Typography, MenuItem, InputLabel, Select, FormControl
 } from "@mui/material";
-import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf"
-  ;
+import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 const MAX_EMAIL_LENGTH = 50;
 function StepFormField() {
   const isMobile = useMediaQuery('(max-width:600px)');
