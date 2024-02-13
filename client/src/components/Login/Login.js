@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
-import { useLoginMutation } from '../../redux/slices/usersApiSlice';
-import { setCredentials } from '../../redux/slices/authSlice';
-import { toast } from 'react-toastify';
 import {
   Box,
   Grid,
@@ -20,12 +16,12 @@ import googlePlay from "../Signup/Assets/pngs/googlePlay.png";
 import appStore from "../Signup/Assets/pngs/appStore.png";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "../Signup/Assets/svgs/GoogleIcon.svg";
-import axios from 'axios'
+
 import YellowBtn from "../UI/button";
 import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 
 const Login = () => {
-
+  const isLG = useMediaQuery("(min-width: 1280px)");
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -36,41 +32,12 @@ const Login = () => {
   const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
   const linkResponsiveColor = { color: isMobile ? "#FFAC00" : "#4C8AB1", }
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const [login, { isLoading }] = useLoginMutation();
-
-  const { userInfo } = useSelector((state) => state.auth);
-
-  // useEffect(() => {
-  //   if (userInfo) {
-  //     console.log("hi")
-  //     navigate('/profile');
-  //   }
-  // }, [navigate, userInfo]);
-
-
+  const [password, setPassword] = useState("");
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await login({ email, password }).unwrap();
-      console.log(res)
-      dispatch(setCredentials({ ...res }));
-      navigate('/dashboard');
-    } catch (err) {
-      toast.error(err?.data?.message || err.error);
-    }
-  };
 
 
   return (
@@ -125,7 +92,7 @@ const Login = () => {
             <Typography sx={formHeadingStyle}>Login</Typography>
             <img src={builder1} width={"20%"} alt="" />
           </Box>
-          <form style={{ marginTop: "1rem" }} onSubmit={submitHandler} >
+          <form style={{ marginTop: "1rem" }}>
             <Box sx={{ marginTop: "0.5rem" }}>
               <label
                 style={{
@@ -139,8 +106,6 @@ const Login = () => {
               <input
                 type="email"
                 id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 style={{
                   ...inputStyle,
                   ...placeholderStyle,
@@ -166,6 +131,8 @@ const Login = () => {
                     ...placeholderStyle,
                     ...lableResponsiveFont
                   }}
+                  type={passwordVisible ? "text" : "password"}
+                  id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder=""
@@ -217,7 +184,6 @@ const Login = () => {
                 ...YellowBtn,
                 ...loginButton
               }}
-              onClick={submitHandler}
               type="submit"
             >
               {isMobile ? "Login" : "Log in with Email"}
