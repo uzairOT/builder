@@ -8,6 +8,8 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import AddPhaseCard from "../AddPhaseCard/AddPhaseCard";
 import actionButton from "../../UI/actionButton";
+import ColorPickerElement from "../../dialogues/ColorPickerElement/ColorPickerElement"
+
 const initialCardPhase = [
   {
     id: 1,
@@ -99,24 +101,18 @@ function AddPhaseView() {
     setCardPhase(updatedCardPhase);
   };
 
-
-
-
-
-
-
-
-
+  const [showColorPicker, setShowColorPicker] = useState(false);
 
   const handleAddPhase = () => {
-    const newPhaseId = cardPhase.length + 1;
-    const newPhase = {
-      id: newPhaseId,
-      currentIndex: newPhaseId - 1,
-      previousIndex: newPhaseId - 2,
-      color: "yellow", // You can set a default color or generate one dynamically
-    };
-    setCardPhase([...cardPhase, newPhase]);
+    setShowColorPicker(true); // Set the state to true to render ColorPickerElement
+  };
+
+  const handleOpen = () => {
+    setShowColorPicker(true); // Set the state to true to open the ColorPickerElement
+  };
+
+  const handleClose = () => {
+    setShowColorPicker(false); // Set the state to false to close the ColorPickerElement
   };
 
   return (
@@ -127,7 +123,8 @@ function AddPhaseView() {
       <Box
         sx={buttonBox}
       >
-        <Button sx={{ ...actionButton }} startIcon={<ModeEditOutlinedIcon />}>
+        <Button sx={{ ...actionButton }} startIcon={<ModeEditOutlinedIcon />}
+          onClick={handleAddPhase}>
           Edit
         </Button>
         <Button sx={{ ...actionButton }} startIcon={<DeleteOutlinedIcon />}>
@@ -154,6 +151,12 @@ function AddPhaseView() {
           onGridToggle={() => handleGridToggle(index, phase?.previousIndex)}
         />
       ))}
+      {showColorPicker && (
+        <ColorPickerElement
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+        />
+      )}
 
     </Grid>
   );
@@ -179,7 +182,7 @@ const firstGrid = {
   display: "flex",
   flexDirection: "column",
   padding: {
-    lg: "2rem 0rem",
+    lg: "0rem 0rem",
     md: "4.5rem 2rem",
     sm: "1rem 2rem",
     xs: "0rem 0rem",
