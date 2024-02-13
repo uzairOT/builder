@@ -73,8 +73,8 @@ const firstGrid = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "1.5rem",
-  gap: "1.5rem",
+  marginTop: "1rem",
+  gap: "1rem",
 
 }
 
@@ -89,8 +89,8 @@ const labelStyle = {
 
 const inputStyle = {
   width: '100%',
-  height: "2rem",
-  marginBottom: '1rem',
+  height: "1.5rem",
+  marginBottom: '0.5rem',
   alignSelf: "stretch",
   padding: '8px',
   fontSize: '14px',

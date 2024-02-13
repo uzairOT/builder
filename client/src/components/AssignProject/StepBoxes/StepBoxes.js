@@ -46,12 +46,12 @@ const firstBox = {
   flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "2rem",
+  marginTop: "1rem",
   gap: "1.5rem"
 }
 const boxStyles = {
   width: "9.1875rem",
-  height: "7.75rem",
+  height: "7.7rem",
   borderRadius: "1rem",
   border: "1px solid #F9F9F9",
   background: "#F9F9F9",

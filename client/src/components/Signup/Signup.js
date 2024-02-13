@@ -301,11 +301,10 @@ const SignupComp = () => {
                             </label>
             </Box>
 
-            <Button sx={{ ...YellowBtn, marginBottom: "1rem" }} type="submit">
-              Sign up
-            </Button>
-            <Typography sx={alreadyHaveAccountTypo}>
-                            Already have an account?{'\u00a0'} <Link style={{
+                        <Button sx={{ ...YellowBtn, marginBottom: "1rem" }}
+                            type="submit" onClick={signUpHandler}>Sign up</Button>
+                        <Typography sx={alreadyHaveAccountTypo}>
+                            Already have an account?{'\u00a0'} <Link to="./login" style={{
                                 ...loginLink,
                                 ...linkResponsiveColor,
                                 ...lableResponsiveFont
@@ -323,21 +322,10 @@ const SignupComp = () => {
               </Typography>
             </Box>
 
-            <Button
-              sx={{
-                ...googleBtnStyle,
-                marginBottom: "6.4rem",
-                marginTop: "2rem",
-              }}
-              type="button"
-            >
-              <GoogleLogo style={{ marginRight: "1rem" }} />{" "}
-              {isMobile ? "Google" : "Continue with Google"}
-            </Button>
-          </form>
-        </Grid>
-        {/* </div> */}
-        <Grid sx={bottomGrid}>
+                        <Button sx={{ ...googleBtnStyle, marginBottom: "3.4rem", marginTop: "2rem" }} type="button"><GoogleLogo style={{ marginRight: "1rem" }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
+                    </form>
+                </Grid>
+                <Grid sx={bottomGrid}>
                     <Box sx={selectLanguageBox}>
                         <Select
                             defaultValue={1}
@@ -385,7 +373,7 @@ const SignupComp = () => {
 
 const firstGrid = {
     padding: {
-        lg: "2rem 3rem",
+        lg: "1.19rem 3rem",
         md: "1rem 2rem",
         sm: "1rem 2rem",
         xs: "0rem 0rem 0rem 0rem",
@@ -394,6 +382,7 @@ const firstGrid = {
     alignItems: "center",
     backgroundColor: '#4C8AB1',
     marginTop: { lg: "-1rem", sm: "-4rem", xs: "auto" },
+
     // paddingTop: { xs: "-10rem" }
     // border: "2px solid red",
 }
@@ -413,7 +402,7 @@ const SecondGrid = {
 }
 
 const downloadForMobBox = {
-    marginTop: "19rem",
+    marginTop: "14rem",
     marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
     display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
     justifyContent: "center",
@@ -423,7 +412,7 @@ const googleAppImgsBox = {
     display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "3rem",
+    marginTop: "2rem",
     marginLeft: { lg: "0rem", md: "-3rem", sm: "-3rem" },
     gap: "1rem"
 }
@@ -454,6 +443,7 @@ const formGrid = {
     justifyContent: 'center',
     alignItems: 'center',
     padding: '20px',
+    marginTop: "1rem",
     paddingLeft: "2rem",
     paddingRight: { lg: "6rem", md: "3rem", sm: "2rem", xs: "2rem" },
 
@@ -611,25 +601,19 @@ const hptLinksBox = {
 }
 
 const firstHeading = {
-  color: "#FFF",
-  // fontFamily: GTWalsheimTrial,
-  fontFamily: "GT Walsheim Trial",
-  display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
-  marginTop: "4rem",
-  fontSize: { lg: "2.9375rem", md: "2rem", sm: "1.5rem" },
-  fontStyle: "normal",
-  fontWeight: 400,
-  lineHeight: "4.25rem",
-};
-
-
-
-
+    color: '#FFF',
+    fontFamily: GTWalsheimTrial,
+    display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
+    marginTop: "1rem",
+    fontSize: { lg: '2.9375rem', md: "2rem", sm: "1.5rem" },
+    fontWeight: 400,
+    lineHeight: '4.25rem',
+}
 
 const secondHeading = {
     color: 'rgba(255, 255, 255, 0.80)',
     width: { lg: "31.125rem", md: "28rem", sm: "auto" },
-    marginTop: "1rem",
+    marginTop: "0.5rem",
     display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
     fontFamily: GTWalsheimTrial,
     fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
@@ -640,7 +624,7 @@ const secondHeading = {
 const thirdHeading = {
     color: '#FFF',
     fontFamily: GTWalsheimTrial,
-    marginTop: "2rem",
+    marginTop: "1rem",
     display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
     fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
     fontWeight: 400,
@@ -665,7 +649,7 @@ const customPhoneStyles = {
     border: "1px solid #D8D8D8",
     background: "#FFF",
     width: "100%",
-    height: "2.7rem",
+    height: "2rem",
     alignSelf: "stretch",
     paddingTop: "0.5rem",
     padding: "0.5rem",
@@ -676,8 +660,8 @@ const customPhoneStyles = {
 
 const inputStyle = {
     width: '100%',
-    height: "2.5rem",
-    marginBottom: '1rem',
+    height: "2rem",
+    marginBottom: '0.5rem',
     alignSelf: "stretch",
     padding: '8px',
     fontSize: '14px',
@@ -717,7 +701,7 @@ const hptLinksStyle = {
 const googleBtnStyle = {
     display: 'flex',
     flexDirection: 'row',
-    marginBottom: '1.5rem',
+    marginBottom: '0.5rem',
     marginTop: '1.5rem',
     borderRadius: '2.5rem',
     border: '1px solid rgba(6, 32, 72, 0.11)',
@@ -739,20 +723,25 @@ const googleBtnStyle = {
 
 
 const ContinuewithTextStyle = {
-  color: "#202227",
-  fontFamily: GTWalsheimTrial,
-  fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
-  fontStyle: "normal",
-  fontWeight: 400,
-  lineHeight: "normal",
-  display: "flex",
-  justifyContent: "start",
-  marginTop: "-1.2rem",
-  position: "absolute",
-  left: { lg: "17%", md: "20%", sm: "30%", xs: "50%" },
-  transform: "translateX(-50%)",
-  backgroundColor: "#FFFFFF",
-  padding: "0 10px",
-};
+    color: '#202227',
+    fontFamily: GTWalsheimTrial,
+    fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
+    fontWeight: 400,
+    display: "flex",
+    justifyContent: "start",
+    marginTop: "-1.2rem",
+    position: 'absolute',
+    left: { lg: '17%', md: "20%", sm: "30%", xs: "50%" },
+    transform: 'translateX(-50%)',
+    backgroundColor: '#FFFFFF',
+    padding: '0 10px',
+}
+
+const topSpace = {
+    marginTop: "0.2rem"
+}
+
+
+
 
 export default SignupComp;
