@@ -1,4 +1,4 @@
-import {Divider, Stack } from '@mui/material'
+import { Divider, Stack } from '@mui/material'
 import React from 'react'
 import ProgressCardHeader from './ProgressCardHeader'
 import ProjectProgress from './ProjectProgress'
@@ -7,7 +7,7 @@ import ProfitDetails from './ProfitDetails'
 
 const ProgressCard = () => {
   return (
-    <>
+    <> 
         <ProgressCardHeader />
         <Divider variant='fullWidth'></Divider>
         <Stack direction={'row'} pt={2}>

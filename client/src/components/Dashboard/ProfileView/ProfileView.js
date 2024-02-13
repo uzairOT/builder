@@ -5,7 +5,7 @@ import ListProjects from './ListProjects';
 
 const ProfileView = () => {
   return (
-    <Box fontStyle={'GT-Walsheim-Regular-Trial, sans-serif'}>
+    <Box fontStyle={'GT-Walsheim-Regular-Trial, sans-serif'} height={'100%'}>
       <Typography variant='h6' sx={themeStyle.title}>Dashboard</Typography>
       <Profile />
       <ListProjects />

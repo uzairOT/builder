@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 
 const calenderWrapper = styled.div`
+.rbc-date-cell.rbc-now  button{
+  color: white;
+}
 .rbc-events-container{
   width: 100%;
 }
@@ -23,8 +26,8 @@ const calenderWrapper = styled.div`
     max-width: 100% !important;
   }
   .rbc-label {
-    padding: 8px 6px;
-    font-family: "muli-semi-bold";
+    // padding: 8px 6px;
+    // font-family: "muli-semi-bold";
   }
   .rbc-toolbar button.rbc-active{
     background-color: #4C8AB1;
@@ -63,9 +66,11 @@ const calenderWrapper = styled.div`
   }
   .rbc-month-view {
     border: 0;
+    padding-left: 5px;
     .rbc-month-row {
       border: 0;
       min-height: 128px;
+     
     }
   }
   .rbc-day-slot .rbc-time-slot {
@@ -76,6 +81,8 @@ const calenderWrapper = styled.div`
   }
   .rbc-time-gutter {
     border-top: 0px solid #dae5f0;
+    font-family: Montserrat, sans-serif;
+    color: #6A6A6A;
   }
   rbc-time-gutter rbc-time-column{
 
@@ -86,15 +93,25 @@ const calenderWrapper = styled.div`
   }
   .rbc-time-content {
     border: 0;
+    scrollbar-width: none;
   }
   .rbc-date-cell {
-    padding: 8px;
+    padding: 4px;
     font-size: 16px !important;
-    font-weight: 400;
+    text-align: center;
     > a {
       color: #6c757d !important;
       font-family: "muli-semi-bold";
     }
+  }
+
+  .rbc-date-cell button {
+    padding: 4px;
+    text-align: center;
+    color: #9B9B9B;
+    font-family: "Inter", sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 12px;
   }
   .rbc-event.rbc-selected {
     background-color: white;
@@ -111,14 +128,14 @@ const calenderWrapper = styled.div`
     //padding: 2px 10px;
     padding:0px !important;
     // min-height: 40px !important;
-    background-color: white;
+    background-color: transparent;
     color: black;
     border: 0px;
     // border-right: 6px solid #563c91;
-    box-shadow: 0 0.46875rem 2.1875rem rgba(0, 0, 0, 0.03),
-      0 0.9375rem 1.40625rem rgba(0, 0, 0, 0.03),
-      0 0.25rem 0.53125rem rgba(0, 0, 0, 0.05),
-      0 0.125rem 0.1875rem rgba(0, 0, 0, 0.03);
+    // box-shadow: 0 0.46875rem 2.1875rem rgba(0, 0, 0, 0.03),
+    //   0 0.9375rem 1.40625rem rgba(0, 0, 0, 0.03),
+    //   0 0.25rem 0.53125rem rgba(0, 0, 0, 0.05),
+    //   0 0.125rem 0.1875rem rgba(0, 0, 0, 0.03);
     .rbc-event-content {
       font-size: 14px;
       font-family: "muli-semi-bold";
@@ -131,13 +148,13 @@ const calenderWrapper = styled.div`
 
   .rbc-month-row {
     .rbc-event {
-      min-height: 20px !important;
+      // min-height: 20px !important;
     }
   }
 
   .rbc-row-segment {
-    padding: 0 4px 4px 4px;
-  }
+    padding: 0;
+    margin-top: 2px;
 
   .rbc-addons-dnd
     .rbc-addons-dnd-resizable-month-event

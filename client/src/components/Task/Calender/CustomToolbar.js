@@ -3,9 +3,9 @@ import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
-const CustomToolbar = ({toolbar, setMonthEventView}) => {
+const CustomToolbar = ({toolbar, setEventView}) => {
   const [activeButton, setActiveButton] = useState("day");
-  const [activeMonthHeader, setActiveMonthHeader] = useState('');
+  const [activeHeader, setActiveHeader] = useState('');
   const goToDayView = (view) => {
     toolbar.onView(view);
     setActiveButton(view);
@@ -22,11 +22,30 @@ const CustomToolbar = ({toolbar, setMonthEventView}) => {
     toolbar.onNavigate(action);
 
   }
-  const handleMonthEventView = (monthEventView) =>{
-    console.log(monthEventView);
-    setMonthEventView(monthEventView)
-    setActiveMonthHeader(monthEventView); 
-  }
+//   const handleMonthEventTasks =() => {
+//     setMonthEventView(prevState => {
+//       console.log('Tasks Clicked');
+//       console.log("Inside handleMonthEventTasks: ", prevState);
+//       setActiveMonthHeader('tasks');
+//       return true;  // or any new state based on prevState
+//     });
+//   }
+
+// const handleMonthEventWeatherNotes = () => {
+//   setMonthEventView(prevState => {
+//     console.log('Weather/Notes Clicked');
+//     console.log("Inside handleMonthEventWeatherNotes: ",prevState);
+//     setActiveMonthHeader('weather/notes');
+//     return false;
+//   });
+// }
+const handleActiveHeader = (view) => {
+  setEventView(() => {
+    setActiveHeader(view);
+    return view
+  });
+}
+
   // Styles
   const themeStyle = {
     toolbarTitle: {
@@ -141,12 +160,21 @@ const CustomToolbar = ({toolbar, setMonthEventView}) => {
             <ArrowRightIcon style={{ color: "#797979" }} />
           </IconButton>
         </Stack>
-        {toolbar.view === 'month' && <Stack direction={'row'} spacing={2} pr={1} justifyContent={'center'} alignItems={'center'}>
-          <button style={themeStyle.button} onClick={()=> {handleMonthEventView('tasks')}}>
-          <Typography fontSize={'10px'} style={{...themeStyle.monthEventHeader, color: activeMonthHeader === 'tasks' ? '#4C8AB1': '', textDecoration:  activeMonthHeader === 'tasks' ? 'underline': ''}}>Tasks</Typography>
+        {toolbar.view === 'month' && <Stack direction={'row'} spacing={2} pr={0.5} justifyContent={'center'} alignItems={'center'}>
+          <button style={themeStyle.button} onClick={()=>{ handleActiveHeader("Work Order")}}>
+          <Typography fontSize={'12px'} style={{...themeStyle.monthEventHeader, color: activeHeader === 'Work Order' ? '#4C8AB1': '', textDecoration:  activeHeader === 'Work Order' ? 'underline': ''}}>Work Order</Typography>
           </button>
-          <button style={themeStyle.button} onClick={()=> {handleMonthEventView('weather/notes')}}>
-          <Typography fontSize={'10px'} style={{...themeStyle.monthEventHeader,  color: activeMonthHeader === 'weather/notes' ? '#4C8AB1': '', textDecoration:  activeMonthHeader === 'weather/notes' ? 'underline': ''}}>Weather/notes</Typography>
+          <button style={themeStyle.button} onClick={()=>{ handleActiveHeader("Notes")}}>
+          <Typography fontSize={'12px'} style={{...themeStyle.monthEventHeader,  color: activeHeader === 'Notes' ? '#4C8AB1': '', textDecoration:  activeHeader === 'Notes' ? 'underline': ''}}>Weather/notes</Typography>
+          </button>
+          
+        </Stack>}
+        {toolbar.view === 'day' && <Stack direction={'row'} spacing={2} pr={1} justifyContent={'center'} alignItems={'center'}>
+          <button style={themeStyle.button} onClick={()=>{ handleActiveHeader("Work Order")}}>
+          <Typography fontSize={'12px'} style={{...themeStyle.monthEventHeader, color: activeHeader === 'Work Order' ? '#4C8AB1': '', textDecoration:  activeHeader === 'Work Order' ? 'underline': ''}}>Work Order</Typography>
+          </button>
+          <button style={themeStyle.button} onClick={()=>{ handleActiveHeader("Notes")}}>
+          <Typography fontSize={'12px'} style={{...themeStyle.monthEventHeader,  color: activeHeader === 'Notes' ? '#4C8AB1': '', textDecoration:  activeHeader === 'Notes' ? 'underline': ''}}>Notes</Typography>
           </button>
           
         </Stack>}
