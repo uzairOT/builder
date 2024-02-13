@@ -132,7 +132,7 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
                       onChange={handleSelectAllChange} />
                   </TableCell>
                   <TableCell
-                    sx={{ ...tableHeadings, width: "15%", paddingLeft: "1rem" }}
+                    sx={{ ...tableHeadings, width: "15%", }}
                   >
                     Line Item
                   </TableCell>
@@ -191,7 +191,7 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
 const firstGrid = {
   display: "flex",
   flexDirection: "column",
-  marginTop: "1.5rem",
+  marginTop: "1rem",
   borderRadius: "0.5rem",
 }
 const headingsBox = {
@@ -211,7 +211,7 @@ const phaseBox = {
 const tableGrid = {
   background: "#FBFBFB",
   borderRadius: "1rem",
-  margin: "1rem 1rem",
+  margin: "0.7rem 1rem",
   padding: "1rem 2rem",
 }
 const blackHeading = {
@@ -235,9 +235,9 @@ const listOfLineText = {
 const tableHeadings = {
   fontFamily: "Poppins, sans-serif",
   fontWeight: 500,
-  fontSize: "14px",
-  letterSpacing: "-1%",
+  fontSize: "0.9rem",
   color: "#8C8C8C",
+  paddingLeft: "0rem"
 };
 const hrLine = {
   width: "100%",

@@ -161,7 +161,7 @@ const buttonBox = {
   display: "flex",
   justifyContent: "flex-end",
   gap: "0.5rem",
-  marginTop: "1.5rem",
+  marginTop: "0.5rem",
   padding: {
     lg: "0rem 5rem",
     md: "4.5rem 2rem",

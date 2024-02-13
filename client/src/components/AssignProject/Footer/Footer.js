@@ -47,7 +47,9 @@ function Footer({ onNextStep }) {
           Save as to start the Duplicate the Project with same line Item and
           Phases.
         </Typography>
-        <FooterCircles width3="4rem" background3="#4C8AB1" />
+        <div>
+          <FooterCircles width3="4rem" background3="#4C8AB1" />
+        </div>
       </Grid>
     </div>
   )
@@ -60,7 +62,7 @@ const firstGrid = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "2.5rem",
+  marginTop: "1rem",
 }
 const buttonBox = {
   display: "flex",
@@ -69,7 +71,7 @@ const buttonBox = {
 }
 const redText = {
   color: "#BE1D1D",
-  marginTop: "1.25rem",
+  marginTop: "1rem",
   fontFamily: GTWalsheimTrial,
   fontSize: "0.875rem",
   fontStyle: "normal",
