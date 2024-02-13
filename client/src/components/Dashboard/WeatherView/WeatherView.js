@@ -8,7 +8,7 @@ const WeatherView = ({dailyForecast, loading, error}) => {
   console.log(dailyForecast)
  
   return (
-    <Stack direction={{md:'column', lg: 'row'}} spacing={2} padding={2}>
+    <Stack direction={{xs:'column-reverse',xm:'column-reverse',md:'column-reverse', lg: 'row'}} spacing={2} padding={2}>
     <Box flex={2}>
       <Typography style={themeStyle.title}>Good morning, Admin</Typography>
       <Stack direction="row" justifyContent={'space-evenly'} alignItems={'center'}  height={'50%'} spacing={1} pl={2.5} pr={2.5}>

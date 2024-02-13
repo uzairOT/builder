@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {useMemo, useRef, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
@@ -7,7 +7,7 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalenderWrapper from "./calender.style";
 import CustomToolbar from "./CustomToolbar";
-import {formats} from "./Formats";
+import {Formats} from "./Formats";
 import {CustomEventDayNotes, CustomEventDayTasks, CustomEventMonthTasks, CustomEventMonthWeatherNotes, CustomEventWeek, CustomEventWeekOnModal} from "./CustomEvent";
 import TimeGutterHeader from "./TimeGutterHeader";
 import MonthCellWapper from "./MonthCellWapper";
@@ -161,17 +161,6 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
         allDay: 'Week'
       }
 
-      const resizeEvent = useCallback(
-        ({ event, start, end }) => {
-          setEvents((prev) => {
-            const existing = prev.find((ev) => ev.id === event.id) ?? {}
-            const filtered = prev.filter((ev) => ev.id !== event.id)
-            return [...filtered, { ...existing, start, end }]
-          })
-        },
-        [setEvents]
-      )
-    
 
 
   return (
@@ -187,7 +176,7 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
             resizable={false}
             style={{ height: "100% " }}
             components={components}
-            formats={formats}
+            formats={Formats}
             messages={messages}
             min={startTime.toDate()}
             max={endTime.toDate()}
