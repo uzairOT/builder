@@ -42,19 +42,19 @@ const Dashboard = () => {
             <Grid item margin={1}><Paper height={themeStyle.dashboardViews}><WeatherView dailyForecast={dailyForecast} loading={loading} error={error} /></Paper></Grid>
             {/* direction={{md:'column', lg:'row'}} */}
             <Grid  container sx={{...themeStyle.scrollable, height: {xl:'69.4vh', lg:'65vh', md:'43vh', sm:'45vh', xs: '45vh'}}} width={'98%'}   margin={'auto'}>
-              <Grid item xs={12} sm={12} md={12} lg={6} style={{paddingTop: '0px', paddingLeft:'0px'}}>
+              <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'0px'}}>
               <Paper sx={themeStyle.progressCard} margin={1} ><ProgressCard /></Paper>
               </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={6} style={{paddingTop: '0px', paddingLeft:'8px'}}>
+              <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'8px'}}>
               <Paper sx={themeStyle.progressCard} margin={1} ><ProgressCard /></Paper>
               </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={6} style={{paddingTop: '0px', paddingLeft:'0px'}}>
+              <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'0px'}}>
               <Paper sx={themeStyle.progressCard} margin={1} ><ProgressCard /></Paper>
               </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={6} style={{paddingTop: '0px', paddingLeft:'8px'}}>
+              <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'8px'}}>
               <Paper sx={themeStyle.progressCard} margin={1} ><ProgressCard /></Paper>
               </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={6} style={{paddingTop: '0px', paddingLeft:'0px'}}>
+              <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'0px'}}>
               <Paper sx={themeStyle.progressCard} margin={1}><ProgressCard /></Paper>
               </Grid>
             </Grid>

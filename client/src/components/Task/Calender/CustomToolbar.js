@@ -112,11 +112,13 @@ const handleActiveHeader = (view) => {
         justifyContent={"space-between"}
         alignItems={"center"}
         width={"100%"}
-        p={2}
-        pl={3}
+        p={1}
+        pl={4}
         mt={1}
+        pt={2}
+        pb={2}
       >
-          <Typography sx={themeStyle.toolbarTitle} pl={1}>WorkOrder</Typography>
+          <Typography sx={themeStyle.toolbarTitle} pl={2}>WorkOrder</Typography>
         <Box element="div" style={themeStyle.toolbarButtonGroup}>
           <Button
             style={{
