@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
@@ -8,7 +8,9 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalenderWrapper from "./calender.style";
 import CustomToolbar from "./CustomToolbar";
 import {formats} from "./Formats";
-import {CustomEventDay, CustomEventWeek, CustomEventWeekOnModal} from "./CustomEvent";
+import {CustomEventDayNotes, CustomEventDayTasks, CustomEventMonthTasks, CustomEventMonthWeatherNotes, CustomEventWeek, CustomEventWeekOnModal} from "./CustomEvent";
+import TimeGutterHeader from "./TimeGutterHeader";
+import MonthCellWapper from "./MonthCellWapper";
 
 
 const localizer = momentLocalizer(moment);
@@ -16,11 +18,16 @@ const DnDCalendar = withDragAndDrop(Calendar);
 
 
 const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
-  
+  const [monthEventView, setMonthEventView] = useState(true);
+  const [eventView, setEventView] = useState('Work Order')
+  const eventViewRef = useRef(eventView);
+    eventViewRef.current = eventView;
+    console.log("Ref updated: ",eventViewRef.current)
+
   const currentDate = moment();
   const startTime = moment(currentDate).set({ hour: 9, minute: 0, second: 0, millisecond: 0 });
   const endTime = moment(currentDate).set({ hour: 23, minute: 0, second: 0, millisecond: 0 });
-  const [monthEventView, setMonthEventView] = useState('task');
+ 
     const [events, setEvents] = useState([
         {
           start: moment('2024-02-06T09:00:00').toDate(),
@@ -121,22 +128,50 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
           }
         },
       ]);
-
+      console.log("Inside Task Calender: ", monthEventView);
 
       const components = useMemo(()=> ({
-        toolbar: (props) => <CustomToolbar toolbar={props} setMonthEventView={setMonthEventView} />,
+
+        toolbar: (props) => <CustomToolbar toolbar={props} setEventView={setEventView} setMonthEventView={setMonthEventView} monthEventView={monthEventView}/>,
         day:{
-          event: (props) => <CustomEventDay {...props} />
+          event: (props) => (eventViewRef.current === 'Work Order' ? <CustomEventDayTasks {...props}/> : <CustomEventDayNotes {...props}/>)
         },
         week: {
-          event: isDrawerOpen ? (props) => <CustomEventWeekOnModal {...props}/> :(props) => <CustomEventWeek {...props} />
+          timeGutterHeader: TimeGutterHeader,
+          event: (props) => (isDrawerOpen ? <CustomEventWeekOnModal {...props}/> :<CustomEventWeek {...props} /> )
+          // isDrawerOpen ? (props) => <CustomEventWeekOnModal {...props}/> :(props) => <CustomEventWeek {...props} />
         },
+        month: {
+          dateCellWrapper: (props) => (eventViewRef.current === 'Work Order' ? <MonthCellWapper props={props} isDrawerOpen={isDrawerOpen} monthView={'tasks'} />: <MonthCellWapper props={props} isDrawerOpen={isDrawerOpen}  monthView={'weather/notes'}/>),
+          event: (props) =>{
+            console.log("Month Event View current Function rerendered: ",eventViewRef.current);
+            if(eventViewRef.current === 'Work Order'){
+              return <CustomEventMonthTasks {...props} monthEventView={monthEventView.current} />
+            }else{
+              return <CustomEventMonthWeatherNotes {...props} isDrawerOpen={isDrawerOpen}/>
+            }
+          }
+          // monthEventView === 'tasks' ? 
+          // (props) => <CustomEventMonthTasks {...props} /> :
+          // (props) => <CustomEventMonthWeatherNotes {...props} /> 
+        }
 
-      }),[isDrawerOpen])
+      }), [monthEventView, setMonthEventView, isDrawerOpen])
       const messages = {
         allDay: 'Week'
       }
-      useEffect(()=>{console.log(monthEventView)}, [monthEventView])
+
+      const resizeEvent = useCallback(
+        ({ event, start, end }) => {
+          setEvents((prev) => {
+            const existing = prev.find((ev) => ev.id === event.id) ?? {}
+            const filtered = prev.filter((ev) => ev.id !== event.id)
+            return [...filtered, { ...existing, start, end }]
+          })
+        },
+        [setEvents]
+      )
+    
 
 
   return (
@@ -149,7 +184,7 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
             views={["day", "week", "month"]}
             events={events}
             localizer={localizer}
-            resizable
+            resizable={false}
             style={{ height: "100% " }}
             components={components}
             formats={formats}

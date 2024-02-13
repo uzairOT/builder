@@ -7,12 +7,12 @@ const CircularGauge = ({value}) => {
             type: 'radial',
             arc: {
                 subArcs: [
-                    { limit: 20, color: '#FF5732' },
-                    { limit: 50, color: '#82B811' },
+                    { limit: 30, color: '#FF5732' },
+                    { limit: 60, color: '#82B811' },
                 ],
                 padding: '1px',
                 width: '0.11',
-                gradient: true,
+                gradient: false,
               },
               labels:{
                 tickLabels: {

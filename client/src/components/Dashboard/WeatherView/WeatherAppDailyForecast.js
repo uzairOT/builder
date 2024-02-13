@@ -62,7 +62,8 @@ const themeStyle = {
     dailyForecastBubble: {
       borderRadius: '13px',
       width: '72px',
-      textAlign: 'center'
+      textAlign: 'center',
+      backgroundColor: '#F7F9FC',
     }
   };
 
