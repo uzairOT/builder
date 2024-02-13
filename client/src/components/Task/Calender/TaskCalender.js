@@ -25,7 +25,7 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
     console.log("Ref updated: ",eventViewRef.current)
 
   const currentDate = moment();
-  const startTime = moment(currentDate).set({ hour: 9, minute: 0, second: 0, millisecond: 0 });
+  const startTime = moment(currentDate).set({ hour: 9, minute:   0, second: 0, millisecond: 0 });
   const endTime = moment(currentDate).set({ hour: 23, minute: 0, second: 0, millisecond: 0 });
  
     const [events, setEvents] = useState([

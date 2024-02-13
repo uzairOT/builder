@@ -11,7 +11,7 @@ const toggleDrawer = () => {
   setIsDrawerOpen(!isDrawerOpen);
 };
   return (
-    <Box height={"100vh"} overflow='auto' display={'flex'} flexDirection={'column'} style={{scrollbarWidth: 'none'}}>
+    <Box height={"100%"} overflow='auto' display={'flex'} flexDirection={'column'} style={{scrollbarWidth: 'none'}}>
       <Box display={''} sx={{ alignSelf: 'flex-start', marginBottom: '-64px', marginTop:'18px', marginLeft:'5px'}}>
       <IconButton onClick={toggleDrawer} >
           <ExpandCircleDownOutlinedIcon

@@ -34,14 +34,15 @@ const Dashboard = () => {
     <main>
       <Grid sx={themeStyle.dashboard} container pt={1} >
         {/* Profile View */}
-        <Grid item xs={12} sm={3} md={2} height={themeStyle.dashboardViews}>
-          <Paper  sx={themeStyle.dashboardViews}><ProfileView /></Paper>
+        <Grid item xs={12} sm={3} md={2}>
+          <Paper  sx={{ borderRadius: '0 14px 14px 0', height:'97%'}} ><ProfileView /></Paper>
         </Grid>
         {/* Weather and Progress View */}
-        <Grid item xs={12} sm={9} md={7} height={themeStyle.dashboardViews}>
-            <Grid item margin={1}><Paper height={themeStyle.dashboardViews}><WeatherView dailyForecast={dailyForecast} loading={loading} error={error} /></Paper></Grid>
+        <Grid item xs={12} sm={9} md={7} >
+            <Grid item margin={1} ml={2} mr={2}><Paper sx={{...themeStyle.dashboardViews, borderRadius: '14px'}}><WeatherView dailyForecast={dailyForecast} loading={loading} error={error} /></Paper></Grid>
             {/* direction={{md:'column', lg:'row'}} */}
-            <Grid  container sx={{...themeStyle.scrollable, height: {xl:'69.4vh', lg:'65vh', md:'43vh', sm:'45vh', xs: '45vh'}}} width={'98%'}   margin={'auto'}>
+          
+            <Grid  container sx={{...themeStyle.scrollable, height:{xl:'69vh', lg:'65vh', md:'43vh', sm:'45vh', xs: '45vh'}}} width={'98%'} pt={1}  margin={'auto'}>
               <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'0px'}}>
               <Paper sx={themeStyle.progressCard} margin={1} ><ProgressCard /></Paper>
               </Grid>
@@ -60,8 +61,8 @@ const Dashboard = () => {
             </Grid>
         </Grid>
         {/* Calender Tracker View */}
-        <Grid item xs={12} sm={12} md={3} height={themeStyle.dashboardViews}>
-          <Paper sx={themeStyle.dashboardViews}>
+        <Grid item xs={12} sm={12} md={3} pb={1}>
+          <Paper sx={{ borderRadius: ' 14px 0 0 14px', height:'98%', marginBottom:'8px'}}>
             <TaskCalenderView dailyForecast={dailyForecast} />
           </Paper>
         </Grid>
@@ -84,7 +85,8 @@ const themeStyle = {
   progressCard: {
     height: "100%",
     width: "100%",
-    margin: '1px'
+    margin: '1px',
+    borderRadius: '14px',
   },
   scrollable:{
     overflowY: 'scroll',

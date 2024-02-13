@@ -5,7 +5,7 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
 const CustomToolbar = ({toolbar, setEventView}) => {
   const [activeButton, setActiveButton] = useState("day");
-  const [activeHeader, setActiveHeader] = useState('');
+  const [activeHeader, setActiveHeader] = useState('Work Order');
   const goToDayView = (view) => {
     toolbar.onView(view);
     setActiveButton(view);
