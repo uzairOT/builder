@@ -11,7 +11,7 @@ import {
   TableBody,
   Checkbox
 } from "@mui/material";
-
+import AddLine from "../../dialogues/AddLine/AddLine"
 import { ReactComponent as ArrowDown } from "../Assets/svgs/ArrowDown.svg";
 import { ReactComponent as Arrowup } from "../Assets/svgs/Arrowup.svg";
 import { ReactComponent as EditIcon } from "../Assets/svgs/EditIcon.svg";
@@ -21,6 +21,9 @@ import actionButton from "../../UI/actionButton";
 import "./AddPhaseCard.css";
 
 const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
+  const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
+  const [rowCheckboxes, setRowCheckboxes] = useState(rows.map(() => false)); // State to track the checked state of each checkbox in the table rows
+  const [showAddLine, setShowAddLine] = useState(false);
 
   const handleArrowDownClick = () => {
     onGridToggle(cardPhase.currentIndex, cardPhase.currentIndex + 1);
@@ -30,6 +33,31 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
     onGridToggle(cardPhase.currentIndex, cardPhase.currentIndex - 1);
   };
 
+  const handleSelectAllChange = (event) => {
+    const isChecked = event.target.checked;
+    setSelectAll(isChecked);
+    setRowCheckboxes(rowCheckboxes.map(() => isChecked));
+  };
+
+  const handleRowCheckboxChange = (index) => (event) => {
+    const isChecked = event.target.checked;
+    const updatedCheckboxes = [...rowCheckboxes];
+    updatedCheckboxes[index] = isChecked;
+    setRowCheckboxes(updatedCheckboxes);
+    setSelectAll(updatedCheckboxes.every((checkbox) => checkbox));
+  };
+
+  const handleAddLine = () => {
+    setShowAddLine(true)
+  };
+
+  const handleOpen = () => {
+    setShowAddLine(true);
+  };
+
+  const handleClose = () => {
+    setShowAddLine(false);
+  };
 
 
 
@@ -83,6 +111,7 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
             <DeleteIcon />
             <Button
               sx={{ ...actionButton, background: "#4C8AB1", marginTop: "0.7rem" }}
+              onClick={handleAddLine}
             >
               Add Line Item
             </Button>
@@ -99,7 +128,8 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    <Checkbox />
+                    <Checkbox checked={selectAll}
+                      onChange={handleSelectAllChange} />
                   </TableCell>
                   <TableCell
                     sx={{ ...tableHeadings, width: "15%", paddingLeft: "1rem" }}
@@ -122,10 +152,11 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
               </TableHead>
 
               <TableBody>
-                {rows.map((row) => (
+                {rows.map((row, index) => (
                   <TableRow key={row.name} sx={{ paddingLeft: "4rem" }}>
                     <TableCell>
-                      <Checkbox />
+                      <Checkbox checked={rowCheckboxes[index]}
+                        onChange={handleRowCheckboxChange(index)} />
                     </TableCell>
                     <TableCell
                       component="th"
@@ -147,6 +178,12 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
             </Table>
           </Box>
         </Grid>
+        {showAddLine && (
+          <AddLine
+            handleOpen={handleOpen}
+            handleClose={handleClose}
+          />
+        )}
       </Grid>
     </div>
   );

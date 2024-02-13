@@ -112,21 +112,3 @@ export default StepForm
 
 
 
-
-
-{/* <Box sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          gap: "8rem",
-          marginBottom: "0.3rem",
-        }}>
-          <Box sx={{ marginTop: "0.2rem" }}>
-            <label style={{ ...labelStyle, ...lableResponsiveFont }}
-              htmlFor="firstName">Workdone</label>
-            <input className='placeholder' type="text" id="firstName" style={inputStyle} placeholder="Workdone" />
-          </Box>
-          <Box sx={{ marginTop: "0.2rem" }}>
-            <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="lastName">Estimated Price</label>
-            <input className='placeholder' type="text" id="lastName" style={inputStyle} placeholder="Estimated Price" />
-          </Box>
-        </Box> */}

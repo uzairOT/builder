@@ -4,7 +4,6 @@ const actionButton = {
   padding: "0.75rem 1.5rem",
   justifyContent: "center",
   alignItems: "center",
-
   flexShrink: 0,
   alignSelf: "stretch",
   borderRadius: "2.8125rem",
