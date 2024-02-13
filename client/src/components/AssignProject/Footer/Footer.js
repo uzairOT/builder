@@ -65,7 +65,7 @@ function Footer({ onNextStep }) {
           Phases.
         </Typography>
         <FooterCircles width3="4rem" background3="#4C8AB1" />
-        <FooterCircles width3="4rem" background3="#4C8AB1" />
+        
       </Grid>
     </div>
   );
