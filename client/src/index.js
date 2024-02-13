@@ -20,7 +20,8 @@ import PrivateRoute from "./utils/PrivateRoute";
 import Chat from "./pages/Chat/Chat";
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Login />}>
+    <Route path="/" element={<App />}>
+       <Route path="/" element={<Signup />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />

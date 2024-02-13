@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { useLoginMutation } from '../../redux/slices/usersApiSlice';
+import { setCredentials } from '../../redux/slices/authSlice';
+import { toast } from 'react-toastify';
 import {
   Box,
   Grid,
@@ -21,7 +25,7 @@ import YellowBtn from "../UI/button";
 import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 
 const Login = () => {
-  const isLG = useMediaQuery("(min-width: 1280px)");
+
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -32,12 +36,41 @@ const Login = () => {
   const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
   const linkResponsiveColor = { color: isMobile ? "#FFAC00" : "#4C8AB1", }
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  // useEffect(() => {
+  //   if (userInfo) {
+  //     console.log("hi")
+  //     navigate('/profile');
+  //   }
+  // }, [navigate, userInfo]);
+
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
 
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await login({ email, password }).unwrap();
+      console.log(res)
+      dispatch(setCredentials({ ...res }));
+      navigate('/dashboard');
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
+  };
 
 
   return (
@@ -92,7 +125,7 @@ const Login = () => {
             <Typography sx={formHeadingStyle}>Login</Typography>
             <img src={builder1} width={"20%"} alt="" />
           </Box>
-          <form style={{ marginTop: "1rem" }}>
+          <form style={{ marginTop: "1rem" }} onSubmit={submitHandler} >
             <Box sx={{ marginTop: "0.5rem" }}>
               <label
                 style={{
@@ -106,6 +139,8 @@ const Login = () => {
               <input
                 type="email"
                 id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 style={{
                   ...inputStyle,
                   ...placeholderStyle,
@@ -131,8 +166,6 @@ const Login = () => {
                     ...placeholderStyle,
                     ...lableResponsiveFont
                   }}
-                  type={passwordVisible ? "text" : "password"}
-                  id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder=""
@@ -158,7 +191,11 @@ const Login = () => {
               <Box sx={{ display: "flex" }}>
                 <Checkbox
                   id="agreeTerms"
-                  sx={checkBoxStyle}
+                  sx={{
+                    "&.Mui-checked": {
+                      color: "#4C8AB1",
+                    },
+                  }}
                 />
                 <label
                   htmlFor="agreeTerms"
@@ -171,7 +208,7 @@ const Login = () => {
                 </label>
               </Box>
               <Box sx={{ ...forgetPassTypo, ...lableResponsiveFont, ...linkResponsiveColor, }}>
-                <Link
+              <Link
                   style={{ ...signupLink, ...lableResponsiveFont, ...linkResponsiveColor }}
                 >
                   Forget Password ?
@@ -184,6 +221,7 @@ const Login = () => {
                 ...YellowBtn,
                 ...loginButton
               }}
+              onClick={submitHandler}
               type="submit"
             >
               {isMobile ? "Login" : "Log in with Email"}
@@ -262,8 +300,8 @@ const Login = () => {
 
 const firstGrid = {
   padding: {
-    lg: "1.7rem 3rem",
-    md: "2rem 2rem",
+    lg: "4.5rem 3rem",
+    md: "4.5rem 2rem",
     sm: "1rem 2rem",
     xs: "0rem 0rem",
   },
@@ -287,7 +325,7 @@ const SecondGrid = {
 }
 
 const downloadForMobBox = {
-  marginTop: "9.98rem",
+  marginTop: "15rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
   justifyContent: "center",
@@ -367,13 +405,7 @@ const checkBox = {
   whiteSpace: "nowrap",
   fontFamily: GTWalsheimTrial,
   marginTop: "1rem"
-}
 
-const checkBoxStyle = {
-  "&.Mui-checked": {
-    color: "#4C8AB1",
-  },
-  marginTop: "0.2rem"
 }
 const forgetPassTypo = {
   whiteSpace: "nowrap",
@@ -482,7 +514,7 @@ const hptLinksBox = {
 const firstHeading = {
   color: "#FFF",
   fontFamily: GTWalsheimTrial,
-  marginTop: "6rem",
+  marginTop: "4rem",
   fontSize: { lg: "2.9375rem", md: "2rem", sm: "1.5rem" },
   fontWeight: 400,
   lineHeight: "4.25rem",
