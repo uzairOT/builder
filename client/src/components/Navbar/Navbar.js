@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 import SearchBar from '../UI/SearchBar/SearchBar';
 import BuilderProButton from '../UI/Button/BuilderProButton';
 import NavbarDrawer from './NavbarDrawer'
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
     
@@ -13,10 +14,15 @@ const Navbar = () => {
     const theme = useTheme(); 
     const showHamburger = useMediaQuery(theme.breakpoints.down('lg'));
     const responsiveButton = useMediaQuery(theme.breakpoints.up('sm'));
+    const navigate = useNavigate();
 
     const  handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
             }
+    const handleOnClick = () =>{
+      localStorage.clear();
+      navigate('/login');
+    }
 
     // Navbar styles
     const themeStyle = {
@@ -68,7 +74,7 @@ const Navbar = () => {
             </Tabs>
             <Box display={'flex'}>
             <BuilderProButton backgroundColor={'#FFAC00'} variant={'contained'} Icon={BuilderProNavbarShare}>{ responsiveButton ? "Share" : ""}</BuilderProButton>
-            <BuilderProButton backgroundColor={'#4C8AB1'} variant={'outlined'} Icon={BuilderProNavbarLogout}>{ responsiveButton ? "Logout" : ""}</BuilderProButton>
+            <BuilderProButton backgroundColor={'#4C8AB1'} variant={'outlined'} Icon={BuilderProNavbarLogout} handleOnClick={handleOnClick}>{ responsiveButton ? "Logout" : ""}</BuilderProButton>
             </Box>
         </Toolbar>
       </AppBar>
