@@ -31,7 +31,8 @@ const CircularGauge = ({value}) => {
         };
   return (
     <Box sx={{
-      width: {md: 150, lg:150, xl:180}
+      width: {xs:180,md: 150, lg:150, xl:180},
+      textAlign: 'center'
     }}>
       <GaugeComponent {...gaugeOptions} />
       <Typography textAlign={'center'}>Progress</Typography>

@@ -26,8 +26,8 @@
         >
           All Listed Projects
         </Typography>
-        <Box sx={{ overflowY: 'auto', height:'50vh' ,...themeStyle.scrollable }}>
-        <Stack spacing={2} >
+        <Box sx={{ overflowY: 'auto', height:'45vh' ,...themeStyle.scrollable }}>
+        <Stack spacing={1} pl={2} pr={2} >
           <>
           {projects.map((projectProfileCard) => {
             return (

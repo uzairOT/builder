@@ -8,7 +8,7 @@ import {getFormattedWeatherData} from "../../../services/WeatherService";
 
 const WeatherAppCurrentForecast = () => {
 
-  const [temperatureUnit, setTemperatureUnit] = useState("celsius");
+  const [temperatureUnit, setTemperatureUnit] = useState("metric");
   const [currentWeather, setCurrentWeather] = useState({})
 
   const handleUnitChange = (event) => {
@@ -18,15 +18,15 @@ const WeatherAppCurrentForecast = () => {
 useEffect(()=>{  
     const fetchWeather = async () => {
     try {
-      const data = await getFormattedWeatherData({lat: "33.6844", lon: "73.0479", units: 'Metric'});
+      const data = await getFormattedWeatherData({lat: "33.6844", lon: "73.0479", units: temperatureUnit});
       console.log(data);
       setCurrentWeather(data);} catch(error) { console.log(error); 
       }
   }
-  fetchWeather();}, [])
+  fetchWeather();}, [temperatureUnit])
 
   return (
-    <Box display={"flex"} flexDirection={"row-reverse"} justifyContent={'space-between'} width={'100%'}>
+    <Box display={"flex"} flexDirection={"row-reverse"} sx={{justifyContent:{xl: 'space-between', lg:'space-between', md: 'center'}}} width={'100%'}>
   
       <Box
         display="flex"
@@ -35,15 +35,16 @@ useEffect(()=>{
         flexDirection="column"
         width={'100%'}
       >
-        <Box display={'flex'} justifyContent={'center'} alignItems={'center'} width={"100%"}>
+        <Box display={'flex'} justifyContent={'center'} alignItems={'center'} width={'100%'}>
+
+          <Box  display={'flex'} flexDirection={'row'} justifyContent={'start'} alignItems={'flex-start'}>
           <Box
             component="img"
             src={SunnyWindy}
             alt="SunnyWindy"
             sx={themeStyle.image}
           />
-
-          <Box  display={'flex'} flexDirection={'column'} justifyContent={'start'} alignItems={'flex-start'} width={"100%"}>
+          <Box display={'flex'} flexDirection={'column'}>
             <Typography sx={{...themeStyle.text, }} variant="h4">
               {currentWeather?.temp}
             </Typography>
@@ -53,6 +54,7 @@ useEffect(()=>{
             </span>
             </Typography>
           </Box>
+          </Box>
           <Box sx={themeStyle.degreeDropdown} justifyContent={'flex-end'} pl={1}> 
         <Select
           size="small"
@@ -60,12 +62,12 @@ useEffect(()=>{
           value={temperatureUnit}
           onChange={handleUnitChange}
         >
-          <MenuItem value="celsius">Celsius</MenuItem>
-          <MenuItem value="fahrenheit">Fahrenheit</MenuItem>
+          <MenuItem value="metric">Celsius</MenuItem>
+          <MenuItem value="imperial">Fahrenheit</MenuItem>
         </Select>
       </Box>
         </Box>
-        <Box display={'flex'} flexDirection={'row'} justifyContent={'left'} width={'100%'}>
+        <Box display={'flex'} flexDirection={'row'} sx={{justifyContent:{xl:'left', lg:'left', md:'center', sm:'center', xs:'center'}}} width={'100%'}>
         {/* Humidity */}
         <Stack display="flex" flexDirection={'column'} alignItems="center" pl={4} spacing={1}>
           <Box component={'img'} src={HumidityImg} alt="Humdity" />
@@ -90,7 +92,6 @@ const themeStyle = {
     display: "flex",
     alignSelf: 'flex-start',
     justifySelf: 'flex-end',
-    width: '100%  '
   },
   degreeDropdownMenu: {
     borderRadius: "50px",

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {useMemo, useRef, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
@@ -25,7 +25,7 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
     console.log("Ref updated: ",eventViewRef.current)
 
   const currentDate = moment();
-  const startTime = moment(currentDate).set({ hour: 9, minute: 0, second: 0, millisecond: 0 });
+  const startTime = moment(currentDate).set({ hour: 9, minute:   0, second: 0, millisecond: 0 });
   const endTime = moment(currentDate).set({ hour: 23, minute: 0, second: 0, millisecond: 0 });
  
     const [events, setEvents] = useState([
@@ -161,17 +161,6 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
         allDay: 'Week'
       }
 
-      const resizeEvent = useCallback(
-        ({ event, start, end }) => {
-          setEvents((prev) => {
-            const existing = prev.find((ev) => ev.id === event.id) ?? {}
-            const filtered = prev.filter((ev) => ev.id !== event.id)
-            return [...filtered, { ...existing, start, end }]
-          })
-        },
-        [setEvents]
-      )
-    
 
 
   return (
@@ -187,7 +176,7 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
             resizable={false}
             style={{ height: "100% " }}
             components={components}
-            Formats={Formats}
+            formats={Formats}
             messages={messages}
             min={startTime.toDate()}
             max={endTime.toDate()}

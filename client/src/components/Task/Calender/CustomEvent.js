@@ -6,29 +6,30 @@ import ScheduleIcon from '@mui/icons-material/Schedule';
 
 const CustomEventDayTasks = ({event}) => {
   return (
-    <Stack sx={themeStyle.eventBox} direction={'row'} justifyContent={'space-between'} alignItems={'center'} height={'inherit'} spacing={0.2} borderRadius={'6px'} borderRight={'6px solid #563c91'}>
+    <Stack sx={themeStyle.eventBox} width={'176px'} direction={'row'} justifyContent={'space-between'} alignItems={'center'} height={'inherit'} spacing={0.2} borderRadius={'6px'} borderRight={'6px solid #563c91'}>
         <Stack sx={themeStyle.weather}  max-height={'90%'} max-width={'50%'} alignItems={'center'} justifyContent={'center'} flex={1} spacing={-0.5}>
             <img src={PartlySunny} alt={PartlySunny} style={themeStyle.eventIcon} fontSize={'10px'}></img>
             <Typography sx={themeStyle.eventText} fontSize={'10px'}>{event?.data?.weather?.temp}</Typography>
             <Typography sx={themeStyle.eventText} fontSize={'10px'}>{event?.data?.weather?.description}</Typography>
         </Stack>
-        <Stack height={'inherit'} flex={2} justifyContent={'center'}>
-            <Typography sx={themeStyle.eventTask} fontSize={'10px'} fontStyle={'italic'} color={'#454545'}>Task:</Typography>
-            <Typography sx={themeStyle.eventTask} fontSize={'10px'} overflow={'hidden'}>{event?.data?.task}</Typography>
+        <Stack height={'inherit'} pl={0.5} flex={2} justifyContent={'center'}>
+            <Typography sx={themeStyle.eventTask} fontSize={'10px'} fontStyle={'italic'} color={'#454545'} fontWeight={'300'}>Work Order:</Typography>
+            <Typography sx={themeStyle.eventTask} fontSize={'10px'} overflow={'hidden'} fontWeight={'500'}>{event?.data?.task}</Typography>
         </Stack >
     </Stack>
   )
 }
 const CustomEventDayNotes = ({event}) => {
   return (
-    <Stack sx={themeStyle.eventBox} direction={'row'} justifyContent={'space-between'} alignItems={'center'} height={'inherit'} spacing={0.2} borderRadius={'6px'} borderRight={'6px solid #563c91'}>
+    <Stack sx={themeStyle.eventBox} width={'176px'}  direction={'row'} justifyContent={'space-between'} alignItems={'center'} height={'100%'} spacing={0.2} borderRadius={'6px'} borderRight={'6px solid #563c91'}>
         <Stack sx={themeStyle.weather}  max-height={'90%'} max-width={'50%'} alignItems={'center'} justifyContent={'center'} flex={1} spacing={-0.5}>
             <img src={PartlySunny} alt={PartlySunny} style={themeStyle.eventIcon} fontSize={'10px'}></img>
             <Typography sx={themeStyle.eventText} fontSize={'10px'}>{event?.data?.weather?.temp}</Typography>
             <Typography sx={themeStyle.eventText} fontSize={'10px'}>{event?.data?.weather?.description}</Typography>
         </Stack>
-        <Stack flex={2} pl={1} alignSelf={'flex-start'}>
-            <Typography sx={{...themeStyle.eventNote}} pt={1} fontSize={'10px'} height={'inherit'} overflow={'hidden'}>{`Note: ${event?.data?.note}`}</Typography>
+        <Stack flex={2} pl={0.5} justifyContent={'flex-start'}>
+            <Typography sx={themeStyle.eventTask} fontSize={'10px'} fontStyle={'italic'} color={'#454545'} fontWeight={'300'}>Note:</Typography>
+            <Typography sx={{...themeStyle.eventNote, ...themeStyle.scrollable}}fontSize={'10px'} maxHeight={'45px'} fontWeight={'500'}>{`${event?.data?.note}`}</Typography>
         </Stack>
     </Stack>
   )
@@ -47,9 +48,9 @@ const CustomEventWeek = ({event}) => {
             <Box pl={0.5}>
                 <Typography  fontSize={'7px'} height={'40px'} width={'100%'}>{event?.data?.note}</Typography>
             </Box>
-            
+
         </Stack>
-        
+
     )
 }
 
@@ -135,5 +136,20 @@ const themeStyle = {
     eventBox:{
         boxShadow: 'rgba(0, 0, 0, 0.03) 0px 0.46875rem 2.1875rem, rgba(0, 0, 0, 0.03) 0px 0.9375rem 1.40625rem, rgba(0, 0, 0, 0.05) 0px 0.25rem 0.53125rem, rgba(0, 0, 0, 0.03) 0px 0.125rem 0.1875rem',
         backgroundColor: "#F3F3F3",
-    }
+    },
+    scrollable:{
+        overflowY: 'scroll',
+        scrollbarWidth: 'none',  // For Firefox
+        '-ms-overflow-style': 'none',  // For IE and Edge
+        '&::-webkit-scrollbar': {
+          width: '6px'
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: 'transparent',
+          transition: 'background-color 0.3s',
+        },
+        '&:hover::-webkit-scrollbar-thumb': {
+          backgroundColor: '#ddd',
+        },
+      }
 }
