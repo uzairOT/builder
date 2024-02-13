@@ -41,7 +41,7 @@ const Dashboard = () => {
         <Grid item xs={12} sm={9} md={7} height={themeStyle.dashboardViews}>
             <Grid item margin={1}><Paper height={themeStyle.dashboardViews}><WeatherView dailyForecast={dailyForecast} loading={loading} error={error} /></Paper></Grid>
             {/* direction={{md:'column', lg:'row'}} */}
-            <Grid  container sx={themeStyle.scrollable} height={'69.4vh'}   margin={'auto'}>
+            <Grid  container sx={themeStyle.scrollable} height={'69.4vh'} width={'98%'}   margin={'auto'}>
               <Grid item xs={12} sm={12} md={12} lg={6} style={{paddingTop: '0px', paddingLeft:'0px'}}>
               <Paper sx={themeStyle.progressCard} margin={1} ><ProgressCard /></Paper>
               </Grid>
@@ -87,7 +87,7 @@ const themeStyle = {
     margin: '1px'
   },
   scrollable:{
-    overflow: 'scroll',
+    overflowY: 'scroll',
     scrollbarWidth: 'none',  // For Firefox
     '-ms-overflow-style': 'none',  // For IE and Edge
     '&::-webkit-scrollbar': {
