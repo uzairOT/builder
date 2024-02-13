@@ -12,9 +12,9 @@ const CustomEventDayTasks = ({event}) => {
             <Typography sx={themeStyle.eventText} fontSize={'10px'}>{event?.data?.weather?.temp}</Typography>
             <Typography sx={themeStyle.eventText} fontSize={'10px'}>{event?.data?.weather?.description}</Typography>
         </Stack>
-        <Stack height={'inherit'} flex={2} justifyContent={'center'}>
-            <Typography sx={themeStyle.eventTask} fontSize={'10px'} fontStyle={'italic'} color={'#454545'}>Task:</Typography>
-            <Typography sx={themeStyle.eventTask} fontSize={'10px'} overflow={'hidden'}>{event?.data?.task}</Typography>
+        <Stack height={'inherit'} pl={0.5} flex={2} justifyContent={'center'}>
+            <Typography sx={themeStyle.eventTask} fontSize={'10px'} fontStyle={'italic'} color={'#454545'} fontWeight={'300'}>Work Order:</Typography>
+            <Typography sx={themeStyle.eventTask} fontSize={'10px'} overflow={'hidden'} fontWeight={'500'}>{event?.data?.task}</Typography>
         </Stack >
     </Stack>
   )
@@ -27,8 +27,9 @@ const CustomEventDayNotes = ({event}) => {
             <Typography sx={themeStyle.eventText} fontSize={'10px'}>{event?.data?.weather?.temp}</Typography>
             <Typography sx={themeStyle.eventText} fontSize={'10px'}>{event?.data?.weather?.description}</Typography>
         </Stack>
-        <Stack flex={2} pl={1} alignSelf={'flex-start'}>
-            <Typography sx={{...themeStyle.eventNote}} pt={1} fontSize={'10px'} height={'inherit'} overflow={'hidden'}>{`Note: ${event?.data?.note}`}</Typography>
+        <Stack flex={2} pl={0.5} justifyContent={'center'}>
+            <Typography sx={themeStyle.eventTask} fontSize={'10px'} fontStyle={'italic'} color={'#454545'} fontWeight={'300'}>Note:</Typography>
+            <Typography sx={{...themeStyle.eventNote}}fontSize={'10px'} height={'inherit'} overflow={'hidden'} fontWeight={'500'}>{`${event?.data?.note}`}</Typography>
         </Stack>
     </Stack>
   )
@@ -47,9 +48,9 @@ const CustomEventWeek = ({event}) => {
             <Box pl={0.5}>
                 <Typography  fontSize={'7px'} height={'40px'} width={'100%'}>{event?.data?.note}</Typography>
             </Box>
-            
+
         </Stack>
-        
+
     )
 }
 
