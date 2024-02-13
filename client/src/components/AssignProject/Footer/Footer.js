@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 
 import {
@@ -31,7 +31,9 @@ function Footer({ onNextStep }) {
         <Box
           sx={buttonBox}
         >
-          <Button sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}>Done</Button>
+          <Link to="/dashboard">
+            <Button sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}>Done</Button>
+          </Link>
           <Button
             variant="outlined"
             sx={{

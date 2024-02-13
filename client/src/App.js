@@ -8,14 +8,14 @@ import AssignProject from "./pages/AssignProject/AssignProject";
 function App() {
   return (
     <div className="App">
-       <BrowserRouter>
+      <BrowserRouter>
         <Routes>
-          <Route path="/" element= {<Signup />} />
-          <Route path="/login" element= {<Login />} />
-          <Route path="/assignproject" element= {<AssignProject />} />
-          
-          </Routes>
-     </BrowserRouter>
+          <Route path="/" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/assignproject" element={<AssignProject />} />
+
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
