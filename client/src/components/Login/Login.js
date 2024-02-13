@@ -158,11 +158,7 @@ const Login = () => {
               <Box sx={{ display: "flex" }}>
                 <Checkbox
                   id="agreeTerms"
-                  sx={{
-                    "&.Mui-checked": {
-                      color: "#4C8AB1",
-                    },
-                  }}
+                  sx={checkBoxStyle}
                 />
                 <label
                   htmlFor="agreeTerms"
@@ -176,7 +172,7 @@ const Login = () => {
               </Box>
               <Box sx={{ ...forgetPassTypo, ...lableResponsiveFont, ...linkResponsiveColor, }}>
                 <Link
-                  style={{}}
+                  style={{ ...signupLink, ...lableResponsiveFont, ...linkResponsiveColor }}
                 >
                   Forget Password ?
                 </Link>
@@ -196,7 +192,7 @@ const Login = () => {
               sx={accountLinkText}
             >
               Don’t have an account?{"\u00a0"}{" "}
-              <Link
+              <Link to="/"
                 style={{ ...signupLink, ...lableResponsiveFont, ...linkResponsiveColor }}
               >
                 Sign up
@@ -266,8 +262,8 @@ const Login = () => {
 
 const firstGrid = {
   padding: {
-    lg: "4.5rem 3rem",
-    md: "4.5rem 2rem",
+    lg: "1.7rem 3rem",
+    md: "2rem 2rem",
     sm: "1rem 2rem",
     xs: "0rem 0rem",
   },
@@ -291,7 +287,7 @@ const SecondGrid = {
 }
 
 const downloadForMobBox = {
-  marginTop: "15rem",
+  marginTop: "9.98rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
   justifyContent: "center",
@@ -371,7 +367,13 @@ const checkBox = {
   whiteSpace: "nowrap",
   fontFamily: GTWalsheimTrial,
   marginTop: "1rem"
+}
 
+const checkBoxStyle = {
+  "&.Mui-checked": {
+    color: "#4C8AB1",
+  },
+  marginTop: "0.2rem"
 }
 const forgetPassTypo = {
   whiteSpace: "nowrap",
@@ -480,7 +482,7 @@ const hptLinksBox = {
 const firstHeading = {
   color: "#FFF",
   fontFamily: GTWalsheimTrial,
-  marginTop: "4rem",
+  marginTop: "6rem",
   fontSize: { lg: "2.9375rem", md: "2rem", sm: "1.5rem" },
   fontWeight: 400,
   lineHeight: "4.25rem",

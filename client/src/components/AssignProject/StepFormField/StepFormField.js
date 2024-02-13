@@ -108,7 +108,7 @@ const buttonBox = {
 
 const formControlStyle = {
   m: 0,
-  height: 60,
+  height: 50,
   minWidth: 180,
   borderRadius: 12
 }
@@ -117,7 +117,6 @@ const formControlStyle = {
 const inputStyle = {
   width: "250%", // Set width to 100% for responsiveness
   height: "2rem",
-  marginBottom: '1rem',
   alignSelf: "center",
   padding: '8px',
   fontSize: '14px',
@@ -132,12 +131,12 @@ const formBox = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "1rem",
+  marginTop: "0.5rem",
   marginRight: "28rem",
   gap: "1.5rem"
 };
 const counterTypo = {
-  position: 'absolute', right: '-18rem', bottom: '2rem', fontSize: '0.8rem',
+  position: 'absolute', right: '-18rem', bottom: '1rem', fontSize: '0.8rem',
   color: "#B8B8B8",
   fontFamily: 'Inter',
   fontWeight: 500

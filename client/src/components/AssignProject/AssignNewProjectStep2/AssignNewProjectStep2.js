@@ -5,6 +5,8 @@ import YellowBtn from '../../UI/button';
 import StepTitles from "../StepTitles/StepTitles";
 import AttachFileSharpIcon from '@mui/icons-material/AttachFileSharp';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import SkipInvite from "../../dialogues/SkipInvite/SkipInvite";
+
 import "../StepForm/StepForm.css"
 import {
   Button, Box,
@@ -16,6 +18,8 @@ import StepFormField from "../StepFormField/StepFormField";
 function AssignNewProjectStep2({ onNextStep }) {
 
   const [emailCount, setEmailCount] = useState(1);
+  const [showSkipInvite, setShowSkipInvite] = useState(false);
+
 
   const handleAddEmail = () => {
     setEmailCount(emailCount + 1);
@@ -24,6 +28,18 @@ function AssignNewProjectStep2({ onNextStep }) {
 
   const handleNextStep = () => {
     onNextStep();
+  };
+
+  const handleSkip = () => {
+    setShowSkipInvite(true);
+  };
+
+  const handleOpen = () => {
+    setShowSkipInvite(true);
+  };
+
+  const handleClose = () => {
+    setShowSkipInvite(false);
   };
 
   return (
@@ -62,14 +78,21 @@ function AssignNewProjectStep2({ onNextStep }) {
       >
         <Button sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}
           onClick={handleNextStep}>Next</Button>
-        <Button sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}>Skip</Button>
+        <Button sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}
+          onClick={handleSkip}
+        >Skip</Button>
       </Box>
 
-      <div style={{ marginTop: "10rem" }}>
+      <div style={{ marginTop: "5rem" }}>
 
         <FooterCircles width2={"4rem"} background2={"#4C8AB1"} />
       </div>
-
+      {showSkipInvite && (
+        <SkipInvite
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+        />
+      )}
 
     </>
 
@@ -85,7 +108,7 @@ const buttonBox = {
   justifyContent: "center",
   alignItems: "center",
   gap: "3rem",
-  marginTop: "3rem"
+  marginTop: "1.5rem"
 }
 const buttonLnks = {
   fontFamily: "Inter", fontWeight: 500, height: "50%", marginTop: "2rem", textTransform: "none", color: "#4C8AB1"

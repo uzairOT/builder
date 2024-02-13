@@ -42,6 +42,6 @@ const firstGrid = {
   display: "flex",
   flexDirection: "column",
   padding: "0rem 6rem",
-  marginTop: "3.5rem"
+  marginTop: "1rem"
 }
 export default Header

@@ -116,23 +116,23 @@ const SignupComp = () => {
                     </Box >
                     <form style={{ marginTop: "0.1rem" }}>
                         <Box sx={namesFieldBox}>
-                            <Box sx={{ marginTop: "0.5rem" }}>
+                            <Box sx={topSpace}>
                                 <label style={{ ...labelStyle, ...lableResponsiveFont }}
                                     htmlFor="firstName">First name</label>
                                 <input type="text" id="firstName" style={inputStyle} />
                             </Box>
-                            <Box sx={{ marginTop: "0.5rem" }}>
+                            <Box sx={topSpace}>
                                 <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="lastName">Last name</label>
                                 <input type="text" id="lastName" style={inputStyle} />
                             </Box>
                         </Box>
 
-                        <Box sx={{ marginTop: "0.5rem" }}>
+                        <Box sx={topSpace}>
                             <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="email">Email address</label>
                             <input type="email" id="email" style={{ ...inputStyle, ...placeholderStyle, ...lableResponsiveFont }} placeholder="workemail@gmail.com" />
                         </Box>
 
-                        <Box sx={{ marginTop: "0.5rem" }}>
+                        <Box sx={topSpace}>
                             <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="phone">Phone number</label>
 
 
@@ -154,7 +154,7 @@ const SignupComp = () => {
                             <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="company">Company Name</label>
                             <input type="text" id="company" style={inputStyle} />
                         </Box>
-                        <Box sx={{ marginTop: "0.5rem" }}>
+                        <Box sx={topSpace}>
                             <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="password">Password</label>
 
                             {!isMobile && (
@@ -202,7 +202,7 @@ const SignupComp = () => {
                         <Button sx={{ ...YellowBtn, marginBottom: "1rem" }}
                             type="submit" onClick={signUpHandler}>Sign up</Button>
                         <Typography sx={alreadyHaveAccountTypo}>
-                            Already have an account?{'\u00a0'} <Link style={{
+                            Already have an account?{'\u00a0'} <Link to="./login" style={{
                                 ...loginLink,
                                 ...linkResponsiveColor,
                                 ...lableResponsiveFont
@@ -222,7 +222,7 @@ const SignupComp = () => {
                             </Typography>
                         </Box>
 
-                        <Button sx={{ ...googleBtnStyle, marginBottom: "6.4rem", marginTop: "2rem" }} type="button"><GoogleLogo style={{ marginRight: "1rem" }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
+                        <Button sx={{ ...googleBtnStyle, marginBottom: "3.4rem", marginTop: "2rem" }} type="button"><GoogleLogo style={{ marginRight: "1rem" }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
                     </form>
                 </Grid>
                 <Grid sx={bottomGrid}>
@@ -309,7 +309,7 @@ const SecondGrid = {
 }
 
 const downloadForMobBox = {
-    marginTop: "19rem",
+    marginTop: "14rem",
     marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
     display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
     justifyContent: "center",
@@ -350,6 +350,7 @@ const formGrid = {
     justifyContent: 'center',
     alignItems: 'center',
     padding: '20px',
+    marginTop: "1rem",
     paddingLeft: "2rem",
     paddingRight: { lg: "6rem", md: "3rem", sm: "2rem", xs: "2rem" },
 
@@ -510,7 +511,7 @@ const firstHeading = {
     color: '#FFF',
     fontFamily: GTWalsheimTrial,
     display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
-    marginTop: "4rem",
+    marginTop: "1rem",
     fontSize: { lg: '2.9375rem', md: "2rem", sm: "1.5rem" },
     fontWeight: 400,
     lineHeight: '4.25rem',
@@ -519,7 +520,7 @@ const firstHeading = {
 const secondHeading = {
     color: 'rgba(255, 255, 255, 0.80)',
     width: { lg: "31.125rem", md: "28rem", sm: "auto" },
-    marginTop: "1rem",
+    marginTop: "0.5rem",
     display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
     fontFamily: GTWalsheimTrial,
     fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
@@ -530,7 +531,7 @@ const secondHeading = {
 const thirdHeading = {
     color: '#FFF',
     fontFamily: GTWalsheimTrial,
-    marginTop: "2rem",
+    marginTop: "1rem",
     display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
     fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
     fontWeight: 400,
@@ -555,7 +556,7 @@ const customPhoneStyles = {
     border: "1px solid #D8D8D8",
     background: "#FFF",
     width: "100%",
-    height: "2.7rem",
+    height: "2rem",
     alignSelf: "stretch",
     paddingTop: "0.5rem",
     padding: "0.5rem",
@@ -566,8 +567,8 @@ const customPhoneStyles = {
 
 const inputStyle = {
     width: '100%',
-    height: "2.5rem",
-    marginBottom: '1rem',
+    height: "2rem",
+    marginBottom: '0.5rem',
     alignSelf: "stretch",
     padding: '8px',
     fontSize: '14px',
@@ -607,7 +608,7 @@ const hptLinksStyle = {
 const googleBtnStyle = {
     display: 'flex',
     flexDirection: 'row',
-    marginBottom: '1.5rem',
+    marginBottom: '0.5rem',
     marginTop: '1.5rem',
     borderRadius: '2.5rem',
     border: '1px solid rgba(6, 32, 72, 0.11)',
@@ -640,9 +641,9 @@ const ContinuewithTextStyle = {
     padding: '0 10px',
 }
 
-
-
-
+const topSpace = {
+    marginTop: "0.2rem"
+}
 
 
 

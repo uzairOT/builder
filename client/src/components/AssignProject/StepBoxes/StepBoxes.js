@@ -41,7 +41,7 @@ const firstBox = {
   flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "2rem",
+  marginTop: "1.5rem",
   gap: "1.5rem"
 }
 const boxStyles = {

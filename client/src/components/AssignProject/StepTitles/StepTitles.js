@@ -10,7 +10,7 @@ function StepTitles({ Heading, stepHeading, stepDiscription, projectName }) {
       lg={12}
       sx={firstGrid}
     >
-      <Typography sx={{ ...stepGeneralText, marginBottom: "1.5rem" }}>
+      <Typography sx={{ ...stepGeneralText, marginBottom: "0.5rem" }}>
         {stepHeading}
       </Typography >
       <Typography sx={{ ...stepGeneralText, ...headingStyle }}>
@@ -30,8 +30,8 @@ const firstGrid = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "4rem",
-  gap: "1rem"
+  marginTop: "2rem",
+  gap: "0.5rem"
 }
 const discriptionTypo = {
   color: "#202227", width: "60%", maxWidth: "44%"

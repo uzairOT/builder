@@ -86,7 +86,7 @@ function SaveAsProject({ onSaveStep, onNextStep }) {
           Done
         </Button>
       </Box>
-      <div style={{ marginTop: "10rem" }}>
+      <div style={{ marginTop: "3rem" }}>
         <FooterCircles width1={"4rem"} background1={"#4C8AB1"} />
       </div>
     </div>
@@ -98,7 +98,7 @@ const buttonBox = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "2rem"
+  marginTop: "1.5rem"
 }
 
 const labelStyle = {
@@ -113,7 +113,7 @@ const labelStyle = {
 const inputStyle = {
   width: "100%", // Set width to 100% for responsiveness
   height: "2rem",
-  marginBottom: '1rem',
+  marginBottom: '0.5rem',
   alignSelf: "center",
   padding: '8px',
   fontSize: '14px',
@@ -129,7 +129,7 @@ const formBox = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "1rem",
+  marginTop: "0.5rem",
   gap: "1.5rem"
 };
 const formStyle = {
@@ -140,7 +140,7 @@ const typoBox = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "4rem",
+  marginTop: "2rem",
   gap: "1.5rem"
 }
 
@@ -148,7 +148,7 @@ const typoText = {
   fontFamily: GTWalsheimTrial,
   fontSize: '1rem',
   letterSpacing: '0.01em',
-  color: "#4C8AB1",
+  color: "#202227",
   textAlign: 'center',
   width: "40%",
 }

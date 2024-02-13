@@ -10,10 +10,7 @@ function AssignNewProjectStep3({ onNextStep }) {
 
   return (
     <div >
-
       <AddPhaseView onNextStep={onNextStep} />
-
-
     </div>
   );
 }

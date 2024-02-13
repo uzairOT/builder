@@ -12,7 +12,6 @@ import {
 import YellowBtn from "../../UI/button";
 import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 import FooterCircles from "../FooterCircles/FooterCircles";
-import SaveAsProject from "../SaveAsProject/SaveAsProject";
 
 function Footer({ onNextStep }) {
   const navigate = useNavigate()
@@ -61,7 +60,7 @@ const firstGrid = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "4rem",
+  marginTop: "2.5rem",
 }
 const buttonBox = {
   display: "flex",

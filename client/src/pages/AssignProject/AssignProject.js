@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react'
 
 import {
@@ -116,7 +114,7 @@ function AssignProject() {
             onClick={() => handleProjectChange("Existing")}>Existing Project</Button>
         </Box>
 
-        <div style={{ marginTop: "10rem" }}>
+        <div style={{ marginTop: "1rem" }}>
           <FooterCircles width1={"4rem"} background1={"#4C8AB1"} />
         </div>
       </div></>) : (<>
@@ -140,7 +138,7 @@ const labelStyle = {
 const inputStyle = {
   width: "100%", // Set width to 100% for responsiveness
   height: "2rem",
-  marginBottom: '1rem',
+  marginBottom: '0.5rem',
   alignSelf: "center",
   padding: '8px',
   fontSize: '14px',
@@ -155,7 +153,7 @@ const formBox = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "1rem",
+  marginTop: "0.5rem",
   gap: "1.5rem"
 };
 const formStyle = {
@@ -166,7 +164,7 @@ const buttonBox = {
   justifyContent: "center",
   alignItems: "center",
   gap: "1.2rem",
-  marginTop: "3rem"
+  marginTop: "1rem"
 }
 
 const NewProjectButton = {
