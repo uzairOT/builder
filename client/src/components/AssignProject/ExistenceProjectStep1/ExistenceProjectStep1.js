@@ -42,8 +42,8 @@ const buttonBox = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "2rem",
-  marginBottom: "2rem"
+  marginTop: "1rem",
+  marginBottom: "1rem"
 }
 
 

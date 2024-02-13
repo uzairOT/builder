@@ -281,7 +281,7 @@ const SignupComp = () => {
 
 const firstGrid = {
     padding: {
-        lg: "2rem 3rem",
+        lg: "1.19rem 3rem",
         md: "1rem 2rem",
         sm: "1rem 2rem",
         xs: "0rem 0rem 0rem 0rem",
@@ -290,6 +290,7 @@ const firstGrid = {
     alignItems: "center",
     backgroundColor: '#4C8AB1',
     marginTop: { lg: "-1rem", sm: "-4rem", xs: "auto" },
+
     // paddingTop: { xs: "-10rem" }
     // border: "2px solid red",
 }
@@ -319,7 +320,7 @@ const googleAppImgsBox = {
     display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "3rem",
+    marginTop: "2rem",
     marginLeft: { lg: "0rem", md: "-3rem", sm: "-3rem" },
     gap: "1rem"
 }
