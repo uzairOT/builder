@@ -21,11 +21,10 @@ function ColorPickerElement({ handleOpen, handleClose }) {
     const handleClickClose = () => {
         handleClose()
         setOpen(false);
-
     };
 
     const toggleColorMode = () => {
-        setColorMode(prevMode => prevMode === 'rgba' ? 'hex' : 'rgba'); // Toggle between rgba and hex modes
+        setColorMode(prevMode => prevMode === 'rgba' ? 'hex' : 'rgba');
     };
 
 
@@ -33,8 +32,8 @@ function ColorPickerElement({ handleOpen, handleClose }) {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
-        const { phaseName } = formJson; // Extract phaseName from form data
-        const selectedColor = color; // Get the selected color from state
+        const { phaseName } = formJson;
+        const selectedColor = color;
         console.log("Phase:", phaseName);
         console.log("Color:", selectedColor);
         handleClose();

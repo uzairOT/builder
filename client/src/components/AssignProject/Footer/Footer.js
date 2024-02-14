@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useAssignProjectMutation } from "../../../redux/slices/usersApiSlice";
@@ -9,7 +9,6 @@ import { selectProjectForm } from "../../../redux/slices/projectFormSlice";
 import YellowBtn from "../../UI/button";
 import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 import FooterCircles from "../FooterCircles/FooterCircles";
-import SaveAsProject from "../SaveAsProject/SaveAsProject";
 
 function Footer({ onNextStep }) {
   const navigate = useNavigate()
@@ -43,12 +42,9 @@ function Footer({ onNextStep }) {
         <Box
           sx={buttonBox}
         >
-          <Button
-            onClick={handleDoneClick}
-            sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}
-          >
-            Done
-          </Button>
+          <Link to="/dashboard">
+            <Button sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}>Done</Button>
+          </Link>
           <Button
             variant="outlined"
             sx={{
@@ -64,8 +60,9 @@ function Footer({ onNextStep }) {
           Save as to start the Duplicate the Project with same line Item and
           Phases.
         </Typography>
-        <FooterCircles width3="4rem" background3="#4C8AB1" />
-        <FooterCircles width3="4rem" background3="#4C8AB1" />
+        <div>
+          <FooterCircles width3="4rem" background3="#4C8AB1" />
+        </div>
       </Grid>
     </div>
   );
@@ -82,7 +79,7 @@ const firstGrid = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "4rem",
+  marginTop: "1rem",
 }
 const buttonBox = {
   display: "flex",
@@ -91,7 +88,7 @@ const buttonBox = {
 }
 const redText = {
   color: "#BE1D1D",
-  marginTop: "1.25rem",
+  marginTop: "1rem",
   fontFamily: GTWalsheimTrial,
   fontSize: "0.875rem",
   fontStyle: "normal",

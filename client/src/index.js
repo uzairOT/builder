@@ -20,13 +20,17 @@ import Chat from "./pages/Chat/Chat";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="" element={<PrivateRoute />}>
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/assignproject" element= {<AssignProject />} />
-      </Route>
-    </Route>
+    <Route path="/" element={<Signup />} />
+   {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+   <Route path="/signup" element={<Signup />} />
+   <Route path="/login" element={<Login />} />
+   <Route path="" element={<PrivateRoute />}>
+     <Route path="/chat" element={<Chat />} />
+     <Route path="/assignproject" element= {<AssignProject />} />
+   </Route>
+ </Route>
+
+    
   )
 );
 

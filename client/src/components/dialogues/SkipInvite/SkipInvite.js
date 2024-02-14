@@ -6,32 +6,32 @@ import YellowBtn from '../../UI/button';
 
 
 
-function SkipInvite() {
+function SkipInvite({ handleOpen, handleClose }) {
 
 
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
+        handleOpen()
         setOpen(true);
     };
 
-    const handleClose = () => {
+    const handleClickClose = () => {
+        handleClose()
         setOpen(false);
     };
 
     return (
         <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Slide in alert dialog
-            </Button>
+
             <Dialog
                 PaperProps={{
                     sx: { ...paperPropsStyle },
                     component: 'form',
                 }}
-                open={open}
+                open={handleClickOpen}
+                onClose={handleClickClose}
                 keepMounted
-                onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
             >
                 <IconButton
@@ -47,16 +47,16 @@ function SkipInvite() {
                         Are you sure you want to skip this step without inviting ?
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions>
+                <DialogActions sx={{ gap: "1rem", marginTop: "3rem" }}>
                     <Button
                         variant="outlined"
                         sx={{
                             ...YellowBtn,
-                            ...skipButton
+                            ...dialogueActionButton
                         }}
                         onClick={handleClose}
                     >
-                        Cancle
+                        Cancel
                     </Button>
                     <Button sx={{ ...YellowBtn, padding: "1rem 1rem", }}
                         onClick={handleClose}>Yes, Skip</Button>
@@ -72,11 +72,11 @@ const paperPropsStyle = {
     // width: { lg: "25%", md: "50%", sm: "50%", xs: "50%" },
     width: '30%', maxWidth: "none",
     display: "flex",
-    padding: "0.5rem"// Change background color here
+    padding: "1rem"// Change background color here
 }
 const crossIcon = {
     position: 'absolute',
-    right: 8,
+    right: 20,
     top: 8,
 }
 const typoTitle = {
@@ -94,10 +94,10 @@ const typoTect = {
     fontSize: '1rem',
     color: '#575757',
 }
-const skipButton = {
+const dialogueActionButton = {
     border: "1px solid #FFAC00",
     background: "#FFF",
-    padding: "1rem 1rem",
+    padding: "1rem 1.5rem",
     color: "#FFAC00",
     "&:hover": {
         background: "#FFF",

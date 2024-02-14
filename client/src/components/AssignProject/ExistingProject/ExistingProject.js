@@ -50,7 +50,7 @@ function ExistingProject() {
                                 backgroundColor: "#4C8AB1",
                             }}
                         >
-                            <Box sx={{ ...normalBox, ...whiteBox, marginTop: "2rem" }}>
+                            <Box sx={{ ...normalBox, ...whiteBox, marginTop: "0.99rem" }}>
 
                                 <Header gap="25rem" handlePreviousStep={handlePreviousStep} />
                                 <ExistenceProjectStep1 onNextStep={onNextStep} />
@@ -102,6 +102,6 @@ const normalBox = {
 }
 
 const whiteBox = {
-    background: "#FFF", width: "70%", margin: "2rem", padding: "2rem 2rem", borderRadius: '1rem',
+    background: "#FFF", width: "70%", margin: "1rem", padding: "0rem 2rem", borderRadius: '1rem',
 }
 export default ExistingProject

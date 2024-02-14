@@ -3,7 +3,6 @@ import SignupComp from '../../components/Signup/Signup';
 import Splash from '../../components/Splash/Splash';
 
 
-
 function Signup() {
   const [showSplash, setShowSplash] = useState(true);
   const [showSignup, setShowSignup] = useState(false);
@@ -22,7 +21,7 @@ function Signup() {
   }, []);
 
   return (
-    <div>
+    <div style={{ backgroundColor: "#4C8AB1", }}>
       {showSplash && <Splash />}
       {showSignup && <SignupComp />}
     </div>
