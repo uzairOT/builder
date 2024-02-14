@@ -46,7 +46,7 @@ const getFiveDayForcast = async (searchParams) => {
 
 const formatFiveDayWeather = async (forecastData) => {
     const formattedData =[];
-
+    console.log(forecastData)
     const currentDate = moment().format('YYYY-MM-DD');
     for(const forecast of forecastData) {
         const forecastDate  = forecast.dt_txt.split(' ')[0];
@@ -57,8 +57,9 @@ const formatFiveDayWeather = async (forecastData) => {
 
         const {temp} = main;
         const {main: weatherDetails} = weather[0];
-        if(forecastTime === '09:00:00' && forecastDate !== currentDate){
-
+        if(forecastTime === '09:00:00' && forecastDate !== currentDate && formattedData.length <= 4){
+            formattedData.push({day: formattedDay, temp, weatherDetails});
+        }else if (forecastTime === '06:00:00' && formattedData.length >= 4){
             formattedData.push({day: formattedDay, temp, weatherDetails});
         }
         }

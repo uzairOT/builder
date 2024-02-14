@@ -114,7 +114,7 @@ const calenderWrapper = styled.div`
     font-size: 12px;
   }
   .rbc-event.rbc-selected {
-    background-color: white;
+    background-color: transparent;
   }
 
   .rbc-show-more {
