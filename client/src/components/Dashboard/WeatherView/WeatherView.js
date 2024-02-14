@@ -19,6 +19,7 @@ const WeatherView = ({dailyForecast, loading, error}) => {
       </>
           )): <CircularProgress></CircularProgress>
           }
+          
       </Stack>
     </Box>
     <Box flex={1} display={"flex"} width={'100%'}>

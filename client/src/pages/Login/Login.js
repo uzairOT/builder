@@ -20,7 +20,7 @@ function Signup() {
   }, []);
 
   return (
-    <div style={{ background: "#4C8AB1", }}>
+    <div style={{ background: "#4C8AB1", height:"101.7vh"}}>
       {showSplash && <Splash />}
       {showSignup && <LoginComp />}
     </div>

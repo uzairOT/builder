@@ -125,7 +125,7 @@ const Login = () => {
             <Typography sx={formHeadingStyle}>Login</Typography>
             <img src={builder1} width={"20%"} alt="" />
           </Box>
-          <form style={{ marginTop: "1rem" }} onSubmit={submitHandler} >
+          <form style={{ marginTop: "1rem" }}  >
             <Box sx={{ marginTop: "0.5rem" }}>
               <label
                 style={{

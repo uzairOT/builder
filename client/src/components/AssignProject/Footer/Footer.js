@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useAssignProjectMutation } from "../../../redux/slices/usersApiSlice";
@@ -42,12 +42,9 @@ function Footer({ onNextStep }) {
         <Box
           sx={buttonBox}
         >
-          <Button
-            onClick={handleDoneClick}
-            sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}
-          >
-            Done
-          </Button>
+          <Link to="/dashboard">
+            <Button sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}>Done</Button>
+          </Link>
           <Button
             variant="outlined"
             sx={{
@@ -81,7 +78,7 @@ const firstGrid = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "2.5rem",
+  marginTop: "1rem",
 }
 const buttonBox = {
   display: "flex",
@@ -90,7 +87,7 @@ const buttonBox = {
 }
 const redText = {
   color: "#BE1D1D",
-  marginTop: "1.25rem",
+  marginTop: "1rem",
   fontFamily: GTWalsheimTrial,
   fontSize: "0.875rem",
   fontStyle: "normal",
