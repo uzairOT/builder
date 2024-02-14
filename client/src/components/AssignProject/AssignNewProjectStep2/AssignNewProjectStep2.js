@@ -91,6 +91,7 @@ function AssignNewProjectStep2({ onNextStep }) {
         <SkipInvite
           handleOpen={handleOpen}
           handleClose={handleClose}
+          handleNextStep={handleNextStep}
         />
       )}
 

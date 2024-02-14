@@ -34,7 +34,9 @@ const firstGrid = {
   gap: "0.5rem"
 }
 const discriptionTypo = {
-  color: "#202227", width: "60%", maxWidth: "44%"
+  color: "#202227",
+  width: { lg: "40%", md: "60%", sm: "70%", xs: "90%" },
+  fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem", xs: "0.75rem" },
 }
 const stepGeneralText = {
   fontFamily: GTWalsheimTrial,
@@ -44,7 +46,11 @@ const stepGeneralText = {
   textAlign: 'center'
 }
 const headingStyle = {
-  fontSize: "3rem", maxWidth: "46rem"
+  fontSize: { lg: "3rem", md: "2.5rem", sm: "2rem", xs: "1.5rem" },
+  fontWeight: { lg: 400, md: 400, sm: 400, xs: 700 },
+  // fontFamily: "Inter",
+  width: { lg: "50%", md: "60%", sm: "70%", xs: "95%" },
+  maxWidth: "46rem"
 }
 
 

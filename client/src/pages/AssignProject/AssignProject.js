@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../components/AssignProject/Header/Header';
 import NewProject from '../../components/AssignProject/NewProject/NewProject';
 import ExistingProject from '../../components/AssignProject/ExistingProject/ExistingProject';
+import ProjectFormFields from '../../components/AssignProject/ProjectFormFields/ProjectFormFields';
 
 
 function AssignProject() {
@@ -23,7 +24,8 @@ function AssignProject() {
 
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate()
-  const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
+
+
 
 
   const handleProjectChange = (value) => {
@@ -34,24 +36,6 @@ function AssignProject() {
   const handlePreviousStep = () => {
     setStep(step - 1);
   };
-  const Locations = [
-    {
-      value: 'Pakistan',
-      label: 'Pakistan',
-    },
-    {
-      value: 'India',
-      label: 'India',
-    },
-    {
-      value: 'England',
-      label: 'England',
-    },
-    {
-      value: 'Franch',
-      label: 'Franch',
-    },
-  ];
 
 
 
@@ -66,53 +50,50 @@ function AssignProject() {
         <StepBoxes />
 
 
-        <Box
-          sx={formBox}
-        >
-          <form style={formStyle}>
-            <Box sx={{ marginTop: "0.5rem", }}>
-              <label style={{ ...labelStyle, ...labelResponsiveFont }} htmlFor="email">Project Name</label>
-              <input className='placeholder' type="email" id="email" style={{ ...inputStyle, ...labelResponsiveFont }} placeholder="e.g. Project name                                                                                                             0/50" />
-            </Box>
-            <Box sx={{ marginTop: "0.2rem" }}>
-              <label style={{ ...labelStyle, ...labelResponsiveFont }} htmlFor="email">Location</label>
-              <TextField className='placeholder' sx={{ ...inputStyle, borderButtom: "none" }}
-
-
-                id="standard-select-currency"
-                select
-                variant="standard"
-              >
-                {Locations.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Box>
-          </form>
-        </Box>
-
-        <Box
-          sx={buttonBox}
-        >
-
-          <Button
-            variant="outlined"
-            sx={{
-              ...YellowBtn,
-              ...NewProjectButton
-            }}
-            onClick={() => handleProjectChange("New")}
+        <ProjectFormFields />
+        {!isMobile ?
+          <Box
+            sx={buttonBox}
           >
-            New Project
-          </Button>
-          <Typography sx={{ fontFamily: GTWalsheimTrial }}>
-            OR
-          </Typography>
-          <Button sx={{ ...YellowBtn, padding: "1rem 2.5rem" }}
-            onClick={() => handleProjectChange("Existing")}>Existing Project</Button>
-        </Box>
+
+            <Button
+              variant="outlined"
+              sx={{
+                ...YellowBtn,
+                ...NewProjectButton
+              }}
+              onClick={() => handleProjectChange("New")}
+            >
+              New Project
+            </Button>
+            <Typography sx={orTypo}>
+              OR
+            </Typography>
+            <Button sx={{ ...YellowBtn, padding: "1rem 2.5rem" }}
+              onClick={() => handleProjectChange("Existing")}>Existing Project</Button>
+          </Box> : <Box
+            sx={buttonBox}
+          >
+            <Button sx={{ ...YellowBtn, ...buttonStyle }}
+              onClick={() => handleProjectChange("Existing")}>Existing Project</Button>
+            <Typography sx={orTypo}>
+              OR
+            </Typography>
+            <Button
+              variant="outlined"
+              sx={{
+                ...YellowBtn,
+                ...NewProjectButton,
+                ...buttonStyle
+              }}
+              onClick={() => handleProjectChange("New")}
+            >
+              New Project
+            </Button>
+
+          </Box>
+
+        }
 
         <div style={{ marginTop: "1rem" }}>
           <FooterCircles width1={"4rem"} background1={"#4C8AB1"} />
@@ -126,45 +107,15 @@ function AssignProject() {
     </>
   )
 }
-const labelStyle = {
-  display: 'block',
-  marginBottom: '5px',
-  color: '#202227',
-  fontFamily: "Inter",
-  fontSize: '1rem',
-  fontWeight: 500,
-}
 
-const inputStyle = {
-  width: "100%", // Set width to 100% for responsiveness
-  height: "2rem",
-  marginBottom: '0.5rem',
-  alignSelf: "center",
-  padding: '8px',
-  fontSize: '14px',
-  border: '1px solid #ccc',
-  borderRadius: '12px',
-  color: "#202227",
-  fontFamily: GTWalsheimTrial,
-  paddingLeft: "-1.5rem",
-};
-const formBox = {
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  marginTop: "0.5rem",
-  gap: "1.5rem"
-};
-const formStyle = {
-  marginTop: "0.1rem", width: "38%"
-}
+
 const buttonBox = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  gap: "1.2rem",
-  marginTop: "1rem"
+  gap: { lg: "1.2rem", md: "1rem", sm: "0.8rem", xs: "0.5rem" },
+  marginTop: "1rem",
+  padding: { xs: "0rem 4rem" }
 }
 
 const NewProjectButton = {
@@ -174,6 +125,15 @@ const NewProjectButton = {
   "&:hover": {
     background: "#FFF",
   },
+}
+
+const buttonStyle = {
+  fontSize: { lg: '1.25rem', md: "1rem", sm: "1rem", xs: "0.8rem" },
+  padding: "1rem 0.5rem"
+}
+const orTypo = {
+  fontFamily: GTWalsheimTrial,
+  fontSize: "0.8rem"
 }
 
 export default AssignProject

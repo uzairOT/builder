@@ -6,10 +6,14 @@ import YellowBtn from '../../UI/button';
 
 
 
-function SkipInvite({ handleOpen, handleClose }) {
+function SkipInvite({ handleOpen, handleClose, handleNextStep }) {
 
 
     const [open, setOpen] = useState(false);
+
+    const handleSkip = () => {
+        handleNextStep()
+    }
 
     const handleClickOpen = () => {
         handleOpen()
@@ -59,7 +63,7 @@ function SkipInvite({ handleOpen, handleClose }) {
                         Cancel
                     </Button>
                     <Button sx={{ ...YellowBtn, padding: "1rem 1rem", }}
-                        onClick={handleClose}>Yes, Skip</Button>
+                        onClick={handleSkip}>Yes, Skip</Button>
                 </DialogActions>
             </Dialog>
         </div>

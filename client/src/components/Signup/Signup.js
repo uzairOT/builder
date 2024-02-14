@@ -40,8 +40,9 @@ const SignupComp = () => {
             : "100%"
 
 
-    const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
+    const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "1rem" }
     const linkResponsiveColor = { color: isMobile ? '#FFAC00' : '#4C8AB1' }
+    const borderRadiusResponsive = { borderRadius: isMobile ? "0.5rem" : "0.75rem" }
     const [phone, setPhone] = useState('');
 
 
@@ -119,17 +120,17 @@ const SignupComp = () => {
                             <Box sx={topSpace}>
                                 <label style={{ ...labelStyle, ...lableResponsiveFont }}
                                     htmlFor="firstName">First name</label>
-                                <input type="text" id="firstName" style={inputStyle} />
+                                <input type="text" id="firstName" style={{ ...inputStyle, ...borderRadiusResponsive }} />
                             </Box>
                             <Box sx={topSpace}>
                                 <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="lastName">Last name</label>
-                                <input type="text" id="lastName" style={inputStyle} />
+                                <input type="text" id="lastName" style={{ ...inputStyle, ...borderRadiusResponsive }} />
                             </Box>
                         </Box>
 
                         <Box sx={topSpace}>
                             <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="email">Email address</label>
-                            <input type="email" id="email" style={{ ...inputStyle, ...placeholderStyle, ...lableResponsiveFont }} placeholder="workemail@gmail.com" />
+                            <input type="email" id="email" style={{ ...inputStyle, ...placeholderStyle, ...lableResponsiveFont, ...borderRadiusResponsive }} placeholder="workemail@gmail.com" />
                         </Box>
 
                         <Box sx={topSpace}>
@@ -137,7 +138,7 @@ const SignupComp = () => {
 
 
                             <PhoneInput
-                                style={{ ...customPhoneStyles, }}
+                                style={{ ...customPhoneStyles, ...borderRadiusResponsive }}
                                 defaultCountry="pk"
                                 value={phone}
                                 onChange={(phone) => setPhone(phone)}
@@ -152,7 +153,7 @@ const SignupComp = () => {
                         </Box>
                         <Box sx={{ marginTop: "0.5rem" }}>
                             <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="company">Company Name</label>
-                            <input type="text" id="company" style={inputStyle} />
+                            <input type="text" id="company" style={{ ...inputStyle, ...borderRadiusResponsive }} />
                         </Box>
                         <Box sx={topSpace}>
                             <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="password">Password</label>
@@ -165,7 +166,7 @@ const SignupComp = () => {
 
                             <Box style={{ position: 'relative' }}>
                                 <input
-                                    style={inputStyle}
+                                    style={{ ...inputStyle, ...borderRadiusResponsive }}
                                     type={passwordVisible ? 'text' : 'password'}
                                     id="password"
                                     value={password}
@@ -194,13 +195,14 @@ const SignupComp = () => {
 
                         <Box sx={linkBox}>
                             <Checkbox id="agreeTerms" sx={checkBox} />
-                            <label htmlFor="agreeTerms" style={checkBoxText}>
+                            <Typography htmlFor="agreeTerms" sx={checkBoxText}>
                                 By creating an account, I agree to our <Link style={{ ...linkStyle, ...lableResponsiveFont }}>Terms of use</Link> and <Link style={{ ...linkStyle, ...lableResponsiveFont }} >Privacy Policy</Link>
-                            </label>
+                            </Typography>
                         </Box>
-
-                        <Button sx={{ ...YellowBtn, marginBottom: "1rem" }}
-                            type="submit" onClick={signUpHandler}>Sign up</Button>
+                        <Box sx={buttonBox}>
+                            <Button sx={{ ...YellowBtn, marginBottom: "1rem" }}
+                                type="submit" onClick={signUpHandler}>Sign up</Button>
+                        </Box>
                         <Typography sx={alreadyHaveAccountTypo}>
                             Already have an account?{'\u00a0'} <Link to="./login" style={{
                                 ...loginLink,
@@ -221,8 +223,9 @@ const SignupComp = () => {
                                 {isMobile ? 'Or' : 'or continue with'}
                             </Typography>
                         </Box>
-
-                        <Button sx={{ ...googleBtnStyle, marginBottom: "3.4rem", marginTop: "2rem" }} type="button"><GoogleLogo style={{ marginRight: "1rem" }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
+                        <Box sx={buttonBox}>
+                            <Button sx={{ ...googleBtnStyle, marginBottom: "3.4rem", marginTop: "2rem" }} type="button"><GoogleLogo style={{ marginRight: "1rem" }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
+                        </Box>
                     </form>
                 </Grid>
                 <Grid sx={bottomGrid}>
@@ -257,7 +260,7 @@ const SignupComp = () => {
                     <img src={appStore} width={widthValue} alt="" />
                 </Box>
             </Grid>
-        </Grid>
+        </Grid >
 
 
     );
@@ -281,15 +284,15 @@ const SignupComp = () => {
 
 const firstGrid = {
     padding: {
-        lg: "1.19rem 3rem",
-        md: "1rem 2rem",
+        lg: "1.19rem 3rem 0rem 3rem",
+        md: "0.5rem 2rem",
         sm: "1rem 2rem",
         xs: "0rem 0rem 0rem 0rem",
     },
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: '#4C8AB1',
-    marginTop: { lg: "-1rem", sm: "-4rem", xs: "auto" },
+    marginTop: { lg: "0rem", sm: "-1rem", xs: "-1rem" },
 
     // paddingTop: { xs: "-10rem" }
     // border: "2px solid red",
@@ -419,7 +422,8 @@ const checkBox = {
 }
 
 const checkBoxText = {
-    marginTop: "0.5rem", fontSize: "0.95rem",
+    marginTop: "0.5rem",
+    fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem", xs: "0.75rem" },
 }
 const alreadyHaveAccountTypo = {
     color: '#202227',
@@ -583,7 +587,7 @@ const placeholderStyle = {
     color: '#B8B8B8',
     fontFamily: GTWalsheimTrial,
     fontSize: "1rem",
-    paddingLeft: "1rem",
+    paddingLeft: "0.5rem",
     fontWeight: 400,
 
 };
@@ -642,6 +646,14 @@ const ContinuewithTextStyle = {
     padding: '0 10px',
 }
 
+
+const buttonBox = {
+    display: "flex",
+    justifyContent: { lg: "start", md: "start", sm: "start", xs: "center" },
+    alignItems: { lg: "start", md: "start", sm: "start", xs: "center" },
+    width: { lg: 'auto', md: 'auto', sm: 'auto', xs: '100%' },
+    // border: "2px solid red"
+}
 const topSpace = {
     marginTop: "0.2rem"
 }

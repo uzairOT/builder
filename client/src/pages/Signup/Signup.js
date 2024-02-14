@@ -21,7 +21,7 @@ function Signup() {
   }, []);
 
   return (
-    <div style={{ backgroundColor: "#4C8AB1", }}>
+    <div>
       {showSplash && <Splash />}
       {showSignup && <SignupComp />}
     </div>

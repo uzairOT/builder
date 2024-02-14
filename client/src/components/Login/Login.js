@@ -31,6 +31,7 @@ const Login = () => {
 
   const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
   const linkResponsiveColor = { color: isMobile ? "#FFAC00" : "#4C8AB1", }
+  const borderRadiusResponsive = { borderRadius: isMobile ? "0.5rem" : "0.75rem" }
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
   const togglePasswordVisibility = () => {
@@ -108,6 +109,7 @@ const Login = () => {
                 id="email"
                 style={{
                   ...inputStyle,
+                  ...borderRadiusResponsive,
                   ...placeholderStyle,
                   ...lableResponsiveFont
                 }}
@@ -128,6 +130,7 @@ const Login = () => {
                 <input
                   style={{
                     ...inputStyle,
+                    ...borderRadiusResponsive,
                     ...placeholderStyle,
                     ...lableResponsiveFont
                   }}
@@ -243,7 +246,7 @@ const Login = () => {
           </Box>
         </Grid>
         <Box
-          sx={{ ...googleAppImgsBox, ...googleAppImgsMobile }}
+          sx={googleAppImgsMobile}
         >
           <img src={googlePlay} width={widthValue} alt="" />
           <img src={appStore} width={widthValue} alt="" />
@@ -262,13 +265,13 @@ const Login = () => {
 
 const firstGrid = {
   padding: {
-    lg: "1.7rem 3rem",
-    md: "2rem 2rem",
+    lg: "0rem 3rem",
+    md: "4rem 2rem 2rem 2rem",
     sm: "1rem 2rem",
     xs: "0rem 0rem",
   },
   backgroundColor: "#4C8AB1",
-  marginTop: { lg: "-1rem", sm: "-4rem", xs: "0rem" },
+  marginTop: { lg: "0rem", sm: "-1rem", xs: "0rem" },
   // border: "2px solid red",
 }
 
@@ -303,7 +306,10 @@ const googleAppImgsBox = {
 }
 const googleAppImgsMobile = {
   display: { lg: "none", md: "none", sm: "flex", xs: "none" },
+  justifyContent: "center",
+  alignItems: "center",
   marginTop: "1rem",
+  gap: "1rem"
 }
 
 
@@ -482,8 +488,8 @@ const hptLinksBox = {
 const firstHeading = {
   color: "#FFF",
   fontFamily: GTWalsheimTrial,
-  marginTop: "6rem",
-  fontSize: { lg: "2.9375rem", md: "2rem", sm: "1.5rem" },
+  marginTop: { lg: "6rem", md: "5rem", sm: "1rem" },
+  fontSize: { lg: "2.7rem", md: "2rem", sm: "1.5rem" },
   fontWeight: 400,
   lineHeight: "4.25rem",
 };
@@ -552,11 +558,11 @@ const hptLinksStyle = {
 };
 
 const googleBtnStyle = {
-  marginBottom: { lg: "2rem", md: "1rem", sm: "1rem", xs: "2rem" },
+  marginBottom: { lg: "6rem", md: "5rem", sm: "4rem", xs: "2rem" },
   display: "flex",
   flexDirection: "row",
   gap: "0.3rem",
-  marginTop: { lg: "2.5rem", md: "1rem", sm: "1rem", xs: "3rem" },
+  marginTop: { lg: "2.5rem", md: "2rem", sm: "2rem", xs: "3rem" },
   borderRadius: "2.5rem",
   border: "1px solid rgba(6, 32, 72, 0.11)",
   background: "#FFF",
@@ -566,6 +572,7 @@ const googleBtnStyle = {
   fontWeight: 400,
   cursor: "pointer",
   width: { lg: "auto", md: "auto", sm: "auto", xs: "100%" },
+  minWidht: "15rem",
   padding: {
     lg: "0.96875rem 2rem",
     md: "0.96875rem 1rem",
@@ -576,7 +583,7 @@ const googleBtnStyle = {
   alignItems: "center",
   flexShrink: 0,
   textTransform: "none",
-  marginBottom: "6.5rem",
+
 };
 
 const ContinuewithTextStyle = {
