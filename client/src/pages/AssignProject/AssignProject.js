@@ -76,70 +76,71 @@ function AssignProject() {
   };
   return (
     <>
-
-      {projectType === null ? (<> <div>
-        <Header handlePreviousStep={handlePreviousStep} />
-        <StepTitles stepHeading={"Step 1 of 3"} Heading={"What projects is your team currently engaged in"} stepDiscription={"Lorem ipsum dolor sit amet consectetur. Pretium aliquam egestas interdum varius sed at libero. Sed vestibulum vel platea accumsan in elit morbi eu erat. Purus non urna et purus. Libero nec nec quam pulvinar massa nulla et tincidunt."} />
-        <StepBoxes />
-
-
-        <Box
-          sx={formBox}
-        >
-          <form style={formStyle}>
-            <Box sx={{ marginTop: "0.5rem", }}>
-              <label style={{ ...labelStyle, ...labelResponsiveFont }} htmlFor="email">Project Name</label>
-              <input className='placeholder' type="email" id="email" style={{ ...inputStyle, ...labelResponsiveFont }} placeholder="e.g. Project name                                                                                                             0/50" />
+      {projectType === null ? (
+        <>
+          <div>
+            <Header handlePreviousStep={handlePreviousStep} />
+            <StepTitles
+              stepHeading={"Step 1 of 3"}
+              Heading={"What projects is your team currently engaged in"}
+              stepDiscription={
+                "Lorem ipsum dolor sit amet consectetur. Pretium aliquam egestas interdum varius sed at libero. Sed vestibulum vel platea accumsan in elit morbi eu erat. Purus non urna et purus. Libero nec nec quam pulvinar massa nulla et tincidunt."
+              }
+            />
+            <StepBoxes />
+            <Box sx={formBox}>
+              <form style={formStyle}>
+                <Box sx={{ marginTop: "0.5rem" }}>
+                  <label style={{ ...labelStyle, ...labelResponsiveFont }} htmlFor="email">Project Name</label>
+                  <input className='placeholder' type="email" id="email" value={projectForm.projectName} onChange={handleChange} style={{ ...inputStyle, ...labelResponsiveFont }} placeholder="e.g. Project name                                                                                                             0/50" />
+                </Box>
+                <Box sx={{ marginTop: "0.2rem" }}>
+                  <label style={{ ...labelStyle, ...labelResponsiveFont }} htmlFor="email">Location</label>
+                  <TextField className='placeholder' sx={{ ...inputStyle, borderButtom: "none" }}
+                    id="standard-select-currency"
+                    select
+                    variant="standard"
+                    value={projectForm.location}
+                    onChange={handleLocationChange}
+                  >
+                    {Locations.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Box>
+              </form>
             </Box>
-            <Box sx={{ marginTop: "0.2rem" }}>
-              <label style={{ ...labelStyle, ...labelResponsiveFont }} htmlFor="email">Location</label>
-              <TextField className='placeholder' sx={{ ...inputStyle, borderButtom: "none" }}
-
-
-                id="standard-select-currency"
-                select
-                variant="standard"
+            <Box sx={buttonBox}>
+              <Button
+                variant="outlined"
+                sx={{
+                  ...YellowBtn,
+                  ...NewProjectButton
+                }}
+                onClick={() => handleProjectChange("New")}
               >
-                {Locations.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+                New Project
+              </Button>
+              <Typography sx={{ fontFamily: GTWalsheimTrial }}>OR</Typography>
+              <Button
+                sx={{ ...YellowBtn, padding: "1rem 2.5rem" }}
+                onClick={() => handleProjectChange("Existing")}
+              >
+                Existing Project
+              </Button>
             </Box>
-          </form>
-        </Box>
-
-        <Box
-          sx={buttonBox}
-        >
-
-          <Button
-            variant="outlined"
-            sx={{
-              ...YellowBtn,
-              ...NewProjectButton
-            }}
-            onClick={() => handleProjectChange("New")}
-          >
-            New Project
-          </Button>
-          <Typography sx={{ fontFamily: GTWalsheimTrial }}>
-            OR
-          </Typography>
-          <Button sx={{ ...YellowBtn, padding: "1rem 2.5rem" }}
-            onClick={() => handleProjectChange("Existing")}>Existing Project</Button>
-        </Box>
-
-        <div style={{ marginTop: "1rem" }}>
-          <FooterCircles width1={"4rem"} background1={"#4C8AB1"} />
-        </div>
-      </div></>) : (<>
-        {projectType === 'New' ? (<NewProject />) : (<ExistingProject />)}
-
-
-      </>)}
-
+          </div>
+          <div style={{ marginTop: "10rem" }}>
+            <FooterCircles width1={"4rem"} background1={"#4C8AB1"} />
+          </div>
+        </>
+      ) : (
+        <>
+          {projectType === "New" ? <NewProject /> : <ExistingProject />}
+        </>
+      )}
     </>
   );
   

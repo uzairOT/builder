@@ -3,55 +3,67 @@ import { HexColorPicker, RgbaColorPicker, RgbaStringColorPicker, HexColorInput, 
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Box, Typography } from '@mui/material';
 import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 import actionButton from "../../UI/actionButton";
+// import { setOpen, setColor, setColorMode, setPhaseName } from '../../../redux/slices/addPhaseSlice';
+// import { useDispatch, useSelector } from 'react-redux';
 
-
+import { setOpen, setColor, setColorMode, setPhaseName } from '../../../redux/slices/addPhaseSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectAddPhase } from '../../../redux/slices/addPhaseSlice';
+import { useAddProjectPhaseMutation } from "../../../redux/apis/projectApiSlice";
 import "./ColorPickerElement.css";
 
 function ColorPickerElement({ handleOpen, handleClose }) {
+    const [addPhase, { isLoading }] = useAddProjectPhaseMutation();
+    const dispatch = useDispatch();
+    const addPhaseState = useSelector(selectAddPhase);
+    const { open, color, colorMode, phaseName } = useSelector(selectAddPhase);
 
-    const [open, setOpen] = useState(false);
-    const [color, setColor] = useState("#aabbcc");
-    const [colorMode, setColorMode] = useState('rgba');
-
-    const handleClickOpen = () => {
-        handleOpen()
-        setOpen(true);
-    };
 
     const handleClickClose = () => {
-        handleClose()
-        setOpen(false);
+        handleClose();
+        dispatch(setOpen(false));
     };
 
     const toggleColorMode = () => {
-        setColorMode(prevMode => prevMode === 'rgba' ? 'hex' : 'rgba');
+        const newColorMode = colorMode === 'rgba' ? 'hex' : 'rgba';
+       
+        dispatch(setColorMode(newColorMode));
     };
+    const handleColorChange = (newColor) => {
+        dispatch(setColor(newColor)); // Dispatch setColor action
+      };
+    
+      const handlePhaseNameChange = (event) => {
+        dispatch(setPhaseName(event.target.value)); // Dispatch setPhaseName action
+      };
 
-
-    const handleSubmit = (event) => {
+   
+      
+      const handleSubmit = async (event) => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        const { phaseName } = formJson;
-        const selectedColor = color;
-        console.log("Phase:", phaseName);
-        console.log("Color:", selectedColor);
+        const projectId = localStorage.getItem('projectId');
+
+        if (!projectId) {
+            console.error('Project ID not found in local storage');
+            return;
+        }
+
+        const addPhaseData= { ...addPhaseState, projectId };
+        const { open, ...data } = addPhaseData;
+        console.log(data)
+        // Call addPhase function with updated addPhaseState
+        const res = await addPhase(data).unwrap();
+        console.log(res);
         handleClose();
     };
+
+
     return (
         <div className="App">
 
             <>
-                <Dialog
-                    open={handleClickOpen}
-                    onClose={handleClickClose}
-                    PaperProps={{
-                        sx: { ...paperPropsStyle },
-                        component: 'form',
-                        onSubmit: handleSubmit
-                    }}
-
-                >
+         
+            <Dialog open={open} onClose={handleClickClose} PaperProps={{   sx: { ...paperPropsStyle },component: 'form', onSubmit: handleSubmit }}>
                     <DialogTitle sx={typoTitle} >Add Phase</DialogTitle>
                     <DialogContent sx={{ padding: "3rem" }}>
                         <Typography sx={typoText}>
@@ -59,15 +71,16 @@ function ColorPickerElement({ handleOpen, handleClose }) {
                         </Typography>
                         <TextField
                             sx={inputStyle}
-                            // autoFocus
                             required
                             margin="dense"
                             id="phaseName"
                             name="phaseName"
-                            // label="Email Address"
                             type="text"
                             variant="standard"
+                            value={phaseName}
+                            onChange={handlePhaseNameChange}
                         />
+                    
                         <Typography sx={typoText}>
                             Select Color
                         </Typography>
@@ -76,16 +89,16 @@ function ColorPickerElement({ handleOpen, handleClose }) {
 
                             {colorMode === 'rgba' ? ( // Render RGBA color picker if colorMode is 'rgba'
                                 <Box sx={generalBox}>
-                                    <RgbaStringColorPicker sx={{ gap: "0.5rem", ...generalBox }} color={color} onChange={setColor} />
+                                    <RgbaStringColorPicker sx={{ gap: "0.5rem", ...generalBox }} color={color} onChange={handleColorChange} />
                                 </Box>
                             ) : (
                                 <Box sx={generalBox}>
-                                    <HexColorPicker color={color} onChange={setColor} />
+                                    <HexColorPicker color={color} onChange={handleColorChange} />
                                 </Box>
                             )}
 
                             <Box sx={{ ...generalBox, ...inputColorBox }} >
-                                <HexColorInput style={{ width: "60%" }} color={color} onChange={setColor} />
+                                <HexColorInput style={{ width: "60%" }} color={color} onChange={handleColorChange} />
                                 <Box sx={{ ...colorBox, background: color }} />
                             </Box>
                             <Box sx={generalBox} onClick={toggleColorMode}>

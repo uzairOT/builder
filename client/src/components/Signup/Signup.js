@@ -15,7 +15,7 @@ import "./Signup.css";
 import axios from "axios";
 
 import { useDispatch, useSelector } from 'react-redux';
-import { useRegisterMutation } from '../../redux/slices/usersApiSlice';
+import { useRegisterMutation } from '../../redux/apis/usersApiSlice';
 import { setCredentials } from '../../redux/slices/authSlice';
 import { toast } from 'react-toastify';
 

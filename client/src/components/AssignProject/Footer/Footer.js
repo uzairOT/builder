@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useAssignProjectMutation } from "../../../redux/slices/usersApiSlice";
+import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
 
 import { Box, Grid, Typography, Button } from "@mui/material";
 import { selectProjectForm } from "../../../redux/slices/projectFormSlice";
