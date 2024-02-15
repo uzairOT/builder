@@ -46,7 +46,7 @@ const calenderWrapper = styled.div`
     border-bottom: 0;
     .rbc-time-header-content {
       border: 0;
-      padding-right: 12px;
+      // padding-right: 12px;
       .rbc-allday-cell {
         height: 0px;
       }
