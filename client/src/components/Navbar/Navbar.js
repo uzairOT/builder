@@ -11,8 +11,12 @@ import {
   Stack,
   Divider,
   IconButton,
-  Autocomplete,
-  TextField,
+  FormControl,
+  Input,
+  InputLabel,
+  Select,
+  MenuItem,
+  Button,
 } from "@mui/material";
 import { ReactComponent as BuilderProNavbarLogo } from "./assets/svgs/builder-pro-logo-navbar.svg";
 import { ReactComponent as BuilderProNavbarShare } from "./assets/svgs/builder-pro-navbar-share.svg";
@@ -24,10 +28,12 @@ import NavbarDrawer from "./NavbarDrawer";
 import { useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import users from "./assets/data/users.json";
+import LinkIcon from '@mui/icons-material/Link';
 
 const Navbar = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [open, setOpen] = useState(null);
+  const [userType, setUserType] = useState('');
   const theme = useTheme();
   const showHamburger = useMediaQuery(theme.breakpoints.down("lg"));
   const responsiveButton = useMediaQuery(theme.breakpoints.up("sm"));
@@ -48,7 +54,9 @@ const Navbar = () => {
   const handleClose = () => {
     setOpen(null);
   };
-  const getOptionLabel = (option) => option.name;
+  const handleUserTypeChange = (event) => {
+    setUserType(event.target.value);
+  };
 
   // Navbar styles
   const themeStyle = {
@@ -143,6 +151,7 @@ const Navbar = () => {
           paper: {
             sx: {
               marginTop: "30px",
+              borderRadius: '15px'
             },
           },
         }}
@@ -153,65 +162,95 @@ const Navbar = () => {
           alignItems={"center"}
         >
           <Typography sx={{ p: 2 }} color={"#4C8AB1"}>
-            Index
+            Invite
           </Typography>
           <IconButton onClick={handleClose}>
             <CloseIcon sx={{ p: 2, color: "#535353", fontSize: "19px" }} />
           </IconButton>
         </Stack>
         <Divider variant="fullWidth" />
-        <Stack direction={'row'} pl={4} pr={4} pt={2} pb={2} spacing={3}>
-          <Stack>
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={users}
-            getOptionLabel={getOptionLabel}
-            sx={{ width: 200, borderWidth: 'none' }}
-            renderInput={(params) => (
-              <TextField {...params} label="Select Role" />
-            )}
-          />
-          </Stack>
-          <BuilderProButton
-            backgroundColor={"#FFAC00"}
-            variant={"contained"}
-          >
+        <Stack direction={"row"} pl={4} pr={4} pt={2} pb={2} spacing={3}>
+          <Stack direction={'row'} border={'2px solid #FFAC00'} borderRadius={'30px'} pl={2}>
+            <Input
+              placeholder="Enter an Email to invite"
+              aria-describedby="my-helper-text"
+              sx={{
+                "&::after": {
+                  borderBottom: "none",
+                },
+                "&:before": {
+                  borderBottom: "none",
+                },
+                "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before": {
+                  borderBottom: "none",
+                },
+              }}
+            />
+          <FormControl style={{marginLeft:'5px', width:'120px'}} size="small">
+          <InputLabel id="demo-simple-select-label" style={{fontSize: '12px', top:'3px', fontFamily:'GT-Walsheim-Regular-Trial, sans-serif', color: '#202227'}} sx={{
+            "&.Mui-focused":{
+              transform: "translate(14px, -1px) scale(0.75)",
+            }
+          }}>Select Role</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={userType}
+            label="Age"
+            onChange={handleUserTypeChange}
+            placeholder="Select Role"
+            sx={{
+              '.css-1d3z3hw-MuiOutlinedInput-notchedOutline': {
+                border: 'none'
+              }
+            }}
+            >
+            <MenuItem value={'user'}>User</MenuItem>
+            <MenuItem value={'admin'}>Admin</MenuItem>
+            <MenuItem value={'super admin'}>Super admin</MenuItem>
+          </Select>
+          </FormControl>
+            </Stack>
+          <BuilderProButton backgroundColor={"#FFAC00"} variant={"contained"}>
             <Typography>Invite</Typography>
           </BuilderProButton>
         </Stack>
 
         {users.map((user, index) => (
-          <Stack p={1}>
+          <Stack p={0.5} pl={2.5} pr={2.5}>
             <Stack
               id={user.img}
               direction={"row"}
               justifyContent={"space-between"}
               alignItems={"center"}
+              pb={1}
             >
               <Stack
                 direction={"row"}
                 justifyContent={"space-between"}
                 alignItems={"center"}
+                pl={2}
               >
                 <img
                   src={user.img}
                   alt="User Profile Pic"
                   width={"32px"}
                   height={"32px"}
-                  style={{ borderRadius: "50px" }}
+                  style={{ borderRadius: "50px",}}
                 ></img>
-                <Typography color={"#202227"} fontSize={"14px"}>
+                <Typography color={"#202227"} fontSize={"14px"} pl={2} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'}>
                   {user.name}
                 </Typography>
               </Stack>
-              <Typography>{user.userType}</Typography>
+              <Typography fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'} fontSize={'14px'}>{user.userType}</Typography>
             </Stack>
             {users.length - 1 === index ? <></> : <Divider />}
           </Stack>
         ))}
         <Divider />
-        <Typography>Copy Link</Typography>
+        <Stack direction={'row'} p={2} pl={3}>
+          <BuilderProButton Icon={LinkIcon} iconProps={{transform:'rotate(135deg)'}} variant={'text'}>Copy Link</BuilderProButton>
+        </Stack>
       </Popover>
     </>
   );
