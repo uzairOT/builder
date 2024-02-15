@@ -61,6 +61,7 @@ const buttonBox = {
   justifyContent: "center",
   alignItems: "center",
   marginTop: "1rem",
+  padding: "0rem 1rem 0rem 2rem",
   marginBottom: "1rem"
 }
 

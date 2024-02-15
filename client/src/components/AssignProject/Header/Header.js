@@ -28,18 +28,20 @@ function Header({ gap, handlePreviousStep, }) {
       >
         {isMobile ?
           <>
-            <Box sx={mobileButtonBox}>
-              <Button
-                sx={buttonStyle}
-                startIcon={<ArrowBackIosIcon />}
-                onClick={handleStep}
-              >
+            <Box display={"flex"} flexDirection={"row"}>
+              <Box sx={mobileImageBox}>
+                <img src={builder1} width={"40%"} alt="" />
+              </Box>
+              <Box sx={mobileButtonBox}>
+                <Button
+                  sx={buttonStyle}
+                  startIcon={<ArrowBackIosIcon />}
+                  onClick={handleStep}
+                >
 
-                Back
-              </Button>
-            </Box>
-            <Box sx={mobileImageBox}>
-              <img src={builder1} width={"40%"} alt="" />
+                  Back
+                </Button>
+              </Box>
             </Box>
           </>
           :
@@ -73,13 +75,13 @@ const mobileButtonBox = {
   display: "flex", justifyContent: "flex-end", alignItems: "flex-end",
 }
 const mobileImageBox = {
-  display: "flex", justifyContent: "center", alignItems: "center",
+  display: "flex", justifyContent: "flex-start", alignItems: "flex-start",
 }
 const headerBox = {
   display: "flex", justifyContent: "space-between"
 }
 const buttonStyle = {
-  height: "50%", marginTop: "2rem", fontFamily: "Inter"
+  height: "50%", marginTop: { lg: "2rem", sm: "2rem", xs: "0rem" }, fontFamily: "Inter"
 }
 
 

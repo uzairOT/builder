@@ -103,6 +103,7 @@ const normalBox = {
 }
 
 const whiteBox = {
-    background: "#FFF", width: "70%", margin: "1rem", padding: "0rem 2rem", borderRadius: '1rem',
+    background: "#FFF", width: { lg: "70%", sm: '80%', xs: "90%" },
+    margin: "1rem", padding: { lg: "0rem 2rem", sm: "0rem 2rem", xs: "0rem 2rem" }, borderRadius: '1rem',
 }
 export default ExistingProject

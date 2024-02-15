@@ -327,8 +327,8 @@ const formGrid = {
   flexDirection: "column",
   display: "flex",
   padding: "20px",
-  paddingLeft: "3.5rem",
-  paddingRight: { lg: "7rem", md: "2rem", sm: "2rem", xs: "2rem" },
+  paddingLeft: { lg: "2.5rem", md: "1rem", sm: "2rem", xs: "1rem" },
+  paddingRight: { lg: "5rem", md: "2rem", sm: "2rem", xs: "2rem" },
   marginLeft: { lg: "3rem", md: "2rem", sm: "0rem", xs: "0rem" },
   borderRadius: {
     lg: "1.5rem",
@@ -360,7 +360,7 @@ const passwordEyeBox = {
 const linkBox = {
   display: "flex",
   justifyContent: "space-between",
-  gap: { lg: "8rem", md: "5rem", sm: "3.5rem", xs: "5rem" },
+  gap: { lg: "1rem", md: "5rem", sm: "3.5rem", xs: "5rem" },
   marginTop: { lg: "2rem", md: "2rem", sm: "2rem", xs: "0.5rem" },
   marginBottom: {
     lg: "2rem",

@@ -59,7 +59,10 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
     setShowAddLine(false);
   };
 
-
+  const tableContainerStyle = {
+    maxWidth: '100%', // Allow the table to take up the entire available width
+    overflowX: 'auto', // Add horizontal scrollbar when needed
+  };
 
   return (
     <div>
@@ -71,14 +74,16 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
         <Box
           sx={headingsBox}
         >
-          <Box>
-            <Typography sx={blackHeading}>Phase 1</Typography>
-          </Box>
-          <Box>
-            <Typography sx={blackHeading}>Total Price:</Typography>
-          </Box>
-          <Box>
-            <Typography sx={blackHeading}>Time: &nbsp; Days:</Typography>
+          <Box sx={headingInnerBox}>
+            <Box>
+              <Typography sx={blackHeading}>Phase 1</Typography>
+            </Box>
+            <Box>
+              <Typography sx={blackHeading}>Total Price:</Typography>
+            </Box>
+            <Box>
+              <Typography sx={blackHeading}>Time: &nbsp; Days:</Typography>
+            </Box>
           </Box>
           <Box
             sx={phaseBox}
@@ -117,13 +122,15 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
             </Button>
           </Box>
         </Box>
+
+
         <Grid
           item
           sx={tableGrid}
         >
           <Typography sx={listOfLineText}>List of Line Items</Typography>
           <hr style={hrLine} />
-          <Box sx={{ marginLeft: "1rem" }}>
+          <Box sx={{ ...tableContainerStyle, marginLeft: "1rem" }}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -178,6 +185,13 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
             </Table>
           </Box>
         </Grid>
+
+
+
+
+
+
+
         {showAddLine && (
           <AddLine
             handleOpen={handleOpen}
@@ -196,17 +210,25 @@ const firstGrid = {
 }
 const headingsBox = {
   display: "flex",
-  flexDirection: "row",
+  flexDirection: { lg: "row", md: "row", sm: "column", xs: "column" },
   justifyContent: "space-between",
-  margin: "0.1rem 4rem 0rem",
+  margin: "0.2rem 4rem 0rem",
+}
+
+const headingInnerBox = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-around",
+  whiteSpace: "nowrap",
+  gap: { lg: "9rem", md: "2rem", sm: "auto", xs: "auto" }
 }
 const phaseBox = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   gap: "1rem",
-  marginBottom: "-1rem",
-  marginRight: "4rem"
+  marginTop: "1rem",
+  marginRight: { lg: "4rem", md: "4rem", sm: "0rem", xs: "0rem" }
 }
 const tableGrid = {
   background: "#FBFBFB",

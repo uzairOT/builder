@@ -80,6 +80,7 @@ const redText = {
   fontWeight: 400,
   lineHeight: "150%", // 1.3125rem
   letterSpacing: "-0.00875rem",
+  display: { lg: "flex", md: "flex", sm: "none", xs: "none" }
 };
 const saveButton = {
   border: "1px solid #FFAC00",

@@ -307,7 +307,7 @@ const SecondGrid = {
         sm: "center",
         xs: "center",
     },
-    display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
+    display: { sm: "flex", xs: "none" },
     flexDirection: "column",
     paddingLeft: "4rem",
 }
@@ -355,13 +355,13 @@ const formGrid = {
     alignItems: 'center',
     padding: '20px',
     marginTop: "1rem",
-    paddingLeft: "2rem",
+    paddingLeft: { lg: "2rem", md: "2rem", sm: "1rem", xs: "1rem" },
     paddingRight: { lg: "6rem", md: "3rem", sm: "2rem", xs: "2rem" },
 
     marginLeft: { lg: "6rem", md: "2rem", sm: "0rem", xs: "0rem" },
 
     borderRadius: { lg: '1.5rem', md: "1.5rem", sm: "1.5rem", xs: "0rem" },
-    width: { lg: '80%', md: "90%", sm: "100%", xs: "100%" }
+    width: { lg: '80%', md: "90%", sm: "85%", xs: "100%" }
 }
 
 const logoBox = {

@@ -36,7 +36,7 @@ function SaveAsProject({ onSaveStep, onNextStep }) {
       <Box sx={buttonBox}>
         <Button
           variant="outlined"
-          sx={{ ...YellowBtn, ...shallowButton, }}
+          sx={{ ...YellowBtn, ...shallowButton, ...responsiveDone }}
           onClick={handleDone}
         >
           Done
@@ -73,5 +73,12 @@ const typoText = {
   textAlign: 'center',
   width: { lg: "40%", md: "60%", sm: "70%", xs: "90%" },
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem", xs: "0.75rem" },
+}
+
+const responsiveDone = {
+  width: { lg: "auto", md: "auto", sm: "auto", xs: "10%" },
+  background: { lg: "auto", md: "auto", sm: "#FFF", xs: "#FFAC00" },
+  color: { lg: "auto", md: "auto", sm: "#FFAC00", xs: "#FFF" },
+
 }
 export default SaveAsProject
