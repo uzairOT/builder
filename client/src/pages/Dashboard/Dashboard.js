@@ -30,7 +30,6 @@ const Dashboard = () => {
 
   return (
     <>
-    <Navbar />
     <main>
       <Grid sx={themeStyle.dashboard} container pt={1} >
         {/* Profile View */}

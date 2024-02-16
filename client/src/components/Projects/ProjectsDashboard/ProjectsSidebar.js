@@ -1,13 +1,15 @@
 import { Divider, Stack, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import BuilderProButton from '../../../components/UI/Button/BuilderProButton'
+import BuilderProButton from '../../UI/Button/BuilderProButton'
+import { useParams } from 'react-router-dom'
 
-const ProjectsDashboard = () => {
+const ProjectsSidebar = () => {
     const [activeBtn, setActiveBtn] = useState('New build')
 
     const handleListedProjectsButton = (btn)=>{
         setActiveBtn(btn);
     }
+    
   return (
     <>
         <Stack p={2}>
@@ -39,14 +41,14 @@ const ProjectsDashboard = () => {
                 </BuilderProButton>
             </Stack>
             <Stack>
-                
+
             </Stack>
         </Stack>
     </>
   )
 }
 
-export default ProjectsDashboard
+export default ProjectsSidebar
 
 const themeStyle = {
     title: {
