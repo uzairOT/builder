@@ -1,0 +1,34 @@
+
+  [
+        {
+            "id": 1,
+            "day": "Mon",
+            "icon": "./images/rainy-sunny.png",
+            "temp": "18°"
+        },
+        {
+            "id": 2,
+            "day": "Tue",
+            "icon": "./images/stormy-sunny.png",
+            "temp": "15°"
+        },
+        {
+            "id": 3,
+            "day": "Wed",
+            "icon": "./images/rainy.png",
+            "temp": "12°"
+        },
+        {
+            "id": 4,
+            "day": "Thu",
+            "icon": "./images/partly-cloudy.png",
+            "temp": "20°"
+        },
+        {
+            "id": 5,
+            "day": "Fri",
+            "icon": "./images/rainy-storm.png",
+            "temp": "9°"
+        }
+    ]
+

@@ -26,7 +26,7 @@ const router = createBrowserRouter(
    {/* <Route path="/dashboard" element={<Dashboard />} /> */}
    <Route path="/signup" element={<Signup />} />
    <Route path="/login" element={<Login />} />
-   <Route path="/settings" element={<Settings />} />
+   <Route path="/settings/:page" element={<Settings />} />
    <Route path="" element={<PrivateRoute />}>
      <Route path="/chat" element={<Chat />} />
      <Route path="/assignproject" element= {<AssignProject />} />
