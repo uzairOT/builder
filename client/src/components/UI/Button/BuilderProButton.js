@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 
-const BuilderProButton = ({ backgroundColor, variant, Icon,iconProps, children, handleOnClick }) => {
+const BuilderProButton = ({ backgroundColor, variant, Icon,iconProps, children, handleOnClick, marginLeft, padding }) => {
   const themeStyle = {
     button: {
       backgroundColor: variant === "outlined" ? "" : backgroundColor,
@@ -10,8 +10,9 @@ const BuilderProButton = ({ backgroundColor, variant, Icon,iconProps, children, 
       "&:hover": {
         backgroundColor: variant === "outlined" ? "" : backgroundColor,
       },
-      marginLeft: "15px",
+      marginLeft: marginLeft ? marginLeft : "15px",
       borderWidth: "1px",
+      padding: padding
     },
   };
 

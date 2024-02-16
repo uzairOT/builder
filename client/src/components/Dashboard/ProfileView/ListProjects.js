@@ -2,7 +2,8 @@
   import React from "react";
   import ProjectCard from "../../UI/Card/ProjectCard";
   import projects from "./assets/data/projects.json";
-
+  import Link from '@mui/material/Link';
+  
   const ListProjects = () => {
     return (
       <Box sx={{ padding: 1}} >
@@ -34,10 +35,11 @@
           <>
           {projects.map((projectProfileCard) => {
             return (
+              <Link key={projectProfileCard.id} href={`projects/${projectProfileCard.id}/default`} underline="none">
               <ProjectCard
-              key={projectProfileCard.image}
               projectProfileCard={projectProfileCard}
               />
+              </Link>
               );
             })}
             </>

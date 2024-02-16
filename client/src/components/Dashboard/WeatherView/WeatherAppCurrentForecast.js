@@ -67,7 +67,7 @@ useEffect(()=>{
         </Select>
       </Box>
         </Box>
-        <Box display={'flex'} flexDirection={'row'} sx={{justifyContent:{xl:'left', lg:'left', md:'center', sm:'center', xs:'center'}}} width={'100%'}>
+        <Box display={'flex'} flexDirection={'row'} sx={{justifyContent:{xl:'left', lg:'center', md:'center', sm:'center', xs:'center'}}} width={'100%'}>
         {/* Humidity */}
         <Stack display="flex" flexDirection={'column'} alignItems="center" pl={4} spacing={1}>
           <Box component={'img'} src={HumidityImg} alt="Humdity" />
