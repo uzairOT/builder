@@ -18,32 +18,16 @@ import {
 import PrivateRoute from "./utils/PrivateRoute";
 import Chat from "./pages/Chat/Chat";
 import Settings from "./pages/Settings/SettingsWrapper";
+import Layout3 from './components/Layouts/Layout3'
 
+  
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<App />}>
-    <Route path="/" element={<Signup />} />
-   {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-   <Route path="/signup" element={<Signup />} />
-   <Route path="/login" element={<Login />} />
-
-   <Route path="/settings/*" element={<Settings />} />
-
-   <Route path="" element={<PrivateRoute />}>
-     <Route path="/chat" element={<Chat />} />
-     <Route path="/assignproject" element= {<AssignProject />} />
-   </Route>
- </Route>
-
-    
-  )
-);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <React.StrictMode>
-      <RouterProvider router={router} />
+      {/* <RouterProvider router={router} /> */}
+      <App/>
     </React.StrictMode>
   </Provider>
 );

@@ -20,26 +20,11 @@ import SideBar from "../../components/Settings/SideBar/SideBar.js";
 
 
 const Settings = () => {
-  const [dailyForecast, setDailyForecast] = useState();
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); 
   const { page } = useParams();
 
-  useEffect(()=>{
-
-    const fetchWeather = async () => {
-      try {
-        const data = await  getFormattedFiveDayWeather({lat: "33.6844", lon: "73.0479", units: 'Metric'});
-        setDailyForecast(data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchWeather();
-
-  }, []);
 console.log(page)
 
 let pageContent;
