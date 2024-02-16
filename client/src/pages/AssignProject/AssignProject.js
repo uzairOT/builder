@@ -5,7 +5,7 @@ import {
   Button, Box, Typography, TextField, MenuItem
 } from "@mui/material";
 
-import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
+import "../../App.css"
 import FooterCircles from '../../components/AssignProject/FooterCircles/FooterCircles'
 import YellowBtn from '../../components/UI/button';
 import StepTitles from '../../components/AssignProject/StepTitles/StepTitles';
@@ -132,7 +132,7 @@ const buttonStyle = {
   padding: "1rem 0.5rem"
 }
 const orTypo = {
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: "0.8rem"
 }
 

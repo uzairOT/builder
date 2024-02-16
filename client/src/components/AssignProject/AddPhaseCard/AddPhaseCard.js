@@ -16,7 +16,7 @@ import { ReactComponent as ArrowDown } from "../Assets/svgs/ArrowDown.svg";
 import { ReactComponent as Arrowup } from "../Assets/svgs/Arrowup.svg";
 import { ReactComponent as EditIcon } from "../Assets/svgs/EditIcon.svg";
 import { ReactComponent as DeleteIcon } from "../Assets/svgs/DeleteIcon.svg";
-import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
+import "../../../App.css"
 import actionButton from "../../UI/actionButton";
 import "./AddPhaseCard.css";
 
@@ -237,7 +237,7 @@ const tableGrid = {
   padding: "1rem 2rem",
 }
 const blackHeading = {
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   color: "#4B4B4B",
   fontSize: "20px",
   fontWeight: 400,
@@ -247,7 +247,7 @@ const blackHeading = {
   marginTop: "1rem",
 };
 const listOfLineText = {
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontWeight: 400,
   fontSize: "1.25rem",
   paddingLeft: "2rem",

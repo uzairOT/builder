@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { HexColorPicker, RgbaColorPicker, RgbaStringColorPicker, HexColorInput, } from "react-colorful";
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Box, Typography } from '@mui/material';
-import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 import actionButton from "../../UI/actionButton";
+import "../../../App.css"
 
 
 import "./ColorPickerElement.css";
@@ -109,7 +109,7 @@ function ColorPickerElement({ handleOpen, handleClose }) {
 }
 
 const typoTitle = {
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     fontSize: "1.5rem",
     color: "#4C8AB1"
 }
@@ -123,7 +123,7 @@ const inputStyle = {
     border: '1px solid #ccc',
     borderRadius: '12px',
     color: "#202227",
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     paddingLeft: "-1.5rem",
     backgroundColor: "#EDF2F6"
 
@@ -140,7 +140,7 @@ const paperPropsStyle = {
 }
 
 const typoText = {
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     fontSize: "1rem",
     color: "#202227"
 }

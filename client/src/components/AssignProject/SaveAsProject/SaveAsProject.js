@@ -8,7 +8,7 @@ import FooterCircles from '../FooterCircles/FooterCircles'
 import StepBoxes from '../StepBoxes/StepBoxes'
 import YellowBtn from "../../UI/button";
 import shallowButton from "../../UI/shallowButton";
-import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf"
+import "../../../App.css"
 import StepTitles from '../StepTitles/StepTitles';
 import ProjectFormFields from '../ProjectFormFields/ProjectFormFields';
 function SaveAsProject({ onSaveStep, onNextStep }) {
@@ -67,7 +67,7 @@ const typoBox = {
 }
 
 const typoText = {
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   letterSpacing: '0.01em',
   color: "#202227",
   textAlign: 'center',

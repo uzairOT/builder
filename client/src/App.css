@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'GT-Walsheim-Regular-Trial';
+    src: url(./assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf) format('opentype');
+}
+
+body {
+    font-family: 'GT-Walsheim-Regular-Trial', sans-serif;
+}

@@ -18,7 +18,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "../Signup/Assets/svgs/GoogleIcon.svg";
 
 import YellowBtn from "../UI/button";
-import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
+import "../../App.css"
 
 const Login = () => {
   const isLG = useMediaQuery("(min-width: 1280px)");
@@ -343,7 +343,7 @@ const logoBox = {
   gap: "7rem",
   marginBottom: "8rem",
   justifyContent: "space-evenly",
-  marginTop: "1rem",
+  marginTop: "2rem",
   display: { lg: "none", md: "none", sm: "none", xs: "flex" },
 }
 
@@ -371,7 +371,7 @@ const linkBox = {
 }
 const checkBox = {
   whiteSpace: "nowrap",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   marginTop: "1rem"
 }
 
@@ -383,7 +383,7 @@ const checkBoxStyle = {
 }
 const forgetPassTypo = {
   whiteSpace: "nowrap",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontWeight: 600,
   paddingTop: "1rem"
 
@@ -397,7 +397,7 @@ const accountLinkText = {
     sm: "1rem",
     xs: "2rem",
   },
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: {
     lg: "1rem",
     md: "1rem",
@@ -416,7 +416,7 @@ const accountLinkText = {
   marginTop: "1.5rem",
 }
 const signupLink = {
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontWeight: 600,
 }
 
@@ -470,7 +470,7 @@ const selectStyle = {
   ".MuiOutlinedInput-notchedOutline": { border: 0 },
   color: "white",
   border: "none",
-  fontFamily: "GT Walsheim Trial",
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: "1rem",
   fontStyle: "normal",
   fontWeight: "400",
@@ -487,7 +487,7 @@ const hptLinksBox = {
 }
 const firstHeading = {
   color: "#FFF",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   marginTop: { lg: "6rem", md: "5rem", sm: "1rem" },
   fontSize: { lg: "2.7rem", md: "2rem", sm: "1.5rem" },
   fontWeight: 400,
@@ -498,7 +498,7 @@ const secondHeading = {
   color: "rgba(255, 255, 255, 0.80)",
   width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
   fontWeight: 400,
 
@@ -507,7 +507,7 @@ const secondHeading = {
 const thirdHeading = {
   color: "#FFF",
   marginTop: "2rem",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontWeight: 400,
@@ -517,7 +517,7 @@ const thirdHeading = {
 const formHeadingStyle = {
   color: "#4C8AB1",
   textAlign: "center",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: "2.1875rem",
   fontWeight: 700,
 };
@@ -535,7 +535,7 @@ const inputStyle = {
 const placeholderStyle = {
   color: "#B8B8B8",
   padding: "8px",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: "1rem",
   fontWeight: 400,
 };
@@ -544,14 +544,14 @@ const labelStyle = {
   display: "block",
   marginBottom: "1rem",
   color: "#202227",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.75rem" },
   fontWeight: 400,
 };
 
 const hptLinksStyle = {
   color: "#FFF",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem" },
   fontWeight: 400,
 
@@ -567,7 +567,7 @@ const googleBtnStyle = {
   border: "1px solid rgba(6, 32, 72, 0.11)",
   background: "#FFF",
   color: "#333",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: { lg: "1.25rem", md: "1.25rem", sm: "1.1rem", xs: "1rem" },
   fontWeight: 400,
   cursor: "pointer",
@@ -588,7 +588,7 @@ const googleBtnStyle = {
 
 const ContinuewithTextStyle = {
   color: "#202227",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
   fontWeight: 400,
   display: "flex",

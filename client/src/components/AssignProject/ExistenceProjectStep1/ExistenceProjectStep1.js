@@ -8,7 +8,7 @@ import StepTitles from "../StepTitles/StepTitles";
 import FooterCircles from "../FooterCircles/FooterCircles"
 import YellowBtn from "../../UI/button";
 import shallowButton from "../../UI/shallowButton";
-import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
+import "../../../App.css"
 
 
 function ExistenceProjectStep1({ onNextStep }) {
@@ -21,6 +21,7 @@ function ExistenceProjectStep1({ onNextStep }) {
   const handleNextStep = () => {
     onNextStep();
   };
+
   const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
 
   return (
@@ -84,7 +85,7 @@ const inputStyle = {
   border: '1px solid #ccc',
   borderRadius: '12px',
   color: "#202227",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   paddingLeft: "-1.5rem",
 };
 const formBox = {

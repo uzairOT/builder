@@ -1,6 +1,6 @@
 import { Typography, Grid } from '@mui/material'
 import React from 'react'
-import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
+import "../../../App.css"
 
 
 function StepTitles({ Heading, stepHeading, stepDiscription, projectName }) {
@@ -39,7 +39,7 @@ const discriptionTypo = {
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem", xs: "0.75rem" },
 }
 const stepGeneralText = {
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: '1rem',
   letterSpacing: '0.01em',
   color: "#4C8AB1",

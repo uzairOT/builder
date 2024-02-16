@@ -1,5 +1,5 @@
 
-import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf"
+import "../../App.css"
 
 const YellowBtn = {
   backgroundColor: '#FFAC00',
@@ -20,7 +20,7 @@ const YellowBtn = {
   '&:hover': {
     backgroundColor: '#FFAC00',
   },
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   lineHeight: 'normal',
 
 };

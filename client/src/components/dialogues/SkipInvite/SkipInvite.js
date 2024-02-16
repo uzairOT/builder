@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Box, Typography, MenuItem, Avatar, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close'; import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
+import CloseIcon from '@mui/icons-material/Close';
 import YellowBtn from '../../UI/button';
 
 

@@ -3,6 +3,7 @@ const actionButton = {
   height: "2.375rem",
   padding: "0.75rem 1.5rem",
   justifyContent: "center",
+  fontFamily: "Inter",
   alignItems: "center",
   flexShrink: 0,
   alignSelf: "stretch",

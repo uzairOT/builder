@@ -10,8 +10,8 @@ import {
 } from "@mui/material";
 
 import YellowBtn from "../../UI/button";
-import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 import FooterCircles from "../FooterCircles/FooterCircles";
+import "../../../App.css"
 
 function Footer({ onNextStep }) {
   const navigate = useNavigate()
@@ -74,7 +74,7 @@ const buttonBox = {
 const redText = {
   color: "#BE1D1D",
   marginTop: "1rem",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: "0.875rem",
   fontStyle: "normal",
   fontWeight: 400,

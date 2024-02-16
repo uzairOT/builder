@@ -5,7 +5,7 @@ import {
 } from "@mui/material";
 import "../StepFormField/StepFormField.css"
 
-import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
+import "../../../App.css"
 
 function ProjectFormFields() {
 
@@ -78,7 +78,7 @@ const inputStyle = {
     border: '1px solid #ccc',
     borderRadius: '12px',
     color: "#202227",
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     paddingLeft: "-1.5rem",
 };
 const formBox = {
