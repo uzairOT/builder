@@ -14,6 +14,9 @@ function Header({ gap, handlePreviousStep, }) {
 
 
   const isMobile = useMediaQuery('(max-width:600px)');
+  const isTab = useMediaQuery('(max-width:900px)');
+  const isMd = useMediaQuery('(max-width:1200px)');
+  const imgWidth = isMd ? "18%" : "12%";
   const handleStep = () => {
     handlePreviousStep();
   };
@@ -30,7 +33,7 @@ function Header({ gap, handlePreviousStep, }) {
           <>
             <Box display={"flex"} flexDirection={"row"}>
               <Box sx={mobileImageBox}>
-                <img src={builder1} width={"40%"} alt="" />
+                <img src={builder1} width={"45%"} alt="" />
               </Box>
               <Box sx={mobileButtonBox}>
                 <Button
@@ -46,7 +49,7 @@ function Header({ gap, handlePreviousStep, }) {
           </>
           :
           <Box sx={headerBox} gap={gap}>
-            <img src={builder1} width={"11%"} alt="" />
+            <img src={builder1} width={imgWidth} alt="" />
             <Button
               sx={buttonStyle}
               startIcon={<ArrowBackIosIcon />}
@@ -73,6 +76,7 @@ const firstGrid = {
 
 const mobileButtonBox = {
   display: "flex", justifyContent: "flex-end", alignItems: "flex-end",
+  marginBottom: "1rem"
 }
 const mobileImageBox = {
   display: "flex", justifyContent: "flex-start", alignItems: "flex-start",

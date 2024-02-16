@@ -7,7 +7,7 @@ import AttachFileSharpIcon from '@mui/icons-material/AttachFileSharp';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import SkipInvite from "../../dialogues/SkipInvite/SkipInvite";
 
-import "../StepForm/StepForm.css"
+import "../StepFormField/StepFormField.css"
 import {
   Button, Box,
 } from "@mui/material";

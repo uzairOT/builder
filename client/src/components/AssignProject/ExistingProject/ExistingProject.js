@@ -43,23 +43,22 @@ function ExistingProject() {
                 )
             case 0:
                 return (
-                    <div>
-                        <Box
-                            sx={{
-                                ...normalBox,
-                                backgroundColor: "#4C8AB1",
-                            }}
-                        >
-                            <Box sx={{ ...normalBox, ...whiteBox, marginTop: "0.99rem" }}>
 
-                                <Header gap="25rem" handlePreviousStep={handlePreviousStep} />
-                                <ExistenceProjectStep1 onNextStep={onNextStep} />
+                    <Box
+                        sx={{
+                            ...normalBox,
+                            ...backgroundColor
+                        }}
+                    >
+                        <Box sx={{ ...normalBox, ...whiteBox, }}>
+
+                            <Header gap="25rem" handlePreviousStep={handlePreviousStep} />
+                            <ExistenceProjectStep1 onNextStep={onNextStep} />
 
 
-                            </Box >
-                        </Box>
+                        </Box >
+                    </Box>
 
-                    </div>
                 );
             case 1:
                 return (
@@ -100,10 +99,17 @@ const normalBox = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    overFlowX: "hidden",
+    conttain: "content"
 }
-
+const backgroundColor = {
+    backgroundColor: { lg: "#4C8AB1", sm: "#4C8AB1", xs: "#FFF" }
+}
 const whiteBox = {
     background: "#FFF", width: { lg: "70%", sm: '80%', xs: "90%" },
-    margin: "1rem", padding: { lg: "0rem 2rem", sm: "0rem 2rem", xs: "0rem 2rem" }, borderRadius: '1rem',
+    padding: { lg: "0rem 2rem", sm: "0rem 2rem", xs: "0rem 1rem 0rem 0rem" }, borderRadius: '1rem',
+    marginTop: { lg: "0.99rem", sm: "", xs: "0rem" },
+    marginBottom: { lg: "0.99rem", sm: "", xs: "0rem" },
+    overFlow: "hidden"
 }
 export default ExistingProject

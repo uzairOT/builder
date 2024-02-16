@@ -16,9 +16,9 @@ function ProjectFormFields() {
   const isMobile = useMediaQuery('(max-width:600px)');
   const isTab = useMediaQuery('(max-width:900px)');
   const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
-  const formWidth = { width: isMobile ? "75%" : isTab ? "65%" : "45%" }
+  const formWidth = { width: isMobile ? "75%" : isTab ? "65%" : "48%" }
   const borderRadiusResponsive = { borderRadius: isMobile ? "0.5rem" : "0.75rem" }
-  const placeholderText = !isTab && !isMobile ? 'e.g. abc@workmail.com' : '@workmail';
+  const placeholderText = !isTab && !isMobile ? 'e.g. abc@workmail.com' : '@mail';
 
 
   const handleEmailChange = (event) => {
@@ -113,7 +113,10 @@ const formInnerBox = {
   display: 'flex', flexDirection: 'row', justifyContent: 'space-between', gap: { lg: "2rem", md: "1.5rem", sm: "1rem", xs: "0.5rem" }
 }
 const fieldBox1 = {
-  flex: 4, marginRight: "1rem", position: "relative",
+  flex: 4,
+  marginRight: "1rem",
+  marginLeft: "-1rem",
+  position: "relative",
 }
 
 const formStyle = {
@@ -121,7 +124,7 @@ const formStyle = {
 }
 
 const counterTypo = {
-  position: 'absolute', right: '1rem', bottom: '1.5rem', fontSize: '0.8rem',
+  position: 'absolute', right: '-0.2rem', bottom: '1.5rem', fontSize: '0.8rem',
   color: "#B8B8B8",
   fontFamily: 'Inter',
   fontWeight: 500
