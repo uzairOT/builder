@@ -14,7 +14,10 @@ import ClientsPage from "../../components/Settings/Client/Client.js"
 import SubcontractorPage from "../../components/Settings/Subcontractor/Subcontractor.js"
 import SupplierPage from "../../components/Settings/SupplierList/SupplierList.js"
 import MaterlinePage from "../../components/Settings/MasterLineItem/MasterLineItem.js"
-import NotFoundPage from "../NotFound/NotFound.js"
+import NotFoundPage from "../NotFound/NotFound.js";
+import SideBar from "../../components/Settings/SideBar/SideBar.js";
+
+
 
 const Settings = () => {
   const [dailyForecast, setDailyForecast] = useState();
@@ -65,7 +68,9 @@ switch (page) {
   default:
     pageContent = <NotFoundPage />;
 }
-
+useEffect(()=>{
+  console.log("sa")
+})
 
   return (
     <>
@@ -74,7 +79,7 @@ switch (page) {
       <Grid sx={themeStyle.dashboard} container pt={1} >
         {/* Side bar */}
         <Grid item xs={12} sm={3} md={2}>
-          <Paper  sx={{ borderRadius: '0 14px 14px 0', height:'97%'}} ></Paper>
+          <Paper  sx={{ borderRadius: '0 14px 14px 0', height:'97%'}} ><SideBar/> </Paper>
         </Grid>
         {/* Weather and Progress View */}
         {/* <Grid item xs={12} sm={9} md={7} >

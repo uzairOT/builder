@@ -17,7 +17,8 @@ import {
 } from "react-router-dom";
 import PrivateRoute from "./utils/PrivateRoute";
 import Chat from "./pages/Chat/Chat";
-import Settings from "./pages/Settings/Settings";
+import Settings from "./pages/Settings/SettingsWrapper";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,7 +27,9 @@ const router = createBrowserRouter(
    {/* <Route path="/dashboard" element={<Dashboard />} /> */}
    <Route path="/signup" element={<Signup />} />
    <Route path="/login" element={<Login />} />
-   <Route path="/settings/:page" element={<Settings />} />
+
+   <Route path="/settings/*" element={<Settings />} />
+
    <Route path="" element={<PrivateRoute />}>
      <Route path="/chat" element={<Chat />} />
      <Route path="/assignproject" element= {<AssignProject />} />
