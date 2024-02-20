@@ -23,11 +23,11 @@ function Layout3() {
             xs={12}
             sm={12}
             md={12}
-            lg={6}
+            lg={8}
             mb={1}
-            style={{ paddingTop: "0px", paddingLeft: "0px" }}
+            style={{ paddingTop: "0px", paddingLeft: "10px" }}
           >
-            <Paper sx={themeStyle.progressCard} margin={1}>
+            <Paper sx={themeStyle.Layout3Pages} margin={1}>
               <Outlet />
             </Paper>
           </Grid>
@@ -47,8 +47,8 @@ const themeStyle = {
   dashboardViews: {
     height: "100%",
   },
-  progressCard: {
-    height: "100%",
+  Layout3Pages: {
+    // height: "100%",
     width: "100%",
     margin: "1px",
     borderRadius: "14px",

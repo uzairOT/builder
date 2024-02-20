@@ -1,21 +1,118 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Box, Typography, List, ListItemText, ListItem } from '@mui/material';
+import { useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom';
-
+import "../../../App.css";
 function SideBar() {
-  return (
-    <div>
-      <h2>SideBar</h2>
-      <ul>
-        <li><Link to="/settings/profile">Profile</Link></li>
-        <li><Link to="/settings/admin">Admin</Link></li>
-        <li><Link to="/settings/projectmanager">Project Manager</Link></li>
-        <li><Link to="/settings/clients">Clients</Link></li>
-        <li><Link to="/settings/subcontractor">Subcontractor</Link></li>
-        <li><Link to="/settings/supplier">Supplier</Link></li>
-        <li><Link to="/settings/materline">Materline</Link></li>
-      </ul>
-    </div>
-  );
-}
+    const location = useLocation();
+   
 
+
+
+    const paths = [
+        '/settings/profile',
+        '/settings/admin',
+        '/settings/projectmanager',
+        '/settings/clients',
+        '/settings/subcontractor',
+        '/settings/supplier',
+        '/settings/materline'
+      ];
+
+      const selectedItem = paths.findIndex(path => path === location.pathname);
+
+    return (
+        <Box padding={"2rem"}>
+            <Typography sx={listHeading}>My Profile</Typography>
+            <List sx={{ ...listHeading, fontSize: "1rem", marginTop: "2rem" }}>
+                <ListItem
+                    component={Link}
+                    to="/settings/profile"
+                  
+                    selected={selectedItem === 0}
+                    sx={listItemStyle}
+                >
+                    Profile
+                </ListItem>
+                <ListItem
+                    component={Link}
+                    to="/settings/admin"
+                    
+                    selected={selectedItem === 1}
+                    sx={listItemStyle}
+                >
+                    Admin
+                </ListItem>
+                <ListItem
+                component={Link}
+                    to="/settings/projectmanager"
+                    
+                    selected={selectedItem === 2}
+                    sx={listItemStyle}
+                >
+                    Project Manager
+                </ListItem>
+                <ListItem
+                component={Link}
+                    to="/settings/clients"
+                    
+                    selected={selectedItem === 3}
+                    sx={listItemStyle}
+                >
+                    Clients
+                </ListItem>
+                <ListItem
+                component={Link}
+                    to="/settings/subcontractor"
+                  
+                    selected={selectedItem === 4}
+                    sx={listItemStyle}
+                >
+                    Subcontractor
+                </ListItem>
+                <ListItem
+                component={Link}
+                    to="/settings/supplier"
+                    
+                    selected={selectedItem === 5}
+                    sx={listItemStyle}
+                >
+                    Supplier List
+                </ListItem>
+                <ListItem
+                component={Link}
+                    to="/settings/materline"
+                    
+                    selected={selectedItem === 6}
+                    sx={listItemStyle}
+                >
+                    Master Line List
+                </ListItem>
+            </List>
+        </Box>
+    );
+}
+const listHeading = {
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+  fontSize: '1.5rem',
+  color: "#000",
+};
+
+const listItemStyle = {
+  color: "#000",
+  height:"46px",
+  marginBottom: "1rem", 
+  cursor: "pointer", 
+  marginBottom:"0px",
+  
+  "&:hover": {
+    //   backgroundColor: "#E9F6FF",
+  },
+  '&.Mui-selected': {
+      backgroundColor: '#E9F6FF',
+      borderRadius: "0 9px 9px 0",
+      borderLeft: "6px solid #1F9EF3",
+      color: "#4C8AB1"
+  },
+};
 export default SideBar;
