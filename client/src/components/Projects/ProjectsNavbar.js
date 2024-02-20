@@ -46,7 +46,7 @@ const ProjectsNavbar = ({project}) => {
         <Stack direction={'row'} alignItems={'center'} spacing={1}>
     <IconButton><ChevronLeftIcon style={{color:'black'}}/></IconButton>
       <img src={project.image} alt='Project' width={'60px'} height={'35px'} style={{borderRadius: '12px'}}></img>
-    <Link to={`${project.id}/default`} underline='none'>
+    <Link to={`default`} style={{textDecoration: 'none'}}>
       <Typography color={'#494A4A'} fontSize={'20px'} fontWeight={'600'} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'}>{project.title}</Typography>
     </Link>
         </Stack>
@@ -55,7 +55,7 @@ const ProjectsNavbar = ({project}) => {
       <Stack direction={'row'} alignItems={'center'} spacing={1} pr={2}>
         {navLinks.map((navlink, index) => (
           <React.Fragment key={index}>
-            <Link to={`${project.id}/${navlink.path}`} underline='none'>
+            <Link to={`${navlink.path}`} style={{textDecoration: 'none'}}>
               <Typography
                 color={'#494A4A'}
                 fontSize={'15px'}
@@ -66,7 +66,7 @@ const ProjectsNavbar = ({project}) => {
                 {navlink.title}
               </Typography>
             </Link>
-            {index !== navLinks.length - 1 && <Divider orientation="vertical" flexItem />}
+            {index !== navLinks.length - 1 && <Divider orientation="vertical" style={{borderWidth:'1px'}} flexItem />}
           </React.Fragment>
         ))}
       </Stack>

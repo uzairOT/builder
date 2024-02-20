@@ -1,8 +1,9 @@
+import { Box } from '@mui/material'
 import React from 'react'
 
 const DrawingFilesView = () => {
   return (
-    <div>DrawingFilesView</div>
+    <Box flex={2}>DrawingFilesView</Box>
   )
 }
 

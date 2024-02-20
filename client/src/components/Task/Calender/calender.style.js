@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 
 const calenderWrapper = styled.div`
+.rbc-toolbar button:hover {
+  background-color: #31313159;
+}
 .rbc-date-cell.rbc-now  button{
   color: white;
 }
@@ -55,12 +58,12 @@ const calenderWrapper = styled.div`
   .rbc-header {
     border: 0 !important;
     text-align: center !important;
-    height: 45px;
-    color: #6A6A6A;
+    min-height: 25px;
+    color: #484848;
     text-align: center;
     font-size: 13px;
     span {
-      font-family: Montserrat, sans-serif;
+      font-family: Inter, sans-serif;
       white-space: pre-line !important;
     }
   }
@@ -69,7 +72,7 @@ const calenderWrapper = styled.div`
     padding-left: 5px;
     .rbc-month-row {
       border: 0;
-      min-height: 128px;
+      min-height: 80px;
      
     }
   }

@@ -1,10 +1,11 @@
+import { Box } from '@mui/material'
 import React from 'react'
 
 const PermitView = () => {
   return (
-    <div>
+    <Box flex={2}>
       PermitView
-    </div>
+    </Box>
   )
 }
 

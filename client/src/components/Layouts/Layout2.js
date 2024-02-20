@@ -1,4 +1,4 @@
-import { Grid, Paper, Stack } from '@mui/material'
+import { Grid, Paper, Stack, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
 import ProjectsSidebar from '../Projects/ProjectsDashboard/ProjectsSidebar'
 import { Outlet, useParams } from 'react-router-dom'
@@ -19,13 +19,14 @@ useEffect(()=>{
   return (
     <>
     <Grid container height={"100vh"} backgroundColor={"#eff5ff"} spacing={1}>
-    <Grid item xl={2} height={"99vh"}>
+    <Grid item xl={2} md={2} height={"99vh"}>
           <Paper sx={{ height: "100%", borderRadius: "14px" }}>
+            <Typography sx={themeStyle.title} p={2} pb={1.5}>Projects Dashboard</Typography>
             <ProjectsSidebar />
           </Paper>
         </Grid>
-        <Grid item  xl={10} pr={1}>
-        <Stack><Paper sx={{height:'100%', borderRadius: '14px'}}><ProjectsNavbar project={selectedProjectId} /></Paper></Stack>
+        <Grid item  xl={10} md={10} pr={1} style={{height:'99vh'}} overflow={'hidden'}>
+        <Stack><Paper sx={{height:'100%', borderRadius: '14px', }}><ProjectsNavbar project={selectedProjectId} /></Paper></Stack>
         <Outlet/>
         </Grid>
     </Grid>
@@ -35,3 +36,12 @@ useEffect(()=>{
 }
 
 export default Layout2
+
+const themeStyle = {
+  title: {
+    fontSize: '22px',
+    fontWeight: '500',
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+    color: '#000000'
+},
+}

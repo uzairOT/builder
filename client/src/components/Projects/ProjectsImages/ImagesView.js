@@ -1,10 +1,11 @@
+import { Box } from '@mui/material'
 import React from 'react'
 
 const ImagesView = () => {
   return (
-    <div>
+    <Box flex={2}>
       ImagesView
-    </div>
+    </Box>
   )
 }
 

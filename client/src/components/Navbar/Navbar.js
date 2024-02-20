@@ -43,6 +43,8 @@ const Navbar = () => {
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
+    const lowercasedValue = `${event.target.textContent}`.toLowerCase();
+    navigate(lowercasedValue === 'dashboard' ? '/' : lowercasedValue);
   };
   const handleLogout = () => {
     localStorage.clear();
@@ -104,7 +106,7 @@ const Navbar = () => {
             indicatorColor=""
             centered
           >
-            <Tab label="Dashboard" to={'/dashboard'} style={themeStyle.getTabColor(0)} />
+            <Tab label="Dashboard" style={themeStyle.getTabColor(0)} />
             <Tab label="Projects" style={themeStyle.getTabColor(1)} />
             <Tab label="Reports" style={themeStyle.getTabColor(2)} />
             <Tab label="Chat" style={themeStyle.getTabColor(3)} />

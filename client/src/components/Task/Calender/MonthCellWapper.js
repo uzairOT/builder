@@ -7,7 +7,7 @@ const currentDate = moment(new Date());
 const currentFormattedDate = currentDate.format('M/D/YYYY');
 const currentMonth = currentDate.format("MMM")
 
-const MonthCellWapper = ({props, isDrawerOpen, monthView}) => {
+const MonthCellWapper = ({props, isDrawerOpen, monthView, isProjectPage}) => {
 
   const month = moment(props.value).format('MMM');
 
@@ -15,6 +15,7 @@ const MonthCellWapper = ({props, isDrawerOpen, monthView}) => {
   const isCurrentDay = currentFormattedDate === date;
 
   const isCurrentMonth = currentMonth === month;
+  console.log("isProjectPage: ", isProjectPage)
   let backgroundColor;
   if(isCurrentDay){
     backgroundColor = '#4C8AB1';
@@ -37,7 +38,7 @@ const MonthCellWapper = ({props, isDrawerOpen, monthView}) => {
     </Stack>
   )} else {
     return(
-      <Stack border={'1px solid'} width={'100%'} height={'95.5%'} borderRadius={'4px 4px 4px 4px'} borderColor={'#31313159'} m={0.2} pt={isDrawerOpen ? 1 : 3} flexWrap={'wrap'} sx={{backgroundColor: backgroundColor}}>
+      <Stack border={'1px solid'} width={'100%'} borderRadius={'4px 4px 4px 4px'} borderColor={'#31313159'} m={0.2} pt={isDrawerOpen ? 1 : 3} flexWrap={'wrap'} sx={{backgroundColor: backgroundColor}}>
      
       </Stack>
     )

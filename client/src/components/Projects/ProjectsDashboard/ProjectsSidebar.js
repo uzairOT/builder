@@ -14,7 +14,6 @@ const ProjectsSidebar = () => {
     <>
         <Stack p={2}>
             {/* PROJECT DASHBOARD */}
-            <Typography sx={themeStyle.title} pb={1.5}>Projects Dashboard</Typography>
             <Typography sx={themeStyle.subtile} pb={1.5}>User Projects</Typography>
             <Divider  variant='fullWidth'sx={{marginLeft:'2px',marginRight:'2px'}}/>
 
