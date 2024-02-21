@@ -13,7 +13,7 @@ function Layout3() {
       <main>
         <Grid sx={themeStyle.dashboard} container pt={1}>
           {/* Side bar */}
-          <Grid item xs={12} sm={3} md={2}>
+          <Grid item xs={12} sm={12} md={12} lg={2}>
             <Paper sx={{ borderRadius: "0 14px 14px 0", height: "97%" }}>
               <SideBar />{" "}
             </Paper>
@@ -23,7 +23,7 @@ function Layout3() {
             xs={12}
             sm={12}
             md={12}
-            lg={8}
+            lg={10}
             mb={1}
             style={{ paddingTop: "0px", paddingLeft: "10px" }}
           >
@@ -50,7 +50,7 @@ const themeStyle = {
   Layout3Pages: {
     // height: "100%",
     width: "100%",
-    margin: "1px",
+    // margin: "1px",
     borderRadius: "14px",
   },
   scrollable: {

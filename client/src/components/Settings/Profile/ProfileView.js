@@ -3,6 +3,7 @@ import { Box, Grid, Typography, TextField } from "@mui/material";
 import Textarea from "@mui/joy/Textarea";
 import Avatar from "@mui/material/Avatar";
 import AvatarImg from "../../../assets/settings/UploadProfileIcon.png";
+import Button from "../../UI/CustomButton";
 
 function ProfileView() {
   const [formData, setFormData] = useState({
@@ -24,9 +25,11 @@ function ProfileView() {
   return (
     <Box sx={{ mb: 2 }}>
       <Grid container spacing={2}>
-        <Grid item xs={8}>
+        <Grid item md={8} xs={12} >
           <Grid item xs={12}>
-          <Typography variant="h5" sx={Profile}>Profile</Typography>
+            <Typography variant="h5" sx={Profile}>
+              Profile
+            </Typography>
           </Grid>
 
           <Grid container spacing={2}>
@@ -82,13 +85,34 @@ function ProfileView() {
                 value={formData.address}
                 onChange={handleChange}
                 multiline
+                rows={4}
                 fullWidth
                 sx={textAreaStyle}
               />
             </Grid>
+            <Grid item xs={12} sx={{ display: "flex", gap: 1, my: 6.1 }}>
+              <Button
+                buttonText="Update Profile"
+                color="#ffffff"
+                backgroundColor="#4C8AB1"
+                width="112px"
+                height="38px"
+                borderRadius="50px"
+              />
+
+              <Button
+                buttonText="Reset"
+                color="#4C8AB1"
+                border={"1px solid #4C8AB1"}
+                width="112px"
+                height="38px"
+                borderRadius="50px"
+                fontSize={"13px"}
+              />
+            </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item md={4} xs={12}>
           <Box textAlign="center">
             <Typography variant="subtitle1" sx={changeProfile}>
               Your Profile Picture
@@ -112,10 +136,7 @@ function ProfileView() {
               </Typography>
             </Box>
             <Box>
-              <Typography
-                variant="body1"
-                sx={TextStyle}
-              >
+              <Typography variant="body1" sx={TextStyle}>
                 User:
               </Typography>
               <Typography variant="body1" sx={ValueStyle}>
@@ -146,6 +167,20 @@ function ProfileView() {
                 {formData.address}
               </Typography>
             </Box>
+
+            <Box sx={{textAlign:"center" ,mt:15}}>
+           
+               <Button
+                buttonText="Delete Profile"
+                color="#E03535"
+                border={"1px solid #E03535"}
+                width="112px"
+                height="38px"
+                borderRadius="50px"
+                fontSize={"13px"}
+              />
+
+            </Box>
           </Box>
         </Grid>
       </Grid>
@@ -158,7 +193,7 @@ export default ProfileView;
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: 'Manrope, sans-serif',
+  fontFamily: "Manrope, sans-serif",
   "& input": {
     border: "1px solid #E0E4EC",
     borderRadius: "8px",
@@ -176,6 +211,7 @@ const textAreaStyle = {
   borderRadius: "8px",
   border: "1px solid #E0E4EC",
   padding: "10px",
+  height:"135px",
   "&:focus": {
     outline: "none", // Remove the default focus outline
     borderColor: "#1a73e8", // Example color for focused state
@@ -188,8 +224,8 @@ const TextStyle = {
   fontFamily: "GT Walsheim Trial",
   fontWeight: 400,
   marginBottom: "8px",
-  fontFamily: 'Manrope, sans-serif',
-  fontWeight:"500"
+  fontFamily: "Manrope, sans-serif",
+  fontWeight: "500",
 };
 const ValueStyle = {
   whiteSpace: "nowrape",
@@ -200,10 +236,16 @@ const ValueStyle = {
   fontWeight: 400,
   marginBottom: "8px",
 };
-const Profile = { marginTop: '20px', marginBottom: '30px',fontFamily: 'Manrope, sans-serif',fontWeight:"700",  color: '#4C8AB1' }
+const Profile = {
+  marginTop: "20px",
+  marginBottom: "30px",
+  fontFamily: "Manrope, sans-serif",
+  fontWeight: "700",
+  color: "#4C8AB1",
+};
 
-const changeProfile ={
+const changeProfile = {
   ...Profile,
-  color:"#202227",
-  fontWeight:"500"
-}
+  color: "#202227",
+  fontWeight: "500",
+};

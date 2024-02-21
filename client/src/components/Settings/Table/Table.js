@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import EditIcon from "../../../assets/settings/edit.png";
 import DeleteIcon from "../../../assets/settings/delete.png";
+import EmailIcon from "../../../assets/settings/email.png";
 import Button from "../../UI/CustomButton";
 
 
@@ -49,7 +50,18 @@ const dummyData = [
   // Add more dummy data objects as needed
 ];
 
-function CustomTable() {
+function CustomTable({title , setTemplateView ,setUpdateModalOpen}) {
+  const showEmailAndRecords = title === "subcontractor";
+
+  const handleEmailIconClick = () => {
+    setTemplateView(true); // Call the function to update the template view
+  };
+  
+  const OpenUpdateModal = () => {
+    console.log("UpdateModal")
+    setUpdateModalOpen(true);
+  };
+
   return (
     <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
       <Table>
@@ -62,6 +74,11 @@ function CustomTable() {
             <TableCell sx={tableCellStyle}>Email</TableCell>
             <TableCell sx={tableCellStyle}>Country</TableCell>
             <TableCell sx={tableCellStyle}>Project Status</TableCell>
+            {showEmailAndRecords && (
+              <TableCell sx={tableCellStyle}>
+                Email <br /> Records
+              </TableCell>
+            )}
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
@@ -89,8 +106,16 @@ function CustomTable() {
                   borderRadius="45px"
                 />
               </TableCell>
+              
+              {showEmailAndRecords && (
+                <TableCell sx={tableCellValueStyle}>
+                  <IconButton aria-label="email" size="small" onClick={handleEmailIconClick}>
+                    <img src={EmailIcon} alt="" />
+                  </IconButton>
+                </TableCell>
+              )}
               <TableCell sx={tableCellValueStyle}>
-                <IconButton aria-label="edit" size="small">
+                <IconButton aria-label="edit" size="small" onClick={OpenUpdateModal}>
                   <img src={EditIcon} alt="" />
                 </IconButton>
                 <IconButton aria-label="delete" size="small">
