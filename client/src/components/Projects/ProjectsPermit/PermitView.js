@@ -1,11 +1,13 @@
-import { Box } from '@mui/material'
+import { Box, Paper } from '@mui/material'
 import React from 'react'
+import Permit from '../Permit'
+
 
 const PermitView = () => {
   return (
-    <Box flex={2}>
-      PermitView
-    </Box>
+    <Paper flex={2}>
+      <Permit view={'Permit'}/>
+    </Paper>
   )
 }
 

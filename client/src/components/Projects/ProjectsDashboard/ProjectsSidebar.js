@@ -1,7 +1,9 @@
-import { Divider, Stack, Typography } from '@mui/material'
+import { Box, Divider, Link, Stack, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import BuilderProButton from '../../UI/Button/BuilderProButton'
 import { useParams } from 'react-router-dom'
+import ProjectCard from '../../UI/Card/ProjectCard'
+import projects from './assets/data/projects.json'
 
 const ProjectsSidebar = () => {
     const [activeBtn, setActiveBtn] = useState('New build')
@@ -9,7 +11,8 @@ const ProjectsSidebar = () => {
     const handleListedProjectsButton = (btn)=>{
         setActiveBtn(btn);
     }
-    
+    const {id} = useParams();
+    console.log(id);
   return (
     <>
         <Stack p={2}>
@@ -39,9 +42,23 @@ const ProjectsSidebar = () => {
                 </Typography>
                 </BuilderProButton>
             </Stack>
-            <Stack>
-
-            </Stack>
+        <Box sx={{...themeStyle.scrollable }}  style={{height:'70vh',}}>
+        <Stack spacing={1} pl={2} pr={2} pt={1} >
+          <>
+          {projects.map((projectProfileCard) => {
+            const selected = projectProfileCard.id == id;
+            return (
+              <Link key={projectProfileCard.id} underline="none">
+              <ProjectCard
+              projectProfileCard={projectProfileCard}
+              selected={selected}
+              />
+              </Link>
+              );
+            })}
+            </>
+        </Stack>
+            </Box>
         </Stack>
     </>
   )
@@ -67,5 +84,20 @@ const themeStyle = {
         fontWeight: '500',
         fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
         color: '#535353C9'
-    }
-}
+    },
+  scrollable: {
+    scrollbarWidth: 'none',  // For Firefox
+    '-ms-overflow-style': 'none',  // For IE and Edge
+    '&::-webkit-scrollbar': {
+      width: '6px'
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: 'transparent',
+      transition: 'background-color 0.3s',
+    },
+    '&:hover::-webkit-scrollbar-thumb': {
+      backgroundColor: '#ddd',
+    },
+    overflowY: 'scroll'
+  }
+ }

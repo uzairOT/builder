@@ -8,62 +8,63 @@ const StyledText = styled("text")(({ theme, color }) => ({
   fill: color,
   textAnchor: "middle",
   dominantBaseline: "central",
-  fontSize: '16px',
+  fontSize: '24px',
   fontFamily: "Inter, sans serif",
   color: theme.palette.text.color,
+  fontWeight: '600'
 }));
 
 function PieCenterLabel({ children }) {
   return (
-    <StyledText x={65} y={70} color="#45A5F6">
+    <StyledText x={158} y={100} color="#F65E5E">
       {children}
     </StyledText>
   );
 }
 function PieCenterLabel2({ children }) {
   return (
-    <StyledText x={65} y={100} color="#888888">
+    <StyledText x={160} y={120} color="#2D9CDB">
       {children}
     </StyledText>
   );
 }
 
-const ReportsPieChart = () => {
+const OverBudgetPie = () => {
    const data= [
-        { id: 0, value: 20, color: "#1F9EF3, #1B59F800" },
-        { id: 1, value: 80, color: "#eff5ff" },
+        { id: 0, value: 25, color: "#1F9EF3, #1B59F800" },
+        { id: 1, value: 75, color: "#eff5ff" },
       ];
   return (
     <Stack 
-    width={'130px'}
-    height="100%"
+    width={'100%'}
+    height={"100%"}
     justifyContent={'center'}
+    alignItems={'center'}
     >
       <PieChart
         series={[
           {
             data: [
-              { id: 0, value: 20, color: "#1F9EF3, #1B59F800" },
-              { id: 1, value: 80, color: "#eff5ff" },
+              { id: 0, value: 25, color: "#F65E5E, #1B59F800" },
+              { id: 1, value: 75, color: "#2D9CDB" },
             ],
-            innerRadius: 50,
-            outerRadius: 65,
+            innerRadius: 40,
+            outerRadius: 75,
             paddingAngle: 2,
             cornerRadius: 2,
             startAngle: -435,
             endAngle: 360,
-            cx: 60,
-            cy: 80,
+            cx: 150,
+            cy: 100,
           },
         ]}
-        height={160}
-        width={130}
+        height={190}
+        width={300}
         >
-        <PieCenterLabel>20%</PieCenterLabel>
-        <PieCenterLabel2>80%</PieCenterLabel2>
+        <PieCenterLabel>25%</PieCenterLabel>
       </PieChart>
     </Stack>
   );
 };
 
-export default ReportsPieChart;
+export default OverBudgetPie;

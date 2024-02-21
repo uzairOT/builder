@@ -3,6 +3,7 @@ import React from 'react'
 import ProjectsSidebar from '../../components/Projects/ProjectsDashboard/ProjectsSidebar'
 import ProfileReport from './ProfileReport'
 import Reports from '../../components/Reports/Reports'
+import ReportsSideBar from '../../components/Reports/ReportsSideBar'
 
 const ReportsPage = () => {
   return (
@@ -14,13 +15,15 @@ const ReportsPage = () => {
             <ProjectsSidebar />
           </Paper>
     </Grid>
-    <Grid item xl={7}>
-        <Paper>
+    <Grid item xl={7} height={"99vh"}>
+        <Paper sx={{height:'100%', borderRadius: '14px'}}>
             <Reports />
         </Paper>
     </Grid>
-    <Grid item xl={3}>
-        <Box>yoo</Box>
+    <Grid item xl={3} height={"99vh"}>
+        <Box sx={{height:'100%', borderRadius: '14px', ...themeStyle.scrollable}}>
+          <ReportsSideBar />
+        </Box>
     </Grid>
    </Grid>
    </>
@@ -28,3 +31,19 @@ const ReportsPage = () => {
 }
 
 export default ReportsPage
+const themeStyle = {
+  scrollable:{
+    overflowY: 'scroll',
+    scrollbarWidth: 'none',  // For Firefox
+    '-ms-overflow-style': 'none',  // For IE and Edge
+    '&::-webkit-scrollbar': {
+      width: '6px'
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: 'transparent',
+      transition: 'background-color 0.3s',
+    },
+    '&:hover::-webkit-scrollbar-thumb': {
+      backgroundColor: '#ddd',
+    }, }
+}
