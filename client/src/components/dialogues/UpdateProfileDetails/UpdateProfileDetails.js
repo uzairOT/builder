@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Box, Typography, MenuItem, Avatar } from '@mui/material';
-import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 import actionButton from "../../UI/actionButton";
 import placeholderImage from "../Assets/pngs/AvatarPlaceholder.png";
+import "../../../App.css"
 
 
 function UpdateProfileDetails() {
@@ -233,7 +233,7 @@ function UpdateProfileDetails() {
 }
 
 const typoTitle = {
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     fontSize: "1.5rem",
     color: "#4C8AB1"
 }
@@ -247,7 +247,7 @@ const inputStyle = {
     border: '1px solid #ccc',
     borderRadius: '12px',
     color: "#202227",
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     paddingLeft: "-1.5rem",
     backgroundColor: "#EDF2F6"
 
@@ -291,7 +291,7 @@ const paperPropsStyle = {
 }
 
 const typoText = {
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     fontSize: "0.8rem",
     color: "#202227"
 }

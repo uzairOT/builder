@@ -8,7 +8,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SkipInvite from "../../dialogues/SkipInvite/SkipInvite";
 
 
-import "../StepForm/StepForm.css";
+// import "../StepForm/StepForm.css";
 
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser,updateUserEmail, updateUserRole,selectUsers } from '../../../redux/slices/projectFormSlice';
@@ -103,11 +103,11 @@ function AssignNewProjectStep2({ onNextStep }) {
         </Button>
       </Box>
       <Box
-        sx={buttonBox}
+        sx={{ ...buttonBox, ...buttoncontainer }}
       >
-        <Button sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}
+        <Button sx={{ ...YellowBtn, ...buttonStyle }}
           onClick={handleNextStep}>Next</Button>
-        <Button sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}
+        <Button sx={{ ...YellowBtn, ...buttonStyle }}
           onClick={handleSkip}
         >Skip</Button>
       </Box>
@@ -120,6 +120,7 @@ function AssignNewProjectStep2({ onNextStep }) {
         <SkipInvite
           handleOpen={handleOpen}
           handleClose={handleClose}
+          handleNextStep={handleNextStep}
         />
       )}
 
@@ -132,17 +133,23 @@ const buttonBox = {
   flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",
-  gap: "3rem",
-  marginTop: "1.5rem"
+  marginTop: "1.5rem",
+  gap: "3rem"
 }
-const buttonLnks = {
-  fontFamily: "Inter",
-  fontWeight: 500,
-  height: "50%",
-  marginTop: "2rem",
-  textTransform: "none",
-  color: "#4C8AB1",
-};
 
+const buttoncontainer = {
+  gap: { lg: "3rem", md: "2.5rem", sm: "2rem", xs: "1rem" },
+  padding: "0rem 3rem"
+
+}
+const buttonStyle = {
+  padding: { lg: "1rem 3.5rem", md: "1rem 2.5rem", sm: "1rem 2rem", xs: "1rem 1rem" },
+}
+
+const buttonLnks = {
+  fontFamily: "Inter", fontWeight: 500, height: "50%", marginTop: "2rem", textTransform: "none", color: "#4C8AB1", fontSize: { lg: "0.9rem", md: "0.9rem", sm: "0.8rem", xs: "0.6rem" },
+  whiteSpace: "nowrap"
+
+}
 
 export default AssignNewProjectStep2;

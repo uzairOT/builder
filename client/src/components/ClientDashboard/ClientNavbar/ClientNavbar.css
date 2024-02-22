@@ -1,0 +1,8 @@
+
+
+.css-1rs4vbj-MuiInputBase-root-MuiInput-root-MuiSelect-root::before{
+    border-bottom: none !important;
+}
+.css-1rs4vbj-MuiInputBase-root-MuiInput-root-MuiSelect-root::after{
+    border-bottom: none !important;
+}

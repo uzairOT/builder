@@ -4,6 +4,7 @@ import {
   Box,
   Grid,
   Button,
+  useMediaQuery
 } from "@mui/material";
 
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -11,6 +12,11 @@ import builder1 from "../../Signup/Assets/pngs/builderProYellowLogo.png";
 
 function Header({ gap, handlePreviousStep, }) {
 
+
+  const isMobile = useMediaQuery('(max-width:600px)');
+  const isTab = useMediaQuery('(max-width:900px)');
+  const isMd = useMediaQuery('(max-width:1200px)');
+  const imgWidth = isMd ? "18%" : "12%";
   const handleStep = () => {
     handlePreviousStep();
   };
@@ -20,18 +26,41 @@ function Header({ gap, handlePreviousStep, }) {
       <Grid
         item
         lg={12}
+
         sx={firstGrid}
       >
-        <Box sx={{ display: "flex", justifyContent: "space-between" }} gap={gap}>
-          <img src={builder1} width={"11%"} alt="" />
-          <Button
-            sx={{ height: "50%", marginTop: "2rem" }}
-            startIcon={<ArrowBackIosIcon />}
-            onClick={handleStep}
-          >
-            Back
-          </Button>
-        </Box>
+        {isMobile ?
+          <>
+            <Box display={"flex"} flexDirection={"row"}>
+              <Box sx={mobileImageBox}>
+                <img src={builder1} width={"45%"} alt="" />
+              </Box>
+              <Box sx={mobileButtonBox}>
+                <Button
+                  sx={buttonStyle}
+                  startIcon={<ArrowBackIosIcon />}
+                  onClick={handleStep}
+                >
+
+                  Back
+                </Button>
+              </Box>
+            </Box>
+          </>
+          :
+          <Box sx={headerBox} gap={gap}>
+            <img src={builder1} width={imgWidth} alt="" />
+            <Button
+              sx={buttonStyle}
+              startIcon={<ArrowBackIosIcon />}
+              onClick={handleStep}
+            >
+              Back
+            </Button>
+          </Box>
+
+        }
+
       </Grid>
     </div>
   )
@@ -41,7 +70,23 @@ function Header({ gap, handlePreviousStep, }) {
 const firstGrid = {
   display: "flex",
   flexDirection: "column",
-  padding: "0rem 6rem",
+  padding: { lg: "0rem 6rem", md: "0rem 5rem", sm: "0rem 4rem", xs: "0rem 1rem" },
   marginTop: "1rem"
 }
+
+const mobileButtonBox = {
+  display: "flex", justifyContent: "flex-end", alignItems: "flex-end",
+  marginBottom: "1rem"
+}
+const mobileImageBox = {
+  display: "flex", justifyContent: "flex-start", alignItems: "flex-start",
+}
+const headerBox = {
+  display: "flex", justifyContent: "space-between"
+}
+const buttonStyle = {
+  height: "50%", marginTop: { lg: "2rem", sm: "2rem", xs: "0rem" }, fontFamily: "Inter"
+}
+
+
 export default Header

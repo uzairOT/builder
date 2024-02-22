@@ -7,8 +7,8 @@ import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
 import { Box, Grid, Typography, Button } from "@mui/material";
 import { selectProjectForm } from "../../../redux/slices/projectFormSlice";
 import YellowBtn from "../../UI/button";
-import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
 import FooterCircles from "../FooterCircles/FooterCircles";
+import "../../../App.css"
 
 function Footer({ onNextStep }) {
   const navigate = useNavigate()
@@ -89,12 +89,13 @@ const buttonBox = {
 const redText = {
   color: "#BE1D1D",
   marginTop: "1rem",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: "0.875rem",
   fontStyle: "normal",
   fontWeight: 400,
   lineHeight: "150%", // 1.3125rem
   letterSpacing: "-0.00875rem",
+  display: { lg: "flex", md: "flex", sm: "none", xs: "none" }
 };
 const saveButton = {
   border: "1px solid #FFAC00",

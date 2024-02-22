@@ -100,25 +100,21 @@ function AddPhaseView() {
       <Box
         sx={buttonBox}
       >
-        <Button sx={{ ...actionButton }} startIcon={<ModeEditOutlinedIcon />}
+        <Button sx={{ ...actionButton, ...displayButton }} startIcon={<ModeEditOutlinedIcon />}
           onClick={handleAddPhase}>
           Edit
         </Button>
-        <Button sx={{ ...actionButton }} startIcon={<DeleteOutlinedIcon />}>
+        <Button sx={{ ...actionButton, ...displayButton }} startIcon={<DeleteOutlinedIcon />}>
           Delete
         </Button>
         <Button sx={{ ...actionButton, background: "#FFAC00", }}
           onClick={handleAddPhase}>
           Add Phase
         </Button>
-        <Button sx={{ ...actionButton, ...approvalButton }}>
+        <Button sx={{ ...actionButton, ...approvalButton, ...displayButton }}>
           Send Approval
         </Button>
       </Box>
-
-
-
-
       {cardPhase.map((phase, index) => (
         <AddPhaseCard
           key={phase?.id}
@@ -157,7 +153,7 @@ const firstGrid = {
   flexDirection: "column",
   padding: {
     lg: "0rem 0rem",
-    md: "4.5rem 2rem",
+    md: "0.1rem 2rem",
     sm: "1rem 2rem",
     xs: "0rem 0rem",
   },
@@ -165,12 +161,12 @@ const firstGrid = {
 }
 const buttonBox = {
   display: "flex",
-  justifyContent: "flex-end",
+  justifyContent: { lg: "flex-end", md: "flex-end", sm: "center", xs: "center" },
   gap: "0.5rem",
   marginTop: "0.5rem",
   padding: {
     lg: "0rem 5rem",
-    md: "4.5rem 2rem",
+    md: "0.1rem 2rem",
     sm: "1rem 2rem",
     xs: "0rem 0rem",
   },
@@ -178,6 +174,10 @@ const buttonBox = {
 }
 const approvalButton = {
   background: "#FFAC00", padding: "1rem 0.5rem"
+}
+
+const displayButton = {
+  display: { lg: "flex", md: "flex", sm: "none", xs: "none" }
 }
 
 export default AddPhaseView;
