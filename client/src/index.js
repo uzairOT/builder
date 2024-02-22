@@ -5,11 +5,9 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
-import Dashboard from "./pages/Dashboard/Dashboard";
 import Signup from "./pages/Signup/Signup"
 import Login from "./pages/Login/Login"
 import AssignProject from "./pages/AssignProject/AssignProject"
-
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -18,25 +16,17 @@ import {
 } from "react-router-dom";
 import PrivateRoute from "./utils/PrivateRoute";
 import Chat from "./pages/Chat/Chat";
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<App />}>
-       <Route path="/" element={<Signup />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="" element={<PrivateRoute />}>
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/assignproject" element= {<AssignProject />} />
-      </Route>
-    </Route>
-  )
-);
+import Settings from "./pages/Settings/SettingsWrapper";
+import Layout3 from './components/Layouts/Layout3'
+
+  
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <React.StrictMode>
-      <RouterProvider router={router} />
+      {/* <RouterProvider router={router} /> */}
+      <App/>
     </React.StrictMode>
   </Provider>
 );

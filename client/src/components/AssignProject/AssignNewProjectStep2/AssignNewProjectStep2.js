@@ -7,6 +7,7 @@ import AttachFileSharpIcon from "@mui/icons-material/AttachFileSharp";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SkipInvite from "../../dialogues/SkipInvite/SkipInvite";
 
+
 import "../StepForm/StepForm.css";
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,17 +33,6 @@ function AssignNewProjectStep2({ onNextStep }) {
     onNextStep();
   };
 
-
-  const dispatch = useDispatch();
-  const users = useSelector(selectUsers);
-
-  const handleAddUser = () => {
-    dispatch(addUser());
-  };
-
-
-
-
   const handleSkip = () => {
     setShowSkipInvite(true);
   };
@@ -54,6 +44,17 @@ function AssignNewProjectStep2({ onNextStep }) {
   const handleClose = () => {
     setShowSkipInvite(false);
   };
+
+
+  const dispatch = useDispatch();
+  const users = useSelector(selectUsers);
+
+  const handleAddUser = () => {
+    dispatch(addUser());
+  };
+
+
+
 
   return (
     <>

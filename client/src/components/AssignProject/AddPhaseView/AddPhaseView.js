@@ -9,6 +9,9 @@ import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import AddPhaseCard from "../AddPhaseCard/AddPhaseCard";
 import actionButton from "../../UI/actionButton";
 import ColorPickerElement from "../../dialogues/ColorPickerElement/ColorPickerElement"
+import { setOpen } from '../../../redux/slices/addPhaseSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectAddPhase } from '../../../redux/slices/addPhaseSlice';
 
 const initialCardPhase = [
   {
@@ -28,7 +31,9 @@ const initialCardPhase = [
 
 function AddPhaseView() {
   const [cardPhase, setCardPhase] = useState(initialCardPhase);
-
+  
+  const { open } = useSelector(selectAddPhase);
+  const dispatch = useDispatch();
 
 
 
@@ -75,15 +80,16 @@ function AddPhaseView() {
   const [showColorPicker, setShowColorPicker] = useState(false);
 
   const handleAddPhase = () => {
-    setShowColorPicker(true); // Set the state to true to render ColorPickerElement
+    dispatch(setOpen(true))
   };
 
   const handleOpen = () => {
-    setShowColorPicker(true); // Set the state to true to open the ColorPickerElement
+   
+    dispatch(setOpen(true))
   };
 
   const handleClose = () => {
-    setShowColorPicker(false); // Set the state to false to close the ColorPickerElement
+    setShowColorPicker(false);
   };
 
   return (
@@ -122,7 +128,7 @@ function AddPhaseView() {
           onGridToggle={() => handleGridToggle(index, phase?.previousIndex)}
         />
       ))}
-      {showColorPicker && (
+      {open && (
         <ColorPickerElement
           handleOpen={handleOpen}
           handleClose={handleClose}

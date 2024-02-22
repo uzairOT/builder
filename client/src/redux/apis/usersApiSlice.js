@@ -9,12 +9,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
+      providesTags:["User"],
     }),
     logout: builder.mutation({
       query: () => ({
         url: `${USERS_URL}/logout`,
         method: 'POST',
       }),
+      providesTags:["User"],
     }),
     register: builder.mutation({
       query: (data) => ({
@@ -22,6 +24,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
+      providesTags:["User"],
     }),
     assignProject: builder.mutation({
       query: (data) => ({
@@ -29,7 +32,9 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
+      providesTags:["User"],
     }),
+  
   }),
 });
 
@@ -38,4 +43,5 @@ export const {
   useLogoutMutation,
   useRegisterMutation,
   useAssignProjectMutation,
+
 } = userApiSlice;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useAssignProjectMutation } from "../../../redux/slices/usersApiSlice";
+import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
 
 import { Box, Grid, Typography, Button } from "@mui/material";
 import { selectProjectForm } from "../../../redux/slices/projectFormSlice";
@@ -60,8 +60,9 @@ function Footer({ onNextStep }) {
           Save as to start the Duplicate the Project with same line Item and
           Phases.
         </Typography>
-        <FooterCircles width3="4rem" background3="#4C8AB1" />
-        
+        <div>
+          <FooterCircles width3="4rem" background3="#4C8AB1" />
+        </div>
       </Grid>
     </div>
   );
