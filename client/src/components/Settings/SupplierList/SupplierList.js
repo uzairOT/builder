@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Divider, Typography } from "@mui/material";
 import ChatView from "../../Chat/ChatView";
 import Header from "../Header/Header";
-import CustomTable from "../Table/Table";
+import CustomTable from "../Tables/Table";
 import Pagination from "@mui/material/Pagination";
 import AddModal from '../../dialogues/Settings/AddModal';
 import UpdateModal from '../../dialogues/Settings/UpdateModal';
