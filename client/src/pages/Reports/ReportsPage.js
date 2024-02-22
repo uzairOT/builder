@@ -7,32 +7,32 @@ import ReportsSideBar from '../../components/Reports/ReportsSideBar'
 
 const ReportsPage = () => {
   return (
-   <>
-   <Grid container height={"100vh"} backgroundColor={"#eff5ff"} spacing={1}>
-   <Grid item xl={2} height={"99vh"}>
+    <>
+      <Grid container height={"100vh"} backgroundColor={"#eff5ff"} spacing={1}>
+        <Grid item xl={2} height={"99vh"}>
           <Paper sx={{ height: "100%", borderRadius: "14px" }}>
-            <ProfileReport />
+            <ProfileReport name={"Admin"} description={"SuperAdmin@gmail.com"} />
             <ProjectsSidebar />
           </Paper>
-    </Grid>
-    <Grid item xl={7} height={"99vh"}>
-        <Paper sx={{height:'100%', borderRadius: '14px'}}>
+        </Grid>
+        <Grid item xl={7} height={"99vh"}>
+          <Paper sx={{ height: '100%', borderRadius: '14px' }}>
             <Reports />
-        </Paper>
-    </Grid>
-    <Grid item xl={3} height={"99vh"}>
-        <Box sx={{height:'100%', borderRadius: '14px', ...themeStyle.scrollable}}>
-          <ReportsSideBar />
-        </Box>
-    </Grid>
-   </Grid>
-   </>
+          </Paper>
+        </Grid>
+        <Grid item xl={3} height={"99vh"}>
+          <Box sx={{ height: '100%', borderRadius: '14px', ...themeStyle.scrollable }}>
+            <ReportsSideBar />
+          </Box>
+        </Grid>
+      </Grid>
+    </>
   )
 }
 
 export default ReportsPage
 const themeStyle = {
-  scrollable:{
+  scrollable: {
     overflowY: 'scroll',
     scrollbarWidth: 'none',  // For Firefox
     '-ms-overflow-style': 'none',  // For IE and Edge
@@ -45,5 +45,6 @@ const themeStyle = {
     },
     '&:hover::-webkit-scrollbar-thumb': {
       backgroundColor: '#ddd',
-    }, }
+    },
+  }
 }

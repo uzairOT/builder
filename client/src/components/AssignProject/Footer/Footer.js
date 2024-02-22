@@ -31,6 +31,9 @@ function Footer({ onNextStep }) {
     const res = await assignProject(FormData).unwrap();
     console.log(res);
   };
+  const handleDone = () => {
+    navigate('/')
+  }
 
   return (
     <div>
@@ -42,9 +45,9 @@ function Footer({ onNextStep }) {
         <Box
           sx={buttonBox}
         >
-          <Link to="/">
-            <Button sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}>Done</Button>
-          </Link>
+
+          <Button sx={{ ...YellowBtn, padding: "1rem 3.5rem" }} onClick={handleDone}>Done</Button>
+
           <Button
             variant="outlined"
             sx={{
