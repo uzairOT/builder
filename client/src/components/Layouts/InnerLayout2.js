@@ -8,6 +8,7 @@ import TabList from '@mui/joy/TabList';
 import Tab,  { tabClasses } from '@mui/joy/Tab';
 import TabPanel from '@mui/joy/TabPanel';
 import ChangeOrder from '../Projects/ProjectsDefault/ChangeOrder'
+import BuilderProButton from '../UI/Button/BuilderProButton'
 
 const InnerLayout2 = () => {
   return (
@@ -20,7 +21,10 @@ const InnerLayout2 = () => {
         <Stack direction={'row'} pt={1} spacing={1} sx={{height:'80%'}}>
         <Outlet />
         {/* Change Order Tab navigation */}
-        <Stack flex={1}><Paper style={{...themeStyle.border, height:'71vh'}}>
+        <Stack flex={1}>
+          <Paper style={{...themeStyle.border, height:'71vh', width: '99%'}}>
+          {/* First Item of Stack */}
+          <Stack>
           <Typography p={3} pb={1} color={'#4C8AB1'}>Change Order</Typography>
           <Tabs defaultValue={0} sx={{backgroundColor: 'transparent'}}>
             <TabList sx={{
@@ -49,7 +53,13 @@ const InnerLayout2 = () => {
           <ChangeOrder />
             </TabPanel>
           </Tabs>
-          </Paper></Stack>
+          </Stack>
+            {/* Second Item of Stack */}
+            <Stack alignItems={'flex-end'} pr={4} pt={2}>
+            <BuilderProButton variant={'contained'} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'} fontSize={'14px'} backgroundColor={'#4C8AB1'}>Change Order Request</BuilderProButton>
+            </Stack>
+          </Paper>
+          </Stack>
         </Stack>
    </>
     

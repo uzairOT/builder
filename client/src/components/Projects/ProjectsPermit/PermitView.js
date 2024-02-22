@@ -5,10 +5,15 @@ import Permit from '../Permit'
 
 const PermitView = () => {
   return (
-    <Paper flex={2}>
+    <Paper style={themeStyle.borders}>
       <Permit view={'Permit'}/>
     </Paper>
   )
 }
 
 export default PermitView
+const themeStyle = {
+  borders: {
+    borderRadius: '14px'
+  }
+}

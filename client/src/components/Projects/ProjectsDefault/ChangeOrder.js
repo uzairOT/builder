@@ -18,7 +18,7 @@ const ChangeOrder = () => {
           id: 1,
           "LineItem": "Demolition",
           "Status": "Pending",
-          "Total": 50000,
+          "Total": 5000.0,
           "Start": "2024/03/01",
           "End": "-",
           "Member": "Client"
@@ -27,7 +27,7 @@ const ChangeOrder = () => {
           id: 2,
           "LineItem": "Rebuild",
           "Status": "Pending",
-          "Total": 75000,
+          "Total": 7500.0,
           "Start": "2024/04/15",
           "End": "2024/06/30",
           "Member": "Admin"
@@ -36,7 +36,7 @@ const ChangeOrder = () => {
           id: 3,
           "LineItem": "New Build",
           "Status": "Pending",
-          "Total": 100000,
+          "Total": 10000.0,
           "Start": "2024/05/30",
           "End": "-",
           "Member": "Team"
@@ -45,7 +45,7 @@ const ChangeOrder = () => {
           id: 4,
           "LineItem": "Renovation",
           "Status": "Pending",
-          "Total": 60000,
+          "Total": 6000.0,
           "Start": "2024/06/10",
           "End": "2024/08/15",
           "Member": "Client"
@@ -54,7 +54,7 @@ const ChangeOrder = () => {
           id: 5,
           "LineItem": "Infrastructure Upgrade",
           "Status": "Pending",
-          "Total": 120000,
+          "Total": 1200.00,
           "Start": "2024/07/20",
           "End": "-",
           "Member": "Admin"
@@ -63,7 +63,7 @@ const ChangeOrder = () => {
           id: 6,
           "LineItem": "Interior Design",
           "Status": "Pending",
-          "Total": 90000,
+          "Total": 9000.0,
           "Start": "2024/08/05",
           "End": "-",
           "Member": "Team"
@@ -72,7 +72,7 @@ const ChangeOrder = () => {
           id: 7,
           "LineItem": "Landscaping",
           "Status": "Pending",
-          "Total": 80000,
+          "Total": 8000.0,
           "Start": "2024/09/15",
           "End": "2024/11/30",
           "Member": "Client"
@@ -81,7 +81,7 @@ const ChangeOrder = () => {
           id: 8,
           "LineItem": "Renovation",
           "Status": "Pending",
-          "Total": 95000,
+          "Total": 9500.0,
           "Start": "2024/10/01",
           "End": "-",
           "Member": "Admin"
@@ -113,7 +113,7 @@ const ChangeOrder = () => {
                                 {row.Status}
                                 </Typography>
                                 </TableCell>
-                            <TableCell sx={themeStyle.tableBody}>{row.Total}</TableCell>
+                            <TableCell sx={themeStyle.tableBody}>US${row.Total}</TableCell>
                             <TableCell sx={{...themeStyle.tableBody,}}>{row.Start}</TableCell>
                             <TableCell sx={{...themeStyle.tableBody}}>{row.End}</TableCell>
                             <TableCell sx={themeStyle.tableBody}>{row.Member}</TableCell>

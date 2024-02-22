@@ -42,7 +42,7 @@ function Footer({ onNextStep }) {
         <Box
           sx={buttonBox}
         >
-          <Link to="/dashboard">
+          <Link to="/">
             <Button sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}>Done</Button>
           </Link>
           <Button
