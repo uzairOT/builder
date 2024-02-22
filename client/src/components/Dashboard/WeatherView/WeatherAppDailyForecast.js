@@ -32,7 +32,7 @@ const WeatherAppDailyForecast = ({ forecast }) => {
 
 
     return (
-        <Stack key={forecast.id} justifyContent='center' alignItems='center'>
+        <Stack key={forecast.id} justifyContent='center' alignItems='center' pr={2}>
             <Paper sx={themeStyle.dailyForecastBubble}>
                 <Typography sx={themeStyle.dailyForecastBubbleText}>{forecast.day}</Typography>
                 <Divider variant="fullWidth" />
@@ -54,6 +54,7 @@ const themeStyle = {
       fontFamily: "Montserrat, sans-serif",
       fontWeight: "600",
       fontSize: "12px",
+      textTransform: 'uppercase',
     },
     dailyForecastBubbleImg: {
       width: "40px",

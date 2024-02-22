@@ -11,13 +11,14 @@ import {Formats} from "./Formats";
 import {CustomEventDayNotes, CustomEventDayTasks, CustomEventMonthTasks, CustomEventMonthWeatherNotes, CustomEventWeek, CustomEventWeekOnModal} from "./CustomEvent";
 import TimeGutterHeader from "./TimeGutterHeader";
 import MonthCellWapper from "./MonthCellWapper";
+import CustomToolbarProjects from "./CustomToolbarProjects";
 
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 
-const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
+const TaskCalender = ({dailyForecast, isDrawerOpen, isProjectPage}) => {
   const [monthEventView, setMonthEventView] = useState(true);
   const [eventView, setEventView] = useState('Work Order')
   const eventViewRef = useRef(eventView);
@@ -30,8 +31,8 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
  
     const [events, setEvents] = useState([
         {
-          start: moment('2024-02-06T09:00:00').toDate(),
-          end: moment('2024-02-06T11:00:00').toDate(),
+          start: moment('2024-02-19T09:00:00').toDate(),
+          end: moment('2024-02-19T11:00:00').toDate(),
           title: "Event 1",
           data: {
             task: "Distributed tertiary system engine",
@@ -44,8 +45,8 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
           }
         },
         {
-          start: moment('2024-02-07T12:00:00').toDate(),
-          end: moment('2024-02-07T13:00:00').toDate(),
+          start: moment('2024-02-20T12:00:00').toDate(),
+          end: moment('2024-02-20T13:00:00').toDate(),
           title: "Event 2",
           data: {
             task: "Distributed tertiary system engine",
@@ -58,8 +59,8 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
           }
         },
         {
-          start: moment('2024-02-07T14:00:00').toDate(),
-          end: moment('2024-02-07T15:00:00').toDate(),
+          start: moment('2024-02-20T14:00:00').toDate(),
+          end: moment('2024-02-20T15:00:00').toDate(),
           title: "Event 2",
           data: {
             task: "Distributed tertiary system engine",
@@ -72,8 +73,8 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
           }
         },
         {
-          start: moment('2024-02-08T12:00:00').toDate(),
-          end: moment('2024-02-08T13:00:00').toDate(),
+          start: moment('2024-02-21T12:00:00').toDate(),
+          end: moment('2024-02-21T13:00:00').toDate(),
           title: "Event 2",
           data: {
             task: "Distributed tertiary system engine",
@@ -86,8 +87,8 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
           }
         },
         {
-          start: moment('2024-02-08T16:00:00').toDate(),
-          end: moment('2024-02-08T18:00:00').toDate(),
+          start: moment('2024-02-21T16:00:00').toDate(),
+          end: moment('2024-02-21T18:00:00').toDate(),
           title: "Event 3",
           data: {
             task: "Distributed tertiary system engine",
@@ -100,8 +101,8 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
           }
         },
         {
-          start: moment('2024-02-12T13:00:00').toDate(),
-          end: moment('2024-02-13T16:00:00').toDate(),
+          start: moment('2024-02-26T13:00:00').toDate(),
+          end: moment('2024-02-27T16:00:00').toDate(),
           title: "Long Event",
           data: {
             task: "Distributed tertiary system engine",
@@ -114,8 +115,8 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
           }
         },
         {
-          start: moment('2024-02-13T13:00:00').toDate(),
-          end: moment('2024-02-14T18:00:00').toDate(),
+          start: moment('2024-02-27T13:00:00').toDate(),
+          end: moment('2024-02-28T18:00:00').toDate(),
           title: "Event 3",
           data: {
             task: "Distributed tertiary system engine",
@@ -132,7 +133,7 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
 
       const components = useMemo(()=> ({
 
-        toolbar: (props) => <CustomToolbar toolbar={props} setEventView={setEventView} setMonthEventView={setMonthEventView} monthEventView={monthEventView}/>,
+        toolbar: (props) => (isProjectPage ? <CustomToolbarProjects toolbar={props} setEventView={setEventView} setMonthEventView={setMonthEventView} monthEventView={monthEventView}/> : <CustomToolbar toolbar={props} setEventView={setEventView} setMonthEventView={setMonthEventView} monthEventView={monthEventView}/>),
         day:{
           event: (props) => (eventViewRef.current === 'Work Order' ? <CustomEventDayTasks {...props}/> : <CustomEventDayNotes {...props}/>)
         },
@@ -142,7 +143,7 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
           // isDrawerOpen ? (props) => <CustomEventWeekOnModal {...props}/> :(props) => <CustomEventWeek {...props} />
         },
         month: {
-          dateCellWrapper: (props) => (eventViewRef.current === 'Work Order' ? <MonthCellWapper props={props} isDrawerOpen={isDrawerOpen} monthView={'tasks'} />: <MonthCellWapper props={props} isDrawerOpen={isDrawerOpen}  monthView={'weather/notes'}/>),
+          dateCellWrapper: (props) => (eventViewRef.current === 'Work Order' ? <MonthCellWapper props={props} isDrawerOpen={isDrawerOpen} monthView={'tasks'} isProjectPage={isProjectPage} />: <MonthCellWapper props={props} isDrawerOpen={isDrawerOpen}  monthView={'weather/notes'} isProjectPage={isProjectPage}/>),
           event: (props) =>{
             console.log("Month Event View current Function rerendered: ",eventViewRef.current);
             if(eventViewRef.current === 'Work Order'){
@@ -156,7 +157,7 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
           // (props) => <CustomEventMonthWeatherNotes {...props} /> 
         }
 
-      }), [monthEventView, setMonthEventView, isDrawerOpen])
+      }), [monthEventView, setMonthEventView, isDrawerOpen, isProjectPage])
       const messages = {
         allDay: 'Week'
       }
@@ -166,7 +167,7 @@ const TaskCalender = ({dailyForecast, isDrawerOpen}) => {
   return (
 
         <>
-            <CalenderWrapper className="calendar-wrapper" style={{height: '100%'}}>
+            <CalenderWrapper className="calendar-wrapper" style={{height:'100%' }}>
           <DnDCalendar
             defaultDate={moment().toDate()}
             defaultView="day"
