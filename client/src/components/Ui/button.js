@@ -1,9 +1,8 @@
 
 import "../../App.css"
-
 const YellowBtn = {
   backgroundColor: '#FFAC00',
-  color: '#ffffff',
+  color: '#FFFFFF',
   border: 'none',
   padding: '0.9rem 2.5rem',
   fontSize: { lg: '1.25rem', md: "1.25rem", sm: "1.1rem", xs: "1rem" },
@@ -22,7 +21,5 @@ const YellowBtn = {
   },
   fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   lineHeight: 'normal',
-
 };
-
 export default YellowBtn;
