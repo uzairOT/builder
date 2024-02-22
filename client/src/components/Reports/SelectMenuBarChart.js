@@ -7,12 +7,16 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { CssTransition } from '@mui/base/Transitions';
 import { PopupContext } from '@mui/base/Unstable_Popup';
 
-export default function SelectMenuBarChart() {
+export default function SelectMenuBarChart({listItems, color}) {
   return (
-    <Select defaultValue={10}>
-      <Option value={10}>Line Item #1</Option>
-      <Option value={20}>Line Item #2</Option>
-      <Option value={30}>Line Item #3</Option>
+    <Select defaultValue={0} color={color}>
+      {
+        listItems.map((item, index) => (
+          <Option key={index} value={index} color={color}>
+            {item.listItem}
+          </Option>
+        ))
+      }
     </Select>
   );
 }
@@ -69,7 +73,7 @@ const Button = React.forwardRef(function Button(props, ref) {
   return (
     <button type="button" {...other} ref={ref}>
       {other.children}
-      <ArrowDropDownIcon sx={{color:'#3F3F3F'}} />
+      <ArrowDropDownIcon />
     </button>
   );
 });
@@ -80,7 +84,7 @@ Button.propTypes = {
 };
 
 const StyledButton = styled(Button, { shouldForwardProp: () => true })(
-  ({ theme }) => `
+  ({ theme, ownerState }) => `
   font-family: 'GT-Walsheim-Regular-Trial', sans-serif;
   font-size: 0.875rem;
   box-sizing: border-box;
@@ -91,7 +95,7 @@ const StyledButton = styled(Button, { shouldForwardProp: () => true })(
   line-height: 1.5;
   background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
   border: 0px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
-  color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+  color: ${ownerState.color ? ownerState.color : theme.palette.mode === 'dark' ? grey[300] : grey[900]};
   position: relative;
   box-shadow: 0px 0px 0px ${
     theme.palette.mode === 'dark' ? 'rgba(0,0,0, 0.5)' : 'rgba(0,0,0, 0.05)'
@@ -190,24 +194,24 @@ AnimatedListbox.propTypes = {
 };
 
 const Option = styled(BaseOption)(
-  ({ theme }) => `
+  ({ theme, color }) => `
   list-style: none;
   padding: 8px;
   border-radius: 8px;
   cursor: default;
-
+  color: ${color};
   &:last-of-type {
     border-bottom: none;
   }
 
   &.${optionClasses.selected} {
     background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
-    color: ${theme.palette.mode === 'dark' ? blue[100] : blue[900]};
+    color:${color ? color : theme.palette.mode === 'dark' ? grey[300] : grey[900]};
   }
 
   &.${optionClasses.highlighted} {
     background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
-    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    color: ${color ? color : theme.palette.mode === 'dark' ? grey[300] : grey[900]};
   }
 
   &:focus-visible {
@@ -216,16 +220,16 @@ const Option = styled(BaseOption)(
   
   &.${optionClasses.highlighted}.${optionClasses.selected} {
     background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
-    color: ${theme.palette.mode === 'dark' ? blue[100] : blue[900]};
+    color: ${color ? color : theme.palette.mode === 'dark' ? grey[300] : grey[900]};
   }
 
   &.${optionClasses.disabled} {
-    color: ${theme.palette.mode === 'dark' ? grey[700] : grey[400]};
+    color:${color ? color : theme.palette.mode === 'dark' ? grey[300] : grey[900]};
   }
 
   &:hover:not(.${optionClasses.disabled}) {
     background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
-    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    color: ${color ? color : theme.palette.mode === 'dark' ? grey[300] : grey[900]};
   }
   `,
 );
