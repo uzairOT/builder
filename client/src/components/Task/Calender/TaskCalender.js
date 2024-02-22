@@ -7,7 +7,7 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalenderWrapper from "./calender.style";
 import CustomToolbar from "./CustomToolbar";
-import {Formats} from "./Formats";
+import {DateFormat} from "./DateFormat";
 import {CustomEventDayNotes, CustomEventDayTasks, CustomEventMonthTasks, CustomEventMonthWeatherNotes, CustomEventWeek, CustomEventWeekOnModal} from "./CustomEvent";
 import TimeGutterHeader from "./TimeGutterHeader";
 import MonthCellWapper from "./MonthCellWapper";
@@ -177,7 +177,7 @@ const TaskCalender = ({dailyForecast, isDrawerOpen, isProjectPage}) => {
             resizable={false}
             style={{ height: "100% " }}
             components={components}
-            formats={Formats}
+            formats={DateFormat}
             messages={messages}
             min={startTime.toDate()}
             max={endTime.toDate()}
