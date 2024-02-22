@@ -5,6 +5,11 @@ import CircleIcon from '@mui/icons-material/Circle';
 import SelectMenuBarChart from './SelectMenuBarChart';
 
 const BudgetPieChartCard = () => {
+  const listItems = [
+    {"listItem": "List Item #1"},
+    {"listItem": "List Item #1"},
+    {"listItem": "List Item #1"},
+  ]
   return (
     <>
     <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} p={1} pl={2} pr={2}>
@@ -13,7 +18,7 @@ const BudgetPieChartCard = () => {
     </Stack>
     <Divider variant='fullWidth'/>
     <Stack>
-       <SelectMenuBarChart />
+       <SelectMenuBarChart  listItems={listItems}/>
        <BudgetPieChart />
        <Typography pl={3} fontFamily={'Inter, sans serif'} fontWeight={'500'} fontSize={'24px'}>$ 31000.8</Typography>
        <Typography pl={3} fontFamily={"Inter, sans serif"} fontSize={'12px'} color={'#4F4F4F'}>Total</Typography>

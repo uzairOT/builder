@@ -88,13 +88,14 @@ function Permit({view}) {
 const themeStyle = {
     titleBox: {
         display: "flex",
-        width: "57vw",
+        width: "52vw",
         justifyContent: "space-between",
         alignItems: "center",
-        background: "#4C8AB1"
+        background: "#4C8AB1",
+        borderRadius: '6px 6px 0 0',
     },
     titleTypo: {
-        color: "#484848",
+        color: "#FFFFFF",
         fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
         fontSize: "1.3rem",
         margin: "1rem 2rem"
@@ -117,7 +118,7 @@ const themeStyle = {
         textTransform: 'none',
         gap: '0.625rem',
         '&:hover': {
-          backgroundColor: '#FFAC00',
+          backgroundColor: 'lightgray',
         },
         fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
         lineHeight: 'normal',
@@ -125,7 +126,7 @@ const themeStyle = {
     permitBox: {
         borderRadius: "0.5rem",
         background: "#EFF5FF",
-        width: "95%",
+        width: "93%",
         display: "flex",
         flexDirection: "row",
         marginTop: "2rem"
