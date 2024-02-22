@@ -1,0 +1,38 @@
+[
+    {
+      "name": "John Doe",
+      "role": "Prime Contractor",
+      "profilePic": "https://placekitten.com/200/200"
+    },
+    {
+      "name": "Jane Smith",
+      "role": "Team Member",
+      "profilePic": "https://placekitten.com/200/201"
+    },
+    {
+      "name": "Bob Johnson",
+      "role": "Sub Contractor",
+      "profilePic": "https://placekitten.com/201/200"
+    },
+    {
+      "name": "Alice Brown",
+      "role": "Client",
+      "profilePic": "https://placekitten.com/201/201"
+    },
+    {
+      "name": "Charlie Davis",
+      "role": "Suppliers",
+      "profilePic": "https://placekitten.com/202/202"
+    },
+    {
+      "name": "Eva Rodriguez",
+      "role": "Team Member",
+      "profilePic": "https://placekitten.com/202/201"
+    },
+    {
+      "name": "Alex Turner",
+      "role": "Team Member",
+      "profilePic": "https://placekitten.com/201/202"
+    }
+  ]
+  
