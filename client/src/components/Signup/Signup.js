@@ -71,10 +71,7 @@ const SignupComp = () => {
     }
   };
 
-  const Navigate = useNavigate()
-  const signUpHandler = () => {
-      Navigate("./assignproject")
-  }
+ 
   const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "1rem" }
   const linkResponsiveColor = { color: isMobile ? '#FFAC00' : '#4C8AB1' }
     const borderRadiusResponsive = { borderRadius: isMobile ? "0.5rem" : "0.75rem" }
@@ -303,7 +300,7 @@ const SignupComp = () => {
             </Box>
 
                         <Button sx={{ ...YellowBtn, marginBottom: "1rem" }}
-                            type="submit" onClick={signUpHandler}>Sign up</Button>
+                            type="submit" onClick={handleSubmit}>Sign up</Button>
                         <Typography sx={alreadyHaveAccountTypo}>
                             Already have an account?{'\u00a0'} <Link to="/login" style={{
                                 ...loginLink,

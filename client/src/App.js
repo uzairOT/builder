@@ -45,8 +45,14 @@ import Images from "./components/ClientDashboard/Images/Images";
 import DailyLog from "./components/ClientDashboard/DailyLog/DailyLog";
 import Chats from "./components/ClientDashboard/Chats/Chats";
 import ClientDashboardCards from "./components/ClientDashboard/ClientDashboardCards/ClientDashboardCards";
+import { useSelector } from 'react-redux';
 
 function App() {
+
+  // const isAuthenticated = useSelector((state) => state.auth.userInfo);
+  const isAuthenticated = true
+  console.log(isAuthenticated);
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
@@ -54,7 +60,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/assignproject" element={<AssignProject />} />
 
-        <Route path="/" element={<Layout1 />}>
+        {isAuthenticated ? (
+          <Route path="/" element={<Layout1 />}>
           <Route index element={<Dashboard />} />
           <Route path="/projects" element={<ProjectsList />} />
           <Route path="/projects/:id" element={<Layout2 />}>
@@ -83,6 +90,14 @@ function App() {
             <Route path="materline" element={<MasterLineItem />} />
           </Route>
         </Route>
+        ) : (
+          <Route
+            path="/"
+            element={<Login />}
+          />
+        )}
+
+       
         <Route path="/clientdashboard" element={<ClientDashboard />}>
           <Route path="/clientdashboard" element={<ClientDashboardCards />} />
           <Route path="permit" element={<Permit />} />

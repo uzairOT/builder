@@ -67,7 +67,7 @@ const Login = () => {
       const res = await login({ email, password }).unwrap();
       console.log(res)
       dispatch(setCredentials({ ...res }));
-      navigate('/dashboard');
+      navigate('/');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
@@ -233,7 +233,7 @@ const Login = () => {
               sx={accountLinkText}
             >
               Don’t have an account?{"\u00a0"}{" "}
-              <Link to="/"
+              <Link to="/signup"
                 style={{ ...signupLink, ...lableResponsiveFont, ...linkResponsiveColor }}
               >
                 Sign up
