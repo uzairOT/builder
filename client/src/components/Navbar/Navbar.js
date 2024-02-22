@@ -25,7 +25,7 @@ import React, { useState } from "react";
 import SearchBar from "../UI/SearchBar/SearchBar";
 import BuilderProButton from "../UI/Button/BuilderProButton";
 import NavbarDrawer from "./NavbarDrawer";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import users from "./assets/data/users.json";
 import LinkIcon from '@mui/icons-material/Link';
@@ -95,10 +95,12 @@ const Navbar = () => {
       <AppBar position="static" sx={themeStyle.navbar}>
         <Toolbar sx={themeStyle.toolbar}>
           {showHamburger && <NavbarDrawer />}
+          <Link to="/">
           <BuilderProNavbarLogo
             aria-label="Builder Pro Logo"
             style={themeStyle.logo}
           />
+          </Link>
           <Tabs
             sx={themeStyle.tabs}
             value={selectedTab}
