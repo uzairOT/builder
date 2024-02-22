@@ -43,13 +43,13 @@ const ClientDashboard = () => {
             <main>
                 <Grid sx={themeStyle.dashboard} container pt={1} >
                     {/* Profile View */}
-                    <Grid item xs={12} sm={3} md={2} height={themeStyle.dashboardViews}>
+                    <Grid item xs={12} sm={3} md={2} height={"auto"}>
                         <Paper sx={themeStyle.dashboardViews}>
                             {heading === "Messages" ? <ProfileChatView /> : <ProfileView heading={heading} />}
                         </Paper>
                     </Grid>
                     <Grid item xs={12} sm={9} md={7} height={themeStyle.dashboardViews}>
-                        <Grid container sx={themeStyle.scrollable} height={'100vh'} margin={'auto'}>
+                        <Grid container sx={themeStyle.scrollable} height={'112vh'} margin={'auto'}>
                             <Grid item xs={12} sm={12} md={12} lg={12} style={{ height: "auto", paddingTop: '0px', paddingLeft: '8px' }}>
                                 <Paper sx={themeStyle.progressCard} padding={5} >
                                     <WeatherView dailyForecast={dailyForecast} loading={loading} error={error} userGreetings={"Good Morning, Client"} />
@@ -57,13 +57,13 @@ const ClientDashboard = () => {
                             </Grid>
                             <Grid item xs={12} sm={12} md={12} lg={12} style={{ height: { lg: "auto", xs: "100vh" }, margin: '8px', }}>
                                 <Box sx={themeStyle.alternativeBox}>
-                                    <Outlet bgColor={"#FFE09F"} dailyForecast={dailyForecast} />
+                                    <Outlet dailyForecast={dailyForecast} />
                                 </Box>
                             </Grid>
 
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={12} md={3} height={themeStyle.dashboardViews}>
+                    <Grid item xs={12} sm={12} md={3} height={"auto"}>
 
                         <RecentImagesAndComments />
                     </Grid>
@@ -78,7 +78,8 @@ export default ClientDashboard;
 const themeStyle = {
     dashboard: {
         backgroundColor: "#eff5ff",
-        height: "100vh",
+        // height: "100vh",
+        height: "auto"
     },
     dashboardViews: {
         height: '100%',

@@ -5,7 +5,6 @@ import Layout1 from "./components/Layouts/Layout1";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Layout2 from "./components/Layouts/Layout2";
-import Projects from "./pages/Projects/Projects";
 import ProjectsDefault from "./components/Projects/ProjectsDefault/ProjectsDefault";
 import ProjectsList from "./pages/Projects/ProjectsList";
 import InitialProposalView from "./components/Projects/ProjectsInitialProposal/InitialProposalView";
@@ -31,7 +30,6 @@ import Drawing from "./components/ClientDashboard/Drawing/Drawing";
 import Images from "./components/ClientDashboard/Images/Images";
 import Chats from "./components/ClientDashboard/Chats/Chats";
 import ClientDashboardCards from "./components/ClientDashboard/ClientDashboardCards/ClientDashboardCards";
-import TaskCalenderView from "./components/Dashboard/TaskCalenderView/TaskCalenderView";
 import DailyLog from "./components/ClientDashboard/DailyLog/DailyLog";
 
 

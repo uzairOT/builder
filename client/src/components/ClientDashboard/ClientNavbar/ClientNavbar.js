@@ -12,6 +12,8 @@ import Permit from '../Permit/Permit';
 
 const ClientNavbar = () => {
     const [selectedTab, setSelectedTab] = useState(0);
+
+
     const [anchorEl, setAnchorEl] = useState(0);
 
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -20,6 +22,10 @@ const ClientNavbar = () => {
     const showHamburger = useMediaQuery(theme.breakpoints.down('lg'));
     const responsiveButton = useMediaQuery(theme.breakpoints.up('sm'));
     const navigate = useNavigate(); // Initialize useHistory
+    const handleClick = () => {
+        "red"
+    };
+
 
     const handleDashboard = () => {
         navigate('/clientdashboard', { state: { heading: "Dashboard" } });
@@ -149,23 +155,24 @@ const ClientNavbar = () => {
                             }
 
                         />
-                        <Select
-                            value={selectedTab}
-                            variant="standard"
-                            sx={{ ...themeStyle.select, marginLeft: "1rem" }}
+                        <Box sx={themeStyle.getTabColor(1)}>
+                            <Select
+                                value={selectedTab}
+                                variant="standard"
+                                sx={{ ...themeStyle.select, marginLeft: "1rem", color: { handleClick } }}
 
+                            >
 
-                        >
+                                {ProjectdropItems.map((item, index) => (
+                                    <MenuItem key={index} value={item.value} onClick={() => handleMenuItemClick(item.value)}
+                                        disabled={selectedTab === 0 && index === 0} // Disable when selectedTab is 0 and index is 0
 
-                            {ProjectdropItems.map((item, index) => (
-                                <MenuItem key={index} value={item.value} onClick={() => handleMenuItemClick(item.value)}
-                                    disabled={selectedTab === 0 && index === 0} // Disable when selectedTab is 0 and index is 0
-                                >
-
-                                    {item.label}
-                                </MenuItem>
-                            ))}
-                        </Select>
+                                    >
+                                        {item.label}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </Box>
                         <Select
                             value={selectedTab}
                             variant="standard"
