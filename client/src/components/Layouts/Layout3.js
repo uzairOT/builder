@@ -9,7 +9,7 @@ function Layout3() {
   });
   return (
     <>
-      <Navbar />
+      
       <main>
         <Grid sx={themeStyle.dashboard} container pt={1}>
           {/* Side bar */}

@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, Card, CardMedia, Typography } from "@mui/material";
 
-const ProjectCard = ({projectProfileCard}) => {
+const ProjectCard = ({projectProfileCard, selected}) => {
 
   const handleCardBorderColor = ()=> {
     switch (projectProfileCard.status) {
       case 'Critical':
-          return '#FF777F';
+          return '#EA3B46';
       case 'High':
           return '#FAAA3B';
       case 'Medium':
@@ -18,7 +18,7 @@ const ProjectCard = ({projectProfileCard}) => {
   const handleCardColor = ()=> {
     switch(projectProfileCard.status){
       case 'Critical':
-        return '#FFE0E2';
+        return  selected ? '#CF4A52': '#FFE0E2';
       case 'High':
         return '#FFF3E1';
       case 'Medium':
@@ -27,6 +27,26 @@ const ProjectCard = ({projectProfileCard}) => {
         return '#E9EFFF';
     }
   }
+  const themeStyle = {
+    cardBody: {
+      marginBottom: "2px",
+      fontSize: "12px",
+      fontFamily: "inherit",
+      fontStyle: selected ? "italic" : "normal",
+    },
+    card: {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "flex-start",
+      padding: "10px",
+      borderRadius: "14px",
+      ml: 1,
+      mr: 1,
+    },
+    image: {
+      width: "38px", height: "38px", borderRadius: "9px"
+    }
+  };
 
   return (
     <Card
@@ -54,49 +74,53 @@ const ProjectCard = ({projectProfileCard}) => {
         <Typography
           variant="h6"
           sx={{
-            color: projectProfileCard.status === 'Critical' ? '#FD3845' : `${handleCardBorderColor()}`,
+            color:selected ? 'white' : projectProfileCard.status === 'Critical' ? '#FD3845' : `${handleCardBorderColor()}`,
             ...themeStyle.cardBody,
             marginBottom: '8px'
           }}
         >
           {projectProfileCard.title}
         </Typography>
-        <Typography
-          variant="body1"
-          sx={{
-            ...themeStyle.cardBody,
-            color: "#848484",
-          }}
-        >
-          Admin name: {projectProfileCard.adminName}
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{
-            ...themeStyle.cardBody,
-            color: "#848484",
-          }}
-        >
-          Client name: {projectProfileCard.clientName}
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{
-            ...themeStyle.cardBody,
-            color: "#202227",
-          }}
-        >
-          Job Running Total: {projectProfileCard.jobRunningTotal}
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{
-            ...themeStyle.cardBody,
-            color: "#848484",
-          }}
-        >
-          Location: {projectProfileCard.location}
-        </Typography>
+        {selected === true || selected === undefined ? (
+  <>
+    <Typography
+      variant="body1"
+      sx={{
+        ...themeStyle.cardBody,
+        color: selected ? 'white' : "#848484",
+      }}
+    >
+      Admin name: {projectProfileCard.adminName}
+    </Typography>
+    <Typography
+      variant="body1"
+      sx={{
+        ...themeStyle.cardBody,
+        color: selected ? 'white' : "#848484",
+      }}
+    >
+      Client name: {projectProfileCard.clientName}
+    </Typography>
+    <Typography
+      variant="body1"
+      sx={{
+        ...themeStyle.cardBody,
+        color: selected ? 'white' : "#202227",
+      }}
+    >
+      Job Running Total: {projectProfileCard.jobRunningTotal}
+    </Typography>
+    <Typography
+      variant="body1"
+      sx={{
+        ...themeStyle.cardBody,
+        color: selected ? 'white' :"#848484",
+      }}
+    >
+      Location: {projectProfileCard.location}
+    </Typography>
+  </>
+) : <></>}
       </Box>
     </Card>
   );
@@ -104,22 +128,3 @@ const ProjectCard = ({projectProfileCard}) => {
 
 export default ProjectCard;
 
-const themeStyle = {
-  cardBody: {
-    marginBottom: "2px",
-    fontSize: "12px",
-    fontFamily: "inherit",
-  },
-  card: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "flex-start",
-    padding: "10px",
-    borderRadius: "14px",
-    ml: 1,
-    mr: 1,
-  },
-  image: {
-    width: "38px", height: "38px", borderRadius: "9px"
-  }
-};
