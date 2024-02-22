@@ -5,7 +5,7 @@ import ProjectCard from '../ProjectCard/ProjectCard';
 import ScheduleCard from '../ScheduleCard/ScheduleCard';
 
 
-function Dashboard() {
+function ClientDashboardCards() {
     return (
         <div style={{ width: "100%" }}>
             <Box sx={themeStyle.boxStyle}>
@@ -54,4 +54,4 @@ const themeStyle = {
         overflowY: 'auto',
     },
 }
-export default Dashboard
+export default ClientDashboardCards
