@@ -4,17 +4,39 @@ import { Outlet, useLocation, Link } from "react-router-dom";
 import ClientNavbar from "../../components/ClientDashboard/ClientNavbar/ClientNavbar";
 import ProfileView from "../../components/ClientDashboard/ProfileView/ProfileView";
 import RecentImagesAndComments from "../../components/ClientDashboard/RecentImagesAndComments/RecentImagesAndComments";
+import WeatherView from "../../components/Dashboard/WeatherView/WeatherView";
+import { getFormattedFiveDayWeather } from '../../services/WeatherService.js'
+import ProfileChatView from "../../components/ClientDashboard/ProfileChatView/ProfileChatView.js";
+
 
 
 
 const ClientDashboard = () => {
+    const [dailyForecast, setDailyForecast] = useState();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
+    useEffect(() => {
+
+        const fetchWeather = async () => {
+            try {
+                const data = await getFormattedFiveDayWeather({ lat: "33.6844", lon: "73.0479", units: 'Metric' });
+                setDailyForecast(data);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchWeather();
+
+    }, []);
 
     // Function to update the heading
 
     const location = useLocation();
     const { state } = location;
-    const heading = state ? state.heading : "";
+    const heading = state ? state.heading : "Dashboard";
     return (
         <>
             <ClientNavbar />
@@ -23,27 +45,24 @@ const ClientDashboard = () => {
                     {/* Profile View */}
                     <Grid item xs={12} sm={3} md={2} height={themeStyle.dashboardViews}>
                         <Paper sx={themeStyle.dashboardViews}>
-                            <ProfileView heading={heading} />
+                            {heading === "Messages" ? <ProfileChatView /> : <ProfileView heading={heading} />}
                         </Paper>
                     </Grid>
-
-
                     <Grid item xs={12} sm={9} md={7} height={themeStyle.dashboardViews}>
                         <Grid container sx={themeStyle.scrollable} height={'100vh'} margin={'auto'}>
-                            <Grid item xs={12} sm={12} md={12} lg={12} style={{ height: "20vh", paddingTop: '0px', paddingLeft: '8px' }}>
+                            <Grid item xs={12} sm={12} md={12} lg={12} style={{ height: "auto", paddingTop: '0px', paddingLeft: '8px' }}>
                                 <Paper sx={themeStyle.progressCard} padding={5} >
-
+                                    <WeatherView dailyForecast={dailyForecast} loading={loading} error={error} userGreetings={"Good Morning, Client"} />
                                 </Paper>
                             </Grid>
-                            <Grid item xs={12} sm={12} md={12} lg={12} style={{ height: { lg: "85vh", xs: "100vh" }, margin: '8px', }}>
+                            <Grid item xs={12} sm={12} md={12} lg={12} style={{ height: { lg: "auto", xs: "100vh" }, margin: '8px', }}>
                                 <Box sx={themeStyle.alternativeBox}>
-                                    <Outlet />
+                                    <Outlet bgColor={"#FFE09F"} dailyForecast={dailyForecast} />
                                 </Box>
                             </Grid>
 
                         </Grid>
                     </Grid>
-
                     <Grid item xs={12} sm={12} md={3} height={themeStyle.dashboardViews}>
 
                         <RecentImagesAndComments />

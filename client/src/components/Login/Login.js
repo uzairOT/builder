@@ -195,7 +195,7 @@ const Login = () => {
               sx={accountLinkText}
             >
               Don’t have an account?{"\u00a0"}{" "}
-              <Link to="/"
+              <Link to="/signup"
                 style={{ ...signupLink, ...lableResponsiveFont, ...linkResponsiveColor }}
               >
                 Sign up

@@ -1,6 +1,7 @@
 import { Typography, useTheme, Box, Avatar } from '@mui/material'
 import Avatarimg from "./assets/imgAvatar.png";
-import "../../../App.css"
+import "../../../App.css";
+import DateAndTime from '../../UI/DataAndTime/DataAndTime';
 import React from 'react'
 
 function ProfileView({ heading }) {
@@ -20,13 +21,7 @@ function ProfileView({ heading }) {
                 {heading}
             </Typography>
             <Box sx={themeStyle.box}>
-                <Typography sx={themeStyle.timeHeading}>
-                    09:03
-                </Typography>
-                <Typography sx={themeStyle.dateText}>
-                    Thursday, 31 Aug
-                </Typography>
-
+                <DateAndTime />
                 <Avatar
                     alt="Avatar"
                     src={Avatarimg}

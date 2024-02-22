@@ -204,7 +204,7 @@ const SignupComp = () => {
                                 type="submit" onClick={signUpHandler}>Sign up</Button>
                         </Box>
                         <Typography sx={alreadyHaveAccountTypo}>
-                            Already have an account?{'\u00a0'} <Link to="./login" style={{
+                            Already have an account?{'\u00a0'} <Link to="/login" style={{
                                 ...loginLink,
                                 ...linkResponsiveColor,
                                 ...lableResponsiveFont

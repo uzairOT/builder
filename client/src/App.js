@@ -29,9 +29,10 @@ import ChangeOrders from "./components/ClientDashboard/ChangeOrders/ChangeOrders
 import Invoices from "./components/ClientDashboard/Invoices/Invoices";
 import Drawing from "./components/ClientDashboard/Drawing/Drawing";
 import Images from "./components/ClientDashboard/Images/Images";
-import DailyLog from "./components/ClientDashboard/DailyLog/DailyLog";
 import Chats from "./components/ClientDashboard/Chats/Chats";
 import ClientDashboardCards from "./components/ClientDashboard/ClientDashboardCards/ClientDashboardCards";
+import TaskCalenderView from "./components/Dashboard/TaskCalenderView/TaskCalenderView";
+import DailyLog from "./components/ClientDashboard/DailyLog/DailyLog";
 
 
 

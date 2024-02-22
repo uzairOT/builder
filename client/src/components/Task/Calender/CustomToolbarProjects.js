@@ -3,7 +3,7 @@ import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
-const CustomToolbarProjects = ({ toolbar, setEventView }) => {
+const CustomToolbarProjects = ({ toolbar, setEventView, bgColor }) => {
   const [activeButton, setActiveButton] = useState("day");
   const [activeHeader, setActiveHeader] = useState("Work Order");
   const goToDayView = (view) => {
