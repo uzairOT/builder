@@ -58,7 +58,7 @@ const tableCellStyle = {
   color: "#8C8C8C",
 };
 // <div><ChatView /></div>
-const paginationStyle ={
+const paginationStyle = {
   '& .MuiPaginationItem-root': {
     border: 'none',
     backgroundColor: '#EEEEEE',
@@ -67,7 +67,7 @@ const paginationStyle ={
     },
   },
   '& .Mui-selected': {
-    backgroundColor: '#FFAC00',
-    color: '#FFFFFF', // Set text color for selected item if needed
+    backgroundColor: '#FFAC00 !important', // Set background color for the selected page
+    color: '#FFFFFF', // Text color for the selected page
   },
-}
+};

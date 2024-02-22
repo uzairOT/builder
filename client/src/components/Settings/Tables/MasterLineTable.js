@@ -76,39 +76,34 @@ const dummyData = [
   // Add more dummy data objects as needed
 ];
 
-function MasterLineTable({setUpdateModalOpen}) {
- 
-
+function MasterLineTable({ setUpdateModalOpen }) {
   const handleUnitChange = (event, id) => {
     const selectedUnit = event.target.value;
     // Assuming you have a function to update the unit value in your data structure
     // Update the unit value for the corresponding row with the given ID
     // For example, if you're using state:
-
   };
 
   const OpenUpdateModal = () => {
-    console.log("UpdateModal")
+    console.log("UpdateModal");
     setUpdateModalOpen(true);
   };
-
 
   return (
     <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell></TableCell>
             <TableCell sx={tableCellStyle}>Name</TableCell>
             <TableCell sx={tableCellStyle}>Description</TableCell>
             <TableCell sx={tableCellStyle}>
               Unit
               <IconButton>
-              <Select
-      value={""}
-      onChange={(e) => handleUnitChange(e)} // Assuming you have a function to handle unit changes
-      input={<Input sx={{ underline: 'none' }} />} // Apply underline: 'none' style here
-    >
+                <Select
+                  value={""}
+                  onChange={(e) => handleUnitChange(e)} // Assuming you have a function to handle unit changes
+                  input={<Input sx={{ underline: "none" }} />} // Apply underline: 'none' style here
+                >
                   <MenuItem value="kg">kg</MenuItem>
                   <MenuItem value="lbs">lbs</MenuItem>
                   {/* Add more menu items as needed */}
@@ -128,9 +123,7 @@ function MasterLineTable({setUpdateModalOpen}) {
         <TableBody>
           {dummyData.map((row) => (
             <TableRow key={row.id}>
-              <TableCell sx={tableCellValueStyle}>
-                <Avatar alt="Avatar" src={row.avatar} />
-              </TableCell>
+            
               <TableCell sx={tableCellValueStyle}>{row.name}</TableCell>
               <TableCell sx={tableCellValueStyle}>{row.description}</TableCell>
               <TableCell sx={tableCellValueStyle}>{row.unit}</TableCell>
@@ -141,7 +134,11 @@ function MasterLineTable({setUpdateModalOpen}) {
               <TableCell sx={tableCellValueStyle}>{row.end}</TableCell>
               <TableCell sx={tableCellValueStyle}>{row.notes}</TableCell>
               <TableCell sx={tableCellValueStyle}>
-                <IconButton aria-label="edit" size="small"   onClick={OpenUpdateModal}>
+                <IconButton
+                  aria-label="edit"
+                  size="small"
+                  onClick={OpenUpdateModal}
+                >
                   <img src={EditIcon} alt="" />
                 </IconButton>
                 <IconButton aria-label="delete" size="small">

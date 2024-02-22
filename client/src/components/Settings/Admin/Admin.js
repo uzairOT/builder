@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Divider, Typography } from "@mui/material";
 import ChatView from "../../Chat/ChatView";
 import Header from "../Header/Header";
-import CustomTable from "../Table/Table";
+import CustomTable from "../Tables/Table";
 import Pagination from "@mui/material/Pagination";
 import AddModal from '../../dialogues/Settings/AddModal';
 import UpdateModal from '../../dialogues/Settings/UpdateModal';
@@ -54,7 +54,7 @@ function Admin() {
 export default Admin;
 
 // <div><ChatView /></div>
-const paginationStyle ={
+const paginationStyle = {
   '& .MuiPaginationItem-root': {
     border: 'none',
     backgroundColor: '#EEEEEE',
@@ -63,10 +63,10 @@ const paginationStyle ={
     },
   },
   '& .Mui-selected': {
-    backgroundColor: '#FFAC00',
-    color: '#FFFFFF', // Set text color for selected item if needed
+    backgroundColor: '#FFAC00 !important', // Set background color for the selected page
+    color: '#FFFFFF', // Text color for the selected page
   },
-}
+};
 const paginationTextStyle = {
  
   display: {
