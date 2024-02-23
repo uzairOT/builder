@@ -7,6 +7,8 @@ import TotalProjects from './TotalProjects';
 import BudgetPieChartCard from './BudgetPieChartCard';
 import ProfitMarginBarChartCard from './ProfitMarginBarChartCard';
 import PaidTransactionsCard from './PaidTransactionsCard';
+import TotalDaysAllotted from './TotalDaysAllottedView';
+import TotalDaysAllottedView from './TotalDaysAllottedView';
 
 
 const Reports = () => {
@@ -25,7 +27,7 @@ const Reports = () => {
             <TotalProjects />
         </Box>
         <Box flex={3}  sx={{border: '1px solid #D3D3D3', borderRadius: '10px'}}>
-        
+          <TotalDaysAllottedView />
         </Box>
       </Stack>
       <Stack flex={1} direction={'row'} spacing={1}>

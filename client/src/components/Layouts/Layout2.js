@@ -12,7 +12,7 @@ useEffect(()=>{
 })
     const params = useParams();
     const {id: currentProjectId} = params;
-    const selectedProjectId = projects.find(project => toString(project.id) === toString(currentProjectId));
+    const selectedProjectId = projects.find(project => project.id === parseInt(currentProjectId));
     console.log(selectedProjectId, params);
     console.log("cascasc");
 
@@ -27,7 +27,7 @@ useEffect(()=>{
         </Grid>
         <Grid item  xl={10} md={10} pr={1} style={{height:'99vh'}} overflow={'hidden'}>
         <Stack><Paper sx={{height:'100%', borderRadius: '14px', }}><ProjectsNavbar project={selectedProjectId} /></Paper></Stack>
-        <Outlet/>
+        <Outlet project={selectedProjectId} />
         </Grid>
     </Grid>
 

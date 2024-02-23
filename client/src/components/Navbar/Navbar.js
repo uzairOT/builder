@@ -111,12 +111,11 @@ const Navbar = () => {
             <Tab label="Dashboard" style={themeStyle.getTabColor(0)} />
             <Tab label="Projects" style={themeStyle.getTabColor(1)} />
             <Tab label="Reports" style={themeStyle.getTabColor(2)} />
-            <Tab label="Chat" style={themeStyle.getTabColor(3)} />
             <Box sx={themeStyle.search}>
               <SearchBar />
             </Box>
-            <Tab label="Subscription" style={themeStyle.getTabColor(5)} />
-            <Tab label="Settings" style={themeStyle.getTabColor(6)} />
+            <Tab label="Subscription" style={themeStyle.getTabColor(4)} />
+            <Tab label="Settings" style={themeStyle.getTabColor(5)} />
           </Tabs>
           <Box display={"flex"}>
             <BuilderProButton
