@@ -18,6 +18,7 @@ import NotesView from "./components/Projects/ProjectNotes/NotesView";
 import InnerLayout2 from "./components/Layouts/InnerLayout2";
 import ReportsPage from "./pages/Reports/ReportsPage";
 import ProjectsTable from "./pages/Projects/ProjectsTable";
+import Subscription from "./pages/Subscription/Subscription";
 
 function App() {
   const router = createBrowserRouter(
@@ -42,6 +43,7 @@ function App() {
            <Route path="project-report" element={ <ReportView />} />
         </Route>
         <Route path='reports' element={<ReportsPage />} />
+        <Route path='subscription' element={<Subscription />} />
       </Route>
     )
   );

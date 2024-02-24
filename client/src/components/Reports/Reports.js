@@ -21,7 +21,7 @@ const Reports = () => {
             <BuilderProButton variant={'contained'} backgroundColor={'#FFAC00'} fontSize={'13px'} fontFamily={'Inter, sans serif'}>Invoice History</BuilderProButton>
         </Stack>
       </Stack>
-      <Stack flex={1} direction={'row'} spacing={1}>
+      <Stack flex={1} direction={{xl:'row', lg:'row', md:'column', sm:'column', xs:'column'}} spacing={1}>
         {/* Total Projects */}
         <Box flex={2}  sx={{border: '1px solid #D3D3D3', borderRadius: '10px'}}>
             <TotalProjects />
@@ -30,7 +30,7 @@ const Reports = () => {
           <TotalDaysAllottedView />
         </Box>
       </Stack>
-      <Stack flex={1} direction={'row'} spacing={1}>
+      <Stack flex={1} direction={{xl:'row', lg:'row', md:'column', sm:'column', xs:'column'}} spacing={1}>
         {/* Total Projects */}
         <Box flex={1} height={'100%'}  sx={{border: '1px solid #D3D3D3', borderRadius: '10px'}}>
           <BudgetPieChartCard />
