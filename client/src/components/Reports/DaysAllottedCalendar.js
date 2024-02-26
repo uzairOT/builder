@@ -64,7 +64,7 @@ const CustomPickersDay = styled(PickersDay, {
 }));
 
 const isInDateRange = (day, startRange, endRange) => {
-    console.log("DAys Allotted: " ,moment(day).isBetween(startRange, endRange,null,[]))
+
     return moment(day).isBetween(startRange, endRange,null,[]);
 }
 
@@ -72,7 +72,6 @@ const isInDateRange = (day, startRange, endRange) => {
 
 const Day = (props) =>{
     const  {day, startRange, endRange,startRange1, endRange1, hoveredDay, selectedDay, ...other} = props;
-    console.log(day.isSame(selectedDay, 'week'))
     return (
         <CustomPickersDay
         {...other}

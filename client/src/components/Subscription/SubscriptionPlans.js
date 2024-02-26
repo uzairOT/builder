@@ -4,7 +4,7 @@ import SubscriptionCard from "../UI/Card/SubscriptionCard";
 
 const SubscriptionPlans = () => {
   return (
-    <Stack p={1} px={4}>
+    <Stack p={1} pl={4}>
       <Typography sx={themeStyle.title} pl={1}>Your Current Plan</Typography>
         <Stack spacing={2} pb={1} p={1}>
       <SubscriptionCard current={true} planType={"Business"} />

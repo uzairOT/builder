@@ -55,7 +55,6 @@ const ProjectList = () => {
       })
       .then((data) => {
         setRows(data);
-        console.log("rows: ", data);
       })
       .catch((err) => console.error("Error fetching data: ", err));
   }, []); // Empty dependency array to execute the effect only once on component mount
