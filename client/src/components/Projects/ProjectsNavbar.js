@@ -1,11 +1,15 @@
-import { Box, Button, Divider, IconButton,  Stack, Typography } from '@mui/material'
+import { Box, Button, Divider, IconButton,  Stack, Typography, useMediaQuery, useTheme } from '@mui/material'
 import React from 'react'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { useParams,Link } from 'react-router-dom';
+import ProjectNavbarDrawer from './ProjectNavbarDrawer';
+
 
 const ProjectsNavbar = ({project}) => {
   const params = useParams();
-    console.log(params);
+  const theme = useTheme();
+  const showHamburger = useMediaQuery(theme.breakpoints.down("lg"));
+    console.log(showHamburger);
     const navLinks = [
         {
           title: "Initial Proposal",
@@ -51,8 +55,8 @@ const ProjectsNavbar = ({project}) => {
     </Link>
         </Stack>
 
-      
-      <Stack direction={'row'} alignItems={'center'} spacing={1} pr={2}>
+      { showHamburger && <ProjectNavbarDrawer navLinks={navLinks} />}
+      <Stack direction={'row'} alignItems={'center'} spacing={1} pr={2} display={{xl:'flex', lg:'flex', md:'none', sm:'none', xs:'none'}}>
         {navLinks.map((navlink, index) => (
           <React.Fragment key={index}>
             <Link to={`${navlink.path}`} style={{textDecoration: 'none'}}>

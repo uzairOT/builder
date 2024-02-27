@@ -5,7 +5,7 @@ import ReportsSideBar from '../../Reports/ReportsSideBar'
 
 const ReportView = () => {
   return (
-    <Stack direction={'row'} spacing={1}>
+    <Stack direction={{xl:'row', lg:'column'}} spacing={1}>
     <Grid item xl={8} pt={1} height={'91vh'}>
       <Paper sx={{height:'92vh', borderRadius: '14px',...themeStyle.scrollable}}>
     <Reports />

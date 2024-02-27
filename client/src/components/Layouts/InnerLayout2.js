@@ -13,15 +13,15 @@ import BuilderProButton from '../UI/Button/BuilderProButton'
 const InnerLayout2 = () => {
   return (
    <>
-   <Stack direction={'row'} pt={1} spacing={1}>
+   <Stack direction={{xl:'row', lg:'row', md:'column'}} pt={1} spacing={1}>
         {/* Monitoring And Accounting */}
-        <Stack flex={2}><Paper style={themeStyle.border}><MonitoringFinances /></Paper></Stack>
-        <Stack flex={8}><Paper style={themeStyle.border}><ProjectInfoAndTeam /></Paper></Stack>
+        <Stack flex={{xl:2}}display={{xl:"flex",lg:'none'}}><Paper style={themeStyle.border}><MonitoringFinances /></Paper></Stack>
+        <Stack flex={{xl:8,lg:7}}><Paper style={themeStyle.border}><ProjectInfoAndTeam /></Paper></Stack>
         </Stack>
-        <Stack direction={'row'} pt={1} spacing={1} sx={{height:'80%'}}>
+        <Stack direction={{xl:'row',}} pt={1} spacing={1} sx={{height:'80%',}}>
         <Outlet />
         {/* Change Order Tab navigation */}
-        <Stack flex={1}>
+        <Stack flex={1} >
           <Paper style={{...themeStyle.border, height:'71vh', width: '99%'}}>
           {/* First Item of Stack */}
           <Stack>
@@ -71,5 +71,6 @@ export default InnerLayout2
 const themeStyle = {
     border: {
       borderRadius: '14px'
-    }
+    },
+    
    }
