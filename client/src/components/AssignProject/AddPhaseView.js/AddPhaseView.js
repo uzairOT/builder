@@ -31,7 +31,7 @@ const initialCardPhase = [
 
 ];
 
-function AddPhaseView({adminProjectView}) {
+function AddPhaseView({adminProjectView, view}) {
   const [cardPhase, setCardPhase] = useState(initialCardPhase);
   
   const { open } = useSelector(selectAddPhase);
@@ -102,10 +102,10 @@ function AddPhaseView({adminProjectView}) {
       <Stack direction={'row'} justifyContent={'space-between'}>
         <Stack>
             {adminProjectView && <Typography pl={3} pt={1} color={'#4C8AB1'} fontFamily={'Poppins, san serif'} fontSize={'22px'} fontWeight={'600'}>
-                    Initial Proposal
+                    {view}
                 </Typography>} 
         </Stack>
-        <Stack direction={'row'} sx={buttonBox}>
+       {view === 'Work Order' ? <></> : <Stack direction={'row'} sx={buttonBox}>
         <Button sx={{ ...actionButton }} startIcon={<ModeEditOutlinedIcon />}
           onClick={handleAddPhase}>
           Edit
@@ -120,7 +120,7 @@ function AddPhaseView({adminProjectView}) {
        { adminProjectView ? <></> : <Button sx={{ ...actionButton, ...approvalButton }}>
           Send Approval
         </Button>}
-        </Stack>
+        </Stack>}
       </Stack>
 
 

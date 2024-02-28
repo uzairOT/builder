@@ -21,6 +21,11 @@ const Search = styled('div')(({ theme }) => ({
     width: '80%',
 
   },
+  [theme.breakpoints.up('xs')]: {
+    margin: 'auto',
+    width: '70%',
+
+  },
   justifyContent: 'center',
   margin: 'auto'
 }));

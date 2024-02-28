@@ -19,15 +19,15 @@ useEffect(()=>{
   return (
     <>
     <Grid container height={"100vh"} backgroundColor={"#eff5ff"} spacing={1}>
-    <Grid item xl={2} lg={3} md={4} sm={12} xs={12} height={"99vh"}>
+    <Grid item xl={2} lg={3} md={4} sm={12} xs={12} height={{xl:"99vh" ,lg:'99vh', md:'99vh', sm:'80vh', xs:'80vh' }}>
           <Paper sx={{ height: "100%", borderRadius: "14px" }}>
             <Typography sx={themeStyle.title} p={2} pb={1.5}>Projects Dashboard</Typography>
             <ProjectsSidebar />
           </Paper>
         </Grid>
-        <Grid item  xl={10} lg={9} md={8} sm={12} xs={12}   pr={1} style={{height:'99vh', ...themeStyle.scrollable}} overflow={'hidden'}>
+        <Grid item  xl={10} lg={9} md={8} sm={12} xs={12}   pr={1} height={{xl:"99vh" ,lg:'99vh',md:'100vh', sm: '100%', xs:'100%'}} sx={{ ...themeStyle.scrollable}} overflow={'hidden'}>
         <Stack><Paper sx={{height:'100%', borderRadius: '14px', }}><ProjectsNavbar project={selectedProjectId} /></Paper></Stack>
-        <Outlet project={selectedProjectId} />
+        <Outlet  />
         </Grid>
     </Grid>
 

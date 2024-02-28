@@ -6,8 +6,8 @@ const ProjectsTable = () => {
   return (
     <main>
       <Grid sx={themeStyle.dashboard} container>
-      <Grid item p={2} xl={12}>
-        <Paper style={{height:'100%', borderRadius:'14px'}}>
+      <Grid item p={2} xl={12} lg={12} md={12} sx={12} xs={12}>
+        <Paper  style={{height:'100%', borderRadius:'14px'}}>
           <ProjectList />
         </Paper>
       </Grid>
@@ -23,4 +23,8 @@ const themeStyle = {
     backgroundColor: "#eff5ff",
     height: "100vh",
   },
+}
+
+export const loader = () => {
+  return null
 }
