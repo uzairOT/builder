@@ -32,7 +32,7 @@ const Reports = () => {
       </Stack>
       <Stack flex={1} direction={{xl:'row', lg:'row', md:'column', sm:'column', xs:'column'}} spacing={1}>
         {/* Total Projects */}
-        <Box flex={1} height={'100%'}  sx={{border: '1px solid #D3D3D3', borderRadius: '10px'}}>
+        <Box flex={1} sx={{border: '1px solid #D3D3D3', borderRadius: '10px'}}>
           <BudgetPieChartCard />
         </Box>
         <Box flex={1}  sx={{border: '1px solid #D3D3D3', borderRadius: '10px'}}>

@@ -15,8 +15,8 @@ const ProjectNavbarDrawer = ({ navLinks }) => {
 
   return (
     <>
-      <Drawer anchor="right" open={openMenu} onClose={() => setOpenMenu(false)}>
-        <List sx={{ width: "40vw" }}>
+      <Drawer  open={openMenu} onClose={() => setOpenMenu(false)}>
+        <List sx={{ width: '40vw'}}>
           {navLinks.map((navlink) => {
             return (
               <Link to={`${navlink.path}`} style={{ textDecoration: "none", color: '#4C8AB1' }}>

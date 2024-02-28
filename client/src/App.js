@@ -25,7 +25,10 @@ function App() {
     createRoutesFromElements(
       <Route path="/" element={<Layout1 />}>
         <Route index element={<Dashboard />} />
-        <Route path="/projects" element={<ProjectsTable />} />
+        <Route path="/projects" element={<ProjectsTable />} loader={()=>{
+           console.log('hello from loader')
+            return null;
+           } }/>
         <Route path="/projects/:id" element={ <Layout2 />} >
            <Route path="" element={ <InnerLayout2 />} >
              <Route path="default" element={ <ProjectsDefault />} />

@@ -2,7 +2,9 @@ import {
     Box,
     ButtonGroup,
   IconButton,
+  Pagination,
   Paper,
+  Popover,
   Stack,
   Table,
   TableBody,
@@ -37,7 +39,19 @@ const ProjectList = () => {
   ];
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const rowsPerPage = 6;
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
@@ -56,16 +70,19 @@ const ProjectList = () => {
       .then((data) => {
         setRows(data);
       })
-      .catch((err) => console.error("Error fetching data: ", err));
+      .catch((err) => console.error("Error fetching data: ", err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []); // Empty dependency array to execute the effect only once on component mount
 
   return (
-    <Stack>
+    <Stack width={'100%'}>
       {/* Project List Header */}
-      <Stack p={3}>
+      <Stack p={3} >
         {/* Project List Title */}
-        <Stack direction={"row"} justifyContent={"space-between"}>
-          <Stack pl={8}>
+        <Stack direction={{xl:'row', lg:'row', md:'row', sm:'row', xs:'column'}} justifyContent={{xl:"space-between", lg:"space-between", md:"space-between", sm:"space-between", xs:'flex-start'}} alignItems={{xs:'flex-start'}} spacing={1}>
+          <Stack pl={{xl:8, lg:8, md:8, sm:8, xs:3}}>
             <Typography
               color={"#4C8AB1"}
               fontFamily={"Poppins, san serif"}
@@ -106,14 +123,39 @@ const ProjectList = () => {
               Icon={FilterListIcon}
               fontFamily={"inherit"}
               fontSize={"12px"}
+              handleOnClick={handleClick}
             >
               Filter
             </BuilderProButton>
+            <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+          
+           sx={{borderRadius:'14px'}}
+            >
+              <Stack p={1} borderRadius={'14px'} spacing={1}>
+              <Typography fontFamily={'Inter, sans serif'} fontSize={'12px'} fontWeight={'500'}>Remodel</Typography>
+              <Typography fontFamily={'Inter, sans serif'} fontSize={'12px'} fontWeight={'500'}>New Build</Typography>
+              <Typography fontFamily={'Inter, sans serif'} fontSize={'12px'} fontWeight={'500'}>Commercial</Typography>
+              </Stack>
+            </Popover>
           </Stack>
         </Stack>
-        <Stack alignSelf={"flex-end"} direction={"row"}>
+        <Stack alignSelf={{xl:'flex-end', lg:'flex-end', md:'flex-end', sm:'flex-end', xs:'flex-end'}} direction={{xl:'row', lg:'row', md:'row', sm:'row', xs:'column-reverse'}} spacing={1}>
+          <Stack alignSelf={'flex-end'}>
           <SearchBar />
-          <Stack width={"150px"} justifyContent={"center"}>
+          </Stack>
+          <Stack width={{xl:"150px", lg:'150px', md:'150px', sm:'150px',}} justifyContent={"flex-end"} alignSelf={'flex-end'}>
             <BuilderProButton
               variant={"contained"}
               backgroundColor={"#FFAC00"}
@@ -127,9 +169,9 @@ const ProjectList = () => {
         </Stack>
       </Stack>
       {/* Table */}
-      <Stack px={3}>
-        <TableContainer>
-          <Table>
+      <Stack px={3} >
+        <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
+         { isLoading ? <>Loading...</> : <Table>
             <TableHead>
               <TableRow>
                 <TableCell></TableCell>
@@ -168,7 +210,7 @@ const ProjectList = () => {
                             const status = column.id === "projectStatus";
 
                             return (
-                              <TableCell key={value}>
+                              <TableCell key={value} sx={themeStyle.tableCell}>
                                 <Typography
                                   sx={
                                     status
@@ -214,9 +256,13 @@ const ProjectList = () => {
                   </TableRow>
                 )}
             </TableBody>
-          </Table>
+          </Table>}
         </TableContainer>
-        <TablePagination
+<Stack justifyContent={'flex-end'} alignItems={'flex-end'}>
+
+        <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/>
+</Stack>
+        {/* <TablePagination
           page={page}
           rowsPerPage={rowsPerPage}
           component={"div"}
@@ -224,7 +270,7 @@ const ProjectList = () => {
           count={rows.length}
           labelRowsPerPage={false}
           rowsPerPageOptions={[1]}
-        ></TablePagination>
+        ></TablePagination> */}
       </Stack>
     </Stack>
   );
@@ -258,5 +304,19 @@ const themeStyle = {
     fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
     width: "80px",
     textAlign: "center",
+  },
+};
+
+const paginationStyle = {
+  '& .MuiPaginationItem-root': {
+    border: 'none',
+    backgroundColor: '#EEEEEE',
+    '&:hover': {
+      backgroundColor: '#EEEEEE',
+    },
+  },
+  '& .Mui-selected': {
+    backgroundColor: '#FFAC00 !important', // Set background color for the selected page
+    color: '#FFFFFF', // Text color for the selected page
   },
 };

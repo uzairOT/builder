@@ -17,7 +17,7 @@ const ReportsPage = () => {
     </Grid>
     <Grid item container xl={10} lg={9} md={12} sm={12} xs={12} spacing={2}  style={{overflow:'hidden', ...themeStyle.scrollable}}>
     <Grid item xl={8} lg={12} md={12} sm={12} xs={12} height={"99vh"} overflow={'hidden'}>
-        <Paper sx={{height:'100%', borderRadius: '14px'}}>
+        <Paper sx={{height:'100%', borderRadius: '14px', ...themeStyle.scrollable}}>
             <Reports />
         </Paper>
     </Grid>

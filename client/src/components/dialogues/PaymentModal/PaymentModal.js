@@ -87,7 +87,7 @@ const PaymentModal = () => {
   
 
   return (
-    <Paper style={{ borderRadius: "14px" }}>
+    <Paper style={{ borderRadius: "14px", overflowX:'hidden', width:'100%'  }}>
       {/* Stack of the Form*/}
       <form>
         <Stack p={3} px={4}>

@@ -13,10 +13,10 @@ const Subscription = () => {
             <SubscriptionSidebar />
         </Grid>
         <Grid item container xl={10} lg={8} md={8} sm={12} xs={12} spacing={2} height={"99vh"} style={{overflow:'hidden', ...themeStyle.scrollable}}>
-        <Grid item xl={7} lg={12}>
+        <Grid item xl={7} lg={12} md={12} sm={12} xs={12}>
         <SubscriptionPlans />
         </Grid>
-        <Grid item xl={5} lg={12}>
+        <Grid item xl={5} lg={12} md={12} sm={12} xs={12}>
         <SubscriptionForm />
         </Grid>
         </Grid>
