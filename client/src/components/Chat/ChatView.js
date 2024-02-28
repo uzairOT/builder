@@ -1,10 +1,13 @@
 import React from "react";
-import { Box, Avatar, Typography } from "@mui/material";
+import { Box, Avatar, Typography, Stack, Divider } from "@mui/material";
 import { TextField, IconButton } from "@mui/material";
 import AttachFileIcon from "../../assets/Chat/attachment.png";
 import SendIcon from "../../assets/Chat/send.png";
+import CircleIcon from '@mui/icons-material/Circle';
+import Circle from "@mui/icons-material/Circle";
+import SearchIcon from '@mui/icons-material/Search';
 
-function ChatView() {
+function ChatView({isAdminPage, project}) {
   const dummyMessages = [
     {
       type: "receiver",
@@ -26,7 +29,23 @@ function ChatView() {
 
   return (
     <>
-      <Box
+      {isAdminPage ?
+      <Stack p={4}>
+        {/* Image and online status */}
+      <Stack direction={'row'} justifyContent={'space-between'}>
+        <Stack direction={'row'} alignItems={'center'} spacing={1}>
+        {/* <img src={project.image} alt="/" ></img> */}
+        <Typography fontFamily={'Inter, sans serif'} fontWeight={'500'} color={'#3B9434'}>Online</Typography>
+        <Circle style={{color:'#3B9434', fontSize:'15px'}}/>
+        </Stack>
+        {/* Search Icon */}
+        <Stack>
+        <SearchIcon />
+        </Stack>
+      </Stack>
+      {/* Divider */}
+      <Divider variant="fullWidth" style={{paddingTop:'8px'}}/>
+       </Stack>:<Box
         sx={{
           bgcolor: "#FFECC5",
           height: 58,
@@ -36,7 +55,7 @@ function ChatView() {
         }}
       >
         <Typography variant="h6">Chats</Typography>
-      </Box>
+      </Box>}
 
       <Box
         sx={{
@@ -45,7 +64,7 @@ function ChatView() {
         }}
       >
 
-        <Box sx={{height:"670px"}}>
+        <Box sx={{height:"100%"}}>
 
     
 

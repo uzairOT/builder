@@ -6,12 +6,12 @@ import { Typography } from "@mui/material";
 
 const VerticalTabs = ({ notes, handleSelectedButton , selectedButton}) => {
   return (
-    <Stack direction={"column"} height={"100%"} p={1}>
-      <ButtonGroup orientation="vertical" variant="plan" >
+    <Stack direction={"column"} height={"100%"} p={1}  overflow={'hidden'}>
+      <ButtonGroup orientation="vertical" variant="plan" style={{overflow:'hidden'}}>
         {notes.map((note, index) => {
           return (
             <Button key={index} style={{borderRadius: '7px',}} sx={{ width: "100%", height: "100%", paddingLeft:'32px', '--ButtonGroup-separatorColor': 'white', backgroundColor: selectedButton === index ? '#EBF3F8' : '', }} onClick={()=>{handleSelectedButton(index)}}>
-              <Stack width={"100%"}>
+              <Stack width={"100%"}  >
                 <Typography textAlign={"left"} fontSize={'16px'} fontWeight={'700'} color={'#202227'}>{note.title}</Typography>
                 <Typography
                  fontSize={'12px'}

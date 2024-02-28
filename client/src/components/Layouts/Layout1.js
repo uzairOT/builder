@@ -7,7 +7,7 @@ const NavbarLayout = () => {
   
   return (
     <>
-        <header>
+        <header >
         <Navbar />
         </header>
         <Outlet />

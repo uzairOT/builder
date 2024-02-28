@@ -4,6 +4,7 @@ import {
 } from "@mui/material";
 import '../../App.css';
 import YellowBtn from '../UI/button';
+import AddImage from '../dialogues/AddImage/AddImage';
 function Permit({view}) {
     const objectFit = { objectFit: "none" }
     const permitsData = [
@@ -12,11 +13,21 @@ function Permit({view}) {
     ];
     const img = `https://source.unsplash.com/random/100x100`;
     const placeholderImg = `https://source.unsplash.com/random/100x100`;
+    const [open , setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true)
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+    }
+
     return (
         <div>
             <Box sx={themeStyle.titleBox}>
                 <Typography sx={themeStyle.titleTypo}>{view}</Typography>
-                <Button sx={{ ...themeStyle.buttonStyle }}>
+                <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>
                     Add {view}
                 </Button>
             </Box>
@@ -82,6 +93,9 @@ function Permit({view}) {
                     />
                 </Box>
             </Box>
+            { open &&
+                <AddImage handleOpen={handleOpen} handleClose={handleClose} heading={view}></AddImage>
+                }
         </div>
     )
 }

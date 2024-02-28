@@ -5,14 +5,12 @@ import Notes from "./Notes";
 
 const NotesView = () => {
   return (
-    <Stack direction={"row"} pt={1} spacing={1} height={'100%'}>
+    <Stack direction={{xl: 'row', lg:'column'}} pt={1} spacing={1} height={'100%'}>
         <Stack flex={3}>
-        
           <Notes />
-  
         </Stack>
         <Stack  flex={1}>
-      <Paper sx={{height: '91.5%'}}>
+      <Paper sx={{height: {xl:'94.5%', lg:'98%', borderRadius:'14px'}}}>
           <TaskCalenderView />
       </Paper>
           </Stack>

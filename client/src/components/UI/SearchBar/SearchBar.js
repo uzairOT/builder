@@ -4,24 +4,30 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 
 const Search = styled('div')(({ theme }) => ({
-    display: 'flex',
-    width: '306px',
-    height: '25px',
-    padding: '8px 16px',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    gap: '10px',
-    borderRadius: '60px',
-    border: '1px solid rgba(83, 83, 83, 0.15)',
-    background: '#F8FAFF',
-    position: 'relative',
-    marginLeft: 0,
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(1),
-        width: 'auto',
-    },
-    justifyContent: 'center',
-    margin: 'auto'
+  display: 'flex',
+  width: '306px',
+  height: '25px',
+  padding: '8px 16px',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  gap: '10px',
+  borderRadius: '60px',
+  border: '1px solid rgba(83, 83, 83, 0.15)',
+  background: '#F8FAFF',
+  position: 'relative',
+  marginLeft: 0,
+  [theme.breakpoints.up('sm')]: {
+    margin: 'auto',
+    width: '80%',
+
+  },
+  [theme.breakpoints.up('xs')]: {
+    margin: 'auto',
+    width: '70%',
+
+  },
+  justifyContent: 'center',
+  margin: 'auto'
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({

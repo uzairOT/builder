@@ -7,6 +7,7 @@ import SelectMenuBarChart from '../../Reports/SelectMenuBarChart';
 import VerticalTabs from './VerticalTabs';
 import ButtonGroup from '@mui/joy/ButtonGroup';
 import OpenNotes from './OpenNotes';
+import NotesModal from './NotesModal';
 
 const Notes = () => {
     const [selectedButton, setSelectedButton] = useState(0);
@@ -49,13 +50,13 @@ const Notes = () => {
       }
       
   return (
-    <Stack direction={'row'} spacing={1} height={'100%'}>
+    <Stack direction={{xl:'row', lg:'row', md:'column-reverse'}} spacing={1} height={'100%'}>
     <Stack flex={1}>
-    <Paper sx={{height: '91.5%'}}>
+    <Paper sx={{height: {xl:'94.5%', lg:'99%'}, borderRadius:'14px'}} overflow={'hidden'}>
       <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} p={2} >
         <Typography fontSize={'20px'} fontFamily={'Poppins, sans serif'} fontWeight={'600'} color={'#4C8AB1'}>Notes</Typography>
         <Stack direction={'row'} alignItems={'center'}>
-            <BuilderProButton variant={'contained'} backgroundColor={'#4C8AB1'} fontSize={'11px'} fontFamily={'Inter, sans serif'}>Add Notes</BuilderProButton>
+            <NotesModal/>
         </Stack>
       </Stack>
       <SearchBar />
@@ -69,11 +70,10 @@ const Notes = () => {
 
 
         <Stack flex={2} >
-         <Paper sx={{height: '91.5%'}}>
+         <Paper sx={{height:{ xl:'94.5%', lg:'99%'}, borderRadius:'14px'}}>
            <OpenNotes notes={notes[selectedButton]} />
         </Paper>
           </Stack>
-
 
     </Stack>
   )
