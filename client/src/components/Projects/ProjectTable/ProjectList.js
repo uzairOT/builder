@@ -159,7 +159,13 @@ const ProjectList = ({ rows, isLoading }) => {
                 vertical: "top",
                 horizontal: "left",
               }}
-              style={{ borderRadius: "20px" }}
+              slotProps={{
+                paper: {
+                  sx:{
+                    
+                  }
+                }
+              }}
             >
               <Stack p={1} borderRadius={"14px"} spacing={1}>
                 <Typography
