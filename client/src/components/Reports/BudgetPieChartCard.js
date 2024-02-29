@@ -77,7 +77,7 @@ const BudgetPieChartCard = () => {
   onClose={handleClose}
   aria-labelledby="modal-modal-title"
   aria-describedby="modal-modal-description"
-  sx={{overflow: 'scroll', height:'100%', width:{xs:'80%'}}}
+  sx={{...scrollable, height:'100%', width:{xs:'80%'}}}
 >
   <Box sx={style} >
   <Stack direction={{xl:'row', lg:'row', md:'row', sm:'row', xs:'column'}} justifyContent={'space-between'} alignItems={'center'} p={2} >
@@ -116,14 +116,14 @@ const BudgetPieChartCard = () => {
       <Stack justifyContent={'center'} alignItems={'center'} width={{xl:'100%', lg:'100%', md:'100%', sm:'100%', xs:'80%'}} >
           <GenerateInvoiceTable />
       </Stack>
-      <Stack direction={{xl:'row', lg:'row', md:'column'}} justifyContent={'space-between'} p={4}>
+      <Stack direction={{xl:'row', lg:'row', md:'column'}} justifyContent={'space-between'} p={4} spacing={1}>
       <Stack>
       <Typography sx={modalStyle} fontWeight={'bold'}>Notes</Typography>
       <Typography sx={modalStyle}>It was great doing business with you</Typography>
       </Stack>
       <Stack>
       <Typography sx={modalStyle} fontWeight={'bold'}>Terms and Condition</Typography>
-      <Typography sx={modalStyle}>Please make payments before the due date</Typography>
+      <Typography sx={modalStyle}>Please make payments before the due date</Typography> 
       </Stack>
       </Stack>
       <Stack
@@ -134,7 +134,7 @@ const BudgetPieChartCard = () => {
       >
         <Button
           variant={"contained"}
-          backgroundColor={"#4C8AB1"}
+          sx={{backgroundColor:'#4C8AB1', borderRadius:'28px', fontFamily:'Inter, sans serif', textTransform:'capitalize', fontSize:'16px'}}
           fontSize={"16px"}
           fontFamily={"Inter, sans serif"}
           onClick={()=> {
@@ -159,8 +159,8 @@ export default BudgetPieChartCard
 
 const style = {
   position: 'absolute',
-  top: {xl:'50%', lg:'50%', md:'50%', sm:'50%', xs:'60%'},
-  left: {xl:'50%', lg:'50%', md:'50%', sm:'50%', xs:'60%'},
+  top: {xl:'50%', lg:'50%', md:'50%', sm:'50%', xs:'80%'},
+  left: {xl:'50%', lg:'50%', md:'50%', sm:'50%', xs:'55%'},
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
   border: '0px solid #000',
@@ -172,4 +172,19 @@ const style = {
 const modalStyle = {
   color: 'gray',
   fontSize: '15px'
+}
+const scrollable = {
+    overflow: 'scroll',
+    scrollbarWidth: 'none',  // For Firefox
+    '-ms-overflow-style': 'none',  // For IE and Edge
+    '&::-webkit-scrollbar': {
+      width: '6px'
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: 'transparent',
+      transition: 'background-color 0.3s',
+    },
+    '&:hover::-webkit-scrollbar-thumb': {
+      backgroundColor: '#ddd',
+    }
 }
