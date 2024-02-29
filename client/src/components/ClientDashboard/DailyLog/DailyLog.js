@@ -4,7 +4,7 @@ import { TroubleshootRounded } from '@mui/icons-material'
 
 function DailyLog({ bgColor }) {
     return (
-        <div style={{ width: "100%" }}>
+        <div style={{ width: "100%", height: "95vh", marginBottom: "1rem" }}>
 
             <TaskCalender bgColorClient={true} isProjectPage={true} isDrawerOpen={true} />
         </div>

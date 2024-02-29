@@ -104,7 +104,7 @@ const themeStyle = {
     },
     imgBox: {
         marginTop: "0.5rem",
-        width: '75%',
+        width: '95%',
         height: '100%',
         borderRadius: '14px',
         alignItems: "center",
@@ -118,13 +118,14 @@ const themeStyle = {
 
     smallimgBox: {
         marginTop: "0.5rem",
-        width: '35%',
+        width: '45%',
         height: '100%',
         borderRadius: '14px',
     },
     evenBox: {
         display: "flex",
-        justifyContent: "space-evenly",
+        justifyContent: "center",
+        gap: "1rem"
     },
     commentBox: {
         display: "flex",

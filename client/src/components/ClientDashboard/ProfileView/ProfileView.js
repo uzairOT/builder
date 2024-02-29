@@ -63,7 +63,7 @@ const themeStyle = {
     heading: {
         color: "#000000",
         fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
-        fontSize: "1.5rem",
+        fontSize: { lg: "1.5rem", md: "1.5rem", xs: "1.2rem" },
         padding: "1rem 1rem 0rem 1rem",
     },
 
@@ -86,7 +86,7 @@ const themeStyle = {
         padding: "0rem 1rem",
     },
     avatarStyle: {
-        width: 150, height: 150, marginTop: "2rem"
+        width: 150, height: 150, marginTop: "-1rem"
     },
     avatarCaption: {
         color: "#202227",
@@ -121,12 +121,20 @@ const themeStyle = {
     },
     evenBox: {
         display: "flex",
+        alignItems: "center",
+        textAlign: "center",
+        whiteSpace: "nowrap",
         justifyContent: "space-between",
 
+        padding: { lg: "0rem 1rem", xs: "0rem 0rem" },
+        gap: { lg: "1rem", sm: "1rem", xs: "1rem" }
     },
     listItem: {
         color: "#202227",
-        fontSize: "0.9rem",
+        marginTop: "0.2rem",
+        fontSize: { lg: '0.9rem', sm: "0.75rem", xs: "0.9rem" },
+        textAlign: "center",
+        display: "flex",
         fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
         paddingLeft: "1rem",
         fontWeight: 400
@@ -134,8 +142,10 @@ const themeStyle = {
     },
     costText: {
         color: "#4C8AB1",
+        display: "flex",
         fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
-        fontSize: '0.9rem',
+        textAlign: "center",
+        fontSize: { lg: '0.9rem', sm: "0.75rem", xs: "0.9rem" },
         marginRight: "1rem",
         fontWeight: 400
 
