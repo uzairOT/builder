@@ -7,21 +7,22 @@ import { loader } from "./pages/Projects/ProjectsTable";
 import PageLoader from "./components/UI/Loaders/PageLoader/PageLoader";
 import InnerLayout2 from './components/Layouts/InnerLayout2'
 import ProjectsDefault from './components/Projects/ProjectsDefault/ProjectsDefault'
-import ImagesView from "./components/Projects/ProjectsImages/ImagesView"
-import PermitView from './components/Projects/ProjectsPermit/PermitView'
-import DrawingFilesView from "./components/Projects/ProjectsDrawingFiles/DrawingFilesView"
 import InitialProposalView from "./components/Projects/ProjectsInitialProposal/InitialProposalView"
 import WorkOrderView from './components/Projects/ProjectsWorkOrder/WorkOrderView'
 import NotesView from "./components/Projects/ProjectNotes/NotesView"
-import ReportView from "./components/Projects/ProjectsReport/ReportView"
+import Layout1 from "./components/Layouts/Layout1";
+import ProjectsTable from "./pages/Projects/ProjectsTable";
+import Layout2 from "./components/Layouts/Layout2";
+import ChatView from "./components/Projects/ProjectsChat/ChatView";
+import Subscription from "./pages/Subscription/Subscription";
 
-const Layout1 = lazy( () => import("./components/Layouts/Layout1"))
 const Dashboard =  lazy(() => import("./pages/Dashboard/Dashboard"))
-const ProjectsTable = lazy(() => import("./pages/Projects/ProjectsTable"));
-const Layout2 = lazy(() => import("./components/Layouts/Layout2"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"))
-const Subscription = lazy(() => import("./pages/Subscription/Subscription"));
-const ChatView = lazy(() => import("./components/Projects/ProjectsChat/ChatView"));
+const ImagesView = lazy(() => import("./components/Projects/ProjectsImages/ImagesView"))
+const PermitView = lazy(() => import("./components/Projects/ProjectsImages/ImagesView"))
+const DrawingFilesView = lazy(() => import("./components/Projects/ProjectsDrawingFiles/DrawingFilesView"))
+const ReportView = lazy(() => import("./components/Projects/ProjectsReport/ReportView"))
+
 
 
 function App() {
