@@ -10,7 +10,7 @@ function ClientDashboardCards() {
 
 
     return (
-        <div style={{ width: "100%" }}>
+        <div style={{ width: "100%", marginBottom: "1rem" }}>
             <Box sx={themeStyle.boxStyle}>
 
                 <Box sx={themeStyle.projectCard}>
@@ -47,7 +47,7 @@ const themeStyle = {
         contain: "content"
     },
     scheduleCard: {
-        height: { lg: "30vh", md: "100vh", xs: "100vh" },
+        height: { lg: "auto", md: "100vh", xs: "100vh" },
         backgroundColor: "#eff5ff",
         margin: {
             lg: "3.5rem 1rem 0rem 1rem", xs: "0.5rem 1rem 0rem 1rem"

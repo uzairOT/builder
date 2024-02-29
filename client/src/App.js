@@ -6,23 +6,8 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 // import Signup from "./pages/SignUp/Signup";
-import { Outlet } from "react-router-dom";
-import Layout1 from "./components/Layouts/Layout1";
+import {lazy, Suspense} from 'react';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import Layout2 from "./components/Layouts/Layout2";
-import Projects from "./pages/Projects/Projects";
-import ProjectsDefault from "./components/Projects/ProjectsDefault/ProjectsDefault";
-import InitialProposalView from "./components/Projects/ProjectsInitialProposal/InitialProposalView";
-import ImagesView from "./components/Projects/ProjectsImages/ImagesView";
-import PermitView from "./components/Projects/ProjectsPermit/PermitView";
-import DrawingFilesView from "./components/Projects/ProjectsDrawingFiles/DrawingFilesView";
-import WorkOrderView from "./components/Projects/ProjectsWorkOrder/WorkOrderView";
-import ChatView from "./components/Projects/ProjectsChat/ChatView";
-import ReportView from "./components/Projects/ProjectsReport/ReportView";
-import NotesView from "./components/Projects/ProjectNotes/NotesView";
-import InnerLayout2 from "./components/Layouts/InnerLayout2";
-import ReportsPage from "./pages/Reports/ReportsPage";
 import Layout3 from "./components/Layouts/Layout3";
 import Profile from "./components/Settings/Profile/Profile";
 import Admin from "./components/Settings/Admin/Admin";
@@ -43,11 +28,24 @@ import Images from "./components/ClientDashboard/Images/Images";
 import Chats from "./components/ClientDashboard/Chats/Chats";
 import ClientDashboardCards from "./components/ClientDashboard/ClientDashboardCards/ClientDashboardCards";
 import DailyLog from "./components/ClientDashboard/DailyLog/DailyLog";
-import ProjectsTable from "./pages/Projects/ProjectsTable";
-import Subscription from "./pages/Subscription/Subscription";
 
-import { useSelector } from "react-redux";
-import TaskCalenderView from "./components/Dashboard/TaskCalenderView/TaskCalenderView";
+const Layout1 = lazy( () => import("./components/Layouts/Layout1"))
+const Dashboard =  lazy(() => import("./pages/Dashboard/Dashboard"))
+const ProjectsTable = lazy(() => import("./pages/Projects/ProjectsTable"));
+const Layout2 = lazy(() => import("./components/Layouts/Layout2"));
+const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"))
+const Subscription = lazy(() => import("./pages/Subscription/Subscription"));
+const InnerLayout2 = lazy(() => import("./components/Layouts/InnerLayout2"));
+const ProjectsDefault = lazy(() => import("./components/Projects/ProjectsDefault/ProjectsDefault"));
+const ImagesView = lazy(() => import("./components/Projects/ProjectsImages/ImagesView"));
+const PermitView = lazy(() => import("./components/Projects/ProjectsPermit/PermitView"));
+const DrawingFilesView = lazy(() => import("./components/Projects/ProjectsDrawingFiles/DrawingFilesView"));
+const InitialProposalView = lazy(() => import("./components/Projects/ProjectsInitialProposal/InitialProposalView"));
+const WorkOrderView = lazy(() => import("./components/Projects/ProjectsWorkOrder/WorkOrderView"));
+const ChatView = lazy(() => import("./components/Projects/ProjectsChat/ChatView"));
+const NotesView = lazy(() => import("./components/Projects/ProjectNotes/NotesView"));
+const ReportView = lazy(() => import("./components/Projects/ProjectsReport/ReportView"));
+
 
 function App() {
   // const isAuthenticated = useSelector((state) => state.auth.userInfo);
@@ -122,7 +120,9 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={router} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <RouterProvider router={router} />
+      </Suspense>
     </>
   );
 }

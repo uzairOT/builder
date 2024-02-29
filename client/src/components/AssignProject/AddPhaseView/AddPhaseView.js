@@ -162,6 +162,7 @@ const firstGrid = {
 const buttonBox = {
   display: "flex",
   justifyContent: { lg: "flex-end", md: "flex-end", sm: "center", xs: "center" },
+  overflowX: "auto",
   gap: "0.5rem",
   marginTop: "0.5rem",
   padding: {

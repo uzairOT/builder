@@ -26,7 +26,7 @@ function Chats() {
 
     return (
         <>
-            <Box sx={{ width: "100%", padding: "0rem 0rem" }}>
+            <Box style={{ width: "100%", marginBottom: "1rem", padding: "0rem 0rem" }}>
                 <Box
                     sx={{
                         bgcolor: "#FFECC5",
@@ -98,7 +98,7 @@ function Chats() {
 
                         <TextField
                             name="email"
-                            placeholder="Please enter your email"
+                            placeholder="type..."
                             fullWidth
                             sx={InputStyle}
                         />
