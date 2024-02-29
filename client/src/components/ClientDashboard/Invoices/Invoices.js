@@ -7,13 +7,14 @@ import {
     TableRow,
     TableCell,
     TableBody,
-    TableContainer
+    TableContainer, Modal
 } from "@mui/material";
 
 import '../../../App.css';
 import YellowBtn from '../../UI/button';
+import PaymentModal from '../../dialogues/PaymentModal/PaymentModal/PaymentModal';
 function Invoices() {
-
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
     function createData(id, title, status, invoicesAmount, AmountPaid, Balance, DeadLine, DatePaid) {
         return { id, title, status, invoicesAmount, AmountPaid, Balance, DeadLine, DatePaid };
     }
@@ -27,13 +28,39 @@ function Invoices() {
         { title: 'Amount Total Paid', amount: '$412,972.99' },
         { title: 'Remaining Balance', amount: '$21,972.99' }
     ];
+
+    const handleMakePaymentClick = () => {
+        setShowPaymentModal(true);
+    };
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
     return (
-        <div>
+        <div style={{ width: "100%", height: "100vh", marginBottom: "1rem" }}>
+            <Modal
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    left: { lg: "30%", md: "20%", sm: "15%", xs: "10%", },
+                    width: { lg: "35%", md: "60%", sm: "70%", xs: "80%" },
+                }}
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="parent-modal-title"
+                aria-describedby="parent-modal-description"
+            >
+                <PaymentModal />
+            </Modal>
             <Box sx={themeStyle.titleBox}>
                 <Typography sx={themeStyle.titleTypo}>Invoices</Typography>
-                <Button sx={{ ...YellowBtn, ...themeStyle.buttonStyle }}>
+                <Button sx={{ ...YellowBtn, ...themeStyle.buttonStyle }} onClick={handleOpen}>
                     Make Payment
                 </Button>
+
             </Box>
             <Box sx={{ ...themeStyle.titleBox, ...themeStyle.evenBox }}>
                 {invoiceData.map((item, index) => (
@@ -48,18 +75,12 @@ function Invoices() {
                 ))}
             </Box>
 
-            <Box sx={{ margin: "2rem 1rem" }}>
+            <Box sx={{ margin: "2rem 1rem", overflowX: "auto" }}>
+
                 <Table>
                     <TableHead>
                         <TableRow>
-
-
-                            <TableCell
-                                sx={{ ...themeStyle.tableHeadings, paddingLeft: "1.5rem" }}
-                            >
-                                ID#
-                            </TableCell>
-
+                            <TableCell sx={{ ...themeStyle.tableHeadings, paddingLeft: "1.5rem" }}>ID#</TableCell>
                             <TableCell sx={themeStyle.tableHeadings}>Title</TableCell>
                             <TableCell sx={{ ...themeStyle.tableHeadings, paddingLeft: "1.5rem" }}>Status</TableCell>
                             <TableCell sx={themeStyle.tableHeadings}>Invoices Amount</TableCell>
@@ -67,19 +88,13 @@ function Invoices() {
                             <TableCell sx={themeStyle.tableHeadings}>Balance</TableCell>
                             <TableCell sx={themeStyle.tableHeadings}>Deadline</TableCell>
                             <TableCell sx={themeStyle.tableHeadings}>Date Paid</TableCell>
-
-
-
                         </TableRow>
-
                     </TableHead>
-
                     <TableBody>
                         {rows.map((row, index) => (
                             <React.Fragment key={row.name}>
                                 <TableRow>
                                     <TableCell sx={themeStyle.tableRowText}>{row.id}</TableCell>
-
                                     <TableCell sx={themeStyle.tableRowText} component="th" scope="row">{row.title}</TableCell>
                                     <TableCell>
                                         <Button sx={{ ...themeStyle.buttonStatus, background: "#6BFFAF", color: "#00AC4F" }}>
@@ -91,15 +106,12 @@ function Invoices() {
                                     <TableCell sx={themeStyle.tableRowText}>{row.Balance}</TableCell>
                                     <TableCell sx={themeStyle.tableRowText}>{row.DeadLine}</TableCell>
                                     <TableCell sx={themeStyle.tableRowText}>{row.DatePaid}</TableCell>
-
                                 </TableRow>
-
                             </React.Fragment>
                         ))}
                     </TableBody>
                 </Table>
             </Box>
-
         </div>
     )
 }
@@ -108,7 +120,7 @@ function Invoices() {
 const themeStyle = {
     titleBox: {
         display: "flex",
-        width: "57vw",
+        width: "100%",
         justifyContent: "space-between",
         alignItems: "center",
         background: "#FFF6E4"
@@ -121,27 +133,31 @@ const themeStyle = {
     },
     buttonStyle: {
         padding: "0.7rem 0.1rem",
+        width: "5rem",
         fontSize: "0.9rem",
         marginRight: "1rem"
     },
     evenBox: {
         justifyContent: "space-around",
+        display: "flex",
+        flexDirection: { lg: "row", xs: "column" },
         background: "none"
     },
     amountBox: {
         borderRadius: "0.5rem",
         background: "#EFF5FF",
-        width: "30%",
+        width: { lg: "30%", xs: "80%" },
         display: "flex",
         flexDirection: "column",
         marginTop: "1rem"
     },
     amountSize: {
-        fontSize: "2.3rem",
+        fontSize: { lg: "1.9rem", xs: "1.5rem" },
         marginTop: "0.5rem",
     },
     tableHeadings: {
         fontFamily: "Poppins, sans-serif",
+        whiteSpace: "nowrap",
         fontWeight: 500,
         fontSize: "0.9rem",
         color: "#8C8C8C",

@@ -69,7 +69,7 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
       <Grid
         item
         lg={12}
-        sx={{ ...firstGrid, backgroundColor: `${cardPhase?.color}`, }}
+        sx={{ ...firstGrid, backgroundColor: `${cardPhase?.color}` }}
       >
         <Box
           sx={headingsBox}
@@ -130,7 +130,7 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
         >
           <Typography sx={listOfLineText}>List of Line Items</Typography>
           <hr style={hrLine} />
-          <Box sx={{ ...tableContainerStyle, marginLeft: "1rem" }}>
+          <Box sx={{ ...tableContainerStyle, marginLeft: "1rem", }}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -256,6 +256,7 @@ const listOfLineText = {
 
 const tableHeadings = {
   fontFamily: "Poppins, sans-serif",
+  whiteSpace: "nowrap",
   fontWeight: 500,
   fontSize: "0.9rem",
   color: "#8C8C8C",

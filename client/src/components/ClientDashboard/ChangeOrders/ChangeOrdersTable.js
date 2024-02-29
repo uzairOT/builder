@@ -23,7 +23,7 @@ function ChangeOrdersTable({ status, background, color }) {
     ];
     return (
         <div>
-            <Box sx={{ marginTop: "2rem" }}>
+            <Box sx={{ marginTop: "2rem", overflowX: "auto" }}>
                 <Table>
                     <TableHead sx={{
                         borderRadius: "1rem",
@@ -38,7 +38,7 @@ function ChangeOrdersTable({ status, background, color }) {
                                 Line Item
                             </TableCell>
 
-                            <TableCell sx={themeStyle.tableHeadings}>Status</TableCell>
+                            <TableCell sx={{ ...themeStyle.tableHeadings, paddingLeft: "2rem" }}>Status</TableCell>
                             <TableCell sx={themeStyle.tableHeadings}>Total</TableCell>
                             <TableCell sx={themeStyle.tableHeadings}>Start</TableCell>
                             <TableCell sx={themeStyle.tableHeadings}>End</TableCell>
@@ -84,6 +84,7 @@ const themeStyle = {
     tableHeadings: {
         width: "21%",
         fontFamily: "Poppins, sans-serif",
+        whiteSpace: "nowrap",
         fontWeight: 500,
         fontSize: "0.9rem",
         color: "#8C8C8C",

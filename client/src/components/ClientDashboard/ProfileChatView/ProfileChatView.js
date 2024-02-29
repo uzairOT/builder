@@ -20,8 +20,10 @@ function ProfileChatView() {
         <div>
             <Box sx={{ padding: "1rem", }}>
                 <ProfileReport name={"Devid Peters"} description={"Senior Developer"} />
-                <SearchBar />
-                <Stack direction={'row'} ml={'-16px'} mr={'-16px'} mt={'1rem'} justifyContent={'center'} >
+                <Box sx={{ display: { lg: "block", xs: "none" } }}>
+                    <SearchBar />
+                </Box>
+                <Stack direction={{ lg: 'row', xs: "column" }} gap={{ lg: '0rem', xs: "0.5rem" }} ml={'-16px'} mr={'-16px'} mt={'1rem'} p={{ lg: '0rem', xs: "1rem" }} justifyContent={'center'} >
                     <BuilderProButton variant={'contained'} marginLeft={'4px'} padding={'8px 8px'} backgroundColor={activeBtn === 'Remodel' ? '#FFCA5B' : '#F2F2F2'} handleOnClick={() => { handleListedProjectsButton('Remodel') }}>
                         <Typography fontSize={'11px'} fontWeight={'500'} color={'black'} fontFamily={'Inter, sans-serif'} width={'100%'}>
                             Remodel

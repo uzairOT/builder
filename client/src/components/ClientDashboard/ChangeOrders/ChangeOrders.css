@@ -21,3 +21,19 @@
         font-weight: 550 !important;
 
 }
+
+.css-1te3phx-JoyTab-root[aria-selected="true"] {
+    --Tab-indicatorColor: #4C8AB1 !important;
+}
+
+.css-18lekjc-JoyTab-root[aria-selected="true"] {
+--Tab-indicatorColor: #4C8AB1 !important;
+}
+
+
+.css-18lekjc-JoyTab-root.Mui-selected{
+    background: none !important;
+}
+.css-1te3phx-JoyTab-root.Mui-selected{
+background: none !important;
+}

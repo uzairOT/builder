@@ -35,13 +35,13 @@ export default DateAndTime;
 const themeStyle = {
   contianer: { textAlign: "center", paddingBottom: 4 },
   time: {
-    fontSize: { xs: "30px", md: "50px", xl: "71px" },
+    fontSize: { xs: "50px", md: "50px", xl: "71px" },
     color: "#FFAC00",
     fontFamily: "inherit",
     fontWeight: "300",
   },
   date: {
-    fontSize: { xs: "10px", md: "14px", xl: "19px" },
+    fontSize: { xs: "14px", md: "14px", xl: "19px" },
     color: "#4C8AB1",
     fontWeight: "400",
   },
