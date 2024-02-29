@@ -1,6 +1,15 @@
+
 import { BrowserRouter, Routes, Route, Link, createRoutesFromElements } from "react-router-dom";
 // import Signup from "./pages/SignUp/Signup";
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
+import Layout3 from "./components/Layouts/Layout3";
+import Profile from "./components/Settings/Profile/Profile";
+import Admin from "./components/Settings/Admin/Admin";
+import ProjectManager from "./components/Settings/ProjectManager/ProjectManager";
+import Client from "./components/Settings/Client/Client";
+import Subcontractor from "./components/Settings/Subcontractor/Subcontractor";
+import SupplierList from "./components/Settings/SupplierList/SupplierList";
+import MasterLineItem from "./components/Settings/MasterLineItem/MasterLineItem";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import {lazy, Suspense} from 'react';
 import { loader } from "./pages/Projects/ProjectsTable";
@@ -39,7 +48,7 @@ function App() {
            </Route>
            <Route path="initial-proposal" element={ <InitialProposalView />} />
            <Route path="work-order" element={ <WorkOrderView />} />
-           <Route 
+           <Route
             path="chat"
             element={ <ChatView />}
             />
@@ -48,16 +57,27 @@ function App() {
         </Route>
         <Route path='reports' element={<ReportsPage />} />
         <Route path='subscription' element={<Subscription />} />
+         <Route path="/settings" element={<Layout3 />}>
+          <Route index element={<Profile/>} />
+          <Route path="profile" element={<Profile/>} />
+          <Route path="admin" element={<Admin/>} />
+          <Route path="projectmanager" element={<ProjectManager/>} />
+          <Route path="clients" element={<Client/>} />
+          <Route path="subcontractor" element={<Subcontractor />} />
+          <Route path="supplier" element={<SupplierList />} />
+          <Route path="materline" element={<MasterLineItem/>} />
+        </Route>
       </Route>
     )
   );
 
   return (
+
     <>
-     <Suspense fallback={<PageLoader />}>
-      <RouterProvider router={router} />
-     </Suspense>
-    </>
+    <Suspense fallback={<PageLoader />}>
+     <RouterProvider router={router} />
+    </Suspense>
+   </>
   );
 }
 
