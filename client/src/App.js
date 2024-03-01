@@ -3,19 +3,19 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { lazy, Suspense } from 'react';
 
-const Signup = lazy(() => import("./pages/Signup/Signup"));
-const Login = lazy(() => import("./pages/Login/Login"));
-const AssignProject = lazy(() => import("./pages/AssignProject/AssignProject"));
-const Settings = lazy(() => import("./pages/Settings/Settings"));
-const ClientDashboard = lazy(() => import("./pages/ClientDashboard/ClientDashboard"));
-const Permit = lazy(() => import("./components/ClientDashboard/Permit/Permit"));
-const ChangeOrders = lazy(() => import("./components/ClientDashboard/ChangeOrders/ChangeOrders"));
-const Invoices = lazy(() => import("./components/ClientDashboard/Invoices/Invoices"));
-const Drawing = lazy(() => import("./components/ClientDashboard/Drawing/Drawing"));
-const Images = lazy(() => import("./components/ClientDashboard/Images/Images"));
-const Chats = lazy(() => import("./components/ClientDashboard/Chats/Chats"));
-const ClientDashboardCards = lazy(() => import("./components/ClientDashboard/ClientDashboardCards/ClientDashboardCards"));
-const DailyLog = lazy(() => import("./components/ClientDashboard/DailyLog/DailyLog"));
+import Signup from "./pages/Signup/Signup";
+import Login from "./pages/Login/Login";
+import AssignProject from "./pages/AssignProject/AssignProject";
+import Settings from "./pages/Settings/Settings";
+import ClientDashboard from "./pages/ClientDashboard/ClientDashboard";
+import Permit from "./components/ClientDashboard/Permit/Permit";
+import ChangeOrders from "./components/ClientDashboard/ChangeOrders/ChangeOrders";
+import Invoices from "./components/ClientDashboard/Invoices/Invoices";
+import Drawing from "./components/ClientDashboard/Drawing/Drawing";
+import Images from "./components/ClientDashboard/Images/Images";
+import Chats from "./components/ClientDashboard/Chats/Chats";
+import ClientDashboardCards from "./components/ClientDashboard/ClientDashboardCards/ClientDashboardCards";
+import DailyLog from "./components/ClientDashboard/DailyLog/DailyLog";
 
 
 function App() {
