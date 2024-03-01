@@ -36,8 +36,8 @@ const PaidTransactionsCard = () => {
         </Stack>
         <Divider variant="fullWidth" />
         <Stack p={2} spacing={1}>
-          {data.map((data) => (
-            <Stack direction={"row"} justifyContent={"space-between"}>
+          {data.map((data, index) => (
+            <Stack key={index} direction={"row"} justifyContent={"space-between"}>
               <Typography
                 fontFamily={"Inter, sans-serif"}
                 fontWeight={"500"}

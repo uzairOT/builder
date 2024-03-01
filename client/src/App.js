@@ -29,23 +29,25 @@ import Chats from "./components/ClientDashboard/Chats/Chats";
 import ClientDashboardCards from "./components/ClientDashboard/ClientDashboardCards/ClientDashboardCards";
 import DailyLog from "./components/ClientDashboard/DailyLog/DailyLog";
 
-const Layout1 = lazy( () => import("./components/Layouts/Layout1"))
-const Dashboard =  lazy(() => import("./pages/Dashboard/Dashboard"))
-const ProjectsTable = lazy(() => import("./pages/Projects/ProjectsTable"));
-const Layout2 = lazy(() => import("./components/Layouts/Layout2"));
-const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"))
-const Subscription = lazy(() => import("./pages/Subscription/Subscription"));
-const InnerLayout2 = lazy(() => import("./components/Layouts/InnerLayout2"));
-const ProjectsDefault = lazy(() => import("./components/Projects/ProjectsDefault/ProjectsDefault"));
-const ImagesView = lazy(() => import("./components/Projects/ProjectsImages/ImagesView"));
-const PermitView = lazy(() => import("./components/Projects/ProjectsPermit/PermitView"));
-const DrawingFilesView = lazy(() => import("./components/Projects/ProjectsDrawingFiles/DrawingFilesView"));
-const InitialProposalView = lazy(() => import("./components/Projects/ProjectsInitialProposal/InitialProposalView"));
-const WorkOrderView = lazy(() => import("./components/Projects/ProjectsWorkOrder/WorkOrderView"));
-const ChatView = lazy(() => import("./components/Projects/ProjectsChat/ChatView"));
-const NotesView = lazy(() => import("./components/Projects/ProjectNotes/NotesView"));
-const ReportView = lazy(() => import("./components/Projects/ProjectsReport/ReportView"));
+import { loader } from "./pages/Projects/ProjectsTable";
+import PageLoader from "./components/UI/Loaders/PageLoader/PageLoader";
+import InnerLayout2 from './components/Layouts/InnerLayout2'
+import ProjectsDefault from './components/Projects/ProjectsDefault/ProjectsDefault'
+import InitialProposalView from "./components/Projects/ProjectsInitialProposal/InitialProposalView"
+import WorkOrderView from './components/Projects/ProjectsWorkOrder/WorkOrderView'
+import NotesView from "./components/Projects/ProjectNotes/NotesView"
+import Layout1 from "./components/Layouts/Layout1";
+import ProjectsTable from "./pages/Projects/ProjectsTable";
+import Layout2 from "./components/Layouts/Layout2";
+import ChatView from "./components/Projects/ProjectsChat/ChatView";
+import Subscription from "./pages/Subscription/Subscription";
 
+const Dashboard =  lazy(() => import("./pages/Dashboard/Dashboard"))
+const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"))
+const ImagesView = lazy(() => import("./components/Projects/ProjectsImages/ImagesView"))
+const PermitView = lazy(() => import("./components/Projects/ProjectsImages/ImagesView"))
+const DrawingFilesView = lazy(() => import("./components/Projects/ProjectsDrawingFiles/DrawingFilesView"))
+const ReportView = lazy(() => import("./components/Projects/ProjectsReport/ReportView"))
 
 function App() {
   // const isAuthenticated = useSelector((state) => state.auth.userInfo);
@@ -120,9 +122,9 @@ function App() {
 
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
-        <RouterProvider router={router} />
-      </Suspense>
+       <Suspense fallback={<PageLoader />}>
+      <RouterProvider router={router} />
+     </Suspense>
     </>
   );
 }

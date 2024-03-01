@@ -264,7 +264,7 @@ const Navbar = () => {
         </Stack>
 
         {users.map((user, index) => (
-          <Stack p={0.5} pl={2.5} pr={2.5}>
+          <Stack key={index} p={0.5} pl={2.5} pr={2.5}>
             <Stack
               id={user.img}
               direction={"row"}
