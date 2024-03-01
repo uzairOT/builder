@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { updateFormData, resetFormData } from '../../../redux/slices/addLineSlice';
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Box, Typography, MenuItem } from '@mui/material';
 import actionButton from "../../UI/actionButton";
 import "../../../App.css"
@@ -6,6 +8,20 @@ import "../../../App.css"
 import "./AddLine.css"
 
 function AddLine({ handleOpen, handleClose }) {
+    const dispatch = useDispatch();
+    const formData = useSelector((state) => state.addLine.formData);
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        dispatch(updateFormData({ [name]: value }));
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Additional logic for form submission
+        dispatch(updateFormData(formData)); // Example: Dispatch an action to submit form data
+        dispatch(resetFormData()); // Reset form data after submission
+        handleClose(); // Close the dialog
+    };
 
     const [open, setOpen] = useState(false);
 
@@ -21,25 +37,25 @@ function AddLine({ handleOpen, handleClose }) {
 
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        const { phaseName, description, unit, quantity, unitPrice, total, start, end, longDescription } = formJson;
-        console.log("phaseName:", phaseName);
-        console.log("description:", description);
-        console.log("unit:", unit);
-        console.log("quantity:", quantity);
-        console.log("unitPrice:", unitPrice);
-        console.log("total:", total);
-        console.log("start:", start);
-        console.log("end:", end);
-        console.log("longDescription:", longDescription);
+    // const handleSubmit = (event) => {
+    //     event.preventDefault();
+    //     const formData = new FormData(event.currentTarget);
+    //     const formJson = Object.fromEntries(formData.entries());
+    //     const { phaseName, description, unit, quantity, unitPrice, total, start, end, longDescription } = formJson;
+    //     console.log("phaseName:", phaseName);
+    //     console.log("description:", description);
+    //     console.log("unit:", unit);
+    //     console.log("quantity:", quantity);
+    //     console.log("unitPrice:", unitPrice);
+    //     console.log("total:", total);
+    //     console.log("start:", start);
+    //     console.log("end:", end);
+    //     console.log("longDescription:", longDescription);
 
 
 
-        handleClose();
-    };
+    //     handleClose();
+    // };
 
 
     const Units = [
@@ -96,6 +112,8 @@ function AddLine({ handleOpen, handleClose }) {
                             name="phaseName"
                             type="text"
                             variant="standard"
+                            value={formData.phaseName}
+                            onChange={handleInputChange}
                         />
 
                         <Typography sx={typoText}>
@@ -109,6 +127,8 @@ function AddLine({ handleOpen, handleClose }) {
                             name="description"
                             type="text"
                             variant="standard"
+                            value={formData.description}
+                            onChange={handleInputChange}
                         />
                         <Box sx={parallelBox}>
                             <Box sx={innerBox}>
@@ -126,6 +146,8 @@ function AddLine({ handleOpen, handleClose }) {
                                     type="text"
                                     select
                                     variant="standard"
+                                    value={formData.unit}
+                                    onChange={handleInputChange}
 
                                 >
                                     {Units.map((option) => (
@@ -148,6 +170,8 @@ function AddLine({ handleOpen, handleClose }) {
                                     name="quantity"
                                     type="number"
                                     variant="standard"
+                                    value={formData.quantity}
+                                    onChange={handleInputChange}
                                 />
                             </Box>
                         </Box>
@@ -162,6 +186,8 @@ function AddLine({ handleOpen, handleClose }) {
                             name="unitPrice"
                             type="price"
                             variant="standard"
+                            value={formData.unitPrice}
+                            onChange={handleInputChange}
                         />
 
                         <Typography sx={typoText}>
@@ -175,6 +201,8 @@ function AddLine({ handleOpen, handleClose }) {
                             name="total"
                             type="number"
                             variant="standard"
+                            value={formData.total}
+                            onChange={handleInputChange}
                         />
                         <Box sx={parallelBox}>
                             <Box sx={innerBox}>
@@ -189,6 +217,8 @@ function AddLine({ handleOpen, handleClose }) {
                                     name="start"
                                     type="text"
                                     variant="standard"
+                                    value={formData.start}
+                                    onChange={handleInputChange}
                                 />
                             </Box>
                             <Box sx={innerBox}>
@@ -203,6 +233,8 @@ function AddLine({ handleOpen, handleClose }) {
                                     name="end"
                                     type="text"
                                     variant="standard"
+                                    value={formData.end}
+                                    onChange={handleInputChange}
                                 />
                             </Box>
                         </Box>
@@ -220,6 +252,8 @@ function AddLine({ handleOpen, handleClose }) {
                             multiline
                             rows={3}
                             variant="standard"
+                            value={formData.longDescription}
+                            onChange={handleInputChange}
 
                         />
 
