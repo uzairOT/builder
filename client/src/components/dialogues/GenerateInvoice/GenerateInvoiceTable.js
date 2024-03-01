@@ -51,8 +51,8 @@ export default function GenerateInvoiceTable() {
           </TableRow>
         </TableHead>
         <TableBody  style={{color:'gray'}} >
-          {rows.map((row) => (
-            <TableRow key={row.desc}>
+          {rows.map((row, index) => (
+            <TableRow key={index}>
               <TableCell >{row.desc}</TableCell>
               <TableCell align="right">{row.qty}</TableCell>
               <TableCell align="right">{row.rate}</TableCell>
