@@ -5,14 +5,14 @@ import ReportsSideBar from '../../Reports/ReportsSideBar'
 
 const ReportView = () => {
   return (
-    <Stack direction={'row'} spacing={1}>
-    <Grid item xl={8} pt={1} height={'91vh'}>
-      <Paper sx={{height:'92vh', borderRadius: '14px',...themeStyle.scrollable}}>
+    <Stack direction={{xl:'row', lg:'column', md:'column', sm:'column', xs:'column'}} overflow={'hidden'} spacing={1}>
+    <Grid item xl={8} lg={12} md={12} sm={12} xs={12} pt={1} overflow={'hidden'} >
+      <Paper sx={{height:'100%', borderRadius: '14px',}}>
     <Reports />
       </Paper>
     </Grid>
-    <Grid item xl={4} pt={1} height={'91vh'}>
-    <Box sx={{height:'92vh', ...themeStyle.scrollable}} >
+    <Grid item xl={4} lg={12} md={12} sm={12} xs={12} pt={1} overflow={'hidden'}>
+    <Box>
       <ReportsSideBar />
     </Box>
     </Grid>

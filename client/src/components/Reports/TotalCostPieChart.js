@@ -5,7 +5,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 
 const TotalCostPieChart = () => {
   return (
-    <Paper sx={{height:'100%', borderRadius:'14px'}}>
+    <Paper sx={{borderRadius:'14px'}}>
         <Stack p={2}>
             <Typography fontFamily={'Inter, sans serif'} fontWeight={'500'} fontSize={'18px'}>
                Total Cost

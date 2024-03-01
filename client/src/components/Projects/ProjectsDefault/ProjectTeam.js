@@ -13,15 +13,15 @@ import data from './assests/data/data.json'
   
         console.log(groupedData);
   return (
-    <Stack pl={5} >
+    <Stack pl={{xl:5,lg:5,md:0}} >
         <Typography sx={themeStyle.title}>Project Team</Typography>
-        <Stack direction={'row'} justifyContent={'space-between'}>
+        <Stack direction={'row'} justifyContent={{xl:'space-between',lg:'space-between',md:'center'}}>
             <Stack  width={'100%'}>
             {Object.keys(groupedData).map((role)=>{
                 let acc =0;
                 return(
-                <Stack direction={'row'} justifyContent={'space-between'} >
-                <Stack direction={'row'}  width={'100%'} justifyContent={'space-between'}>
+                <Stack direction={'row'} justifyContent={{xl:'space-between', lg:'space-between', md:'flex-start', sm:'flex-start', xs:'flex-start'}} >
+                <Stack direction={'row'}  width={{xl:'100%', lg:'100%', md:'50%', sm:'50%', xs:'70%'}} justifyContent={'space-between'}>
                 <Typography sx={themeStyle.subTitle}>{role}</Typography>
                 <Stack direction={'row'} width={'190px'}>
 

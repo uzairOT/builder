@@ -37,10 +37,10 @@ function Client() {
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: {xs:"center",md:"space-between"} ,
         }}
       >
-        <Typography variant="body1" sx={tableCellStyle}>
+        <Typography variant="body1" sx={paginationTextStyle}>
           Showing data 1 to 4 of 25 entries
         </Typography>
         <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/>
@@ -72,6 +72,17 @@ const paginationStyle = {
     color: '#FFFFFF', // Text color for the selected page
   },
 };
+const paginationTextStyle = {
+ 
+  display: {
+    xs: 'none', 
+    md: 'block', 
+  },
+  fontWeight: 400,
+  fontSize: "14px",
+  fontFamily: "Poppins",
+  color: "#8C8C8C",
 
+};
 
 

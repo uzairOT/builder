@@ -10,7 +10,7 @@ import { ReactComponent as GoogleLogo } from "./Assets/svgs/GoogleIcon.svg";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import YellowBtn from "../UI/button";
-import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
+import "../../App.css";
 import "./Signup.css";
 import axios from "axios";
 
@@ -59,24 +59,23 @@ const SignupComp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = { ...formData, phone };
-    console.log(data)
-    try {
-      const res = await register({data}).unwrap();
-      console.log(res.user);
-      dispatch(setCredentials(res.user));
-      navigate('/assignproject');
-    } catch (err) {
-      toast.error(err?.data?.message || err.error);
-    }
+    // const data = { ...formData, phone };
+    // console.log(data)
+    // try {
+    //   const res = await register({data}).unwrap();
+    //   console.log(res.user);
+    //   dispatch(setCredentials(res.user));
+    //   navigate('/assignproject');
+    // } catch (err) {
+    //   toast.error(err?.data?.message || err.error);
+    // }
+    navigate('/assignproject');
   };
 
-  const Navigate = useNavigate()
-  const signUpHandler = () => {
-      Navigate("./assignproject")
-  }
-  const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
+ 
+  const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "1rem" }
   const linkResponsiveColor = { color: isMobile ? '#FFAC00' : '#4C8AB1' }
+    const borderRadiusResponsive = { borderRadius: isMobile ? "0.5rem" : "0.75rem" }
 
   return (
     <Grid
@@ -182,7 +181,7 @@ const SignupComp = () => {
                 style={{
                   ...inputStyle,
                   ...placeholderStyle,
-                  fontFamily: GTWalsheimTrial,
+                  fontFamily: "GTWalsheimTrial",
                   paddingLeft: "-1.5rem",
                   fontSize: isMobile ? "0.8rem" : "1rem",
                 }}
@@ -302,9 +301,9 @@ const SignupComp = () => {
             </Box>
 
                         <Button sx={{ ...YellowBtn, marginBottom: "1rem" }}
-                            type="submit" onClick={signUpHandler}>Sign up</Button>
+                            type="submit" onClick={handleSubmit}>Sign up</Button>
                         <Typography sx={alreadyHaveAccountTypo}>
-                            Already have an account?{'\u00a0'} <Link to="./login" style={{
+                            Already have an account?{'\u00a0'} <Link to="/login" style={{
                                 ...loginLink,
                                 ...linkResponsiveColor,
                                 ...lableResponsiveFont
@@ -373,18 +372,16 @@ const SignupComp = () => {
 
 const firstGrid = {
     padding: {
-        lg: "1.19rem 3rem",
-        md: "1rem 2rem",
+        lg: "1.19rem 3rem 0rem 3rem",
+        md: "0.5rem 2rem",
         sm: "1rem 2rem",
         xs: "0rem 0rem 0rem 0rem",
     },
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: '#4C8AB1',
-    marginTop: { lg: "-1rem", sm: "-4rem", xs: "auto" },
+    marginTop: { lg: "-0.3rem", sm: "-1rem", xs: "-2rem" },
 
-    // paddingTop: { xs: "-10rem" }
-    // border: "2px solid red",
 }
 
 const SecondGrid = {
@@ -396,7 +393,7 @@ const SecondGrid = {
         sm: "center",
         xs: "center",
     },
-    display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
+    display: { sm: "flex", xs: "none" },
     flexDirection: "column",
     paddingLeft: "4rem",
 }
@@ -444,13 +441,11 @@ const formGrid = {
     alignItems: 'center',
     padding: '20px',
     marginTop: "1rem",
-    paddingLeft: "2rem",
+    paddingLeft: { lg: "2rem", md: "2rem", sm: "1rem", xs: "1rem" },
     paddingRight: { lg: "6rem", md: "3rem", sm: "2rem", xs: "2rem" },
-
     marginLeft: { lg: "6rem", md: "2rem", sm: "0rem", xs: "0rem" },
-
     borderRadius: { lg: '1.5rem', md: "1.5rem", sm: "1.5rem", xs: "0rem" },
-    width: { lg: '80%', md: "90%", sm: "100%", xs: "100%" }
+    width: { lg: '80%', md: "90%", sm: "85%", xs: "100%" }
 }
 
 const logoBox = {
@@ -469,7 +464,7 @@ const namesFieldBox = {
 
 const subtitleStyle = {
     color: '#202227',
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     fontSize: '0.75rem',
     fontWeight: 400,
     marginBottom: '0.2rem',
@@ -511,11 +506,12 @@ const checkBox = {
 }
 
 const checkBoxText = {
-    marginTop: "0.5rem", fontSize: "0.95rem",
+    marginTop: "0.5rem",
+    fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem", xs: "0.75rem" },
 }
 const alreadyHaveAccountTypo = {
     color: '#202227',
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.8rem" },
     fontWeight: 400,
     lineHeight: 'normal',
@@ -527,7 +523,8 @@ const alreadyHaveAccountTypo = {
 
 const loginLink = {
     fontWeight: 600,
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+
 }
 
 
@@ -585,7 +582,7 @@ const selectStyle = {
     '.MuiOutlinedInput-notchedOutline': { border: 0 },
     color: 'white',
     border: "none",
-    fontFamily: 'GT Walsheim Trial',
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     fontSize: '1rem',
     fontWeight: '400',
     lineHeight: 'normal',
@@ -602,7 +599,7 @@ const hptLinksBox = {
 
 const firstHeading = {
     color: '#FFF',
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
     marginTop: "1rem",
     fontSize: { lg: '2.9375rem', md: "2rem", sm: "1.5rem" },
@@ -615,7 +612,7 @@ const secondHeading = {
     width: { lg: "31.125rem", md: "28rem", sm: "auto" },
     marginTop: "0.5rem",
     display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
     fontWeight: 400,
 
@@ -623,7 +620,7 @@ const secondHeading = {
 
 const thirdHeading = {
     color: '#FFF',
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     marginTop: "1rem",
     display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
     fontSize: { lg: '2rem', md: "1.5rem", sm: "1.2rem" },
@@ -635,7 +632,7 @@ const thirdHeading = {
 const formHeadingStyle = {
     color: '#4C8AB1',
     textAlign: 'center',
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     fontSize: '2.1875rem',
     fontWeight: 700,
     lineHeight: 'normal',
@@ -667,15 +664,15 @@ const inputStyle = {
     fontSize: '14px',
     border: '1px solid #ccc',
     borderRadius: '12px',
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     paddingLeft: "-1.5rem",
 };
 
 const placeholderStyle = {
     color: '#B8B8B8',
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     fontSize: "1rem",
-    paddingLeft: "1rem",
+    paddingLeft: "0.5rem",
     fontWeight: 400,
 
 };
@@ -684,7 +681,7 @@ const labelStyle = {
     display: 'block',
     marginBottom: '5px',
     color: '#202227',
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     fontSize: '1rem',
     fontWeight: 400,
     lineHeight: 'normal',
@@ -693,7 +690,7 @@ const labelStyle = {
 const hptLinksStyle = {
     color: '#FFF',
     fontSize: { lg: '1rem', md: "0.9rem", sm: "0.8rem" },
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     fontWeight: 400,
     lineHeight: 'normal',
 }
@@ -701,13 +698,13 @@ const hptLinksStyle = {
 const googleBtnStyle = {
     display: 'flex',
     flexDirection: 'row',
-    marginBottom: '0.5rem',
-    marginTop: '1.5rem',
+    marginBottom: { lg: "3.4rem", sm: "3rem", xs: "1rem" },
+    marginTop: '2rem',
     borderRadius: '2.5rem',
     border: '1px solid rgba(6, 32, 72, 0.11)',
     background: '#FFF',
     color: '#333',
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     fontSize: { lg: '1.25rem', md: "1.25rem", sm: "1.1rem", xs: "1rem" },
     fontWeight: 400,
     lineHeight: 'normal',
@@ -724,7 +721,7 @@ const googleBtnStyle = {
 
 const ContinuewithTextStyle = {
     color: '#202227',
-    fontFamily: GTWalsheimTrial,
+    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
     fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
     fontWeight: 400,
     display: "flex",
@@ -737,6 +734,14 @@ const ContinuewithTextStyle = {
     padding: '0 10px',
 }
 
+
+const buttonBox = {
+    display: "flex",
+    justifyContent: { lg: "start", md: "start", sm: "start", xs: "center" },
+    alignItems: { lg: "start", md: "start", sm: "start", xs: "center" },
+    width: { lg: 'auto', md: 'auto', sm: 'auto', xs: '100%' },
+    // border: "2px solid red"
+}
 const topSpace = {
     marginTop: "0.2rem"
 }

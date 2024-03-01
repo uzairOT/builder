@@ -1,0 +1,18 @@
+
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline{
+    border: none !important;
+    display: flex !important;
+   
+    }
+
+
+.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input{
+font-weight: bold !important;
+}
+@media (max-width: 600px) {
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+        font-size: 0.8rem !important;
+    }
+   
+}
+

@@ -5,6 +5,11 @@ import CircleIcon from '@mui/icons-material/Circle';
 import SelectMenuBarChart from './SelectMenuBarChart';
 
 const ProfitMarginBarChartCard = () => {
+      const listItems = [
+        {"listItem": "List Item #1"},
+        {"listItem": "List Item #1"},
+        {"listItem": "List Item #1"},
+      ]
   return (
     <>
       <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} p={1} pl={2} pr={2}>
@@ -12,7 +17,7 @@ const ProfitMarginBarChartCard = () => {
        <Typography color={'#606060'} fontFamily={'Inter, sans serif'} fontWeight={'500'} fontSize={'13px'}>Profit Margin</Typography>
     </Stack>
     <Divider variant='fullWidth'/>
-    <SelectMenuBarChart />
+    <SelectMenuBarChart listItems={listItems} />
     <ProfitMarginStackedBarChart />
     <Stack direction={'row'} justifyContent={'space-around'} spacing={1}>
             <Stack direction={'row'} spacing={1}>

@@ -42,12 +42,12 @@ function AddModal({ title, open, onClose }) {
             </Typography>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12}  sm={6}>
             {/* Name input */}
             <Typography variant="body1">Name</Typography>
             <TextField placeholder="Name" fullWidth sx={InputStyle} />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12}  sm={6}>
             {/* Phone Number input */}
             <Typography variant="body1">Phone Number</Typography>
             <TextField
@@ -56,22 +56,22 @@ function AddModal({ title, open, onClose }) {
               sx={InputStyle}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12}  sm={6}>
             {/* Projects input */}
             <Typography variant="body1">Projects</Typography>
             <TextField placeholder="Projects" fullWidth sx={InputStyle} />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12}  sm={6}>
             {/* Country input */}
             <Typography variant="body1">Country</Typography>
             <TextField placeholder="Country" fullWidth sx={InputStyle} />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12}  sm={6}>
             {/* Email input */}
             <Typography variant="body1">Email</Typography>
             <TextField placeholder="Email" fullWidth sx={InputStyle} />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12}  sm={6}>
             {/* Status input */}
             <Typography variant="body1">Status</Typography>
             <TextField placeholder="Status" fullWidth sx={InputStyle} />
@@ -79,7 +79,7 @@ function AddModal({ title, open, onClose }) {
         </Grid>
       </DialogContent>
       <DialogActions sx={{ display: "flex", justifyContent: "center",mb:2 }}>
-        <Grid item xs={2} sx={{ textAlign: "center" }}>
+        <Grid item xs={8} sm={4} md={3} lg={2} sx={{ textAlign: "center" }}>
           <Button
             buttonText="Add New"
             color="#ffffff"
@@ -89,7 +89,7 @@ function AddModal({ title, open, onClose }) {
             borderRadius="50px"
           />
         </Grid>
-        <Grid item xs={2} sx={{ textAlign: "center" }}>
+        <Grid item xs={8} sm={4} md={3} lg={2} sx={{ textAlign: "center" }}>
           <Button
             buttonText="Reset"
             color="#4C8AB1"

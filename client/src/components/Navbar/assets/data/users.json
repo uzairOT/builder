@@ -2,22 +2,22 @@
     {
       "name": "John Doe",
       "img": "https://randomuser.me/api/portraits/men/1.jpg",
-      "userType": "Super Admin"
+      "userType": "Client"
     },
     {
       "name": "Jane Smith",
       "img": "https://randomuser.me/api/portraits/women/2.jpg",
-      "userType": "Admin"
+      "userType": "Client"
     },
     {
       "name": "Alex Johnson",
       "img": "https://randomuser.me/api/portraits/men/3.jpg",
-      "userType": "User"
+      "userType": "Admin"
     },
     {
       "name": "Emily Davis",
       "img": "https://randomuser.me/api/portraits/women/4.jpg",
-      "userType": "User"
+      "userType": "Super Admin"
     }
   ]
   

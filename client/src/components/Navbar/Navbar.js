@@ -21,19 +21,19 @@ import {
 import { ReactComponent as BuilderProNavbarLogo } from "./assets/svgs/builder-pro-logo-navbar.svg";
 import { ReactComponent as BuilderProNavbarShare } from "./assets/svgs/builder-pro-navbar-share.svg";
 import { ReactComponent as BuilderProNavbarLogout } from "./assets/svgs/builder-pro-navbar-logout.svg";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchBar from "../UI/SearchBar/SearchBar";
 import BuilderProButton from "../UI/Button/BuilderProButton";
 import NavbarDrawer from "./NavbarDrawer";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import users from "./assets/data/users.json";
-import LinkIcon from '@mui/icons-material/Link';
+import LinkIcon from "@mui/icons-material/Link";
 
 const Navbar = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [open, setOpen] = useState(null);
-  const [userType, setUserType] = useState('');
+  const [userType, setUserType] = useState("");
   const theme = useTheme();
   const showHamburger = useMediaQuery(theme.breakpoints.down("lg"));
   const responsiveButton = useMediaQuery(theme.breakpoints.up("sm"));
@@ -41,10 +41,35 @@ const Navbar = () => {
   const openShare = Boolean(open);
   const id = openShare ? "simple-popover" : undefined;
 
+  const location = useLocation();
+  const path = location.pathname.split("/")[1];
+
+  useEffect(() => {
+    switch (path) {
+      case undefined:
+        setSelectedTab(0);
+        break;
+      case "projects":
+        setSelectedTab(1);
+        break;
+      case "reports":
+        setSelectedTab(2);
+        break;
+      case "subscription":
+        setSelectedTab(4);
+        break;
+      case "settings":
+        setSelectedTab(5);
+        break;
+        default:
+          return;
+    }
+  }, [path]);
+
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
     const lowercasedValue = `${event.target.textContent}`.toLowerCase();
-    navigate(lowercasedValue === 'dashboard' ? '/' : lowercasedValue);
+    navigate(lowercasedValue === "dashboard" ? "/" : lowercasedValue);
   };
   const handleLogout = () => {
     localStorage.clear();
@@ -95,10 +120,12 @@ const Navbar = () => {
       <AppBar position="static" sx={themeStyle.navbar}>
         <Toolbar sx={themeStyle.toolbar}>
           {showHamburger && <NavbarDrawer />}
-          <BuilderProNavbarLogo
-            aria-label="Builder Pro Logo"
-            style={themeStyle.logo}
-          />
+          <Link to="/">
+            <BuilderProNavbarLogo
+              aria-label="Builder Pro Logo"
+              style={themeStyle.logo}
+            />
+          </Link>
           <Tabs
             sx={themeStyle.tabs}
             value={selectedTab}
@@ -109,12 +136,11 @@ const Navbar = () => {
             <Tab label="Dashboard" style={themeStyle.getTabColor(0)} />
             <Tab label="Projects" style={themeStyle.getTabColor(1)} />
             <Tab label="Reports" style={themeStyle.getTabColor(2)} />
-            <Tab label="Chat" style={themeStyle.getTabColor(3)} />
             <Box sx={themeStyle.search}>
               <SearchBar />
             </Box>
-            <Tab label="Subscription" style={themeStyle.getTabColor(5)} />
-            <Tab label="Settings" style={themeStyle.getTabColor(6)} />
+            <Tab label="Subscription" style={themeStyle.getTabColor(4)} />
+            <Tab label="Settings" style={themeStyle.getTabColor(5)} />
           </Tabs>
           <Box display={"flex"}>
             <BuilderProButton
@@ -153,7 +179,7 @@ const Navbar = () => {
           paper: {
             sx: {
               marginTop: "30px",
-              borderRadius: '15px'
+              borderRadius: "15px",
             },
           },
         }}
@@ -172,7 +198,12 @@ const Navbar = () => {
         </Stack>
         <Divider variant="fullWidth" />
         <Stack direction={"row"} pl={4} pr={4} pt={2} pb={2} spacing={3}>
-          <Stack direction={'row'} border={'2px solid #FFAC00'} borderRadius={'30px'} pl={2}>
+          <Stack
+            direction={"row"}
+            border={"2px solid #FFAC00"}
+            borderRadius={"30px"}
+            pl={2}
+          >
             <Input
               placeholder="Enter an Email to invite"
               aria-describedby="my-helper-text"
@@ -188,38 +219,52 @@ const Navbar = () => {
                 },
               }}
             />
-          <FormControl style={{marginLeft:'5px', width:'120px'}} size="small">
-          <InputLabel id="demo-simple-select-label" style={{fontSize: '12px', top:'3px', fontFamily:'GT-Walsheim-Regular-Trial, sans-serif', color: '#202227'}} sx={{
-            "&.Mui-focused":{
-              transform: "translate(14px, -1px) scale(0.75)",
-            }
-          }}>Select Role</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={userType}
-            label="Age"
-            onChange={handleUserTypeChange}
-            placeholder="Select Role"
-            sx={{
-              '.css-1d3z3hw-MuiOutlinedInput-notchedOutline': {
-                border: 'none'
-              }
-            }}
+            <FormControl
+              style={{ marginLeft: "5px", width: "120px" }}
+              size="small"
             >
-            <MenuItem value={'user'}>User</MenuItem>
-            <MenuItem value={'admin'}>Admin</MenuItem>
-            <MenuItem value={'super admin'}>Super admin</MenuItem>
-          </Select>
-          </FormControl>
-            </Stack>
+              <InputLabel
+                id="demo-simple-select-label"
+                style={{
+                  fontSize: "12px",
+                  top: "3px",
+                  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+                  color: "#202227",
+                }}
+                sx={{
+                  "&.Mui-focused": {
+                    transform: "translate(14px, -1px) scale(0.75)",
+                  },
+                }}
+              >
+                Select Role
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={userType}
+                label="Age"
+                onChange={handleUserTypeChange}
+                placeholder="Select Role"
+                sx={{
+                  ".css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+                    border: "none",
+                  },
+                }}
+              >
+                <MenuItem value={"user"}>User</MenuItem>
+                <MenuItem value={"admin"}>Admin</MenuItem>
+                <MenuItem value={"super admin"}>Super admin</MenuItem>
+              </Select>
+            </FormControl>
+          </Stack>
           <BuilderProButton backgroundColor={"#FFAC00"} variant={"contained"}>
             <Typography>Invite</Typography>
           </BuilderProButton>
         </Stack>
 
         {users.map((user, index) => (
-          <Stack p={0.5} pl={2.5} pr={2.5}>
+          <Stack key={index} p={0.5} pl={2.5} pr={2.5}>
             <Stack
               id={user.img}
               direction={"row"}
@@ -238,20 +283,36 @@ const Navbar = () => {
                   alt="User Profile Pic"
                   width={"32px"}
                   height={"32px"}
-                  style={{ borderRadius: "50px",}}
+                  style={{ borderRadius: "50px" }}
                 ></img>
-                <Typography color={"#202227"} fontSize={"14px"} pl={2} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'}>
+                <Typography
+                  color={"#202227"}
+                  fontSize={"14px"}
+                  pl={2}
+                  fontFamily={"GT-Walsheim-Regular-Trial, sans-serif"}
+                >
                   {user.name}
                 </Typography>
               </Stack>
-              <Typography fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'} fontSize={'14px'}>{user.userType}</Typography>
+              <Typography
+                fontFamily={"GT-Walsheim-Regular-Trial, sans-serif"}
+                fontSize={"14px"}
+              >
+                {user.userType}
+              </Typography>
             </Stack>
             {users.length - 1 === index ? <></> : <Divider />}
           </Stack>
         ))}
         <Divider />
-        <Stack direction={'row'} p={2} pl={3}>
-          <BuilderProButton Icon={LinkIcon} iconProps={{transform:'rotate(135deg)'}} variant={'text'}>Copy Link</BuilderProButton>
+        <Stack direction={"row"} p={2} pl={3}>
+          <BuilderProButton
+            Icon={LinkIcon}
+            iconProps={{ transform: "rotate(135deg)" }}
+            variant={"text"}
+          >
+            Copy Link
+          </BuilderProButton>
         </Stack>
       </Popover>
     </>

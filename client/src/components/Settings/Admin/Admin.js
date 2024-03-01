@@ -27,7 +27,7 @@ function Admin() {
 
   return (
     <div style={{padding:"20px"}}>
-      <Header title="Admin"   OpenAddModal={OpenAddModal}/>
+      <Header title="Admin"   OpenAddModal={OpenAddModal} />
       <CustomTable setUpdateModalOpen={setUpdateModalOpen} />
 
       <Box mt={2} mb={2}>
