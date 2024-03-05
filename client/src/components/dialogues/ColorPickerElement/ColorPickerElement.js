@@ -1,43 +1,75 @@
 import React, { useState } from 'react'
 import { HexColorPicker, RgbaColorPicker, RgbaStringColorPicker, HexColorInput, } from "react-colorful";
+import { useUpdateProjectPhaseMutation, useAddPhaseLineMutation, useAddProjectPhaseMutation } from '../../../redux/apis/Project/projectApiSlice';
+
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Box, Typography } from '@mui/material';
 import actionButton from "../../UI/actionButton";
 import "../../../App.css"
 
 
 import "./ColorPickerElement.css";
+import { yellow } from '@mui/material/colors';
 
-function ColorPickerElement({ handleOpen, handleClose }) {
+function ColorPickerElement({ handleUpdateOpen, handleUpdateClose, handleAddClose, handleAddOpen, phaseData, setPhaseData, PhaseHeading, onSubmit }) {
 
     const [open, setOpen] = useState(false);
-    const [color, setColor] = useState("#aabbcc");
-    const [colorMode, setColorMode] = useState('rgba');
-
-    const handleClickOpen = () => {
-        handleOpen()
-        setOpen(true);
-    };
-
-    const handleClickClose = () => {
-        handleClose()
-        setOpen(false);
-    };
-
+    const [color, setColor] = useState(phaseData ? phaseData.color : "yellow");
+    const [colorMode, setColorMode] = useState("");
+    const [phaseName, setPhaseName] = useState(phaseData ? phaseData.phaseName : 'a');
+    const [updateProjectPhase] = useUpdateProjectPhaseMutation();
+    const [addProjectPhase] = useAddProjectPhaseMutation();
     const toggleColorMode = () => {
         setColorMode(prevMode => prevMode === 'rgba' ? 'hex' : 'rgba');
     };
 
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        const { phaseName } = formJson;
-        const selectedColor = color;
-        console.log("Phase:", phaseName);
-        console.log("Color:", selectedColor);
-        handleClose();
+    const handleClickOpen = () => {
+        if (PhaseHeading === "Update Phase") {
+            handleUpdateOpen();
+        } else {
+            handleAddOpen();
+        }
+        setOpen(true);
     };
+
+    const handleClickClose = () => {
+        if (PhaseHeading === "Update Phase") {
+            handleUpdateClose();
+        } else {
+            handleAddClose();
+        }
+        setOpen(false);
+    };
+
+
+    const handleSubmit = event => {
+        event.preventDefault();
+        if (PhaseHeading === "Update Phase") {
+            onSubmit(phaseName, color);
+            const updatedPhaseData = {
+                phaseName,
+                color,
+            };
+            updateProjectPhase({ id: phaseData?.id, updatedData: updatedPhaseData });
+            setPhaseData(phaseData => ({ ...phaseData, ...updatedPhaseData }));
+            console.log(updatedPhaseData)
+            console.log(phaseData)
+            handleUpdateClose();
+        } else {
+            onSubmit(phaseName, color);
+            const newPhaseData = {
+                phaseName,
+                color,
+            };
+            addProjectPhase({ newData: newPhaseData });
+            setPhaseData(phaseData => ({ ...phaseData, ...newPhaseData }));
+            console.log(newPhaseData)
+            console.log(phaseData)
+            handleAddClose();
+        }
+
+    };
+
     return (
         <div className="App">
 
@@ -52,7 +84,7 @@ function ColorPickerElement({ handleOpen, handleClose }) {
                     }}
 
                 >
-                    <DialogTitle sx={typoTitle} >Add Phase</DialogTitle>
+                    <DialogTitle sx={typoTitle} >{PhaseHeading}</DialogTitle>
                     <DialogContent sx={{ padding: "3rem" }}>
                         <Typography sx={typoText}>
                             Phase
@@ -64,9 +96,12 @@ function ColorPickerElement({ handleOpen, handleClose }) {
                             margin="dense"
                             id="phaseName"
                             name="phaseName"
+                            // placeholder={phaseData.phaseName}
                             // label="Email Address"
                             type="text"
                             variant="standard"
+                            value={phaseName}
+                            onChange={event => setPhaseName(event.target.value)}
                         />
                         <Typography sx={typoText}>
                             Select Color
@@ -95,7 +130,7 @@ function ColorPickerElement({ handleOpen, handleClose }) {
                         </div>
                     </DialogContent>
                     <DialogActions sx={generalBox}>
-                        <Button sx={{ ...actionButton, ...addPhaseButton }} type="submit">Add Phase</Button>
+                        <Button sx={{ ...actionButton, ...addPhaseButton }} type="submit" onClick={handleSubmit}>{PhaseHeading}</Button>
                     </DialogActions>
                 </Dialog>
 

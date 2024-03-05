@@ -9,25 +9,56 @@ import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import AddPhaseCard from "../AddPhaseCard/AddPhaseCard";
 import actionButton from "../../UI/actionButton";
 import ColorPickerElement from "../../dialogues/ColorPickerElement/ColorPickerElement"
+import { useDeleteProjectPhaseMutation } from '../../../redux/apis/Project/projectApiSlice';
+import UpdatePhaseDialogue from "../../dialogues/UpdatePhaseDialogue/UpdatePhaseDialogue";
+import AddPhaseDialogue from "../../dialogues/AddPhaseDialogue/AddPhaseDialogue";
 
 const initialCardPhase = [
   {
     id: 1,
     currentIndex: 0,
     previousIndex: -1,
-    color: "pink"
+    phaseName: "Phase 1",
+    color: "#F9F9F9"
   },
   {
     id: 2,
     currentIndex: 1,
     previousIndex: 0,
+    phaseName: "Phase 2",
     color: "yellow"
+  },
+  {
+    id: 3,
+    currentIndex: 1,
+    previousIndex: 0,
+    phaseName: "Phase 3",
+    color: "blue"
+  },
+  {
+    id: 4,
+    currentIndex: 1,
+    previousIndex: 0,
+    phaseName: "Phase 4",
+    color: "red"
+  },
+  {
+    id: 5,
+    currentIndex: 1,
+    previousIndex: 0,
+    phaseName: "Phase 5",
+    color: "green"
   },
 
 ];
 
 function AddPhaseView() {
   const [cardPhase, setCardPhase] = useState(initialCardPhase);
+  const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [selectedPhaseData, setSelectedPhaseData] = useState(null);
+  const [deleteProjectPhase] = useDeleteProjectPhaseMutation();
+
+
   const handleGridToggle = (currentIndex, previousIndex) => {
     // Ensure indices are within the valid range
     if (
@@ -68,19 +99,89 @@ function AddPhaseView() {
     setCardPhase(updatedCardPhase);
   };
 
-  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [showUpdatePhaseDialogue, setShowUpdatePhaseDialogue] = useState(false);
+  const [showAddPhaseDialogue, setShowAddPhaseDialogue] = useState(false);
+
+
+  const handleEditPhase = () => {
+    setShowUpdatePhaseDialogue(true);
+  };
+
+  const handleUpdateOpen = () => {
+    setShowUpdatePhaseDialogue(true);
+  };
+
+  const handleUpdateClose = () => {
+    setShowUpdatePhaseDialogue(false);
+  };
 
   const handleAddPhase = () => {
-    setShowColorPicker(true); // Set the state to true to render ColorPickerElement
+    setShowAddPhaseDialogue(true);
+  };
+  const handleAddOpen = () => {
+    setShowAddPhaseDialogue(true);
   };
 
-  const handleOpen = () => {
-    setShowColorPicker(true); // Set the state to true to open the ColorPickerElement
+  const handleAddClose = () => {
+    setShowAddPhaseDialogue(false);
   };
 
-  const handleClose = () => {
-    setShowColorPicker(false); // Set the state to false to close the ColorPickerElement
+
+  const handleSelectCard = (id) => {
+    if (selectedPhaseId === id) {
+      setSelectedPhaseId(null);
+    } else {
+      setSelectedPhaseId(id);
+      const selectedPhase = cardPhase.find(phase => phase.id === id);
+      setSelectedPhaseData(selectedPhase);
+    }
   };
+
+  const handleDeletePhase = () => {
+    if (selectedPhaseId) {
+      deleteProjectPhase(selectedPhaseId);
+      const updatedCardPhase = cardPhase.filter(card => card.id !== selectedPhaseId);
+      setCardPhase(updatedCardPhase);
+      console.log(updatedCardPhase)
+      setSelectedPhaseId(null);
+      setSelectedPhaseData(null);
+    }
+  };
+
+
+  const handleAddSubmit = (phaseName, color) => {
+    const newPhase = {
+      id: cardPhase.length + 1,
+      currentIndex: cardPhase.length,
+      previousIndex: cardPhase.length - 1,
+      phaseName: phaseName,
+      color: color,
+    };
+    const updatedCardPhase = [...cardPhase, newPhase];
+    setCardPhase(updatedCardPhase);
+    setSelectedPhaseData(newPhase);
+    setShowAddPhaseDialogue(false);
+  };
+
+  const handleUpdateSubmit = (phaseName, color, selectedPhaseData) => {
+    const updatedPhaseData = {
+      ...selectedPhaseData,
+      phaseName: phaseName,
+      color: color,
+    };
+
+    const updatedCardPhase = cardPhase.map(phase => {
+      if (phase.id === selectedPhaseData.id) {
+        return updatedPhaseData;
+      }
+      return phase;
+    });
+
+    setCardPhase(updatedCardPhase);
+    setSelectedPhaseData(updatedPhaseData);
+    setShowUpdatePhaseDialogue(false);
+  };
+
 
   return (
     <Grid
@@ -91,49 +192,62 @@ function AddPhaseView() {
         sx={buttonBox}
       >
         <Button sx={{ ...actionButton, ...displayButton }} startIcon={<ModeEditOutlinedIcon />}
-          onClick={handleAddPhase}>
+          onClick={handleEditPhase}>
           Edit
         </Button>
-        <Button sx={{ ...actionButton, ...displayButton }} startIcon={<DeleteOutlinedIcon />}>
+        <Button sx={{ ...actionButton, ...displayButton }} startIcon={<DeleteOutlinedIcon />} onClick={handleDeletePhase}>
           Delete
         </Button>
         <Button sx={{ ...actionButton, background: "#FFAC00", }}
-          onClick={handleAddPhase}>
+          onClick={handleAddPhase}
+        >
           Add Phase
         </Button>
         <Button sx={{ ...actionButton, ...approvalButton, ...displayButton }}>
           Send Approval
         </Button>
       </Box>
+
       {cardPhase.map((phase, index) => (
-        <AddPhaseCard
-          key={phase?.id}
-          cardPhase={phase}
-          rows={rows}
-          length={cardPhase.length}
-          onGridToggle={() => handleGridToggle(index, phase?.previousIndex)}
-        />
+        <div key={phase.id}
+          style={{
+            ...slectedCardStyle,
+            backgroundColor: selectedPhaseId === phase.id ? "#000" : "#FFF"
+          }}>
+          <AddPhaseCard
+            key={phase?.id}
+            cardPhase={phase}
+            length={cardPhase.length}
+            onGridToggle={() => handleGridToggle(index, phase?.previousIndex)}
+            handleSelectCard={handleSelectCard}
+          />
+
+        </div>
       ))}
-      {showColorPicker && (
-        <ColorPickerElement
-          handleOpen={handleOpen}
-          handleClose={handleClose}
+      {showUpdatePhaseDialogue && (
+        <UpdatePhaseDialogue
+          handleUpdateOpen={handleUpdateOpen}
+          handleUpdateClose={handleUpdateClose}
+          phaseData={selectedPhaseData}
+          setPhaseData={setSelectedPhaseData}
+          // onSubmit={handleColorPickerSubmit}
+          onSubmit={(phaseName, color) => handleUpdateSubmit(phaseName, color, selectedPhaseData)}
+        />
+      )}
+      {showAddPhaseDialogue && (
+        <AddPhaseDialogue
+          handleAddOpen={handleAddOpen}
+          handleAddClose={handleAddClose}
+          phaseData={selectedPhaseData}
+          setPhaseData={setSelectedPhaseData}
+          // onSubmit={handleColorPickerSubmit}
+          onSubmit={handleAddSubmit}
         />
       )}
 
     </Grid>
   );
 }
-
-
-
-function createData(name, calories, fat, carbs, protein, calorie, fa, carb, protei) {
-  return { name, calories, fat, carbs, protein, calorie, fa, carb, protei };
-}
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 159, 6.0, 24, 4.0),
-];
 
 
 
@@ -169,6 +283,11 @@ const approvalButton = {
 
 const displayButton = {
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" }
+}
+const slectedCardStyle = {
+  padding: "0.1rem 0rem 1rem 0rem",
+  margin: "0.5rem 0rem",
+  cursor: "pointer",
 }
 
 export default AddPhaseView;

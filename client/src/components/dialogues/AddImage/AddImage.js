@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Box, Typography } from '@mui/material';
 import actionButton from "../../UI/actionButton";
 import upload from "./assets/upload.png"
@@ -11,6 +11,7 @@ function AddImage({ handleOpen, handleClose, heading }) {
     const [image, setImage] = useState(null);
     const objectFit = { objectFit: image ? "cover" : "none" }
     const dotBorder = { border: image ? "none" : "2px dashed #D9D9D9" }
+
 
     const handleClickOpen = () => {
         handleOpen()
@@ -26,8 +27,10 @@ function AddImage({ handleOpen, handleClose, heading }) {
         const file = e.target.files[0];
         const reader = new FileReader();
 
+
         reader.onloadend = () => {
             setImage(reader.result);
+
         };
 
         if (file) {
