@@ -17,12 +17,17 @@ import {
   Button, Box,
 } from "@mui/material";
 import StepFormField from "../StepFormField/StepFormField";
+import {
+  selectProjectForm,
+  setProjectName,
+  setLocation,
+} from "../../../redux/slices/projectFormSlice";
 
 function AssignNewProjectStep2({ onNextStep }) {
 
   const [emailCount, setEmailCount] = useState(1);
   const [showSkipInvite, setShowSkipInvite] = useState(false);
-
+  const { projectName } = useSelector(selectProjectForm);
 
   const handleAddEmail = () => {
     setEmailCount(emailCount + 1);
@@ -50,18 +55,19 @@ function AssignNewProjectStep2({ onNextStep }) {
   const users = useSelector(selectUsers);
 
   const handleAddUser = () => {
+
     dispatch(addUser());
   };
 
 
-
+console.log(25);
 
   return (
     <>
       <StepTitles
         stepHeading={"Step 2 of 3"}
         Heading={"invite your Team to the"}
-        projectName={"Project Name"}
+        projectName={projectName}
         stepDiscription={
           "Lorem ipsum dolor sit amet consectetur. Pretium aliquam egestas interdum varius sed at libero. Sed vestibulum vel platea accumsan in elit morbi eu erat. Purus non urna et purus. Libero nec nec quam pulvinar massa nulla et tincidunt."
         }

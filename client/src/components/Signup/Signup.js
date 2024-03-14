@@ -59,17 +59,18 @@ const SignupComp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const data = { ...formData, phone };
-    // console.log(data)
-    // try {
-    //   const res = await register({data}).unwrap();
-    //   console.log(res.user);
-    //   dispatch(setCredentials(res.user));
-    //   navigate('/assignproject');
-    // } catch (err) {
-    //   toast.error(err?.data?.message || err.error);
-    // }
-    navigate('/assignproject');
+    const data = { ...formData, phone };
+    console.log(data)
+    try {
+      const res = await register({data}).unwrap();
+      console.log(res.user);
+      dispatch(setCredentials(res.user));
+      navigate('/assignproject');
+      console.log("hi")
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
+    // navigate('/assignproject');
   };
 
  

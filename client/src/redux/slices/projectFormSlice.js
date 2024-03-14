@@ -3,12 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   projectName: '',
-  buildType: '',
+  buildType: 'remodel',
   workDone: '',
   estimatedPrice: '',
-  location: '',
+  location: 'Islamabad',
   clientName: '',
-  users: [{ email: '', role: '' }],
+  users: [{ email: '', role: 'admin' }],
 };
 
 const projectFormSlice = createSlice({
