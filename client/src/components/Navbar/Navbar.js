@@ -19,7 +19,7 @@ import {
   Button,
 } from "@mui/material";
 import { ReactComponent as BuilderProNavbarLogo } from "./assets/svgs/builder-pro-logo-navbar.svg";
-import { ReactComponent as BuilderProNavbarShare } from "./assets/svgs/builder-pro-navbar-share.svg";
+// import { ReactComponent as BuilderProNavbarShare } from "./assets/svgs/builder-pro-navbar-share.svg";
 import { ReactComponent as BuilderProNavbarLogout } from "./assets/svgs/builder-pro-navbar-logout.svg";
 import React, { useEffect, useState } from "react";
 import SearchBar from "../UI/SearchBar/SearchBar";
@@ -75,9 +75,9 @@ const Navbar = () => {
     localStorage.clear();
     navigate("/login");
   };
-  const handleShare = (e) => {
-    setOpen(e.currentTarget);
-  };
+  // const handleShare = (e) => {
+  //   setOpen(e.currentTarget);
+  // };
   const handleClose = () => {
     setOpen(null);
   };
@@ -143,14 +143,14 @@ const Navbar = () => {
             <Tab label="Settings" style={themeStyle.getTabColor(5)} />
           </Tabs>
           <Box display={"flex"}>
-            <BuilderProButton
+            {/* <BuilderProButton
               backgroundColor={"#FFAC00"}
               variant={"contained"}
               Icon={BuilderProNavbarShare}
               handleOnClick={handleShare}
             >
               {responsiveButton ? "Share" : ""}
-            </BuilderProButton>
+            </BuilderProButton> */}
             <BuilderProButton
               backgroundColor={"#4C8AB1"}
               variant={"outlined"}
@@ -247,7 +247,7 @@ const Navbar = () => {
                 onChange={handleUserTypeChange}
                 placeholder="Select Role"
                 sx={{
-                  ".css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+                  "& .notchedOutline": {
                     border: "none",
                   },
                 }}

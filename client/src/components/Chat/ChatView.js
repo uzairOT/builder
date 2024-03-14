@@ -60,13 +60,11 @@ function ChatView({isAdminPage, project}) {
       <Box
         sx={{
           mx: 4,
-          
         }}
       >
 
         <Box sx={{height:"100%"}}>
 
-    
 
         {/* Message Cards */}
         {dummyMessages.map((message, index) => (

@@ -3,10 +3,72 @@ import { Grid, Paper } from "@mui/material";
 import SideBar from "../Settings/SideBar/SideBar";
 import { Outlet } from "react-router";
 import Navbar from "../../components/Navbar/Navbar.js";
+import { useLocation } from "react-router-dom";
+import { useAddAssignRoleMutation, useUpdateAssignRoleMutation } from "../../redux/apis/Admin/assignRoleApiSlice.js";
 function Layout3() {
+  const [userInfo, setUserInfo] = useState({
+    userRole:'',
+    image:'',
+    name: '',
+    projects: '',
+    email:'',
+    phoneNumber: '',
+    country: '',
+    status:'',
+  })
+
+  const location = useLocation();
+  const pathSegments = location.pathname.split('/')
+  const userRole = pathSegments[pathSegments.length-1]
+  console.log(userRole);
+
+  const [assignRolePost] = useAddAssignRoleMutation()
+  const [assignRolePut] = useUpdateAssignRoleMutation();
+
+  const [userId, setUserId] = useState(null);
   useEffect(() => {
-    console.log("hi");
-  });
+    console.log(userInfo);
+  }, [userInfo]);
+
+
+  const handleAssignRoleButton = (e) => {
+    e.preventDefault();
+    const post = {
+      ...userInfo,
+      userRole: userRole,
+    }
+    console.log(post)
+    assignRolePost(post);
+    setUserInfo({
+      userRole:'',
+      image:'',
+      name: '',
+      projects: '',
+      email:'',
+      phoneNumber: '',
+      country: '',
+      status:'',
+    })
+  }
+  const handleUpdateAssignRole = (e) => {
+    e.preventDefault();
+    const put = {
+      ...userInfo,
+      userRole: userRole
+    }
+    console.log(put);
+    assignRolePut(put);
+    setUserInfo({
+      userRole:'',
+      image:'',
+      name: '',
+      projects: '',
+      email:'',
+      phoneNumber: '',
+      country: '',
+      status:'',
+    })
+  }
   return (
     <>
       
@@ -28,7 +90,7 @@ function Layout3() {
             style={{ paddingTop: "0px", paddingLeft: "10px" }}
           >
             <Paper sx={themeStyle.Layout3Pages} margin={1}>
-              <Outlet />
+              <Outlet context={[userInfo,setUserInfo, handleAssignRoleButton,userId, setUserId, handleUpdateAssignRole]} />
             </Paper>
           </Grid>
         </Grid>

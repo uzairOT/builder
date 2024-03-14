@@ -19,10 +19,14 @@ import { ReactComponent as DeleteIcon } from "../Assets/svgs/DeleteIcon.svg";
 import "../../../App.css"
 import actionButton from "../../UI/actionButton";
 import "./AddPhaseCard.css";
+import { selectAddPhase, setRowCheckboxes } from "../../../redux/slices/addPhaseSlice";
+import {useSelector, useDispatch} from 'react-redux'
 
-const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
+const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length, adminProjectView }) => {
   const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
-  const [rowCheckboxes, setRowCheckboxes] = useState(rows.map(() => false)); // State to track the checked state of each checkbox in the table rows
+  // const [rowCheckboxes, setRowCheckboxes] = useState(rows.map(() => false)); // State to track the checked state of each checkbox in the table rows
+  const {rowCheckboxes} = useSelector(selectAddPhase);
+  const dispatch = useDispatch();
   const [showAddLine, setShowAddLine] = useState(false);
 
   const handleArrowDownClick = () => {
@@ -36,14 +40,14 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
   const handleSelectAllChange = (event) => {
     const isChecked = event.target.checked;
     setSelectAll(isChecked);
-    setRowCheckboxes(rowCheckboxes.map(() => isChecked));
+    dispatch(setRowCheckboxes(rowCheckboxes.map(() => isChecked)));
   };
 
   const handleRowCheckboxChange = (index) => (event) => {
     const isChecked = event.target.checked;
     const updatedCheckboxes = [...rowCheckboxes];
     updatedCheckboxes[index] = isChecked;
-    setRowCheckboxes(updatedCheckboxes);
+    dispatch(setRowCheckboxes(updatedCheckboxes));
     setSelectAll(updatedCheckboxes.every((checkbox) => checkbox));
   };
 
@@ -135,8 +139,8 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    <Checkbox checked={selectAll}
-                      onChange={handleSelectAllChange} />
+                    {!adminProjectView && <Checkbox checked={selectAll}
+                      onChange={handleSelectAllChange} />}
                   </TableCell>
                   <TableCell
                     sx={{ ...tableHeadings, width: "15%", }}

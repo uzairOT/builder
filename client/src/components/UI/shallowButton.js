@@ -1,13 +1,17 @@
-
-const shallowButton = {
-    border: "1px solid #FFAC00",
-    padding: "1rem 4rem",
-    background: "#FFF",
-    color: "#FFAC00",
+const actionButton = {
+    display: "flex",
+    height: "2.375rem",
+    padding: "0.75rem 1.5rem",
+    justifyContent: "center",
+    alignItems: "center",
+    flexShrink: 0,
+    alignSelf: "stretch",
+    borderRadius: "2.8125rem",
+    background: "#4C8AB1",
+    color: "#FFF",
+    textTransform: "none",
     "&:hover": {
-      background: "#FFF",
+      background: "#357899",
     },
-    fontWeight: 600,
-    fontFamily: "Inter"
-  }
-  export default shallowButton;
+  };
+  export default actionButton;

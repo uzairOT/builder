@@ -14,6 +14,8 @@ import EditIcon from "../../../assets/settings/edit.png";
 import DeleteIcon from "../../../assets/settings/delete.png";
 import EmailIcon from "../../../assets/settings/email.png";
 import Button from "../../UI/CustomButton";
+import { useDeleteAssignRoleMutation } from "../../../redux/apis/Admin/assignRoleApiSlice";
+import { useLocation } from "react-router-dom";
 
 
 const dummyData = [
@@ -50,18 +52,31 @@ const dummyData = [
   // Add more dummy data objects as needed
 ];
 
-function CustomTable({title , setTemplateView ,setUpdateModalOpen}) {
+function CustomTable({title , setTemplateView ,setUpdateModalOpen, setUserId}) {
   const showEmailAndRecords = title === "subcontractor";
+  const [assignRoleDelete] = useDeleteAssignRoleMutation();
+  const location = useLocation();
+  const pathSegments = location.pathname.split("/");
+  const userRole = pathSegments[pathSegments.length - 1];
 
   const handleEmailIconClick = () => {
     setTemplateView(true); // Call the function to update the template view
   };
   
   const OpenUpdateModal = () => {
-    console.log("UpdateModal")
     setUpdateModalOpen(true);
   };
-
+  const handleUserId = (id) =>{
+    setUserId(id)
+    OpenUpdateModal();
+  }
+  const handleDelete = (userId) =>{
+    const deleteUser = {
+      userId: userId,
+      userRole: userRole,
+    }
+    assignRoleDelete(deleteUser);
+  }
   return (
     <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
       <Table>
@@ -106,7 +121,6 @@ function CustomTable({title , setTemplateView ,setUpdateModalOpen}) {
                   borderRadius="45px"
                 />
               </TableCell>
-              
               {showEmailAndRecords && (
                 <TableCell sx={tableCellValueStyle}>
                   <IconButton aria-label="email" size="small" onClick={handleEmailIconClick}>
@@ -115,10 +129,10 @@ function CustomTable({title , setTemplateView ,setUpdateModalOpen}) {
                 </TableCell>
               )}
               <TableCell sx={tableCellValueStyle}>
-                <IconButton aria-label="edit" size="small" onClick={OpenUpdateModal}>
+                <IconButton aria-label="edit" size="small" onClick={()=> handleUserId(row.id)}>
                   <img src={EditIcon} alt="" />
                 </IconButton>
-                <IconButton aria-label="delete" size="small">
+                <IconButton aria-label="delete" size="small" onClick={()=> handleDelete(row.id)}>
                   <img src={DeleteIcon} alt="" />
                 </IconButton>
               </TableCell>

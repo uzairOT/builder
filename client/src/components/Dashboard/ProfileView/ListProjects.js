@@ -1,10 +1,22 @@
   import { Box, Divider, Typography, Stack } from "@mui/material";
-  import React from "react";
+  import React, { useEffect } from "react";
   import ProjectCard from "../../UI/Card/ProjectCard";
   import projects from "./assets/data/projects.json";
-  import Link from '@mui/material/Link';
+  import {Link} from 'react-router-dom'
+import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+import {useDispatch} from 'react-redux';
+import {addProjects} from '../../../redux/slices/Project/userProjectsSlice'
   
   const ListProjects = () => {
+    const dispatch = useDispatch();
+
+    const {data, isLoading, error} = useGetUserProjectsQuery({userId: 15});
+    useEffect(() => {
+      if(data){
+        dispatch(addProjects(data))
+      }
+    },[data, dispatch])
+
     return (
       <Box sx={{ padding: 1}} >
         <Typography
@@ -35,7 +47,7 @@
           <>
           {projects.map((projectProfileCard) => {
             return (
-              <Link key={projectProfileCard.id} href={`projects/${projectProfileCard.id}/default`} underline="none">
+              <Link key={projectProfileCard.id} to={`projects/${projectProfileCard.id}`} style={{textDecoration:'none'}}>
               <ProjectCard
               projectProfileCard={projectProfileCard}
               />

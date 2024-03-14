@@ -45,7 +45,7 @@ import { useDispatch, useSelector } from "react-redux";
 const Dashboard =  lazy(() => import("./pages/Dashboard/Dashboard"))
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"))
 const ImagesView = lazy(() => import("./components/Projects/ProjectsImages/ImagesView"))
-const PermitView = lazy(() => import("./components/Projects/ProjectsImages/ImagesView"))
+const PermitView = lazy(() => import("./components/Projects/ProjectsPermit/PermitView"))
 const DrawingFilesView = lazy(() => import("./components/Projects/ProjectsDrawingFiles/DrawingFilesView"))
 const ReportView = lazy(() => import("./components/Projects/ProjectsReport/ReportView"))
 
@@ -121,6 +121,7 @@ function App() {
   );
 
   return (
+
     <>
        <Suspense fallback={<PageLoader />}>
       <RouterProvider router={router} />
