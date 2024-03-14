@@ -11,7 +11,6 @@ import {
   TableBody,
   Checkbox
 } from "@mui/material";
-import AddLine from "../../dialogues/AddLine/AddLine"
 import { ReactComponent as ArrowDown } from "../Assets/svgs/ArrowDown.svg";
 import { ReactComponent as Arrowup } from "../Assets/svgs/Arrowup.svg";
 import { ReactComponent as EditIcon } from "../Assets/svgs/EditIcon.svg";
@@ -19,11 +18,31 @@ import { ReactComponent as DeleteIcon } from "../Assets/svgs/DeleteIcon.svg";
 import "../../../App.css"
 import actionButton from "../../UI/actionButton";
 import "./AddPhaseCard.css";
+import AddLineDialogue from "../../dialogues/AddLineDialogue/AddLineDialogue";
+import UpdateLineDialogue from "../../dialogues/UpdateLineDialogue/UpdateLineDialogue";
+import { useDeletePhaseLineMutation } from "../../../redux/apis/Project/projectApiSlice";
 
-const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
+
+const initialRows = [
+  { phaseName: 'Item 1', description: 'Description 1', unit: 'Unit 1', margin: '10%', quantity: 5, unitPrice: 20, total: 100, start: '2024-03-01', end: '2024-03-05', longDescription: 'Note 1' },
+  { phaseName: 'Item 2', description: 'Description 2', unit: 'Unit 2', margin: '15%', quantity: 3, unitPrice: 30, total: 90, start: '2024-03-03', end: '2024-03-08', longDescription: 'Note 2' },
+  { phaseName: 'Item 3', description: 'Description 3', unit: 'Unit 3', margin: '20%', quantity: 2, unitPrice: 25, total: 50, start: '2024-03-02', end: '2024-03-06', longDescription: 'Note 3' },
+  // Add more rows as needed
+];
+
+
+const AddPhaseCard = ({ cardPhase, onGridToggle, length, handleSelectCard }) => {
+
+
   const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
-  const [rowCheckboxes, setRowCheckboxes] = useState(rows.map(() => false)); // State to track the checked state of each checkbox in the table rows
   const [showAddLine, setShowAddLine] = useState(false);
+  const [showUpdateLine, setShowUpdateLine] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [rows, setRows] = useState(initialRows)
+  const [rowCheckboxes, setRowCheckboxes] = useState(rows.map(() => false)); // State to track the checked state of each checkbox in the table rows
+  const [deletePhaseLine] = useDeletePhaseLineMutation();
+
+
 
   const handleArrowDownClick = () => {
     onGridToggle(cardPhase.currentIndex, cardPhase.currentIndex + 1);
@@ -36,33 +55,78 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
   const handleSelectAllChange = (event) => {
     const isChecked = event.target.checked;
     setSelectAll(isChecked);
-    setRowCheckboxes(rowCheckboxes.map(() => isChecked));
+    const updatedSelectedRows = isChecked ? rows.map((_, index) => index) : [];
+    setSelectedRows(updatedSelectedRows);
   };
 
   const handleRowCheckboxChange = (index) => (event) => {
     const isChecked = event.target.checked;
-    const updatedCheckboxes = [...rowCheckboxes];
-    updatedCheckboxes[index] = isChecked;
-    setRowCheckboxes(updatedCheckboxes);
-    setSelectAll(updatedCheckboxes.every((checkbox) => checkbox));
+    const updatedRowCheckboxes = [...rowCheckboxes];
+    updatedRowCheckboxes[index] = isChecked;
+    setRowCheckboxes(updatedRowCheckboxes);
+
+    const updatedSelectedRows = isChecked
+      ? [...selectedRows, index]
+      : selectedRows.filter((rowIndex) => rowIndex !== index);
+    setSelectedRows(updatedSelectedRows);
+    setSelectAll(updatedSelectedRows.length === rows.length);
   };
+  const handleDeleteSelectedRows = () => {
+    const updatedRows = rows.filter((_, index) => !selectedRows.includes(index));
+    // Handle the updated rows according to your application logic
+    deletePhaseLine(selectedRows);
+    console.log("Deleted rows:", selectedRows);
+    console.log("Remaining rows:", updatedRows);
+
+    // Clear the selectedRows state after deletion
+    setSelectedRows([]);
+  };
+
+
+
+
 
   const handleAddLine = () => {
     setShowAddLine(true)
   };
 
-  const handleOpen = () => {
+  const handleAddOpen = () => {
     setShowAddLine(true);
   };
 
-  const handleClose = () => {
+  const handleAddClose = () => {
     setShowAddLine(false);
+  };
+  const handleUpdateLine = () => {
+    setShowUpdateLine(true)
+  };
+
+  const handleUpdateOpen = () => {
+    setShowUpdateLine(true);
+  };
+
+  const handleUpdateClose = () => {
+    setShowUpdateLine(false);
   };
 
   const tableContainerStyle = {
     maxWidth: '100%', // Allow the table to take up the entire available width
     overflowX: 'auto', // Add horizontal scrollbar when needed
   };
+
+
+  const handleUpdateRow = (index, newData) => {
+    const updatedRows = [...rows];
+    updatedRows[index] = { ...updatedRows[index], ...newData };
+    setRows(updatedRows);
+    console.log(updatedRows)
+  };
+  const handleAddRow = (newData) => {
+    const updatedRows = [...rows, newData];
+    setRows(updatedRows);
+    console.log(updatedRows);
+  };
+
 
   return (
     <div>
@@ -75,8 +139,8 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
           sx={headingsBox}
         >
           <Box sx={headingInnerBox}>
-            <Box>
-              <Typography sx={blackHeading}>Phase 1</Typography>
+            <Box >
+              <Typography sx={{ ...blackHeading, cursor: "pointer" }} onClick={() => handleSelectCard(cardPhase.id)}>{cardPhase.phaseName}</Typography>
             </Box>
             <Box>
               <Typography sx={blackHeading}>Total Price:</Typography>
@@ -112,8 +176,13 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
                 </>
               )}
             </>
-            <EditIcon />
-            <DeleteIcon />
+            <EditIcon
+              // onClick={handleUpdateLine}
+              onClick={handleUpdateLine}
+            />
+            <DeleteIcon
+              onClick={handleDeleteSelectedRows}
+              disabled={selectedRows.length === 0} />
             <Button
               sx={{ ...actionButton, background: "#4C8AB1", marginTop: "0.7rem" }}
               onClick={handleAddLine}
@@ -160,25 +229,25 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
 
               <TableBody>
                 {rows.map((row, index) => (
-                  <TableRow key={row.name} sx={{ paddingLeft: "4rem" }}>
+                  <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
                     <TableCell>
-                      <Checkbox checked={rowCheckboxes[index]}
-                        onChange={handleRowCheckboxChange(index)} />
+                      <Checkbox
+                        checked={rowCheckboxes[index]}
+                        onChange={handleRowCheckboxChange(index)}
+                      />
                     </TableCell>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                    >
-                      {row.name}
+                    <TableCell component="th" scope="row">
+                      {row.phaseName}
                     </TableCell>
-                    <TableCell>{row.calories}</TableCell>
-                    <TableCell>{row.fat}</TableCell>
-                    <TableCell>{row.carbs}</TableCell>
-                    <TableCell>{row.protein}</TableCell>
-                    <TableCell>{row.calorie}</TableCell>
-                    <TableCell>{row.fa}</TableCell>
-                    <TableCell>{row.carb}</TableCell>
-                    <TableCell>{row.protei}</TableCell>
+                    <TableCell>{row.description}</TableCell>
+                    <TableCell>{row.unit}</TableCell>
+                    <TableCell>{row.margin}</TableCell>
+                    <TableCell>{row.quantity}</TableCell>
+                    <TableCell>{row.unitPrice}</TableCell>
+                    <TableCell>{row.total}</TableCell>
+                    <TableCell>{row.start}</TableCell>
+                    <TableCell>{row.end}</TableCell>
+                    <TableCell>{row.longDescription}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -188,16 +257,23 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length }) => {
 
 
 
-
-
-
-
         {showAddLine && (
-          <AddLine
-            handleOpen={handleOpen}
-            handleClose={handleClose}
+          <AddLineDialogue
+            handleAddOpen={handleAddOpen}
+            handleAddClose={handleAddClose}
+            handleAddRow={handleAddRow}
           />
         )}
+        {showUpdateLine && (
+          <UpdateLineDialogue
+            handleUpdateOpen={handleUpdateOpen}
+            handleUpdateClose={handleUpdateClose}
+            handleUpdateRow={handleUpdateRow} // Pass the update function
+            selectedRowIndex={selectedRows[0]}
+            rowData={selectedRows[0] !== undefined ? rows[selectedRows[0]] : null} // Pass the selected row's index
+          />
+        )}
+
       </Grid>
     </div>
   );

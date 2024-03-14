@@ -1,84 +1,108 @@
 import React, { useState } from 'react'
 import { HexColorPicker, RgbaColorPicker, RgbaStringColorPicker, HexColorInput, } from "react-colorful";
+import { useUpdateProjectPhaseMutation, useAddPhaseLineMutation, useAddProjectPhaseMutation } from '../../../redux/apis/Project/projectApiSlice';
+
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Box, Typography } from '@mui/material';
 import actionButton from "../../UI/actionButton";
 import "../../../App.css"
 
-import { setOpen, setColor, setColorMode, setPhaseName } from '../../../redux/slices/addPhaseSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectAddPhase } from '../../../redux/slices/addPhaseSlice';
-import { useAddProjectPhaseMutation } from "../../../redux/apis/projectApiSlice";
+
 import "./ColorPickerElement.css";
+import { yellow } from '@mui/material/colors';
 
-function ColorPickerElement({ handleOpen, handleClose }) {
-    const [addPhase, { isLoading }] = useAddProjectPhaseMutation();
-    const dispatch = useDispatch();
-    const addPhaseState = useSelector(selectAddPhase);
-    const { open, color, colorMode, phaseName } = useSelector(selectAddPhase);
+function ColorPickerElement({ handleUpdateOpen, handleUpdateClose, handleAddClose, handleAddOpen, phaseData, setPhaseData, PhaseHeading, onSubmit }) {
 
+    const [open, setOpen] = useState(false);
+    const [color, setColor] = useState(phaseData ? phaseData.color : "yellow");
+    const [colorMode, setColorMode] = useState("");
+    const [phaseName, setPhaseName] = useState(phaseData ? phaseData.phaseName : 'a');
+    const [updateProjectPhase] = useUpdateProjectPhaseMutation();
+    const [addProjectPhase] = useAddProjectPhaseMutation();
+    const toggleColorMode = () => {
+        setColorMode(prevMode => prevMode === 'rgba' ? 'hex' : 'rgba');
+    };
+
+
+    const handleClickOpen = () => {
+        if (PhaseHeading === "Update Phase") {
+            handleUpdateOpen();
+        } else {
+            handleAddOpen();
+        }
+        setOpen(true);
+    };
 
     const handleClickClose = () => {
-        handleClose();
-        dispatch(setOpen(false));
+        if (PhaseHeading === "Update Phase") {
+            handleUpdateClose();
+        } else {
+            handleAddClose();
+        }
+        setOpen(false);
     };
 
-    const toggleColorMode = () => {
-        const newColorMode = colorMode === 'rgba' ? 'hex' : 'rgba';
-       
-        dispatch(setColorMode(newColorMode));
-    };
-    const handleColorChange = (newColor) => {
-        dispatch(setColor(newColor)); // Dispatch setColor action
-      };
-    
-      const handlePhaseNameChange = (event) => {
-        dispatch(setPhaseName(event.target.value)); // Dispatch setPhaseName action
-      };
 
-   
-      
-      const handleSubmit = async (event) => {
+    const handleSubmit = event => {
         event.preventDefault();
-        const projectId = localStorage.getItem('projectId');
-
-        if (!projectId) {
-            console.error('Project ID not found in local storage');
-            return;
+        if (PhaseHeading === "Update Phase") {
+            onSubmit(phaseName, color);
+            const updatedPhaseData = {
+                phaseName,
+                color,
+            };
+            updateProjectPhase({ id: phaseData?.id, updatedData: updatedPhaseData });
+            setPhaseData(phaseData => ({ ...phaseData, ...updatedPhaseData }));
+            console.log(updatedPhaseData)
+            console.log(phaseData)
+            handleUpdateClose();
+        } else {
+            onSubmit(phaseName, color);
+            const newPhaseData = {
+                phaseName,
+                color,
+            };
+            addProjectPhase({ newData: newPhaseData });
+            setPhaseData(phaseData => ({ ...phaseData, ...newPhaseData }));
+            console.log(newPhaseData)
+            console.log(phaseData)
+            handleAddClose();
         }
 
-        const addPhaseData= { ...addPhaseState, projectId };
-        const { open, ...data } = addPhaseData;
-        console.log(data)
-        // Call addPhase function with updated addPhaseState
-        const res = await addPhase(data).unwrap();
-        console.log(res);
-        handleClose();
     };
-
 
     return (
         <div className="App">
 
             <>
-         
-            <Dialog open={open} onClose={handleClickClose} PaperProps={{   sx: { ...paperPropsStyle },component: 'form', onSubmit: handleSubmit }}>
-                    <DialogTitle sx={typoTitle} >Add Phase</DialogTitle>
+                <Dialog
+                    open={handleClickOpen}
+                    onClose={handleClickClose}
+                    PaperProps={{
+                        sx: { ...paperPropsStyle },
+                        component: 'form',
+                        onSubmit: handleSubmit
+                    }}
+
+                >
+                    <DialogTitle sx={typoTitle} >{PhaseHeading}</DialogTitle>
                     <DialogContent sx={{ padding: "3rem" }}>
                         <Typography sx={typoText}>
                             Phase
                         </Typography>
                         <TextField
                             sx={inputStyle}
+                            // autoFocus
                             required
                             margin="dense"
                             id="phaseName"
                             name="phaseName"
+                            // placeholder={phaseData.phaseName}
+                            // label="Email Address"
                             type="text"
                             variant="standard"
                             value={phaseName}
-                            onChange={handlePhaseNameChange}
+                            onChange={event => setPhaseName(event.target.value)}
                         />
-                    
                         <Typography sx={typoText}>
                             Select Color
                         </Typography>
@@ -87,16 +111,16 @@ function ColorPickerElement({ handleOpen, handleClose }) {
 
                             {colorMode === 'rgba' ? ( // Render RGBA color picker if colorMode is 'rgba'
                                 <Box sx={generalBox}>
-                                    <RgbaStringColorPicker sx={{ gap: "0.5rem", ...generalBox }} color={color} onChange={handleColorChange} />
+                                    <RgbaStringColorPicker sx={{ gap: "0.5rem", ...generalBox }} color={color} onChange={setColor} />
                                 </Box>
                             ) : (
                                 <Box sx={generalBox}>
-                                    <HexColorPicker color={color} onChange={handleColorChange} />
+                                    <HexColorPicker color={color} onChange={setColor} />
                                 </Box>
                             )}
 
                             <Box sx={{ ...generalBox, ...inputColorBox }} >
-                                <HexColorInput style={{ width: "60%" }} color={color} onChange={handleColorChange} />
+                                <HexColorInput style={{ width: "60%" }} color={color} onChange={setColor} />
                                 <Box sx={{ ...colorBox, background: color }} />
                             </Box>
                             <Box sx={generalBox} onClick={toggleColorMode}>
@@ -106,7 +130,7 @@ function ColorPickerElement({ handleOpen, handleClose }) {
                         </div>
                     </DialogContent>
                     <DialogActions sx={generalBox}>
-                        <Button sx={{ ...actionButton, ...addPhaseButton }} type="submit">Add Phase</Button>
+                        <Button sx={{ ...actionButton, ...addPhaseButton }} type="submit" onClick={handleSubmit}>{PhaseHeading}</Button>
                     </DialogActions>
                 </Dialog>
 

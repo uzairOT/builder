@@ -38,19 +38,19 @@ const themeStyle = {
         margin: { lg: "1rem", xs: "0rem" },
     },
     projectCard: {
-        width: { lg: "50%", md: "80%", sm: "85%", xs: "78%" },
+        width: { lg: "50%", md: "80%", sm: "85%", xs: "90%" },
         height: "100%",
         backgroundColor: "#eff5ff",
         marginTop: { lg: "2rem", xs: "0.5rem" },
         borderRadius: "1rem",
-        padding: "1.5rem",
+        padding: "1.5rem 0.7rem",
         contain: "content"
     },
     scheduleCard: {
         height: { lg: "auto", md: "100vh", xs: "100vh" },
         backgroundColor: "#eff5ff",
         margin: {
-            lg: "3.5rem 1rem 0rem 1rem", xs: "0.5rem 1rem 0rem 1rem"
+            lg: "3.5rem 1rem 0rem 1rem", xs: "0.5rem 0.5rem 0rem 0.5rem"
         },
         borderRadius: "1rem",
         padding: "1rem 2rem",
