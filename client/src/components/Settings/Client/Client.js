@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Divider, Typography } from "@mui/material";
 import ChatView from "../../Chat/ChatView";
 import Header from "../Header/Header";
@@ -6,12 +6,18 @@ import CustomTable from "../Tables/Table";
 import Pagination from "@mui/material/Pagination";
 import AddModal from '../../dialogues/Settings/AddModal';
 import UpdateModal from '../../dialogues/Settings/UpdateModal';
+import { useOutletContext } from 'react-router-dom';
 function Client() {
 
 
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
 
+  const [userInfo, setUserInfo, handleAssignRoleButton, userId, setUserId, handleUpdateAssignRole] = useOutletContext();
+ 
+  useEffect(()=>{
+    console.log(userInfo);
+  },[userInfo])
   // Function to open the Add Modal
   const OpenAddModal = () => {
     setAddModalOpen(true);
@@ -28,7 +34,7 @@ function Client() {
   return (
     <div style={{padding:"20px"}}>
       <Header title="Client"   OpenAddModal={OpenAddModal}/>
-      <CustomTable setUpdateModalOpen={setUpdateModalOpen} />
+      <CustomTable setUpdateModalOpen={setUpdateModalOpen} setUserId={setUserId} />
 
       <Box mt={2} mb={2}>
         <Divider />
@@ -45,8 +51,8 @@ function Client() {
         </Typography>
         <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Client"} open={isAddModalOpen} onClose={handleCloseAddModal} />
-      <UpdateModal title={"Client"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} />
+      <AddModal title={"Client"} open={isAddModalOpen} onClose={handleCloseAddModal} userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton}/>
+      <UpdateModal title={"Client"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo}/>
     </div>
   );
 }

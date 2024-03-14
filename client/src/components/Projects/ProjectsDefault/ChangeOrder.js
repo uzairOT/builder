@@ -9,11 +9,14 @@ import {
     Tab,
     Typography, 
 } from '@mui/material'
+import { useGetProjectChangeOrderQuery } from '../../../redux/apis/Project/projectApiSlice';
 
 
 const ChangeOrder = () => {
+  const {data} = useGetProjectChangeOrderQuery({projectId: 1})
+  console.log(data);
 
-    const data = [
+    const data1 = [
         {
           id: 1,
           "LineItem": "Demolition",
@@ -105,7 +108,7 @@ const ChangeOrder = () => {
             </TableHead>
             <TableBody style={{paddingLeft:'4px', paddingRight: '4px'}}>
                 {
-                    data.map((row) => (
+                    data1.map((row) => (
                         <TableRow key={row.id}>
                             <TableCell sx={themeStyle.tableBody}>{row.LineItem}</TableCell>
                             <TableCell sx={{...themeStyle.tableBody}}>

@@ -28,7 +28,7 @@ import Subscription from "./pages/Subscription/Subscription";
 const Dashboard =  lazy(() => import("./pages/Dashboard/Dashboard"))
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"))
 const ImagesView = lazy(() => import("./components/Projects/ProjectsImages/ImagesView"))
-const PermitView = lazy(() => import("./components/Projects/ProjectsImages/ImagesView"))
+const PermitView = lazy(() => import("./components/Projects/ProjectsPermit/PermitView"))
 const DrawingFilesView = lazy(() => import("./components/Projects/ProjectsDrawingFiles/DrawingFilesView"))
 const ReportView = lazy(() => import("./components/Projects/ProjectsReport/ReportView"))
 
@@ -42,7 +42,7 @@ function App() {
         <Route path="/projects" element={<ProjectsTable />}/>
         <Route path="/projects/:id" element={ <Layout2 />} >
            <Route path="" element={ <InnerLayout2 />} >
-             <Route path="default" element={ <ProjectsDefault />} />
+             <Route path="" element={ <ProjectsDefault />} />
              <Route path="images" element={ <ImagesView />} />
              <Route path="permit" element={ <PermitView />} />
              <Route path="drawing-files" element={ <DrawingFilesView />} />

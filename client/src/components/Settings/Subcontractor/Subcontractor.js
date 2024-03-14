@@ -7,11 +7,14 @@ import Pagination from "@mui/material/Pagination";
 import AddModal from '../../dialogues/Settings/AddModal';
 import EmailTemplate from './EmailTemplate';
 import UpdateModal from '../../dialogues/Settings/UpdateModal';
+import { useOutletContext } from 'react-router-dom';
 
 function Subcontractor() {
   const [isTemplateView, setTemplateView] = useState(false);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
+  const [userInfo, setUserInfo, handleAssignRoleButton, userId, setUserId, handleUpdateAssignRole] = useOutletContext();
+
 
   // Function to open the Add Modal
   const OpenAddModal = () => {
@@ -34,7 +37,7 @@ function Subcontractor() {
     ) : (<>
      <div style={{padding:"20px"}}>
       <Header title="Subcontractor"   OpenAddModal={OpenAddModal}/>
-      <CustomTable title={"subcontractor"} setUpdateModalOpen={setUpdateModalOpen} setTemplateView={setTemplateView} />
+      <CustomTable title={"subcontractor"} setUpdateModalOpen={setUpdateModalOpen} setUserId={setUserId} setTemplateView={setTemplateView} />
 
       <Box mt={2} mb={2}>
         <Divider />
@@ -51,8 +54,8 @@ function Subcontractor() {
         </Typography>
         <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Subcontractor"} open={isAddModalOpen} onClose={handleCloseAddModal} />
-      <UpdateModal title={"Subcontractor"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} />
+      <AddModal title={"Subcontractor"} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} />
+      <UpdateModal title={"Subcontractor"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo} />
     </div>
     </>) }
     </>

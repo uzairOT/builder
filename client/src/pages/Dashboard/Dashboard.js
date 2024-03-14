@@ -41,8 +41,8 @@ const Dashboard = () => {
             <Grid item margin={1} ml={2} mr={2}><Paper sx={{...themeStyle.dashboardViews, borderRadius: '14px'}}><WeatherView dailyForecast={dailyForecast} loading={loading} error={error} /></Paper></Grid>
             {/* direction={{md:'column', lg:'row'}} */}
           {/*  height:{xl:'67vh', lg:'65vh', md:'43vh', sm:'45vh', xs: '45vh'} */}
-            <Grid  container sx={{...themeStyle.scrollable,}} overflow={'hidden'} height={'100%'} width={'98%'} pt={1}  margin={'auto'}>
-              <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'0px', overflow:'hidden'}}>
+            <Grid  container sx={{...themeStyle.scrollable,}} overflow={'hidden'} height={'72vh'} width={'98%'} pt={1}  margin={'auto'}>
+              <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'0px ', overflow:'hidden'}}>
               <Paper sx={themeStyle.progressCard} margin={1} ><ProgressCard /></Paper>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'8px',overflow:'hidden'}}>
@@ -54,7 +54,7 @@ const Dashboard = () => {
               <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'8px',overflow:'hidden'}}>
               <Paper sx={themeStyle.progressCard} margin={1} ><ProgressCard /></Paper>
               </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'0px',overflow:'hidden'}}>
+              <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'0px',overflow:''}}>
               <Paper sx={themeStyle.progressCard} margin={1}><ProgressCard /></Paper>
               </Grid>
             </Grid>

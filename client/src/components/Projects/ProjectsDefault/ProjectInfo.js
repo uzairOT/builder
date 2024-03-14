@@ -20,7 +20,7 @@ const ProjectInfo = () => {
   return (
     <Stack >
         <Typography sx={themeStyle.title}>Burrow - Home Build</Typography>
-        <Stack direction={'row'} width={'60%'} justifyContent={'space-between'}>
+        <Stack  direction={'row'} width={'60%'} justifyContent={'space-between'}>
             <Typography sx={themeStyle.label} fontSize={'13px'}>Start</Typography>
             <Typography sx={themeStyle.label} fontSize={'13px'}>End</Typography>
         </Stack>
@@ -28,7 +28,7 @@ const ProjectInfo = () => {
         <BorderLinearProgress variant="determinate" value={50}/>
         <Typography sx={themeStyle.label} fontSize={'10px'} pl={1}>2/6</Typography>
         </Stack>
-        <Stack spacing={0.5} pt={1} pb={1.2} width={'80%'} >
+        <Stack spacing={0.5} pt={1} pb={1.2} width={'100%'} >
              <Stack direction={'row'} justifyContent={'space-between'}>
                 <Typography sx={themeStyle.text}>Job Type</Typography>
                 <Stack width={'55%'} alignSelf={'center'}>

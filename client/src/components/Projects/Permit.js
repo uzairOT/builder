@@ -23,6 +23,7 @@ function Permit({view}) {
         setOpen(false);
     }
 
+    console.log('VIEW: ', view);
     return (
         <div>
             <Box sx={themeStyle.titleBox}>

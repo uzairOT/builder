@@ -133,6 +133,7 @@ function AddPhaseView({adminProjectView, view}) {
           rows={rows}
           length={cardPhase.length}
           onGridToggle={() => handleGridToggle(index, phase?.previousIndex)}
+          adminProjectView={adminProjectView}
         />
       ))}
       {open && (

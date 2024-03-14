@@ -25,9 +25,12 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Avatarimg from "../Assets/pngs/woman.png";
 import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import moment from 'moment';
+import {useSelector} from 'react-redux'
+import { selectAddPhase } from "../../../redux/slices/addPhaseSlice";
 
 const RequestWorkOrderModal = () => {
   const [open, setOpen] = useState(false);
+  const {rowCheckboxes} = useSelector(selectAddPhase);
 
   const handleClose = () => {
     setOpen(false);
@@ -46,6 +49,7 @@ const RequestWorkOrderModal = () => {
           fontWeight={"600"}
           padding={"6px 32px 6px 32px"}
           handleOnClick={handleOpen}
+          disabled={!rowCheckboxes.some((checkbox) => checkbox)}
         >
           Next
         </BuilderProButton>

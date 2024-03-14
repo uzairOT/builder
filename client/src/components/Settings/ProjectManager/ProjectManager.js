@@ -6,11 +6,14 @@ import CustomTable from "../Tables/Table";
 import Pagination from "@mui/material/Pagination";
 import AddModal from '../../dialogues/Settings/AddModal';
 import UpdateModal from '../../dialogues/Settings/UpdateModal';
+import { useOutletContext } from 'react-router-dom';
 function ProjectManager() {
 
 
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
+  const [userInfo, setUserInfo, handleAssignRoleButton, userId, setUserId, handleUpdateAssignRole] = useOutletContext();
+  const PROJECT_MANAGER_VIEW = 'projectManager';
 
   // Function to open the Add Modal
   const OpenAddModal = () => {
@@ -24,10 +27,11 @@ function ProjectManager() {
     setUpdateModalOpen(false);
   };
 
+
   return (
     <div style={{padding:"20px"}}>
       <Header title="Project manager"   OpenAddModal={OpenAddModal}/>
-      <CustomTable setUpdateModalOpen={setUpdateModalOpen} />
+      <CustomTable setUpdateModalOpen={setUpdateModalOpen} setUserId={setUserId} />
 
       <Box mt={2} mb={2}>
         <Divider />
@@ -44,8 +48,8 @@ function ProjectManager() {
         </Typography>
         <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Project manager"} open={isAddModalOpen} onClose={handleCloseAddModal} />
-      <UpdateModal title={"Project manager"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} />
+      <AddModal title={"Project manager"} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} />
+      <UpdateModal title={"Project manager"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo} />
     </div>
   );
 }
