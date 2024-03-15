@@ -8,14 +8,13 @@ import "../../../App.css"
 
 
 import "./ColorPickerElement.css";
-import { yellow } from '@mui/material/colors';
 
 function ColorPickerElement({ handleUpdateOpen, handleUpdateClose, handleAddClose, handleAddOpen, phaseData, setPhaseData, PhaseHeading, onSubmit }) {
 
     const [open, setOpen] = useState(false);
-    const [color, setColor] = useState(phaseData ? phaseData.color : "yellow");
+    const [color, setColor] = useState(phaseData ? phaseData.color : "");
     const [colorMode, setColorMode] = useState("");
-    const [phaseName, setPhaseName] = useState(phaseData ? phaseData.phaseName : 'a');
+    const [phaseName, setPhaseName] = useState(phaseData ? phaseData.phaseName : "");
     const [updateProjectPhase] = useUpdateProjectPhaseMutation();
     const [addProjectPhase] = useAddProjectPhaseMutation();
     const toggleColorMode = () => {

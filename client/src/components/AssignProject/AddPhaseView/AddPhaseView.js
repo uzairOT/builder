@@ -238,9 +238,7 @@ function AddPhaseView() {
         <AddPhaseDialogue
           handleAddOpen={handleAddOpen}
           handleAddClose={handleAddClose}
-          phaseData={selectedPhaseData}
           setPhaseData={setSelectedPhaseData}
-          // onSubmit={handleColorPickerSubmit}
           onSubmit={handleAddSubmit}
         />
       )}
