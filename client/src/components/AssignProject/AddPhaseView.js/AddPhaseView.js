@@ -14,6 +14,7 @@ import ColorPickerElement from "../../dialogues/ColorPickerElement/ColorPickerEl
 import { setOpen } from '../../../redux/slices/addPhaseSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAddPhase } from '../../../redux/slices/addPhaseSlice';
+import { useGetProjectInitialProposalQuery } from "../../../redux/apis/Project/projectApiSlice";
 
 const initialCardPhase = [
   {
@@ -32,8 +33,8 @@ const initialCardPhase = [
 ];
 
 function AddPhaseView({adminProjectView, view}) {
+  const {data} = useGetProjectInitialProposalQuery({projectId:1})
   const [cardPhase, setCardPhase] = useState(initialCardPhase);
-  
   const { open } = useSelector(selectAddPhase);
   const dispatch = useDispatch();
 
