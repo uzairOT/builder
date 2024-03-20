@@ -1,12 +1,19 @@
 import { apiSlice } from "../apiSlice";
 
-const ASSIGN_ROLE_URL = 'http://192.168.18.147:8080/v1/userRole';
+const ASSIGN_ROLE_URL = 'http://192.168.0.101:8080/v1/userRole';
 
  export const assignRoleApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
+        getAssignRoleTable: builder.query({
+            query: (data) => ({
+                url: `${ASSIGN_ROLE_URL}/${data.userRole}/${data.projectId}`,
+                method: 'GET',
+            }),
+            providesTags:["Admin"],
+        }),
         addAssignRole: builder.mutation({
             query: (data) => ({
-                url: `${ASSIGN_ROLE_URL}/${data.userRole}`,
+                url: `${ASSIGN_ROLE_URL}/${data.userRole}/${data.projectId}`,
                 method: 'POST',
                 body: data,
             }),
@@ -14,7 +21,7 @@ const ASSIGN_ROLE_URL = 'http://192.168.18.147:8080/v1/userRole';
         }),
         updateAssignRole: builder.mutation({
             query: (data) => ({
-                url:`${ASSIGN_ROLE_URL}/${data.userRole}`,
+                url:`${ASSIGN_ROLE_URL}/${data.userRole}/${data.projectId}`,
                 method: 'PUT',
                 body: data,
             }),
@@ -22,7 +29,7 @@ const ASSIGN_ROLE_URL = 'http://192.168.18.147:8080/v1/userRole';
         }),
         deleteAssignRole: builder.mutation({
             query: (data) => ({
-                url:`${ASSIGN_ROLE_URL}/${data.userRole}`,
+                url:`${ASSIGN_ROLE_URL}/${data.userRole}/${data.projectId}`,
                 method: 'DELETE',
                 body: data,
             })
@@ -30,4 +37,4 @@ const ASSIGN_ROLE_URL = 'http://192.168.18.147:8080/v1/userRole';
     })
 })
 
-export const {useAddAssignRoleMutation, useUpdateAssignRoleMutation, useDeleteAssignRoleMutation} = assignRoleApiSlice;
+export const {useAddAssignRoleMutation, useUpdateAssignRoleMutation, useDeleteAssignRoleMutation, useGetAssignRoleTableQuery} = assignRoleApiSlice;

@@ -3,11 +3,33 @@ import Switch from "@mui/joy/Switch";
 import { Typography, Grid, TextField, Divider } from "@mui/material";
 import Button from "../../UI/CustomButton";
 import { useTheme } from "@mui/material/styles";
+import { useChangePasswordMutation } from "../../../redux/apis/usersApiSlice";
 
 export default function MyApp() {
   const theme = useTheme();
   const isXs = theme.breakpoints.down("xs");
+  const [passwords, setPasswords] = useState({
+    currentPassword: null,
+    newPassword: null,
+    confirmPassword:null,
+  })
+  const [changePassword] =useChangePasswordMutation();
 
+  const handleChange = (e) =>{
+    const {name, value} = e.target;
+    setPasswords(prev => ({
+        ...prev,
+        [name] : value,
+    }))
+  }
+
+  const handleUpdate = () => {
+    const put = {
+      ...passwords,
+        userId: 4,
+    }
+    changePassword(put)
+  }
   
   const [checked, setChecked] = useState(true);
 
@@ -22,30 +44,39 @@ export default function MyApp() {
           <Typography sx={subHeadings}>Current Password</Typography>
           <TextField
             fullWidth
+            value={passwords.currentPassword}
+            name="currentPassword"
             placeholder="Enter Current Password"
             variant="outlined"
             type="password"
             sx={InputStyle}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={6}>
           <Typography sx={subHeadings}>New Password</Typography>
           <TextField
             fullWidth
+            value={passwords.newPassword}
+            name="newPassword"
             placeholder="Enter New Password"
             variant="outlined"
             type="password"
             sx={InputStyle}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={6}>
           <Typography sx={subHeadings}>Confirm Password</Typography>
           <TextField
             fullWidth
+            value={passwords.confirmPassword}
+            name="confirmPassword"
             placeholder="Confirm your password here"
             variant="outlined"
             type="password"
             sx={InputStyle}
+            onChange={handleChange}
           />
         </Grid>
       </Grid>
@@ -148,6 +179,7 @@ export default function MyApp() {
             width="112px"
             height="38px"
             borderRadius="50px"
+            onClick={handleUpdate}
           />
 
           <Button

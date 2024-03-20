@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -15,6 +15,7 @@ import DeleteIcon from "../../../assets/settings/delete.png";
 import EmailIcon from "../../../assets/settings/email.png";
 import Button from "../../UI/CustomButton";
 import { useDeleteAssignRoleMutation } from "../../../redux/apis/Admin/assignRoleApiSlice";
+import { useGetAssignRoleTableQuery } from "../../../redux/apis/Admin/assignRoleApiSlice";
 import { useLocation } from "react-router-dom";
 
 
@@ -58,6 +59,12 @@ function CustomTable({title , setTemplateView ,setUpdateModalOpen, setUserId}) {
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
   const userRole = pathSegments[pathSegments.length - 1];
+  const { data, error, isLoading, isSuccess, isError, refetch } = useGetAssignRoleTableQuery({userRole:userRole, projectId:4});
+
+  useEffect(() => {
+    // Fetch the data when the component mounts or when userRole or projectId changes
+    refetch();
+  }, [refetch])
 
   const handleEmailIconClick = () => {
     setTemplateView(true); // Call the function to update the template view

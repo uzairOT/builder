@@ -8,7 +8,7 @@ import TabPanel from "@mui/joy/TabPanel";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import AddPhaseView from "../../AssignProject/AddPhaseView.js/AddPhaseView";
+import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
 import RequestWorkOrderModal from "../../dialogues/RequestWorkOrder/RequestWorkOrderModal";
 
 const WorkOrderView = () => {

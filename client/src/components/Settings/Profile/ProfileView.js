@@ -4,6 +4,8 @@ import Textarea from "@mui/joy/Textarea";
 import Avatar from "@mui/material/Avatar";
 import AvatarImg from "../../../assets/settings/UploadProfileIcon.png";
 import Button from "../../UI/CustomButton";
+import { useUpdateMutation } from "../../../redux/apis/usersApiSlice";
+import { useDeleteMutation } from "../../../redux/apis/usersApiSlice";
 
 function ProfileView() {
   const [formData, setFormData] = useState({
@@ -13,6 +15,9 @@ function ProfileView() {
     phoneNumber: "03015995784",
     address: "your address here",
   });
+  
+  const [updateProfile] = useUpdateMutation();
+  const [deleteProfile] = useDeleteMutation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,6 +26,20 @@ function ProfileView() {
       [name]: value,
     }));
   };
+
+  const handleUpdate = ()=>{
+    const put = {
+      userId: 4,
+      ...formData,
+    }
+    updateProfile(put);
+  }
+  const handleDelete = () => {
+    const del = {
+      userId: 4
+    }
+    deleteProfile(del);
+  }
 
   return (
     <Box sx={{ mb: 2 }}>
@@ -98,6 +117,7 @@ function ProfileView() {
                 width="112px"
                 height="38px"
                 borderRadius="50px"
+                onClick={handleUpdate}
               />
 
               <Button
@@ -178,6 +198,7 @@ function ProfileView() {
                 height="38px"
                 borderRadius="50px"
                 fontSize={"13px"}
+                onClick={handleDelete}
               />
 
             </Box>

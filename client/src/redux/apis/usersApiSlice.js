@@ -1,5 +1,5 @@
 import { apiSlice } from './apiSlice';
-const USERS_URL = 'http://192.168.18.147:8080/user';
+const USERS_URL = 'http://192.168.0.101:8080/user';
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -34,6 +34,30 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags:["User"],
     }),
+    update: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/profile`,
+        method: 'PUT',
+        body: data,
+      }),
+      providesTags:["User"],
+    }),
+    delete: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/profile`,
+        method: 'DELETE',
+        body: data,
+      }),
+      providesTags:["User"],
+    }),
+    changePassword: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/changePassword`,
+        method: 'PUT',
+        body: data,
+      }),
+      providesTags:["User"],
+    }),
   
   }),
 });
@@ -43,5 +67,7 @@ export const {
   useLogoutMutation,
   useRegisterMutation,
   useAssignProjectMutation,
-
+  useUpdateMutation,
+  useDeleteMutation,
+  useChangePasswordMutation,
 } = userApiSlice;

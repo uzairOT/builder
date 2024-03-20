@@ -3,6 +3,8 @@ import {
   Box,
   Grid,
   Button,
+  Stack,
+  Typography,
 } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
@@ -12,6 +14,7 @@ import ColorPickerElement from "../../dialogues/ColorPickerElement/ColorPickerEl
 import { setOpen } from '../../../redux/slices/addPhaseSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAddPhase } from '../../../redux/slices/addPhaseSlice';
+import { useGetProjectInitialProposalQuery } from "../../../redux/apis/Project/projectApiSlice";
 
 const initialCardPhase = [
   {
@@ -29,9 +32,9 @@ const initialCardPhase = [
 
 ];
 
-function AddPhaseView() {
+function AddPhaseView({adminProjectView, view}) {
+  const {data} = useGetProjectInitialProposalQuery({projectId:1})
   const [cardPhase, setCardPhase] = useState(initialCardPhase);
-  
   const { open } = useSelector(selectAddPhase);
   const dispatch = useDispatch();
 
@@ -97,9 +100,13 @@ function AddPhaseView() {
       container
       sx={firstGrid}
     >
-      <Box
-        sx={buttonBox}
-      >
+      <Stack direction={'row'} justifyContent={'space-between'}>
+        <Stack>
+            {adminProjectView && <Typography pl={3} pt={1} color={'#4C8AB1'} fontFamily={'Poppins, san serif'} fontSize={'22px'} fontWeight={'600'}>
+                    {view}
+                </Typography>} 
+        </Stack>
+       {view === 'Work Order' ? <></> : <Stack direction={'row'} sx={buttonBox}>
         <Button sx={{ ...actionButton }} startIcon={<ModeEditOutlinedIcon />}
           onClick={handleAddPhase}>
           Edit
@@ -111,10 +118,11 @@ function AddPhaseView() {
           onClick={handleAddPhase}>
           Add Phase
         </Button>
-        <Button sx={{ ...actionButton, ...approvalButton }}>
+       { adminProjectView ? <></> : <Button sx={{ ...actionButton, ...approvalButton }}>
           Send Approval
-        </Button>
-      </Box>
+        </Button>}
+        </Stack>}
+      </Stack>
 
 
 
@@ -126,6 +134,7 @@ function AddPhaseView() {
           rows={rows}
           length={cardPhase.length}
           onGridToggle={() => handleGridToggle(index, phase?.previousIndex)}
+          adminProjectView={adminProjectView}
         />
       ))}
       {open && (
