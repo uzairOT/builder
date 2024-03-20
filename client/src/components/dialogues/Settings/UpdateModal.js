@@ -136,7 +136,7 @@ function UpdateModal({
               </div>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={12}  sm={6}>
               {/* Name input */}
               <Typography variant="body1">Name</Typography>
               <TextField
@@ -156,7 +156,7 @@ function UpdateModal({
                 helperText={errors.name && touched.name  ? errors.name : ''}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}  sm={6}>
               {/* Phone Number input */}
               <Typography variant="body1">Phone Number</Typography>
               <TextField
@@ -176,7 +176,7 @@ function UpdateModal({
                 helperText={errors.phoneNumber && touched.phoneNumber ? errors.phoneNumber : ''}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}  sm={6}>
               {/* Projects input */}
               <Typography variant="body1">Projects</Typography>
               <TextField
@@ -196,7 +196,7 @@ function UpdateModal({
                 helperText={errors.projects && touched.projects ? errors.projects : ''}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}  sm={6}>
               {/* Country input */}
               <Typography variant="body1">Country</Typography>
               <TextField
@@ -216,7 +216,7 @@ function UpdateModal({
                 helperText={errors.country && touched.country ? errors.country : ''}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}  sm={6}>
               {/* Email input */}
               <Typography variant="body1">Email</Typography>
               <TextField
@@ -236,7 +236,7 @@ function UpdateModal({
                 helperText={errors.email && touched.email ? errors.email : ''}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}  sm={6}>
               {/* Status input */}
               <Typography variant="body1">Status</Typography>
               <FormControl fullWidth>
@@ -282,7 +282,7 @@ function UpdateModal({
         <DialogActions
           sx={{ display: "flex", justifyContent: "center", mb: 2 }}
         >
-          <Grid item xs={2} sx={{ textAlign: "center" }}>
+          <Grid item xs={8} sm={4} md={3} lg={2} sx={{ textAlign: "center" }}>
             <Button
               buttonText={isSubmitting ? "Submitting" : "Update Profile"}
               color="#ffffff"
@@ -295,7 +295,7 @@ function UpdateModal({
              
             />
           </Grid>
-          <Grid item xs={2} sx={{ textAlign: "center" }}>
+          <Grid item xs={8} sm={4} md={3} lg={2} sx={{ textAlign: "center" }}>
             <Button
               buttonText="Reset"
               color="#4C8AB1"

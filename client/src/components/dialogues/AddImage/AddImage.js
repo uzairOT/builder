@@ -1,19 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Box, Typography } from '@mui/material';
 import actionButton from "../../UI/actionButton";
 import upload from "./assets/upload.png"
 import "../../../App.css"
 
+
 function AddImage({ handleOpen, handleClose, heading }) {
+
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(null);
     const objectFit = { objectFit: image ? "cover" : "none" }
     const dotBorder = { border: image ? "none" : "2px dashed #D9D9D9" }
+
+
     const handleClickOpen = () => {
         handleOpen()
         setOpen(true);
         setImage(null)
     };
+
     const handleClickClose = () => {
         handleClose()
         setOpen(false);
@@ -21,9 +26,13 @@ function AddImage({ handleOpen, handleClose, heading }) {
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
+
+
         reader.onloadend = () => {
             setImage(reader.result);
+
         };
+
         if (file) {
             reader.readAsDataURL(file);
         }
@@ -33,6 +42,7 @@ function AddImage({ handleOpen, handleClose, heading }) {
         const file = e.dataTransfer.files[0];
         previewImage(file);
     };
+
     const previewImage = (file) => {
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -42,6 +52,9 @@ function AddImage({ handleOpen, handleClose, heading }) {
             reader.readAsDataURL(file);
         }
     };
+
+
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -50,6 +63,7 @@ function AddImage({ handleOpen, handleClose, heading }) {
     };
     return (
         <div className="App">
+
             <>
                 <Dialog
                     open={handleClickOpen}
@@ -59,6 +73,7 @@ function AddImage({ handleOpen, handleClose, heading }) {
                         component: 'form',
                         onSubmit: handleSubmit
                     }}
+
                 >
                     <DialogTitle sx={themeStyle.typoTitle} >{heading}</DialogTitle>
                     <DialogContent >
@@ -89,8 +104,12 @@ function AddImage({ handleOpen, handleClose, heading }) {
                                     <Typography sx={themeStyle.avatarText}>
                                         {image ? "" : "Drag your file here"}
                                     </Typography>
+
+
                                 </div>
+
                             </label>
+
                         </div>
                         <Box sx={{ textAlign: "center" }}>
                             <TextField
@@ -104,13 +123,19 @@ function AddImage({ handleOpen, handleClose, heading }) {
                                 variant="standard"
                             />
                         </Box>
+
                     </DialogContent>
                     <DialogActions sx={themeStyle.generalBox}>
                         <Button sx={{ ...actionButton, ...themeStyle.sendButton }} type="submit">Send</Button>
                     </DialogActions>
                 </Dialog>
+
             </>
+
         </div >
+
+
+
     )
 }
 const themeStyle = {
@@ -132,15 +157,18 @@ const themeStyle = {
         color: "#202227",
         fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
         backgroundColor: "#FAFAFA"
+
     },
     generalBox: {
         display: "flex", justifyContent: "flex-end", marginTop: "1rem"
     },
+
     paperPropsStyle: {
         borderRadius: "1rem",
         width: { lg: "50%", md: "60%", sm: "60%", xs: "70%" },
         padding: "1rem 2rem"// Change background color here
     },
+
     typoText: {
         fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
         fontSize: "1rem",
@@ -156,6 +184,7 @@ const themeStyle = {
         left: 0,
         width: "100%",
         height: "100%",
+
     },
     avatarBox: {
         width: "90%",
@@ -174,4 +203,5 @@ const themeStyle = {
         marginTop: "6rem"
     }
 }
+
 export default AddImage

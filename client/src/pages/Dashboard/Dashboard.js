@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {  Grid, Paper } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import ProfileView from "../../components/Dashboard/ProfileView/ProfileView.js";
 import Navbar from "../../components/Navbar/Navbar.js";
 import WeatherView from "../../components/Dashboard/WeatherView/WeatherView.js";
@@ -10,13 +10,13 @@ import { getFormattedFiveDayWeather } from '../../services/WeatherService.js'
 const Dashboard = () => {
   const [dailyForecast, setDailyForecast] = useState();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
 
-  useEffect(()=>{
+  useEffect(() => {
 
     const fetchWeather = async () => {
       try {
-        const data = await  getFormattedFiveDayWeather({lat: "33.6844", lon: "73.0479", units: 'Metric'});
+        const data = await getFormattedFiveDayWeather({ lat: "33.6844", lon: "73.0479", units: 'Metric' });
         setDailyForecast(data);
       } catch (error) {
         setError(error);
@@ -45,14 +45,14 @@ const Dashboard = () => {
               <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'0px ', overflow:'hidden'}}>
               <Paper sx={themeStyle.progressCard} margin={1} ><ProgressCard /></Paper>
               </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'8px',overflow:'hidden'}}>
-              <Paper sx={themeStyle.progressCard} margin={1} ><ProgressCard /></Paper>
+              <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{ paddingTop: '0px', paddingLeft: '8px', overflow: 'hidden' }}>
+                <Paper sx={themeStyle.progressCard} margin={1} ><ProgressCard /></Paper>
               </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'0px',overflow:'hidden'}}>
-              <Paper sx={themeStyle.progressCard} margin={1} ><ProgressCard /></Paper>
+              <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{ paddingTop: '0px', paddingLeft: '0px', overflow: 'hidden' }}>
+                <Paper sx={themeStyle.progressCard} margin={1} ><ProgressCard /></Paper>
               </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'8px',overflow:'hidden'}}>
-              <Paper sx={themeStyle.progressCard} margin={1} ><ProgressCard /></Paper>
+              <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{ paddingTop: '0px', paddingLeft: '8px', overflow: 'hidden' }}>
+                <Paper sx={themeStyle.progressCard} margin={1} ><ProgressCard /></Paper>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={6} mb={1} style={{paddingTop: '0px', paddingLeft:'0px',overflow:''}}>
               <Paper sx={themeStyle.progressCard} margin={1}><ProgressCard /></Paper>
@@ -78,7 +78,7 @@ const themeStyle = {
     backgroundColor: "#eff5ff",
     height: "100vh",
   },
-  dashboardViews:{
+  dashboardViews: {
     height: '100%',
   },
   progressCard: {
@@ -86,9 +86,9 @@ const themeStyle = {
     width: "100%",
     margin: '1px',
     borderRadius: '14px',
-    overflow:'hidden'
+    overflow: 'hidden'
   },
-  scrollable:{
+  scrollable: {
     overflowY: 'scroll',
     scrollbarWidth: 'none',  // For Firefox
     '-ms-overflow-style': 'none',  // For IE and Edge

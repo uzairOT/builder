@@ -41,10 +41,10 @@ function MasterLine() {
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: {xs:"center",md:"space-between"} ,
         }}
       >
-        <Typography variant="body1" sx={tableCellStyle}>
+        <Typography variant="body1" sx={paginationTextStyle}>
           Showing data 1 to 4 of 25 entries
         </Typography>
         <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/>
@@ -56,12 +56,7 @@ function MasterLine() {
 }
 
 export default MasterLine;
-const tableCellStyle = {
-  fontWeight: 400,
-  fontSize: "14px",
-  fontFamily: "Poppins",
-  color: "#8C8C8C",
-};
+
 // <div><ChatView /></div>
 const paginationStyle = {
   '& .MuiPaginationItem-root': {
@@ -75,4 +70,16 @@ const paginationStyle = {
     backgroundColor: '#FFAC00 !important', // Set background color for the selected page
     color: '#FFFFFF', // Text color for the selected page
   },
+};
+const paginationTextStyle = {
+ 
+  display: {
+    xs: 'none', 
+    md: 'block', 
+  },
+  fontWeight: 400,
+  fontSize: "14px",
+  fontFamily: "Poppins",
+  color: "#8C8C8C",
+
 };

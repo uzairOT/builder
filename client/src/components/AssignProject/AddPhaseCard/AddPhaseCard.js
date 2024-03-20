@@ -11,56 +11,118 @@ import {
   TableBody,
   Checkbox
 } from "@mui/material";
-import AddLine from "../../dialogues/AddLine/AddLine"
 import { ReactComponent as ArrowDown } from "../Assets/svgs/ArrowDown.svg";
 import { ReactComponent as Arrowup } from "../Assets/svgs/Arrowup.svg";
 import { ReactComponent as EditIcon } from "../Assets/svgs/EditIcon.svg";
 import { ReactComponent as DeleteIcon } from "../Assets/svgs/DeleteIcon.svg";
-import GTWalsheimTrial from "../../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
+import "../../../App.css"
 import actionButton from "../../UI/actionButton";
 import "./AddPhaseCard.css";
-import { selectAddPhase, setRowCheckboxes } from "../../../redux/slices/addPhaseSlice";
-import {useSelector, useDispatch} from 'react-redux'
+import AddLineDialogue from "../../dialogues/AddLineDialogue/AddLineDialogue";
+import UpdateLineDialogue from "../../dialogues/UpdateLineDialogue/UpdateLineDialogue";
+import { useDeletePhaseLineMutation } from "../../../redux/apis/Project/projectApiSlice";
 
-const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length, adminProjectView }) => {
+
+const initialRows = [
+  { phaseName: 'Item 1', description: 'Description 1', unit: 'Unit 1', margin: '10%', quantity: 5, unitPrice: 20, total: 100, start: '2024-03-01', end: '2024-03-05', longDescription: 'Note 1' },
+  { phaseName: 'Item 2', description: 'Description 2', unit: 'Unit 2', margin: '15%', quantity: 3, unitPrice: 30, total: 90, start: '2024-03-03', end: '2024-03-08', longDescription: 'Note 2' },
+  { phaseName: 'Item 3', description: 'Description 3', unit: 'Unit 3', margin: '20%', quantity: 2, unitPrice: 25, total: 50, start: '2024-03-02', end: '2024-03-06', longDescription: 'Note 3' },
+  // Add more rows as needed
+];
+
+
+const AddPhaseCard = ({ phaseData, onGridToggle, length, handleSelectCard }) => {
+
+
+
   const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
-  // const [rowCheckboxes, setRowCheckboxes] = useState(rows.map(() => false)); // State to track the checked state of each checkbox in the table rows
-  const {rowCheckboxes} = useSelector(selectAddPhase);
-  const dispatch = useDispatch();
   const [showAddLine, setShowAddLine] = useState(false);
+  const [showUpdateLine, setShowUpdateLine] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [rows, setRows] = useState(initialRows)
+  const [rowCheckboxes, setRowCheckboxes] = useState(rows.map(() => false)); // State to track the checked state of each checkbox in the table rows
+  const [deletePhaseLine] = useDeletePhaseLineMutation();
+
+console.log(phaseData?.LineItems)
 
   const handleArrowDownClick = () => {
-    onGridToggle(cardPhase.currentIndex, cardPhase.currentIndex + 1);
+    onGridToggle(phaseData.currentIndex, phaseData.currentIndex + 1);
   };
 
   const handleArrowUpClick = () => {
-    onGridToggle(cardPhase.currentIndex, cardPhase.currentIndex - 1);
+    onGridToggle(phaseData.currentIndex, phaseData.currentIndex - 1);
   };
 
   const handleSelectAllChange = (event) => {
     const isChecked = event.target.checked;
     setSelectAll(isChecked);
-    dispatch(setRowCheckboxes(rowCheckboxes.map(() => isChecked)));
+    const updatedSelectedRows = isChecked ? rows.map((_, index) => index) : [];
+    setSelectedRows(updatedSelectedRows);
   };
 
-  const handleRowCheckboxChange = (index) => (event) => {
-    const isChecked = event.target.checked;
-    const updatedCheckboxes = [...rowCheckboxes];
-    updatedCheckboxes[index] = isChecked;
-    dispatch(setRowCheckboxes(updatedCheckboxes));
-    setSelectAll(updatedCheckboxes.every((checkbox) => checkbox));
+
+
+  const handleDeleteSelectedRows = () => {
+    const updatedRows = rows.filter((_, index) => !selectedRows.includes(index));
+    // Handle the updated rows according to your application logic
+    deletePhaseLine(selectedRows);
+    console.log("Deleted rows:", selectedRows);
+    console.log("Remaining rows:", updatedRows);
+
+    // Clear the selectedRows state after deletion
+    setSelectedRows([]);
   };
+
 
   const handleAddLine = () => {
     setShowAddLine(true)
   };
 
-  const handleOpen = () => {
+  const handleAddOpen = () => {
     setShowAddLine(true);
   };
 
-  const handleClose = () => {
+  const handleAddClose = () => {
     setShowAddLine(false);
+  };
+  const handleUpdateLine = (row) => {
+ 
+    setCheckedRow(row);
+    setShowUpdateLine(true)
+  };
+
+
+
+  const handleUpdateOpen = () => {
+    setShowUpdateLine(true);
+  };
+
+  const handleUpdateClose = () => {
+    setShowUpdateLine(false);
+  };
+
+  const tableContainerStyle = {
+    maxWidth: '100%', // Allow the table to take up the entire available width
+    overflowX: 'auto', // Add horizontal scrollbar when needed
+  };
+
+
+  const handleUpdateRow = (index, newData) => {
+    const updatedRows = [...rows];
+    updatedRows[index] = { ...updatedRows[index], ...newData };
+    setRows(updatedRows);
+    console.log(updatedRows)
+  };
+  const handleAddRow = (newData) => {
+    const updatedRows = [...rows, newData];
+    setRows(updatedRows);
+    console.log(updatedRows);
+  };
+
+  const [checkedRow, setCheckedRow] = useState(null);
+
+  const handleCheckboxChange = (row) => {
+    setCheckedRow(prevCheckedRow => prevCheckedRow === row ? null : row);
   };
 
 
@@ -70,30 +132,32 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length, adminProjectView 
       <Grid
         item
         lg={12}
-        sx={{ ...firstGrid, backgroundColor: `${cardPhase?.color}`, }}
+        sx={{ ...firstGrid, backgroundColor: `${phaseData?.color}` }}
       >
         <Box
           sx={headingsBox}
         >
-          <Box>
-            <Typography sx={blackHeading}>Phase 1</Typography>
-          </Box>
-          <Box>
-            <Typography sx={blackHeading}>Total Price:</Typography>
-          </Box>
-          <Box>
-            <Typography sx={blackHeading}>Time: &nbsp; Days:</Typography>
+          <Box sx={headingInnerBox}>
+            <Box >
+              <Typography sx={{ ...blackHeading, cursor: "pointer" }} onClick={() => handleSelectCard(phaseData.id)}>{phaseData.phase_name}</Typography>
+            </Box>
+            <Box>
+              <Typography sx={blackHeading}>Total Price:</Typography>
+            </Box>
+            <Box>
+              <Typography sx={blackHeading}>Time: &nbsp; Days:</Typography>
+            </Box>
           </Box>
           <Box
             sx={phaseBox}
           >
             <>
-              {cardPhase?.currentIndex === 0 ? (
+              {phaseData?.currentIndex === 0 ? (
                 <ArrowDown
                   style={{ marginRight: "1rem", cursor: "pointer" }}
                   onClick={handleArrowDownClick}
                 />
-              ) : cardPhase?.currentIndex === length - 1 ? (
+              ) : phaseData?.currentIndex === length - 1 ? (
                 <Arrowup
                   style={{ marginRight: "1rem", cursor: "pointer" }}
                   onClick={handleArrowUpClick}
@@ -111,8 +175,13 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length, adminProjectView 
                 </>
               )}
             </>
-            <EditIcon />
-            <DeleteIcon />
+            {/* <EditIcon
+              // onClick={handleUpdateLine}
+              onClick={handleUpdateLine}
+            />
+            <DeleteIcon
+              onClick={handleDeleteSelectedRows}
+              disabled={selectedRows.length === 0} /> */}
             <Button
               sx={{ ...actionButton, background: "#4C8AB1", marginTop: "0.7rem" }}
               onClick={handleAddLine}
@@ -121,19 +190,27 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length, adminProjectView 
             </Button>
           </Box>
         </Box>
+
+
         <Grid
           item
           sx={tableGrid}
         >
+          <Box sx={{display:"flex",justifyContent:"space-between" }}>
           <Typography sx={listOfLineText}>List of Line Items</Typography>
+          <Button sx={{ ...actionButton, ...approvalButton, ...displayButton }}>
+          Send Approval
+        </Button>
+          </Box>
+        
           <hr style={hrLine} />
-          <Box sx={{ marginLeft: "1rem" }}>
+          <Box sx={{ ...tableContainerStyle, marginLeft: "1rem", }}>
             <Table>
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    {!adminProjectView && <Checkbox checked={selectAll}
-                      onChange={handleSelectAllChange} />}
+                    <Checkbox checked={selectAll}
+                      onChange={handleSelectAllChange} />
                   </TableCell>
                   <TableCell
                     sx={{ ...tableHeadings, width: "15%", }}
@@ -141,56 +218,95 @@ const AddPhaseCard = ({ cardPhase, rows, onGridToggle, length, adminProjectView 
                     Line Item
                   </TableCell>
 
-                  <TableCell sx={tableHeadings}>Description</TableCell>
                   <TableCell sx={tableHeadings}>Unit</TableCell>
-                  <TableCell sx={tableHeadings}>Margin</TableCell>
                   <TableCell sx={tableHeadings}>Quantity</TableCell>
-                  <TableCell sx={tableHeadings}>Unit Price</TableCell>
-                  <TableCell sx={tableHeadings}>Total</TableCell>
+                  <TableCell sx={tableHeadings}>Unit Cost</TableCell>
+                  <TableCell sx={tableHeadings}>Total Cost</TableCell>
                   <TableCell sx={tableHeadings}>Start</TableCell>
                   <TableCell sx={tableHeadings}>End</TableCell>
+                  <TableCell sx={tableHeadings}>Time Tracking</TableCell>
                   <TableCell sx={tableHeadings}>Notes</TableCell>
+
+                  <TableCell></TableCell>
+                    <TableCell></TableCell>
+                  
+                    <TableCell></TableCell>
+               
                 </TableRow>
 
                 <TableRow style={hrLine}></TableRow>
               </TableHead>
 
               <TableBody>
-                {rows.map((row, index) => (
-                  <TableRow key={row.name} sx={{ paddingLeft: "4rem" }}>
+                {phaseData.LineItems.map((row, index) => (
+                  <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
                     <TableCell>
-                      <Checkbox checked={rowCheckboxes[index]}
-                        onChange={handleRowCheckboxChange(index)} />
+                    <Checkbox
+              // checked={checkedRow === row}
+              // onChange={() => handleCheckboxChange(row)}
+            />
                     </TableCell>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                    >
-                      {row.name}
+                    <TableCell component="th" scope="row">
+                      {row.title}
                     </TableCell>
-                    <TableCell>{row.calories}</TableCell>
-                    <TableCell>{row.fat}</TableCell>
-                    <TableCell>{row.carbs}</TableCell>
-                    <TableCell>{row.protein}</TableCell>
-                    <TableCell>{row.calorie}</TableCell>
-                    <TableCell>{row.fa}</TableCell>
-                    <TableCell>{row.carb}</TableCell>
-                    <TableCell>{row.protei}</TableCell>
+                    <TableCell>{row.description}</TableCell>
+                    <TableCell>{row.unit}</TableCell>
+                    <TableCell>{row.unit_price}</TableCell>
+                    <TableCell>{row.quantity}</TableCell>
+                    <TableCell>{row.start_day}</TableCell>
+                    <TableCell>{row.end_day}</TableCell>
+                
+                    <TableCell>{row.total}</TableCell>
+                
+                    <TableCell>{row.longDescription}</TableCell>
+                    <TableCell>{row.status}</TableCell>
+                    <TableCell>
+                      <EditIcon  onClick={() => handleUpdateLine(row) } />
+                    <DeleteIcon
+                      onClick={handleDeleteSelectedRows}
+                      disabled={selectedRows.length === 0} />
+                   </TableCell>
+                   
+                    
+           
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </Box>
         </Grid>
+
+
+
         {showAddLine && (
-          <AddLine
-            handleOpen={handleOpen}
-            handleClose={handleClose}
+          <AddLineDialogue
+          phaseData={phaseData}
+            handleAddOpen={handleAddOpen}
+            handleAddClose={handleAddClose}
+            handleAddRow={handleAddRow}
           />
         )}
+        {showUpdateLine && (
+          <UpdateLineDialogue
+            handleUpdateOpen={handleUpdateOpen}
+            handleUpdateClose={handleUpdateClose}
+            handleUpdateRow={handleUpdateRow} // Pass the update function
+            selectedRowIndex={selectedRows[0]}
+            rowData={selectedRows[0] !== undefined ? rows[selectedRows[0]] : null} 
+            LineItem={checkedRow}
+          />
+        )}
+
       </Grid>
     </div>
   );
+};
+const approvalButton = {
+  background: "#FFAC00",
+  padding: "1rem 0.5rem",
+};
+const displayButton = {
+  display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
 };
 const firstGrid = {
   display: "flex",
@@ -200,17 +316,25 @@ const firstGrid = {
 }
 const headingsBox = {
   display: "flex",
-  flexDirection: "row",
+  flexDirection: { lg: "row", md: "row", sm: "column", xs: "column" },
   justifyContent: "space-between",
-  margin: "0.1rem 4rem 0rem",
+  margin: "0.2rem 4rem 0rem",
+}
+
+const headingInnerBox = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-around",
+  whiteSpace: "nowrap",
+  gap: { lg: "9rem", md: "2rem", sm: "auto", xs: "auto" }
 }
 const phaseBox = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   gap: "1rem",
-  marginBottom: "-1rem",
-  marginRight: "4rem"
+  marginTop: "1rem",
+  marginRight: { lg: "4rem", md: "4rem", sm: "0rem", xs: "0rem" }
 }
 const tableGrid = {
   background: "#FBFBFB",
@@ -219,7 +343,7 @@ const tableGrid = {
   padding: "1rem 2rem",
 }
 const blackHeading = {
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   color: "#4B4B4B",
   fontSize: "20px",
   fontWeight: 400,
@@ -229,7 +353,7 @@ const blackHeading = {
   marginTop: "1rem",
 };
 const listOfLineText = {
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontWeight: 400,
   fontSize: "1.25rem",
   paddingLeft: "2rem",
@@ -238,6 +362,7 @@ const listOfLineText = {
 
 const tableHeadings = {
   fontFamily: "Poppins, sans-serif",
+  whiteSpace: "nowrap",
   fontWeight: 500,
   fontSize: "0.9rem",
   color: "#8C8C8C",

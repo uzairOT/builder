@@ -31,45 +31,44 @@ const Search = styled('div')(({ theme }) => ({
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 0),
-  height: '76%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+    padding: theme.spacing(0, 0),
+    height: '76%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: '#535353C9',
-  width: '100%',
-  height:"38px",
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
-      },
+    color: '#535353C9',
+    width: '100%',
+    '& .MuiInputBase-input': {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create('width'),
+        [theme.breakpoints.up('sm')]: {
+            width: '12ch',
+            '&:focus': {
+                width: '20ch',
+            },
+        },
     },
-  },
 }));
 
 const SearchBar = () => {
-  return (
-    <Search>
-    <SearchIconWrapper>
-      <SearchIcon style={{ color: '#535353C9' }}/>
-    </SearchIconWrapper>
-    <StyledInputBase
-      placeholder="Search"
-      inputProps={{ 'aria-label': 'search', }}
-    />
-  </Search>
-  )
+    return (
+        <Search>
+            <SearchIconWrapper>
+                <SearchIcon style={{ color: '#535353C9' }} />
+            </SearchIconWrapper>
+            <StyledInputBase
+                placeholder="Search"
+                inputProps={{ 'aria-label': 'search', }}
+            />
+        </Search>
+    )
 }
 
 export default SearchBar

@@ -11,7 +11,7 @@ const ReportsPage = () => {
    <Grid container height={{xl:"100vh",lg:"100vh",md:"100vh",sm:'', xs:''}} backgroundColor={"#eff5ff"} spacing={2} overflow={'hidden'} sx={themeStyle.scrollable}>
    <Grid item xl={2} lg={3} md={12} sm={12} xs={12} height={"99vh"}>
           <Paper sx={{ height: "100%", borderRadius: "14px" }}>
-            <ProfileReport />
+            <ProfileReport name={"Admin"} description={"SuperAdmin@gmail.com"} />
             <ProjectsSidebar />
           </Paper>
     </Grid>
@@ -34,7 +34,7 @@ const ReportsPage = () => {
 
 export default ReportsPage
 const themeStyle = {
-  scrollable:{
+  scrollable: {
     overflowY: 'scroll',
     scrollbarWidth: 'none',  // For Firefox
     '-ms-overflow-style': 'none',  // For IE and Edge
@@ -47,5 +47,6 @@ const themeStyle = {
     },
     '&:hover::-webkit-scrollbar-thumb': {
       backgroundColor: '#ddd',
-    }, }
+    },
+  }
 }
