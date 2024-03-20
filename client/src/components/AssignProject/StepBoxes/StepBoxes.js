@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import { Typography, Box } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -7,11 +7,13 @@ import {
 } from "../../../redux/slices/projectFormSlice";
 
 function StepBoxes() {
-  const [selectedBox, setSelectedBox] = useState(0);
+  const [selectedBox, setSelectedBox] =useState(null);
+  const { buildType } = useSelector(selectProjectForm);
+  console.log(buildType)
   const dispatch = useDispatch();
 
   const handleBoxClick = (index) => {
-    setSelectedBox(index);
+    setSelectedBox(boxes[index].name); // Set to the name of the box
     const value = boxes[index].name;
     dispatch(setBuildType(value));
   };
@@ -20,6 +22,13 @@ function StepBoxes() {
     { label: "New build", background: "#4C8AB1", name: "newbuild" },
     { label: "Commercial", background: "#4C8AB1", name: "commercial" },
   ];
+
+  useEffect(() => {
+    const foundBox = boxes.find(box => box.name === buildType);
+    if (foundBox) {
+      setSelectedBox(foundBox.name); // Set to the name of the box
+    }
+  }, [buildType]);
 
   return (
     <Box
@@ -30,8 +39,8 @@ function StepBoxes() {
           key={index}
           sx={{
             ...boxStyles,
-            background: selectedBox === index ? box.background : "#F9F9F9",
-            color: selectedBox === index ? "#FFF" : "#000000",
+            background: selectedBox === box.name ? box.background : "#F9F9F9", // Compare with the name
+            color: selectedBox === box.name ? "#FFF" : "#000000", // Compare with the name
           }}
           onClick={() => handleBoxClick(index)}
         >

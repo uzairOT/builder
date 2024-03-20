@@ -31,7 +31,7 @@ const WorkOrderView = () => {
                   fontSize={"22px"}
                   fontWeight={"600"}
                 >
-                  Change Order
+                  Work Order
                 </Typography>
                 <Tabs defaultValue={0} sx={{ backgroundColor: "transparent" }}>
                   <Stack direction={"row"} justifyContent={"space-between"}>
@@ -138,6 +138,7 @@ const WorkOrderView = () => {
               <Stack p={1} borderRadius={"14px"}>
                 <AddPhaseView adminProjectView={true} view={'Work Order'} />
               </Stack>
+              
              <RequestWorkOrderModal /> 
             </>
           )}

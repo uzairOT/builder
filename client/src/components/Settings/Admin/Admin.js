@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Divider, Typography } from "@mui/material";
 import ChatView from "../../Chat/ChatView";
 import Header from "../Header/Header";
@@ -7,11 +7,23 @@ import Pagination from "@mui/material/Pagination";
 import AddModal from '../../dialogues/Settings/AddModal';
 import UpdateModal from '../../dialogues/Settings/UpdateModal';
 
+import { useOutletContext } from 'react-router-dom';
+
+
+
+
 function Admin() {
+  
 
-
+  const [userId, setUserId] = useOutletContext();
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
+  const ADMIN_VIEW = 'admin';
+ 
+  useEffect(()=> {
+    console.log("Admin useEffect userId: ", userId)
+  }, [userId])
+
 
   // Function to open the Add Modal
   const OpenAddModal = () => {
@@ -25,10 +37,11 @@ function Admin() {
     setUpdateModalOpen(false);
   };
 
+console.log(userId)
   return (
     <div style={{padding:"20px"}}>
-      <Header title="Admin"   OpenAddModal={OpenAddModal} />
-      <CustomTable setUpdateModalOpen={setUpdateModalOpen} />
+      <Header title="Admin"   OpenAddModal={OpenAddModal}/>
+      <CustomTable setUpdateModalOpen={setUpdateModalOpen} userId={userId} setUserId={setUserId}/>
 
       <Box mt={2} mb={2}>
         <Divider />
@@ -45,8 +58,8 @@ function Admin() {
         </Typography>
         <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Admin"} open={isAddModalOpen} onClose={handleCloseAddModal} />
-      <UpdateModal title={"Admin"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} />
+      <AddModal title={"Admin"} open={isAddModalOpen} onClose={handleCloseAddModal}/>
+      <UpdateModal title={"Admin"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} />
     </div>
   );
 }

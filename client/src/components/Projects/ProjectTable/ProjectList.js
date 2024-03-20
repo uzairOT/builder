@@ -236,27 +236,27 @@ const ProjectList = ({ rows, isLoading }) => {
           {isLoading ? (
             <Stack spacing={1} p={2}>
               <Stack width={'96%'} alignSelf={'flex-end'}>
-            <Skeleton variant="rectangular" width={'100%'} height={'50px'} />
+            <Skeleton variant="rounded" width={'100%'} height={'50px'} />
               </Stack>
             <Stack direction={'row'} spacing={2}>
             <Skeleton variant="circular" width={50} height={50} />
-            <Skeleton variant="rectangular" width={'100%'} height={'50px'} />
+            <Skeleton variant="rounded" width={'100%'} height={'50px'} />
             </Stack>
             <Stack direction={'row'} spacing={2}>
             <Skeleton variant="circular" width={50} height={50} />
-            <Skeleton variant="rectangular" width={'100%'} height={'50px'} />
+            <Skeleton variant="rounded" width={'100%'} height={'50px'} />
             </Stack>
             <Stack direction={'row'} spacing={2}>
             <Skeleton variant="circular" width={50} height={50} />
-            <Skeleton variant="rectangular" width={'100%'} height={'50px'} />
+            <Skeleton variant="rounded" width={'100%'} height={'50px'} />
             </Stack>
             <Stack direction={'row'} spacing={2}>
             <Skeleton variant="circular" width={50} height={50} />
-            <Skeleton variant="rectangular" width={'100%'} height={'50px'} />
+            <Skeleton variant="rounded" width={'100%'} height={'50px'} />
             </Stack>
             <Stack direction={'row'} spacing={2}>
             <Skeleton variant="circular" width={50} height={50} />
-            <Skeleton variant="rectangular" width={'100%'} height={'50px'} />
+            <Skeleton variant="rounded" width={'100%'} height={'50px'} />
             </Stack>
             <Stack direction={'row'} spacing={2}>
             <Skeleton variant="circular" width={50} height={50} />

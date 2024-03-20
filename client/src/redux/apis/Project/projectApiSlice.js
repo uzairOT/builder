@@ -1,7 +1,9 @@
 import { apiSlice } from '../apiSlice';
 
-const PROJECTS_URL = 'http://192.168.18.147:8080/project';
+const PROJECTS_URL = 'http://192.168.0.101:8080/project';
+const URL = 'http://192.168.0.101:8080/project';
 
+const projectId = localStorage.getItem("projectId");
 
 export const projectApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -17,7 +19,7 @@ export const projectApiSlice = apiSlice.injectEndpoints({
         // Phase ApiSlices ................. //
         addProjectPhase: builder.mutation({
             query: (data) => ({
-                url: `${PROJECTS_URL}/addPhase`,
+                url: `${PROJECTS_URL}/addPhase/${projectId}`,
                 method: 'POST',
                 body: data,
             }),
@@ -33,7 +35,7 @@ export const projectApiSlice = apiSlice.injectEndpoints({
         }),
         deleteProjectPhase: builder.mutation({
             query: (data) => ({
-                url: `${PROJECTS_URL}/addPhase/${data.id}`,
+                url: `${PROJECTS_URL}/addPhase/${projectId}`,
                 method: 'DELETE',
                 body: data,
             }),
@@ -41,17 +43,25 @@ export const projectApiSlice = apiSlice.injectEndpoints({
         }),
 
         // PhaseLine ApiSlices ................. //
-        addPhaseLine: builder.mutation({
+        getPhases: builder.query({
             query: (data) => ({
-                url: `${PROJECTS_URL}/addPhaseLine`,
+                url: `${URL}/getPhases/${projectId}`,
+                method: 'GET',
+           
+            }),
+            providesTags: ["Project"],
+        }),
+        addPhaseLine: builder.mutation({
+            query: (newLineItem) => ({
+                url: `${PROJECTS_URL}/addPhaseLine/${projectId}`,
                 method: 'POST',
-                body: data,
+                body: newLineItem,
             }),
             providesTags: ["Project"],
         }),
         updatePhaseLine: builder.mutation({
-            query: (data) => ({
-                url: `${PROJECTS_URL}/addPhaseLine/${data.id}`,
+            query: (data,lineItemId) => ({
+                url: `${PROJECTS_URL}/updatePhaseLine/${lineItemId}`,
                 method: 'PATCH',
                 body: data,
             }),
@@ -66,6 +76,15 @@ export const projectApiSlice = apiSlice.injectEndpoints({
             providesTags: ["Project"],
         }),
 
+        getProjectChangeOrder: builder.query({
+            query: (data) => ({
+                url: `${PROJECTS_URL}/changeOrder/`,
+                method: 'GET',
+            })
+        }),
+        getProjectWorkOrder: builder.query({
+            
+        })
 
     }),
 });
@@ -77,5 +96,6 @@ export const {
     useAddPhaseLineMutation,
     useUpdatePhaseLineMutation,
     useDeletePhaseLineMutation,
-
+    useGetProjectChangeOrderQuery,
+    useGetPhasesQuery,
 } = projectApiSlice;

@@ -41,17 +41,17 @@ import ProjectsTable from "./pages/Projects/ProjectsTable";
 import Layout2 from "./components/Layouts/Layout2";
 import ChatView from "./components/Projects/ProjectsChat/ChatView";
 import Subscription from "./pages/Subscription/Subscription";
-
+import { useDispatch, useSelector } from "react-redux";
 const Dashboard =  lazy(() => import("./pages/Dashboard/Dashboard"))
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"))
 const ImagesView = lazy(() => import("./components/Projects/ProjectsImages/ImagesView"))
-const PermitView = lazy(() => import("./components/Projects/ProjectsImages/ImagesView"))
+const PermitView = lazy(() => import("./components/Projects/ProjectsPermit/PermitView"))
 const DrawingFilesView = lazy(() => import("./components/Projects/ProjectsDrawingFiles/DrawingFilesView"))
 const ReportView = lazy(() => import("./components/Projects/ProjectsReport/ReportView"))
 
 function App() {
-  // const isAuthenticated = useSelector((state) => state.auth.userInfo);
-  const isAuthenticated = true;
+  const isAuthenticated = useSelector((state) => state.auth.userInfo);
+  // const isAuthenticated = true;
   console.log(isAuthenticated);
 
   const router = createBrowserRouter(
@@ -121,6 +121,7 @@ function App() {
   );
 
   return (
+
     <>
        <Suspense fallback={<PageLoader />}>
       <RouterProvider router={router} />
