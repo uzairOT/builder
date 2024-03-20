@@ -53,6 +53,7 @@ const formatFiveDayWeather = async (forecastData) => {
         const forecastTime  = forecast.dt_txt.split(' ')[1];
 
         const formattedDay = moment(forecastDate).format('ddd'); // Formats day to 'Mon', 'Tue', etc.
+     
         const  {main , weather} = forecast;
 
         const {temp} = main;

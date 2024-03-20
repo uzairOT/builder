@@ -138,6 +138,7 @@ const WorkOrderView = () => {
               <Stack p={1} borderRadius={"14px"}>
                 <AddPhaseView adminProjectView={true} view={'Work Order'} />
               </Stack>
+              
              <RequestWorkOrderModal /> 
             </>
           )}

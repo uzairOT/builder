@@ -3,19 +3,19 @@ import React from "react";
 import ProfileImage from "../../components/UI/ProfilePic/ProfilePic";
 import UserImage from "./assests/images/user-image.jpg"
 
-const ProfileReport = () => {
+const ProfileReport = ({ name, description }) => {
   return (
     <>
       <Box sx={themeStyle.container}>
         <Box padding={1}>
-          <ProfileImage UserImage={UserImage} border={true}/>
+          <ProfileImage UserImage={UserImage} border={true} />
         </Box>
         <Box padding={1}>
           <Typography color="primary" sx={themeStyle.containerTitle}>
-            Admin Name
+            {name}
           </Typography>
           <Typography sx={themeStyle.containerSubtitle}>
-            SuperAdmin@gmail.com
+            {description}
           </Typography>
         </Box>
       </Box>
@@ -32,10 +32,11 @@ const themeStyle = {
     alignItems: "center",
   },
   containerTitle: {
-    fontSize: { xs: "10px", md: "10px", xl: "13px" },
+    fontSize: { xs: "10px", md: "10px", lg: "1.2rem", xl: "1.2rem" },
+    color: "#FFAC00",
     fontWeight: "400",
     fontFamily: "inherit",
-    textTransform: 'uppercase'
+
   },
   containerSubtitle: {
     fontSize: { xs: "13px", md: "10px", xl: "13px" },

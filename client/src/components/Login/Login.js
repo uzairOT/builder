@@ -22,7 +22,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "../Signup/Assets/svgs/GoogleIcon.svg";
 
 import YellowBtn from "../UI/button";
-import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf";
+import "../../App.css"
 
 const Login = () => {
 
@@ -35,6 +35,7 @@ const Login = () => {
 
   const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
   const linkResponsiveColor = { color: isMobile ? "#FFAC00" : "#4C8AB1", }
+  const borderRadiusResponsive = { borderRadius: isMobile ? "0.5rem" : "0.75rem" }
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -66,7 +67,7 @@ const Login = () => {
       const res = await login({ email, password }).unwrap();
       console.log(res)
       dispatch(setCredentials({ ...res }));
-      navigate('/dashboard');
+      navigate('/');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
@@ -125,7 +126,7 @@ const Login = () => {
             <Typography sx={formHeadingStyle}>Login</Typography>
             <img src={builder1} width={"20%"} alt="" />
           </Box>
-          <form style={{ marginTop: "1rem" }} onSubmit={submitHandler} >
+          <form style={{ marginTop: "1rem" }}  >
             <Box sx={{ marginTop: "0.5rem" }}>
               <label
                 style={{
@@ -143,6 +144,7 @@ const Login = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 style={{
                   ...inputStyle,
+                  ...borderRadiusResponsive,
                   ...placeholderStyle,
                   ...lableResponsiveFont
                 }}
@@ -163,6 +165,7 @@ const Login = () => {
                 <input
                   style={{
                     ...inputStyle,
+                    ...borderRadiusResponsive,
                     ...placeholderStyle,
                     ...lableResponsiveFont
                   }}
@@ -191,7 +194,11 @@ const Login = () => {
               <Box sx={{ display: "flex" }}>
                 <Checkbox
                   id="agreeTerms"
-                  sx={checkBoxStyle}
+                  sx={{
+                    "&.Mui-checked": {
+                      color: "#4C8AB1",
+                    },
+                  }}
                 />
                 <label
                   htmlFor="agreeTerms"
@@ -204,7 +211,7 @@ const Login = () => {
                 </label>
               </Box>
               <Box sx={{ ...forgetPassTypo, ...lableResponsiveFont, ...linkResponsiveColor, }}>
-                <Link
+              <Link
                   style={{ ...signupLink, ...lableResponsiveFont, ...linkResponsiveColor }}
                 >
                   Forget Password ?
@@ -226,7 +233,7 @@ const Login = () => {
               sx={accountLinkText}
             >
               Don’t have an account?{"\u00a0"}{" "}
-              <Link to="/"
+              <Link to="/signup"
                 style={{ ...signupLink, ...lableResponsiveFont, ...linkResponsiveColor }}
               >
                 Sign up
@@ -277,7 +284,7 @@ const Login = () => {
           </Box>
         </Grid>
         <Box
-          sx={{ ...googleAppImgsBox, ...googleAppImgsMobile }}
+          sx={googleAppImgsMobile}
         >
           <img src={googlePlay} width={widthValue} alt="" />
           <img src={appStore} width={widthValue} alt="" />
@@ -296,13 +303,13 @@ const Login = () => {
 
 const firstGrid = {
   padding: {
-    lg: "1.7rem 3rem",
-    md: "2rem 2rem",
+    lg: "0rem 3rem",
+    md: "4rem 2rem 2rem 2rem",
     sm: "1rem 2rem",
     xs: "0rem 0rem",
   },
   backgroundColor: "#4C8AB1",
-  marginTop: { lg: "-1rem", sm: "-4rem", xs: "0rem" },
+  marginTop: { lg: "0rem", sm: "-1rem", xs: "0rem" },
   // border: "2px solid red",
 }
 
@@ -321,7 +328,7 @@ const SecondGrid = {
 }
 
 const downloadForMobBox = {
-  marginTop: "9.98rem",
+  marginTop: "15rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
   justifyContent: "center",
@@ -337,7 +344,10 @@ const googleAppImgsBox = {
 }
 const googleAppImgsMobile = {
   display: { lg: "none", md: "none", sm: "flex", xs: "none" },
+  justifyContent: "center",
+  alignItems: "center",
   marginTop: "1rem",
+  gap: "1rem"
 }
 
 
@@ -355,8 +365,8 @@ const formGrid = {
   flexDirection: "column",
   display: "flex",
   padding: "20px",
-  paddingLeft: "3.5rem",
-  paddingRight: { lg: "7rem", md: "2rem", sm: "2rem", xs: "2rem" },
+  paddingLeft: { lg: "2.5rem", md: "1rem", sm: "2rem", xs: "1rem" },
+  paddingRight: { lg: "5rem", md: "2rem", sm: "2rem", xs: "2rem" },
   marginLeft: { lg: "3rem", md: "2rem", sm: "0rem", xs: "0rem" },
   borderRadius: {
     lg: "1.5rem",
@@ -371,7 +381,7 @@ const logoBox = {
   gap: "7rem",
   marginBottom: "8rem",
   justifyContent: "space-evenly",
-  marginTop: "1rem",
+  marginTop: "2rem",
   display: { lg: "none", md: "none", sm: "none", xs: "flex" },
 }
 
@@ -388,7 +398,7 @@ const passwordEyeBox = {
 const linkBox = {
   display: "flex",
   justifyContent: "space-between",
-  gap: { lg: "8rem", md: "5rem", sm: "3.5rem", xs: "5rem" },
+  gap: { lg: "1rem", md: "5rem", sm: "3.5rem", xs: "5rem" },
   marginTop: { lg: "2rem", md: "2rem", sm: "2rem", xs: "0.5rem" },
   marginBottom: {
     lg: "2rem",
@@ -399,19 +409,13 @@ const linkBox = {
 }
 const checkBox = {
   whiteSpace: "nowrap",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   marginTop: "1rem"
-}
 
-const checkBoxStyle = {
-  "&.Mui-checked": {
-    color: "#4C8AB1",
-  },
-  marginTop: "0.2rem"
 }
 const forgetPassTypo = {
   whiteSpace: "nowrap",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontWeight: 600,
   paddingTop: "1rem"
 
@@ -425,7 +429,7 @@ const accountLinkText = {
     sm: "1rem",
     xs: "2rem",
   },
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: {
     lg: "1rem",
     md: "1rem",
@@ -444,7 +448,7 @@ const accountLinkText = {
   marginTop: "1.5rem",
 }
 const signupLink = {
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontWeight: 600,
 }
 
@@ -498,7 +502,7 @@ const selectStyle = {
   ".MuiOutlinedInput-notchedOutline": { border: 0 },
   color: "white",
   border: "none",
-  fontFamily: "GT Walsheim Trial",
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: "1rem",
   fontStyle: "normal",
   fontWeight: "400",
@@ -515,9 +519,9 @@ const hptLinksBox = {
 }
 const firstHeading = {
   color: "#FFF",
-  fontFamily: GTWalsheimTrial,
-  marginTop: "6rem",
-  fontSize: { lg: "2.9375rem", md: "2rem", sm: "1.5rem" },
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+  marginTop: { lg: "6rem", md: "5rem", sm: "1rem" },
+  fontSize: { lg: "2.7rem", md: "2rem", sm: "1.5rem" },
   fontWeight: 400,
   lineHeight: "4.25rem",
 };
@@ -526,7 +530,7 @@ const secondHeading = {
   color: "rgba(255, 255, 255, 0.80)",
   width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
   fontWeight: 400,
 
@@ -535,7 +539,7 @@ const secondHeading = {
 const thirdHeading = {
   color: "#FFF",
   marginTop: "2rem",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontWeight: 400,
@@ -545,7 +549,7 @@ const thirdHeading = {
 const formHeadingStyle = {
   color: "#4C8AB1",
   textAlign: "center",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: "2.1875rem",
   fontWeight: 700,
 };
@@ -563,7 +567,7 @@ const inputStyle = {
 const placeholderStyle = {
   color: "#B8B8B8",
   padding: "8px",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: "1rem",
   fontWeight: 400,
 };
@@ -572,34 +576,35 @@ const labelStyle = {
   display: "block",
   marginBottom: "1rem",
   color: "#202227",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.75rem" },
   fontWeight: 400,
 };
 
 const hptLinksStyle = {
   color: "#FFF",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem" },
   fontWeight: 400,
 
 };
 
 const googleBtnStyle = {
-  marginBottom: { lg: "2rem", md: "1rem", sm: "1rem", xs: "2rem" },
+  marginBottom: { lg: "6rem", md: "5rem", sm: "4rem", xs: "2rem" },
   display: "flex",
   flexDirection: "row",
   gap: "0.3rem",
-  marginTop: { lg: "2.5rem", md: "1rem", sm: "1rem", xs: "3rem" },
+  marginTop: { lg: "2.5rem", md: "2rem", sm: "2rem", xs: "3rem" },
   borderRadius: "2.5rem",
   border: "1px solid rgba(6, 32, 72, 0.11)",
   background: "#FFF",
   color: "#333",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: { lg: "1.25rem", md: "1.25rem", sm: "1.1rem", xs: "1rem" },
   fontWeight: 400,
   cursor: "pointer",
   width: { lg: "auto", md: "auto", sm: "auto", xs: "100%" },
+  minWidht: "15rem",
   padding: {
     lg: "0.96875rem 2rem",
     md: "0.96875rem 1rem",
@@ -610,12 +615,12 @@ const googleBtnStyle = {
   alignItems: "center",
   flexShrink: 0,
   textTransform: "none",
-  marginBottom: "6.5rem",
+
 };
 
 const ContinuewithTextStyle = {
   color: "#202227",
-  fontFamily: GTWalsheimTrial,
+  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
   fontWeight: 400,
   display: "flex",

@@ -37,7 +37,7 @@ function FooterCircles({ width1, background1, width3, background3, width2, backg
 }
 
 const circlesBox = {
-  display: "flex",
+  display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
   flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",

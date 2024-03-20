@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import LoginComp from '../../components/Login/Login';
 import Splash from '../../components/Splash/Splash';
+import { Box } from '@mui/material';
 
 function Signup() {
   const [showSplash, setShowSplash] = useState(true);
@@ -20,10 +21,10 @@ function Signup() {
   }, []);
 
   return (
-    <div style={{ background: "#4C8AB1", }}>
+    <Box sx={{ background: "#4C8AB1", height: "100vh" }}>
       {showSplash && <Splash />}
       {showSignup && <LoginComp />}
-    </div>
+    </Box>
   );
 }
 

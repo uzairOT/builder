@@ -7,7 +7,7 @@ import {
   CardContent,
   Button,
 } from "@mui/material";
-
+import '../../../App.css'
 function TemplateCard() {
   return (
     <Card
@@ -49,11 +49,12 @@ function TemplateCard() {
           display: "flex",
           justifyContent: "flex-end",
           alignItems: "center",
+         
         }}
       >
         <Typography
           variant="body1"
-          sx={{ color: "#4C8AB1", marginTop: "auto" }}
+          sx={{ color: "#4C8AB1", marginTop: "auto",}}
         >
           Send
         </Typography>
