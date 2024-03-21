@@ -21,7 +21,8 @@ import "./AddPhaseCard.css";
 import AddLineDialogue from "../../dialogues/AddLineDialogue/AddLineDialogue";
 import UpdateLineDialogue from "../../dialogues/UpdateLineDialogue/UpdateLineDialogue";
 import { useDeletePhaseLineMutation } from "../../../redux/apis/Project/projectApiSlice";
-
+import { selectAddPhase, setRowCheckbox } from "../../../redux/slices/addPhaseSlice";
+import {useDispatch} from 'react-redux';
 
 const initialRows = [
   { phaseName: 'Item 1', description: 'Description 1', unit: 'Unit 1', margin: '10%', quantity: 5, unitPrice: 20, total: 100, start: '2024-03-01', end: '2024-03-05', longDescription: 'Note 1' },
@@ -31,7 +32,7 @@ const initialRows = [
 ];
 
 
-const AddPhaseCard = ({ phaseData, onGridToggle, length, handleSelectCard }) => {
+const AddPhaseCard = ({ phaseData, onGridToggle, length, handleSelectCard, adminProjectView }) => {
 
 
 
@@ -42,6 +43,7 @@ const AddPhaseCard = ({ phaseData, onGridToggle, length, handleSelectCard }) => 
   const [rows, setRows] = useState(initialRows)
   const [rowCheckboxes, setRowCheckboxes] = useState(rows.map(() => false)); // State to track the checked state of each checkbox in the table rows
   const [deletePhaseLine] = useDeletePhaseLineMutation();
+  const dispatch = useDispatch();
 
 console.log(phaseData?.LineItems)
 
@@ -102,8 +104,10 @@ console.log(phaseData?.LineItems)
   };
 
   const tableContainerStyle = {
-    maxWidth: '100%', // Allow the table to take up the entire available width
-    overflowX: 'auto', // Add horizontal scrollbar when needed
+    width: '100%', // Allow the table to take up the entire available width
+    overflow: 'auto',
+    maxHeight:'500px',
+     // Add horizontal scrollbar when needed
   };
 
 
@@ -122,6 +126,8 @@ console.log(phaseData?.LineItems)
   const [checkedRow, setCheckedRow] = useState(null);
 
   const handleCheckboxChange = (row) => {
+    const checkRow = row;
+    dispatch(setRowCheckbox(checkRow))
     setCheckedRow(prevCheckedRow => prevCheckedRow === row ? null : row);
   };
 
@@ -209,8 +215,8 @@ console.log(phaseData?.LineItems)
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    <Checkbox checked={selectAll}
-                      onChange={handleSelectAllChange} />
+                  {!adminProjectView && <Checkbox checked={selectAll}
+                      onChange={handleSelectAllChange} />}
                   </TableCell>
                   <TableCell
                     sx={{ ...tableHeadings, width: "15%", }}
@@ -242,8 +248,8 @@ console.log(phaseData?.LineItems)
                   <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
                     <TableCell>
                     <Checkbox
-              // checked={checkedRow === row}
-              // onChange={() => handleCheckboxChange(row)}
+              checked={checkedRow === row}
+              onChange={() => handleCheckboxChange(row)}
             />
                     </TableCell>
                     <TableCell component="th" scope="row">

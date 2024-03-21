@@ -30,7 +30,8 @@ import { selectAddPhase } from "../../../redux/slices/addPhaseSlice";
 
 const RequestWorkOrderModal = () => {
   const [open, setOpen] = useState(false);
-  const {rowCheckboxes} = useSelector(selectAddPhase);
+  const {addPhase} = useSelector(selectAddPhase);
+  console.log(addPhase)
 
   const handleClose = () => {
     setOpen(false);
@@ -49,7 +50,7 @@ const RequestWorkOrderModal = () => {
           fontWeight={"600"}
           padding={"6px 32px 6px 32px"}
           handleOnClick={handleOpen}
-          disabled={!rowCheckboxes.some((checkbox) => checkbox)}
+          disabled={addPhase}
         >
           Next
         </BuilderProButton>
@@ -69,7 +70,7 @@ const RequestWorkOrderModal = () => {
           <Stack direction={{xl:"row", lg:'row', md:'column', sm:'column', xs:'column'}}>
             <Stack p={3} spacing={1}>
               <Typography fontFamily={"inherit"}>
-                <strong>Subject: </strong> Tile
+                <strong>Subject: </strong> {addPhase?.rowCheckbox?.title}
               </Typography>
               <Typography pb={1} fontFamily={"inherit"} fontWeight={"200"}>
                 <strong>Description: </strong> Lorem Ipsum is simply dummy text

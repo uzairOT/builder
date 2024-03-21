@@ -25,8 +25,8 @@ useEffect(()=>{
             <ProjectsSidebar />
           </Paper>
         </Grid>
-        <Grid item  xl={10} lg={9} md={8} sm={12} xs={12}   pr={1} height={{xl:"99vh" ,lg:'99vh',md:'100vh', sm: '100%', xs:'100%'}} sx={{ ...themeStyle.scrollable}} overflow={'hidden'}>
-        <Stack><Paper sx={{height:'100%', borderRadius: '14px', }}><ProjectsNavbar project={selectedProjectId} /></Paper></Stack>
+        <Grid item  xl={10} lg={9} md={8} sm={12} xs={12}  pr={1} height={{xl:"99vh" ,lg:'99vh',md:'100vh', sm: '100%', xs:'100%'}} sx={{ ...themeStyle.scrollable}} overflow={'hidden'}>
+        <Stack><Paper sx={{ borderRadius: '14px', }}><ProjectsNavbar project={selectedProjectId} /></Paper></Stack>
         <Outlet  />
         </Grid>
     </Grid>

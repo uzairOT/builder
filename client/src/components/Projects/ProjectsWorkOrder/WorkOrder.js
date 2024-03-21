@@ -62,7 +62,9 @@ const dummyData = [
         projectProfile: "Profile 1", // New field for the project profile
       },
   ];
-function WorkOrder({ setUpdateModalOpen }) {
+function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow }) {
+ 
+  console.log(data)
   const handleUnitChange = (event, id) => {
     const selectedUnit = event.target.value;
     // Assuming you have a function to update the unit value in your data structure
@@ -72,6 +74,9 @@ function WorkOrder({ setUpdateModalOpen }) {
   const OpenUpdateModal = () => {
     console.log("UpdateModal");
     setUpdateModalOpen(true);
+  };
+  const handleCheckboxChange = (row) => {
+    setCheckedRow(prevCheckedRow => prevCheckedRow === row ? null : row);
   };
   return (
     <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
@@ -96,10 +101,13 @@ function WorkOrder({ setUpdateModalOpen }) {
     </TableRow>
   </TableHead>
   <TableBody>
-    {dummyData.map((row) => (
+    {data?.map((row) => (
       <TableRow key={row.id}>
         <TableCell sx={tableCellValueStyle}>
-          <Checkbox /* Add Checkbox component here */ />
+        <Checkbox
+              checked={checkedRow === row}
+              onChange={() => handleCheckboxChange(row)}
+            />
         </TableCell>
         <TableCell sx={tableCellValueStyle}>{row.lineItem}</TableCell>
         <TableCell sx={tableCellValueStyle}>{row.description}</TableCell>

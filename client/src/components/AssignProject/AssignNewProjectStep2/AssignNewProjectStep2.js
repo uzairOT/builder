@@ -69,9 +69,9 @@ function AssignNewProjectStep2({ onNextStep }) {
   const handleCreateNewProject = async () => {
     // const userdata =  userInfo.id
    
-    // const userId =userInfo.id
+    // const userId =userInfo.user.id
     // console.log(userId)
-    //  const FormData = { ...Data,userId  };
+    //  const FormData = { ...Data,userId: userId  };
  
     //  const res = await assignProject(FormData).unwrap();
     //  localStorage.setItem('projectId', res.project.id);

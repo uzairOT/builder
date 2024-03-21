@@ -1,4 +1,4 @@
-import { apiSlice } from './apiSlice';
+import { apiSlice } from '../apiSlice';
 
 const PROJECTS_URL = 'http://192.168.18.147:8080/project'; // Corrected base URL for projects
 

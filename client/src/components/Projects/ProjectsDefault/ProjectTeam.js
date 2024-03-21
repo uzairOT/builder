@@ -1,5 +1,5 @@
 import { Stack, Typography, Popover, IconButton, Divider,Input, FormControl, Select, InputLabel, MenuItem } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import data from './assests/data/data.json'
 import BuilderProButton from '../../UI/Button/BuilderProButton';
 import CloseIcon from "@mui/icons-material/Close";
@@ -14,7 +14,8 @@ import LinkIcon from "@mui/icons-material/Link";
         const [open, setOpen] = useState(null);
         const [userType, setUserType] = useState("");
         const openShare = Boolean(open);
-        
+        const [email, setEmail] = useState('');
+
         const id = openShare ? "simple-popover" : undefined;
         // Grouping data by role
         const groupedData = data.reduce((acc, person) => {
@@ -32,6 +33,9 @@ import LinkIcon from "@mui/icons-material/Link";
           const handleUserTypeChange = (event) => {
             setUserType(event.target.value);
           };
+         const  handleEmailChange = (e) =>{
+            setEmail(e.target.value)
+          }
   return (
     <Stack pl={{xl:5,lg:5,md:0}} >
         <Typography sx={themeStyle.title}>Project Team</Typography>
@@ -123,6 +127,8 @@ import LinkIcon from "@mui/icons-material/Link";
             pl={2}
           >
             <Input
+            value={email}
+            onChange={(e)=>{handleEmailChange(e)}}
               placeholder="Enter an Email to invite"
               aria-describedby="my-helper-text"
               sx={{

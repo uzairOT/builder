@@ -1,5 +1,5 @@
 import { ButtonGroup, Paper, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WorkOrder from "./WorkOrder";
 import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
@@ -8,17 +8,22 @@ import TabPanel from "@mui/joy/TabPanel";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import AddPhaseView from "../../AssignProject/AddPhaseView.js/AddPhaseView";
+import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
 import RequestWorkOrderModal from "../../dialogues/RequestWorkOrder/RequestWorkOrderModal";
+import { useGetProjectWorkOrderQuery } from "../../../redux/apis/Project/projectApiSlice";
 
 const WorkOrderView = () => {
   const [changeView, setChangeView] = useState(false);
+  const [checkedRow, setCheckedRow] = useState(null);
+  const {data} = useGetProjectWorkOrderQuery();
+  console.log(data)
   const handleButton = () => {
     setChangeView(!changeView);
   };
+  console.log(checkedRow)
   return (
-    <Stack flex={1} pt={1} height={"100%"}>
-      <Paper style={{ ...themeStyle.borders, height: "92%", width: "99%" }}>
+    <Stack flex={1} pt={1} height={"100%"} >
+      <Paper style={{ ...themeStyle.borders, width: "99%", marginBottom:'4px' }}>
         <Stack justifyContent={"space-between"} height={"95%"}>
           {!changeView ? (
             <>
@@ -102,21 +107,21 @@ const WorkOrderView = () => {
                     value={0}
                     style={{ padding: "16px 8px 0 8px" }}
                   >
-                    <WorkOrder />
+                    <WorkOrder setCheckedRow={setCheckedRow} checkedRow={checkedRow} data={data?.LineItems} />
                   </TabPanel>
                   <TabPanel
                     sx={{ padding: 0 }}
                     value={1}
                     style={{ padding: "16px 8px 0 8px" }}
                   >
-                    <WorkOrder />
+                    <WorkOrder setCheckedRow={setCheckedRow} checkedRow={checkedRow} data={data?.LineItems} />
                   </TabPanel>
                   <TabPanel
                     sx={{ padding: 0 }}
                     value={2}
                     style={{ padding: "16px 8px 0 8px" }}
                   >
-                    <WorkOrder />
+                    <WorkOrder setCheckedRow={setCheckedRow} checkedRow={checkedRow} data={data?.LineItems} />
                   </TabPanel>
                 </Tabs>
               </Stack>

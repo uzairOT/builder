@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid, Button } from "@mui/material";
+import { Box, Grid, Button, Stack,
+  Typography, } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import PhaseCard from "../AddPhaseCard/AddPhaseCard";
@@ -12,7 +13,7 @@ import UpdatePhaseDialogue from "../../dialogues/UpdatePhaseDialogue/UpdatePhase
 import AddPhaseDialogue from "../../dialogues/AddPhaseDialogue/AddPhaseDialogue";
 import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
 
-function AddPhaseView() {
+function AddPhaseView({adminProjectView, view}) {
   const [cardPhase, setCardPhase] = useState();
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
   const [selectedPhaseData, setSelectedPhaseData] = useState(null);
@@ -22,13 +23,14 @@ function AddPhaseView() {
   const [showUpdatePhaseDialogue, setShowUpdatePhaseDialogue] = useState(false);
   const [showAddPhaseDialogue, setShowAddPhaseDialogue] = useState(false);
 
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-
+    console.log(isLoading)
     if (!isLoading) {
       if (data) {
-      
+        console.log(data)
         dispatch(addPhase(data.phases));
       }
     }
@@ -147,7 +149,30 @@ function AddPhaseView() {
 
   return (
     <Grid container sx={firstGrid}>
-      <Box sx={buttonBox}>
+      <Stack direction={'row'} justifyContent={'space-between'}>
+        <Stack>
+            {adminProjectView && <Typography pl={3} pt={1} color={'#4C8AB1'} fontFamily={'Poppins, san serif'} fontSize={'22px'} fontWeight={'600'}>
+                    {view}
+                </Typography>} 
+        </Stack>
+       {!view === 'Work Order' ? <></> : <Stack direction={'row'} sx={buttonBox}>
+        <Button sx={{ ...actionButton }} startIcon={<ModeEditOutlinedIcon />}
+          onClick={handleAddPhase}>
+          Edit
+        </Button>
+        <Button sx={{ ...actionButton }} startIcon={<DeleteOutlinedIcon />}>
+          Delete
+        </Button>
+        <Button sx={{ ...actionButton, background: "#FFAC00", }}
+          onClick={handleAddPhase}>
+          Add Phase
+        </Button>
+       { adminProjectView ? <></> : <Button sx={{ ...actionButton, ...approvalButton }}>
+          Send Approval
+        </Button>}
+        </Stack>}
+      </Stack>
+      {/* <Box sx={buttonBox}>
         <Button
           sx={{ ...actionButton, ...displayButton }}
           startIcon={<ModeEditOutlinedIcon />}
@@ -169,11 +194,11 @@ function AddPhaseView() {
           Add Phase
         </Button>
       
-      </Box>
+      </Box> */}
 
       {phases !== null && phases[0] !== undefined ? (
-        phases[0].map((phase, index) => (
-          <div
+        phases[0]?.map((phase, index) => (
+          <Stack
             key={phase.id}
             style={{
               ...slectedCardStyle,
@@ -186,8 +211,9 @@ function AddPhaseView() {
               length={phase.length}
               onGridToggle={() => handleGridToggle(index, phase?.previousIndex)}
               handleSelectCard={handleSelectCard}
+              adminProjectView={adminProjectView}
             />
-          </div>
+          </Stack>
         ))
       ) : (
         <div
@@ -265,7 +291,7 @@ const displayButton = {
 };
 const slectedCardStyle = {
   padding: "0.1rem 0rem 1rem 0rem",
-  margin: "0.5rem 0rem",
+  margin: "0rem",
   cursor: "pointer",
 };
 
