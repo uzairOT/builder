@@ -10,18 +10,21 @@ import {
   Button, Box,
 } from "@mui/material";
 import StepFormField from "../StepFormField/StepFormField";
-
+import { useDispatch, useSelector } from "react-redux";
+import { selectProjectForm } from "../../../redux/slices/projectFormSlice";
+import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
 
 function ExistenceProjectStep2({ onNextStep }) {
 
   const [emailCount, setEmailCount] = useState(3);
   const [showSkipInvite, setShowSkipInvite] = useState(false);
-
+  const [assignProject, { isLoading }] = useAssignProjectMutation();
   const handleAddEmail = () => {
     setEmailCount(emailCount + 1);
   };
   const handleNextStep = () => {
     onNextStep();
+    handleDoneClick()
   };
 
   const handleSkip = () => {
@@ -35,6 +38,24 @@ function ExistenceProjectStep2({ onNextStep }) {
   const handleClose = () => {
     setShowSkipInvite(false);
   };
+
+  const Data = useSelector(selectProjectForm);
+  const userInfo = useSelector((state) => state.auth.userInfo);
+  console.log(userInfo);
+
+  const handleDoneClick = async () => {
+    // const userdata =  userInfo.id
+    const userId =userInfo.user.id
+    console.log(userId)
+     const FormData = { ...Data,userId  };
+     console.log(userInfo.user.id);
+ 
+     const res = await assignProject(FormData).unwrap();
+     localStorage.setItem('projectId', res.project.id);
+     console.log(res.project.id);
+   };
+
+
   return (
 
     <div>

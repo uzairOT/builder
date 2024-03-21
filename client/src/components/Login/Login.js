@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { useLoginMutation } from '../../redux/apis/usersApiSlice';
+import { setCredentials } from '../../redux/slices/authSlice';
+import { toast } from 'react-toastify';
 import {
   Box,
   Grid,
@@ -21,7 +25,7 @@ import YellowBtn from "../UI/button";
 import "../../App.css"
 
 const Login = () => {
-  const isLG = useMediaQuery("(min-width: 1280px)");
+
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -33,12 +37,41 @@ const Login = () => {
   const linkResponsiveColor = { color: isMobile ? "#FFAC00" : "#4C8AB1", }
   const borderRadiusResponsive = { borderRadius: isMobile ? "0.5rem" : "0.75rem" }
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  // useEffect(() => {
+  //   if (userInfo) {
+  //     console.log("hi")
+  //     navigate('/profile');
+  //   }
+  // }, [navigate, userInfo]);
+
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
 
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await login({ email, password }).unwrap();
+      console.log(res)
+      dispatch(setCredentials({ ...res }));
+      navigate('/');
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
+  };
 
 
   return (
@@ -93,7 +126,7 @@ const Login = () => {
             <Typography sx={formHeadingStyle}>Login</Typography>
             <img src={builder1} width={"20%"} alt="" />
           </Box>
-          <form style={{ marginTop: "1rem" }}>
+          <form style={{ marginTop: "1rem" }}  >
             <Box sx={{ marginTop: "0.5rem" }}>
               <label
                 style={{
@@ -107,6 +140,8 @@ const Login = () => {
               <input
                 type="email"
                 id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 style={{
                   ...inputStyle,
                   ...borderRadiusResponsive,
@@ -134,8 +169,6 @@ const Login = () => {
                     ...placeholderStyle,
                     ...lableResponsiveFont
                   }}
-                  type={passwordVisible ? "text" : "password"}
-                  id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder=""
@@ -161,7 +194,11 @@ const Login = () => {
               <Box sx={{ display: "flex" }}>
                 <Checkbox
                   id="agreeTerms"
-                  sx={checkBoxStyle}
+                  sx={{
+                    "&.Mui-checked": {
+                      color: "#4C8AB1",
+                    },
+                  }}
                 />
                 <label
                   htmlFor="agreeTerms"
@@ -174,7 +211,7 @@ const Login = () => {
                 </label>
               </Box>
               <Box sx={{ ...forgetPassTypo, ...lableResponsiveFont, ...linkResponsiveColor, }}>
-                <Link
+              <Link
                   style={{ ...signupLink, ...lableResponsiveFont, ...linkResponsiveColor }}
                 >
                   Forget Password ?
@@ -187,6 +224,7 @@ const Login = () => {
                 ...YellowBtn,
                 ...loginButton
               }}
+              onClick={submitHandler}
               type="submit"
             >
               {isMobile ? "Login" : "Log in with Email"}
@@ -290,7 +328,7 @@ const SecondGrid = {
 }
 
 const downloadForMobBox = {
-  marginTop: "9.98rem",
+  marginTop: "15rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
   justifyContent: "center",
@@ -373,13 +411,7 @@ const checkBox = {
   whiteSpace: "nowrap",
   fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
   marginTop: "1rem"
-}
 
-const checkBoxStyle = {
-  "&.Mui-checked": {
-    color: "#4C8AB1",
-  },
-  marginTop: "0.2rem"
 }
 const forgetPassTypo = {
   whiteSpace: "nowrap",

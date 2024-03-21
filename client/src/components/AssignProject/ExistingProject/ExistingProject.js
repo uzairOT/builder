@@ -71,8 +71,8 @@ function ExistingProject() {
                 return (
                     <div>
                         <Header handlePreviousStep={handlePreviousStep} />
-                        {/* <ExistenceProjectStep3 onNextStep={onNextStep} /> */}
-                        <AssignNewProjectStep3 onNextStep={onNextStep} />
+                        <ExistenceProjectStep3 onNextStep={onNextStep} />
+                        {/* <AssignNewProjectStep3 onNextStep={onNextStep} /> */}
                         <Footer onNextStep={onNextStep} />
                     </div>
                 );

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
+import { useDispatch, useSelector } from "react-redux";
+import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
 
-import {
-  Box,
-  Grid,
-  Typography,
-  Button,
-} from "@mui/material";
-
+import { Box, Grid, Typography, Button } from "@mui/material";
+import { selectProjectForm } from "../../../redux/slices/projectFormSlice";
 import YellowBtn from "../../UI/button";
 import FooterCircles from "../FooterCircles/FooterCircles";
 import "../../../App.css"
@@ -16,9 +13,23 @@ import "../../../App.css"
 function Footer({ onNextStep }) {
   const navigate = useNavigate()
 
+  
   const handleSaveAs = () => {
 
     onNextStep();
+  };
+
+  const [assignProject, { isLoading }] = useAssignProjectMutation();
+
+  const Data = useSelector(selectProjectForm);
+  const handleDoneClick = async () => {
+   const userdata =  JSON.parse(localStorage.getItem('userInfo'))
+   const userId = userdata.id
+    const FormData = { ...Data,userId  };
+    console.log(userdata.id);
+
+    const res = await assignProject(FormData).unwrap();
+    console.log(res);
   };
   const handleDone = () => {
     navigate('/')
@@ -57,8 +68,12 @@ function Footer({ onNextStep }) {
         </div>
       </Grid>
     </div>
-  )
+  );
 }
+
+
+
+
 
 
 
@@ -93,4 +108,4 @@ const saveButton = {
     background: "#FFF",
   },
 }
-export default Footer
+export default Footer;

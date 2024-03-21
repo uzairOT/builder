@@ -9,10 +9,10 @@ import {
 import "../../../App.css"
 import "./StepFormField.css"
 
-function ProjectFormFields() {
+function ProjectFormFields({ index, email, role, onUpdateEmail, onUpdateRole }) {
   const MAX_EMAIL_LENGTH = 50;
 
-  const [email, setEmail] = useState('');
+
   const isMobile = useMediaQuery('(max-width:600px)');
   const isTab = useMediaQuery('(max-width:900px)');
   const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
@@ -20,18 +20,15 @@ function ProjectFormFields() {
   const borderRadiusResponsive = { borderRadius: isMobile ? "0.5rem" : "0.75rem" }
   const placeholderText = !isTab && !isMobile ? 'e.g. abc@workmail.com' : '@mail';
 
-
   const handleEmailChange = (event) => {
     const { value } = event.target;
-    if (value.length <= MAX_EMAIL_LENGTH) {
-      setEmail(value);
+    if (value <= MAX_EMAIL_LENGTH) {
+      onUpdateEmail(value);
     }
   };
 
-  const [role, setRole] = useState(0);
-
-  const handleChangess = (event) => {
-    setRole(event.target.value);
+  const handleRoleChange = (event) => {
+    onUpdateRole(event.target.value);
   };
 
 
@@ -47,8 +44,8 @@ function ProjectFormFields() {
                 value={email}
                 onChange={handleEmailChange}
               />
-              <Typography color={email.length > MAX_EMAIL_LENGTH ? 'error' : 'textSecondary'} sx={counterTypo}>
-                {email.length}/{MAX_EMAIL_LENGTH}
+              <Typography color={email > MAX_EMAIL_LENGTH ? 'error' : 'textSecondary'} sx={counterTypo}>
+                {email}/{MAX_EMAIL_LENGTH}
               </Typography>
             </Box>
             <Box sx={{ flex: 1 }}>
@@ -63,15 +60,13 @@ function ProjectFormFields() {
                 select
                 variant="standard"
                 value={role}
-                onChange={handleChangess}
+
+                onChange={handleRoleChange}
               >
-                <MenuItem value={0} sx={{ ...menuItem, color: 'gray', }}>
-                  Select Role
-                </MenuItem>
-                {/* <MenuItem value={0}>Select Role</MenuItem> */}
-                <MenuItem sx={menuItem} value={10}>Admin</MenuItem>
-                <MenuItem sx={menuItem} value={20}>Super Admin</MenuItem>
-                <MenuItem sx={menuItem} value={30}>Client</MenuItem>
+
+                <MenuItem sx={menuItem} value={'admin'}>Admin</MenuItem>
+                <MenuItem sx={menuItem} value={'primecontractor'}>Prime Contractor</MenuItem>
+                <MenuItem sx={menuItem} value={'client'}>Client</MenuItem>
               </TextField>
             </Box>
           </Box>

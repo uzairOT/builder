@@ -1,5 +1,3 @@
-
-
 export const Formats = {
     dayFormat: (date, culture, localizer) => {
       const dayOfMonth = localizer.format(date, 'DD', culture);

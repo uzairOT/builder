@@ -4,6 +4,7 @@ import {
 } from "@mui/material";
 import '../../App.css';
 import YellowBtn from '../UI/button';
+import AddImage from '../dialogues/AddImage/AddImage';
 function Permit({view}) {
     const objectFit = { objectFit: "none" }
     const permitsData = [
@@ -12,11 +13,22 @@ function Permit({view}) {
     ];
     const img = `https://source.unsplash.com/random/100x100`;
     const placeholderImg = `https://source.unsplash.com/random/100x100`;
+    const [open , setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true)
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+    }
+
+    console.log('VIEW: ', view);
     return (
         <div>
             <Box sx={themeStyle.titleBox}>
                 <Typography sx={themeStyle.titleTypo}>{view}</Typography>
-                <Button sx={{ ...themeStyle.buttonStyle }}>
+                <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>
                     Add {view}
                 </Button>
             </Box>
@@ -82,19 +94,23 @@ function Permit({view}) {
                     />
                 </Box>
             </Box>
+            { open &&
+                <AddImage handleOpen={handleOpen} handleClose={handleClose} heading={view}></AddImage>
+                }
         </div>
     )
 }
 const themeStyle = {
     titleBox: {
         display: "flex",
-        width: "57vw",
+        width: "52vw",
         justifyContent: "space-between",
         alignItems: "center",
-        background: "#4C8AB1"
+        background: "#4C8AB1",
+        borderRadius: '6px 6px 0 0',
     },
     titleTypo: {
-        color: "#484848",
+        color: "#FFFFFF",
         fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
         fontSize: "1.3rem",
         margin: "1rem 2rem"
@@ -117,7 +133,7 @@ const themeStyle = {
         textTransform: 'none',
         gap: '0.625rem',
         '&:hover': {
-          backgroundColor: '#FFAC00',
+          backgroundColor: 'lightgray',
         },
         fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
         lineHeight: 'normal',
@@ -125,7 +141,7 @@ const themeStyle = {
     permitBox: {
         borderRadius: "0.5rem",
         background: "#EFF5FF",
-        width: "95%",
+        width: "93%",
         display: "flex",
         flexDirection: "row",
         marginTop: "2rem"

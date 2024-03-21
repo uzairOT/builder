@@ -7,8 +7,8 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalenderWrapper from "./calender.style";
 import CustomToolbar from "./CustomToolbar";
-import { Formats } from "./Formats";
-import { CustomEventDayNotes, CustomEventDayTasks, CustomEventMonthTasks, CustomEventMonthWeatherNotes, CustomEventWeek, CustomEventWeekOnModal } from "./CustomEvent";
+import {DateFormat} from "./DateFormat";
+import {CustomEventDayNotes, CustomEventDayTasks, CustomEventMonthTasks, CustomEventMonthWeatherNotes, CustomEventWeek, CustomEventWeekOnModal} from "./CustomEvent";
 import TimeGutterHeader from "./TimeGutterHeader";
 import MonthCellWapper from "./MonthCellWapper";
 import CustomToolbarProjects from "./CustomToolbarProjects";
@@ -166,25 +166,25 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
 
   return (
 
-    <>
-      <CalenderWrapper className="calendar-wrapper" style={{ height: '100%' }}>
-        <DnDCalendar
-          defaultDate={moment().toDate()}
-          defaultView="day"
-          views={["day", "week", "month"]}
-          events={events}
-          localizer={localizer}
-          resizable={false}
-          style={{ height: "100% " }}
-          components={components}
-          formats={Formats}
-          messages={messages}
-          min={startTime.toDate()}
-          max={endTime.toDate()}
-        />
-      </CalenderWrapper>
-    </>
-  );
+        <>
+            <CalenderWrapper className="calendar-wrapper" style={{height:'100%' }}>
+          <DnDCalendar
+            defaultDate={moment().toDate()}
+            defaultView="day"
+            views={["day", "week", "month"]}
+            events={events}
+            localizer={localizer}
+            resizable={false}
+            style={{ height: "100% " }}
+            components={components}
+            formats={DateFormat}
+            messages={messages}
+            min={startTime.toDate()}
+            max={endTime.toDate()}
+          />
+          </CalenderWrapper>
+        </>
+      );
 }
 
 export default TaskCalender

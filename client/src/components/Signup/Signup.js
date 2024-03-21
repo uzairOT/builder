@@ -1,208 +1,308 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
 import { Box, Grid, Typography, Checkbox, useMediaQuery, Button, MenuItem, Select } from '@mui/material';
 import builder1 from "./Assets/pngs/builderProYellowLogo.png";
 import downloadForMob from "./Assets/pngs/downloadForMob.png";
 import googlePlay from "./Assets/pngs/googlePlay.png";
 import appStore from "./Assets/pngs/appStore.png";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { ReactComponent as GoogleLogo } from "./Assets/svgs/GoogleIcon.svg"
-import { PhoneInput } from 'react-international-phone';
+import { ReactComponent as GoogleLogo } from "./Assets/svgs/GoogleIcon.svg";
+import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
-import YellowBtn from '../UI/button';
-import "../../App.css"
-import "./Signup.css"
+import YellowBtn from "../UI/button";
+import "../../App.css";
+import "./Signup.css";
+import axios from "axios";
 
+import { useDispatch, useSelector } from 'react-redux';
+import { useRegisterMutation } from '../../redux/apis/usersApiSlice';
+import { setCredentials } from '../../redux/slices/authSlice';
+import { toast } from 'react-toastify';
 
 const SignupComp = () => {
+  const isLG = useMediaQuery("(min-width: 1280px)");
+  const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
+  const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
+  const isMobile = useMediaQuery("(max-width:600px)");
+
+  const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
+  const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
 
 
+  const [phone, setPhone] = useState("");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    company: "",
+    password: "",
+  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const Navigate = useNavigate()
-    const signUpHandler = () => {
-        Navigate("./assignproject")
+  const [register, { isLoading }] = useRegisterMutation();
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target || e;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = { ...formData, phone };
+    console.log(data)
+    try {
+      const res = await register({data}).unwrap();
+      console.log(res.user);
+      dispatch(setCredentials(res.user));
+      navigate('/assignproject');
+      console.log("hi")
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
     }
-    // const isLG = useMediaQuery("(min-width: 1280px)");
-    const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
-    const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
-    const isMobile = useMediaQuery('(max-width:600px)');
+    // navigate('/assignproject');
+  };
 
-    const DoMobWidth = isSM
-        ? "50%"
-        : isMD
-            ? "70%"
-            : "100%"
-    const widthValue = isSM
-        ? "35%"
-        : isMD
-            ? "40%"
-            : "100%"
-
-
-    const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "1rem" }
-    const linkResponsiveColor = { color: isMobile ? '#FFAC00' : '#4C8AB1' }
+ 
+  const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "1rem" }
+  const linkResponsiveColor = { color: isMobile ? '#FFAC00' : '#4C8AB1' }
     const borderRadiusResponsive = { borderRadius: isMobile ? "0.5rem" : "0.75rem" }
-    const [phone, setPhone] = useState('');
 
+  return (
+    <Grid
+      container
+        sx={firstGrid}
+    >
+      <Grid
+        item
+        container
+        lg={6}
+        md={6}
+        sm={12}
+        xs={12}
+        sx={SecondGrid}
+      >
+        <Typography sx={firstHeading}>Construction Management</Typography>
 
-    const [passwordVisible, setPasswordVisible] = useState(false);
-    const [password, setPassword] = useState('');
-    const togglePasswordVisibility = () => {
-        setPasswordVisible(!passwordVisible);
-    };
+        {/* Button */}
 
-
-
-    return (
-        <Grid
-            container
-
-            sx={firstGrid}
+        <Typography component="p" sx={secondHeading}>
+          On schedule. On budget. On the path to building better.
+        </Typography>
+        <Typography sx={thirdHeading}>Create an account</Typography>
+        <Box
+        sx={downloadForMobBox}
         >
-            <Grid
-                item
-                container
-                lg={6}
-                md={6}
-                sm={12}
-                xs={12}
-                sx={SecondGrid}
+          <img src={downloadForMob} width={DoMobWidth} alt="" />
+        </Box>
+        <Box
+          sx={googleAppImgsBox}
+        >
+          <img src={googlePlay} width={widthValue} alt="" />
+          <img src={appStore} width={widthValue} alt="" />
+        </Box>
+      </Grid>
+      <Grid
+        justifyContent="space-between"
+        xs={12}
+        sm={12}
+        md={6}
+        lg={6}
+        sx={formGridContainer}
+      >
+        <Grid
+          item
+          sx={formGrid}
+        >
+          <Box
+           sx={logoBox}
+          >
+            <Typography sx={formHeadingStyle}>Signup</Typography>
+            <img src={builder1} width={"20%"} alt="" />
+          </Box>
+          <form style={{ marginTop: "0.1rem" }} onSubmit={handleSubmit}>
+            <Box
+              sx={namesFieldBox}
             >
-                <Typography
-                    sx={firstHeading}
-                >
-                    Construction Management
-                </Typography>
-
-                {/* Button */}
-
-                <Typography
-                    component="p"
-                    sx={secondHeading}
-                >
-                    On schedule. On budget. On the path to building better.
-                </Typography>
-                <Typography
-                    sx={thirdHeading}
-                >
-                    Create an account
-                </Typography>
-                <Box sx={downloadForMobBox} >
-                    <img src={downloadForMob} width={DoMobWidth} alt="" />
-                </Box>
-                <Box sx={googleAppImgsBox}>
-                    <img src={googlePlay} width={widthValue} alt="" />
-                    <img src={appStore} width={widthValue} alt="" />
-                </Box>
-            </Grid>
-            <Grid
-
-                justifyContent="space-between"
-                xs={12}
-                sm={12}
-                md={6}
-                lg={6}
-                sx={formGridContainer}
-            >
-
-
-                <Grid item sx={formGrid}>
-                    <Box sx={logoBox}>
-                        <Typography sx={formHeadingStyle}>
-                            Signup
-                        </Typography>
-                        <img src={builder1} width={"20%"} alt="" />
-
-                    </Box >
-                    <form style={{ marginTop: "0.1rem" }}>
-                        <Box sx={namesFieldBox}>
-                            <Box sx={topSpace}>
-                                <label style={{ ...labelStyle, ...lableResponsiveFont }}
+              <Box sx={topSpace}>
+              <label style={{ ...labelStyle, ...lableResponsiveFont }}
                                     htmlFor="firstName">First name</label>
-                                <input type="text" id="firstName" style={{ ...inputStyle, ...borderRadiusResponsive }} />
-                            </Box>
-                            <Box sx={topSpace}>
-                                <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="lastName">Last name</label>
-                                <input type="text" id="lastName" style={{ ...inputStyle, ...borderRadiusResponsive }} />
-                            </Box>
-                        </Box>
+           
+                <input
+                  type="text"
+                  name="firstName"
+                  style={inputStyle}
+                  value={formData.firstName}
+                  onChange={handleChange}
+                />
+              </Box>
+              <Box sx={{ marginTop: "0.5rem" }}>
+                <label
+                  style={{
+                    ...labelStyle,
+                    fontSize: isMobile ? "0.8rem" : "1rem",
+                  }}
+                  htmlFor="lastName"
+                >
+                  Last name
+                </label>
+                <input
+                  type="text"
+                  name="lastName"
+                  style={inputStyle}
+                  value={formData.lastName}
+                  onChange={handleChange}
+                />
+              </Box>
+            </Box>
 
-                        <Box sx={topSpace}>
-                            <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="email">Email address</label>
-                            <input type="email" id="email" style={{ ...inputStyle, ...placeholderStyle, ...lableResponsiveFont, ...borderRadiusResponsive }} placeholder="workemail@gmail.com" />
-                        </Box>
+            <Box sx={{ marginTop: "0.5rem" }}>
+              <label
+                style={{
+                  ...labelStyle,
+                  fontSize: isMobile ? "0.8rem" : "1rem",
+                }}
+                htmlFor="email"
+              >
+                Email address
+              </label>
+              <input
+                type="email"
+                name="email"
+                style={{
+                  ...inputStyle,
+                  ...placeholderStyle,
+                  fontFamily: "GTWalsheimTrial",
+                  paddingLeft: "-1.5rem",
+                  fontSize: isMobile ? "0.8rem" : "1rem",
+                }}
+                placeholder="workemail@gmail.com"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </Box>
 
-                        <Box sx={topSpace}>
-                            <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="phone">Phone number</label>
+            <Box sx={{ marginTop: "0.5rem" }}>
+              <label
+                style={{
+                  ...labelStyle,
+                  fontSize: isMobile ? "0.8rem" : "1rem",
+                }}
+                htmlFor="phone"
+              >
+                Phone number
+              </label>
 
+              <PhoneInput
+                style={{ ...customPhoneStyles }}
+                defaultCountry="pk"
+                value={formData.phone}
+                onChange={(phone) => setPhone(phone)}
+                inputStyle={{ ...customeInputStyles }}
+                inputProps={{
+                  border: "none",
+                }}
+                required
+                name="phone"
+              />
+            </Box>
 
-                            <PhoneInput
-                                style={{ ...customPhoneStyles, ...borderRadiusResponsive }}
-                                defaultCountry="pk"
-                                value={phone}
-                                onChange={(phone) => setPhone(phone)}
-                                inputStyle={{ ...customeInputStyles }}
+            <Box sx={{ marginTop: "0.5rem" }}>
+              <label
+                style={{
+                  ...labelStyle,
+                  fontSize: isMobile ? "0.8rem" : "1rem",
+                }}
+                htmlFor="company"
+              >
+                Company Name
+              </label>
+              <input
+                type="text"
+                name="company"
+                style={inputStyle}
+                value={formData.company}
+                onChange={handleChange}
+              />
+            </Box>
 
-                                inputProps={{
-                                    border: 'none'
+            <Box sx={{ marginTop: "0.5rem" }}>
+              <label
+                style={{
+                  ...labelStyle,
+                  fontSize: isMobile ? "0.8rem" : "1rem",
+                }}
+                htmlFor="password"
+              >
+                Password
+              </label>
 
-                                }}
-                                required
-                            />
-                        </Box>
-                        <Box sx={{ marginTop: "0.5rem" }}>
-                            <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="company">Company Name</label>
-                            <input type="text" id="company" style={{ ...inputStyle, ...borderRadiusResponsive }} />
-                        </Box>
-                        <Box sx={topSpace}>
-                            <label style={{ ...labelStyle, ...lableResponsiveFont }} htmlFor="password">Password</label>
-
-                            {!isMobile && (
+              {!isMobile && (
                                 <Box sx={subtitleStyle}>
                                     Use 8 or more characters with a mix of letters, numbers & symbols
                                 </Box>
                             )}
 
-                            <Box style={{ position: 'relative' }}>
-                                <input
-                                    style={{ ...inputStyle, ...borderRadiusResponsive }}
-                                    type={passwordVisible ? 'text' : 'password'}
-                                    id="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
+              <Box style={{ position: "relative" }}>
+                <input
+                  style={inputStyle}
+                  type={passwordVisible ? "text" : "password"}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
 
-                                <Box
-                                    style={passwordEyeBox}
-                                    onClick={togglePasswordVisibility}
-                                >
-                                    {passwordVisible ? <VisibilityOff /> : <Visibility />}
-                                    {!isMobile && (
-                                        <span style={{ marginLeft: '5px', }}>
-                                            {passwordVisible ? 'Hide' : 'Show'}
-                                        </span>
-                                    )}
-                                </Box>
-                            </Box>
+                <Box
+                  style={passwordEyeBox}
+                  onClick={togglePasswordVisibility}
+                >
+                  {passwordVisible ? <VisibilityOff /> : <Visibility />}
+                  {!isMobile && (
+                    <span style={{ marginLeft: "5px" }}>
+                      {passwordVisible ? "Hide" : "Show"}
+                    </span>
+                  )}
+                </Box>
+              </Box>
 
-                            {isMobile && (
-                                <Box sx={subtitleStyle}>
-                                    Use 8 or more characters with a mix of letters, numbers & symbols
-                                </Box>
-                            )}
-                        </Box>
+              {isMobile && (
+                <Box
+                sx={subtitleStyle}
+                >
+                  Use 8 or more characters with a mix of letters, numbers &
+                  symbols
+                </Box>
+              )}
+            </Box>
 
-                        <Box sx={linkBox}>
-                            <Checkbox id="agreeTerms" sx={checkBox} />
-                            <Typography htmlFor="agreeTerms" sx={checkBoxText}>
+            <Box
+              sx={linkBox}
+            >
+              <Checkbox
+                id="agreeTerms"
+                sx={{
+                  "&.Mui-checked": {
+                    color: "#4C8AB1",
+                  },
+                }}
+              />
+              <label htmlFor="agreeTerms" style={checkBoxText}>
                                 By creating an account, I agree to our <Link style={{ ...linkStyle, ...lableResponsiveFont }}>Terms of use</Link> and <Link style={{ ...linkStyle, ...lableResponsiveFont }} >Privacy Policy</Link>
-                            </Typography>
-                        </Box>
-                        <Box sx={buttonBox}>
-                            <Button sx={{ ...YellowBtn, marginBottom: "1rem" }}
-                                type="submit" onClick={signUpHandler}>Sign up</Button>
-                        </Box>
+                            </label>
+            </Box>
+
+                        <Button sx={{ ...YellowBtn, marginBottom: "1rem" }}
+                            type="submit" onClick={handleSubmit}>Sign up</Button>
                         <Typography sx={alreadyHaveAccountTypo}>
                             Already have an account?{'\u00a0'} <Link to="/login" style={{
                                 ...loginLink,
@@ -213,19 +313,16 @@ const SignupComp = () => {
                                 Log in</Link>
 
                         </Typography>
-                        <Box sx={continueWithBox}>
-                            <hr
-                                style={hrLine}
-                            />
-                            <Typography
-                                sx={ContinuewithTextStyle}
-                            >
-                                {isMobile ? 'Or' : 'or continue with'}
-                            </Typography>
-                        </Box>
-                        <Box sx={buttonBox}>
-                            <Button sx={googleBtnStyle} type="button"><GoogleLogo style={{ marginRight: "1rem" }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
-                        </Box>
+            <Box sx={continueWithBox}>
+              <hr
+               style={hrLine}
+              />
+              <Typography sx={ContinuewithTextStyle}>
+                {isMobile ? "Or" : "or continue with"}
+              </Typography>
+            </Box>
+
+                        <Button sx={{ ...googleBtnStyle, marginBottom: "3.4rem", marginTop: "2rem" }} type="button"><GoogleLogo style={{ marginRight: "1rem" }} /> {isMobile ? 'Google' : 'Continue with Google'}</Button>
                     </form>
                 </Grid>
                 <Grid sx={bottomGrid}>
@@ -254,31 +351,23 @@ const SignupComp = () => {
                     </Box>
 
                 </Grid>
-
-                <Box sx={googleAppImgsMobile}>
-                    <img src={googlePlay} width={widthValue} alt="" />
-                    <img src={appStore} width={widthValue} alt="" />
-                </Box>
-            </Grid>
-        </Grid >
-
-
-    );
+        <Box
+          sx={{
+            display: { lg: "none", md: "none", sm: "flex", xs: "none" },
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "1rem",
+            marginLeft: { lg: "0rem", md: "-3rem", sm: "0rem" },
+            gap: "1rem",
+          }}
+        >
+          <img src={googlePlay} width={widthValue} alt="" />
+          <img src={appStore} width={widthValue} alt="" />
+        </Box>
+      </Grid>
+    </Grid>
+  );
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -628,6 +717,9 @@ const googleBtnStyle = {
     textTransform: 'none',
 }
 
+
+
+
 const ContinuewithTextStyle = {
     color: '#202227',
     fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
@@ -659,4 +751,3 @@ const topSpace = {
 
 
 export default SignupComp;
-
