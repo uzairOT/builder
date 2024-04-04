@@ -29,8 +29,9 @@ const SignupComp = () => {
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
 
-
+  
   const [phone, setPhone] = useState("");
+  const [checked, setChecked] = useState(false)
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -52,25 +53,35 @@ const SignupComp = () => {
     }));
   };
 
+  const handleChecked = (e) =>{
+    setChecked(e.target.checked);
+  }
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
+  useEffect(()=>{
+    console.log(checked);
+  },[checked])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = { ...formData, phone };
-    console.log(data)
-    try {
-      const res = await register(data).unwrap();
-      console.log("Sign up: ",res);
-      dispatch(setCredentials({...res}));
-      navigate('/assignproject');
-      console.log("hi")
-    } catch (err) {
-      console.log(err)
-      toast.error(err?.data?.error || err.error);
+    if(checked){
+      const data = { ...formData, phone };
+      console.log(data)
+      try {
+        const res = await register(data).unwrap();
+        console.log("Sign up: ",res);
+        dispatch(setCredentials({...res}));
+        navigate('/assignproject');
+        console.log("hi")
+      } catch (err) {
+        console.log(err)
+        toast.error(err?.data?.error || err.error);
+      }
+    } else{
+      toast('Please agree to our Terms of use')
     }
     // navigate('/assignproject');
   };
@@ -298,6 +309,8 @@ const SignupComp = () => {
                     color: "#4C8AB1",
                   },
                 }}
+                value={checked}
+                onChange={handleChecked}
               />
               <label htmlFor="agreeTerms" style={checkBoxText}>
                                 By creating an account, I agree to our <Link style={{ ...linkStyle, ...lableResponsiveFont }}>Terms of use</Link> and <Link style={{ ...linkStyle, ...lableResponsiveFont }} >Privacy Policy</Link>

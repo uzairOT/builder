@@ -10,7 +10,7 @@ const VerticalTabs = ({ notes, handleSelectedButton , selectedButton}) => {
       <ButtonGroup orientation="vertical" variant="plan" >
         {notes?.map((note, index) => {
           return (
-            <Button key={index} style={{borderRadius: '7px', height:'100%'}} sx={{ width: "100%", height: "100%", paddingLeft:'32px', '--ButtonGroup-separatorColor': 'white', backgroundColor: selectedButton === index ? '#EBF3F8' : '', }} onClick={()=>{handleSelectedButton(index)}}>
+            <Button key={note.id} style={{borderRadius: '7px', height:'100%'}} sx={{ width: "100%", height: "100%", paddingLeft:'32px', '--ButtonGroup-separatorColor': 'white', backgroundColor: selectedButton === index ? '#EBF3F8' : '', }} onClick={()=>{handleSelectedButton(index)}}>
               <Stack width={"100%"}  height={'100%'} >
                 <Typography textAlign={"left"} fontSize={'16px'} fontWeight={'700'} color={'#202227'} height={'100%'}>{note?.subject}</Typography>
                 <Typography

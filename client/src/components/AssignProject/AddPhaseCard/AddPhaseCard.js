@@ -254,14 +254,15 @@ const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSele
                     Line Item
                   </TableCell>
 
+                  <TableCell sx={tableHeadings}>Description</TableCell>
                   <TableCell sx={tableHeadings}>Unit</TableCell>
-                  <TableCell sx={tableHeadings}>Quantity</TableCell>
                   <TableCell sx={tableHeadings}>Unit Cost</TableCell>
-                  <TableCell sx={tableHeadings}>Total Cost</TableCell>
+                  <TableCell sx={tableHeadings}>Quantity</TableCell>
                   <TableCell sx={tableHeadings}>Start</TableCell>
                   <TableCell sx={tableHeadings}>End</TableCell>
-                  <TableCell sx={tableHeadings}>Time Tracking</TableCell>
+                  <TableCell sx={tableHeadings}>Total Cost</TableCell>
                   <TableCell sx={tableHeadings}>Notes</TableCell>
+                  <TableCell sx={tableHeadings}>Status</TableCell>
 
                   <TableCell></TableCell>
                     <TableCell></TableCell>
@@ -296,7 +297,7 @@ const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSele
                 
                     <TableCell>{row.total}</TableCell>
                 
-                    <TableCell>{row.longDescription}</TableCell>
+                    <TableCell>{row.notes}</TableCell>
                     <TableCell>{row.status}</TableCell>
                     <TableCell>
                       <EditIcon  onClick={() => handleUpdateLine(row) } />
