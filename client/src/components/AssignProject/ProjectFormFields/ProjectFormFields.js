@@ -11,6 +11,7 @@ import {
   selectProjectForm
 } from '../../../redux/slices/projectFormSlice';
 import "../../../App.css"
+import ColorPicker from '../../dialogues/ColorPickerProject/ColorPicker';
 
 function ProjectFormFields() {
 
@@ -25,7 +26,7 @@ function ProjectFormFields() {
 
 
 
-    const { projectName, location } = useSelector(selectProjectForm);
+    const { projectName, location, projectColor } = useSelector(selectProjectForm);
   const dispatch = useDispatch();
 
   // Event handler to update the projectName state
@@ -70,10 +71,10 @@ function ProjectFormFields() {
                     <Box sx={{ marginTop: "0.2rem" }}>
                         <label style={{ ...labelStyle, ...labelDisplay, ...labelResponsiveFont }} htmlFor="email">Select Color</label>
                         <Stack direction={'row'} alignItems={'center'} gap={2} p={1}>
-                        <Box width={'40px'} height={'40px'} bgcolor={'lightgray'} borderRadius={'999999px'}></Box>
-                        <Typography onClick={()=> console.log('click')} color={'#4C8AB1'} sx={{textDecoration:'underline'}}>Tap to Select Color</Typography>
+                        <Box width={'40px'} height={'40px'} bgcolor={projectColor} borderRadius={'999999px'}></Box>
+                        
+                        <ColorPicker />
                         </Stack>
-
                     </Box>
                 </form>
             </Box>

@@ -36,7 +36,7 @@ const SignupComp = () => {
     lastName: "",
     email: "",
     company: "",
-    password: "",
+    password: ""
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ const SignupComp = () => {
     const { name, value } = e.target || e;
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value,
+      [name]: value
     }));
   };
 
@@ -63,7 +63,7 @@ const SignupComp = () => {
     const data = { ...formData, phone };
     console.log(data)
     try {
-      const res = await register({data}).unwrap();
+      const res = await register(data).unwrap();
       console.log("Sign up: ",res);
       dispatch(setCredentials({...res}));
       navigate('/assignproject');

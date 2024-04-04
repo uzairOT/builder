@@ -8,6 +8,7 @@ const initialState = {
   estimatedPrice: '',
   location: 'Islamabad',
   clientName: '',
+  projectColor:'',
   users: [{ email: '', role: 'admin' }],
 };
 
@@ -33,7 +34,9 @@ const projectFormSlice = createSlice({
     setClientName: (state, action) => {
       state.clientName = action.payload;
     },
-
+    setProjectColor: (state, action)=>{
+      state.projectColor = action.payload;
+    },
     addUser: (state) => {
       state.users.push({ email: '', role: '' });
     },
@@ -61,6 +64,7 @@ export const {
   setClientName,
   setAdminEmails,
   setUserEmails,
+  setProjectColor,
   addUser,
   removeUser,
   updateUserEmail,

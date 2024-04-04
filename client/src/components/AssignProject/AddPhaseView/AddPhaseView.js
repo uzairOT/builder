@@ -210,7 +210,7 @@ function  AddPhaseView({ adminProjectView, view ,projectId }) {
             </Typography>
           )}
         </Stack>
-        {!view === "Work Order" ? (
+        {view === "Initial Proposal" ? (
           <></>
         ) : (
           <Stack direction={"row"} sx={buttonBox}>
@@ -231,7 +231,7 @@ function  AddPhaseView({ adminProjectView, view ,projectId }) {
               Add Phase
             </Button>
             {adminProjectView ? (
-              <RequestWorkOrderModal rowCheckboxes={rowCheckboxes} phases={phases} />
+               <RequestWorkOrderModal rowCheckboxes={rowCheckboxes} phases={phases} />
             ) : (
               <Button sx={{ ...actionButton, ...approvalButton }}>
                 Send Approval
