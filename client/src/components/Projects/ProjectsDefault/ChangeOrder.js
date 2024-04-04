@@ -9,114 +9,142 @@ import {
     Tab,
     Typography, 
 } from '@mui/material'
+import { useGetProjectChangeOrderQuery } from '../../../redux/apis/Project/projectApiSlice';
+import { useParams } from 'react-router-dom'
 
 
 const ChangeOrder = () => {
+  const params = useParams();
+  const {id: currentProjectId} = params;
+  const currentUser = localStorage.getItem('userInfo');
+  const user = JSON.parse(currentUser);
+  console.log(user);
+  const {data} = useGetProjectChangeOrderQuery({projectId: currentProjectId, userId: user.user.id})
+  console.log(data);
 
-    const data = [
-        {
-          id: 1,
-          "LineItem": "Demolition",
-          "Status": "Pending",
-          "Total": 5000.0,
-          "Start": "2024/03/01",
-          "End": "-",
-          "Member": "Client"
-        },
-        {
-          id: 2,
-          "LineItem": "Rebuild",
-          "Status": "Pending",
-          "Total": 7500.0,
-          "Start": "2024/04/15",
-          "End": "2024/06/30",
-          "Member": "Admin"
-        },
-        {
-          id: 3,
-          "LineItem": "New Build",
-          "Status": "Pending",
-          "Total": 10000.0,
-          "Start": "2024/05/30",
-          "End": "-",
-          "Member": "Team"
-        },
-        {
-          id: 4,
-          "LineItem": "Renovation",
-          "Status": "Pending",
-          "Total": 6000.0,
-          "Start": "2024/06/10",
-          "End": "2024/08/15",
-          "Member": "Client"
-        },
-        {
-          id: 5,
-          "LineItem": "Infrastructure Upgrade",
-          "Status": "Pending",
-          "Total": 1200.00,
-          "Start": "2024/07/20",
-          "End": "-",
-          "Member": "Admin"
-        },
-        {
-          id: 6,
-          "LineItem": "Interior Design",
-          "Status": "Pending",
-          "Total": 9000.0,
-          "Start": "2024/08/05",
-          "End": "-",
-          "Member": "Team"
-        },
-        {
-          id: 7,
-          "LineItem": "Landscaping",
-          "Status": "Pending",
-          "Total": 8000.0,
-          "Start": "2024/09/15",
-          "End": "2024/11/30",
-          "Member": "Client"
-        },
-        {
-          id: 8,
-          "LineItem": "Renovation",
-          "Status": "Pending",
-          "Total": 9500.0,
-          "Start": "2024/10/01",
-          "End": "-",
-          "Member": "Admin"
-        }
-      ];
-       
+  const data1 = [
+    {
+      id: 1,
+      lineItem: "Demolition",
+      unit: "sq. ft",
+      quantity: 100,
+      unitCost: 50,
+      totalCost: 5000.0,
+      start: "2024/03/01",
+      end: "-",
+      assignedTo: "Client",
+      notes: "Lorem ipsum dolor sit amet"
+    },
+    {
+      id: 2,
+      lineItem: "Rebuild",
+      unit: "sq. ft",
+      quantity: 150,
+      unitCost: 60,
+      totalCost: 9000.0,
+      start: "2024/04/15",
+      end: "2024/06/30",
+      assignedTo: "Admin",
+      notes: "Lorem ipsum dolor sit amet"
+    },
+    {
+      id: 3,
+      lineItem: "New Construction",
+      unit: "sq. ft",
+      quantity: 200,
+      unitCost: 70,
+      totalCost: 14000.0,
+      start: "2024/05/30",
+      end: "-",
+      assignedTo: "Team",
+      notes: "Lorem ipsum dolor sit amet"
+    },
+    {
+      id: 4,
+      lineItem: "Renovation",
+      unit: "sq. ft",
+      quantity: 120,
+      unitCost: 55,
+      totalCost: 6600.0,
+      start: "2024/06/10",
+      end: "2024/08/15",
+      assignedTo: "Client",
+      notes: "Lorem ipsum dolor sit amet"
+    },
+    {
+      id: 5,
+      lineItem: "Infrastructure Upgrade",
+      unit: "unit",
+      quantity: 10,
+      unitCost: 100,
+      totalCost: 1000.0,
+      start: "2024/07/20",
+      end: "-",
+      assignedTo: "Admin",
+      notes: "Lorem ipsum dolor sit amet"
+    },
+    {
+      id: 6,
+      lineItem: "Interior Design",
+      unit: "room",
+      quantity: 5,
+      unitCost: 200,
+      totalCost: 1000.0,
+      start: "2024/08/05",
+      end: "-",
+      assignedTo: "Team",
+      notes: "Lorem ipsum dolor sit amet"
+    },
+    {
+      id: 7,
+      lineItem: "Landscaping",
+      unit: "acre",
+      quantity: 2,
+      unitCost: 4000,
+      totalCost: 8000.0,
+      start: "2024/09/15",
+      end: "2024/11/30",
+      assignedTo: "Client",
+      notes: "Lorem ipsum dolor sit amet"
+    }
+  ];
+  
 ;
 
   return (
-    <TableContainer style={{paddingLeft:'4px', paddingRight: '4px'}}>
+    <TableContainer style={{paddingLeft:'4px', paddingRight: '4px', width:'100%'}}>
         <Table  size="small" aria-label='Change Order Table'>
             <TableHead>
                 <TableRow >
                     <TableCell sx={themeStyle.tableHeader}>Line Item</TableCell>
-                    <TableCell sx={themeStyle.tableHeader}>Status</TableCell>
-                    <TableCell sx={themeStyle.tableHeader}>Total</TableCell>
+                    <TableCell sx={themeStyle.tableHeader}>Unit</TableCell>
+                    <TableCell sx={themeStyle.tableHeader}>Quantity</TableCell>
+                    <TableCell sx={themeStyle.tableHeader}>Unit Cost</TableCell>
+                    <TableCell sx={themeStyle.tableHeader}>Total Cost</TableCell>
                     <TableCell sx={themeStyle.tableHeader}>Start</TableCell>
                     <TableCell sx={themeStyle.tableHeader}>End</TableCell>
-                    <TableCell sx={themeStyle.tableHeader}>Member</TableCell>
+                    <TableCell sx={themeStyle.tableHeader}>Assigned to</TableCell>
+                    <TableCell sx={themeStyle.tableHeader}>Notes</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody style={{paddingLeft:'4px', paddingRight: '4px'}}>
                 {
-                    data.map((row) => (
+                    data1.map((row) => (
                         <TableRow key={row.id}>
-                            <TableCell sx={themeStyle.tableBody}>{row.LineItem}</TableCell>
+                            <TableCell sx={themeStyle.tableBody}>{row.lineItem}</TableCell>
                             <TableCell sx={{...themeStyle.tableBody}}>
-                                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} sx={{backgroundColor:'#FFC8C8', color:'#F03434'}} fontSize={'12px'} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'} >
-                                {row.Status}
-                                </Typography>
+                                {/* <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} sx={{backgroundColor:'#FFC8C8', color:'#F03434'}} fontSize={'12px'} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'} > */}
+                                {row.unit}
+                                {/* </Typography> */}
                                 </TableCell>
-                            <TableCell sx={themeStyle.tableBody}>US${row.Total}</TableCell>
-                            <TableCell sx={{...themeStyle.tableBody,}}>{row.Start}</TableCell>
-                            <TableCell sx={{...themeStyle.tableBody}}>{row.End}</TableCell>
-                            <TableCell sx={themeStyle.tableBody}>{row.Member}</TableCell>
+                            <TableCell sx={themeStyle.tableBody}>US${row.quantity}</TableCell>
+                            <TableCell sx={{...themeStyle.tableBody,}}>{row.unitCost}</TableCell>
+                            <TableCell sx={{...themeStyle.tableBody}}>{row.totalCost}</TableCell>
+                            <TableCell sx={themeStyle.tableBody}>{row.start}</TableCell>
+                            <TableCell sx={themeStyle.tableBody}>{row.end}</TableCell>
+                            <TableCell sx={themeStyle.tableBody}>{row.assignedTo}</TableCell>
+                            <TableCell sx={{ ...themeStyle.tableBody, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{row.notes}</TableCell>
+
                         </TableRow>
                     ))
                 }
@@ -132,7 +160,8 @@ const themeStyle= {
     tableHeader: {
         fontSize: '12px',
         fontFamily: "Poppins, sans-serif",
-        color: '#5B5B5B'
+        color: '#5B5B5B',
+        whiteSpace:'nowrap'
     },
     tableBody:{
         fontSize: '12px',

@@ -48,18 +48,20 @@ const themeStyle = {
     box: {
         display: "flex",
         marginTop: "0.3rem",
+        gap: "1rem",
         justifyContent: "space-between",
     },
     listItem: {
         color: "#000000",
         fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
         opacity: "70%",
+        whiteSpace: "nowrap",
         paddingLeft: "2rem",
         fontWeight: 200
     },
     circleButton: {
         borderRadius: '50%', // Make the button circular
-        minWidth: "7%",
+        minWidth: "9%",
         backgroundColor: '#FFAC00', // Yellow color
         color: 'white', // White content color
         fontSize: '12px', // Adjust the font size

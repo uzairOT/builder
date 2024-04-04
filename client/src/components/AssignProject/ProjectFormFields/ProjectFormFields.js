@@ -1,11 +1,17 @@
 import React, { useState } from 'react'
 import {
     useMediaQuery,
-    Button, Box, Typography, TextField, MenuItem
+    Button, Box, Typography, TextField, MenuItem, Stack
 } from "@mui/material";
 import "../StepFormField/StepFormField.css"
-
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  setProjectName,
+  setLocation,
+  selectProjectForm
+} from '../../../redux/slices/projectFormSlice';
 import "../../../App.css"
+import ColorPicker from '../../dialogues/ColorPickerProject/ColorPicker';
 
 function ProjectFormFields() {
 
@@ -18,10 +24,20 @@ function ProjectFormFields() {
     const borderRadiusResponsive = { borderRadius: isMobile ? "0.5rem" : "0.75rem" }
 
 
-    const [location, setLocation] = useState(0);
-    const handleChanges = (event) => {
-        setLocation(event.target.value);
-    };
+
+
+    const { projectName, location, projectColor } = useSelector(selectProjectForm);
+  const dispatch = useDispatch();
+
+  // Event handler to update the projectName state
+  const handleProjectNameChange = (event) => {
+    dispatch(setProjectName(event.target.value));
+  };
+
+  // Event handler to update the location state
+  const handleLocationChange = (event) => {
+    dispatch(setLocation(event.target.value));
+  };
 
     return (
         <div>
@@ -31,25 +47,34 @@ function ProjectFormFields() {
                 <form style={{ ...formStyle, ...formWidth }}>
                     <Box sx={{ marginTop: "0.5rem", }}>
                         <label style={{ ...labelStyle, ...labelDisplay, ...labelResponsiveFont }} htmlFor="email">Project Name</label>
-                        <input className='placeholder' type="email" id="email" style={{ ...inputStyle, ...borderRadiusResponsive, ...labelResponsiveFont }} placeholder="e.g. Project name" />
+                        <input className='placeholder' type="email" id="email" style={{ ...inputStyle, ...borderRadiusResponsive, ...labelResponsiveFont }} placeholder="e.g. Project name" value={projectName} onChange={handleProjectNameChange} />
                     </Box>
                     <Box sx={{ marginTop: "0.2rem" }}>
                         <label style={{ ...labelStyle, ...labelDisplay, ...labelResponsiveFont }} htmlFor="email">Location</label>
                         <TextField className='placeholder' sx={{ ...inputStyle, ...borderRadiusResponsive, borderButtom: "none" }}
                             id="standard-select-currency"
-                            select
+                            type='text'
                             variant="standard"
                             value={location}
-                            onChange={handleChanges}
+                            onChange={handleLocationChange}
+                            placeholder='Enter your location...'
                         >
 
-                            <MenuItem value={0} sx={{ ...menuItem, color: 'gray', }}>
+                            {/* <MenuItem value={""}  disabled sx={{ ...menuItem, color: 'gray', }}>
                                 Select Location
                             </MenuItem>
-                            <MenuItem sx={menuItem} value={10}>Pakistan</MenuItem>
-                            <MenuItem sx={menuItem} value={20}>India</MenuItem>
-                            <MenuItem sx={menuItem} value={30}>France</MenuItem>
+                            <MenuItem sx={menuItem} value={"Islamabad"}>Islamabad</MenuItem>
+                            <MenuItem sx={menuItem} value={"Lahore"}>Lahore</MenuItem>
+                            <MenuItem sx={menuItem} value={"Karachi"}>Karachi</MenuItem> */}
                         </TextField>
+                    </Box>
+                    <Box sx={{ marginTop: "0.2rem" }}>
+                        <label style={{ ...labelStyle, ...labelDisplay, ...labelResponsiveFont }} htmlFor="email">Select Color</label>
+                        <Stack direction={'row'} alignItems={'center'} gap={2} p={1}>
+                        <Box width={'40px'} height={'40px'} bgcolor={projectColor} borderRadius={'999999px'}></Box>
+                        
+                        <ColorPicker />
+                        </Stack>
                     </Box>
                 </form>
             </Box>
@@ -87,7 +112,7 @@ const formBox = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "0.5rem",
+    marginTop: "0rem",
     gap: "1.5rem"
 };
 const formStyle = {

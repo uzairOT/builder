@@ -1,7 +1,9 @@
 import { Stack, Typography } from '@mui/material'
 import React from 'react'
+import { useGetProjectFinancesQuery } from '../../../redux/apis/Project/projectApiSlice';
 
 const MonitoringFinances = () => {
+    const {data} = useGetProjectFinancesQuery({projectId:1})
     const cost = 754245;
         // Format the cost to appear as $7,542.45
         const formattedCost = (cost).toLocaleString('en-US', {

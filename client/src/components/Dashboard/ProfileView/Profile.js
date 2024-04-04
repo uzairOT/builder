@@ -3,8 +3,14 @@ import React from "react";
 import ProfileImage from "../../UI/ProfilePic/ProfilePic";
 import UserImage from './assets/images/user-image.jpg'
 import DataAndTime from "../../UI/DataAndTime/DataAndTime";
+import {useSelector} from 'react-redux';
 
 const Profile = () => {
+
+  const userInfo = useSelector(state => state.auth.userInfo)
+  const firstName = userInfo?.user?.firstName;
+  const lastName = userInfo?.user?.lastName;
+  const email = userInfo?.user?.email;
   return (
     <>
       <Box sx={themeStyle.container}>
@@ -13,10 +19,10 @@ const Profile = () => {
         </Box>
         <Box padding={1}>
           <Typography color="primary" sx={themeStyle.containerTitle}>
-            Admin Name
+            {firstName} {lastName}
           </Typography>
           <Typography sx={themeStyle.containerSubtitle}>
-            SuperAdmin@gmail.com
+            {email}
           </Typography>
         </Box>
       </Box>

@@ -1,10 +1,23 @@
   import { Box, Divider, Typography, Stack } from "@mui/material";
-  import React from "react";
+  import React, { useEffect } from "react";
   import ProjectCard from "../../UI/Card/ProjectCard";
   import projects from "./assets/data/projects.json";
-  import Link from '@mui/material/Link';
+  import {Link} from 'react-router-dom'
+import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+import {useDispatch} from 'react-redux';
+import {addProjects} from '../../../redux/slices/Project/userProjectsSlice'
   
   const ListProjects = () => {
+    const dispatch = useDispatch();
+    const local = localStorage.getItem('userInfo');
+    const currentUser = JSON.parse(local);
+    const currentUserId = currentUser.user.id
+    console.log('LIST PROJECTS:', currentUserId)
+    const {data, isLoading, error} = useGetUserProjectsQuery({userId: currentUserId});
+    console.log(data);
+    dispatch(addProjects(data?.projects))
+ 
+
     return (
       <Box sx={{ padding: 1}} >
         <Typography
@@ -33,9 +46,9 @@
         <Box sx={{...themeStyle.scrollable }}  style={{height:'50vh',}}>
         <Stack spacing={1} pl={2} pr={2} >
           <>
-          {projects.map((projectProfileCard) => {
+          {data?.projects?.map((projectProfileCard) => {
             return (
-              <Link key={projectProfileCard.id} href={`projects/${projectProfileCard.id}/default`} underline="none">
+              <Link key={projectProfileCard.id} to={`projects/${projectProfileCard.id}`} style={{textDecoration:'none'}}>
               <ProjectCard
               projectProfileCard={projectProfileCard}
               />

@@ -4,6 +4,7 @@ import ProjectsSidebar from '../Projects/ProjectsDashboard/ProjectsSidebar'
 import { Outlet, useParams } from 'react-router-dom'
 import ProjectsNavbar from '../Projects/ProjectsNavbar'
 import projects from './assets/data/projects'
+import {useGetProjectDataQuery} from '../../redux/apis/Project/projectApiSlice';
 
 
 const Layout2 = () => {
@@ -12,7 +13,9 @@ useEffect(()=>{
 })
     const params = useParams();
     const {id: currentProjectId} = params;
-    const selectedProjectId = projects.find(project => project.id === parseInt(currentProjectId));
+    const {data} = useGetProjectDataQuery({projectId: currentProjectId});
+    // projects.find(project => project.id === parseInt(currentProjectId));
+    const selectedProjectId = data?.data;
     console.log(selectedProjectId, params);
     console.log("cascasc");
 
@@ -25,8 +28,8 @@ useEffect(()=>{
             <ProjectsSidebar />
           </Paper>
         </Grid>
-        <Grid item  xl={10} lg={9} md={8} sm={12} xs={12}   pr={1} height={{xl:"99vh" ,lg:'99vh',md:'100vh', sm: '100%', xs:'100%'}} sx={{ ...themeStyle.scrollable}} overflow={'hidden'}>
-        <Stack><Paper sx={{height:'100%', borderRadius: '14px', }}><ProjectsNavbar project={selectedProjectId} /></Paper></Stack>
+        <Grid item  xl={10} lg={9} md={8} sm={12} xs={12}  pr={1} height={{xl:"99vh" ,lg:'99vh',md:'100vh', sm: '100%', xs:'100%'}} sx={{ ...themeStyle.scrollable}} overflow={'hidden'}>
+        <Stack><Paper sx={{ borderRadius: '14px', }}><ProjectsNavbar project={selectedProjectId} /></Paper></Stack>
         <Outlet  />
         </Grid>
     </Grid>

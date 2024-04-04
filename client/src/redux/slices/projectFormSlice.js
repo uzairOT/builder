@@ -3,12 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   projectName: '',
-  buildType: '',
+  buildType: 'remodel',
   workDone: '',
   estimatedPrice: '',
-  location: '',
+  location: 'Islamabad',
   clientName: '',
-  users: [{ email: '', role: '' }],
+  projectColor:'',
+  users: [{ email: '', role: 'admin' }],
 };
 
 const projectFormSlice = createSlice({
@@ -33,7 +34,9 @@ const projectFormSlice = createSlice({
     setClientName: (state, action) => {
       state.clientName = action.payload;
     },
-
+    setProjectColor: (state, action)=>{
+      state.projectColor = action.payload;
+    },
     addUser: (state) => {
       state.users.push({ email: '', role: '' });
     },
@@ -61,6 +64,7 @@ export const {
   setClientName,
   setAdminEmails,
   setUserEmails,
+  setProjectColor,
   addUser,
   removeUser,
   updateUserEmail,

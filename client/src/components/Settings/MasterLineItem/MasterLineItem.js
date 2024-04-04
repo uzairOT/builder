@@ -7,11 +7,14 @@ import Pagination from "@mui/material/Pagination";
 import AddModal from '../../dialogues/Settings/AddModal';
 import UpdateModal from '../../dialogues/Settings/UpdateModal';
 
+import { useOutletContext } from 'react-router-dom';
+
 function MasterLine() {
 
 
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
+  const [userInfo, setUserInfo, handleAssignRoleButton, userId, setUserId, handleUpdateAssignRole] = useOutletContext();
 
   // Function to open the Add Modal
   const OpenAddModal = () => {
@@ -46,8 +49,8 @@ function MasterLine() {
         </Typography>
         <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Master Line Item"} open={isAddModalOpen} onClose={handleCloseAddModal} />
-      <UpdateModal title={"Master Line Item"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} />
+      {/* <AddModal title={"Master Line Item"} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} />
+      <UpdateModal title={"Master Line Item"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo} /> */}
     </div>
   );
 }

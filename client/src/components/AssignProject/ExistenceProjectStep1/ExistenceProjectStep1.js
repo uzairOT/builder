@@ -9,18 +9,49 @@ import FooterCircles from "../FooterCircles/FooterCircles"
 import YellowBtn from "../../UI/button";
 import shallowButton from "../../UI/shallowButton";
 import "../../../App.css"
+import { useUpdateProjectMutation } from "../../../redux/apis/usersApiSlice";
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectProjectForm,
+  setClientName,
+  addUser,
+} from "../../../redux/slices/projectFormSlice";
 
 
 function ExistenceProjectStep1({ onNextStep }) {
+  const local = localStorage.getItem('projectId');
+  const projectId = JSON.parse(local);
   const isMobile = useMediaQuery('(max-width:600px)');
   const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
   const formWidth = { width: isMobile ? "90%" : "50%" }
   const labelDisplay = { display: isMobile ? "none" : "block" }
   const borderRadiusResponsive = { borderRadius: isMobile ? "0.5rem" : "0.75rem" }
-
-  const handleNextStep = () => {
+  const [updateExistingProject] = useUpdateProjectMutation()
+  const dispatch = useDispatch();
+  const {clientName} = useSelector(selectProjectForm);
+  console.log(clientName)
+  const handleNextStep = async () => {
     onNextStep();
+    // const putData = {
+    //   projectId: projectId,
+    //   clientName: clientName,
+    // }
+    // try {
+    //    const res = await updateExistingProject(putData)
+    //    if(res.data?.success){
+    //      onNextStep();
+    //    }else{
+    //     toast.error(res.error.data.message)
+    //    }
+       
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
+  const handleChange = (e) => {
+    dispatch(setClientName(e.target.value));
+  }
 
   const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
 
@@ -34,7 +65,7 @@ function ExistenceProjectStep1({ onNextStep }) {
         <form style={{ ...formStyle, ...formWidth }}>
           <Box sx={{ marginTop: "0.5rem", }}>
             <label style={{ ...labelStyle, ...labelDisplay, ...labelResponsiveFont }} htmlFor="name">Client Name</label>
-            <input className='placeholder' type="email" id="email" style={{ ...inputStyle, ...borderRadiusResponsive, ...labelResponsiveFont }} placeholder="Enter Name here" />
+            <input className='placeholder' value={clientName} onChange={handleChange} type="email" id="email" style={{ ...inputStyle, ...borderRadiusResponsive, ...labelResponsiveFont }} placeholder="Enter Name here" />
           </Box>
         </form>
       </Box>

@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import AddPhaseView from "../AddPhaseView/AddPhaseView"
 import Footer from "../Footer/Footer"
 
-function AssignNewProjectStep3({ onNextStep }) {
+function AssignNewProjectStep3({projectId, onNextStep }) {
   const navigate = useNavigate();
 
 
 
   return (
     <div >
-      <AddPhaseView onNextStep={onNextStep} />
+      <AddPhaseView projectId={projectId} onNextStep={onNextStep} />
     </div>
   );
 }

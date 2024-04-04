@@ -62,7 +62,9 @@ const dummyData = [
         projectProfile: "Profile 1", // New field for the project profile
       },
   ];
-function WorkOrder({ setUpdateModalOpen }) {
+function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow }) {
+ 
+  console.log(data)
   const handleUnitChange = (event, id) => {
     const selectedUnit = event.target.value;
     // Assuming you have a function to update the unit value in your data structure
@@ -72,6 +74,9 @@ function WorkOrder({ setUpdateModalOpen }) {
   const OpenUpdateModal = () => {
     console.log("UpdateModal");
     setUpdateModalOpen(true);
+  };
+  const handleCheckboxChange = (row) => {
+    setCheckedRow(prevCheckedRow => prevCheckedRow === row ? null : row);
   };
   return (
     <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
@@ -96,34 +101,38 @@ function WorkOrder({ setUpdateModalOpen }) {
     </TableRow>
   </TableHead>
   <TableBody>
-    {dummyData.map((row) => (
-      <TableRow key={row.id}>
-        <TableCell sx={tableCellValueStyle}>
-          <Checkbox /* Add Checkbox component here */ />
-        </TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.lineItem}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.description}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.unit}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.margin}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.projectProfile}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.quantity}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.unitPrice}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.total}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.start}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.end}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.notes}</TableCell>
-        <TableCell sx={tableCellValueStyle}>
-        <Button
-                  buttonText={"pending"}
-                  color={"#DF0404"}
-                  backgroundColor={"#FFDADA"}
-                  width="101px"
-                  height="27px"
-                  borderRadius="45px"
-                />
-        </TableCell>
-      </TableRow>
-    ))}
+  {data?.map((item) => (
+  <TableRow key={item.id}>
+    <TableCell sx={tableCellValueStyle}>
+      <Checkbox
+        checked={checkedRow === item}
+        onChange={() => handleCheckboxChange(item)}
+      />
+    </TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.subject}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.description}</TableCell>
+    {/* <TableCell sx={tableCellValueStyle}>{item.LineItem.unit}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.LineItem.margin}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.LineItem.projectProfile}</TableCell> */}
+    <TableCell sx={tableCellValueStyle}>{item.status}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.priority}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.total}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.start_day}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.end_day}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.notes}</TableCell>
+    <TableCell sx={tableCellValueStyle}>
+      <Button
+        buttonText={item.status} // Assuming status property represents the status
+        color={item.status === 'pending' ? "#DF0404" : "#000000"} // Adjust colors based on status
+        backgroundColor={item.status === 'pending' ? "#FFDADA" : "#FFFFFF"} // Adjust background colors based on status
+        width="101px"
+        height="27px"
+        borderRadius="45px"
+      />
+    </TableCell>
+  </TableRow>
+))}
+
   </TableBody>
 </Table>
     </TableContainer>

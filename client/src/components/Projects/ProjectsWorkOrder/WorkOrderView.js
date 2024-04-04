@@ -1,5 +1,5 @@
 import { ButtonGroup, Paper, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WorkOrder from "./WorkOrder";
 import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
@@ -8,19 +8,36 @@ import TabPanel from "@mui/joy/TabPanel";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import AddPhaseView from "../../AssignProject/AddPhaseView.js/AddPhaseView";
+import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
 import RequestWorkOrderModal from "../../dialogues/RequestWorkOrder/RequestWorkOrderModal";
+import { useGetProjectWorkOrderQuery } from "../../../redux/apis/Project/projectApiSlice";
+import { useGetRequestWorkOrderQuery } from "../../../redux/apis/Project/workOrderApiSlice";
+import { useParams } from "react-router-dom";
 
 const WorkOrderView = () => {
-  const [changeView, setChangeView] = useState(false);
-  const handleButton = () => {
-    setChangeView(!changeView);
-  };
+  // const [changeView, setChangeView] = useState(false);
+  const [checkedRow, setCheckedRow] = useState(null);
+  const {data} = useGetProjectWorkOrderQuery();
+  console.log(data)
+    console.log(checkedRow)
+    const {id} = useParams();
+    const getUserIdFromLocalStorage = () => {
+      const userData = localStorage.getItem('user');
+      if(userData){
+        const user = JSON.parse(userData);
+        const userId = user.id;
+        console.log(userId)
+        return{ userId: userId}
+      } else{
+        return null;
+      }
+    }
+    const {requestWorkOrderData} = useGetRequestWorkOrderQuery(getUserIdFromLocalStorage());
   return (
-    <Stack flex={1} pt={1} height={"100%"}>
-      <Paper style={{ ...themeStyle.borders, height: "92%", width: "99%" }}>
+    <Stack flex={1} pt={1} height={"100%"} >
+      <Paper style={{ ...themeStyle.borders, width: "99%", marginBottom:'4px' }}>
         <Stack justifyContent={"space-between"} height={"95%"}>
-          {!changeView ? (
+          {/* {!changeView ? (
             <>
               <Stack>
                 <Typography
@@ -31,7 +48,7 @@ const WorkOrderView = () => {
                   fontSize={"22px"}
                   fontWeight={"600"}
                 >
-                  Change Order
+                  Work Order
                 </Typography>
                 <Tabs defaultValue={0} sx={{ backgroundColor: "transparent" }}>
                   <Stack direction={"row"} justifyContent={"space-between"}>
@@ -102,21 +119,21 @@ const WorkOrderView = () => {
                     value={0}
                     style={{ padding: "16px 8px 0 8px" }}
                   >
-                    <WorkOrder />
+                    <WorkOrder setCheckedRow={setCheckedRow} checkedRow={checkedRow} data={data?.LineItems} />
                   </TabPanel>
                   <TabPanel
                     sx={{ padding: 0 }}
                     value={1}
                     style={{ padding: "16px 8px 0 8px" }}
                   >
-                    <WorkOrder />
+                    <WorkOrder setCheckedRow={setCheckedRow} checkedRow={checkedRow} data={data?.LineItems} />
                   </TabPanel>
                   <TabPanel
                     sx={{ padding: 0 }}
                     value={2}
                     style={{ padding: "16px 8px 0 8px" }}
                   >
-                    <WorkOrder />
+                    <WorkOrder setCheckedRow={setCheckedRow} checkedRow={checkedRow} data={data?.LineItems} />
                   </TabPanel>
                 </Tabs>
               </Stack>
@@ -133,14 +150,15 @@ const WorkOrderView = () => {
                 </BuilderProButton>
               </Stack>
             </>
-          ) : (
+          ) : ( */}
             <>
+             
               <Stack p={1} borderRadius={"14px"}>
-                <AddPhaseView adminProjectView={true} view={'Work Order'} />
+                <AddPhaseView projectId={id} adminProjectView={true} view={'Work Order'} />
               </Stack>
-             <RequestWorkOrderModal /> 
+              
             </>
-          )}
+          {/* )} */}
         </Stack>
       </Paper>
     </Stack>

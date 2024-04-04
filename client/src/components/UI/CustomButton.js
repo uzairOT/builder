@@ -2,7 +2,7 @@ import React from 'react';
 import {Button } from "@mui/material";
 import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf"
 
-function CustomButton({onClick, buttonText,color,backgroundColor,width,height,borderRadius ,fontSize,border }) {
+function CustomButton({onClick, buttonText,color,backgroundColor,width,height,borderRadius ,fontSize,border, disabled }) {
 
     const YellowBtn = {
         backgroundColor: backgroundColor,
@@ -17,7 +17,7 @@ function CustomButton({onClick, buttonText,color,backgroundColor,width,height,bo
       };
 
   return (
-    <Button onClick={onClick} style={YellowBtn}>{buttonText}</Button>
+    <Button  onClick={onClick} disabled={disabled} style={YellowBtn}>{buttonText}</Button>
   );
 }
 

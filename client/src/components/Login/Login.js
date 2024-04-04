@@ -44,7 +44,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [login, { isLoading }] = useLoginMutation();
+  const [login, { isLoading, error }] = useLoginMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -63,13 +63,19 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if(email === ''){
+        alert('please enter email or password')
+        return;
+      }
+
     try {
       const res = await login({ email, password }).unwrap();
-      console.log(res)
+      console.log("login :",res)
       dispatch(setCredentials({ ...res }));
       navigate('/');
     } catch (err) {
-      toast.error(err?.data?.message || err.error);
+      console.log(err)
+      alert(err?.data?.message || err.error);
     }
   };
 
@@ -138,6 +144,7 @@ const Login = () => {
                 Email address
               </label>
               <input
+                required
                 type="email"
                 id="email"
                 value={email}
@@ -163,6 +170,7 @@ const Login = () => {
               </label>
               <Box sx={{ position: "relative" }}>
                 <input
+                required
                   style={{
                     ...inputStyle,
                     ...borderRadiusResponsive,

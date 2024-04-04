@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material'
 import React from 'react'
-import AddPhaseView from '../../AssignProject/AddPhaseView.js/AddPhaseView'
+import AddPhaseView from '../../AssignProject/AddPhaseView/AddPhaseView'
 
 const InitialProposalView = () => {
   return (

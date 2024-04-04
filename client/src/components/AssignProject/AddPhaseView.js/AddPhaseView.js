@@ -14,6 +14,7 @@ import ColorPickerElement from "../../dialogues/ColorPickerElement/ColorPickerEl
 import { setOpen } from '../../../redux/slices/addPhaseSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAddPhase } from '../../../redux/slices/addPhaseSlice';
+import { useGetProjectInitialProposalQuery } from "../../../redux/apis/Project/projectApiSlice";
 
 const initialCardPhase = [
   {
@@ -32,8 +33,8 @@ const initialCardPhase = [
 ];
 
 function AddPhaseView({adminProjectView, view}) {
+  const {data} = useGetProjectInitialProposalQuery({projectId:1})
   const [cardPhase, setCardPhase] = useState(initialCardPhase);
-  
   const { open } = useSelector(selectAddPhase);
   const dispatch = useDispatch();
 
@@ -99,7 +100,7 @@ function AddPhaseView({adminProjectView, view}) {
       container
       sx={firstGrid}
     >
-      <Stack direction={'row'} justifyContent={'space-between'}>
+      {/* <Stack direction={'row'} justifyContent={'space-between'}>
         <Stack>
             {adminProjectView && <Typography pl={3} pt={1} color={'#4C8AB1'} fontFamily={'Poppins, san serif'} fontSize={'22px'} fontWeight={'600'}>
                     {view}
@@ -121,7 +122,7 @@ function AddPhaseView({adminProjectView, view}) {
           Send Approval
         </Button>}
         </Stack>}
-      </Stack>
+      </Stack> */}
 
 
 
@@ -129,10 +130,11 @@ function AddPhaseView({adminProjectView, view}) {
       {cardPhase.map((phase, index) => (
         <AddPhaseCard
           key={phase?.id}
-          cardPhase={phase}
+          phaseData={phase}
           rows={rows}
           length={cardPhase.length}
           onGridToggle={() => handleGridToggle(index, phase?.previousIndex)}
+          adminProjectView={adminProjectView}
         />
       ))}
       {open && (
