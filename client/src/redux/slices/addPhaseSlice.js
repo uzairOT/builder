@@ -6,7 +6,8 @@ const initialState = {
   color: "#ffff",
   colorMode: 'rgba',
   phaseName: '',
-  rowCheckbox: null,
+  rowCheckbox: [],
+
 };
 
 export const addPhaseSlice = createSlice({
@@ -32,7 +33,7 @@ export const addPhaseSlice = createSlice({
       state.phaseName = initialState.phaseName;
     },
     setRowCheckbox: (state, action)=>{
-      state.rowCheckbox = action.payload;
+      return action.payload;
     }
   },
 });

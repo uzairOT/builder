@@ -8,10 +8,14 @@ import VerticalTabs from './VerticalTabs';
 import ButtonGroup from '@mui/joy/ButtonGroup';
 import OpenNotes from './OpenNotes';
 import NotesModal from './NotesModal';
+import { useParams } from "react-router-dom";
+import { useGetProjectNotesQuery } from '../../../redux/apis/Project/projectApiSlice';
 
 const Notes = () => {
     const [selectedButton, setSelectedButton] = useState(0);
-
+    const { id } = useParams();
+    const { data } = useGetProjectNotesQuery({ projectId: id });
+  console.log(data)
     const list =[
         {"listItem": "All Notes"},
         {"listItem": "All Notes"},
@@ -52,11 +56,11 @@ const Notes = () => {
   return (
     <Stack direction={{xl:'row', lg:'row', md:'column-reverse'}} spacing={1} height={'100%'}>
     <Stack flex={1}>
-    <Paper sx={{height: {xl:'94.5%', lg:'99%'}, borderRadius:'14px'}} overflow={'hidden'}>
+    <Paper sx={{height: {xl:'94.5%', lg:'99%'}, borderRadius:'14px'}} >
       <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} p={2} >
         <Typography fontSize={'20px'} fontFamily={'Poppins, sans serif'} fontWeight={'600'} color={'#4C8AB1'}>Notes</Typography>
         <Stack direction={'row'} alignItems={'center'}>
-            <NotesModal/>
+            <NotesModal />
         </Stack>
       </Stack>
       <SearchBar />
@@ -64,14 +68,14 @@ const Notes = () => {
         <EventNoteIcon style={{color:'#4C8AB1'}} />
         <SelectMenuBarChart listItems={list} color={'#4C8AB1'}/>
       </Stack>
-       <VerticalTabs notes={notes} handleSelectedButton={handleSelectedButton} selectedButton={selectedButton}/>
+       <VerticalTabs notes={data?.notes} handleSelectedButton={handleSelectedButton} selectedButton={selectedButton}/>
     </Paper>
     </Stack>
 
 
         <Stack flex={2} >
          <Paper sx={{height:{ xl:'94.5%', lg:'99%'}, borderRadius:'14px'}}>
-           <OpenNotes notes={notes[selectedButton]} />
+           <OpenNotes notes={data?.notes[selectedButton]} />
         </Paper>
           </Stack>
 

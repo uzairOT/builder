@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid, Button, Stack,
-  Typography, } from "@mui/material";
+import { Box, Grid, Button, Stack, Typography } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import PhaseCard from "../AddPhaseCard/AddPhaseCard";
@@ -12,30 +11,78 @@ import { useGetPhasesQuery } from "../../../redux/apis/Project/projectApiSlice";
 import UpdatePhaseDialogue from "../../dialogues/UpdatePhaseDialogue/UpdatePhaseDialogue";
 import AddPhaseDialogue from "../../dialogues/AddPhaseDialogue/AddPhaseDialogue";
 import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
+import RequestWorkOrderModal from "../../dialogues/RequestWorkOrder/RequestWorkOrderModal";
+import {
+  selectAddPhase,
+  setRowCheckbox,
+} from "../../../redux/slices/addPhaseSlice";
+import axios from 'axios';
+import {useParams} from 'react-router-dom';
 
-function AddPhaseView({adminProjectView, view}) {
+function  AddPhaseView({ adminProjectView, view ,projectId }) {
   const [cardPhase, setCardPhase] = useState();
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
   const [selectedPhaseData, setSelectedPhaseData] = useState(null);
-  const [deleteProjectPhase] = useDeleteProjectPhaseMutation();
+  const local = localStorage.getItem('userInfo');
+  const {id} = useParams()
+  const currentUser = JSON.parse(local);
+  console.log("Add PhaseView:",currentUser)
+  const [deleteProjectPhase] = useDeleteProjectPhaseMutation({userId: currentUser.id});
   const phases = useSelector((state) => state.projectInitialProposal.phases);
-  const { data, error, isLoading } = useGetPhasesQuery();
+  // const  [getPhases  { data, error, isLoading}] = useGetPhasesQuery({projectId: projectId});
   const [showUpdatePhaseDialogue, setShowUpdatePhaseDialogue] = useState(false);
   const [showAddPhaseDialogue, setShowAddPhaseDialogue] = useState(false);
-
+  const { rowCheckbox } = useSelector(selectAddPhase);
+  const [rowCheckboxes, setRowCheckboxes] = useState({}); // State to track the checked state of each checkbox in the table rows
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log(isLoading)
-    if (!isLoading) {
-      if (data) {
-        console.log(data)
-        dispatch(addPhase(data.phases));
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null)
+  const fetchData = async () => {
+    setIsLoading(true);
+    if(projectId === null){
+      return;
+    }else if(adminProjectView){
+      try {
+        const response = await axios.get(`http://192.168.0.105:8080/project/getPhases/${id}`);
+        console.log(response)
+        dispatch(addPhase(response.data.phases));
+      } catch (error) {
+        setError(error);
       }
+      setIsLoading(false);
     }
-  }, [data, dispatch]);
- 
+    else{
+
+      try {
+        const response = await axios.get(`http://192.168.0.105:8080/project/getPhases/${projectId}`);
+        console.log(response)
+        dispatch(addPhase(response.data.phases));
+      } catch (error) {
+        setError(error);
+      }
+      setIsLoading(false);
+    };
+    
+  }
+  useEffect(() => {
+    
+    fetchData();
+
+    // Cleanup function
+    return () => {
+      // Any cleanup code if needed
+    };
+  }, [projectId]);
+
+  const handleAddRow = () => {
+    fetchData();
+  };
+
+  useEffect(()=>{
+    console.log(rowCheckboxes)
+  },[rowCheckboxes])
 
   const handleGridToggle = (currentIndex, previousIndex) => {
     // Ensure indices are within the valid range
@@ -76,7 +123,6 @@ function AddPhaseView({adminProjectView, view}) {
     // Update the state with the modified array
     setCardPhase(updatedCardPhase);
   };
-
 
   const handleEditPhase = () => {
     setShowUpdatePhaseDialogue(true);
@@ -146,31 +192,53 @@ function AddPhaseView({adminProjectView, view}) {
     setSelectedPhaseData(updatedPhaseData);
     setShowUpdatePhaseDialogue(false);
   };
-
+  console.log(phases)
   return (
     <Grid container sx={firstGrid}>
-      <Stack direction={'row'} justifyContent={'space-between'}>
+      <Stack direction={"row"} justifyContent={"space-between"}>
         <Stack>
-            {adminProjectView && <Typography pl={3} pt={1} color={'#4C8AB1'} fontFamily={'Poppins, san serif'} fontSize={'22px'} fontWeight={'600'}>
-                    {view}
-                </Typography>} 
+          {adminProjectView && (
+            <Typography
+              pl={3}
+              pt={1}
+              color={"#4C8AB1"}
+              fontFamily={"Poppins, san serif"}
+              fontSize={"22px"}
+              fontWeight={"600"}
+            >
+              {view}
+            </Typography>
+          )}
         </Stack>
-       {!view === 'Work Order' ? <></> : <Stack direction={'row'} sx={buttonBox}>
-        <Button sx={{ ...actionButton }} startIcon={<ModeEditOutlinedIcon />}
-          onClick={handleAddPhase}>
-          Edit
-        </Button>
-        <Button sx={{ ...actionButton }} startIcon={<DeleteOutlinedIcon />}>
-          Delete
-        </Button>
-        <Button sx={{ ...actionButton, background: "#FFAC00", }}
-          onClick={handleAddPhase}>
-          Add Phase
-        </Button>
-       { adminProjectView ? <></> : <Button sx={{ ...actionButton, ...approvalButton }}>
-          Send Approval
-        </Button>}
-        </Stack>}
+        {!view === "Work Order" ? (
+          <></>
+        ) : (
+          <Stack direction={"row"} sx={buttonBox}>
+            <Button
+              sx={{ ...actionButton }}
+              startIcon={<ModeEditOutlinedIcon />}
+              onClick={handleAddPhase}
+            >
+              Edit
+            </Button>
+            <Button sx={{ ...actionButton }} startIcon={<DeleteOutlinedIcon />}>
+              Delete
+            </Button>
+            <Button
+              sx={{ ...actionButton, background: "#FFAC00" }}
+              onClick={handleAddPhase}
+            >
+              Add Phase
+            </Button>
+            {adminProjectView ? (
+              <RequestWorkOrderModal rowCheckboxes={rowCheckboxes} phases={phases} />
+            ) : (
+              <Button sx={{ ...actionButton, ...approvalButton }}>
+                Send Approval
+              </Button>
+            )}
+          </Stack>
+        )}
       </Stack>
       {/* <Box sx={buttonBox}>
         <Button
@@ -196,25 +264,32 @@ function AddPhaseView({adminProjectView, view}) {
       
       </Box> */}
 
-      {phases !== null && phases[0] !== undefined ? (
-        phases[0]?.map((phase, index) => (
-          <Stack
-            key={phase.id}
-            style={{
-              ...slectedCardStyle,
-              backgroundColor: selectedPhaseId === phase.id ? "#000" : "#FFF",
-            }}
-          >
-            <PhaseCard
-              key={phase?.id}
-              phaseData={phase}
-              length={phase.length}
-              onGridToggle={() => handleGridToggle(index, phase?.previousIndex)}
-              handleSelectCard={handleSelectCard}
-              adminProjectView={adminProjectView}
-            />
-          </Stack>
-        ))
+      {phases !== null && phases[0] !== undefined && phases[0].length !== 0 ? (
+        phases[0]?.map((phase, index) => {
+          return (
+            <Stack
+              key={phase.id}
+              style={{
+                ...slectedCardStyle,
+                backgroundColor: selectedPhaseId === phase.id ? "#000" : "#FFF",
+              }}
+            >
+              <PhaseCard
+                projectId= {adminProjectView ? id : projectId}
+                key={phase?.id}
+                phaseData={phase}
+                length={phase.length}
+                onGridToggle={() =>
+                  handleGridToggle(index, phase?.previousIndex)
+                }
+                handleSelectCard={handleSelectCard}
+                adminProjectView={adminProjectView}
+                setRowCheckboxes={setRowCheckboxes}
+                handleAddRow={handleAddRow}
+              />
+            </Stack>
+          );
+        })
       ) : (
         <div
           style={{
@@ -245,6 +320,7 @@ function AddPhaseView({adminProjectView, view}) {
           handleAddClose={handleAddClose}
           setPhaseData={setSelectedPhaseData}
           onSubmit={handleAddSubmit}
+          adminProjectView={adminProjectView}
         />
       )}
     </Grid>

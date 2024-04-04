@@ -1,7 +1,7 @@
 import { apiSlice } from "../apiSlice";
 
-const PROJECTS_URL = "http://192.168.0.101:8080/project";
-const projectId = 1;
+const PROJECTS_URL = "http://192.168.0.105:8080/project";
+const projectId = 47;
 
 const projectApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -17,7 +17,7 @@ const projectApiSlice = apiSlice.injectEndpoints({
     // Phase ApiSlices ................. //
     addProjectPhase: builder.mutation({
       query: (data) => ({
-        url: `${PROJECTS_URL}/addPhase/${projectId}`,
+        url: `${PROJECTS_URL}/addPhase/${data.projectId}`,
         method: "POST",
         body: data,
       }),
@@ -43,30 +43,30 @@ const projectApiSlice = apiSlice.injectEndpoints({
     // PhaseLine ApiSlices ................. //
     getPhases: builder.query({
       query: (data) => ({
-        url: `${PROJECTS_URL}/getPhases/${projectId}`,
+        url: `${PROJECTS_URL}/getPhases/${data.projectId}`,
         method: "GET",
       }),
       providesTags: ["Project"],
     }),
     addPhaseLine: builder.mutation({
-      query: (newLineItem) => ({
-        url: `${PROJECTS_URL}/addPhaseLine/${projectId}`,
+      query: (data) => ({
+        url: `${PROJECTS_URL}/addPhaseLine/${data.projectId}`,
         method: "POST",
-        body: newLineItem,
+        body: data,
       }),
       providesTags: ["Project"],
     }),
     updatePhaseLine: builder.mutation({
-      query: (data, lineItemId) => ({
-        url: `${PROJECTS_URL}/updatePhaseLine/${lineItemId}`,
-        method: "PATCH",
+      query: (data) => ({
+        url: `${PROJECTS_URL}/updatePhaseLine/${data.id}`,
+        method: "PUT",
         body: data,
       }),
       providesTags: ["Project"],
     }),
     deletePhaseLine: builder.mutation({
       query: (data) => ({
-        url: `${PROJECTS_URL}/addPhaseLine/${data.id}`,
+        url: `${PROJECTS_URL}/deletePhaseLine/${data.lineItemId}`,
         method: "DELETE",
         body: data,
       }),
@@ -75,13 +75,13 @@ const projectApiSlice = apiSlice.injectEndpoints({
 
     getProjectChangeOrder: builder.query({
       query: (data) => ({
-        url: `${PROJECTS_URL}/changeOrder/${projectId}`,
+        url: `${PROJECTS_URL}/getWorkOrder/${data.projectId}/${data.userId}`,
         method: "GET",
       }),
     }),
-    getProjectInfoAndTeam: builder.query({
+    getProjectTeam: builder.query({
       query: (data) => ({
-        url: `${PROJECTS_URL}/projectTeam/${projectId}`,
+        url: `${PROJECTS_URL}/getProjectTeam/${data}`,
         method: "GET",
       }),
     }),
@@ -129,8 +129,29 @@ const projectApiSlice = apiSlice.injectEndpoints({
     }),
     getProjectNotes: builder.query({
       query: (data) => ({
-        url: `${PROJECTS_URL}/notes/${projectId}}`,
+        url: `${PROJECTS_URL}/notes/${data.projectId}`,
         method: "GET",
+      }),
+      fetchPolicy: "network-only",
+    }),
+    addProjectNotes: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/notes/${data.projectId}`,
+        method: "POST",
+        body: data
+      }),
+    }),
+    editProjectNotes: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/notes/${data.noteId}`,
+        method: "PUT",
+        body: data
+      }),
+    }),
+    deleteProjectNotes: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/notes/${data}`,
+        method: "DELETE",
       }),
     }),
     getProjectReports: builder.query({
@@ -138,6 +159,17 @@ const projectApiSlice = apiSlice.injectEndpoints({
         url: `${PROJECTS_URL}/notes/${projectId}}`,
         method: "GET",
       }),
+    }),
+    getTeamMembers: builder.query({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/getProjectTeam/${data}`,
+        method: 'GET',
+      })
+    }),
+    getProjectData: builder.query({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/getProjectData/${data.projectId}`
+      })
     }),
   }),
 });
@@ -152,7 +184,7 @@ export const {
   useUpdatePhaseLineMutation,
   useDeletePhaseLineMutation,
   useGetProjectChangeOrderQuery,
-  useGetProjectInfoAndTeamQuery,
+  useGetProjectTeamQuery,
   useGetProjectFinancesQuery,
   useGetProjectInitialProposalQuery,
   useGetProjectImageQuery,
@@ -160,4 +192,10 @@ export const {
   useGetProjectDrawingFilesQuery,
   useGetProjectWorkOrderQuery,
   useGetProjectChatQuery,
+  useGetTeamMembersQuery,
+  useGetProjectDataQuery,
+  useGetProjectNotesQuery,
+  useAddProjectNotesMutation,
+  useEditProjectNotesMutation,
+  useDeleteProjectNotesMutation
 } = projectApiSlice;

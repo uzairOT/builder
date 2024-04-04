@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {
     useMediaQuery,
-    Button, Box, Typography, TextField, MenuItem
+    Button, Box, Typography, TextField, MenuItem, Stack
 } from "@mui/material";
 import "../StepFormField/StepFormField.css"
 import { useSelector, useDispatch } from 'react-redux';
@@ -52,19 +52,28 @@ function ProjectFormFields() {
                         <label style={{ ...labelStyle, ...labelDisplay, ...labelResponsiveFont }} htmlFor="email">Location</label>
                         <TextField className='placeholder' sx={{ ...inputStyle, ...borderRadiusResponsive, borderButtom: "none" }}
                             id="standard-select-currency"
-                            select
+                            type='text'
                             variant="standard"
                             value={location}
                             onChange={handleLocationChange}
+                            placeholder='Enter your location...'
                         >
 
-                            <MenuItem value={""}  disabled sx={{ ...menuItem, color: 'gray', }}>
+                            {/* <MenuItem value={""}  disabled sx={{ ...menuItem, color: 'gray', }}>
                                 Select Location
                             </MenuItem>
                             <MenuItem sx={menuItem} value={"Islamabad"}>Islamabad</MenuItem>
                             <MenuItem sx={menuItem} value={"Lahore"}>Lahore</MenuItem>
-                            <MenuItem sx={menuItem} value={"Karachi"}>Karachi</MenuItem>
+                            <MenuItem sx={menuItem} value={"Karachi"}>Karachi</MenuItem> */}
                         </TextField>
+                    </Box>
+                    <Box sx={{ marginTop: "0.2rem" }}>
+                        <label style={{ ...labelStyle, ...labelDisplay, ...labelResponsiveFont }} htmlFor="email">Select Color</label>
+                        <Stack direction={'row'} alignItems={'center'} gap={2} p={1}>
+                        <Box width={'40px'} height={'40px'} bgcolor={'lightgray'} borderRadius={'999999px'}></Box>
+                        <Typography onClick={()=> console.log('click')} color={'#4C8AB1'} sx={{textDecoration:'underline'}}>Tap to Select Color</Typography>
+                        </Stack>
+
                     </Box>
                 </form>
             </Box>
@@ -102,7 +111,7 @@ const formBox = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "0.5rem",
+    marginTop: "0rem",
     gap: "1.5rem"
 };
 const formStyle = {

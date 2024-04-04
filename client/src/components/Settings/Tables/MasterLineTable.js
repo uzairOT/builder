@@ -17,6 +17,8 @@ import EditIcon from "../../../assets/settings/edit.png";
 import DeleteIcon from "../../../assets/settings/delete.png";
 import EmailIcon from "../../../assets/settings/email.png";
 import Button from "../../UI/CustomButton";
+import { useGetMasterLineItemsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+import { useSelector } from "react-redux";
 
 const dummyData = [
   {
@@ -77,6 +79,9 @@ const dummyData = [
 ];
 
 function MasterLineTable({ setUpdateModalOpen }) {
+  const userInfo = useSelector((state) => state.auth.userInfo);
+  const { data, isLoading } = useGetMasterLineItemsQuery(userInfo.user.id);
+
   const handleUnitChange = (event, id) => {
     const selectedUnit = event.target.value;
     // Assuming you have a function to update the unit value in your data structure
@@ -90,7 +95,7 @@ function MasterLineTable({ setUpdateModalOpen }) {
   };
 
   return (
-    <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
+    <TableContainer component={Paper} sx={{ boxShadow: "none", height: '73.5vh' }}>
       <Table>
         <TableHead>
           <TableRow>
@@ -121,23 +126,22 @@ function MasterLineTable({ setUpdateModalOpen }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {dummyData.map((row) => (
+          {isLoading ? <>Loading...</> : data.MasterLines.map((row) => (
             <TableRow key={row.id}>
-            
-              <TableCell sx={tableCellValueStyle}>{row.name}</TableCell>
+              <TableCell sx={tableCellValueStyle}>{row.title}</TableCell>
               <TableCell sx={tableCellValueStyle}>{row.description}</TableCell>
               <TableCell sx={tableCellValueStyle}>{row.unit}</TableCell>
               <TableCell sx={tableCellValueStyle}>{row.quantity}</TableCell>
-              <TableCell sx={tableCellValueStyle}>{row.unitPrice}</TableCell>
+              <TableCell sx={tableCellValueStyle}>{row.unit_price}</TableCell>
               <TableCell sx={tableCellValueStyle}>{row.total}</TableCell>
-              <TableCell sx={tableCellValueStyle}>{row.start}</TableCell>
-              <TableCell sx={tableCellValueStyle}>{row.end}</TableCell>
+              <TableCell sx={tableCellValueStyle}>{row.start_day}</TableCell>
+              <TableCell sx={tableCellValueStyle}>{row.end_day}</TableCell>
               <TableCell sx={tableCellValueStyle}>{row.notes}</TableCell>
               <TableCell sx={tableCellValueStyle}>
                 <IconButton
                   aria-label="edit"
                   size="small"
-                  onClick={OpenUpdateModal}
+                  onClick={() => OpenUpdateModal(row)} // Pass row data to the function
                 >
                   <img src={EditIcon} alt="" />
                 </IconButton>

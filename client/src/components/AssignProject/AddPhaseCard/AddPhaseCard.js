@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Grid,
@@ -22,7 +22,8 @@ import AddLineDialogue from "../../dialogues/AddLineDialogue/AddLineDialogue";
 import UpdateLineDialogue from "../../dialogues/UpdateLineDialogue/UpdateLineDialogue";
 import { useDeletePhaseLineMutation } from "../../../redux/apis/Project/projectApiSlice";
 import { selectAddPhase, setRowCheckbox } from "../../../redux/slices/addPhaseSlice";
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
 
 const initialRows = [
   { phaseName: 'Item 1', description: 'Description 1', unit: 'Unit 1', margin: '10%', quantity: 5, unitPrice: 20, total: 100, start: '2024-03-01', end: '2024-03-05', longDescription: 'Note 1' },
@@ -32,7 +33,7 @@ const initialRows = [
 ];
 
 
-const AddPhaseCard = ({ phaseData, onGridToggle, length, handleSelectCard, adminProjectView }) => {
+const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSelectCard, adminProjectView,setRowCheckboxes, projectId }) => {
 
 
 
@@ -41,11 +42,9 @@ const AddPhaseCard = ({ phaseData, onGridToggle, length, handleSelectCard, admin
   const [showUpdateLine, setShowUpdateLine] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [rows, setRows] = useState(initialRows)
-  const [rowCheckboxes, setRowCheckboxes] = useState(rows.map(() => false)); // State to track the checked state of each checkbox in the table rows
   const [deletePhaseLine] = useDeletePhaseLineMutation();
   const dispatch = useDispatch();
-
-console.log(phaseData?.LineItems)
+  const {rowCheckbox} = useSelector(selectAddPhase);
 
   const handleArrowDownClick = () => {
     onGridToggle(phaseData.currentIndex, phaseData.currentIndex + 1);
@@ -64,15 +63,23 @@ console.log(phaseData?.LineItems)
 
 
 
-  const handleDeleteSelectedRows = () => {
-    const updatedRows = rows.filter((_, index) => !selectedRows.includes(index));
-    // Handle the updated rows according to your application logic
-    deletePhaseLine(selectedRows);
-    console.log("Deleted rows:", selectedRows);
-    console.log("Remaining rows:", updatedRows);
+  const handleDeleteSelectedRows = async (lineItemId) => {
+    // const updatedRows = rows.filter((_, index) => !selectedRows.includes(index));
+    // // Handle the updated rows according to your application logic
+    // deletePhaseLine(selectedRows);
+    // console.log("Deleted rows:", selectedRows);
+    // console.log("Remaining rows:", updatedRows);
 
-    // Clear the selectedRows state after deletion
-    setSelectedRows([]);
+    // // Clear the selectedRows state after deletion
+    // setSelectedRows([]);
+
+    const data = {
+      lineItemId: lineItemId,
+      projectId: projectId
+    }
+    const res = await deletePhaseLine(data);
+    dispatch(addPhase(res.data.allPhases));
+    
   };
 
 
@@ -117,21 +124,44 @@ console.log(phaseData?.LineItems)
     setRows(updatedRows);
     console.log(updatedRows)
   };
-  const handleAddRow = (newData) => {
+  const handleAddRow1 = (newData) => {
     const updatedRows = [...rows, newData];
     setRows(updatedRows);
-    console.log(updatedRows);
+    console.log("handle add row:",updatedRows);
   };
 
   const [checkedRow, setCheckedRow] = useState(null);
 
   const handleCheckboxChange = (row) => {
-    const checkRow = row;
-    dispatch(setRowCheckbox(checkRow))
-    setCheckedRow(prevCheckedRow => prevCheckedRow === row ? null : row);
+    const phaseName = phaseData.phase_name;
+    const phaseId = phaseData.id;
+
+    setRowCheckboxes(prevSelectedRows => {
+      const updatedRows = { ...prevSelectedRows };
+
+      if (!updatedRows[phaseName]) {
+        // If phaseName doesn't exist in selectedRows, initialize it
+        updatedRows[phaseName] = { id: phaseId, rows: [] };
+      }
+
+      const rowExistsIndex = updatedRows[phaseName].rows.findIndex(item => item === row);
+      if (rowExistsIndex !== -1) {
+        // Row already exists, remove it
+        updatedRows[phaseName].rows.splice(rowExistsIndex, 1);
+      } else {
+        // Row doesn't exist, add it
+        updatedRows[phaseName].rows.push(row);
+      }
+
+      return { ...updatedRows };
+    });
   };
 
-
+  // Function to check if a row is selected
+  const isRowSelected = (row) => {
+    const phaseName = phaseData.phase_name;
+    return selectedRows[phaseName]?.rows.includes(row);
+  };
 
   return (
     <div>
@@ -248,8 +278,10 @@ console.log(phaseData?.LineItems)
                   <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
                     <TableCell>
                     <Checkbox
-              checked={checkedRow === row}
-              onChange={() => handleCheckboxChange(row)}
+              // checked={checkedRow === row}
+              // onChange={() => handleCheckboxChange(row)}
+              checked={isRowSelected(row)}
+             onChange={() => handleCheckboxChange(row)}
             />
                     </TableCell>
                     <TableCell component="th" scope="row">
@@ -269,7 +301,7 @@ console.log(phaseData?.LineItems)
                     <TableCell>
                       <EditIcon  onClick={() => handleUpdateLine(row) } />
                     <DeleteIcon
-                      onClick={handleDeleteSelectedRows}
+                      onClick={() => handleDeleteSelectedRows(row.id)}
                       disabled={selectedRows.length === 0} />
                    </TableCell>
                    
@@ -290,6 +322,7 @@ console.log(phaseData?.LineItems)
             handleAddOpen={handleAddOpen}
             handleAddClose={handleAddClose}
             handleAddRow={handleAddRow}
+            projectId={projectId}
           />
         )}
         {showUpdateLine && (
@@ -300,6 +333,7 @@ console.log(phaseData?.LineItems)
             selectedRowIndex={selectedRows[0]}
             rowData={selectedRows[0] !== undefined ? rows[selectedRows[0]] : null} 
             LineItem={checkedRow}
+            adminProjectView={adminProjectView}
           />
         )}
 

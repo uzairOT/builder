@@ -101,37 +101,38 @@ function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow }) {
     </TableRow>
   </TableHead>
   <TableBody>
-    {data?.map((row) => (
-      <TableRow key={row.id}>
-        <TableCell sx={tableCellValueStyle}>
-        <Checkbox
-              checked={checkedRow === row}
-              onChange={() => handleCheckboxChange(row)}
-            />
-        </TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.lineItem}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.description}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.unit}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.margin}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.projectProfile}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.quantity}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.unitPrice}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.total}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.start}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.end}</TableCell>
-        <TableCell sx={tableCellValueStyle}>{row.notes}</TableCell>
-        <TableCell sx={tableCellValueStyle}>
-        <Button
-                  buttonText={"pending"}
-                  color={"#DF0404"}
-                  backgroundColor={"#FFDADA"}
-                  width="101px"
-                  height="27px"
-                  borderRadius="45px"
-                />
-        </TableCell>
-      </TableRow>
-    ))}
+  {data?.map((item) => (
+  <TableRow key={item.id}>
+    <TableCell sx={tableCellValueStyle}>
+      <Checkbox
+        checked={checkedRow === item}
+        onChange={() => handleCheckboxChange(item)}
+      />
+    </TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.subject}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.description}</TableCell>
+    {/* <TableCell sx={tableCellValueStyle}>{item.LineItem.unit}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.LineItem.margin}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.LineItem.projectProfile}</TableCell> */}
+    <TableCell sx={tableCellValueStyle}>{item.status}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.priority}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.total}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.start_day}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.end_day}</TableCell>
+    <TableCell sx={tableCellValueStyle}>{item.notes}</TableCell>
+    <TableCell sx={tableCellValueStyle}>
+      <Button
+        buttonText={item.status} // Assuming status property represents the status
+        color={item.status === 'pending' ? "#DF0404" : "#000000"} // Adjust colors based on status
+        backgroundColor={item.status === 'pending' ? "#FFDADA" : "#FFFFFF"} // Adjust background colors based on status
+        width="101px"
+        height="27px"
+        borderRadius="45px"
+      />
+    </TableCell>
+  </TableRow>
+))}
+
   </TableBody>
 </Table>
     </TableContainer>

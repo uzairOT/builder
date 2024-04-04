@@ -25,9 +25,12 @@ import {
   setLocation,
 } from "../../../redux/slices/projectFormSlice";
 import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-function AssignNewProjectStep2({ onNextStep }) {
-  const [assignProject, { isLoading }] = useAssignProjectMutation();
+function AssignNewProjectStep2({ onNextStep ,setProjectId, isSaveAs, projectId }) {
+  const userInfo = useSelector((state) => state.auth.userInfo);
+  const [assignProject, { isLoading }] = useAssignProjectMutation({userId: userInfo.user.id});
 
   const [emailCount, setEmailCount] = useState(1);
   const [showSkipInvite, setShowSkipInvite] = useState(false);
@@ -58,24 +61,35 @@ function AssignNewProjectStep2({ onNextStep }) {
     dispatch(addUser());
   };
   const handleNextStep = () => {
-    onNextStep();
     handleCreateNewProject();
   };
 
   const Data = useSelector(selectProjectForm);
-  const userInfo = useSelector((state) => state.auth.userInfo);
-  // console.log(userInfo);
 
   const handleCreateNewProject = async () => {
-    // const userdata =  userInfo.id
-   
-    // const userId =userInfo.user.id
-    // console.log(userId)
-    //  const FormData = { ...Data,userId: userId  };
- 
-    //  const res = await assignProject(FormData).unwrap();
-    //  localStorage.setItem('projectId', res.project.id);
-    //  console.log(res.project.id);
+    localStorage.removeItem('projectId');
+    try {
+      const userdata = userInfo.user.id;
+      console.log(userdata);
+  
+      const userId = userdata;
+      console.log(userId);
+      const FormData = { ...Data, userId: userId, isSaveAs: isSaveAs, projectId: projectId };
+  
+      // Call the assignProject function and wait for the result
+      const res = await assignProject(FormData).unwrap();
+  
+      // If successful, store the project ID in local storage
+      localStorage.setItem('projectId', res.project.id);
+      console.log(res.project.id);
+      console.log(res);
+      setProjectId(res.project.id)
+      onNextStep();
+    } catch (error) {
+      // If an error occurs during the process, handle it here
+      toast.error('Error creating new project:', error.message);
+      return;
+    }
    };
 
   return (

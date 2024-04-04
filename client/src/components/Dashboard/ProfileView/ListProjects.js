@@ -9,13 +9,14 @@ import {addProjects} from '../../../redux/slices/Project/userProjectsSlice'
   
   const ListProjects = () => {
     const dispatch = useDispatch();
-
-    const {data, isLoading, error} = useGetUserProjectsQuery({userId: 15});
-    useEffect(() => {
-      if(data){
-        dispatch(addProjects(data))
-      }
-    },[data, dispatch])
+    const local = localStorage.getItem('userInfo');
+    const currentUser = JSON.parse(local);
+    const currentUserId = currentUser.user.id
+    console.log('LIST PROJECTS:', currentUserId)
+    const {data, isLoading, error} = useGetUserProjectsQuery({userId: currentUserId});
+    console.log(data);
+    dispatch(addProjects(data?.projects))
+ 
 
     return (
       <Box sx={{ padding: 1}} >
@@ -45,7 +46,7 @@ import {addProjects} from '../../../redux/slices/Project/userProjectsSlice'
         <Box sx={{...themeStyle.scrollable }}  style={{height:'50vh',}}>
         <Stack spacing={1} pl={2} pr={2} >
           <>
-          {projects.map((projectProfileCard) => {
+          {data?.projects?.map((projectProfileCard) => {
             return (
               <Link key={projectProfileCard.id} to={`projects/${projectProfileCard.id}`} style={{textDecoration:'none'}}>
               <ProjectCard

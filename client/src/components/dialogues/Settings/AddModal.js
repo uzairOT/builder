@@ -11,60 +11,99 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  FormHelperText
+  FormHelperText,
+  Autocomplete,
 } from "@mui/material";
 import UploadIcon from "../../../assets/settings/uploadimg.png";
 import Button from "../../UI/CustomButton";
-import {useFormik} from 'formik'
+import { useFormik, useFormikContext } from "formik";
 import { settingsSchema } from "../../../utils/Validation/settingsPageSchema";
 import { useLocation } from "react-router-dom";
-import { useAddAssignRoleMutation } from "../../../redux/apis/Admin/assignRoleApiSlice";
+import {
+  useAddAssignRoleMutation,
+  useGetAssignedRolesQuery,
+} from "../../../redux/apis/Admin/assignRoleApiSlice";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { allUserProjects } from "../../../redux/slices/Project/userProjectsSlice";
+import { useSelector } from "react-redux";
+import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+import { createFilterOptions } from "@mui/material/Autocomplete";
 
-function AddModal({
-  title,
-  open,
-  onClose,
-}) {
+function AddModal({ title, open, onClose }) {
   const [image, setImage] = useState(null);
+  const local = localStorage.getItem("userInfo");
+  const currentUser = JSON.parse(local);
+  const currentUserId = currentUser.user.id;
   const location = useLocation();
-  const pathSegments = location.pathname.split('/')
-  const userRole = pathSegments[pathSegments.length-1]
-  const [assignRolePost] = useAddAssignRoleMutation()
-
-
-  const onSubmit = (values, action) => {
-    
-    const post = {
-      ...values,
-      image: image,
-      userRole: userRole,
-    }
-      assignRolePost(post);
-      action.resetForm();
-      setImage(null);
-  }
-
-  const {values, handleChange, handleBlur, errors, touched, handleSubmit, isSubmitting, handleReset} = useFormik({
-        initialValues: {
-          userRole:'',
-          image:'',
-          name: '',
-          projects: '',
-          email:'',
-          phoneNumber: '',
-          country: '',
-          status:'',
-        },
-        validationSchema: settingsSchema,
-        onSubmit,
+  const pathSegments = location.pathname.split("/");
+  const userRole = pathSegments[pathSegments.length - 1];
+  // const { values, handleChange, handleBlur, errors, setFieldValue } = useFormikContext();
+  const filter = createFilterOptions();
+  const { data, isLoading, error } = useGetUserProjectsQuery({
+    userId: currentUserId,
+  });
+  console.log(data);
+  const projectNames = data
+    ? data?.projects.map((project) => project.projectName)
+    : [];
+    console.log(projectNames)
+  const [assignRolePost] = useAddAssignRoleMutation();
+  const { refetch } = useGetAssignedRolesQuery({
+    userRole: userRole,
+    userId: currentUserId,
   });
 
+  const onSubmit = async (values, action) => {
+    try {
+      const post = {
+        ...values,
+        image: image,
+        userRole: userRole,
+        userId: currentUserId,
+      };
+      console.log(post);
+      const res = await assignRolePost(post);
+      refetch();
+      if (res.error) {
+        toast.error(res?.error.data.error);
+      }
+      action.resetForm();
+      setImage(null);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
+  const {
+    values,
+    handleChange,
+    handleBlur,
+    errors,
+    touched,
+    handleSubmit,
+    isSubmitting,
+    handleReset,
+    setFieldValue,
+  } = useFormik({
+    initialValues: {
+      userRole: "",
+      image: "",
+      name: "",
+      project: "",
+      email: "",
+      phoneNumber: "",
+      country: "",
+      status: "",
+    },
+    validationSchema: settingsSchema,
+    onSubmit,
+  });
 
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-      previewImage(file);
+    previewImage(file);
   };
   const previewImage = (file) => {
     const reader = new FileReader();
@@ -88,6 +127,7 @@ function AddModal({
 
   return (
     <form onSubmit={handleSubmit}>
+      <ToastContainer />
       <Dialog open={open} onClose={onClose} maxWidth="md" sx={{}}>
         <DialogTitle sx={headingStyle}>Add {title}</DialogTitle>
         <DialogContent
@@ -119,22 +159,27 @@ function AddModal({
                   type="file"
                   accept="image/*"
                   onChange={handleImageUpload}
-                 style={{display:'none'}}
+                  style={{ display: "none" }}
                   id="avatarInput"
                   name="image"
                 />
                 <label htmlFor="avatarInput">
-                <img src={image ? image : UploadIcon} alt=""  width={'120px'} height={'80px'}/>
+                  <img
+                    src={image ? image : UploadIcon}
+                    alt=""
+                    width={"120px"}
+                    height={"80px"}
+                  />
 
-              {/* Text */}
-              <Typography variant="body1" sx={labelStyle}>
-                Upload your photo
-              </Typography>
-              </label>
+                  {/* Text */}
+                  <Typography variant="body1" sx={labelStyle}>
+                    Upload your photo
+                  </Typography>
+                </label>
               </div>
             </Grid>
 
-            <Grid item xs={12}  sm={6}>
+            <Grid item xs={12} sm={6}>
               {/* Name input */}
               <Typography variant="body1">Name</Typography>
               <TextField
@@ -144,17 +189,20 @@ function AddModal({
                 value={values.name}
                 fullWidth
                 inputProps={{
-                  style:{
+                  style: {
                     ...InputStyle,
-                     border: errors.name && touched.name ? '1px solid #d32f2f' : '1px solid #E0E4EC'
-                  }
+                    border:
+                      errors.name && touched.name
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                  },
                 }}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                helperText={errors.name && touched.name ? errors.name : ''}
+                helperText={errors.name && touched.name ? errors.name : ""}
               />
             </Grid>
-            <Grid item xs={12}  sm={6}>
+            <Grid item xs={12} sm={6}>
               {/* Phone Number input */}
               <Typography variant="body1">Phone Number</Typography>
               <TextField
@@ -164,38 +212,101 @@ function AddModal({
                 value={values.phoneNumber}
                 onChange={handleChange}
                 inputProps={{
-                  style:{
+                  style: {
                     ...InputStyle,
-                     border: errors.phoneNumber && touched.phoneNumber ? '1px solid #d32f2f' : '1px solid #E0E4EC'
-                  }
+                    border:
+                      errors.phoneNumber && touched.phoneNumber
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                  },
                 }}
                 name={"phoneNumber"}
                 onBlur={handleBlur}
-                helperText={errors.phoneNumber && touched.phoneNumber ? errors.phoneNumber : ''}
+                helperText={
+                  errors.phoneNumber && touched.phoneNumber
+                    ? errors.phoneNumber
+                    : ""
+                }
               />
             </Grid>
-            <Grid item xs={12}  sm={6}>
+            <Grid item xs={12} sm={6}>
               {/* Projects input */}
-              <Typography variant="body1">Projects</Typography>
-              <TextField
-                error={errors.projects ? true: false}
-                placeholder="Projects"
-                name={"projects"}
-                value={values.projects}
+              <Typography variant="body1">Project</Typography>
+              {/* <TextField
+              select 
+                error={Boolean(errors.project)} // Simplified error handling
+                placeholder="Project"
+                name="project"
+                value={values.project}
                 onChange={handleChange}
                 fullWidth
                 inputProps={{
-                  style:{
+                  style: {
                     ...InputStyle,
-                     border: errors.projects && touched.projects ? '1px solid #d32f2f' : '1px solid #E0E4EC'
-                  }
+                    border:
+                      errors.project && touched.project
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                  },
                 }}
                 onBlur={handleBlur}
-                FormHelperTextProps={{color:'error'}}
-                helperText={errors.projects && touched.projects ? errors.projects : ''}
-              />
+                FormHelperTextProps={{ color: "error" }}
+                helperText={
+                  errors.project && touched.project ? errors.project : ""
+                }
+              >
+                {projectNames?.map((projectName) => (
+                  <MenuItem key={projectName} value={projectName}>
+                    {projectName}
+                  </MenuItem>
+                ))}
+              </TextField> */}
+              <FormControl fullWidth>
+                <Select
+                  error={errors.project ? true : false}
+                  displayEmpty
+                  labelId="demo-simple-select-label"
+                  value={values.project}
+                  onChange={handleChange}
+                  onBlur={handleBlur} 
+                name="project"
+                  fullWidth
+                  renderValue={(selected) => {
+                    if (selected.length === 0) {
+                      return (
+                        <Typography
+                          style={{ fontSize: "1rem", color: "#969a9c" }}
+                        >
+                          Project
+                        </Typography>
+                      );
+                    }
+                    return selected;
+                  }}
+                  sx={{
+                    ...InputStyle,
+                    height: "45px",
+                    border:
+                      errors.project && touched.project
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                    placeholder: "Project",
+                  }}
+                >
+                  {projectNames?.map((projectName) => (
+                  <MenuItem key={projectName} value={projectName}>
+                    {projectName}
+                  </MenuItem>
+                ))}
+                </Select>
+                {errors.project && touched.project ? (
+                  <FormHelperText error>{errors.project}</FormHelperText>
+                ) : (
+                  <></>
+                )}
+              </FormControl>
             </Grid>
-            <Grid item xs={12}  sm={6}>
+            <Grid item xs={12} sm={6}>
               {/* Country input */}
               <Typography variant="body1">Country</Typography>
               <TextField
@@ -206,66 +317,92 @@ function AddModal({
                 onChange={handleChange}
                 fullWidth
                 inputProps={{
-                  style:{
+                  style: {
                     ...InputStyle,
-                     border: errors.country && touched.country ? '1px solid #d32f2f' : '1px solid #E0E4EC'
-                  }
+                    border:
+                      errors.country && touched.country
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                  },
                 }}
                 sx={{
-                  "& .Mui-error::after":{
-                    borderRadius:'8px'
-                  }
+                  "& .Mui-error::after": {
+                    borderRadius: "8px",
+                  },
                 }}
                 onBlur={handleBlur}
-                helperText={errors.country && touched.country ? errors.country : ''}
+                helperText={
+                  errors.country && touched.country ? errors.country : ""
+                }
               />
             </Grid>
-            <Grid item xs={12}  sm={6}>
+            <Grid item xs={12} sm={6}>
               {/* Email input */}
               <Typography variant="body1">Email</Typography>
               <TextField
-                error={errors.email ? true: false}
+                error={errors.email ? true : false}
                 placeholder="Email"
                 name={"email"}
                 value={values.email}
                 onChange={handleChange}
                 fullWidth
                 inputProps={{
-                  style:{
+                  style: {
                     ...InputStyle,
-                     border: errors.email && touched.email ? '1px solid #d32f2f' : '1px solid #E0E4EC'
-                  }
+                    border:
+                      errors.email && touched.email
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                  },
                 }}
                 onBlur={handleBlur}
-                helperText={errors.email && touched.email ? errors.email : ''}
+                helperText={errors.email && touched.email ? errors.email : ""}
               />
             </Grid>
-            <Grid item xs={12}  sm={6}>
+            <Grid item xs={12} sm={6}>
               {/* Status input */}
               <Typography variant="body1">Status</Typography>
               <FormControl fullWidth>
-              <Select
-              error={errors.status?  true : false}
-              displayEmpty
-              labelId="demo-simple-select-label"
-              value={values.status}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              name={"status"}
-              fullWidth
-              renderValue={(selected) => {
-                if (selected.length === 0) {
-                  return <Typography style={{fontSize:'1rem', color:'#969a9c',}}>Unselected</Typography>;
-                }
-                return selected
-              }}
-              sx={{...InputStyle, height:'45px',  border: errors.status && touched.status ?'1px solid #d32f2f' : '1px solid #E0E4EC', placeholder:'Unselected'}}
-            >
-              <MenuItem value={'done'}>Done</MenuItem>
-              <MenuItem value={'pending'}>Pending</MenuItem>
-            </Select>
-            {errors.status && touched.status ? <FormHelperText error>{errors.status}</FormHelperText> : <></>}
-            </FormControl>
+                <Select
+                  error={errors.status ? true : false}
+                  displayEmpty
+                  labelId="demo-simple-select-label"
+                  value={values.status}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name={"status"}
+                  fullWidth
+                  renderValue={(selected) => {
+                    if (selected.length === 0) {
+                      return (
+                        <Typography
+                          style={{ fontSize: "1rem", color: "#969a9c" }}
+                        >
+                          Unselected
+                        </Typography>
+                      );
+                    }
+                    return selected;
+                  }}
+                  sx={{
+                    ...InputStyle,
+                    height: "45px",
+                    border:
+                      errors.status && touched.status
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                    placeholder: "Unselected",
+                  }}
+                >
+                  <MenuItem value={"done"}>Done</MenuItem>
+                  <MenuItem value={"pending"}>Pending</MenuItem>
+                </Select>
+                {errors.status && touched.status ? (
+                  <FormHelperText error>{errors.status}</FormHelperText>
+                ) : (
+                  <></>
+                )}
+              </FormControl>
             </Grid>
           </Grid>
         </DialogContent>
@@ -277,7 +414,7 @@ function AddModal({
               type={"submit"}
               buttonText="Add New"
               color="#ffffff"
-              backgroundColor={isSubmitting ? 'gray' : "#4C8AB1"}
+              backgroundColor={isSubmitting ? "gray" : "#4C8AB1"}
               width="150px"
               height="44px"
               borderRadius="50px"
@@ -308,8 +445,8 @@ const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
   fontFamily: "Manrope, sans-serif",
-    border: "1px solid #E0E4EC",
-    padding: "10px",
+  border: "1px solid #E0E4EC",
+  padding: "10px",
 
   "& .MuiOutlinedInputRoot": {
     "& fieldset": {

@@ -4,6 +4,7 @@ import ProjectsSidebar from '../Projects/ProjectsDashboard/ProjectsSidebar'
 import { Outlet, useParams } from 'react-router-dom'
 import ProjectsNavbar from '../Projects/ProjectsNavbar'
 import projects from './assets/data/projects'
+import {useGetProjectDataQuery} from '../../redux/apis/Project/projectApiSlice';
 
 
 const Layout2 = () => {
@@ -12,7 +13,9 @@ useEffect(()=>{
 })
     const params = useParams();
     const {id: currentProjectId} = params;
-    const selectedProjectId = projects.find(project => project.id === parseInt(currentProjectId));
+    const {data} = useGetProjectDataQuery({projectId: currentProjectId});
+    // projects.find(project => project.id === parseInt(currentProjectId));
+    const selectedProjectId = data?.data;
     console.log(selectedProjectId, params);
     console.log("cascasc");
 

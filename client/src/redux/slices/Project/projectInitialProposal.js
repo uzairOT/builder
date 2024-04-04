@@ -12,7 +12,7 @@ const projectInitialProposalSlice = createSlice({
   reducers: {
     // Add a new phase to the array
     addPhase: (state, action) => {
-      state.phases.push(action.payload);
+      state.phases[0]=action.payload;
     },
     // Add a line item to a phase
     updatePhase: (state, action) => {

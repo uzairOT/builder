@@ -17,7 +17,8 @@ import axios from "axios";
 import { useDispatch, useSelector } from 'react-redux';
 import { useRegisterMutation } from '../../redux/apis/usersApiSlice';
 import { setCredentials } from '../../redux/slices/authSlice';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignupComp = () => {
   const isLG = useMediaQuery("(min-width: 1280px)");
@@ -63,12 +64,13 @@ const SignupComp = () => {
     console.log(data)
     try {
       const res = await register({data}).unwrap();
-      console.log(res.user);
-      dispatch(setCredentials(res.user));
+      console.log("Sign up: ",res);
+      dispatch(setCredentials({...res}));
       navigate('/assignproject');
       console.log("hi")
     } catch (err) {
-      toast.error(err?.data?.message || err.error);
+      console.log(err)
+      toast.error(err?.data?.error || err.error);
     }
     // navigate('/assignproject');
   };
@@ -83,6 +85,7 @@ const SignupComp = () => {
       container
         sx={firstGrid}
     >
+      <ToastContainer />
       <Grid
         item
         container

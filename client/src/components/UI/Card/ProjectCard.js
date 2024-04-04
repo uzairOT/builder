@@ -79,7 +79,7 @@ const ProjectCard = ({projectProfileCard, selected}) => {
             marginBottom: '8px'
           }}
         >
-          {projectProfileCard.title}
+          {projectProfileCard.projectName}
         </Typography>
         {selected === true || selected === undefined ? (
   <>

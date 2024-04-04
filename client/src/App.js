@@ -42,6 +42,10 @@ import Layout2 from "./components/Layouts/Layout2";
 import ChatView from "./components/Projects/ProjectsChat/ChatView";
 import Subscription from "./pages/Subscription/Subscription";
 import { useDispatch, useSelector } from "react-redux";
+import Invitation from "./pages/InvitationView/Invitation";
+import {ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ProjectsChangeOrder from "./components/Projects/ProjectsChangeOrder/ProjectsChangeOrder";
 const Dashboard =  lazy(() => import("./pages/Dashboard/Dashboard"))
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"))
 const ImagesView = lazy(() => import("./components/Projects/ProjectsImages/ImagesView"))
@@ -74,7 +78,7 @@ function App() {
             />
             <Route path="/projects/:id" element={<Layout2 />}>
               <Route path="" element={<InnerLayout2 />}>
-                <Route path="default" element={<ProjectsDefault />} />
+                <Route path="" element={<ProjectsDefault />} />
                 <Route path="images" element={<ImagesView />} />
                 <Route path="permit" element={<PermitView />} />
                 <Route path="drawing-files" element={<DrawingFilesView />} />
@@ -87,16 +91,16 @@ function App() {
               <Route path="chat" element={<ChatView />} />
               <Route path="notes" element={<NotesView />} />
               <Route path="project-report" element={<ReportView />} />
+            <Route path="change-order" element={<ProjectsChangeOrder />}></Route>
             </Route>
             <Route path="reports" element={<ReportsPage />} />
             <Route path="subscription" element={<Subscription />} />
-
             <Route path="/settings" element={<Layout3 />}>
               <Route index element={<Profile />} />
               <Route path="profile" element={<Profile />} />
               <Route path="admin" element={<Admin />} />
-              <Route path="projectmanager" element={<ProjectManager />} />
-              <Route path="clients" element={<Client />} />
+              <Route path="projectManager" element={<ProjectManager />} />
+              <Route path="client" element={<Client />} />
               <Route path="subcontractor" element={<Subcontractor />} />
               <Route path="supplier" element={<SupplierList />} />
               <Route path="materline" element={<MasterLineItem />} />
@@ -105,6 +109,7 @@ function App() {
         ) : (
           <Route path="/" element={<Login />} />
         )}
+        <Route path="/invitation/:projectId/:email/:userRole" element={<Invitation />} />
 
         <Route path="/clientdashboard" element={<ClientDashboard />}>
           <Route path="/clientdashboard" element={<ClientDashboardCards />} />
@@ -125,6 +130,7 @@ function App() {
     <>
        <Suspense fallback={<PageLoader />}>
       <RouterProvider router={router} />
+      <ToastContainer/>
      </Suspense>
     </>
   );

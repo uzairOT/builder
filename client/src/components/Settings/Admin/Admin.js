@@ -15,7 +15,7 @@ import { useOutletContext } from 'react-router-dom';
 function Admin() {
   
 
-  const [userId, setUserId] = useOutletContext();
+  const [userId, setUserId] = useState();
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
   const ADMIN_VIEW = 'admin';
@@ -58,7 +58,7 @@ console.log(userId)
         </Typography>
         <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Admin"} open={isAddModalOpen} onClose={handleCloseAddModal}/>
+      <AddModal title={"Admin"} open={isAddModalOpen} onClose={handleCloseAddModal} />
       <UpdateModal title={"Admin"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} />
     </div>
   );

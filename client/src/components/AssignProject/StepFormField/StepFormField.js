@@ -65,8 +65,10 @@ function ProjectFormFields({ index, email, role, onUpdateEmail, onUpdateRole }) 
               >
 
                 <MenuItem sx={menuItem} value={'admin'}>Admin</MenuItem>
-                <MenuItem sx={menuItem} value={'primecontractor'}>Prime Contractor</MenuItem>
+                <MenuItem sx={menuItem} value={'projectManager'}>Project Manager</MenuItem>
                 <MenuItem sx={menuItem} value={'client'}>Client</MenuItem>
+                <MenuItem sx={menuItem} value={'subcontractor'}>Subcontractor</MenuItem>
+                <MenuItem sx={menuItem} value={'supplier'}>Supplier</MenuItem>
               </TextField>
             </Box>
           </Box>

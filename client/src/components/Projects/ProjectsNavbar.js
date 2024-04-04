@@ -49,9 +49,11 @@ const ProjectsNavbar = ({project}) => {
     <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} p={1} >
         <Stack direction={'row'} alignItems={'center'} spacing={1}>
     <IconButton><ChevronLeftIcon style={{color:'black'}}/></IconButton>
-      <img src={project.image} alt='Project' width={'60px'} height={'35px'} style={{borderRadius: '12px'}}></img>
+      {/* <img src={project?.image} alt='Project' width={'60px'} height={'35px'} style={{borderRadius: '12px'}}></img> */}
     <Link to={``} style={{textDecoration: 'none'}}>
-      <Typography color={'#494A4A'} fontSize={'20px'} fontWeight={'600'} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'}>{project.title}</Typography>
+      <Typography color={'#494A4A'} fontSize={'20px'} fontWeight={'600'} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'}>
+      {project?.projectName}
+      </Typography>
     </Link>
         </Stack>
 

@@ -17,7 +17,9 @@ import { useFormik } from "formik";
 import { useLocation } from "react-router-dom";
 import FormHelperText from '@mui/material/FormHelperText';
 import { settingsSchema } from "../../../utils/Validation/settingsPageSchema";
-import { useUpdateAssignRoleMutation } from "../../../redux/apis/Admin/assignRoleApiSlice";
+import { useGetAssignedRolesQuery, useUpdateAssignRoleMutation } from "../../../redux/apis/Admin/assignRoleApiSlice";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function UpdateModal({
   title,
@@ -26,19 +28,28 @@ function UpdateModal({
   userId
 }) {
   const [image, setImage] = useState(null);
+  const local = localStorage.getItem('userInfo');
+  const currentUser = JSON.parse(local);
+  const currentUserId = currentUser.user.id;
   const location = useLocation();
   const pathSegments = location.pathname.split('/');
   const userRole =pathSegments[pathSegments.length -1];
   const [assignRolePut] = useUpdateAssignRoleMutation();
+  const { refetch} = useGetAssignedRolesQuery({
+    userRole: userRole,
+    userId: currentUserId,
+  });
 
-  const onSubmit = (values, action) => {
+  const onSubmit = async (values, action) => {
       const put = {
           ...values,
           image: image,
           userRole: userRole,
           userId: userId,
+          superAdminId: currentUserId,
       }
-      assignRolePut(put);
+      const res = await assignRolePut(put);
+      refetch();
       action.resetForm();
       setImage(null);
   };
@@ -49,7 +60,7 @@ function UpdateModal({
       userRole: "",
       image: "",
       name: "",
-      projects: "",
+      project: "",
       email: "",
       phoneNumber: "",
       country: "",
@@ -178,22 +189,22 @@ function UpdateModal({
             </Grid>
             <Grid item xs={12}  sm={6}>
               {/* Projects input */}
-              <Typography variant="body1">Projects</Typography>
+              <Typography variant="body1">Project</Typography>
               <TextField
-                error={errors.projects ? true : false}
-                value={values.projects}
-                placeholder="Projects"
+                error={errors.project ? true : false}
+                value={values.project}
+                placeholder="Project"
                 fullWidth
-                name={"projects"}
+                name={"project"}
                 inputProps={{
                   style:{
                     ...InputStyle,
-                     border: errors.name && touched.projects ? '1px solid #d32f2f' : '1px solid #E0E4EC'
+                     border: errors.project && touched.project ? '1px solid #d32f2f' : '1px solid #E0E4EC'
                   }
                 }}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                helperText={errors.projects && touched.projects ? errors.projects : ''}
+                helperText={errors.project && touched.project ? errors.project : ''}
               />
             </Grid>
             <Grid item xs={12}  sm={6}>

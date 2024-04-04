@@ -29,6 +29,7 @@ import "./ColorPickerElement.css";
 import { yellow } from "@mui/material/colors";
 import { useDispatch,useSelector  } from 'react-redux';
 import { addPhase } from '../../../redux/slices/Project/projectInitialProposal'; 
+import {useParams} from 'react-router-dom';
 
 function ColorPickerElement({
   handleUpdateOpen,
@@ -39,14 +40,19 @@ function ColorPickerElement({
   setPhaseData,
   PhaseHeading,
   onSubmit,
+  adminProjectView
 }) {
   const dispatch = useDispatch();
-
+  const local = localStorage.getItem('projectId');
+  const projectId = parseInt(local);
+  console.log(projectId);
+  
+  const {id} = useParams();
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState(phaseData ? phaseData.color : "");
   const [colorMode, setColorMode] = useState("");
   const [phaseName, setPhaseName] = useState(
-    phaseData ? phaseData.phaseName : ""
+    phaseData?.phaseName ? phaseData.phaseName : ""
   );
   const [updateProjectPhase] = useUpdateProjectPhaseMutation();
   const [addProjectPhase] = useAddProjectPhaseMutation();
@@ -55,6 +61,7 @@ function ColorPickerElement({
   };
 
   const handleClickOpen = () => {
+    console.log('handle Click open run')
     if (PhaseHeading === "Update Phase") {
       handleUpdateOpen();
     } else {
@@ -90,9 +97,11 @@ function ColorPickerElement({
       const data = {
         phaseName,
         color,
-        colorMode
+        colorMode,
+        projectId: adminProjectView ? id : projectId,
       };
-      const res = await addProjectPhase({ data }).unwrap();
+      console.log(data)
+      const res = await addProjectPhase(data).unwrap().then().catch(e=>{ alert(e.message)});
       console.log('Response:', res.phase);
       setPhaseData((phaseData) => ({ ...phaseData, ...data }));
       console.log(data);
@@ -102,11 +111,17 @@ function ColorPickerElement({
     }
   };
 
+  const handlePhaseName = (e) => {
+    setPhaseName((prev) => {
+      return e.target.value;
+    })
+  }
+
   return (
     <div className="App">
       <>
         <Dialog
-          open={handleClickOpen}
+          open={true}
           onClose={handleClickClose}
           PaperProps={{
             sx: { ...paperPropsStyle },
@@ -118,9 +133,7 @@ function ColorPickerElement({
           <DialogContent sx={{ padding: "3rem" }}>
             <Typography sx={typoText}>Phase</Typography>
             <TextField
-              sx={inputStyle}
-              // autoFocus
-              required
+              sx={inputStyle}         
               margin="dense"
               id="phaseName"
               name="phaseName"
@@ -129,7 +142,7 @@ function ColorPickerElement({
               type="text"
               variant="standard"
               value={phaseName}
-              onChange={(event) => setPhaseName(event.target.value)}
+              onChange={handlePhaseName}
             />
             <Typography sx={typoText}>Select Color</Typography>
             <div className="custom-pointers example">
