@@ -11,13 +11,14 @@ import shallowButton from "../../UI/shallowButton";
 import "../../../App.css"
 import StepTitles from '../StepTitles/StepTitles';
 import ProjectFormFields from '../ProjectFormFields/ProjectFormFields';
-function SaveAsProject({ onSaveStep, onNextStep }) {
+function SaveAsProject({ onSaveStep, onNextStep , setIsSaveAs}) {
 
 
 
   const handleDone = () => {
 
     onSaveStep();
+    setIsSaveAs(true)
     // onNextStep();
   };
 

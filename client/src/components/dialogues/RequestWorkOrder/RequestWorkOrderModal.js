@@ -10,34 +10,112 @@ import {
   RadioGroup,
   Stack,
   Typography,
+  Select,
+  MenuItem,
+  TextField,
 } from "@mui/material";
 import React, { useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import AddIcon from "@mui/icons-material/Add";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Avatarimg from "../Assets/pngs/woman.png";
-import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
-import moment from 'moment';
-import {useSelector} from 'react-redux'
+import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
+import moment from "moment";
+import { useSelector } from "react-redux";
 import { selectAddPhase } from "../../../redux/slices/addPhaseSlice";
+import GenerateInvoiceDone from "../GenerateInvoice/GenerateInvoiceDone";
+import { useRequestWorkOrderMutation } from "../../../redux/apis/Project/workOrderApiSlice";
+import AssignTeamMembers from "./AssignTeamMembers";
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const RequestWorkOrderModal = () => {
+
+const RequestWorkOrderModal = ({ rowCheckboxes }) => {
   const [open, setOpen] = useState(false);
-  const {rowCheckboxes} = useSelector(selectAddPhase);
+  const [done, setDone] = useState(false);
+  const { addPhase } = useSelector(selectAddPhase);
+  const [priority, setPriority] = useState("urgent");
+  const [status, setStatus] = useState("pending");
+  const [subject, setSubject] = useState("");
+  const [startDate, setStartDate] = useState(moment())
+  const [endDate, setEndDate] = useState(moment())
+  const [description, setDescription] = useState("");
+  const [phase, setPhase] = useState('');
+  const [lineItems, setLineItems] = useState('');
+  const [assignedCheckboxes,setAssignedCheckboxes] = useState([])
+  const userInfo = localStorage.getItem('userInfo');
+  const user = JSON.parse(userInfo);
+  const userId = user?.user.id;
+  const [notes,setNotes] = useState()
+  let lineItemCounter = 0;
+  Object.values(rowCheckboxes).forEach(phaseData => {
+    lineItemCounter += phaseData.rows.length;
+  })
 
+  console.log(userId)
+  const [requestWorkOrderPut] = useRequestWorkOrderMutation();
+
+  const isButtonDisabled = Object.keys(rowCheckboxes).length === 0;
+  const handleNotesChange = (e) => {
+    setNotes(e.target.value)
+  }
   const handleClose = () => {
     setOpen(false);
   };
   const handleOpen = () => {
     setOpen(true);
   };
+  const handlePriorityChange = (event) => {
+    setPriority(event.target.value);
+  };
+  const handleStatusChange = (event) => {
+    setStatus(event.target.value);
+  };
+  const handleSubjectChange = (event) => {
+    setSubject(event.target.value);
+  };
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
+  };
+  const handlePhaseRadioChange = (event) =>{
+    setPhase(event.target.value);
+  }
+  const handleLineItemRadioChange = (event) =>{
+    setLineItems(event.target.value);
+  }
+
+  const handleRequest = () =>{
+    
+    const formattedStartDate = startDate.format('MMM D, YYYY, h:mm a')
+    const formattedEndDate = endDate.format('MMM D, YYYY, h:mm a')
+    const requestForm = {
+      subject: subject,
+      description: description,
+      startDate: formattedStartDate,
+      endDate: formattedEndDate,
+      priority: priority,
+      status: status,
+      phase: phase,
+      lineItem: lineItems,
+      createdby: userId,
+      teamIds: [...assignedCheckboxes, userId], 
+      notes: notes
+    }
+    if(requestForm.teamIds.length === 0){
+      toast.error('Team member must be assigned')
+    }else{
+      requestWorkOrderPut(requestForm)
+      setDone(true);
+    }
+  }
+
   return (
     <>
       <Stack alignItems={"flex-end"} justifyContent={"flex-end"} pr={2}>
@@ -49,13 +127,13 @@ const RequestWorkOrderModal = () => {
           fontWeight={"600"}
           padding={"6px 32px 6px 32px"}
           handleOnClick={handleOpen}
-          disabled={!rowCheckboxes.some((checkbox) => checkbox)}
+          disabled={isButtonDisabled}
         >
           Next
         </BuilderProButton>
       </Stack>
       <Modal open={open} onClose={handleClose}>
-        <Stack sx={style} height={'90%'} overflow={'scroll'}>
+        <Stack sx={{...style, ...themeStyle.scrollable}} height={"90%"} overflow={"scroll"} >
           <Typography
             p={2}
             color={"#4C8AB1"}
@@ -66,14 +144,37 @@ const RequestWorkOrderModal = () => {
             Request Work Order
           </Typography>
           <Divider />
-          <Stack direction={{xl:"row", lg:'row', md:'column', sm:'column', xs:'column'}}>
+          <Stack
+            direction={{
+              xl: "row",
+              lg: "row",
+              md: "column",
+              sm: "column",
+              xs: "column",
+            }}
+            height={"100%"}
+          >
             <Stack p={3} spacing={1}>
               <Typography fontFamily={"inherit"}>
-                <strong>Subject: </strong> Tile
+                <strong>Subject: </strong>{" "}
+                <input
+                  value={subject}
+                  placeholder="Type your subject..."
+                  type="text"
+                  style={themeStyle.inputFields}
+                  onChange={handleSubjectChange}
+                ></input>
               </Typography>
               <Typography pb={1} fontFamily={"inherit"} fontWeight={"200"}>
-                <strong>Description: </strong> Lorem Ipsum is simply dummy text
-                of the printing.
+                <strong>Description: </strong>{" "}
+                <input
+                  value={description}
+                  placeholder="Type your description..."
+                  type="text"
+                  multiple
+                  style={themeStyle.inputFields}
+                  onChange={handleDescriptionChange}
+                ></input>
               </Typography>
               <Divider />
 
@@ -90,10 +191,10 @@ const RequestWorkOrderModal = () => {
               </Stack>
               <Divider />
               <Stack
-                direction={{xl:"row", lg:'row', md:'column'}}
+                direction={{ xl: "row", lg: "row", md: "column" }}
                 justifyContent={"space-around"}
                 spacing={8}
-                pt={1}
+                p={2}
               >
                 <Stack>
                   <Typography sx={themeStyle.headingText}>
@@ -105,7 +206,7 @@ const RequestWorkOrderModal = () => {
                         marginTop: "0rem",
                       }}
                     >
-                      1/1
+                      1/{Object.keys(rowCheckboxes).length}
                     </Typography>
                   </Typography>
                   <FormControl>
@@ -113,21 +214,27 @@ const RequestWorkOrderModal = () => {
                       aria-labelledby="demo-radio-buttons-group-label"
                       defaultValue="Furniture repairing"
                       name="radio-buttons-group"
+                      onChange={handlePhaseRadioChange}
                     >
-                      <FormControlLabel
-                        sx={themeStyle.radioText}
-                        value="Furniture repairing"
-                        control={<Radio sx={themeStyle.radioChecked} />}
-                        label="Repairing"
-                      />
+                      {Object.keys(rowCheckboxes).map((key, index) => {
+                        const phaseId= rowCheckboxes[key]?.rows[0]?.phase_id;
+                        return(
+                        <FormControlLabel
+                          
+                          sx={themeStyle.radioText}
+                          value={phaseId}
+                          control={<Radio sx={themeStyle.radioChecked} />}
+                          label={key}
+                        />
+                      )}) }
                     </RadioGroup>
                   </FormControl>
-                  <Button
+                  {/* <Button
                     sx={themeStyle.linkButton}
                     startIcon={<AddIcon sx={{ color: "#000" }} />}
                   >
                     Add Phase
-                  </Button>
+                  </Button> */}
                 </Stack>
                 <Stack>
                   <Typography sx={themeStyle.headingText}>
@@ -139,7 +246,7 @@ const RequestWorkOrderModal = () => {
                         marginTop: "0rem",
                       }}
                     >
-                      1/3
+                      1/{lineItemCounter}
                     </Typography>
                   </Typography>
                   <FormControl>
@@ -147,33 +254,32 @@ const RequestWorkOrderModal = () => {
                       aria-labelledby="demo-radio-buttons-group-label"
                       defaultValue="Furniture repairing"
                       name="radio-buttons-group"
+                      onChange={handleLineItemRadioChange}
                     >
-                      <FormControlLabel
-                        sx={themeStyle.radioText}
-                        value="Furniture repairing"
-                        control={<Radio sx={themeStyle.radioChecked} />}
-                        label="Furniture repairing"
-                      />
-                      <FormControlLabel
-                        sx={themeStyle.radioText}
-                        value="Room renovation"
-                        control={<Radio sx={themeStyle.radioChecked} />}
-                        label="Room renovation"
-                      />
-                      <FormControlLabel
-                        sx={themeStyle.radioText}
-                        value="Wood work"
-                        control={<Radio sx={themeStyle.radioChecked} />}
-                        label="Wood work"
-                      />
+                      {Object.keys(rowCheckboxes).map((phase, index) => {
+                        const phaseData = rowCheckboxes[phase];
+                        return (
+                          <>
+                            {phaseData.rows.map((row, index) => {
+                              return(
+                              <FormControlLabel
+                                sx={themeStyle.radioText}
+                                value={row.id}
+                                control={<Radio sx={themeStyle.radioChecked} />}
+                                label={row.title}
+                              />
+                            )})}
+                          </>
+                        );
+                      })}
                     </RadioGroup>
                   </FormControl>
-                  <Button
+                  {/* <Button
                     sx={themeStyle.linkButton}
                     startIcon={<AddIcon sx={{ color: "#000" }} />}
                   >
                     Add Line Item
-                  </Button>
+                  </Button> */}
                 </Stack>
               </Stack>
               <Divider />
@@ -184,7 +290,38 @@ const RequestWorkOrderModal = () => {
                 <Typography
                   sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
                 >
-                  24/ Feb/ 2023
+                  <Box sx={themeStyle.dateBox}>
+                  <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <DemoContainer components={["DateTimePicker"]}>
+                      <DateTimePicker
+                      value={startDate}
+                      onChange={(newValue) => setStartDate(newValue)}
+                        format="MMM D, YYYY,h:mm a"
+                        viewRenderers={{
+                          hours: renderTimeViewClock,
+                          minutes: renderTimeViewClock,
+                          seconds: renderTimeViewClock,
+                        }}
+                        defaultValue={moment("2024-04-17T15:30")}
+                        slotProps={{
+                          // Targets the `IconButton` component.
+                          openPickerButton: {
+                            color: "#5B5B5B",
+                          },
+                          // Targets the `InputAdornment` component.
+                          inputAdornment: {
+                            position: "start",
+                          },
+                        }}
+                        sx={{
+                          input: {
+                            fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
+                          },
+                        }}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                </Box>
                 </Typography>
               </Stack>
               <Stack spacing={1} pt={2}>
@@ -194,7 +331,38 @@ const RequestWorkOrderModal = () => {
                 <Typography
                   sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
                 >
-                  24/ Feb/ 2023
+                                   <Box sx={themeStyle.dateBox}>
+                  <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <DemoContainer components={["DateTimePicker"]}>
+                      <DateTimePicker
+                      value={endDate}
+                      onChange={(newValue) => setEndDate(newValue)}
+                        format="MMM D, YYYY,h:mm a"
+                        viewRenderers={{
+                          hours: renderTimeViewClock,
+                          minutes: renderTimeViewClock,
+                          seconds: renderTimeViewClock,
+                        }}
+                        defaultValue={moment("2024-04-17T15:30")}
+                        slotProps={{
+                          // Targets the `IconButton` component.
+                          openPickerButton: {
+                            color: "#5B5B5B",
+                          },
+                          // Targets the `InputAdornment` component.
+                          inputAdornment: {
+                            position: "start",
+                          },
+                        }}
+                        sx={{
+                          input: {
+                            fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
+                          },
+                        }}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                </Box>
                 </Typography>
                 <Stack width={"80%"} pt={8}>
                   <BuilderProButton
@@ -204,7 +372,7 @@ const RequestWorkOrderModal = () => {
                     fontSize={"16px"}
                     fontWeight={"600"}
                     padding={"6px 32px 6px 32px"}
-                    handleOnClick={handleOpen}
+                    handleOnClick={handleRequest}
                     marginLeft={"0px"}
                   >
                     Request Work Order
@@ -220,11 +388,13 @@ const RequestWorkOrderModal = () => {
                     ...themeStyle.rightheadings,
                   }}
                 >
-                 Created By
+                  Created By
                 </Typography>
                 <Box sx={themeStyle.avatarBox}>
                   <Avatar sx={themeStyle.AvatarStyle} src={Avatarimg} />
-                  <Typography fontFamily={'inherit'} alignSelf={'end'}>Micheal Jordon</Typography>
+                  <Typography fontFamily={"inherit"} alignSelf={"end"}>
+                    {user?.user?.firstName}
+                  </Typography>
                 </Box>
                 {/* Divider  */}
                 <hr style={themeStyle.hrLine} />
@@ -239,9 +409,7 @@ const RequestWorkOrderModal = () => {
                 </Typography>
                 <Box sx={themeStyle.avatarBox}>
                   <Avatar sx={themeStyle.AvatarStyle} src={Avatarimg} />
-                  <AddCircleOutlineIcon
-                    sx={{ ...themeStyle.AvatarStyle, color: "#A8A8A8" }}
-                  />
+                  <AssignTeamMembers assignedCheckboxes={assignedCheckboxes} setAssignedCheckboxes={setAssignedCheckboxes} />
                 </Box>
                 {/* Divider  */}
                 <hr style={themeStyle.hrLine} />
@@ -252,38 +420,48 @@ const RequestWorkOrderModal = () => {
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Due Date
+                  Notes
                 </Typography>
-                <Box sx={themeStyle.dateBox}>
+                <input
+                  value={notes}
+                  placeholder="Type your description..."
+                  type="text"
+                  multiple
+                  style={themeStyle.inputFields}
+                  onChange={handleNotesChange}
+                ></input>
+                {/* <Box sx={themeStyle.dateBox}>
                   <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DemoContainer components={["DateTimePicker"]} >
+                    <DemoContainer components={["DateTimePicker"]}>
                       <DateTimePicker
+                      value={dueDate}
+                      onChange={(newValue) => setDueDate(newValue)}
                         format="MMM D, YYYY,h:mm a"
                         viewRenderers={{
                           hours: renderTimeViewClock,
                           minutes: renderTimeViewClock,
                           seconds: renderTimeViewClock,
                         }}
-                        defaultValue={moment('2024-04-17T15:30')}
+                        defaultValue={moment("2024-04-17T15:30")}
                         slotProps={{
-                            // Targets the `IconButton` component.
-                            openPickerButton: {
-                              color: '#5B5B5B',
-                            },
-                            // Targets the `InputAdornment` component.
-                            inputAdornment: {
-                              position: 'start',
-                            },
-                          }}
-                          sx={{
-                            input: {
-                                fontFamily: 'GT-Walsheim-Regular-Trial, sans serif'
-                            }
-                          }}
+                          // Targets the `IconButton` component.
+                          openPickerButton: {
+                            color: "#5B5B5B",
+                          },
+                          // Targets the `InputAdornment` component.
+                          inputAdornment: {
+                            position: "start",
+                          },
+                        }}
+                        sx={{
+                          input: {
+                            fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
+                          },
+                        }}
                       />
                     </DemoContainer>
                   </LocalizationProvider>
-                </Box>
+                </Box> */}
                 {/* Divider  */}
                 <hr style={themeStyle.hrLine} />
                 <Typography
@@ -294,13 +472,41 @@ const RequestWorkOrderModal = () => {
                 >
                   Set Priority
                 </Typography>
-                <Button
-                  sx={{ ...themeStyle.linkButton, ...themeStyle.priorityButton }}
-                  endIcon={<KeyboardArrowDownIcon sx={{ color: "#636363" }} />}
+                <Select
+                  displayEmpty
+                  renderValue={(value) => {
+                    return (
+                      <Stack direction={"row"} gap={1}>
+                        <FlagOutlinedIcon sx={{ color: "#EB1717" }} />
+                        <Typography
+                          color={"#EB1717"}
+                          textTransform={"capitalize"}
+                          fontFamily={"Inter"}
+                          fontWeight={"500"}
+                          fontSize={{
+                            lg: "0.9rem",
+                            md: "0.9rem",
+                            sm: "0.8rem",
+                            xs: "0.6rem",
+                          }}
+                        >
+                          {value}
+                        </Typography>
+                      </Stack>
+                    );
+                  }}
+                  value={priority}
+                  onChange={handlePriorityChange}
+                  IconComponent={KeyboardArrowDownIcon}
+                  sx={{
+                    ...themeStyle.linkButton,
+                    ...themeStyle.priorityButton,
+                  }}
                   startIcon={<FlagOutlinedIcon sx={{ color: "#EB1717" }} />}
                 >
-                  Urgent
-                </Button>
+                  <MenuItem value={"urgent"}>Urgent</MenuItem>
+                  <MenuItem value={"normal"}>Normal</MenuItem>
+                </Select>
                 <hr style={themeStyle.hrLine} />
                 <Typography
                   sx={{
@@ -310,23 +516,85 @@ const RequestWorkOrderModal = () => {
                 >
                   Status
                 </Typography>
-                <Button
-                  sx={{ ...themeStyle.linkButton, ...themeStyle.pendingbutton }}
-                  endIcon={<KeyboardArrowDownIcon sx={{ color: "#636363" }} />}
+                <Select
+                 displayEmpty
+                 renderValue={(value) => {
+                  return (
+                    <Stack direction={"row"} gap={1}>
+                      <FlagOutlinedIcon sx={{ color: "#EB1717" }} />
+                      <Typography
+                        color={"#EB1717"}
+                        textTransform={"capitalize"}
+                        fontFamily={"Inter"}
+                        fontWeight={"500"}
+                        fontSize={{
+                          lg: "0.9rem",
+                          md: "0.9rem",
+                          sm: "0.8rem",
+                          xs: "0.6rem",
+                        }}
+                      >
+                        {value}
+                      </Typography>
+                    </Stack>
+                  );
+                }}
+                  value={status}
+                  onChange={handleStatusChange}
+                  IconComponent={KeyboardArrowDownIcon}
+                  sx={{
+                    ...themeStyle.linkButton,
+                    ...themeStyle.priorityButton,
+                  }}
+                  startIcon={<FlagOutlinedIcon sx={{ color: "#EB1717" }} />}
                 >
-                  Pending
-                </Button>
+                  <MenuItem value={"pending"}>Pending</MenuItem>
+                  <MenuItem value={"done"}>Done</MenuItem>
+                </Select>
               </Box>
               <Stack spacing={0.5} p={1} px={3}>
-                <Typography fontSize={'13px'} style={{fontFamily: 'GT-Walsheim-Regular-Trial, sans serif'}}>Created</Typography>
-                <Typography fontSize={'14px'} color={'black'} fontWeight={'600'} style={{fontFamily: 'GT-Walsheim-Regular-Trial, sans serif'}}>Feb 6,2023,10:30 AM</Typography>
-                <Typography fontSize={'13px'} style={{fontFamily: 'GT-Walsheim-Regular-Trial, sans serif'}}>Updated</Typography>
-                <Typography fontSize={'14px'} color={'black'} fontWeight={'600'} style={{fontFamily: 'GT-Walsheim-Regular-Trial, sans serif'}}>CreatFeb 6,2023,10:30 AM</Typography>
-                </Stack>
+                <Typography
+                  fontSize={"13px"}
+                  style={{
+                    fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
+                  }}
+                >
+                  Created
+                </Typography>
+                <Typography
+                  fontSize={"14px"}
+                  color={"black"}
+                  fontWeight={"600"}
+                  style={{
+                    fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
+                  }}
+                >
+                  Feb 6,2023,10:30 AM
+                </Typography>
+                <Typography
+                  fontSize={"13px"}
+                  style={{
+                    fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
+                  }}
+                >
+                  Updated
+                </Typography>
+                <Typography
+                  fontSize={"14px"}
+                  color={"black"}
+                  fontWeight={"600"}
+                  style={{
+                    fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
+                  }}
+                >
+                  CreatFeb 6,2023,10:30 AM
+                </Typography>
+              </Stack>
             </Stack>
           </Stack>
         </Stack>
       </Modal>
+      { done && <GenerateInvoiceDone setDone={setDone} />}
     </>
   );
 };
@@ -345,6 +613,12 @@ const style = {
   borderRadius: "14px",
 };
 const themeStyle = {
+  inputFields: {
+    border: "0px solid #FFF",
+    outline: "none",
+    width: "100%",
+    padding: 4,
+  },
   typoTitle: {
     fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
     fontSize: "1.5rem",
@@ -457,7 +731,7 @@ const themeStyle = {
     margin: "0rem 0rem 1rem 1.5rem",
     color: "#D92525",
   },
-   priorityButton : {
+  priorityButton: {
     margin: "0rem 0rem 1rem 1.5rem",
     color: "#636363",
   },
@@ -477,4 +751,19 @@ const themeStyle = {
     paddingLeft: "1.5rem",
     marginTop: "-1rem",
   },
+  
+  scrollable: {
+    scrollbarWidth: 'none',  // For Firefox
+    '-ms-overflow-style': 'none',  // For IE and Edge
+    '&::-webkit-scrollbar': {
+        width: '6px'
+    },
+    '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'transparent',
+        transition: 'background-color 0.3s',
+    },
+    '&:hover::-webkit-scrollbar-thumb': {
+        backgroundColor: '#ddd',
+    },
+}
 };

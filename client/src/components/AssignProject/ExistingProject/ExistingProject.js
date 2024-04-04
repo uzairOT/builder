@@ -11,7 +11,8 @@ import Footer from "../Footer/Footer";
 import AssignNewProjectStep3 from "../AssignNewProjectStep3/AssignNewProjectStep3";
 
 function ExistingProject() {
-
+    const local = localStorage.getItem('projectId');
+    const projectId = JSON.parse(local);
 
     const [step, setStep] = useState(0);
 
@@ -53,7 +54,7 @@ function ExistingProject() {
                         <Box sx={{ ...normalBox, ...whiteBox, }}>
 
                             <Header gap="25rem" handlePreviousStep={handlePreviousStep} />
-                            <ExistenceProjectStep1 onNextStep={onNextStep} />
+                            <ExistenceProjectStep1  onNextStep={onNextStep} />
 
 
                         </Box >
@@ -72,7 +73,7 @@ function ExistingProject() {
                     <div>
                         <Header handlePreviousStep={handlePreviousStep} />
                         {/* <ExistenceProjectStep3 onNextStep={onNextStep} /> */}
-                        <AssignNewProjectStep3 onNextStep={onNextStep} />
+                        <AssignNewProjectStep3 projectId={projectId} onNextStep={onNextStep} />
                         <Footer onNextStep={onNextStep} />
                     </div>
                 );

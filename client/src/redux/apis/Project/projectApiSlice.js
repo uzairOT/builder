@@ -1,20 +1,87 @@
-import { apiSlice } from '../apiSlice';
+import { apiSlice } from "../apiSlice";
 
-const PROJECTS_URL = 'http://192.168.0.101:8080/project';
-const URL = 'http://192.168.0.101:8080/project';
+const PROJECTS_URL = "http://192.168.0.105:8080/project";
+const projectId = 47;
 
-<<<<<<< HEAD
 const projectApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    assignProject: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/assignproject`,
+        method: "POST",
+        body: data,
+      }),
+      providesTags: ["Project"],
+    }),
+
+    // Phase ApiSlices ................. //
+    addProjectPhase: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/addPhase/${data.projectId}`,
+        method: "POST",
+        body: data,
+      }),
+      providesTags: ["Project"],
+    }),
+    updateProjectPhase: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/addPhase/${data.id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      providesTags: ["Project"],
+    }),
+    deleteProjectPhase: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/addPhase/${projectId}`,
+        method: "DELETE",
+        body: data,
+      }),
+      providesTags: ["Project"],
+    }),
+
+    // PhaseLine ApiSlices ................. //
+    getPhases: builder.query({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/getPhases/${data.projectId}`,
+        method: "GET",
+      }),
+      providesTags: ["Project"],
+    }),
+    addPhaseLine: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/addPhaseLine/${data.projectId}`,
+        method: "POST",
+        body: data,
+      }),
+      providesTags: ["Project"],
+    }),
+    updatePhaseLine: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/updatePhaseLine/${data.id}`,
+        method: "PUT",
+        body: data,
+      }),
+      providesTags: ["Project"],
+    }),
+    deletePhaseLine: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/deletePhaseLine/${data.lineItemId}`,
+        method: "DELETE",
+        body: data,
+      }),
+      providesTags: ["Project"],
+    }),
+
     getProjectChangeOrder: builder.query({
       query: (data) => ({
-        url: `${PROJECTS_URL}/changeOrder/${projectId}`,
+        url: `${PROJECTS_URL}/getWorkOrder/${data.projectId}/${data.userId}`,
         method: "GET",
       }),
     }),
-    getProjectInfoAndTeam: builder.query({
+    getProjectTeam: builder.query({
       query: (data) => ({
-        url: `${PROJECTS_URL}/projectTeam/${projectId}`,
+        url: `${PROJECTS_URL}/getProjectTeam/${data}`,
         method: "GET",
       }),
     }),
@@ -50,7 +117,7 @@ const projectApiSlice = apiSlice.injectEndpoints({
     }),
     getProjectWorkOrder: builder.query({
       query: (data) => ({
-        url: `${PROJECTS_URL}/workOrder/${projectId}}`,
+        url: `${PROJECTS_URL}/workOrder/${projectId}`,
         method: "GET",
       }),
     }),
@@ -62,8 +129,29 @@ const projectApiSlice = apiSlice.injectEndpoints({
     }),
     getProjectNotes: builder.query({
       query: (data) => ({
-        url: `${PROJECTS_URL}/notes/${projectId}}`,
+        url: `${PROJECTS_URL}/notes/${data.projectId}`,
         method: "GET",
+      }),
+      fetchPolicy: "network-only",
+    }),
+    addProjectNotes: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/notes/${data.projectId}`,
+        method: "POST",
+        body: data
+      }),
+    }),
+    editProjectNotes: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/notes/${data.noteId}`,
+        method: "PUT",
+        body: data
+      }),
+    }),
+    deleteProjectNotes: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/notes/${data}`,
+        method: "DELETE",
       }),
     }),
     getProjectReports: builder.query({
@@ -72,12 +160,31 @@ const projectApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getTeamMembers: builder.query({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/getProjectTeam/${data}`,
+        method: 'GET',
+      })
+    }),
+    getProjectData: builder.query({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/getProjectData/${data.projectId}`
+      })
+    }),
   }),
 });
 
 export const {
+  useAssignProjectMutation,
+  useAddProjectPhaseMutation,
+  useUpdateProjectPhaseMutation,
+  useDeleteProjectPhaseMutation,
+  useGetPhasesQuery,
+  useAddPhaseLineMutation,
+  useUpdatePhaseLineMutation,
+  useDeletePhaseLineMutation,
   useGetProjectChangeOrderQuery,
-  useGetProjectInfoAndTeamQuery,
+  useGetProjectTeamQuery,
   useGetProjectFinancesQuery,
   useGetProjectInitialProposalQuery,
   useGetProjectImageQuery,
@@ -85,8 +192,14 @@ export const {
   useGetProjectDrawingFilesQuery,
   useGetProjectWorkOrderQuery,
   useGetProjectChatQuery,
+  useGetTeamMembersQuery,
+  useGetProjectDataQuery,
+  useGetProjectNotesQuery,
+  useAddProjectNotesMutation,
+  useEditProjectNotesMutation,
+  useDeleteProjectNotesMutation
 } = projectApiSlice;
-=======
+=========
 const projectId = localStorage.getItem("projectId");
 
 export const projectApiSlice = apiSlice.injectEndpoints({
@@ -183,4 +296,4 @@ export const {
     useGetProjectChangeOrderQuery,
     useGetPhasesQuery,
 } = projectApiSlice;
->>>>>>> c06f13352599bdc0583928b6a8d0dff788a5a1eb
+>>>>>>>>> Temporary merge branch 2

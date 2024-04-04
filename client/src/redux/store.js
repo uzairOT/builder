@@ -18,8 +18,6 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware), // Add the middleware for handling API requests
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware), // Add the middleware for handling API requests
 });
 
 setupListeners(store.dispatch);

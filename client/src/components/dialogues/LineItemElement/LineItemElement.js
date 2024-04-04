@@ -19,11 +19,14 @@ import {
   Box,
   Typography,
   MenuItem,
+  Autocomplete
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
 import "../../../App.css";
 import "./LineItemElement.css";
-import {updateLineItem} from "../../../redux/slices/Project/projectInitialProposal"
+import {addPhase, updateLineItem} from "../../../redux/slices/Project/projectInitialProposal"
+import {useParams} from 'react-router-dom'
+import axios from 'axios'
 
 
 function AddLineElement({
@@ -37,8 +40,12 @@ function AddLineElement({
   selectedRowIndex,
   handleAddRow,
   rowData,
-  LineItem
+  LineItem,
+  assignPageview,
+  projectId
 }) {
+  
+
   const [open, setOpen] = useState(false);
   const [addPhaseLine] = useAddPhaseLineMutation();
   const [updatePhaseLine] = useUpdatePhaseLineMutation();
@@ -53,10 +60,16 @@ function AddLineElement({
   const [longDescription, setLongDescription] = useState(
     LineItem ? LineItem.notes : ""
   );
+  const [autoComplete, setAutoComplete] = useState();
   const dispatch = useDispatch();
+  const {id} = useParams();
+  const local = localStorage.getItem('projectId');
   
+  const currentProject = JSON.parse(local);
   const phases = useSelector((state) => state.projectInitialProposal.phases);
-console.log(phases)
+  const userInfo = useSelector((state) => state.auth.userInfo);
+  console.log(userInfo)
+  
 
   const formData = {
     phaseName,
@@ -69,6 +82,22 @@ console.log(phases)
     end,
     longDescription,
   };
+  useEffect(()=>{
+    console.log(autoComplete);
+  },[autoComplete])
+
+  useEffect(() => {
+    const getData = setTimeout(() => {
+      axios
+        .get(`http://192.168.0.105:8080/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`)
+        .then((response) => {
+          setAutoComplete(response.data.MasterLines);
+          console.log(response.data.MasterLines);
+        });
+    }, 500);
+
+    return () => clearTimeout(getData);
+  }, [formData.phaseName]);
 
   const handleClickOpen = () => {
     if (LineHeading === "Update Line Item") {
@@ -88,18 +117,22 @@ console.log(phases)
     setOpen(false);
   };
 
+  console.log("Line Item Element",)
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (LineHeading === "Update Line Item") {
         console.log("updading..")
         const lineItemId =LineItem.id
         const data = {
-            ...formData,id:lineItemId
+            ...formData,
+            id:lineItemId,
+            projectId: projectId,
         }
-        console.log(LineItem.phase_id)
+        console.log("Update Alin Item",data)
    
-     updatePhaseLine(data,lineItemId);
-     dispatch(updateLineItem({ phaseId:LineItem.phase_id,lineItemId:LineItem.id, updatedLineItem:formData }));
+     const res = await updatePhaseLine(data);
+     console.log(res.data)
+     dispatch(addPhase(res.data.data));
       console.log("form submitted succesfully", formData);
       console.log(LineItem.id)
     //   handleUpdateClose();
@@ -116,6 +149,7 @@ console.log(phases)
         longDescription,
       } = formData;
       const newLineItem = {
+        projectId: projectId,
         phaseId: phaseData.id,
         phaseName,
         description,
@@ -129,6 +163,7 @@ console.log(phases)
       };
 
       const response = await addPhaseLine(newLineItem);
+      dispatch(addPhase(response?.data?.allPhases));
       console.log(newLineItem);
       console.log(response);
       // handleAddRow(newLineItem);
@@ -167,7 +202,7 @@ console.log(phases)
     <div className="App">
       <>
         <Dialog
-          open={handleClickOpen}
+          open={true}
           onClose={handleClickClose}
           PaperProps={{
             sx: { ...paperPropsStyle },
@@ -178,8 +213,42 @@ console.log(phases)
           <DialogTitle sx={typoTitle}>{LineHeading}</DialogTitle>
           <DialogContent sx={{ padding: "3rem" }}>
             <Typography sx={typoText}>Phase</Typography>
-            <form>
-              <TextField
+            <>
+            <Autocomplete
+        freeSolo
+        id="phaseName"
+        options={autoComplete ? autoComplete.map((option)=> option.title) : []} // Add your options here
+        value={formData.phaseName}
+        name="phaseName"
+        onChange={(event, newValue) => {
+          const selectedOption = autoComplete?.find((option) => option.title === newValue);
+          if (selectedOption) {
+            setDescription(selectedOption.description);
+            setUnit(selectedOption.unit);
+            setQuantity(selectedOption.quantity);
+            setUnitPrice(selectedOption.unit_price);
+            setTotal(selectedOption.total);
+            setStart(selectedOption.start_day);
+            setEnd(selectedOption.end_day);
+            setLongDescription(selectedOption.notes);
+          } else {
+            // Handle case where newValue is not found in autoComplete
+          }
+          setPhaseName(newValue);
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Phase Name"
+            margin="dense"
+            variant="standard"
+            onChange={(event) => setPhaseName(event.target.value)} // Assuming setPhaseName is your state updater function
+            required
+            InputLabelProps={{ shrink: true }}
+          />
+        )}
+      />
+              {/* <TextField
                 sx={inputStyle}
                 required
                 margin="dense"
@@ -189,7 +258,7 @@ console.log(phases)
                 variant="standard"
                 value={formData.phaseName}
                 onChange={(e) => setPhaseName(e.target.value)}
-              />
+              /> */}
 
               <Typography sx={typoText}>Description</Typography>
               <TextField
@@ -310,7 +379,7 @@ console.log(phases)
                 value={formData.longDescription}
                 onChange={(e) => setLongDescription(e.target.value)}
               />
-            </form>
+            </>
           </DialogContent>
           <DialogActions sx={generalBox}>
             <Button sx={{ ...actionButton, ...doneButton }} type="submit">

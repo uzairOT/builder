@@ -12,8 +12,8 @@ function SideBar() {
     const paths = [
         '/settings/profile',
         '/settings/admin',
-        '/settings/projectmanager',
-        '/settings/clients',
+        '/settings/projectManager',
+        '/settings/client',
         '/settings/subcontractor',
         '/settings/supplier',
         '/settings/materline'
@@ -45,7 +45,7 @@ function SideBar() {
                 </ListItem>
                 <ListItem
                 component={Link}
-                    to="/settings/projectmanager"
+                    to="/settings/projectManager"
                     
                     selected={selectedItem === 2}
                     sx={listItemStyle}
@@ -54,7 +54,7 @@ function SideBar() {
                 </ListItem>
                 <ListItem
                 component={Link}
-                    to="/settings/clients"
+                    to="/settings/client"
                     
                     selected={selectedItem === 3}
                     sx={listItemStyle}

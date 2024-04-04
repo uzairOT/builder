@@ -100,7 +100,7 @@ function AddPhaseView({adminProjectView, view}) {
       container
       sx={firstGrid}
     >
-      <Stack direction={'row'} justifyContent={'space-between'}>
+      {/* <Stack direction={'row'} justifyContent={'space-between'}>
         <Stack>
             {adminProjectView && <Typography pl={3} pt={1} color={'#4C8AB1'} fontFamily={'Poppins, san serif'} fontSize={'22px'} fontWeight={'600'}>
                     {view}
@@ -122,7 +122,7 @@ function AddPhaseView({adminProjectView, view}) {
           Send Approval
         </Button>}
         </Stack>}
-      </Stack>
+      </Stack> */}
 
 
 
@@ -130,7 +130,7 @@ function AddPhaseView({adminProjectView, view}) {
       {cardPhase.map((phase, index) => (
         <AddPhaseCard
           key={phase?.id}
-          cardPhase={phase}
+          phaseData={phase}
           rows={rows}
           length={cardPhase.length}
           onGridToggle={() => handleGridToggle(index, phase?.previousIndex)}

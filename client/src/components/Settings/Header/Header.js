@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, Box, TextField ,Hidden,IconButton } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import Button from "../../UI/CustomButton";
 import Search from "../../UI/CustomSearchInput";
+import  axios  from "axios";
 
 function Header({ title, OpenAddModal }) {
  
@@ -13,6 +14,14 @@ function Header({ title, OpenAddModal }) {
   const handleSearchInputChange = (event) => {
     setSearchInput(event.target.value);
   };
+
+  // useEffect(()=>{
+  //   const getData = setTimeout(()=>{
+  //     axios.get('').then((res) =>{console.log(res)});
+
+  //   },1000)
+  //   return () => clearTimeout(getData)
+  // },[searchInput])
 
   const handleKeyPress = (event) => {};
 

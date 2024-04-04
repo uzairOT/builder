@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { styled } from '@mui/material/styles';
 import ShareIcon from "@mui/icons-material/Share";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -12,6 +12,9 @@ import download from './assets/images/download.png';
 import DownloadSharpIcon from '@mui/icons-material/DownloadSharp';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import CloseIcon from '@mui/icons-material/Close';
+import NotesModal from "./NotesModal";
+import { useParams } from "react-router-dom";
+import { useDeleteProjectNotesMutation, useGetProjectNotesQuery } from "../../../redux/apis/Project/projectApiSlice";
 
 const OpenNotes = ({ notes }) => {
     const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -26,7 +29,18 @@ const OpenNotes = ({ notes }) => {
         },
         width: '100%'
       }));
-    
+      const [showEditModal, setShowEditModal] = useState(false);
+      const { id } = useParams();
+      const [deleteProjectNote] = useDeleteProjectNotesMutation();
+      const noteId = notes?.id;
+      const { refetch } = useGetProjectNotesQuery({ projectId: id });
+      const handleEdit = ()=>{
+        setShowEditModal(!showEditModal)
+      }
+      const handleDelete = async ()=>{
+        await deleteProjectNote(noteId); 
+        await refetch();
+      }
   return (
     <Stack height={'100%'}>
       <Stack direction={"row"} justifyContent={"space-between"} p={2}>
@@ -48,6 +62,7 @@ const OpenNotes = ({ notes }) => {
                 borderRight: "0px",
                 color: "#484848",
               }}
+              onClick={handleDelete}
             >
               <DeleteIcon />
             </Button>
@@ -57,10 +72,12 @@ const OpenNotes = ({ notes }) => {
                 borderRight: "0px",
                 color: "#484848",
               }}
+              onClick={handleEdit}
             >
               <BorderColorIcon />
             </Button>
           </ButtonGroup>
+          {showEditModal && <NotesModal notes={notes} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />}
         </Stack>
         <BuilderProButton backgroundColor={'#4C8AB1'} variant={'contained'}>
             <Typography fontFamily={'Manrope, sanserif'} fontWeight={'700'} fontSize={'13px'} pl={2} pr={2}>Save</Typography>
@@ -74,7 +91,7 @@ const OpenNotes = ({ notes }) => {
             fontWeight={"700"}
             color={"#202227"}
           >
-            {notes.title}
+            {notes?.subject}
           </Typography>
           <Typography
             textAlign={"left"}
@@ -83,7 +100,7 @@ const OpenNotes = ({ notes }) => {
             color={"#535353"}
             pt={4}
           >
-            {notes.note}
+            {notes?.content}
           </Typography>
         </Stack>
         <Stack spacing={1}>

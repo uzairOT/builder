@@ -4,8 +4,10 @@ import { Box, Drawer, IconButton } from '@mui/material'
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import './styles/drawer.css'
 
-const TaskCalenderView = ({ dailyForecast }) => {
+const TaskCalenderView = ({ dailyForecast, events }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  console.log("In Task Calender View: ", dailyForecast);
+  
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -20,7 +22,7 @@ const TaskCalenderView = ({ dailyForecast }) => {
           />
         </IconButton>
       </Box>
-      <TaskCalender dailyForecast={dailyForecast} sx={{ flexGrow: 1 }} isDrawerOpen={isDrawerOpen} />
+      <TaskCalender events={events} dailyForecast={dailyForecast} sx={{ flexGrow: 1 }} isDrawerOpen={isDrawerOpen} />
       <Drawer open={isDrawerOpen} onClose={toggleDrawer} anchor="right">
         <Box display={''} sx={{ alignSelf: 'flex-start', marginBottom: '-64px', marginTop: '18px', marginLeft: '5px' }}>
           <IconButton onClick={toggleDrawer} >
@@ -30,7 +32,7 @@ const TaskCalenderView = ({ dailyForecast }) => {
             />
           </IconButton>
         </Box>
-        <TaskCalender dailyForecast={dailyForecast} isDrawerOpen={isDrawerOpen} />
+        <TaskCalender events={events} dailyForecast={dailyForecast} isDrawerOpen={isDrawerOpen} />
       </Drawer>
     </Box>
   )

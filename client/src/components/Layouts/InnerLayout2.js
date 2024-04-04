@@ -53,13 +53,13 @@ const InnerLayout2 = () => {
             <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:'15px'}}>Approved</Tab>
             <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:'15px'}}>Declined</Tab>
             </TabList>
-            <TabPanel sx={{padding: 0}} value={0}>
+            <TabPanel sx={{padding: 0, width:'500px'}} value={0}>
           <ChangeOrder />
             </TabPanel>
-            <TabPanel sx={{padding: 0}} value={1}>
+            <TabPanel sx={{padding: 0, width:'500px'}} value={1}>
           <ChangeOrder />
             </TabPanel>
-            <TabPanel sx={{padding: 0}} value={2}>
+            <TabPanel sx={{padding: 0, width:'500px'}} value={2}>
           <ChangeOrder />
             </TabPanel>
           </Tabs>

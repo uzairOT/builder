@@ -1,18 +1,34 @@
 import { Box, Divider, Link, Stack, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import BuilderProButton from '../../UI/Button/BuilderProButton'
 import { useParams } from 'react-router-dom'
 import ProjectCard from '../../UI/Card/ProjectCard'
 import projects from './assets/data/projects.json'
+import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+import {useDispatch} from 'react-redux';
+import {addProjects} from '../../../redux/slices/Project/userProjectsSlice'
 
 const ProjectsSidebar = () => {
     const [activeBtn, setActiveBtn] = useState('New build')
-
+    const dispatch = useDispatch();
+    const local = localStorage.getItem('userInfo');
+    const currentUser = JSON.parse(local);
+    const currentUserId = currentUser.user.id
     const handleListedProjectsButton = (btn)=>{
         setActiveBtn(btn);
     }
     const {id} = useParams();
     console.log(id);
+    const {data, isLoading, error} = useGetUserProjectsQuery({userId: currentUserId});
+    useEffect(() => {
+      console.log(data)
+      if(data){
+        dispatch(addProjects(data))
+      }
+    },[data, dispatch])
+    if(isLoading){
+      return <>Loading...</>
+    }
   return (
     <>
         <Stack p={2}>
@@ -45,7 +61,7 @@ const ProjectsSidebar = () => {
         <Box sx={{...themeStyle.scrollable }}  style={{height:'70vh',}}>
         <Stack spacing={1} pl={2} pr={2} pt={1} >
           <>
-          {projects.map((projectProfileCard) => {
+          {data?.projects?.map((projectProfileCard) => {
             const selected = projectProfileCard.id == id;
             return (
               <Link key={projectProfileCard.id} underline="none">

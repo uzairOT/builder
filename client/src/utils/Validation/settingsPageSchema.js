@@ -5,7 +5,7 @@ const SUPPORTD_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
 
 export const settingsSchema = yup.object().shape({
     name: yup.string().required(),
-    projects: yup.string().required(),
+    project: yup.string().required(),
     email: yup.string().email().required(),
     phoneNumber: yup.string().matches(phoneRegExp, {message: 'Please enter valid Phone Number'}).required(),
     country: yup.string().required(),

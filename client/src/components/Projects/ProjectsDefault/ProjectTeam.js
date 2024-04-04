@@ -1,12 +1,13 @@
 import { Stack, Typography, Popover, IconButton, Divider,Input, FormControl, Select, InputLabel, MenuItem } from '@mui/material'
-import React, { useState } from 'react'
-import data from './assests/data/data.json'
+import React, { useEffect, useState } from 'react'
+import data1 from './assests/data/data.json'
 import BuilderProButton from '../../UI/Button/BuilderProButton';
 import CloseIcon from "@mui/icons-material/Close";
 import { ReactComponent as BuilderProNavbarShare } from "./assests/svgs/builder-pro-navbar-share.svg";
 import users from './assests/data/users.json'
 import LinkIcon from "@mui/icons-material/Link";
-
+import { useGetProjectTeamQuery } from '../../../redux/apis/Project/projectApiSlice';
+import {useLocation} from 'react-router-dom'
 
 
 
@@ -14,15 +15,21 @@ import LinkIcon from "@mui/icons-material/Link";
         const [open, setOpen] = useState(null);
         const [userType, setUserType] = useState("");
         const openShare = Boolean(open);
-        
+        const [email, setEmail] = useState('');
+        const location = useLocation();
+        const pathSegments = location.pathname.split('/')
+        const projectId = pathSegments[2];
+        console.log(pathSegments)
+        const {data, isLoading} = useGetProjectTeamQuery(projectId)
+        const team = data?.team
         const id = openShare ? "simple-popover" : undefined;
-        // Grouping data by role
-        const groupedData = data.reduce((acc, person) => {
+        const groupedData = isLoading ?  <>Loading...</> :  team?.reduce((acc, person) => {
           acc[person.role] = acc[person.role] || [];
           acc[person.role].push(person);
           return acc;
         }, {});
-
+        
+        console.log("team: ", team, "groupedData :", groupedData)
         const handleShare = (e) => {
             setOpen(e.currentTarget);
           };
@@ -32,12 +39,15 @@ import LinkIcon from "@mui/icons-material/Link";
           const handleUserTypeChange = (event) => {
             setUserType(event.target.value);
           };
+         const  handleEmailChange = (e) =>{
+            setEmail(e.target.value)
+          }
   return (
     <Stack pl={{xl:5,lg:5,md:0}} >
         <Typography sx={themeStyle.title}>Project Team</Typography>
         <Stack direction={'row'} justifyContent={{xl:'space-between',lg:'space-between',md:'center'}}>
             <Stack  width={'100%'} >
-            {Object.keys(groupedData).map((role)=>{
+            {isLoading ? <>Loading...</>  : Object.keys(groupedData).map((role)=>{
                 let acc =0;
                 return(
                 <Stack direction={'row'} justifyContent={{xl:'space-between', lg:'space-between', md:'flex-start', sm:'flex-start', xs:'flex-start'}} >
@@ -53,15 +63,15 @@ import LinkIcon from "@mui/icons-material/Link";
                       )
                     }else{
                         return(
-                      <Typography sx={themeStyle.subTitle}>{person.name}{groupedData[role].length > 1 && index === 0 ? ',' :''}</Typography>
+                      <Typography sx={themeStyle.subTitle}>{person.firstName} {person.lastName}{groupedData[role].length > 1 && index === 0 ? ',' :''}</Typography>
                     )}
                 })}
                 </Stack>
                 </Stack>
                 <Stack direction={'row'} width={'100px'}>
                 {groupedData[role].map((person, index)=>{
-                    return(
-                        <img key={index} src={person.profilePic} alt='profile' width={'35px'} height={'35px'} style={{borderRadius:'50px', marginLeft: '-10px'}} ></img>
+                    return( <></>
+                        // <img key={index} src={person.profilePic} alt='profile' width={'35px'} height={'35px'} style={{borderRadius:'50px', marginLeft: '-10px'}} ></img>
                         )
                     })}
                 </Stack>
@@ -123,6 +133,8 @@ import LinkIcon from "@mui/icons-material/Link";
             pl={2}
           >
             <Input
+            value={email}
+            onChange={(e)=>{handleEmailChange(e)}}
               placeholder="Enter an Email to invite"
               aria-describedby="my-helper-text"
               sx={{

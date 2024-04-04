@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import moment from 'moment';
 
-const CustomToolbar = ({toolbar, setEventView}) => {
+const CustomToolbar = ({toolbar, setEventView, dailyForecast, toolbarKey}) => {
+ 
   const [activeButton, setActiveButton] = useState("day");
   const [activeHeader, setActiveHeader] = useState('Work Order');
+  const [matchingForecast,setMatchingForecast] = useState();
+
+  useEffect(()=>{
+    console.log('custom toolbar', dailyForecast, ' key: ', toolbarKey)
+  },[dailyForecast,  toolbarKey])
+
   const goToDayView = (view) => {
     toolbar.onView(view);
     setActiveButton(view);
@@ -181,6 +189,10 @@ const handleActiveHeader = (view) => {
           
         </Stack>}
       </Stack>
+            {
+              
+
+            }
     </div>
 
     </>

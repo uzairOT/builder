@@ -6,7 +6,8 @@ const initialState = {
   color: "#ffff",
   colorMode: 'rgba',
   phaseName: '',
-  rowCheckboxes: [],
+  rowCheckbox: [],
+
 };
 
 export const addPhaseSlice = createSlice({
@@ -31,13 +32,13 @@ export const addPhaseSlice = createSlice({
       state.colorMode = initialState.colorMode;
       state.phaseName = initialState.phaseName;
     },
-    setRowCheckboxes: (state, action)=>{
-      state.rowCheckboxes = action.payload;
+    setRowCheckbox: (state, action)=>{
+      return action.payload;
     }
   },
 });
 
-export const { setOpen, setColor, setColorMode, setPhaseName, resetState, setRowCheckboxes } = addPhaseSlice.actions;
+export const { setOpen, setColor, setColorMode, setPhaseName, resetState, setRowCheckbox } = addPhaseSlice.actions;
 
 export const selectAddPhase = (state) => state.addPhase;
 

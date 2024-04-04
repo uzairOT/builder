@@ -49,8 +49,8 @@ function MasterLine() {
         </Typography>
         <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Master Line Item"} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} />
-      <UpdateModal title={"Master Line Item"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo} />
+      {/* <AddModal title={"Master Line Item"} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} />
+      <UpdateModal title={"Master Line Item"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo} /> */}
     </div>
   );
 }
