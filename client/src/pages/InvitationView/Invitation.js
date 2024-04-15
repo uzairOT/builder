@@ -78,7 +78,7 @@ const Invitation = () => {
   
     try {
       // Make POST request using Axios
-      await axios.post('http://192.168.0.105:8080/project/addme', data);
+      await axios.post('http://192.168.0.107:8080/project/addme', data);
   
       // Navigate to the desired location upon successful request
       navigate('/');

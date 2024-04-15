@@ -129,7 +129,7 @@ function CustomTable({
             data?.users?.map((row) => (
               <TableRow key={row.id}>
                 <TableCell sx={tableCellValueStyle}>
-                  <Avatar alt="Avatar" src={row.avatar} />
+                  <Avatar alt="Avatar" src={row.image} />
                 </TableCell>
                 <TableCell sx={tableCellValueStyle}>{row.firstName}</TableCell>
                 <TableCell sx={tableCellValueStyle}>{row.project}</TableCell>

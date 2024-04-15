@@ -17,7 +17,7 @@ import {
   selectUsers,
 } from "../../../redux/slices/projectFormSlice";
 
-import { Button, Box } from "@mui/material";
+import { Button, Box, useMediaQuery } from "@mui/material";
 import StepFormField from "../StepFormField/StepFormField";
 import {
   selectProjectForm,
@@ -25,22 +25,35 @@ import {
   setLocation,
 } from "../../../redux/slices/projectFormSlice";
 import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 
-function AssignNewProjectStep2({ onNextStep ,setProjectId, isSaveAs, projectId }) {
+function AssignNewProjectStep2({
+  onNextStep,
+  setProjectId,
+  isSaveAs,
+  projectId,
+}) {
+  const isMobile = useMediaQuery("(max-width:600px)");
+  const isTab = useMediaQuery("(max-width:900px)");
   const userInfo = useSelector((state) => state.auth.userInfo);
-  const [assignProject, { isLoading }] = useAssignProjectMutation({userId: userInfo.user.id});
-
+  const formWidth = { width: isMobile ? "75%" : isTab ? "65%" : "48%" };
+  const [assignProject, { isLoading }] = useAssignProjectMutation({
+    userId: userInfo.user.id,
+  });
+  const borderRadiusResponsive = {
+    borderRadius: isMobile ? "0.5rem" : "0.75rem",
+  };
+  const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
   const [emailCount, setEmailCount] = useState(1);
   const [showSkipInvite, setShowSkipInvite] = useState(false);
   const { projectName } = useSelector(selectProjectForm);
+  const { refetch } = useGetUserProjectsQuery({ userId: userInfo.user.id });
 
   const handleAddEmail = () => {
     setEmailCount(emailCount + 1);
   };
-
-  
 
   const handleSkip = () => {
     setShowSkipInvite(true);
@@ -65,32 +78,37 @@ function AssignNewProjectStep2({ onNextStep ,setProjectId, isSaveAs, projectId }
   };
 
   const Data = useSelector(selectProjectForm);
+  console.log(Data);
 
   const handleCreateNewProject = async () => {
-    localStorage.removeItem('projectId');
+    localStorage.removeItem("projectId");
     try {
       const userdata = userInfo.user.id;
       console.log(userdata);
-  
+
       const userId = userdata;
       console.log(userId);
-      const FormData = { ...Data, userId: userId, isSaveAs: isSaveAs, projectId: projectId };
-  
+      const FormData = {
+        ...Data,
+        userId: userId,
+        isSaveAs: isSaveAs,
+        projectId: projectId,
+      };
+
       // Call the assignProject function and wait for the result
       const res = await assignProject(FormData).unwrap();
-  
+
       // If successful, store the project ID in local storage
-      localStorage.setItem('projectId', res.project.id);
-      console.log(res.project.id);
-      console.log(res);
-      setProjectId(res.project.id)
+      localStorage.setItem("projectId", res.project.id);
+      setProjectId(res.project.id);
+      await refetch();
       onNextStep();
     } catch (error) {
       // If an error occurs during the process, handle it here
-      toast.error('Error creating new project:', error.message);
+      toast.error("Error creating new project:", error.message);
       return;
     }
-   };
+  };
 
   return (
     <>
@@ -102,7 +120,7 @@ function AssignNewProjectStep2({ onNextStep ,setProjectId, isSaveAs, projectId }
           "Lorem ipsum dolor sit amet consectetur. Pretium aliquam egestas interdum varius sed at libero. Sed vestibulum vel platea accumsan in elit morbi eu erat. Purus non urna et purus. Libero nec nec quam pulvinar massa nulla et tincidunt."
         }
       />
-
+      
       {users.map((user, index) => (
         <StepFormField
           key={index}
@@ -190,6 +208,39 @@ const buttonLnks = {
   color: "#4C8AB1",
   fontSize: { lg: "0.9rem", md: "0.9rem", sm: "0.8rem", xs: "0.6rem" },
   whiteSpace: "nowrap",
+};
+
+const inputStyle = {
+  width: "100%", // Set width to 100% for responsiveness
+  height: "2rem",
+  marginBottom: "0.5rem",
+  alignSelf: "center",
+  padding: "8px",
+  fontSize: "14px",
+  border: "1px solid #ccc",
+  borderRadius: "12px",
+  color: "#202227",
+  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  paddingLeft: "-1.5rem",
+};
+const fieldBox1 = {
+  flex: 4,
+  marginRight: "1rem",
+  marginLeft: "-1rem",
+  position: "relative",
+};
+
+const formStyle = {
+  marginTop: "0.1rem",
+}
+
+const formBox = {
+  width: "100%",
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  marginTop: "0.5rem",
 };
 
 export default AssignNewProjectStep2;

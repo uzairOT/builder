@@ -12,3 +12,10 @@ export const settingsSchema = yup.object().shape({
     status: yup.string().required(),
     // image: yup.mixed().nullable().required().test("FILE_FORMAT", "Uploaded file has unsupported format.", (value)=> !value || (value && SUPPORTD_FORMATS.includes(value?.type))),
 })
+export const projectSchema = yup.object().shape({
+    name: yup.string().required(),
+    project: yup.string(),
+    phoneNumber: yup.string().matches(phoneRegExp, {message: 'Please enter valid Phone Number'}),
+    status: yup.string(),
+    // image: yup.mixed().nullable().required().test("FILE_FORMAT", "Uploaded file has unsupported format.", (value)=> !value || (value && SUPPORTD_FORMATS.includes(value?.type))),
+})

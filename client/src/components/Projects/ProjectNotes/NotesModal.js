@@ -22,6 +22,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes}) => {
   console.log(notes);
   const [noteSubject, setNoteSubject] = useState(notes ? notes?.subject : "");
   const [noteBody, setNoteBody] = useState(notes? notes?.content : "");
+
   const [addProjectNote] = useAddProjectNotesMutation();
   const [editProjectNotes] = useEditProjectNotesMutation();
   const { refetch } = useGetProjectNotesQuery({ projectId: id });

@@ -24,6 +24,7 @@ import { useDeletePhaseLineMutation } from "../../../redux/apis/Project/projectA
 import { selectAddPhase, setRowCheckbox } from "../../../redux/slices/addPhaseSlice";
 import {useDispatch, useSelector} from 'react-redux';
 import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
+import moment from 'moment';
 
 const initialRows = [
   { phaseName: 'Item 1', description: 'Description 1', unit: 'Unit 1', margin: '10%', quantity: 5, unitPrice: 20, total: 100, start: '2024-03-01', end: '2024-03-05', longDescription: 'Note 1' },
@@ -47,11 +48,11 @@ const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSele
   const {rowCheckbox} = useSelector(selectAddPhase);
 
   const handleArrowDownClick = () => {
-    onGridToggle(phaseData.currentIndex, phaseData.currentIndex + 1);
+    onGridToggle(phaseData.current_position, phaseData.current_position + 1);
   };
 
   const handleArrowUpClick = () => {
-    onGridToggle(phaseData.currentIndex, phaseData.currentIndex - 1);
+    onGridToggle(phaseData.current_position, phaseData.current_position - 1);
   };
 
   const handleSelectAllChange = (event) => {
@@ -113,7 +114,7 @@ const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSele
   const tableContainerStyle = {
     width: '100%', // Allow the table to take up the entire available width
     overflow: 'auto',
-    maxHeight:'500px',
+    height:'100%',
      // Add horizontal scrollbar when needed
   };
 
@@ -169,31 +170,33 @@ const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSele
         item
         lg={12}
         sx={{ ...firstGrid, backgroundColor: `${phaseData?.color}` }}
+       
       >
         <Box
           sx={headingsBox}
+          onClick={() => handleSelectCard(phaseData.id)}
         >
           <Box sx={headingInnerBox}>
             <Box >
-              <Typography sx={{ ...blackHeading, cursor: "pointer" }} onClick={() => handleSelectCard(phaseData.id)}>{phaseData.phase_name}</Typography>
+              <Typography sx={{ ...blackHeading, cursor: "pointer" }}>{phaseData.phase_name}</Typography>
             </Box>
             <Box>
               <Typography sx={blackHeading}>Total Price:</Typography>
             </Box>
             <Box>
-              <Typography sx={blackHeading}>Time: &nbsp; Days:</Typography>
+              <Typography sx={blackHeading}>Time: &nbsp; Days: </Typography>
             </Box>
           </Box>
           <Box
             sx={phaseBox}
           >
             <>
-              {phaseData?.currentIndex === 0 ? (
+              {phaseData?.current_position === 0 ? (
                 <ArrowDown
                   style={{ marginRight: "1rem", cursor: "pointer" }}
                   onClick={handleArrowDownClick}
                 />
-              ) : phaseData?.currentIndex === length - 1 ? (
+              ) : phaseData?.current_position === length - 1 ? (
                 <Arrowup
                   style={{ marginRight: "1rem", cursor: "pointer" }}
                   onClick={handleArrowUpClick}
@@ -275,7 +278,9 @@ const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSele
               </TableHead>
 
               <TableBody>
-                {phaseData.LineItems.map((row, index) => (
+                {phaseData.LineItems.map((row, index) => {
+    
+                  return (
                   <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
                     <TableCell>
                     <Checkbox
@@ -292,10 +297,12 @@ const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSele
                     <TableCell>{row.unit}</TableCell>
                     <TableCell>{row.unit_price}</TableCell>
                     <TableCell>{row.quantity}</TableCell>
-                    <TableCell>{row.start_day}</TableCell>
-                    <TableCell>{row.end_day}</TableCell>
+                    <TableCell>{moment(row.start_day).format('YYYY-MM-DD HH A')}</TableCell>
+                    <TableCell>{moment(row.end_day).format('YYYY-MM-DD HH A')}</TableCell>
                 
-                    <TableCell>{row.total}</TableCell>
+                    <TableCell>
+                      {row.total}
+                    </TableCell>
                 
                     <TableCell>{row.notes}</TableCell>
                     <TableCell>{row.status}</TableCell>
@@ -309,7 +316,7 @@ const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSele
                     
            
                   </TableRow>
-                ))}
+                )})}
               </TableBody>
             </Table>
           </Box>
@@ -352,8 +359,9 @@ const displayButton = {
 const firstGrid = {
   display: "flex",
   flexDirection: "column",
-  marginTop: "1rem",
+  marginTop: "0rem",
   borderRadius: "0.5rem",
+  gap: 0
 }
 const headingsBox = {
   display: "flex",

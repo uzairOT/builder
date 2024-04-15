@@ -9,7 +9,7 @@ import {useDispatch} from 'react-redux';
 import {addProjects} from '../../../redux/slices/Project/userProjectsSlice'
 
 const ProjectsSidebar = () => {
-    const [activeBtn, setActiveBtn] = useState('New build')
+    const [activeBtn, setActiveBtn] = useState('remodel')
     const dispatch = useDispatch();
     const local = localStorage.getItem('userInfo');
     const currentUser = JSON.parse(local);
@@ -41,18 +41,18 @@ const ProjectsSidebar = () => {
 
             {/* BUTTON STACK */}
             <Stack direction={'row'}  ml={'-16px'} mr={'-16px'} justifyContent={'center'} >
-            <BuilderProButton variant={'contained'} marginLeft={'4px'} padding={'8px 8px'} backgroundColor={activeBtn === 'Remodel' ? '#FFCA5B' : '#F2F2F2'} handleOnClick={() => {handleListedProjectsButton('Remodel')}}>
+            <BuilderProButton variant={'contained'} marginLeft={'4px'} padding={'8px 8px'} backgroundColor={activeBtn === 'remodel' ? '#FFCA5B' : '#F2F2F2'} handleOnClick={() => {handleListedProjectsButton('remodel')}}>
                 <Typography fontSize={'11px'} fontWeight={'500'} color={'black'} fontFamily={ 'Inter, sans-serif'} width={'100%'}>
                 Remodel
                 </Typography>
                 </BuilderProButton>
-            <BuilderProButton variant={'contained'} marginLeft={'4px'} padding={'8px 8px'} backgroundColor={activeBtn === 'New build' ? '#FFCA5B' : '#F2F2F2'} handleOnClick={() => {handleListedProjectsButton('New build')}}>
+            <BuilderProButton variant={'contained'} marginLeft={'4px'} padding={'8px 8px'} backgroundColor={activeBtn === 'newbuild' ? '#FFCA5B' : '#F2F2F2'} handleOnClick={() => {handleListedProjectsButton('newbuild')}}>
             <Typography fontSize={'11px'} fontWeight={'500'}color={'black'} fontFamily={ 'Inter, sans-serif'} width={'100%'}>
 
              New build
             </Typography>
                 </BuilderProButton>
-            <BuilderProButton variant={'contained'} marginLeft={'4px'} padding={'8px 8px'} backgroundColor={activeBtn === 'Commercial' ? '#FFCA5B' : '#F2F2F2'} handleOnClick={() => {handleListedProjectsButton('Commercial')}}>
+            <BuilderProButton variant={'contained'} marginLeft={'4px'} padding={'8px 8px'} backgroundColor={activeBtn === 'commercial' ? '#FFCA5B' : '#F2F2F2'} handleOnClick={() => {handleListedProjectsButton('commercial')}}>
             <Typography fontSize={'11px'} fontWeight={'500'} color={'black'} fontFamily={ 'Inter, sans-serif'}>
                 Commercial
                 </Typography>
@@ -63,6 +63,7 @@ const ProjectsSidebar = () => {
           <>
           {data?.projects?.map((projectProfileCard) => {
             const selected = projectProfileCard.id == id;
+            if(projectProfileCard.buildType === activeBtn){
             return (
               <Link key={projectProfileCard.id} underline="none">
               <ProjectCard
@@ -70,7 +71,9 @@ const ProjectsSidebar = () => {
               selected={selected}
               />
               </Link>
-              );
+              );} else {
+                return <></>
+              }
             })}
             </>
         </Stack>

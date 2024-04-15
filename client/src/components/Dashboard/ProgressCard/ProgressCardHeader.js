@@ -1,12 +1,12 @@
 import { Box, Stack, Typography } from '@mui/material'
 import React from 'react'
 
-const ProgressCardHeader = () => {
+const ProgressCardHeader = ({project}) => {
   return (
     <Box textAlign={'left'} p={2}>
           <Stack direction={'row'} justifyContent={'space-around'}>
         <Box width={'60%'}>
-            <Typography p={1} sx={{...themeStyle.colorBlue, fontSize: '18px'}}>Burrow - Home Build</Typography>
+            <Typography p={1} sx={{...themeStyle.colorBlue, fontSize: '18px'}}>{project.projectName}</Typography>
             <Typography p={1} sx={{fontSize: '15px', ...themeStyle.colorGray}}>Client Name</Typography>
         </Box>
         <Box width={'40%'} pr={1}>

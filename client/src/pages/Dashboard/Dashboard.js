@@ -8,65 +8,27 @@ import TaskCalenderView from "../../components/Dashboard/TaskCalenderView/TaskCa
 import { getFormattedFiveDayWeather } from "../../services/WeatherService.js";
 import { useGetUserEventsMutation } from "../../redux/apis/usersApiSlice.js";
 import moment from 'moment';
+import {useDispatch, useSelector} from 'react-redux';
+import { addEvents, setIsLoading, allEvents } from "../../redux/slices/Events/eventsSlice.js";
+import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice.js";
+import { allUserProjects } from "../../redux/slices/Project/userProjectsSlice.js";
 
 const Dashboard = () => {
-  const [dailyForecast, setDailyForecast] = useState(null);
-  const [events, setEvents] = useState();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const allEvent = useSelector(allEvents);
+  const forecast = useSelector(getForecast);
+  const userProjects = useSelector(allUserProjects)
   const local = localStorage.getItem('userInfo');
   const currentUser = JSON.parse(local);
   const { id} = currentUser.user;
-  console.log(id);
-  const[ getEvents ]= useGetUserEventsMutation();
+  const loading = allEvent.isLoading;
+  const error = allEvent.error;
+  const events = allEvent.events;
+  const dailyForecast = forecast.dailyForecast;
+  const forecastIsLoading = forecast.isLoading;
+  const forecastError = forecast.error;
+  console.log( "IN DASHBOARD userProjects: ", userProjects)
 
 
-  useEffect(() => {
-    const fetchWeather = async () => {
-      setLoading(true);
-      try {
-        const data = await getFormattedFiveDayWeather({
-          lat: "33.6844",
-          lon: "73.0479",
-          units: "Metric",
-        });
-
-        setDailyForecast(data);
-      } catch (error) {
-        setError(error);
-      } 
-    };
-
-    if (!dailyForecast) {
-      fetchWeather();
-    }
-  }, [dailyForecast]); // Run this effect whenever dailyForecast changes or on initial mount
-
-  useEffect(() => {
-    const getFormattedEvents = async () => {
-      if (dailyForecast) {
-        try {
-          const res = await getEvents({ id, dailyForecast });
-          const data = res.data.formattedWorkOrders;
-          const eventArr = data.map((item)=>{
-              return{
-                ...item,
-                start: moment(item.start).toDate(),
-                end: moment(item.end).toDate(),
-              }
-          })
-          console.log("EVENT ARR",eventArr)
-          setEvents(eventArr);
-        } catch (err) {
-          console.log(err);
-        } finally{
-          setLoading(false);
-        }
-      }
-    };
-
-    getFormattedEvents();
-  }, [id, dailyForecast]); // Run this effect whenever userId or dailyForecast changes
 
 
   return (
@@ -101,8 +63,8 @@ const Dashboard = () => {
               >
                 <WeatherView
                   dailyForecast={dailyForecast}
-                  loading={loading}
-                  error={error}
+                  loading={forecastIsLoading}
+                  error={forecastError}
                 />
               </Paper>
             </Grid>
@@ -117,7 +79,7 @@ const Dashboard = () => {
               pt={1}
               margin={"auto"}
             >
-              <Grid
+              {Array.isArray(userProjects[0]) ? userProjects[0]?.map((project) => (<Grid
                 item
                 xs={12}
                 sm={12}
@@ -131,10 +93,10 @@ const Dashboard = () => {
                 }}
               >
                 <Paper sx={themeStyle.progressCard} margin={1}>
-                  <ProgressCard />
+                  <ProgressCard project={project} />
                 </Paper>
-              </Grid>
-              <Grid
+              </Grid>) ) : <>Loading..</>}
+              {/* <Grid
                 item
                 xs={12}
                 sm={12}
@@ -197,7 +159,7 @@ const Dashboard = () => {
                 <Paper sx={themeStyle.progressCard} margin={1}>
                   <ProgressCard />
                 </Paper>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
           {/* Calender Tracker View */}
@@ -212,7 +174,7 @@ const Dashboard = () => {
               {loading ? (
                 <>Loading</>
               ) : (
-                <TaskCalenderView dailyForecast={dailyForecast} events={events} />
+                <TaskCalenderView dailyForecast={dailyForecast} eventsArr={events} />
               )}
             </Paper>
           </Grid>

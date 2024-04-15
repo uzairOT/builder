@@ -19,16 +19,22 @@ const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 
-const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClient, events }) => {
+const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClient, eventsArr }) => {
   const [monthEventView, setMonthEventView] = useState(true);
   const [eventView, setEventView] = useState('Work Order')
   const eventViewRef = useRef(eventView);
   eventViewRef.current = eventView;
-
   const currentDate = moment();
   const startTime = moment(currentDate).set({ hour: 9, minute: 0, second: 0, millisecond: 0 });
   const endTime = moment(currentDate).set({ hour: 23, minute: 0, second: 0, millisecond: 0 });
-
+    const events = eventsArr?.map((item)=>{
+    return{
+      ...item,
+      start: moment(item.start).toDate(),
+      end: moment(item.end).toDate(),
+    }
+  })
+  console.log("In Task Calender View: ", events);
 
   // const [events, setEvents] = useState([
   //   {

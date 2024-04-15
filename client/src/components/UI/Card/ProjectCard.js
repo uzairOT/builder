@@ -51,8 +51,8 @@ const ProjectCard = ({projectProfileCard, selected}) => {
   return (
     <Card
       sx={{
-        border: `1px solid ${handleCardBorderColor()}`,
-        backgroundColor: `${handleCardColor()}`,
+        // border: `1px solid ${handleCardBorderColor()}`,
+        backgroundColor: `${projectProfileCard.projectColor}`,
         ...themeStyle.card,
       }}
     >

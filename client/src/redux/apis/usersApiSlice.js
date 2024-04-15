@@ -1,5 +1,5 @@
 import { apiSlice } from './apiSlice';
-const USERS_URL = 'http://192.168.0.105:8080/user';
+const USERS_URL = 'http://192.168.0.107:8080/user';
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -50,9 +50,16 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     getUserEvents: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}/events/${data.id}`,
+        url: `${USERS_URL}/events/${data.userId}`,
         method: 'POST',
         body: data
+      })
+    }),
+    updateProfile: builder.mutation({
+      query: (data) =>({
+        url: `${USERS_URL}/profile`,
+        method: 'PUT',
+        body: data,
       })
     })
   }),
@@ -65,5 +72,6 @@ export const {
   useAssignProjectMutation,
   useExistingProjectMutation,
   useUpdateProjectMutation,
-  useGetUserEventsMutation
+  useGetUserEventsMutation,
+  useUpdateProfileMutation
 } = userApiSlice;

@@ -4,9 +4,10 @@ import {
   Route,
   Link,
   createRoutesFromElements,
+  useNavigate,
 } from "react-router-dom";
 // import Signup from "./pages/SignUp/Signup";
-import {lazy, Suspense} from 'react';
+import {lazy, Suspense, useEffect, useState} from 'react';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout3 from "./components/Layouts/Layout3";
 import Profile from "./components/Settings/Profile/Profile";
@@ -45,7 +46,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Invitation from "./pages/InvitationView/Invitation";
 import {ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getFormattedFiveDayWeather } from "./services/WeatherService.js";
+import { addEvents } from "./redux/slices/Events/eventsSlice.js";
 import ProjectsChangeOrder from "./components/Projects/ProjectsChangeOrder/ProjectsChangeOrder";
+import { useGetUserEventsMutation } from "./redux/apis/usersApiSlice.js";
+import moment from 'moment';
+import { allEvents, setIsLoading,setError } from "./redux/slices/Events/eventsSlice.js";
+import { setDailyForecast, setForecastLoading, setForecastError, getForecast } from "./redux/slices/DailyForecast/dailyForecastSlice.js";
 const Dashboard =  lazy(() => import("./pages/Dashboard/Dashboard"))
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"))
 const ImagesView = lazy(() => import("./components/Projects/ProjectsImages/ImagesView"))
@@ -55,8 +62,73 @@ const ReportView = lazy(() => import("./components/Projects/ProjectsReport/Repor
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.userInfo);
-  // const isAuthenticated = true;
-  console.log(isAuthenticated);
+  const userId = isAuthenticated ? isAuthenticated.user.id : null;
+  console.log("USER ID: ", userId);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
+  // const [dailyForecast, setDailyForecast] = useState(null);
+  const [events, setEvents] = useState();
+  const[ getEvents ]= useGetUserEventsMutation();
+  const allEvent = useSelector(allEvents);
+  const forecast = useSelector(getForecast);
+  const dailyForecast = forecast.dailyForecast || [];
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const fetchWeather = async () => {
+      // setLoading(true);
+      dispatch(setIsLoading(true));
+      dispatch(setForecastLoading(true));
+      try {
+        const data = await getFormattedFiveDayWeather({
+          lat: "33.6844",
+          lon: "73.0479",
+          units: "Metric",
+        });
+        dispatch(setDailyForecast(data))
+        dispatch(setForecastLoading(false));
+      } catch (error) {
+        dispatch(setError(error));
+        dispatch(setForecastError(error));
+      } finally{
+        dispatch(setForecastLoading(false));
+      }
+    };
+
+    if (dailyForecast.length < 1) {
+      fetchWeather();
+    }
+  }, [dailyForecast]); // Run this effect whenever dailyForecast changes or on initial mount
+
+  useEffect(() => {
+    const getFormattedEvents = async () => {
+      // console.log("INSIDE USEEFECT: ", dailyForecast.length)
+      if (dailyForecast.length > 1) {
+        // console.log("CONDITION STATISFIED ", dailyForecast.length, "USER ID: ", userId)
+        try {
+          const res = await getEvents({ userId, dailyForecast });
+          const data = res.data.formattedWorkOrders;
+          // const eventArr = data.map((item)=>{
+          //     return{
+          //       ...item,
+          //       start: moment(item.start).toDate(),
+          //       end: moment(item.end).toDate(),
+          //     }
+          // })
+          console.log("EVENT ARR",data)
+          // setEvents(eventArr);
+          dispatch(addEvents(data));
+          dispatch(setIsLoading(false));
+        } catch (err) {
+          dispatch(setError(err));
+          console.log(err);
+        } finally{
+          dispatch(setIsLoading(false));
+        }
+      }
+    };
+
+    getFormattedEvents();
+  }, [userId, dailyForecast]); // Run this effect whenever userId or dailyForecast changes
 
   const router = createBrowserRouter(
     createRoutesFromElements(
