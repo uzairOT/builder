@@ -8,25 +8,27 @@ import TaskCalenderView from "../../components/Dashboard/TaskCalenderView/TaskCa
 import { getFormattedFiveDayWeather } from "../../services/WeatherService.js";
 import { useGetUserEventsMutation } from "../../redux/apis/usersApiSlice.js";
 import moment from 'moment';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addEvents, setIsLoading, allEvents } from "../../redux/slices/Events/eventsSlice.js";
 import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice.js";
 import { allUserProjects } from "../../redux/slices/Project/userProjectsSlice.js";
 
+
 const Dashboard = () => {
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
-  const userProjects = useSelector(allUserProjects)
+  const userProjects = useSelector(allUserProjects);
+  
   const local = localStorage.getItem('userInfo');
   const currentUser = JSON.parse(local);
-  const { id} = currentUser.user;
+  const { id } = currentUser.user;
+  
   const loading = allEvent.isLoading;
   const error = allEvent.error;
   const events = allEvent.events;
   const dailyForecast = forecast.dailyForecast;
   const forecastIsLoading = forecast.isLoading;
   const forecastError = forecast.error;
-  //console.log( "IN DASHBOARD userProjects: ", userProjects)
 
 
 

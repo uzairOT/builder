@@ -18,7 +18,6 @@ import CustomToolbarProjects from "./CustomToolbarProjects";
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
-
 const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClient, eventsArr }) => {
   const [monthEventView, setMonthEventView] = useState(true);
   const [eventView, setEventView] = useState('Work Order')
@@ -197,4 +196,4 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
       );
 }
 
-export default TaskCalender
+export default TaskCalender;

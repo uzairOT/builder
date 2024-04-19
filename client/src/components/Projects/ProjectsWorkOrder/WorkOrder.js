@@ -62,7 +62,7 @@ const dummyData = [
         projectProfile: "Profile 1", // New field for the project profile
       },
   ];
-function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow }) {
+function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow, workOrder }) {
  
   // console.log('INSIDE WORKORDER: ',data)
   const handleUnitChange = (event, id) => {
@@ -79,7 +79,7 @@ function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow }) {
     setCheckedRow((prevCheckedRow) => prevCheckedRow === row ? null : row);
   };
   return (
-    <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
+    <TableContainer component={Paper} sx={{ boxShadow: "none" }} style={{height:workOrder ? '300px' : ''}}>
     <Table>
   <TableHead>
     <TableRow>

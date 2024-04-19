@@ -113,8 +113,9 @@ const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSele
 
   const tableContainerStyle = {
     width: '100%', // Allow the table to take up the entire available width
-    overflow: 'auto',
-    height:'100%',
+    overflowY: 'auto',
+    height:'245px',
+    overflowX: 'hidden'
      // Add horizontal scrollbar when needed
   };
 
@@ -243,7 +244,7 @@ const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSele
           </Box>
         
           <hr style={hrLine} />
-          <Box sx={{ ...tableContainerStyle, marginLeft: "1rem", }}>
+          <Box sx={{ ...tableContainerStyle, marginLeft: "1rem",  }}>
             <Table>
               <TableHead>
                 <TableRow>

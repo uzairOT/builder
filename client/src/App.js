@@ -32,11 +32,11 @@ import DailyLog from "./components/ClientDashboard/DailyLog/DailyLog";
 
 import { loader } from "./pages/Projects/ProjectsTable";
 import PageLoader from "./components/UI/Loaders/PageLoader/PageLoader";
-import InnerLayout2 from './components/Layouts/InnerLayout2'
-import ProjectsDefault from './components/Projects/ProjectsDefault/ProjectsDefault'
-import InitialProposalView from "./components/Projects/ProjectsInitialProposal/InitialProposalView"
-import WorkOrderView from './components/Projects/ProjectsWorkOrder/WorkOrderView'
-import NotesView from "./components/Projects/ProjectNotes/NotesView"
+import InnerLayout2 from "./components/Layouts/InnerLayout2";
+import ProjectsDefault from "./components/Projects/ProjectsDefault/ProjectsDefault";
+import InitialProposalView from "./components/Projects/ProjectsInitialProposal/InitialProposalView";
+import WorkOrderView from "./components/Projects/ProjectsWorkOrder/WorkOrderView";
+import NotesView from "./components/Projects/ProjectNotes/NotesView";
 import Layout1 from "./components/Layouts/Layout1";
 import ProjectsTable from "./pages/Projects/ProjectsTable";
 import Layout2 from "./components/Layouts/Layout2";
@@ -48,27 +48,52 @@ import {ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getFormattedFiveDayWeather } from "./services/WeatherService.js";
 import { addEvents } from "./redux/slices/Events/eventsSlice.js";
+import "react-toastify/dist/ReactToastify.css";
 import ProjectsChangeOrder from "./components/Projects/ProjectsChangeOrder/ProjectsChangeOrder";
 import { useGetUserEventsMutation } from "./redux/apis/usersApiSlice.js";
-import moment from 'moment';
-import { allEvents, setIsLoading,setError } from "./redux/slices/Events/eventsSlice.js";
-import { setDailyForecast, setForecastLoading, setForecastError, getForecast } from "./redux/slices/DailyForecast/dailyForecastSlice.js";
-const Dashboard =  lazy(() => import("./pages/Dashboard/Dashboard"))
-const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"))
-const ImagesView = lazy(() => import("./components/Projects/ProjectsImages/ImagesView"))
-const PermitView = lazy(() => import("./components/Projects/ProjectsPermit/PermitView"))
-const DrawingFilesView = lazy(() => import("./components/Projects/ProjectsDrawingFiles/DrawingFilesView"))
-const ReportView = lazy(() => import("./components/Projects/ProjectsReport/ReportView"))
+import moment from "moment";
+import {
+  allEvents,
+  setIsLoading,
+  setError,
+} from "./redux/slices/Events/eventsSlice.js";
+import {
+  setDailyForecast,
+  setForecastLoading,
+  setForecastError,
+  getForecast,
+} from "./redux/slices/DailyForecast/dailyForecastSlice.js";
+import GoogleLogin from "./components/Login/GoogleLogin/GoogleLogin.js";
+import ForgotPassword from "./components/Login/ForgotPassword/ForgotPassword.js";
+import VerifyCode from "./components/Login/ForgotPassword/VerifyCode.js";
+import PasswordReset from "./components/Login/ForgotPassword/PasswordReset.js";
+import SetNewPassword from "./components/Login/ForgotPassword/SetNewPassword.js";
+import Help from "./pages/Help/Help.jsx";
+import PrivacyTerms from "./pages/PrivacyTerms/PrivacyTerms.jsx";
+const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
+const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
+const ImagesView = lazy(() =>
+  import("./components/Projects/ProjectsImages/ImagesView")
+);
+const PermitView = lazy(() =>
+  import("./components/Projects/ProjectsPermit/PermitView")
+);
+const DrawingFilesView = lazy(() =>
+  import("./components/Projects/ProjectsDrawingFiles/DrawingFilesView")
+);
+const ReportView = lazy(() =>
+  import("./components/Projects/ProjectsReport/ReportView")
+);
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.userInfo);
   const userId = isAuthenticated ? isAuthenticated.user.id : null;
-  //console.log("USER ID: ", userId);
+  console.log("USER ID: ", userId);
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
   // const [dailyForecast, setDailyForecast] = useState(null);
   const [events, setEvents] = useState();
-  const[ getEvents ]= useGetUserEventsMutation();
+  const [getEvents] = useGetUserEventsMutation();
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
   const dailyForecast = forecast.dailyForecast || [];
@@ -84,12 +109,12 @@ function App() {
           lon: "73.0479",
           units: "Metric",
         });
-        dispatch(setDailyForecast(data))
+        dispatch(setDailyForecast(data));
         dispatch(setForecastLoading(false));
       } catch (error) {
         dispatch(setError(error));
         dispatch(setForecastError(error));
-      } finally{
+      } finally {
         dispatch(setForecastLoading(false));
       }
     };
@@ -101,12 +126,28 @@ function App() {
 
   useEffect(() => {
     const getFormattedEvents = async () => {
-      // //console.log("INSIDE USEEFECT: ", dailyForecast.length)
+      // console.log("INSIDE USEEFECT: ", dailyForecast.length)
       if (dailyForecast.length > 1) {
-        // //console.log("CONDITION STATISFIED ", dailyForecast.length, "USER ID: ", userId)
+        // console.log("CONDITION STATISFIED ", dailyForecast.length, "USER ID: ", userId)
         try {
           const res = await getEvents({ userId, dailyForecast });
-          const data = res.data.formattedWorkOrders;
+
+          const data = res?.data?.formattedWorkOrders; // Using optional chaining (?.)
+
+          // Equivalent to:
+          // const data = (res && res.data && res.data.formattedWorkOrders) ? res.data.formattedWorkOrders : undefined;
+
+          if (data) {
+            // Use `data` safely here
+            console.log(data);
+            dispatch(addEvents(data));
+            dispatch(setIsLoading(false));
+          } else {
+            // Handle case where `formattedWorkOrders` is undefined or null
+            console.error("formattedWorkOrders is undefined or null");
+          }
+          // const data = res.data.formattedWorkOrders;
+
           // const eventArr = data.map((item)=>{
           //     return{
           //       ...item,
@@ -114,14 +155,12 @@ function App() {
           //       end: moment(item.end).toDate(),
           //     }
           // })
-          //console.log("EVENT ARR",data)
+          // console.log("EVENT ARR", data);
           // setEvents(eventArr);
-          dispatch(addEvents(data));
-          dispatch(setIsLoading(false));
         } catch (err) {
           dispatch(setError(err));
-          //console.log(err);
-        } finally{
+          console.log(err);
+        } finally {
           dispatch(setIsLoading(false));
         }
       }
@@ -135,7 +174,14 @@ function App() {
       <>
         <Route index path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/userinfo" element={<GoogleLogin />} />
         <Route path="/assignproject" element={<AssignProject />} />
+        <Route path="/forgetpassword" element={<ForgotPassword />} />
+        <Route path="/verifycode" element={<VerifyCode />} />
+        <Route path="/passwordreset" element={<PasswordReset />} />
+        <Route path="/setnewpassword" element={<SetNewPassword />} />
+        <Route path="/help" element={<Help />} />
+        <Route path="/privacyandterms" element={<PrivacyTerms />} />
 
         {isAuthenticated ? (
           <Route path="/" element={<Layout1 />}>
@@ -163,7 +209,10 @@ function App() {
               <Route path="chat" element={<ChatView />} />
               <Route path="notes" element={<NotesView />} />
               <Route path="project-report" element={<ReportView />} />
-            <Route path="change-order" element={<ProjectsChangeOrder />}></Route>
+              <Route
+                path="change-order"
+                element={<ProjectsChangeOrder />}
+              ></Route>
             </Route>
             <Route path="reports" element={<ReportsPage />} />
             <Route path="subscription" element={<Subscription />} />
@@ -181,7 +230,10 @@ function App() {
         ) : (
           <Route path="/" element={<Login />} />
         )}
-        <Route path="/invitation/:projectId/:email/:userRole" element={<Invitation />} />
+        <Route
+          path="/invitation/:projectId/:email/:userRole/:companyName"
+          element={<Invitation />}
+        />
 
         <Route path="/clientdashboard" element={<ClientDashboard />}>
           <Route path="/clientdashboard" element={<ClientDashboardCards />} />
@@ -198,12 +250,11 @@ function App() {
   );
 
   return (
-
     <>
-       <Suspense fallback={<PageLoader />}>
-      <RouterProvider router={router} />
-      <ToastContainer/>
-     </Suspense>
+      <Suspense fallback={<PageLoader />}>
+        <RouterProvider router={router} />
+        <ToastContainer />
+      </Suspense>
     </>
   );
 }

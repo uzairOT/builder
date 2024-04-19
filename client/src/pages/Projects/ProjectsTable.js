@@ -1,9 +1,6 @@
 import { Grid, Paper, Stack } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import ProjectList from '../../components/Projects/ProjectTable/ProjectList'
-import { useLoaderData, useNavigation } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { allUserProjects } from '../../redux/slices/Project/userProjectsSlice'
 import { useGetUserProjectsQuery } from '../../redux/apis/Project/userProjectApiSlice'
 
 const ProjectsTable = () => {

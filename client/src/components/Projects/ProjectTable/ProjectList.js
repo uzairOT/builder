@@ -33,6 +33,8 @@ const ProjectList = ({ rows, isLoading }) => {
   const tableHeader = [
     { id: "clientName", title: "Client" },
     { id: "projectName", title: "Project" },
+    { id: "clientName", title: "Client" },
+    { id: "projectName", title: "Project" },
     { id: "phoneNumber", title: "Phone Number" },
     { id: "approvedPrice", title: "Approved Price" },
     { id: "collected", title: "Collected" },

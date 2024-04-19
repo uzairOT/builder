@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { allEvents } from "../../../redux/slices/Events/eventsSlice";
 import { getForecast } from "../../../redux/slices/DailyForecast/dailyForecastSlice";
 
+
 const NotesView = () => {
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
@@ -26,6 +27,11 @@ const NotesView = () => {
         </Stack>
         <Stack  flex={1}>
       <Paper sx={{height: {xl:'94.5%', lg:'98%', borderRadius:'14px'}}}>
+      {loading ? (
+                <>Loading</>
+              ) : (
+                <TaskCalenderView dailyForecast={dailyForecast} eventsArr={events} />
+              )}
       {loading ? (
                 <>Loading</>
               ) : (

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Box, Grid, Typography, TextField } from "@mui/material";
-import Textarea from "@mui/joy/Textarea";
 import Avatar from "@mui/material/Avatar";
 import AvatarImg from "../../../assets/settings/UploadProfileIcon.png";
 import Button from "../../UI/CustomButton";
@@ -9,6 +8,8 @@ import axios from "axios";
 import { uploadToS3 } from "../../../utils/S3";
 import { useUpdateProfileMutation } from "../../../redux/apis/usersApiSlice";
 import { setCredentials } from "../../../redux/slices/authSlice";
+import { Textarea } from "@mui/joy";
+
 
 function ProfileView() {
   const user = useSelector((state) => state.auth.userInfo);
@@ -37,7 +38,7 @@ const dispatch = useDispatch();
     email: user.user.email,
     phoneNumber: user.user.phoneNumber,
     address: "your address here",
-    userId: user.user.id
+    userId: user.user.id,
   });
 
   const handleChange = (e) => {
@@ -101,13 +102,13 @@ const dispatch = useDispatch();
     <Box sx={{ mb: 2 }}>
       <Grid container spacing={2}>
         <Grid item md={8} xs={12}>
-          <Grid item xs={12}>
-            <Typography variant="h5" sx={Profile}>
-              Profile
-            </Typography>
-          </Grid>
-
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography variant="h5" sx={Profile}>
+                Profile
+              </Typography>
+            </Grid>
+  
             <Grid item xs={12}>
               <Typography>Full Name</Typography>
               <TextField
@@ -175,7 +176,6 @@ const dispatch = useDispatch();
                 borderRadius="50px"
                 onClick={handleSubmit}
               />
-
               <Button
                 buttonText="Reset"
                 color="#4C8AB1"
@@ -194,9 +194,9 @@ const dispatch = useDispatch();
               Your Profile Picture
             </Typography>
             <div 
-            onDragOver={(e) => e.preventDefault()}
-            onDragEnter={(e) => e.preventDefault()}
-            onDrop={handleDrop}
+              onDragOver={(e) => e.preventDefault()}
+              onDragEnter={(e) => e.preventDefault()}
+              onDrop={handleDrop}
             >
               <input
                 type="file"
@@ -207,12 +207,12 @@ const dispatch = useDispatch();
                 multiple
               />
               <label htmlFor="avatarInput">
-              <Avatar
-                src={image ? image : AvatarImg}
-                alt={image ? "Uploaded Avatar" : "Placeholder Avatar"}
-                sx={{ width: 180, height: 182, mx: "auto" }}
+                <Avatar
+                  src={image ? image : AvatarImg}
+                  alt={image ? "Uploaded Avatar" : "Placeholder Avatar"}
+                  sx={{ width: 180, height: 182, mx: "auto" }}
                 />
-                </label>
+              </label>
             </div>
             <Typography variant="subtitle1" sx={changeProfile}>
               Change Profile
@@ -259,7 +259,7 @@ const dispatch = useDispatch();
                 {formData.address}
               </Typography>
             </Box>
-
+  
             <Box sx={{ textAlign: "center", mt: 15 }}>
               <Button
                 buttonText="Delete Profile"
@@ -269,7 +269,6 @@ const dispatch = useDispatch();
                 height="38px"
                 borderRadius="50px"
                 fontSize={"13px"}
-                
               />
             </Box>
           </Box>
@@ -277,6 +276,7 @@ const dispatch = useDispatch();
       </Grid>
     </Box>
   );
+  
 }
 
 export default ProfileView;
@@ -302,6 +302,7 @@ const textAreaStyle = {
   borderRadius: "8px",
   border: "1px solid #E0E4EC",
   padding: "10px",
+  height: "135px",
   height: "135px",
   "&:focus": {
     outline: "none", // Remove the default focus outline

@@ -7,8 +7,6 @@ import AttachFileSharpIcon from "@mui/icons-material/AttachFileSharp";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SkipInvite from "../../dialogues/SkipInvite/SkipInvite";
 
-// import "../StepForm/StepForm.css";
-
 import { useDispatch, useSelector } from "react-redux";
 import {
   addUser,
@@ -28,6 +26,7 @@ import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+
 
 function AssignNewProjectStep2({
   onNextStep,
@@ -82,6 +81,7 @@ function AssignNewProjectStep2({
 
   const handleCreateNewProject = async () => {
     localStorage.removeItem("projectId");
+    localStorage.removeItem("projectId");
     try {
       const userdata = userInfo.user.id;
       //console.log(userdata);
@@ -98,7 +98,11 @@ function AssignNewProjectStep2({
       // Call the assignProject function and wait for the result
       const res = await assignProject(FormData).unwrap();
 
+
       // If successful, store the project ID in local storage
+      localStorage.setItem("projectId", res.project.id);
+      setProjectId(res.project.id);
+      await refetch();
       localStorage.setItem("projectId", res.project.id);
       setProjectId(res.project.id);
       await refetch();
@@ -106,9 +110,11 @@ function AssignNewProjectStep2({
     } catch (error) {
       // If an error occurs during the process, handle it here
       toast.error("Error creating new project:", error.message);
+      toast.error("Error creating new project:", error.message);
       return;
     }
   };
+
 
   return (
     <>
@@ -120,6 +126,7 @@ function AssignNewProjectStep2({
           "Lorem ipsum dolor sit amet consectetur. Pretium aliquam egestas interdum varius sed at libero. Sed vestibulum vel platea accumsan in elit morbi eu erat. Purus non urna et purus. Libero nec nec quam pulvinar massa nulla et tincidunt."
         }
       />
+      
       
       {users.map((user, index) => (
         <StepFormField
@@ -176,7 +183,6 @@ function AssignNewProjectStep2({
     </>
   );
 }
-
 const buttonBox = {
   display: "flex",
   flexDirection: "row",
@@ -190,6 +196,7 @@ const buttoncontainer = {
   gap: { lg: "3rem", md: "2.5rem", sm: "2rem", xs: "1rem" },
   padding: "0rem 3rem",
 };
+
 const buttonStyle = {
   padding: {
     lg: "1rem 3.5rem",
@@ -223,6 +230,7 @@ const inputStyle = {
   fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
   paddingLeft: "-1.5rem",
 };
+
 const fieldBox1 = {
   flex: 4,
   marginRight: "1rem",
@@ -232,7 +240,7 @@ const fieldBox1 = {
 
 const formStyle = {
   marginTop: "0.1rem",
-}
+};
 
 const formBox = {
   width: "100%",
