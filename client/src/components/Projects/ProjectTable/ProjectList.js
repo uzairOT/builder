@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   ButtonGroup,
   IconButton,
   Pagination,
@@ -24,11 +25,14 @@ import SearchBar from "../../UI/SearchBar/SearchBar";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
+import { useNavigate } from "react-router-dom";
+import EditProjectModal from "../../dialogues/EditProject/EditProjectModal";
 
 const ProjectList = ({ rows, isLoading }) => {
+  const navigate = useNavigate();
   const tableHeader = [
-    { id: "client", title: "Client" },
-    { id: "project", title: "Projects" },
+    { id: "clientName", title: "Client" },
+    { id: "projectName", title: "Project" },
     { id: "phoneNumber", title: "Phone Number" },
     { id: "approvedPrice", title: "Approved Price" },
     { id: "collected", title: "Collected" },
@@ -38,11 +42,15 @@ const ProjectList = ({ rows, isLoading }) => {
     { id: "projectMargin", title: "Projected Margin" },
     { id: "projectStatus", title: "Project Status" },
   ];
+  console.log(rows);
+  const [project, setProject] = useState(null);
 
   const [page, setPage] = useState([]);
+  const [openEditModel, setOpenEditModel] = useState(false); 
 
   const rowsPerPage = 6;
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selectedFilters, setSelectedFilters] = useState([]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -50,6 +58,22 @@ const ProjectList = ({ rows, isLoading }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleClickFeature = (filter) => {
+    if (!selectedFilters.includes(filter)) {
+      setSelectedFilters([...selectedFilters, filter]);
+    }
+  };
+
+  const handleClickFeatureRemove = (filter) =>{
+    setSelectedFilters(selectedFilters.filter((item) => item !== filter ))
+  }
+  const handleOpenEditModel = (row) => {
+    setProject(row);
+    setOpenEditModel(true);
+  }
+  const handleCloseEditModel =() => {
+    setOpenEditModel(false)
+  }
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
@@ -59,7 +83,7 @@ const ProjectList = ({ rows, isLoading }) => {
   };
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    rowsPerPage - Math.min(rowsPerPage, rows?.length - page * rowsPerPage);
 
   // useEffect(() => {
   //   fetch("https://my.api.mockaroo.com/bui.json?key=64d2dd90")
@@ -121,11 +145,12 @@ const ProjectList = ({ rows, isLoading }) => {
           </Stack>
           {/* Buttons Remodel And Filter */}
           <Stack direction={"row"} height={"35px"}>
-            <BuilderProButton
+            {selectedFilters?.map((filter) => (<BuilderProButton
               variant={"contained"}
               backgroundColor={"#E7E7E7"}
               Icon={CloseIcon}
               iconProps={{ color: "#272727" }}
+              handleOnClick={() => { handleClickFeatureRemove(filter)}}
             >
               <Typography
                 color={"#272727"}
@@ -133,9 +158,9 @@ const ProjectList = ({ rows, isLoading }) => {
                 fontSize={"12px"}
                 fontWeight={"500"}
               >
-                Remodel
+                {filter}
               </Typography>
-            </BuilderProButton>
+            </BuilderProButton>))}
             <BuilderProButton
               variant={"contained"}
               backgroundColor={"#FFAC00"}
@@ -161,34 +186,59 @@ const ProjectList = ({ rows, isLoading }) => {
               }}
               slotProps={{
                 paper: {
-                  sx:{
-                    
-                  }
-                }
+                  sx: {},
+                },
               }}
             >
               <Stack p={1} borderRadius={"14px"} spacing={1}>
-                <Typography
-                  fontFamily={"Inter, sans serif"}
-                  fontSize={"12px"}
-                  fontWeight={"500"}
+                <Button
+                  onClick={() => handleClickFeature("Remodel")}
+                  variant={
+                    selectedFilters.includes("Remodel")
+                      ? "contained"
+                      : "outlined"
+                  }
                 >
-                  Remodel
-                </Typography>
-                <Typography
-                  fontFamily={"Inter, sans serif"}
-                  fontSize={"12px"}
-                  fontWeight={"500"}
+                  <Typography
+                    fontFamily={"Inter, sans serif"}
+                    fontSize={"12px"}
+                    fontWeight={"500"}
+                  >
+                    Remodel
+                  </Typography>
+                </Button>
+                <Button
+                  onClick={() => handleClickFeature("New Build")}
+                  variant={
+                    selectedFilters.includes("New Build")
+                      ? "contained"
+                      : "outlined"
+                  }
                 >
-                  New Build
-                </Typography>
-                <Typography
-                  fontFamily={"Inter, sans serif"}
-                  fontSize={"12px"}
-                  fontWeight={"500"}
+                  <Typography
+                    fontFamily={"Inter, sans serif"}
+                    fontSize={"12px"}
+                    fontWeight={"500"}
+                  >
+                    New Build
+                  </Typography>
+                </Button>
+                <Button
+                  onClick={() => handleClickFeature("Commercial")}
+                  variant={
+                    selectedFilters.includes("Commercial")
+                      ? "contained"
+                      : "outlined"
+                  }
                 >
-                  Commercial
-                </Typography>
+                  <Typography
+                    fontFamily={"Inter, sans serif"}
+                    fontSize={"12px"}
+                    fontWeight={"500"}
+                  >
+                    Commercial
+                  </Typography>
+                </Button>
               </Stack>
             </Popover>
           </Stack>
@@ -224,6 +274,9 @@ const ProjectList = ({ rows, isLoading }) => {
               fontFamily={"inherit"}
               fontSize={"12px"}
               marginLeft={0}
+              handleOnClick={() => {
+                navigate("/assignproject");
+              }}
             >
               Add New
             </BuilderProButton>
@@ -235,41 +288,53 @@ const ProjectList = ({ rows, isLoading }) => {
         <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
           {isLoading ? (
             <Stack spacing={1} p={2}>
-              <Stack width={'96%'} alignSelf={'flex-end'}>
-            <Skeleton variant="rounded" width={'100%'} height={'50px'} />
+              <Stack width={"96%"} alignSelf={"flex-end"}>
+                <Skeleton variant="rounded" width={"100%"} height={"50px"} />
               </Stack>
-            <Stack direction={'row'} spacing={2}>
-            <Skeleton variant="circular" width={50} height={50} />
-            <Skeleton variant="rounded" width={'100%'} height={'50px'} />
-            </Stack>
-            <Stack direction={'row'} spacing={2}>
-            <Skeleton variant="circular" width={50} height={50} />
-            <Skeleton variant="rounded" width={'100%'} height={'50px'} />
-            </Stack>
-            <Stack direction={'row'} spacing={2}>
-            <Skeleton variant="circular" width={50} height={50} />
-            <Skeleton variant="rounded" width={'100%'} height={'50px'} />
-            </Stack>
-            <Stack direction={'row'} spacing={2}>
-            <Skeleton variant="circular" width={50} height={50} />
-            <Skeleton variant="rounded" width={'100%'} height={'50px'} />
-            </Stack>
-            <Stack direction={'row'} spacing={2}>
-            <Skeleton variant="circular" width={50} height={50} />
-            <Skeleton variant="rounded" width={'100%'} height={'50px'} />
-            </Stack>
-            <Stack direction={'row'} spacing={2}>
-            <Skeleton variant="circular" width={50} height={50} />
-            <Skeleton variant="rectangular" width={'100%'} height={'50px'} />
-            </Stack>
-            <Stack direction={'row'} spacing={2}>
-            <Skeleton variant="circular" width={50} height={50} />
-            <Skeleton variant="rectangular" width={'100%'} height={'50px'} />
-            </Stack>
-            <Stack direction={'row'} spacing={2}>
-            <Skeleton variant="circular" width={50} height={50} />
-            <Skeleton variant="rectangular" width={'100%'} height={'50px'} />
-            </Stack>
+              <Stack direction={"row"} spacing={2}>
+                <Skeleton variant="circular" width={50} height={50} />
+                <Skeleton variant="rounded" width={"100%"} height={"50px"} />
+              </Stack>
+              <Stack direction={"row"} spacing={2}>
+                <Skeleton variant="circular" width={50} height={50} />
+                <Skeleton variant="rounded" width={"100%"} height={"50px"} />
+              </Stack>
+              <Stack direction={"row"} spacing={2}>
+                <Skeleton variant="circular" width={50} height={50} />
+                <Skeleton variant="rounded" width={"100%"} height={"50px"} />
+              </Stack>
+              <Stack direction={"row"} spacing={2}>
+                <Skeleton variant="circular" width={50} height={50} />
+                <Skeleton variant="rounded" width={"100%"} height={"50px"} />
+              </Stack>
+              <Stack direction={"row"} spacing={2}>
+                <Skeleton variant="circular" width={50} height={50} />
+                <Skeleton variant="rounded" width={"100%"} height={"50px"} />
+              </Stack>
+              <Stack direction={"row"} spacing={2}>
+                <Skeleton variant="circular" width={50} height={50} />
+                <Skeleton
+                  variant="rectangular"
+                  width={"100%"}
+                  height={"50px"}
+                />
+              </Stack>
+              <Stack direction={"row"} spacing={2}>
+                <Skeleton variant="circular" width={50} height={50} />
+                <Skeleton
+                  variant="rectangular"
+                  width={"100%"}
+                  height={"50px"}
+                />
+              </Stack>
+              <Stack direction={"row"} spacing={2}>
+                <Skeleton variant="circular" width={50} height={50} />
+                <Skeleton
+                  variant="rectangular"
+                  width={"100%"}
+                  height={"50px"}
+                />
+              </Stack>
             </Stack>
           ) : (
             <Table>
@@ -294,9 +359,7 @@ const ProjectList = ({ rows, isLoading }) => {
                         <TableRow>
                           <TableCell sx={themeStyle.tableCell}>
                             <img
-                              src={`https://randomuser.me/api/portraits/${
-                                Math.random() > 0.5 ? "men" : "women"
-                              }/${Math.floor(Math.random() * 100)}.jpg`}
+                              src={row.image}
                               alt="profile"
                               style={{
                                 borderRadius: "50%",
@@ -337,7 +400,7 @@ const ProjectList = ({ rows, isLoading }) => {
                             justifyContent={"center"}
                           >
                             <Paper>
-                              <IconButton variant={"contained"}>
+                              <IconButton variant={"contained"} onClick={() => handleOpenEditModel(row)} >
                                 <EditOutlinedIcon
                                   style={{ color: "#4C8AB1" }}
                                 />
@@ -398,6 +461,7 @@ const ProjectList = ({ rows, isLoading }) => {
           rowsPerPageOptions={[1]}
         ></TablePagination> */}
       </Stack>
+      <EditProjectModal project={project} open={openEditModel} onClose={handleCloseEditModel} />
     </Stack>
   );
 };

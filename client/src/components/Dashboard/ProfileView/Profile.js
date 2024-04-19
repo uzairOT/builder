@@ -15,11 +15,11 @@ const Profile = () => {
     <>
       <Box sx={themeStyle.container}>
         <Box padding={1}>
-          <ProfileImage UserImage={UserImage} border={true}/>
+          <ProfileImage UserImage={userInfo.user.image} border={true}/>
         </Box>
         <Box padding={1}>
           <Typography color="primary" sx={themeStyle.containerTitle}>
-            {firstName} {lastName}
+            {firstName} 
           </Typography>
           <Typography sx={themeStyle.containerSubtitle}>
             {email}

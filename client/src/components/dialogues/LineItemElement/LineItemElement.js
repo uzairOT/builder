@@ -89,7 +89,7 @@ function AddLineElement({
   useEffect(() => {
     const getData = setTimeout(() => {
       axios
-        .get(`http://192.168.0.105:8080/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`)
+        .get(`http://192.168.0.104:8080/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`)
         .then((response) => {
           setAutoComplete(response.data.MasterLines);
           console.log(response.data.MasterLines);
@@ -288,8 +288,8 @@ function AddLineElement({
                     value={formData.unit}
                     onChange={(e) => setUnit(e.target.value)}
                   >
-                    {Units.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
+                    {Units.map((option,index) => (
+                      <MenuItem key={index} value={option.value}>
                         {option.label}
                       </MenuItem>
                     ))}

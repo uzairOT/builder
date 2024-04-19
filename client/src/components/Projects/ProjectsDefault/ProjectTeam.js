@@ -70,8 +70,9 @@ import {useLocation} from 'react-router-dom'
                 </Stack>
                 <Stack direction={'row'} width={'100px'}>
                 {groupedData[role].map((person, index)=>{
-                    return( <></>
-                        // <img key={index} src={person.profilePic} alt='profile' width={'35px'} height={'35px'} style={{borderRadius:'50px', marginLeft: '-10px'}} ></img>
+                    return( <>
+                        <img key={index} src={person.image} alt='profile' width={'35px'} height={'35px'} style={{borderRadius:'50px', marginLeft: '-10px'}} ></img>
+                        </>
                         )
                     })}
                 </Stack>

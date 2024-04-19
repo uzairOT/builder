@@ -86,16 +86,17 @@ function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow }) {
       <TableCell>
         {/* <Checkbox  /> */}
       </TableCell>
-      <TableCell sx={tableCellStyle}>Line Item</TableCell>
+      <TableCell sx={tableCellStyle}>Subject</TableCell>
       <TableCell sx={tableCellStyle}>Description</TableCell>
-      <TableCell sx={tableCellStyle}>Unit</TableCell>
-      <TableCell sx={tableCellStyle}>Margin</TableCell>
-      <TableCell sx={tableCellStyle}>Project Profile</TableCell>
-      <TableCell sx={tableCellStyle}>Quantity</TableCell>
-      <TableCell sx={tableCellStyle}>Unit Price</TableCell>
+      {/* <TableCell sx={tableCellStyle}>Unit</TableCell> */}
+      {/* <TableCell sx={tableCellStyle}>Margin</TableCell> */}
+      <TableCell sx={tableCellStyle}>priority</TableCell>
       <TableCell sx={tableCellStyle}>Total</TableCell>
       <TableCell sx={tableCellStyle}>Start</TableCell>
       <TableCell sx={tableCellStyle}>End</TableCell>
+      {/* <TableCell sx={tableCellStyle}>Quantity</TableCell> */}
+      {/* <TableCell sx={tableCellStyle}>Unit Price</TableCell> */}
+      <TableCell sx={tableCellStyle}>Status</TableCell>
       <TableCell sx={tableCellStyle}>Notes</TableCell>
       <TableCell></TableCell>
     </TableRow>
@@ -114,12 +115,10 @@ function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow }) {
     {/* <TableCell sx={tableCellValueStyle}>{item.LineItem.unit}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.LineItem.margin}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.LineItem.projectProfile}</TableCell> */}
-    <TableCell sx={tableCellValueStyle}>{item.status}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.priority}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.total}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.start_day}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.end_day}</TableCell>
-    <TableCell sx={tableCellValueStyle}>{item.notes}</TableCell>
     <TableCell sx={tableCellValueStyle}>
       <Button
         buttonText={item.status} // Assuming status property represents the status
@@ -130,6 +129,8 @@ function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow }) {
         borderRadius="45px"
       />
     </TableCell>
+    {/* <TableCell sx={tableCellValueStyle}>{item.status}</TableCell> */}
+    <TableCell sx={tableCellValueStyle}>{item.notes}</TableCell>
   </TableRow>
 ))}
 

@@ -9,15 +9,15 @@ import {
 import "../../../App.css"
 import "./StepFormField.css"
 
-function ProjectFormFields({ index, email, role, onUpdateEmail, onUpdateRole }) {
+function ProjectFormFields({ index, email, role, onUpdateEmail, onUpdateRole,}) {
   const MAX_EMAIL_LENGTH = 50;
 
 
   const isMobile = useMediaQuery('(max-width:600px)');
   const isTab = useMediaQuery('(max-width:900px)');
-  const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
   const formWidth = { width: isMobile ? "75%" : isTab ? "65%" : "48%" }
   const borderRadiusResponsive = { borderRadius: isMobile ? "0.5rem" : "0.75rem" }
+  const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
   const placeholderText = !isTab && !isMobile ? 'e.g. abc@workmail.com' : '@mail';
 
   const handleEmailChange = (event) => {

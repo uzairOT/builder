@@ -10,12 +10,16 @@ import TabPanel from '@mui/joy/TabPanel';
 import ChangeOrder from '../Projects/ProjectsDefault/ChangeOrder'
 import BuilderProButton from '../UI/Button/BuilderProButton'
 import ChangeOrderRequest from '../dialogues/ChangeOrderRequest/ChangeOrderRequest'
+import { useNavigate, useParams } from "react-router-dom";
 
 const InnerLayout2 = () => {
+  const navigate = useNavigate();
+  const {id} = useParams();
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
-      setOpen(true);
+      navigate(`/projects/${id}/change-order`);
+      // setOpen(true);
   }
   const handleClose = () => {
     setOpen(false);
@@ -53,13 +57,13 @@ const InnerLayout2 = () => {
             <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:'15px'}}>Approved</Tab>
             <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:'15px'}}>Declined</Tab>
             </TabList>
-            <TabPanel sx={{padding: 0, width:'500px'}} value={0}>
+            <TabPanel sx={{padding: 0, width:{xl:'26vw'}}} value={0}>
           <ChangeOrder />
             </TabPanel>
-            <TabPanel sx={{padding: 0, width:'500px'}} value={1}>
+            <TabPanel sx={{padding: 0, width:'495px'}} value={1}>
           <ChangeOrder />
             </TabPanel>
-            <TabPanel sx={{padding: 0, width:'500px'}} value={2}>
+            <TabPanel sx={{padding: 0, width:'495px'}} value={2}>
           <ChangeOrder />
             </TabPanel>
           </Tabs>

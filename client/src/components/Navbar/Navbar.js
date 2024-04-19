@@ -124,6 +124,7 @@ const Navbar = () => {
             <BuilderProNavbarLogo
               aria-label="Builder Pro Logo"
               style={themeStyle.logo}
+              onClick={()=>{setSelectedTab(0)}}
             />
           </Link>
           <Tabs
