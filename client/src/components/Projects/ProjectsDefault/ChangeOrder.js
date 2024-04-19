@@ -18,12 +18,12 @@ const ChangeOrder = () => {
   const { id: currentProjectId } = params;
   const currentUser = localStorage.getItem("userInfo");
   const user = JSON.parse(currentUser);
-  console.log(user);
+  //console.log(user);
   const { data } = useGetProjectChangeOrderQuery({
     projectId: currentProjectId,
     userId: user.user.id,
   });
-  console.log(data);
+  //console.log(data);
 
   return (
     <TableContainer
@@ -47,7 +47,7 @@ const ChangeOrder = () => {
           </TableRow>
         </TableHead>
         <TableBody style={{ paddingLeft: "4px", paddingRight: "4px" }}>
-          {data?.data?.map((row) => (
+          {data?.data?.workOrderReqs.map((row) => (
             <TableRow key={row.id}>
               <TableCell sx={themeStyle.tableBody}>{row.subject}</TableCell>
               <TableCell sx={{ ...themeStyle.tableBody }}>

@@ -96,7 +96,7 @@ const CustomEventMonthTasks = ({event}) => {
     )
 }
 const CustomEventMonthWeatherNotes = ({event, isDrawerOpen}) => {
-        console.log("isDrawer open in CustomEventMonthWeatherNotes: ",isDrawerOpen);
+        //console.log("isDrawer open in CustomEventMonthWeatherNotes: ",isDrawerOpen);
     return(
         <Stack width={'fit-content'} backgroundColor={'transparent'}  alignItems={'flex-end'} pl={1} pt={4}>
             <Typography fontSize={'10px'} sx={themeStyle.eventNote} overflow={'hidden'}height={'47px'} width={isDrawerOpen ? '100%' : '42px'}>Note: {event?.data?.note}</Typography>

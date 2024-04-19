@@ -29,10 +29,10 @@ function NewProject() {
         setStep(step - 1);
     };
     useEffect(() => {
-        console.log('step: ', step);
+        //console.log('step: ', step);
         localStorage.setItem('step', step);
         const step1 = parseInt(localStorage.getItem('step'), 10); // Convert to number
-        console.log('step1: ', step1);
+        //console.log('step1: ', step1);
         setStep(step1);
     }, [step]);
     

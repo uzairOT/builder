@@ -68,8 +68,8 @@ const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSele
     // const updatedRows = rows.filter((_, index) => !selectedRows.includes(index));
     // // Handle the updated rows according to your application logic
     // deletePhaseLine(selectedRows);
-    // console.log("Deleted rows:", selectedRows);
-    // console.log("Remaining rows:", updatedRows);
+    // //console.log("Deleted rows:", selectedRows);
+    // //console.log("Remaining rows:", updatedRows);
 
     // // Clear the selectedRows state after deletion
     // setSelectedRows([]);
@@ -123,12 +123,12 @@ const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSele
     const updatedRows = [...rows];
     updatedRows[index] = { ...updatedRows[index], ...newData };
     setRows(updatedRows);
-    console.log(updatedRows)
+    //console.log(updatedRows)
   };
   const handleAddRow1 = (newData) => {
     const updatedRows = [...rows, newData];
     setRows(updatedRows);
-    console.log("handle add row:",updatedRows);
+    //console.log("handle add row:",updatedRows);
   };
 
   const [checkedRow, setCheckedRow] = useState(null);

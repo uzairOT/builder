@@ -6,7 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import {useSelector} from 'react-redux';
 
 const WeatherView = ({dailyForecast, loading, error, userGreetings='Admin'}) => {
-  console.log(dailyForecast)
+  //console.log(dailyForecast)
   const userInfo = useSelector(state => state.auth.userInfo)
   const firstName = userInfo?.user?.firstName;
   return (

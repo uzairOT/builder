@@ -42,7 +42,7 @@ const ProjectList = ({ rows, isLoading }) => {
     { id: "projectMargin", title: "Projected Margin" },
     { id: "projectStatus", title: "Project Status" },
   ];
-  console.log(rows);
+  //console.log(rows);
   const [project, setProject] = useState(null);
 
   const [page, setPage] = useState([]);

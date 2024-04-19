@@ -27,9 +27,9 @@ const ProjectsDefault = () => {
   const dailyForecast = forecast.dailyForecast;
   const forecastIsLoading = forecast.isLoading;
   const forecastError = forecast.error;
-  console.log( "IN DASHBOARD EVENTS: ", events)
+  //console.log( "IN DASHBOARD EVENTS: ", events)
   useEffect(()=>{
-    console.log(events);
+    //console.log(events);
   },[events]);
 
   return (

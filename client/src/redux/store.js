@@ -8,6 +8,7 @@ import userProjectsReducer from './slices/Project/userProjectsSlice';
 import projectInitialProposalReducer from './slices/Project/projectInitialProposal';
 import eventsReducer from './slices/Events/eventsSlice';
 import dailyForecastSlice from './slices/DailyForecast/dailyForecastSlice';
+import notificationSlice from './slices/Notifications/notificationSlice';
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     projectInitialProposal: projectInitialProposalReducer,
     events: eventsReducer,
     dailyForecast: dailyForecastSlice,
+    notifications: notificationSlice,
     [apiSlice.reducerPath]: apiSlice.reducer, // Include the API slice reducer
   },
   middleware: (getDefaultMiddleware) =>

@@ -9,7 +9,7 @@ const ProjectsNavbar = ({project}) => {
   const params = useParams();
   const theme = useTheme();
   const showHamburger = useMediaQuery(theme.breakpoints.down("lg"));
-    console.log(showHamburger);
+    //console.log(showHamburger);
     const navLinks = [
         {
           title: "Initial Proposal",
@@ -43,6 +43,10 @@ const ProjectsNavbar = ({project}) => {
           title: "Project Report",
           path: "project-report",
         },
+        {
+          title: 'Change Order',
+          path: 'change-order'
+        }
       ];
 
   return (

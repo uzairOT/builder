@@ -18,10 +18,10 @@ const ProjectsSidebar = () => {
         setActiveBtn(btn);
     }
     const {id} = useParams();
-    console.log(id);
+    //console.log(id);
     const {data, isLoading, error} = useGetUserProjectsQuery({userId: currentUserId});
     useEffect(() => {
-      console.log(data)
+      //console.log(data)
       if(data){
         dispatch(addProjects(data))
       }

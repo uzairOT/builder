@@ -63,7 +63,7 @@ const ReportView = lazy(() => import("./components/Projects/ProjectsReport/Repor
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.userInfo);
   const userId = isAuthenticated ? isAuthenticated.user.id : null;
-  console.log("USER ID: ", userId);
+  //console.log("USER ID: ", userId);
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
   // const [dailyForecast, setDailyForecast] = useState(null);
@@ -101,9 +101,9 @@ function App() {
 
   useEffect(() => {
     const getFormattedEvents = async () => {
-      // console.log("INSIDE USEEFECT: ", dailyForecast.length)
+      // //console.log("INSIDE USEEFECT: ", dailyForecast.length)
       if (dailyForecast.length > 1) {
-        // console.log("CONDITION STATISFIED ", dailyForecast.length, "USER ID: ", userId)
+        // //console.log("CONDITION STATISFIED ", dailyForecast.length, "USER ID: ", userId)
         try {
           const res = await getEvents({ userId, dailyForecast });
           const data = res.data.formattedWorkOrders;
@@ -114,13 +114,13 @@ function App() {
           //       end: moment(item.end).toDate(),
           //     }
           // })
-          console.log("EVENT ARR",data)
+          //console.log("EVENT ARR",data)
           // setEvents(eventArr);
           dispatch(addEvents(data));
           dispatch(setIsLoading(false));
         } catch (err) {
           dispatch(setError(err));
-          console.log(err);
+          //console.log(err);
         } finally{
           dispatch(setIsLoading(false));
         }
@@ -144,7 +144,7 @@ function App() {
               path="/projects"
               element={<ProjectsTable />}
               loader={() => {
-                console.log("hello from loader");
+                //console.log("hello from loader");
                 return null;
               }}
             />

@@ -34,7 +34,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
       end: moment(item.end).toDate(),
     }
   })
-  console.log("In Task Calender View: ", events);
+  //console.log("In Task Calender View: ", events);
 
   // const [events, setEvents] = useState([
   //   {
@@ -136,10 +136,10 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
   //     }
   //   },
   // ]);
-  console.log(events)
-  console.log("Inside Task Calender: ", monthEventView);
+  //console.log(events)
+  //console.log("Inside Task Calender: ", monthEventView);
   const toolbarKey = dailyForecast ? 'withForecast' : 'withoutForecast';
-  console.log("Inside Task Calender dailyForecast: ", dailyForecast, " toolbar key: ", toolbarKey);
+  //console.log("Inside Task Calender dailyForecast: ", dailyForecast, " toolbar key: ", toolbarKey);
 
   const components = useCallback(() => ({
 
@@ -157,7 +157,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
     month: {
       dateCellWrapper: (props) => (eventViewRef.current === 'Work Order' ? <MonthCellWapper props={props} isDrawerOpen={isDrawerOpen} monthView={'tasks'} isProjectPage={isProjectPage} /> : <MonthCellWapper props={props} isDrawerOpen={isDrawerOpen} monthView={'weather/notes'} isProjectPage={isProjectPage} />),
       event: (props) => {
-        console.log("Month Event View current Function rerendered: ", eventViewRef.current);
+        //console.log("Month Event View current Function rerendered: ", eventViewRef.current);
         if (eventViewRef.current === 'Work Order') {
           return <CustomEventMonthTasks {...props} monthEventView={monthEventView.current} />
         } else {

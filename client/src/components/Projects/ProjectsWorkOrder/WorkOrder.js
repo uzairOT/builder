@@ -64,7 +64,7 @@ const dummyData = [
   ];
 function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow }) {
  
-  console.log(data)
+  // console.log('INSIDE WORKORDER: ',data)
   const handleUnitChange = (event, id) => {
     const selectedUnit = event.target.value;
     // Assuming you have a function to update the unit value in your data structure
@@ -72,11 +72,11 @@ function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow }) {
     // For example, if you're using state:
   };
   const OpenUpdateModal = () => {
-    console.log("UpdateModal");
+    //console.log("UpdateModal");
     setUpdateModalOpen(true);
   };
   const handleCheckboxChange = (row) => {
-    setCheckedRow(prevCheckedRow => prevCheckedRow === row ? null : row);
+    setCheckedRow((prevCheckedRow) => prevCheckedRow === row ? null : row);
   };
   return (
     <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
@@ -102,12 +102,12 @@ function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow }) {
     </TableRow>
   </TableHead>
   <TableBody>
-  {data?.map((item) => (
+  {data?.workOrderReqs.map((item) => (
   <TableRow key={item.id}>
     <TableCell sx={tableCellValueStyle}>
       <Checkbox
         checked={checkedRow === item}
-        onChange={() => handleCheckboxChange(item)}
+        onChange={() => handleCheckboxChange(item, data)}
       />
     </TableCell>
     <TableCell sx={tableCellValueStyle}>{item.subject}</TableCell>

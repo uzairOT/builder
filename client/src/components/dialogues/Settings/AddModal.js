@@ -48,14 +48,14 @@ function AddModal({ title, open, onClose }) {
   const { data, isLoading, error } = useGetUserProjectsQuery({
     userId: currentUserId,
   });
-  console.log(data);
+  //console.log(data);
   const projectNames = data
     ? data?.projects.map((project) => ({
         id: project.id,
         projectName: project.projectName,
       }))
     : [];
-  console.log(projectNames);
+  //console.log(projectNames);
   const [assignRolePost] = useAddAssignRoleMutation();
   const { refetch } = useGetAssignedRolesQuery({
     userRole: userRole,
@@ -64,8 +64,8 @@ function AddModal({ title, open, onClose }) {
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
-        const res = await axios.post("http://192.168.0.107:8080/project/file",{fileName,fileType});
-        console.log(res);
+        const res = await axios.post("http://192.168.0.104:8080/project/file",{fileName,fileType});
+        //console.log(res);
         return res.data.data.url;
       } catch (error) {
         console.error("Error uploading file:", error);
@@ -80,14 +80,14 @@ function AddModal({ title, open, onClose }) {
 
       const fileUrl = await uploadFileToServer(selectedFile);
       const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
-      console.log(uploadedFileUrl);
+      //console.log(uploadedFileUrl);
       const post = {
         ...values,
         image: uploadedFileUrl,
         userRole: userRole,
         userId: currentUserId,
       };
-      console.log(post);
+      //console.log(post);
       const res = await assignRolePost(post);
       refetch();
       if (res.error) {
@@ -96,7 +96,7 @@ function AddModal({ title, open, onClose }) {
       action.resetForm();
       setImage(null);
     } catch (err) {
-      console.log(err);
+      //console.log(err);
     }
   };
 
@@ -144,7 +144,7 @@ function AddModal({ title, open, onClose }) {
   };
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    console.log(file)
+    //console.log(file)
     setFileName(file.name);
     setFileType(file.type);
     setSelectedFile(file)

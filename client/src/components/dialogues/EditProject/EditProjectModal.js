@@ -25,13 +25,13 @@ function EditProjectModal({ title, open, onClose, project }) {
     const [projectUpdate] = useProjectUpdateMutation();
     const {refetch} = useGetUserProjectsQuery({userId: currentUserId})
 
-    console.log(project)
+    //console.log(project)
 
     const uploadFileToServer = async (selectedFile) => {
       if (selectedFile) {
         try {
-          const res = await axios.post("http://192.168.0.107:8080/project/file",{fileName,fileType});
-          // console.log(res);
+          const res = await axios.post("http://192.168.0.104:8080/project/file",{fileName,fileType});
+          // //console.log(res);
           return res.data.data.url;
         } catch (error) {
           console.error("Error uploading file:", error);
@@ -54,7 +54,7 @@ function EditProjectModal({ title, open, onClose, project }) {
         setImage(null);
         action.resetForm();
       } catch (err) {
-        console.log(err);
+        //console.log(err);
       }
     };
   
@@ -100,7 +100,7 @@ function EditProjectModal({ title, open, onClose, project }) {
     };
     const handleImageUpload = (e) => {
       const file = e.target.files[0];
-      console.log(file)
+      //console.log(file)
       setFileName(file.name);
       setFileType(file.type);
       setSelectedFile(file)

@@ -36,7 +36,7 @@ const Invitation = () => {
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
   const { projectId, email, userRole } = useParams();
-  console.log(projectId, email, userRole);
+  //console.log(projectId, email, userRole);
 
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
@@ -74,18 +74,18 @@ const Invitation = () => {
     
     // Prepare data to be sent in the request body
     const data = { ...formData, phone, userRole, email, projectId };
-    console.log(data);
+    //console.log(data);
   
     try {
       // Make POST request using Axios
-      await axios.post('http://192.168.0.107:8080/project/addme', data);
+      await axios.post('http://192.168.0.104:8080/project/addme', data);
   
       // Navigate to the desired location upon successful request
       navigate('/');
   
     } catch (err) {
       // Handle errors
-      console.log('ERORR: ', err)
+      //console.log('ERORR: ', err)
       toast.error(`${err.response.data.error}`,{
         position: "top-right",
         autoClose: 5000,

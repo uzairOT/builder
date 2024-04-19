@@ -20,9 +20,34 @@ const ProjectsChangeOrder = () => {
     const {id: currentProjectId} = params;
     const currentUser = localStorage.getItem('userInfo');
     const user = JSON.parse(currentUser);
-    console.log(user);
+    console.log(checkedRow);
     const {data} = useGetProjectChangeOrderQuery({projectId: currentProjectId, userId: user.user.id})
-    console.log(data);
+    console.log('GET WORK ORDER DATA: ', data)
+    const rowCheckboxes = {
+      phase: {
+        id: 2,
+        rows: [
+          {
+            id: 10,
+            phase_id: 2,
+            title: 'Line1',
+            description: 'Lorem ipsum',
+            unit: 'sqft',
+            // Add other properties as needed
+          },
+          {
+            id: 11,
+            phase_id: 2,
+            title: 'Line2',
+            description: 'Lorem ipsum',
+            unit: 'sqft',
+            // Add other properties as needed
+          },
+          // Add more rows as needed
+        ],
+      },
+    };
+    
   
   return (
    
@@ -80,26 +105,7 @@ const ProjectsChangeOrder = () => {
                       </Tab>
                     </TabList>
                     <Stack direction={"row"} style={{ paddingRight: "16px" }}>
-                      <BuilderProButton
-                        backgroundColor={"#4C8AB1"}
-                        variant="contained"
-                        Icon={EditOutlinedIcon}
-                      >
-                        Edit
-                      </BuilderProButton>
-                      <BuilderProButton
-                        backgroundColor={"#4C8AB1"}
-                        variant="contained"
-                        Icon={DeleteOutlineOutlinedIcon}
-                      >
-                        Delete
-                      </BuilderProButton>
-                      <BuilderProButton
-                        backgroundColor={"#FFAC00"}
-                        variant="contained"
-                      >
-                        Add Phase
-                      </BuilderProButton>
+                        <RequestWorkOrderModal rowCheckboxes={rowCheckboxes} checkedRow={checkedRow} changeOrder={true}/>
                     </Stack>
                   </Stack>
                   <TabPanel
@@ -121,7 +127,7 @@ const ProjectsChangeOrder = () => {
                     value={2}
                     style={{ padding: "16px 8px 0 8px" }}
                   >
-                    <WorkOrder setCheckedRow={setCheckedRow} checkedRow={checkedRow} data={data?.LineItems} />
+                    <WorkOrder setCheckedRow={setCheckedRow} checkedRow={checkedRow} data={data?.data} />
                   </TabPanel>
                 </Tabs>
               </Stack>

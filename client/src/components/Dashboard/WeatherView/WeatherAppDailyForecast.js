@@ -26,7 +26,7 @@ const WeatherAppDailyForecast = ({ forecast }) => {
       weatherIcon = Clear;
       break;
       default:
-      console.log('Can not fetch weather icon');
+      //console.log('Can not fetch weather icon');
       break
     }
 

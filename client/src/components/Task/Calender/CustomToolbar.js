@@ -11,7 +11,7 @@ const CustomToolbar = ({toolbar, setEventView, dailyForecast, toolbarKey}) => {
   const [matchingForecast,setMatchingForecast] = useState();
 
   useEffect(()=>{
-    console.log('custom toolbar', dailyForecast, ' key: ', toolbarKey)
+    //console.log('custom toolbar', dailyForecast, ' key: ', toolbarKey)
   },[dailyForecast,  toolbarKey])
 
   const goToDayView = (view) => {
@@ -32,8 +32,8 @@ const CustomToolbar = ({toolbar, setEventView, dailyForecast, toolbarKey}) => {
   }
 //   const handleMonthEventTasks =() => {
 //     setMonthEventView(prevState => {
-//       console.log('Tasks Clicked');
-//       console.log("Inside handleMonthEventTasks: ", prevState);
+//       //console.log('Tasks Clicked');
+//       //console.log("Inside handleMonthEventTasks: ", prevState);
 //       setActiveMonthHeader('tasks');
 //       return true;  // or any new state based on prevState
 //     });
@@ -41,8 +41,8 @@ const CustomToolbar = ({toolbar, setEventView, dailyForecast, toolbarKey}) => {
 
 // const handleMonthEventWeatherNotes = () => {
 //   setMonthEventView(prevState => {
-//     console.log('Weather/Notes Clicked');
-//     console.log("Inside handleMonthEventWeatherNotes: ",prevState);
+//     //console.log('Weather/Notes Clicked');
+//     //console.log("Inside handleMonthEventWeatherNotes: ",prevState);
 //     setActiveMonthHeader('weather/notes');
 //     return false;
 //   });

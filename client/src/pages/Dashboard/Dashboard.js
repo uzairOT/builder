@@ -26,7 +26,7 @@ const Dashboard = () => {
   const dailyForecast = forecast.dailyForecast;
   const forecastIsLoading = forecast.isLoading;
   const forecastError = forecast.error;
-  console.log( "IN DASHBOARD userProjects: ", userProjects)
+  //console.log( "IN DASHBOARD userProjects: ", userProjects)
 
 
 

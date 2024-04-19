@@ -74,7 +74,7 @@ function MasterLineTable({ setUpdateModalOpen }) {
   };
 
   const OpenUpdateModal = () => {
-    console.log("UpdateModal");
+    //console.log("UpdateModal");
     setUpdateModalOpen(true);
   };
 

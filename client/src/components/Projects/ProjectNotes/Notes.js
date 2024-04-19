@@ -15,7 +15,7 @@ const Notes = () => {
     const [selectedButton, setSelectedButton] = useState(0);
     const { id } = useParams();
     const { data } = useGetProjectNotesQuery({ projectId: id });
-  console.log(data)
+  //console.log(data)
     const list =[
         {"listItem": "All Notes"},
         {"listItem": "All Notes"},
@@ -24,7 +24,7 @@ const Notes = () => {
    
       const handleSelectedButton = (index) =>{
         setSelectedButton(index);
-        console.log("Slected Btn notes: ", index);
+        //console.log("Slected Btn notes: ", index);
       }
       
   return (

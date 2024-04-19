@@ -18,15 +18,15 @@ const WorkOrderView = () => {
   // const [changeView, setChangeView] = useState(false);
   const [checkedRow, setCheckedRow] = useState(null);
   const {data} = useGetProjectWorkOrderQuery();
-  console.log(data)
-    console.log(checkedRow)
+  //console.log(data)
+    //console.log(checkedRow)
     const {id} = useParams();
     const getUserIdFromLocalStorage = () => {
       const userData = localStorage.getItem('user');
       if(userData){
         const user = JSON.parse(userData);
         const userId = user.id;
-        console.log(userId)
+        //console.log(userId)
         return{ userId: userId}
       } else{
         return null;

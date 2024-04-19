@@ -50,7 +50,7 @@ const Login = () => {
 
   // useEffect(() => {
   //   if (userInfo) {
-  //     console.log("hi")
+  //     //console.log("hi")
   //     navigate('/profile');
   //   }
   // }, [navigate, userInfo]);
@@ -70,11 +70,11 @@ const Login = () => {
 
     try {
       const res = await login({ email, password }).unwrap();
-      console.log("login :",res)
+      //console.log("login :",res)
       dispatch(setCredentials({ ...res }));
       navigate('/');
     } catch (err) {
-      console.log(err)
+      //console.log(err)
       alert(err?.data?.message || err.error);
     }
   };

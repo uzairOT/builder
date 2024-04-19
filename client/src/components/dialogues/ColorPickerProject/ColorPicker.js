@@ -54,7 +54,7 @@ export default function ColorPicker() {
     handleClose();
   }
   React.useEffect(()=>{
-    console.log(color);
+    //console.log(color);
   },[color])
 
   return (

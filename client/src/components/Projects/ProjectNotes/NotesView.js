@@ -18,7 +18,7 @@ const NotesView = () => {
   const dailyForecast = forecast.dailyForecast;
   const forecastIsLoading = forecast.isLoading;
   const forecastError = forecast.error;
-  console.log( "IN DASHBOARD EVENTS: ", events)
+  //console.log( "IN DASHBOARD EVENTS: ", events)
   return (
     <Stack direction={{xl: 'row', lg:'column'}} pt={1} spacing={1} height={'100%'}>
         <Stack flex={3}>

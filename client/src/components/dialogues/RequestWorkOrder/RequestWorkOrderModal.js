@@ -13,8 +13,10 @@ import {
   Select,
   MenuItem,
   TextField,
+  Checkbox,
+  FormGroup,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import AddIcon from "@mui/icons-material/Add";
@@ -43,8 +45,12 @@ import {
 } from "../../../redux/slices/Events/eventsSlice";
 import { useGetTeamMembersQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { useLocation } from "react-router-dom";
+import socketIOClient from "socket.io-client";
+import { setNotifications } from "../../../redux/slices/Notifications/notificationSlice";
+import useSocket from "../../../utils/useSocket";
 
-const RequestWorkOrderModal = ({ rowCheckboxes }) => {
+const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
+  console.log("rizwan------>", rowCheckboxes);
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
   const [open, setOpen] = useState(false);
@@ -52,14 +58,18 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
   const { addPhase } = useSelector(selectAddPhase);
   const [priority, setPriority] = useState("urgent");
   const [status, setStatus] = useState("pending");
-  const [subject, setSubject] = useState("");
+  const [subject, setSubject] = useState(
+    changeOrder ? checkedRow?.subject : ""
+  );
   const [startDate, setStartDate] = useState(moment());
   const [endDate, setEndDate] = useState(moment());
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState(
+    changeOrder ? checkedRow?.description : ""
+  );
   const [phase, setPhase] = useState("");
   const [lineItems, setLineItems] = useState("");
-  const [assignedCheckboxes, setAssignedCheckboxes] = useState([]);
   const { data } = useGetTeamMembersQuery(projectId);
+  const [assignedCheckboxes, setAssignedCheckboxes] = useState([]);
   const userInfo = localStorage.getItem("userInfo");
   const user = JSON.parse(userInfo);
   const userId = user?.user.id;
@@ -68,15 +78,37 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
   const dailyForecast = forecast.dailyForecast || [];
   const [getEvents] = useGetUserEventsMutation();
   const dispatch = useDispatch();
+  const { emit } = useSocket();
+  const phaseId = rowCheckboxes[0]?.rows[0]?.phase_id;
+  console.log(assignedCheckboxes);
+
   let lineItemCounter = 0;
-  Object.values(rowCheckboxes).forEach((phaseData) => {
+  Object?.values(rowCheckboxes)?.forEach((phaseData) => {
     lineItemCounter += phaseData.rows.length;
   });
+  // const lineItemIds = [];
 
-  console.log(assignedCheckboxes);
+  // Object.values(rowCheckboxes).forEach((phaseData) => {
+  //   phaseData.rows.forEach((row) => {
+  //     lineItemIds.push(row.id);
+  //   });
+  // });
+  const ENDPOINT = "http://192.168.0.104:8080";
+  //test new workd order
+  let lineItemIds = [];
+
+  Object?.values(rowCheckboxes)?.forEach((phaseData) => {
+    const lineItemGroup = {
+      phaseId: phaseData.id,
+      lineItemId: phaseData.rows.map((row) => row.id),
+    };
+    lineItemIds.push(lineItemGroup);
+  });
+  //tes end..
+  //console.log(assignedCheckboxes);
   const [requestWorkOrderPut] = useRequestWorkOrderMutation();
 
-  const isButtonDisabled = Object.keys(rowCheckboxes).length === 0;
+  const isButtonDisabled = Object?.keys(rowCheckboxes)?.length === 0;
   const handleNotesChange = (e) => {
     setNotes(e.target.value);
   };
@@ -109,25 +141,36 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
     const formattedStartDate = startDate.format("MMM D, YYYY, h:mm a");
     const formattedEndDate = endDate.format("MMM D, YYYY, h:mm a");
     const requestForm = {
+      workOrder_id: changeOrder ? checkedRow.id : '',
       subject: subject,
       description: description,
       startDate: formattedStartDate,
       endDate: formattedEndDate,
       priority: priority,
       status: status,
-      phase: phase,
-      lineItem: lineItems,
+      phase: phaseId,
+      lineItem: lineItemIds[0].lineItemId[0],
+      phaseItems: lineItemIds,
       createdby: userId,
       teamIds: [...assignedCheckboxes, userId],
       notes: notes,
+      projectId: projectId,
     };
     if (requestForm.teamIds.length === 0) {
       toast.error("Team member must be assigned");
     } else {
-      await requestWorkOrderPut(requestForm);
+      //await requestWorkOrderPut(requestForm);
+      emit("join", userId);
+      if(changeOrder){
+        await emit('updateWorkOrder', requestForm);
+      }else{
+        await emit("notification", requestForm);
+      }
       dispatch(setIsLoading(true));
+      console.log("sockect test");
+      //emit('getNotifications', userId);
       const res = await getEvents({ userId, dailyForecast });
-      const data = res.data.formattedWorkOrders;
+      const data = res?.data?.formattedWorkOrders;
       // const eventArr = data.map((item)=>{
       //     return{
       //       ...item,
@@ -135,7 +178,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
       //       end: moment(item.end).toDate(),
       //     }
       // })
-      console.log("EVENT ARR", data);
+      //console.log("EVENT ARR", data);
       // setEvents(eventArr);
       dispatch(addEvents(data));
       dispatch(setIsLoading(false));
@@ -143,6 +186,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
     }
   };
 
+  console.log(lineItemIds);
   return (
     <>
       <Stack alignItems={"flex-end"} justifyContent={"flex-end"} pr={2}>
@@ -156,7 +200,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
           handleOnClick={handleOpen}
           disabled={isButtonDisabled}
         >
-          Request Work Order
+          {changeOrder ? "Request Change Order" : "Request Work Order"}
         </BuilderProButton>
       </Stack>
       <Modal open={open} onClose={handleClose}>
@@ -172,7 +216,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
             fontSize={"22px"}
             fontWeight={"600"}
           >
-            Request Work Order
+            {changeOrder ? "Request Change Order" : "Request Work Order"}
           </Typography>
           <Divider />
           <Stack
@@ -237,24 +281,44 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
                         marginTop: "0rem",
                       }}
                     >
-                      1/{Object.keys(rowCheckboxes).length}
+                      {changeOrder ? "" : Object?.keys(rowCheckboxes)?.length}
                     </Typography>
                   </Typography>
                   <FormControl>
                     <RadioGroup
                       aria-labelledby="demo-radio-buttons-group-label"
-                      defaultValue={Object.values(rowCheckboxes)[0]?.rows[0]?.phase_id}
+                      defaultValue={
+                        Object?.values(rowCheckboxes)[0]?.rows[0]?.phase_id
+                      }
                       name="radio-buttons-group"
                       onChange={handlePhaseRadioChange}
                     >
-                      {Object.keys(rowCheckboxes).map((key, index) => {
-                        const phaseId = rowCheckboxes[key]?.rows[0]?.phase_id;
-                        return (
-                          <Typography sx={themeStyle.radioText}>{key}</Typography>
-                        );
-                      })}
+                      {checkedRow
+                        ? checkedRow?.phaseItems.map((phase) => (
+                            <Typography>{phase.phase_name}</Typography>
+                          ))
+                        : Object?.keys(rowCheckboxes)?.map((key, index) => {
+                            const phaseId =
+                              rowCheckboxes[key]?.rows[0]?.phase_id;
+                            const isFirstItem = index === 0;
+
+                            return (
+                              <FormControlLabel
+                                sx={themeStyle.radioText}
+                                value={phaseId}
+                                control={
+                                  <Radio
+                                    sx={themeStyle.radioChecked}
+                                    disabled={isFirstItem}
+                                  />
+                                }
+                                label={key}
+                              />
+                            );
+                          })}
                     </RadioGroup>
                   </FormControl>
+
                   {/* <Button
                     sx={themeStyle.linkButton}
                     startIcon={<AddIcon sx={{ color: "#000" }} />}
@@ -272,30 +336,44 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
                         marginTop: "0rem",
                       }}
                     >
-                      1/{lineItemCounter}
+                      {lineItemCounter}
                     </Typography>
                   </Typography>
-                  <FormControl>
-                    <RadioGroup
-                      aria-labelledby="demo-radio-buttons-group-label"
-                      defaultValue="Furniture repairing"
-                      name="radio-buttons-group"
-                      onChange={handleLineItemRadioChange}
-                    >
-                      {Object.keys(rowCheckboxes).map((phase, index) => {
-                        const phaseData = rowCheckboxes[phase];
-                        return (
-                          <>
-                            {phaseData.rows.map((row, index) => {
-                              return (
-                                <Typography sx={themeStyle.headingText}></Typography>
-                              );
-                            })}
-                          </>
-                        );
-                      })}
-                    </RadioGroup>
-                  </FormControl>
+
+                  <FormGroup>
+                    {changeOrder
+                      ? checkedRow?.phaseItems.map((phase) => {
+                          return phase.lineItem_names.map((lineItem) => (
+                            <Typography>{lineItem}</Typography>
+                          ));
+                        })
+                      : Object?.keys(rowCheckboxes)?.map((phase, index) => {
+                          const phaseData = rowCheckboxes[phase];
+                          return (
+                            <>
+                              {phaseData.rows.map((row, index) => {
+                                return (
+                                  <FormControlLabel
+                                    key={index}
+                                    sx={themeStyle.radioText}
+                                    control={
+                                      <Checkbox
+                                        value={row.id}
+                                        checked={true}
+                                        // Handle line item checkbox change
+                                        name={row.id.toString()}
+                                        sx={themeStyle.radioChecked}
+                                      />
+                                    }
+                                    label={row.title}
+                                  />
+                                );
+                              })}
+                            </>
+                          );
+                        })}
+                  </FormGroup>
+
                   {/* <Button
                     sx={themeStyle.linkButton}
                     startIcon={<AddIcon sx={{ color: "#000" }} />}
@@ -415,12 +493,32 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
                   Created By
                 </Typography>
                 <Box sx={themeStyle.avatarBox}>
-                  <Avatar
-                    sx={themeStyle.AvatarStyle}
-                    src={user.user.image ? user?.user?.image : Avatarimg}
-                  />
+                  {changeOrder ? (
+                    checkedRow?.team.map((user) => {
+                      if (checkedRow?.createdby == user?.userId) {
+                        return (
+                          <Avatar
+                            sx={themeStyle.AvatarStyle}
+                            src={user.image}
+                          />
+                        );
+                      }
+                    })
+                  ) : (
+                    <Avatar
+                      sx={themeStyle.AvatarStyle}
+                      src={user.user.image ? user?.user?.image : Avatarimg}
+                    />
+                  )}
                   <Typography fontFamily={"inherit"} alignSelf={"end"}>
-                    {user?.user?.firstName}
+                    {changeOrder
+                      ? checkedRow?.team.map((user) => {
+                        if (checkedRow?.createdby == user?.userId) {
+                          return <>{user?.firstName}</>;
+                        }
+                        return null; // Return null for users that don't match
+                      })
+                      : user?.user?.firstName}
                   </Typography>
                 </Box>
                 {/* Divider  */}
@@ -435,25 +533,34 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
                   Assigned
                 </Typography>
                 <Box sx={themeStyle.avatarBox}>
-                  <Stack direction={'row'}>
-                  {assignedCheckboxes?.map((id) => {
-                    return (
-                      <>
-                        {data?.team?.map((user, idx) => {
-                          if (user.userId === id) {
-                            return (
-                              <Avatar
-                                key={idx}
-                                sx={themeStyle.AvatarStyle}
-                                src={user.image}
-                              />
-                            );
-                          }
-                          return null; // or <></>
-                        })}
-                      </>
-                    );
-                  })}
+                  <Stack direction={"row"}>
+                    {assignedCheckboxes.length === 0 ? checkedRow?.team?.map((user) => {
+                      if (checkedRow?.createdby != user?.userId) {
+                        return (
+                          <Avatar
+                            sx={themeStyle.AvatarStyle}
+                            src={user.image}
+                          />
+                        );
+                      }
+                    }) : assignedCheckboxes?.map((id) => {
+                      return (
+                        <>
+                          {data?.team?.map((user, idx) => {
+                            if (user.userId === id) {
+                              return (
+                                <Avatar
+                                  key={idx}
+                                  sx={themeStyle.AvatarStyle}
+                                  src={user.image}
+                                />
+                              );
+                            }
+                            return null; // or <></>
+                          })}
+                        </>
+                      );
+                    })}
                   </Stack>
                   <AssignTeamMembers
                     assignedCheckboxes={assignedCheckboxes}
@@ -789,12 +896,12 @@ const themeStyle = {
     display: "flex",
     margin: "0.2rem 0rem 1rem 1rem",
     gap: "1rem",
-    ml: '30px'
+    ml: "30px",
   },
   AvatarStyle: {
     width: 30,
     height: 30,
-    ml: '-5px',
+    ml: "-5px",
     mt: 1,
   },
   dateBox: {

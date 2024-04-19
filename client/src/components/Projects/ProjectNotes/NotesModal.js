@@ -19,7 +19,7 @@ import {
 const NotesModal = ({ showEditModal, setShowEditModal, notes}) => {
   const [open, setOpen] = useState(false);
   const { id } = useParams();
-  console.log(notes);
+  //console.log(notes);
   const [noteSubject, setNoteSubject] = useState(notes ? notes?.subject : "");
   const [noteBody, setNoteBody] = useState(notes? notes?.content : "");
 
@@ -54,14 +54,14 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes}) => {
     };
   
     if (showEditModal) {
-        console.log(noteId);
+        //console.log(noteId);
         const res = await editProjectNotes(form).unwrap();
-        console.log("Success:", res);
+        //console.log("Success:", res);
         await refetch();
     } else {
       try {
         const res = await addProjectNote(form).unwrap();
-        console.log("Success:", res);
+        //console.log("Success:", res);
         await refetch(); // Refetch after adding notes
         // setOpen(false);
       } catch (error) {

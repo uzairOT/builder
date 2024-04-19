@@ -9,7 +9,7 @@ import {
 function StepBoxes() {
   const [selectedBox, setSelectedBox] =useState(null);
   const { buildType } = useSelector(selectProjectForm);
-  console.log(buildType)
+  //console.log(buildType)
   const dispatch = useDispatch();
 
   const handleBoxClick = (index) => {

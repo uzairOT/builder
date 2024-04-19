@@ -28,7 +28,7 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
   const local = localStorage.getItem("userInfo");
   const { id } = useParams();
   const currentUser = JSON.parse(local);
-  // console.log("Add PhaseView:", currentUser);
+  // //console.log("Add PhaseView:", currentUser);
   const [deleteProjectPhase] = useDeleteProjectPhaseMutation();
   const phases = useSelector((state) => state.projectInitialProposal.phases);
   // const  [getPhases  { data, error, isLoading}] = useGetPhasesQuery({projectId: projectId});
@@ -47,11 +47,11 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
       return;
     } else if (adminProjectView) {
       try {
-        console.log("fetching data...");
+        //console.log("fetching data...");
         const response = await axios.get(
-          `http://192.168.0.107:8080/project/getPhases/${id}`
+          `http://192.168.0.104:8080/project/getPhases/${id}`
         );
-        console.log(response);
+        //console.log(response);
         dispatch(addPhase(response.data.phases));
       } catch (error) {
         setError(error);
@@ -60,9 +60,9 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
     } else {
       try {
         const response = await axios.get(
-          `http://192.168.0.107:8080/project/getPhases/${projectId}`
+          `http://192.168.0.104:8080/project/getPhases/${projectId}`
         );
-        console.log(response);
+        //console.log(response);
         dispatch(addPhase(response.data.phases));
       } catch (error) {
         setError(error);
@@ -84,7 +84,7 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
   };
 
   useEffect(() => {
-    console.log(rowCheckboxes);
+    //console.log(rowCheckboxes);
   }, [rowCheckboxes]);
 
   const handleGridToggle = (currentIndex, previousIndex) => {
@@ -95,7 +95,7 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
       previousIndex < 0 ||
       previousIndex >= cardPhase.length
     ) {
-      console.log("click", currentIndex, previousIndex, cardPhase);
+      //console.log("click", currentIndex, previousIndex, cardPhase);
       return;
     }
 
@@ -163,29 +163,29 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
     } else {
       setSelectedPhaseId(id);
       const selectedPhase = phases[0].find((phase) => phase.id === id);
-      console.log(selectedPhase);
+      //console.log(selectedPhase);
       setSelectedPhaseData(selectedPhase);
     }
   };
-  useEffect(() => {
-    console.log(
-      "Selected Phase: ",
-      selectedPhaseId,
-      " SelectedPhaseData: ",
-      selectedPhaseData
-    );
-  }, [selectedPhaseId, selectedPhaseData]);
+  // useEffect(() => {
+  //   //console.log(
+  //     "Selected Phase: ",
+  //     selectedPhaseId,
+  //     " SelectedPhaseData: ",
+  //     selectedPhaseData
+  //   );
+  // }, [selectedPhaseId, selectedPhaseData]);
 
   const handleDeletePhase = async () => {
-    console.log('clicked!')
+    //console.log('clicked!')
     if (selectedPhaseId) {
-      console.log('in IF statement ', selectedPhaseId)
+      //console.log('in IF statement ', selectedPhaseId)
       await deleteProjectPhase({id:selectedPhaseId});
       const updatedCardPhase = cardPhase.filter(
         (card) => card.id !== selectedPhaseId
       );
       setCardPhase(updatedCardPhase);
-      console.log(updatedCardPhase);
+      //console.log(updatedCardPhase);
       setSelectedPhaseId(null);
       setSelectedPhaseData(null);
       fetchData();
@@ -219,7 +219,7 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
     setShowUpdatePhaseDialogue(false);
      fetchData();
   };
-  // console.log(phases)
+  // //console.log(phases)
   return (
     <Grid container sx={firstGrid}>
       <Stack direction={"row"} justifyContent={"space-between"}>

@@ -26,8 +26,8 @@ const [selectedFile,setSelectedFile] = useState("")
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
-        const res = await axios.post("http://192.168.0.107:8080/project/file",{fileName,fileType});
-        console.log(res);
+        const res = await axios.post("http://192.168.0.104:8080/project/file",{fileName,fileType});
+        //console.log(res);
         return res.data.data.url;
       } catch (error) {
         console.error("Error uploading file:", error);
@@ -35,7 +35,7 @@ const [selectedFile,setSelectedFile] = useState("")
       }
     }
   };
-console.log(type)
+//console.log(type)
     //   const res = await getPresignedUrl({
     //     fileName: file.name,
     //     fileType: file.type,
@@ -52,7 +52,7 @@ console.log(type)
   };
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    console.log(file)
+    //console.log(file)
     setFileName(file.name);
     setFileType(file.type);
     setSelectedFile(file)
@@ -91,16 +91,16 @@ console.log(type)
     try {
       const formData = new FormData(event.currentTarget);
       const formJson = Object.fromEntries(formData.entries());
-      console.log(selectedFile);
+      //console.log(selectedFile);
       // Upload file to server and get the file URL
       const fileUrl = await uploadFileToServer(selectedFile);
       // Upload file to S3 and get the uploaded file URL
       const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
-      console.log(uploadedFileUrl);
+      //console.log(uploadedFileUrl);
       // Make POST API call to save file URL
       const fileType = getFileType(heading);
       const projectId = 204; // Replace with the actual projectId
-      const apiUrl = `http://192.168.0.107:8080/project/files/${projectId}`;
+      const apiUrl = `http://192.168.0.104:8080/project/files/${projectId}`;
       const requestBody = {
         fileUrl: uploadedFileUrl,
         fileType: fileType // Assuming heading is defined somewhere
@@ -109,7 +109,7 @@ console.log(type)
       if (response.status !== 200) {
         throw new Error('Failed to save file URL');
       }
-      console.log(heading);
+      //console.log(heading);
     } catch (error) {
       console.error('Error:', error.message);
       // Handle error, such as displaying an error message to the user

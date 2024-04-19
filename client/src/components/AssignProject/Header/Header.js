@@ -6,7 +6,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import builder1 from "../../Signup/Assets/pngs/builderProYellowLogo.png";
 
 function Header({ step, gap, handlePreviousStep }) {
-  console.log("Header step: ", step);
+  //console.log("Header step: ", step);
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTab = useMediaQuery("(max-width:900px)");
   const isMd = useMediaQuery("(max-width:1200px)");

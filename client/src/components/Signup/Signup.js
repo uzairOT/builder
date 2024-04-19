@@ -62,22 +62,22 @@ const SignupComp = () => {
     setPasswordVisible(!passwordVisible);
   };
   useEffect(()=>{
-    console.log(checked);
+    //console.log(checked);
   },[checked])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if(checked){
       const data = { ...formData, phone };
-      console.log(data)
+      //console.log(data)
       try {
         const res = await register(data).unwrap();
-        console.log("Sign up: ",res);
+        //console.log("Sign up: ",res);
         dispatch(setCredentials({...res}));
         navigate('/assignproject');
-        console.log("hi")
+        //console.log("hi")
       } catch (err) {
-        console.log(err)
+        //console.log(err)
         toast.error(err?.data?.error || err.error);
       }
     } else{

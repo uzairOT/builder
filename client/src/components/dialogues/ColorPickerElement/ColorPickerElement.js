@@ -60,7 +60,7 @@ function ColorPickerElement({
   };
 
   const handleClickOpen = () => {
-    console.log('handle Click open run')
+    //console.log('handle Click open run')
     if (PhaseHeading === "Update Phase") {
       handleUpdateOpen();
     } else {
@@ -85,11 +85,11 @@ function ColorPickerElement({
         phaseName,
         color,
       };
-      console.log('clicked! phaseName: ', phaseName, ' color : ', color, ' updatedPhaseData: ', updatedPhaseData)
+      //console.log('clicked! phaseName: ', phaseName, ' color : ', color, ' updatedPhaseData: ', updatedPhaseData)
       await updateProjectPhase({ id: phaseData?.id, updatedData: updatedPhaseData });
       setPhaseData((phaseData) => ({ ...phaseData, ...updatedPhaseData }));
-      console.log(updatedPhaseData);
-      console.log(phaseData);
+      //console.log(updatedPhaseData);
+      //console.log(phaseData);
       onSubmit(phaseName, color);
       setPhaseName(phaseName);
       handleUpdateClose();
@@ -101,12 +101,12 @@ function ColorPickerElement({
         colorMode,
         projectId: adminProjectView ? id : projectId,
       };
-      console.log(data)
+      //console.log(data)
       const res = await addProjectPhase(data).unwrap().then().catch(e=>{ alert(e.message)});
-      console.log('Response:', res.phase);
+      //console.log('Response:', res.phase);
       setPhaseData((phaseData) => ({ ...phaseData, ...data }));
-      console.log(data);
-      console.log(phaseData);
+      //console.log(data);
+      //console.log(phaseData);
       dispatch(addPhase(res.phase))
       handleAddClose();
     }

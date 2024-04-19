@@ -14,7 +14,7 @@ const TaskCalenderView = ({ dailyForecast, eventsArr }) => {
   //     end: moment(item.end).toDate(),
   //   }
   // })
-  // console.log("In Task Calender View: ", events);
+  // //console.log("In Task Calender View: ", events);
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);

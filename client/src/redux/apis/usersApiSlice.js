@@ -1,5 +1,5 @@
 import { apiSlice } from './apiSlice';
-const USERS_URL = 'http://192.168.0.107:8080/user';
+const USERS_URL = 'http://192.168.0.104:8080/user';
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -61,6 +61,12 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: data,
       })
+    }),
+    getUserNotifications: builder.query({
+      query: (data) => ({
+        url: `${USERS_URL}/notifications/${data}`,
+        method: 'GET',
+      })
     })
   }),
 });
@@ -73,5 +79,6 @@ export const {
   useExistingProjectMutation,
   useUpdateProjectMutation,
   useGetUserEventsMutation,
-  useUpdateProfileMutation
+  useUpdateProfileMutation,
+  useGetUserNotificationsQuery
 } = userApiSlice;

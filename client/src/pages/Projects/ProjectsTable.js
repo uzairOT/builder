@@ -32,9 +32,9 @@ const ProjectsTable = () => {
   const local = localStorage.getItem('userInfo');
   const currentUser = JSON.parse(local);
   const currentUserId = currentUser.user.id
-  console.log('LIST PROJECTS:', currentUserId)
+  //console.log('LIST PROJECTS:', currentUserId)
   const {data, isLoading, error} = useGetUserProjectsQuery({userId: currentUserId});
-  console.log(data);
+  //console.log(data);
 
   return (
     <main>

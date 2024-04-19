@@ -78,16 +78,16 @@ function AssignNewProjectStep2({
   };
 
   const Data = useSelector(selectProjectForm);
-  console.log(Data);
+  //console.log(Data);
 
   const handleCreateNewProject = async () => {
     localStorage.removeItem("projectId");
     try {
       const userdata = userInfo.user.id;
-      console.log(userdata);
+      //console.log(userdata);
 
       const userId = userdata;
-      console.log(userId);
+      //console.log(userId);
       const FormData = {
         ...Data,
         userId: userId,
