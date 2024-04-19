@@ -88,7 +88,7 @@ const Invitation = () => {
       await axios.post("http://192.168.0.104:8080/project/addme", data);
 
       // Navigate to the desired location upon successful request
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       // Handle errors
       console.log("ERORR: ", err);

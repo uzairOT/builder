@@ -52,14 +52,14 @@ function Header({ step, gap, handlePreviousStep }) {
         ) : (
           <Box sx={headerBox} gap={gap}>
             <img src={builder1} width={imgWidth} alt="" />
-            <Button
+            {/* <Button
               sx={buttonStyle}
               startIcon={<ArrowBackIosIcon />}
               onClick={handleStep}
               disabled
             >
               Back
-            </Button>
+            </Button> */}
           </Box>
         )}
       </Grid>

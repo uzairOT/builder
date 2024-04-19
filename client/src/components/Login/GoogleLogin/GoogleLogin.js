@@ -188,9 +188,8 @@ const CompanyForm = () => {
                     ...labelStyle,
                     ...lableResponsiveFont,
                   }}
-                  htmlFor="email"
                 >
-                  Email address
+                  Company Name
                 </label>
                 <input
                   required
@@ -262,8 +261,8 @@ const CompanyForm = () => {
               </Select> */}
             </Box>
             <Box sx={hptLinksBox}>
-              <Typography sx={hptLinksStyle}>Help</Typography>
-              <Typography sx={hptLinksStyle}>Privacy & Terms</Typography>
+              <Typography sx={hptLinksStyle} onClick={()=>{navigate("/help")}}>Help</Typography>
+              <Typography sx={hptLinksStyle} onClick={()=>{navigate("/privacyandterms")}}>Privacy & Terms</Typography>
             </Box>
           </Grid>
           <Box sx={googleAppImgsMobile}>

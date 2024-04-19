@@ -17,6 +17,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import logo from "../../Signup/Assets/pngs/builderProYellowLogo.png";
 import React, { useEffect, useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import CloseIcon from "@mui/icons-material/Close";
@@ -361,7 +362,7 @@ const ProjectList = ({ rows, isLoading }) => {
                         <TableRow>
                           <TableCell sx={themeStyle.tableCell}>
                             <img
-                              src={row.image}
+                              src={row.image?row.image:logo}
                               alt="profile"
                               style={{
                                 borderRadius: "50%",

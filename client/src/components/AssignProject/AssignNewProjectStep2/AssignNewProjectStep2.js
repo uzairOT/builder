@@ -152,14 +152,14 @@ function AssignNewProjectStep2({
         >
           Add Another Email
         </Button>
-        <Button
+        {/* <Button
           sx={buttonLnks}
           startIcon={
             <AttachFileSharpIcon sx={{ transform: "rotate(30deg)" }} />
           }
         >
           Get a shareable invite link
-        </Button>
+        </Button> */}
       </Box>
       <Box sx={{ ...buttonBox, ...buttoncontainer }}>
         <Button sx={{ ...YellowBtn, ...buttonStyle }} onClick={handleNextStep}>
