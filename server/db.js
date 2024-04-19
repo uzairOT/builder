@@ -13,7 +13,7 @@ pool.connect((err)=>{
     if(err){
         console.error(err.stack)
     }else{
-        console.log("connected")
+        //console.log("connected")
     }
 })
 module.exports =pool

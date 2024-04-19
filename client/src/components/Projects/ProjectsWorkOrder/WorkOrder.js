@@ -15,6 +15,7 @@ import {
   Input,
 } from "@mui/material";
 import Button from "../../UI/CustomButton";
+import ChangeOrder from "../ProjectsDefault/ChangeOrder";
 const dummyData = [
     {
       id: 1,
@@ -83,9 +84,9 @@ function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow, workOr
     <Table>
   <TableHead>
     <TableRow>
-      <TableCell>
+      {workOrder ? <></>: <TableCell>
         {/* <Checkbox  /> */}
-      </TableCell>
+      </TableCell>}
       <TableCell sx={tableCellStyle}>Subject</TableCell>
       <TableCell sx={tableCellStyle}>Description</TableCell>
       {/* <TableCell sx={tableCellStyle}>Unit</TableCell> */}
@@ -104,12 +105,12 @@ function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow, workOr
   <TableBody>
   {data?.workOrderReqs.map((item) => (
   <TableRow key={item.id}>
-    <TableCell sx={tableCellValueStyle}>
+    {workOrder ? <></> : <TableCell sx={tableCellValueStyle}>
       <Checkbox
         checked={checkedRow === item}
         onChange={() => handleCheckboxChange(item, data)}
       />
-    </TableCell>
+    </TableCell>}
     <TableCell sx={tableCellValueStyle}>{item.subject}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.description}</TableCell>
     {/* <TableCell sx={tableCellValueStyle}>{item.LineItem.unit}</TableCell>

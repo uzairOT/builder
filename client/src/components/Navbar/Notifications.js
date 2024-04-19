@@ -57,10 +57,7 @@ function Notification({ notification, refetch, userId }) {
         <Stack direction={"row"} gap={1} p={1} alignItems={'center'}>
           <Avatar></Avatar>
           <Stack>
-            <Typography sx={{fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',}}>Name</Typography>
-            <Typography sx={{fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',}}>{notification.userId}</Typography>
-            <Typography sx={{fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',}}>WorkOrder Id</Typography>
-            <Typography sx={{fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',}}>{notification.workOrder_id}</Typography>
+            <Typography sx={{fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',}}>John</Typography>
           </Stack>
           <Stack direction={'row'} sx={{height:'35px'}}>
           <BuilderProButton

@@ -140,6 +140,14 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const handleRequest = async () => {
     const formattedStartDate = startDate.format("MMM D, YYYY, h:mm a");
     const formattedEndDate = endDate.format("MMM D, YYYY, h:mm a");
+    console.log('CHEHCEH: ', checkedRow)
+    if(changeOrder){
+      var transformedPhaseItems = checkedRow.phaseItems.map(item => ({
+        phaseId: item.phaseId,
+        lineItemId: item.lineItemId
+      }));
+      console.log("TRANSFORMED: ",transformedPhaseItems)
+    }
     const requestForm = {
       workOrder_id: changeOrder ? checkedRow.id : '',
       subject: subject,
@@ -149,8 +157,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
       priority: priority,
       status: status,
       phase: phaseId,
-      lineItem: lineItemIds[0].lineItemId[0],
-      phaseItems: lineItemIds,
+      lineItem: changeOrder ? checkedRow.LineItem_id : lineItemIds[0].lineItemId[0],
+      phaseItems: changeOrder ? transformedPhaseItems : lineItemIds,
       createdby: userId,
       teamIds: [...assignedCheckboxes, userId],
       notes: notes,
@@ -229,7 +237,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
             }}
             height={"100%"}
           >
-            <Stack p={3} spacing={1}>
+            <Stack p={3} spacing={1} width={'100%'}>
               <Typography fontFamily={"inherit"}>
                 <strong>Subject: </strong>{" "}
                 <input
@@ -477,12 +485,12 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                     handleOnClick={handleRequest}
                     marginLeft={"0px"}
                   >
-                    Request Work Order
+                    {changeOrder ? "Request Change" : "Request Work Order"}
                   </BuilderProButton>
                 </Stack>
               </Stack>
             </Stack>
-            <Stack backgroundColor={"#EFF5FF"}>
+            <Stack backgroundColor={"#EFF5FF"} width={'100%'}>
               <Box>
                 <Typography
                   sx={{
@@ -579,6 +587,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                 >
                   Notes
                 </Typography>
+                <Typography fontFamily={"inherit"} pb={4} pl={1}>
                 <input
                   value={notes}
                   placeholder="Type your description..."
@@ -587,6 +596,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                   style={themeStyle.inputFields}
                   onChange={handleNotesChange}
                 ></input>
+                </Typography>
                 {/* <Box sx={themeStyle.dateBox}>
                   <LocalizationProvider dateAdapter={AdapterMoment}>
                     <DemoContainer components={["DateTimePicker"]}>
@@ -768,6 +778,7 @@ const style = {
   boxShadow: 24,
   p: 0,
   borderRadius: "14px",
+  width: '700px'
 };
 const themeStyle = {
   inputFields: {

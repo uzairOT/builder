@@ -18,7 +18,7 @@ module.exports = (io, socket) => {
       // Emit the new message to the recipient
       io.to(recipientId).emit("privateMessage", privateChatMessage);
 
-      console.log(privateChatMessage.dataValues)
+      //console.log(privateChatMessage.dataValues)
       // You can also broadcast the message to other connected users if needed
       // io.emit('privateMessage', privateChatMessage);
 
@@ -40,7 +40,7 @@ module.exports = (io, socket) => {
 
   socket.on('privateMessageHistory', async (data, callback) => {
     const { userId } = data;
-console.log(userId)
+//console.log(userId)
     try {
       // Fetch the private message history for the user
       const history = await PrivateChatMessage.findAll({
@@ -75,7 +75,7 @@ console.log(userId)
 
 
   socket.on('disconnect', () => {
-    console.log(`User disconnected: ${socket.id}`);
+    //console.log(`User disconnected: ${socket.id}`);
   });
 
 };
