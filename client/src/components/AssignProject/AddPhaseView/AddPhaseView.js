@@ -16,18 +16,20 @@ import {
   selectAddPhase,
   setRowCheckbox,
 } from "../../../redux/slices/addPhaseSlice";
-import axios from 'axios';
-import {useParams} from 'react-router-dom';
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
-function  AddPhaseView({ adminProjectView, view ,projectId }) {
-  const [cardPhase, setCardPhase] = useState();
+function AddPhaseView({ adminProjectView, view, projectId }) {
+  const [cardPhase, setCardPhase] = useState([]);
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
   const [selectedPhaseData, setSelectedPhaseData] = useState(null);
-  const local = localStorage.getItem('userInfo');
-  const {id} = useParams()
+  const local = localStorage.getItem("userInfo");
+  const { id } = useParams();
   const currentUser = JSON.parse(local);
-  console.log("Add PhaseView:",currentUser)
-  const [deleteProjectPhase] = useDeleteProjectPhaseMutation({userId: currentUser.id});
+  // //console.log("Add PhaseView:", currentUser);
+  const [deleteProjectPhase] = useDeleteProjectPhaseMutation();
   const phases = useSelector((state) => state.projectInitialProposal.phases);
   // const  [getPhases  { data, error, isLoading}] = useGetPhasesQuery({projectId: projectId});
   const [showUpdatePhaseDialogue, setShowUpdatePhaseDialogue] = useState(false);
@@ -38,36 +40,37 @@ function  AddPhaseView({ adminProjectView, view ,projectId }) {
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null)
-  const fetchData = async () => {
+  const [error, setError] = useState(null);
+  const fetchData = async () => { 
     setIsLoading(true);
-    if(projectId === null){
+    if (projectId === null) {
       return;
-    }else if(adminProjectView){
+    } else if (adminProjectView) {
       try {
-        const response = await axios.get(`http://192.168.0.105:8080/project/getPhases/${id}`);
-        console.log(response)
+        //console.log("fetching data...");
+        const response = await axios.get(
+          `http://192.168.0.104:8080/project/getPhases/${id}`
+        );
+        //console.log(response);
+        dispatch(addPhase(response.data.phases));
+      } catch (error) {
+        setError(error);
+      }
+      setIsLoading(false);
+    } else {
+      try {
+        const response = await axios.get(
+          `http://192.168.0.104:8080/project/getPhases/${projectId}`
+        );
+        //console.log(response);
         dispatch(addPhase(response.data.phases));
       } catch (error) {
         setError(error);
       }
       setIsLoading(false);
     }
-    else{
-
-      try {
-        const response = await axios.get(`http://192.168.0.105:8080/project/getPhases/${projectId}`);
-        console.log(response)
-        dispatch(addPhase(response.data.phases));
-      } catch (error) {
-        setError(error);
-      }
-      setIsLoading(false);
-    };
-    
-  }
+  };
   useEffect(() => {
-    
     fetchData();
 
     // Cleanup function
@@ -80,9 +83,9 @@ function  AddPhaseView({ adminProjectView, view ,projectId }) {
     fetchData();
   };
 
-  useEffect(()=>{
-    console.log(rowCheckboxes)
-  },[rowCheckboxes])
+  useEffect(() => {
+    //console.log(rowCheckboxes);
+  }, [rowCheckboxes]);
 
   const handleGridToggle = (currentIndex, previousIndex) => {
     // Ensure indices are within the valid range
@@ -92,6 +95,7 @@ function  AddPhaseView({ adminProjectView, view ,projectId }) {
       previousIndex < 0 ||
       previousIndex >= cardPhase.length
     ) {
+      //console.log("click", currentIndex, previousIndex, cardPhase);
       return;
     }
 
@@ -124,8 +128,14 @@ function  AddPhaseView({ adminProjectView, view ,projectId }) {
     setCardPhase(updatedCardPhase);
   };
 
+ 
   const handleEditPhase = () => {
-    setShowUpdatePhaseDialogue(true);
+    if(selectedPhaseId){
+
+      setShowUpdatePhaseDialogue(true);
+    } else{
+      toast.info('Please Select a Phase')
+    }
   };
 
   const handleUpdateOpen = () => {
@@ -152,21 +162,35 @@ function  AddPhaseView({ adminProjectView, view ,projectId }) {
       setSelectedPhaseId(null);
     } else {
       setSelectedPhaseId(id);
-      const selectedPhase = cardPhase.find((phase) => phase.id === id);
+      const selectedPhase = phases[0].find((phase) => phase.id === id);
+      //console.log(selectedPhase);
       setSelectedPhaseData(selectedPhase);
     }
   };
+  // useEffect(() => {
+  //   //console.log(
+  //     "Selected Phase: ",
+  //     selectedPhaseId,
+  //     " SelectedPhaseData: ",
+  //     selectedPhaseData
+  //   );
+  // }, [selectedPhaseId, selectedPhaseData]);
 
-  const handleDeletePhase = () => {
+  const handleDeletePhase = async () => {
+    //console.log('clicked!')
     if (selectedPhaseId) {
-      deleteProjectPhase(selectedPhaseId);
+      //console.log('in IF statement ', selectedPhaseId)
+      await deleteProjectPhase({id:selectedPhaseId});
       const updatedCardPhase = cardPhase.filter(
         (card) => card.id !== selectedPhaseId
       );
       setCardPhase(updatedCardPhase);
-      console.log(updatedCardPhase);
+      //console.log(updatedCardPhase);
       setSelectedPhaseId(null);
       setSelectedPhaseData(null);
+      fetchData();
+    } else{
+      toast.info('Please Select a Phase')
     }
   };
 
@@ -174,7 +198,9 @@ function  AddPhaseView({ adminProjectView, view ,projectId }) {
     setShowAddPhaseDialogue(false);
   };
 
-  const handleUpdateSubmit = (phaseName, color, selectedPhaseData) => {
+  const handleUpdateSubmit =  (phaseName, color, selectedPhaseData) => {
+   
+
     const updatedPhaseData = {
       ...selectedPhaseData,
       phaseName: phaseName,
@@ -191,8 +217,9 @@ function  AddPhaseView({ adminProjectView, view ,projectId }) {
     setCardPhase(updatedCardPhase);
     setSelectedPhaseData(updatedPhaseData);
     setShowUpdatePhaseDialogue(false);
+     fetchData();
   };
-  console.log(phases)
+  // //console.log(phases)
   return (
     <Grid container sx={firstGrid}>
       <Stack direction={"row"} justifyContent={"space-between"}>
@@ -217,11 +244,15 @@ function  AddPhaseView({ adminProjectView, view ,projectId }) {
             <Button
               sx={{ ...actionButton }}
               startIcon={<ModeEditOutlinedIcon />}
-              onClick={handleAddPhase}
+              onClick={handleEditPhase}
             >
               Edit
             </Button>
-            <Button sx={{ ...actionButton }} startIcon={<DeleteOutlinedIcon />}>
+            <Button 
+            sx={{ ...actionButton }} 
+            startIcon={<DeleteOutlinedIcon/>}
+            onClick={handleDeletePhase}
+            >
               Delete
             </Button>
             <Button
@@ -231,7 +262,10 @@ function  AddPhaseView({ adminProjectView, view ,projectId }) {
               Add Phase
             </Button>
             {adminProjectView ? (
-               <RequestWorkOrderModal rowCheckboxes={rowCheckboxes} phases={phases} />
+              <RequestWorkOrderModal
+                rowCheckboxes={rowCheckboxes}
+                phases={phases}
+              />
             ) : (
               <Button sx={{ ...actionButton, ...approvalButton }}>
                 Send Approval
@@ -271,11 +305,18 @@ function  AddPhaseView({ adminProjectView, view ,projectId }) {
               key={phase.id}
               style={{
                 ...slectedCardStyle,
-                backgroundColor: selectedPhaseId === phase.id ? "#000" : "#FFF",
+                cursor: "pointer", // Add cursor pointer to indicate clickable
+                borderRadius: "8px", // Rounded corners
+                boxShadow:
+                  selectedPhaseId === phase.id
+                    ? `0 0 0 1px #1B1B1B, 0 5px 20px ${phase.color}`
+                    : "none", // Border and glow effect
+                transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
+                marginTop: "1rem",
               }}
             >
               <PhaseCard
-                projectId= {adminProjectView ? id : projectId}
+                projectId={adminProjectView ? id : projectId}
                 key={phase?.id}
                 phaseData={phase}
                 length={phase.length}
@@ -309,9 +350,9 @@ function  AddPhaseView({ adminProjectView, view ,projectId }) {
           phaseData={selectedPhaseData}
           setPhaseData={setSelectedPhaseData}
           // onSubmit={handleColorPickerSubmit}
-          onSubmit={(phaseName, color) =>
-            handleUpdateSubmit(phaseName, color, selectedPhaseData)
-          }
+          onSubmit={(phaseName, color) => {
+            handleUpdateSubmit(phaseName, color, selectedPhaseData);
+          }}
         />
       )}
       {showAddPhaseDialogue && (
@@ -366,7 +407,7 @@ const displayButton = {
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
 };
 const slectedCardStyle = {
-  padding: "0.1rem 0rem 1rem 0rem",
+  padding: "0rem 0rem 0rem 0rem",
   margin: "0rem",
   cursor: "pointer",
 };

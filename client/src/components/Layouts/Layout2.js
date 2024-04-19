@@ -9,15 +9,15 @@ import {useGetProjectDataQuery} from '../../redux/apis/Project/projectApiSlice';
 
 const Layout2 = () => {
 useEffect(()=>{
-  console.log("layout 2")
+  //console.log("layout 2")
 })
     const params = useParams();
     const {id: currentProjectId} = params;
     const {data} = useGetProjectDataQuery({projectId: currentProjectId});
     // projects.find(project => project.id === parseInt(currentProjectId));
     const selectedProjectId = data?.data;
-    console.log(selectedProjectId, params);
-    console.log("cascasc");
+    //console.log(selectedProjectId, params);
+    //console.log("cascasc");
 
   return (
     <>

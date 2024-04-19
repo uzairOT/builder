@@ -36,17 +36,16 @@ const themeStyle = {
   },
 };
 
-const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes }) => {
+const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes, data }) => {
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
-  console.log("location: ", location, " projectId: ", projectId);
+  //console.log("location: ", location, " projectId: ", projectId);
   const [open, setOpen] = React.useState(false);
   const [checked, setChecked] = React.useState([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { data } = useGetTeamMembersQuery(projectId);
   const team = data?.team;
-  console.log(data?.team[0]);
+  //console.log(data?.team[0]);
 
   const handleEmailCheckBoxes = (event, row) => {
     const { checked } = event.target;

@@ -18,17 +18,22 @@ import CustomToolbarProjects from "./CustomToolbarProjects";
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
-
-const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClient, events }) => {
+const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClient, eventsArr }) => {
   const [monthEventView, setMonthEventView] = useState(true);
   const [eventView, setEventView] = useState('Work Order')
   const eventViewRef = useRef(eventView);
   eventViewRef.current = eventView;
-
   const currentDate = moment();
   const startTime = moment(currentDate).set({ hour: 9, minute: 0, second: 0, millisecond: 0 });
   const endTime = moment(currentDate).set({ hour: 23, minute: 0, second: 0, millisecond: 0 });
-
+    const events = eventsArr?.map((item)=>{
+    return{
+      ...item,
+      start: moment(item.start).toDate(),
+      end: moment(item.end).toDate(),
+    }
+  })
+  //console.log("In Task Calender View: ", events);
 
   // const [events, setEvents] = useState([
   //   {
@@ -130,10 +135,10 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
   //     }
   //   },
   // ]);
-  console.log(events)
-  console.log("Inside Task Calender: ", monthEventView);
+  //console.log(events)
+  //console.log("Inside Task Calender: ", monthEventView);
   const toolbarKey = dailyForecast ? 'withForecast' : 'withoutForecast';
-  console.log("Inside Task Calender dailyForecast: ", dailyForecast, " toolbar key: ", toolbarKey);
+  //console.log("Inside Task Calender dailyForecast: ", dailyForecast, " toolbar key: ", toolbarKey);
 
   const components = useCallback(() => ({
 
@@ -151,7 +156,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
     month: {
       dateCellWrapper: (props) => (eventViewRef.current === 'Work Order' ? <MonthCellWapper props={props} isDrawerOpen={isDrawerOpen} monthView={'tasks'} isProjectPage={isProjectPage} /> : <MonthCellWapper props={props} isDrawerOpen={isDrawerOpen} monthView={'weather/notes'} isProjectPage={isProjectPage} />),
       event: (props) => {
-        console.log("Month Event View current Function rerendered: ", eventViewRef.current);
+        //console.log("Month Event View current Function rerendered: ", eventViewRef.current);
         if (eventViewRef.current === 'Work Order') {
           return <CustomEventMonthTasks {...props} monthEventView={monthEventView.current} />
         } else {
@@ -191,4 +196,4 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
       );
 }
 
-export default TaskCalender
+export default TaskCalender;

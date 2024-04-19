@@ -66,7 +66,7 @@ function CustomTable({
   const local = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(local);
   const currentUserId = currentUser.user.id;
-  console.log(currentUserId);
+  //console.log(currentUserId);
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
   const userRole = pathSegments[pathSegments.length - 1];
@@ -74,7 +74,7 @@ function CustomTable({
     userRole: userRole,
     userId: currentUserId,
   });
-  console.log("ERROR IN FETCHING TABLE:", data);
+  //console.log("ERROR IN FETCHING TABLE:", data);
   const handleEmailIconClick = () => {
     setTemplateView(true); // Call the function to update the template view
   };
@@ -94,7 +94,7 @@ function CustomTable({
         userRole: userRole,
       };
       const res = await assignRoleDelete(deleteUser);
-      console.log(res);
+      //console.log(res);
       if(res.data.success){
         refetch();
       }
@@ -129,7 +129,7 @@ function CustomTable({
             data?.users?.map((row) => (
               <TableRow key={row.id}>
                 <TableCell sx={tableCellValueStyle}>
-                  <Avatar alt="Avatar" src={row.avatar} />
+                  <Avatar alt="Avatar" src={row.image} />
                 </TableCell>
                 <TableCell sx={tableCellValueStyle}>{row.firstName}</TableCell>
                 <TableCell sx={tableCellValueStyle}>{row.project}</TableCell>

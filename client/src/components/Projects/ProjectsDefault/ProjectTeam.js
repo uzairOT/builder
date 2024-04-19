@@ -19,7 +19,7 @@ import {useLocation} from 'react-router-dom'
         const location = useLocation();
         const pathSegments = location.pathname.split('/')
         const projectId = pathSegments[2];
-        console.log(pathSegments)
+        //console.log(pathSegments)
         const {data, isLoading} = useGetProjectTeamQuery(projectId)
         const team = data?.team
         const id = openShare ? "simple-popover" : undefined;
@@ -29,7 +29,7 @@ import {useLocation} from 'react-router-dom'
           return acc;
         }, {});
         
-        console.log("team: ", team, "groupedData :", groupedData)
+        //console.log("team: ", team, "groupedData :", groupedData)
         const handleShare = (e) => {
             setOpen(e.currentTarget);
           };
@@ -47,7 +47,7 @@ import {useLocation} from 'react-router-dom'
         <Typography sx={themeStyle.title}>Project Team</Typography>
         <Stack direction={'row'} justifyContent={{xl:'space-between',lg:'space-between',md:'center'}}>
             <Stack  width={'100%'} >
-            {isLoading ? <>Loading...</>  : Object.keys(groupedData).map((role)=>{
+            {isLoading ? <>Loading...</>  : Object?.keys(groupedData)?.map((role)=>{
                 let acc =0;
                 return(
                 <Stack direction={'row'} justifyContent={{xl:'space-between', lg:'space-between', md:'flex-start', sm:'flex-start', xs:'flex-start'}} >
@@ -70,8 +70,9 @@ import {useLocation} from 'react-router-dom'
                 </Stack>
                 <Stack direction={'row'} width={'100px'}>
                 {groupedData[role].map((person, index)=>{
-                    return( <></>
-                        // <img key={index} src={person.profilePic} alt='profile' width={'35px'} height={'35px'} style={{borderRadius:'50px', marginLeft: '-10px'}} ></img>
+                    return( <>
+                        <img key={index} src={person.image} alt='profile' width={'35px'} height={'35px'} style={{borderRadius:'50px', marginLeft: '-10px'}} ></img>
+                        </>
                         )
                     })}
                 </Stack>

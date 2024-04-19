@@ -97,7 +97,7 @@ function UpdateModal({
 
 
   useEffect(() => {
-    console.log("values", values);
+    //console.log("values", values);
   }, [values]);
   return (
     <form onSubmit={handleSubmit}>

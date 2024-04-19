@@ -6,14 +6,13 @@ import CircularProgress from '@mui/material/CircularProgress'
 import {useSelector} from 'react-redux';
 
 const WeatherView = ({dailyForecast, loading, error, userGreetings='Admin'}) => {
-  console.log(dailyForecast)
+  //console.log(dailyForecast)
   const userInfo = useSelector(state => state.auth.userInfo)
   const firstName = userInfo?.user?.firstName;
-  const lastName = userInfo?.user?.lastName;
   return (
     <Stack direction={{xs:'column-reverse',xm:'column-reverse',md:'column-reverse', lg: 'column-reverse', xl:'row'}} spacing={2} padding={2}>
     <Box flex={2}>
-      <Typography style={themeStyle.title}>Good Morning, {firstName ? `${firstName} ${lastName}` : userGreetings}</Typography>
+      <Typography style={themeStyle.title}>Good Morning, {firstName ? `${firstName}` : userGreetings}</Typography>
       <Stack direction="row" justifyContent={{xl:'flex-start', lg:'center', md:'center'}} alignItems={'center'}  height={'50%'} spacing={1} pl={3} pr={2.5} flexWrap={'wrap'}>
      {!loading ?  dailyForecast?.map( (forecast, index) => (
       <>

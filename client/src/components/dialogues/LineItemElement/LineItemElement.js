@@ -68,7 +68,7 @@ function AddLineElement({
   const currentProject = JSON.parse(local);
   const phases = useSelector((state) => state.projectInitialProposal.phases);
   const userInfo = useSelector((state) => state.auth.userInfo);
-  console.log(userInfo)
+  //console.log(userInfo)
   
 
   const formData = {
@@ -83,16 +83,16 @@ function AddLineElement({
     longDescription,
   };
   useEffect(()=>{
-    console.log(autoComplete);
+    //console.log(autoComplete);
   },[autoComplete])
 
   useEffect(() => {
     const getData = setTimeout(() => {
       axios
-        .get(`http://192.168.0.105:8080/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`)
+        .get(`http://192.168.0.104:8080/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`)
         .then((response) => {
           setAutoComplete(response.data.MasterLines);
-          console.log(response.data.MasterLines);
+          //console.log(response.data.MasterLines);
         });
     }, 500);
 
@@ -117,24 +117,24 @@ function AddLineElement({
     setOpen(false);
   };
 
-  console.log("Line Item Element",)
+  //console.log("Line Item Element",)
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (LineHeading === "Update Line Item") {
-        console.log("updading..")
+        //console.log("updading..")
         const lineItemId =LineItem.id
         const data = {
             ...formData,
             id:lineItemId,
             projectId: projectId,
         }
-        console.log("Update Alin Item",data)
+        //console.log("Update Alin Item",data)
    
      const res = await updatePhaseLine(data);
-     console.log(res.data)
+     //console.log(res.data)
      dispatch(addPhase(res.data.data));
-      console.log("form submitted succesfully", formData);
-      console.log(LineItem.id)
+      //console.log("form submitted succesfully", formData);
+      //console.log(LineItem.id)
     //   handleUpdateClose();
     } else {
       const {
@@ -164,10 +164,10 @@ function AddLineElement({
 
       const response = await addPhaseLine(newLineItem);
       dispatch(addPhase(response?.data?.allPhases));
-      console.log(newLineItem);
-      console.log(response);
+      //console.log(newLineItem);
+      //console.log(response);
       // handleAddRow(newLineItem);
-      // console.log("form submitted succesfully", formData)
+      // //console.log("form submitted succesfully", formData)
       // handleAddClose();
     }
   };
@@ -288,8 +288,8 @@ function AddLineElement({
                     value={formData.unit}
                     onChange={(e) => setUnit(e.target.value)}
                   >
-                    {Units.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
+                    {Units.map((option,index) => (
+                      <MenuItem key={index} value={option.value}>
                         {option.label}
                       </MenuItem>
                     ))}

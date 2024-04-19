@@ -20,14 +20,14 @@ function Layout3() {
   const location = useLocation();
   const pathSegments = location.pathname.split('/')
   const userRole = pathSegments[pathSegments.length-1]
-  console.log(userRole);
+  //console.log(userRole);
 
   const [assignRolePost] = useAddAssignRoleMutation()
   const [assignRolePut] = useUpdateAssignRoleMutation();
 
   const [userId, setUserId] = useState(null);
   useEffect(() => {
-    console.log(userInfo);
+    //console.log(userInfo);
   }, [userInfo]);
 
 
@@ -37,7 +37,7 @@ function Layout3() {
       ...userInfo,
       userRole: userRole,
     }
-    console.log(post)
+    //console.log(post)
     assignRolePost(post);
     setUserInfo({
       userRole:'',
@@ -56,7 +56,7 @@ function Layout3() {
       ...userInfo,
       userRole: userRole
     }
-    console.log(put);
+    //console.log(put);
     assignRolePut(put);
     setUserInfo({
       userRole:'',

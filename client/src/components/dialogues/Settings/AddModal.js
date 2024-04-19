@@ -29,6 +29,9 @@ import { allUserProjects } from "../../../redux/slices/Project/userProjectsSlice
 import { useSelector } from "react-redux";
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 import { createFilterOptions } from "@mui/material/Autocomplete";
+import { uploadToS3 } from "../../../utils/S3";
+import axios from "axios";
+
 
 function AddModal({ title, open, onClose }) {
   const [image, setImage] = useState(null);
@@ -38,31 +41,55 @@ function AddModal({ title, open, onClose }) {
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
   const userRole = pathSegments[pathSegments.length - 1];
+  const [fileName, setFileName] = useState("");
+  const [fileType, setFileType] = useState("");
+  const [selectedFile, setSelectedFile] = useState("");
   // const { values, handleChange, handleBlur, errors, setFieldValue } = useFormikContext();
   const filter = createFilterOptions();
   const { data, isLoading, error } = useGetUserProjectsQuery({
     userId: currentUserId,
   });
-  console.log(data);
+  
+  //console.log(data);
   const projectNames = data
-    ? data?.projects.map((project) => project.projectName)
-    : [];
-    console.log(projectNames)
+    ? data?.projects.map((project) => ({
+        id: project.id,
+        projectName: project.projectName,
+      })): [];
+  //console.log(projectNames);
   const [assignRolePost] = useAddAssignRoleMutation();
   const { refetch } = useGetAssignedRolesQuery({
     userRole: userRole,
     userId: currentUserId,
   });
+  const uploadFileToServer = async (selectedFile) => {
+    if (selectedFile) {
+      try {
+        const res = await axios.post("http://192.168.0.104:8080/project/file",{fileName,fileType});
+        //console.log(res);
+        return res.data.data.url;
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        // Handle error
+      }
+    }
+  };
 
   const onSubmit = async (values, action) => {
+
     try {
+
+      const fileUrl = await uploadFileToServer(selectedFile);
+      const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
+      //console.log(uploadedFileUrl);
       const post = {
         ...values,
-        image: image,
+        image: uploadedFileUrl,
+        image: uploadedFileUrl,
         userRole: userRole,
         userId: currentUserId,
       };
-      console.log(post);
+      //console.log(post);
       const res = await assignRolePost(post);
       refetch();
       if (res.error) {
@@ -71,7 +98,7 @@ function AddModal({ title, open, onClose }) {
       action.resetForm();
       setImage(null);
     } catch (err) {
-      console.log(err);
+      //console.log(err);
     }
   };
 
@@ -103,6 +130,12 @@ function AddModal({ title, open, onClose }) {
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
+    setFileName(file.name);
+    setFileType(file.type);
+    setSelectedFile(file)
+    setFileName(file.name);
+    setFileType(file.type);
+    setSelectedFile(file)
     previewImage(file);
   };
   const previewImage = (file) => {
@@ -116,6 +149,10 @@ function AddModal({ title, open, onClose }) {
   };
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
+    //console.log(file)
+    setFileName(file.name);
+    setFileType(file.type);
+    setSelectedFile(file)
     const reader = new FileReader();
     reader.onloadend = () => {
       setImage(reader.result);
@@ -149,7 +186,7 @@ function AddModal({ title, open, onClose }) {
               }}
             >
               <div
-                style={{ textAlign: "center" }}
+                style={{ textAlign: "center", width: '100%', height: '100%'}}
                 onDragOver={(e) => e.preventDefault()}
                 onDragEnter={(e) => e.preventDefault()}
                 onDrop={handleDrop}
@@ -173,7 +210,8 @@ function AddModal({ title, open, onClose }) {
 
                   {/* Text */}
                   <Typography variant="body1" sx={labelStyle}>
-                    Upload your photo
+                  {image ? '' : 'Upload your Image'}
+                  {image ? '' : 'Upload your Image'}
                   </Typography>
                 </label>
               </div>
@@ -262,43 +300,47 @@ function AddModal({ title, open, onClose }) {
                 ))}
               </TextField> */}
               <FormControl fullWidth>
-                <Select
-                  error={errors.project ? true : false}
-                  displayEmpty
-                  labelId="demo-simple-select-label"
-                  value={values.project}
-                  onChange={handleChange}
-                  onBlur={handleBlur} 
-                name="project"
-                  fullWidth
-                  renderValue={(selected) => {
-                    if (selected.length === 0) {
-                      return (
-                        <Typography
-                          style={{ fontSize: "1rem", color: "#969a9c" }}
-                        >
-                          Project
-                        </Typography>
-                      );
-                    }
-                    return selected;
-                  }}
-                  sx={{
-                    ...InputStyle,
-                    height: "45px",
-                    border:
-                      errors.project && touched.project
-                        ? "1px solid #d32f2f"
-                        : "1px solid #E0E4EC",
-                    placeholder: "Project",
-                  }}
-                >
-                  {projectNames?.map((projectName) => (
-                  <MenuItem key={projectName} value={projectName}>
-                    {projectName}
-                  </MenuItem>
-                ))}
-                </Select>
+              <Select
+  error={errors.project ? true : false}
+  displayEmpty
+  labelId="demo-simple-select-label"
+  value={values.project}
+  onChange={handleChange}
+  onBlur={handleBlur}
+  name="project"
+  fullWidth
+  renderValue={(selected) => {
+    if (selected.length === 0) {
+      return (
+        <Typography
+          style={{ fontSize: "1rem", color: "#969a9c" }}
+        >
+          Project
+        </Typography>
+      );
+    }
+    const selectedProject = projectNames.find(
+      (project) => project.id === selected
+    );
+    return selectedProject ? selectedProject.projectName : "";
+  }}
+  sx={{
+    ...InputStyle,
+    height: "45px",
+    border:
+      errors.project && touched.project
+        ? "1px solid #d32f2f"
+        : "1px solid #E0E4EC",
+    placeholder: "Project",
+  }}
+>
+  {projectNames?.map((projectName) => (
+    <MenuItem key={projectName.id} value={projectName.id}>
+      {projectName.projectName}
+    </MenuItem>
+  ))}
+</Select>
+
                 {errors.project && touched.project ? (
                   <FormHelperText error>{errors.project}</FormHelperText>
                 ) : (

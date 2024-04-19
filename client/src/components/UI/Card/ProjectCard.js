@@ -1,32 +1,31 @@
 import React from "react";
 import { Box, Card, CardMedia, Typography } from "@mui/material";
-
-const ProjectCard = ({projectProfileCard, selected}) => {
-
-  const handleCardBorderColor = ()=> {
+import logo from "../../Signup/Assets/pngs/builderProYellowLogo.png";
+const ProjectCard = ({ projectProfileCard, selected }) => {
+  const handleCardBorderColor = () => {
     switch (projectProfileCard.status) {
-      case 'Critical':
-          return '#EA3B46';
-      case 'High':
-          return '#FAAA3B';
-      case 'Medium':
-          return '#82B811';
+      case "Critical":
+        return "#EA3B46";
+      case "High":
+        return "#FAAA3B";
+      case "Medium":
+        return "#82B811";
       default:
-          return '#5272E9';
-  }
-  }
-  const handleCardColor = ()=> {
-    switch(projectProfileCard.status){
-      case 'Critical':
-        return  selected ? '#CF4A52': '#FFE0E2';
-      case 'High':
-        return '#FFF3E1';
-      case 'Medium':
-        return '#F3FFDB';
-      default:
-        return '#E9EFFF';
+        return "#5272E9";
     }
-  }
+  };
+  const handleCardColor = () => {
+    switch (projectProfileCard.status) {
+      case "Critical":
+        return selected ? "#CF4A52" : "#FFE0E2";
+      case "High":
+        return "#FFF3E1";
+      case "Medium":
+        return "#F3FFDB";
+      default:
+        return "#E9EFFF";
+    }
+  };
   const themeStyle = {
     cardBody: {
       marginBottom: "2px",
@@ -44,15 +43,17 @@ const ProjectCard = ({projectProfileCard, selected}) => {
       mr: 1,
     },
     image: {
-      width: "38px", height: "38px", borderRadius: "9px"
-    }
+      width: "38px",
+      height: "38px",
+      borderRadius: "9px",
+    },
   };
 
   return (
     <Card
       sx={{
-        border: `1px solid ${handleCardBorderColor()}`,
-        backgroundColor: `${handleCardColor()}`,
+        // border: `1px solid ${handleCardBorderColor()}`,
+        backgroundColor: `${projectProfileCard.projectColor}`,
         ...themeStyle.card,
       }}
     >
@@ -63,8 +64,8 @@ const ProjectCard = ({projectProfileCard, selected}) => {
         }}
       >
         <CardMedia
-        component='img'
-          image={projectProfileCard.image}
+          component="img"
+          image={projectProfileCard.image ? projectProfileCard.image : logo}
           sx={{ ...themeStyle.image }}
         />
       </div>
@@ -74,57 +75,62 @@ const ProjectCard = ({projectProfileCard, selected}) => {
         <Typography
           variant="h6"
           sx={{
-            color:selected ? 'white' : projectProfileCard.status === 'Critical' ? '#FD3845' : `${handleCardBorderColor()}`,
+            color: selected
+              ? "white"
+              : projectProfileCard.status === "Critical"
+              ? "#FD3845"
+              : `${handleCardBorderColor()}`,
             ...themeStyle.cardBody,
-            marginBottom: '8px'
+            marginBottom: "8px",
           }}
         >
           {projectProfileCard.projectName}
         </Typography>
         {selected === true || selected === undefined ? (
-  <>
-    <Typography
-      variant="body1"
-      sx={{
-        ...themeStyle.cardBody,
-        color: selected ? 'white' : "#848484",
-      }}
-    >
-      Admin name: {projectProfileCard.adminName}
-    </Typography>
-    <Typography
-      variant="body1"
-      sx={{
-        ...themeStyle.cardBody,
-        color: selected ? 'white' : "#848484",
-      }}
-    >
-      Client name: {projectProfileCard.clientName}
-    </Typography>
-    <Typography
-      variant="body1"
-      sx={{
-        ...themeStyle.cardBody,
-        color: selected ? 'white' : "#202227",
-      }}
-    >
-      Job Running Total: {projectProfileCard.jobRunningTotal}
-    </Typography>
-    <Typography
-      variant="body1"
-      sx={{
-        ...themeStyle.cardBody,
-        color: selected ? 'white' :"#848484",
-      }}
-    >
-      Location: {projectProfileCard.location}
-    </Typography>
-  </>
-) : <></>}
+          <>
+            <Typography
+              variant="body1"
+              sx={{
+                ...themeStyle.cardBody,
+                color: selected ? "white" : "#848484",
+              }}
+            >
+              Admin name: {projectProfileCard.adminName}
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                ...themeStyle.cardBody,
+                color: selected ? "white" : "#848484",
+              }}
+            >
+              Client name: {projectProfileCard.clientName}
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                ...themeStyle.cardBody,
+                color: selected ? "white" : "#202227",
+              }}
+            >
+              Job Running Total: {projectProfileCard.jobRunningTotal}
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                ...themeStyle.cardBody,
+                color: selected ? "white" : "#848484",
+              }}
+            >
+              Location: {projectProfileCard.location}
+            </Typography>
+          </>
+        ) : (
+          <></>
+        )}
       </Box>
     </Card>
   );
 };
 
 export default ProjectCard;
-

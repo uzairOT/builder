@@ -45,14 +45,13 @@ function ColorPickerElement({
   const dispatch = useDispatch();
   const local = localStorage.getItem('projectId');
   const projectId = parseInt(local);
-  console.log(projectId);
   
   const {id} = useParams();
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState(phaseData ? phaseData.color : "");
   const [colorMode, setColorMode] = useState("");
   const [phaseName, setPhaseName] = useState(
-    phaseData?.phaseName ? phaseData.phaseName : ""
+    phaseData?.phase_name ? phaseData.phase_name : ""
   );
   const [updateProjectPhase] = useUpdateProjectPhaseMutation();
   const [addProjectPhase] = useAddProjectPhaseMutation();
@@ -61,7 +60,7 @@ function ColorPickerElement({
   };
 
   const handleClickOpen = () => {
-    console.log('handle Click open run')
+    //console.log('handle Click open run')
     if (PhaseHeading === "Update Phase") {
       handleUpdateOpen();
     } else {
@@ -82,15 +81,17 @@ function ColorPickerElement({
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (PhaseHeading === "Update Phase") {
-      onSubmit(phaseName, color);
       const updatedPhaseData = {
         phaseName,
         color,
       };
-      updateProjectPhase({ id: phaseData?.id, updatedData: updatedPhaseData });
+      //console.log('clicked! phaseName: ', phaseName, ' color : ', color, ' updatedPhaseData: ', updatedPhaseData)
+      await updateProjectPhase({ id: phaseData?.id, updatedData: updatedPhaseData });
       setPhaseData((phaseData) => ({ ...phaseData, ...updatedPhaseData }));
-      console.log(updatedPhaseData);
-      console.log(phaseData);
+      //console.log(updatedPhaseData);
+      //console.log(phaseData);
+      onSubmit(phaseName, color);
+      setPhaseName(phaseName);
       handleUpdateClose();
     } else {
       onSubmit(phaseName, color);
@@ -100,12 +101,12 @@ function ColorPickerElement({
         colorMode,
         projectId: adminProjectView ? id : projectId,
       };
-      console.log(data)
+      //console.log(data)
       const res = await addProjectPhase(data).unwrap().then().catch(e=>{ alert(e.message)});
-      console.log('Response:', res.phase);
+      //console.log('Response:', res.phase);
       setPhaseData((phaseData) => ({ ...phaseData, ...data }));
-      console.log(data);
-      console.log(phaseData);
+      //console.log(data);
+      //console.log(phaseData);
       dispatch(addPhase(res.phase))
       handleAddClose();
     }

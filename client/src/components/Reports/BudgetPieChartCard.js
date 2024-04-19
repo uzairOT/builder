@@ -33,9 +33,9 @@ const BudgetPieChartCard = () => {
   }
 
   useEffect(()=> {
-    console.log("Open: ", open)
-    console.log("Generate Invoice: ", generateInvoice)
-    console.log("shareToClient: ", shareToClient)
+    //console.log("Open: ", open)
+    //console.log("Generate Invoice: ", generateInvoice)
+    //console.log("shareToClient: ", shareToClient)
   },[generateInvoice, open, shareToClient])
   return (
     <>

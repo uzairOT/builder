@@ -6,7 +6,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import builder1 from "../../Signup/Assets/pngs/builderProYellowLogo.png";
 
 function Header({ step, gap, handlePreviousStep }) {
-  console.log("Header step: ", step);
+  //console.log("Header step: ", step);
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTab = useMediaQuery("(max-width:900px)");
   const isMd = useMediaQuery("(max-width:1200px)");
@@ -52,14 +52,14 @@ function Header({ step, gap, handlePreviousStep }) {
         ) : (
           <Box sx={headerBox} gap={gap}>
             <img src={builder1} width={imgWidth} alt="" />
-            <Button
+            {/* <Button
               sx={buttonStyle}
               startIcon={<ArrowBackIosIcon />}
               onClick={handleStep}
               disabled
             >
               Back
-            </Button>
+            </Button> */}
           </Box>
         )}
       </Grid>

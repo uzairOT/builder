@@ -46,7 +46,7 @@ const getFiveDayForcast = async (searchParams) => {
 
 const formatFiveDayWeather = async (forecastData) => {
     const formattedData =[];
-    // console.log("Weather service: ",forecastData)
+    // //console.log("Weather service: ",forecastData)
     const currentDate = moment().format('YYYY-MM-DD');
     for(const forecast of forecastData) {
         const forecastDate  = forecast.dt_txt.split(' ')[0];

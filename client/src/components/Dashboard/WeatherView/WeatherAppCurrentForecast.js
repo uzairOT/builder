@@ -19,8 +19,8 @@ useEffect(()=>{
     const fetchWeather = async () => {
     try {
       const data = await getFormattedWeatherData({lat: "33.6844", lon: "73.0479", units: temperatureUnit});
-      console.log(data);
-      setCurrentWeather(data);} catch(error) { console.log(error); 
+      //console.log(data);
+      setCurrentWeather(data);} catch(error) { //console.log(error); 
       }
   }
   fetchWeather();}, [temperatureUnit])

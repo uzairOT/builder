@@ -17,7 +17,7 @@ function Header({ title, OpenAddModal }) {
 
   // useEffect(()=>{
   //   const getData = setTimeout(()=>{
-  //     axios.get('').then((res) =>{console.log(res)});
+  //     axios.get('').then((res) =>{//console.log(res)});
 
   //   },1000)
   //   return () => clearTimeout(getData)
