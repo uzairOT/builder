@@ -65,6 +65,7 @@ function ProjectFormFields() {
               placeholder="e.g. Project name"
               value={projectName}
               onChange={handleProjectNameChange}
+              required
             />
           </Box>
           <Box sx={{ marginTop: "0.2rem" }}>

@@ -19,16 +19,13 @@ import NewProject from "../../components/AssignProject/NewProject/NewProject";
 import ExistingProject from "../../components/AssignProject/ExistingProject/ExistingProject";
 import ProjectFormFields from "../../components/AssignProject/ProjectFormFields/ProjectFormFields";
 import { useExistingProjectMutation } from "../../redux/apis/usersApiSlice";
-import {
-selectProjectForm
-} from '../../redux/slices/projectFormSlice'
-import { useSelector } from 'react-redux';
-import {toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { selectProjectForm } from "../../redux/slices/projectFormSlice";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AssignProject() {
-
-  const local = localStorage.getItem('userInfo');
+  const local = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(local);
   const currentUserId = currentUser?.user.id;
   const [projectType, setProjectType] = useState(null);
@@ -39,28 +36,30 @@ function AssignProject() {
   const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
 
   const handleProjectChange = async (value) => {
-    if(value === 'Existing'){
+    if (value === "Existing") {
       const data = {
         userId: currentUserId,
         projectName: projectName,
+      };
+      const res = await postExistingProject(data);
+      if (res.data?.success) {
+        setProjectType(value);
+      } else {
+        toast.error(res.error.data.message);
       }
-     const res = await postExistingProject(data);
-     if(res.data?.success){
-      setProjectType(value);
-     }else {
-      toast.error(res.error.data.message)
-     }
-    } else{
+    } else if (projectName !== "") {
       setProjectType(value);
     }
-
   };
 
   const [step, setStep] = useState(0);
   const handlePreviousStep = () => {
-    setStep(step - 1);
+    if (projectName === "") {
+      return;
+    } else {
+      setStep(step - 1);
+    }
   };
-
 
   return (
     <>
