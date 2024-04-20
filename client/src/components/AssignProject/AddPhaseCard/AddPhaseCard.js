@@ -115,7 +115,7 @@ const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSele
     width: '100%', // Allow the table to take up the entire available width
     overflowY: 'auto',
     height:'245px',
-    overflowX: 'hidden'
+    overflowX: {md:'hidden'}
      // Add horizontal scrollbar when needed
   };
 
@@ -166,11 +166,11 @@ const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSele
   };
 
   return (
-    <div>
+    <div style={{width:"100%"}}>
       <Grid
         item
         lg={12}
-        sx={{ ...firstGrid, backgroundColor: `${phaseData?.color}` }}
+        sx={{ ...firstGrid, backgroundColor: `${phaseData?.color}`,width:"100%" }}
        
       >
         <Box
@@ -244,9 +244,9 @@ const AddPhaseCard = ({handleAddRow, phaseData, onGridToggle, length, handleSele
           </Box>
         
           <hr style={hrLine} />
-          <Box sx={{ ...tableContainerStyle, marginLeft: "1rem",  }}>
-            <Table>
-              <TableHead>
+          <Box sx={{ ...tableContainerStyle, marginLeft: "1rem",width:"100%"  }}>
+            <Table sx={{width:"100%"}}>
+              <TableHead sx={{width:"100%"}}>
                 <TableRow>
                   <TableCell>
                   {!adminProjectView && <Checkbox checked={selectAll}
@@ -368,7 +368,8 @@ const headingsBox = {
   display: "flex",
   flexDirection: { lg: "row", md: "row", sm: "column", xs: "column" },
   justifyContent: "space-between",
-  margin: "0.2rem 4rem 0rem",
+  margin: {md:"0.2rem 4rem 0rem"},
+  width:"100%",
 }
 
 const headingInnerBox = {
@@ -376,7 +377,8 @@ const headingInnerBox = {
   flexDirection: "row",
   justifyContent: "space-around",
   whiteSpace: "nowrap",
-  gap: { lg: "9rem", md: "2rem", sm: "auto", xs: "auto" }
+  gap: { lg: "9rem", md: "2rem", sm: "auto", xs: "auto" },
+  width:"100%",
 }
 const phaseBox = {
   display: "flex",
@@ -384,13 +386,15 @@ const phaseBox = {
   alignItems: "center",
   gap: "1rem",
   marginTop: "1rem",
-  marginRight: { lg: "4rem", md: "4rem", sm: "0rem", xs: "0rem" }
+  marginRight: { lg: "4rem", md: "4rem", sm: "0rem", xs: "0rem" },
+  width:"100%"
 }
 const tableGrid = {
   background: "#FBFBFB",
   borderRadius: "1rem",
-  margin: "0.7rem 1rem",
+  margin: {md:"0.7rem 1rem"},
   padding: "1rem 2rem",
+  width: "100%",
 }
 const blackHeading = {
   fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',

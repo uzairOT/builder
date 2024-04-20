@@ -34,10 +34,10 @@ function Header({ step, gap, handlePreviousStep }) {
         {isMobile ? (
           <>
             <Box display={"flex"} flexDirection={"row"}>
-              <Box sx={mobileImageBox}>
+              <Box sx={mobileImageBox}  >
                 <img src={builder1} width={"45%"} alt="" />
               </Box>
-              <Box sx={mobileButtonBox}>
+              {/* <Box sx={mobileButtonBox}>
                 <Button
                   sx={buttonStyle}
                   startIcon={<ArrowBackIosIcon />}
@@ -46,7 +46,7 @@ function Header({ step, gap, handlePreviousStep }) {
                 >
                   Back
                 </Button>
-              </Box>
+              </Box> */}
             </Box>
           </>
         ) : (
@@ -87,8 +87,8 @@ const mobileButtonBox = {
 };
 const mobileImageBox = {
   display: "flex",
-  justifyContent: "flex-start",
-  alignItems: "flex-start",
+  justifyContent: "center",
+  alignItems: "center",
 };
 const headerBox = {
   display: "flex",

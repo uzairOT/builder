@@ -219,7 +219,7 @@ const generalBox = {
 
 const paperPropsStyle = {
   borderRadius: "1rem",
-  width: { lg: "25%", md: "50%", sm: "50%", xs: "50%" },
+  width: { lg: "25%", md: "50%", sm: "100%", xs: "100%" },
   padding: "0.5rem", // Change background color here
 };
 

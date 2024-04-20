@@ -27,13 +27,14 @@ function ProjectFormFields() {
   const borderRadiusResponsive = {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
-
+const [project, setProject]=useState();
   const { projectName, location, projectColor } =
     useSelector(selectProjectForm);
   const dispatch = useDispatch();
 
   // Event handler to update the projectName state
   const handleProjectNameChange = (event) => {
+    setProject(event.target.value)
     dispatch(setProjectName(event.target.value));
   };
 
@@ -63,7 +64,7 @@ function ProjectFormFields() {
                 ...labelResponsiveFont,
               }}
               placeholder="e.g. Project name"
-              value={projectName}
+              value={project}
               onChange={handleProjectNameChange}
               required
             />
