@@ -4,10 +4,10 @@ import PartlySunny from './assets/partly-cloudy.png'
 import moment from 'moment';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 
-const CustomEventDayTasks = ({event}) => {
+const CustomEventDayTasks = ({event, isProjectPage}) => {
   return (
-    <Stack sx={themeStyle.eventBox} width={'176px'} direction={'row'} justifyContent={'space-between'} alignItems={'center'} height={'inherit'} spacing={0.2} borderRadius={'6px'} borderRight={'6px solid #563c91'}>
-        <Stack sx={themeStyle.weather}  max-height={'90%'} max-width={'50%'} alignItems={'center'} justifyContent={'center'} flex={1} spacing={-0.5}>
+    <Stack sx={themeStyle.eventBox} width={'176px'} direction={'row'} justifyContent={'space-between'} alignItems={'center'} height={'inherit'} spacing={0.2} borderRadius={'6px'} borderRight={isProjectPage ? '6px solid #563c91' : `6px solid ${event?.data?.projectColor}`}>
+        <Stack sx={themeStyle.weather} backgroundColor={isProjectPage ? '#563c91' : `${event?.data?.projectColor}`}  max-height={'90%'} max-width={'50%'} alignItems={'center'} justifyContent={'center'} flex={1} spacing={-0.5}>
             <img src={PartlySunny} alt={PartlySunny} style={themeStyle.eventIcon} fontSize={'10px'}></img>
             <Typography sx={themeStyle.eventText} fontSize={'10px'}>{event?.data?.weather?.temp}</Typography>
             <Typography sx={themeStyle.eventText} fontSize={'10px'}>{event?.data?.weather?.description}</Typography>
@@ -19,10 +19,10 @@ const CustomEventDayTasks = ({event}) => {
     </Stack>
   )
 }
-const CustomEventDayNotes = ({event}) => {
+const CustomEventDayNotes = ({event, isProjectPage}) => {
   return (
-    <Stack sx={themeStyle.eventBox} width={'176px'}  direction={'row'} justifyContent={'space-between'} alignItems={'center'} height={'100%'} spacing={0.2} borderRadius={'6px'} borderRight={'6px solid #563c91'}>
-        <Stack sx={themeStyle.weather}  max-height={'90%'} max-width={'50%'} alignItems={'center'} justifyContent={'center'} flex={1} spacing={-0.5}>
+    <Stack sx={themeStyle.eventBox} width={'176px'}  direction={'row'} justifyContent={'space-between'} alignItems={'center'} height={'100%'} spacing={0.2} borderRadius={'6px'}  borderRight={isProjectPage ? '6px solid #563c91' : `6px solid ${event?.data?.projectColor}`}>
+        <Stack sx={themeStyle.weather} backgroundColor={isProjectPage ? '#563c91' : `${event?.data?.projectColor}`}  max-height={'90%'} max-width={'50%'} alignItems={'center'} justifyContent={'center'} flex={1} spacing={-0.5}>
             <img src={PartlySunny} alt={PartlySunny} style={themeStyle.eventIcon} fontSize={'10px'}></img>
             <Typography sx={themeStyle.eventText} fontSize={'10px'}>{event?.data?.weather?.temp}</Typography>
             <Typography sx={themeStyle.eventText} fontSize={'10px'}>{event?.data?.weather?.description}</Typography>
@@ -34,9 +34,9 @@ const CustomEventDayNotes = ({event}) => {
     </Stack>
   )
 }
-const CustomEventWeek = ({event}) => {
+const CustomEventWeek = ({event, isProjectPage}) => {
     return (
-        <Stack sx={themeStyle.eventBox} height={'100%'} borderRight={'6px solid #563c91'} borderRadius={'6px'} >
+        <Stack sx={themeStyle.eventBox} height={'100%'}  borderRight={isProjectPage ? '6px solid #563c91' : `6px solid ${event?.data?.projectColor}`} borderRadius={'6px'} >
             <Stack  direction={'row'} justifyContent={'space-between'} alignItems={'center'} pl={0.5}>
                 <Box  >
                 <Typography height={'30px'} width={'40px'} sx={themeStyle.eventTask} textOverflow={'ellipsis'} overflow={'hidden'} fontSize={'7px'} >{event?.data?.task}</Typography>
@@ -54,11 +54,11 @@ const CustomEventWeek = ({event}) => {
     )
 }
 
-const CustomEventWeekOnModal = ({event}) => {
+const CustomEventWeekOnModal = ({event, isProjectPage}) => {
     const start = moment(event.start).format('HH:mm');
     const end = moment(event.end).format('HH:mm');
     return (
-        <Stack sx={themeStyle.eventBox} borderRight={'6px solid #563c91'} borderRadius={'6px'} height={'100%'}>
+        <Stack sx={themeStyle.eventBox}  borderRight={isProjectPage ? '6px solid #563c91' : `6px solid ${event?.data?.projectColor}`} borderRadius={'6px'} height={'100%'}>
             <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} pl={1} pr={1} flex={1}>
                 <Box flex={1}>
                 <Typography sx={themeStyle.eventTask} textOverflow={'ellipsis'} fontSize={'8px'} overflow={'hidden'}>{event?.data?.task}</Typography>
@@ -88,9 +88,9 @@ const CustomEventWeekOnModal = ({event}) => {
     )
 }
 
-const CustomEventMonthTasks = ({event}) => {
+const CustomEventMonthTasks = ({event, isProjectPage}) => {
     return(
-        <Box sx={{background: '#C7EBE8'}} height={'100%'}>
+        <Box sx={{background: isProjectPage ? '#C7EBE8' : event?.data?.projectColor}} height={'100%'}>
         <Typography fontSize={'10px'} color={'#454545'}>{event?.data?.task}</Typography>
         </Box>
     )
@@ -120,7 +120,6 @@ const themeStyle = {
         fontFamily: 'Inter, sans-serif',
     },
     weather:{
-        backgroundColor: '#5F97BA',
         color: '#FFF',
         borderRadius: '10px',
         paddingTop: 0.1,

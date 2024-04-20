@@ -50,7 +50,7 @@ import { setNotifications } from "../../../redux/slices/Notifications/notificati
 import useSocket from "../../../utils/useSocket";
 
 const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
-  console.log("rizwan------>", rowCheckboxes);
+  console.log("check12------>", rowCheckboxes);
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
   const [open, setOpen] = useState(false);
@@ -164,6 +164,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
       notes: notes,
       projectId: projectId,
     };
+    console.log("--------------------------------------",requestForm)
     if (requestForm.teamIds.length === 0) {
       toast.error("Team member must be assigned");
     } else {

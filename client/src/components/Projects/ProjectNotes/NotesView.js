@@ -32,11 +32,6 @@ const NotesView = () => {
               ) : (
                 <TaskCalenderView dailyForecast={dailyForecast} eventsArr={events} />
               )}
-      {loading ? (
-                <>Loading</>
-              ) : (
-                <TaskCalenderView dailyForecast={dailyForecast} eventsArr={events} />
-              )}
       </Paper>
           </Stack>
     </Stack>

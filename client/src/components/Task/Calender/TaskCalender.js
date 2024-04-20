@@ -33,7 +33,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
       end: moment(item.end).toDate(),
     }
   })
-  //console.log("In Task Calender View: ", events);
+  console.log("In Task Calender View: ", events);
 
   // const [events, setEvents] = useState([
   //   {
@@ -146,11 +146,11 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
     <CustomToolbarProjects bgColor={bgColorClient} toolbar={props} setEventView={setEventView} setMonthEventView={setMonthEventView} monthEventView={monthEventView} key={toolbarKey} /> : 
     <CustomToolbar dailyForecast={dailyForecast} toolbar={props} setEventView={setEventView} setMonthEventView={setMonthEventView} monthEventView={monthEventView} key={toolbarKey} />),
     day: {
-      event: (props) => (eventViewRef.current === 'Work Order' ? <CustomEventDayTasks {...props} /> : <CustomEventDayNotes {...props} />)
+      event: (props) => (eventViewRef.current === 'Work Order' ? <CustomEventDayTasks {...props} isProjectPage={isProjectPage} /> : <CustomEventDayNotes {...props} isProjectPage={isProjectPage}  />)
     },
     week: {
       timeGutterHeader: TimeGutterHeader,
-      event: (props) => (isDrawerOpen ? <CustomEventWeekOnModal {...props} /> : <CustomEventWeek {...props} />)
+      event: (props) => (isDrawerOpen ? <CustomEventWeekOnModal isProjectPage={isProjectPage}  {...props} /> : <CustomEventWeek {...props} isProjectPage={isProjectPage}  />)
       // isDrawerOpen ? (props) => <CustomEventWeekOnModal {...props}/> :(props) => <CustomEventWeek {...props} />
     },
     month: {
@@ -158,9 +158,9 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
       event: (props) => {
         //console.log("Month Event View current Function rerendered: ", eventViewRef.current);
         if (eventViewRef.current === 'Work Order') {
-          return <CustomEventMonthTasks {...props} monthEventView={monthEventView.current} />
+          return <CustomEventMonthTasks {...props} monthEventView={monthEventView.current} isProjectPage={isProjectPage}  />
         } else {
-          return <CustomEventMonthWeatherNotes {...props} isDrawerOpen={isDrawerOpen} />
+          return <CustomEventMonthWeatherNotes {...props} isDrawerOpen={isDrawerOpen} isProjectPage={isProjectPage} />
         }
       }
 

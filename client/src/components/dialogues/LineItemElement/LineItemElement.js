@@ -126,7 +126,7 @@ function AddLineElement({
         const data = {
             ...formData,
             id:lineItemId,
-            projectId: projectId,
+            projectId: id,
         }
         //console.log("Update Alin Item",data)
    

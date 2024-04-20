@@ -73,13 +73,17 @@ const Navbar = () => {
   const { data, refetch } = useGetNotificationsQuery(userId);
   const [updateNotificationRead] = useUpdateWorkOrderReadMutation();
   dispatch(setNotificationsArr(data?.data));
-
+  console.log("JOHN NOTIFICATION TEST",anchorEl)
   const handleClick = async (event) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
-    if(notifications?.length > 0){
-      await updateNotificationRead({ userId });
-      await refetch(userId)
-      dispatch(setNotifications([]));
+    if(anchorEl){
+      setAnchorEl(null)
+    } else{
+      setAnchorEl(event.currentTarget);
+      if(notifications?.length > 0){
+        await updateNotificationRead({ userId });
+        await refetch(userId)
+        dispatch(setNotifications([]));
+      }
     }
   };
 
@@ -233,14 +237,14 @@ const Navbar = () => {
             <IconButton aria-label="bell-notifications">
               <Badge
                 badgeContent={notifications?.length}
-                color="primary"
+                color="error"
                 onClick={handleClick}
               >
-                <NotificationsIcon color="action" />
+                <NotificationsIcon sx={{color:'#4C8AB1'}} />
               </Badge>
             </IconButton>
             <Popper
-              style={{ zIndex: "100" }}
+              style={{ zIndex: "100", backgroundColor:'white' }}
               id={noti_id}
               open={openNotification}
               anchorEl={anchorEl}
@@ -255,7 +259,7 @@ const Navbar = () => {
                   ></Notification>
                 ))
               ) : (
-                <div style={{backgroundColor: 'white'}}>No notifications available</div>
+                <div style={{backgroundColor: 'lightgray', padding:20, borderRadius:'14px',}}>No new notifications available</div>
               )}
             </Popper>
 
