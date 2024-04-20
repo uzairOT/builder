@@ -27,7 +27,8 @@ const ChangeOrder = () => {
 
   return (
     <TableContainer
-      style={{ paddingLeft: "4px", paddingRight: "4px", width: "100%" }}
+      style={{ paddingLeft: "4px", paddingRight: "4px", width: "100%", height:'60vh' }}
+      
     >
       <Table size="small" aria-label="Change Order Table">
         <TableHead>

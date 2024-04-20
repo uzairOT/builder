@@ -36,7 +36,7 @@ const InnerLayout2 = () => {
         <Outlet />
         {/* Change Order Tab navigation */}
         <Stack flex={1} >
-          <Paper style={{...themeStyle.border, height:'71vh', width: '99%'}}>
+          <Paper style={{...themeStyle.border, height:'80vh', width: '99%'}}>
           {/* First Item of Stack */}
           <Stack>
           <Typography p={3} pb={1} color={'#4C8AB1'}>Change Order</Typography>
@@ -57,13 +57,13 @@ const InnerLayout2 = () => {
             <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:'15px'}}>Approved</Tab>
             <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:'15px'}}>Declined</Tab>
             </TabList>
-            <TabPanel sx={{padding: 0, width:{xl:'26vw'}}} value={0}>
+            <TabPanel sx={{padding: 0, width:{xl:'28.5vw'}}} value={0}>
           <ChangeOrder />
             </TabPanel>
-            <TabPanel sx={{padding: 0, width:'495px'}} value={1}>
+            <TabPanel sx={{padding: 0,width:{xl:'28.5vw'}}} value={1}>
           <ChangeOrder />
             </TabPanel>
-            <TabPanel sx={{padding: 0, width:'495px'}} value={2}>
+            <TabPanel sx={{padding: 0, width:{xl:'28.5vw'}}} value={2}>
           <ChangeOrder />
             </TabPanel>
           </Tabs>

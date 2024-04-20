@@ -4,7 +4,9 @@ import PartlySunny from './assets/partly-cloudy.png'
 import moment from 'moment';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 
-const CustomEventDayTasks = ({event, isProjectPage}) => {
+const CustomEventDayTasks = ({event, isProjectPage, projectId}) => {
+    console.log(projectId);
+    console.log(event?.data?.projectId);
   return (
     <Stack sx={themeStyle.eventBox} width={'176px'} direction={'row'} justifyContent={'space-between'} alignItems={'center'} height={'inherit'} spacing={0.2} borderRadius={'6px'} borderRight={isProjectPage ? '6px solid #563c91' : `6px solid ${event?.data?.projectColor}`}>
         <Stack sx={themeStyle.weather} backgroundColor={isProjectPage ? '#563c91' : `${event?.data?.projectColor}`}  max-height={'90%'} max-width={'50%'} alignItems={'center'} justifyContent={'center'} flex={1} spacing={-0.5}>

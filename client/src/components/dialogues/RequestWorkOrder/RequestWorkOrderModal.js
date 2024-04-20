@@ -96,7 +96,6 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const ENDPOINT = "http://192.168.0.104:8080";
   //test new workd order
   let lineItemIds = [];
-
   Object?.values(rowCheckboxes)?.forEach((phaseData) => {
     const lineItemGroup = {
       phaseId: phaseData.id,
@@ -107,7 +106,9 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   //tes end..
   //console.log(assignedCheckboxes);
   const [requestWorkOrderPut] = useRequestWorkOrderMutation();
-
+  
+  console.log('rowCheckboxes--------------->', rowCheckboxes);
+  console.log('lineItemIds--------------->', lineItemIds);
   const isButtonDisabled = Object?.keys(rowCheckboxes)?.length === 0;
   const handleNotesChange = (e) => {
     setNotes(e.target.value);

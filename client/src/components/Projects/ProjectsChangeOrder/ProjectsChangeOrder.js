@@ -17,7 +17,7 @@ import {
 import { useGetRequestWorkOrderQuery } from "../../../redux/apis/Project/workOrderApiSlice";
 import { useParams } from "react-router-dom";
 
-const ProjectsChangeOrder = ({ setChangeView, workOrder }) => {
+const ProjectsChangeOrder = ({ setChangeView, workOrder, view }) => {
   const [checkedRow, setCheckedRow] = useState(null);
   const params = useParams();
   const { id: currentProjectId } = params;
@@ -59,7 +59,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder }) => {
 
   return (
     <>
-      <Stack bgcolor={"white"}>
+      <Stack>
         <Typography
           p={3}
           pb={2}
@@ -68,7 +68,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder }) => {
           fontSize={"22px"}
           fontWeight={"600"}
         >
-          Change Order
+          {workOrder ? view : 'Change Order'}
         </Typography>
         <Tabs defaultValue={0} sx={{ backgroundColor: "transparent",overflowX:"auto" }}>
           <Stack direction={"row"} justifyContent={"space-between"}>
@@ -92,7 +92,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder }) => {
                   fontSize: "15px",
                 }}
               >
-                Pending
+                Approved
               </Tab>
               <Tab
                 sx={{
@@ -100,8 +100,9 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder }) => {
                   fontSize: "15px",
                 }}
               >
-                Approved
+                Pending
               </Tab>
+              
               <Tab
                 sx={{
                   fontFamily: "Poppins, sans serif",
@@ -139,6 +140,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder }) => {
             style={{ padding: "16px 8px 0 8px" }}
           >
             <WorkOrder
+              status='approved'
               setCheckedRow={setCheckedRow}
               checkedRow={checkedRow}
               data={data?.data}
@@ -151,6 +153,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder }) => {
             style={{ padding: "16px 8px 0 8px" }}
           >
             <WorkOrder
+            status='pending'
               setCheckedRow={setCheckedRow}
               checkedRow={checkedRow}
               data={data?.data}
@@ -163,6 +166,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder }) => {
             style={{ padding: "16px 8px 0 8px" }}
           >
             <WorkOrder
+            status='declined'
               setCheckedRow={setCheckedRow}
               checkedRow={checkedRow}
               data={data?.data}

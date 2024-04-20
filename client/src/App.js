@@ -70,6 +70,7 @@ import PasswordReset from "./components/Login/ForgotPassword/PasswordReset.js";
 import SetNewPassword from "./components/Login/ForgotPassword/SetNewPassword.js";
 import Help from "./pages/Help/Help.jsx";
 import PrivacyTerms from "./pages/PrivacyTerms/PrivacyTerms.jsx";
+import ChangeOrder from "./pages/Projects/ChangeOrder.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -211,7 +212,7 @@ function App() {
               <Route path="project-report" element={<ReportView />} />
               <Route
                 path="change-order"
-                element={<ProjectsChangeOrder />}
+                element={<ChangeOrder />}
               ></Route>
             </Route>
             <Route path="reports" element={<ReportsPage />} />

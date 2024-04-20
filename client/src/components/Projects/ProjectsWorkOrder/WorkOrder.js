@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Checkbox from '@mui/material/Checkbox';
+import Checkbox from "@mui/material/Checkbox";
 import {
   Table,
   TableBody,
@@ -17,54 +17,60 @@ import {
 import Button from "../../UI/CustomButton";
 import ChangeOrder from "../ProjectsDefault/ChangeOrder";
 const dummyData = [
-    {
-      id: 1,
-      description: "Project description",
-      unit: "kg",
-      quantity: 10,
-      unitPrice: 25.5,
-      total: 255,
-      start: "2024-02-01",
-      end: "2024-02-28",
-      notes: "Project notes",
-      checkbox: false, // New field for the checkbox
-      lineItem: "Item 1", // New field for the line item
-      margin: "10%", // New field for the margin
-      projectProfile: "Profile 1", // New field for the project profile
-    },
-    {
-        id: 2,
-        description: "Project description",
-        unit: "kg",
-        quantity: 10,
-        unitPrice: 25.5,
-        total: 255,
-        start: "2024-02-01",
-        end: "2024-02-28",
-        notes: "Project notes",
-        checkbox: false, // New field for the checkbox
-        lineItem: "Item 1", // New field for the line item
-        margin: "10%", // New field for the margin
-        projectProfile: "Profile 1", // New field for the project profile
-      },
-      {
-        id: 3,
-        description: "Project description",
-        unit: "kg",
-        quantity: 10,
-        unitPrice: 25.5,
-        total: 255,
-        start: "2024-02-01",
-        end: "2024-02-28",
-        notes: "Project notes",
-        checkbox: false, // New field for the checkbox
-        lineItem: "Item 1", // New field for the line item
-        margin: "10%", // New field for the margin
-        projectProfile: "Profile 1", // New field for the project profile
-      },
-  ];
-function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow, workOrder }) {
- 
+  {
+    id: 1,
+    description: "Project description",
+    unit: "kg",
+    quantity: 10,
+    unitPrice: 25.5,
+    total: 255,
+    start: "2024-02-01",
+    end: "2024-02-28",
+    notes: "Project notes",
+    checkbox: false, // New field for the checkbox
+    lineItem: "Item 1", // New field for the line item
+    margin: "10%", // New field for the margin
+    projectProfile: "Profile 1", // New field for the project profile
+  },
+  {
+    id: 2,
+    description: "Project description",
+    unit: "kg",
+    quantity: 10,
+    unitPrice: 25.5,
+    total: 255,
+    start: "2024-02-01",
+    end: "2024-02-28",
+    notes: "Project notes",
+    checkbox: false, // New field for the checkbox
+    lineItem: "Item 1", // New field for the line item
+    margin: "10%", // New field for the margin
+    projectProfile: "Profile 1", // New field for the project profile
+  },
+  {
+    id: 3,
+    description: "Project description",
+    unit: "kg",
+    quantity: 10,
+    unitPrice: 25.5,
+    total: 255,
+    start: "2024-02-01",
+    end: "2024-02-28",
+    notes: "Project notes",
+    checkbox: false, // New field for the checkbox
+    lineItem: "Item 1", // New field for the line item
+    margin: "10%", // New field for the margin
+    projectProfile: "Profile 1", // New field for the project profile
+  },
+];
+function WorkOrder({
+  setUpdateModalOpen,
+  data,
+  setCheckedRow,
+  checkedRow,
+  workOrder,
+  status,
+}) {
   // console.log('INSIDE WORKORDER: ',data)
   const handleUnitChange = (event, id) => {
     const selectedUnit = event.target.value;
@@ -77,66 +83,80 @@ function WorkOrder({ setUpdateModalOpen, data, setCheckedRow, checkedRow, workOr
     setUpdateModalOpen(true);
   };
   const handleCheckboxChange = (row) => {
-    setCheckedRow((prevCheckedRow) => prevCheckedRow === row ? null : row);
+    setCheckedRow((prevCheckedRow) => (prevCheckedRow === row ? null : row));
   };
   return (
-    <TableContainer component={Paper} sx={{ boxShadow: "none" }} style={{height:workOrder ? '300px' : ''}}>
-    <Table>
-  <TableHead>
-    <TableRow>
-      {workOrder ? <></>: <TableCell>
-        {/* <Checkbox  /> */}
-      </TableCell>}
-      <TableCell sx={tableCellStyle}>Subject</TableCell>
-      <TableCell sx={tableCellStyle}>Description</TableCell>
-      {/* <TableCell sx={tableCellStyle}>Unit</TableCell> */}
-      {/* <TableCell sx={tableCellStyle}>Margin</TableCell> */}
-      <TableCell sx={tableCellStyle}>priority</TableCell>
-      <TableCell sx={tableCellStyle}>Total</TableCell>
-      <TableCell sx={tableCellStyle}>Start</TableCell>
-      <TableCell sx={tableCellStyle}>End</TableCell>
-      {/* <TableCell sx={tableCellStyle}>Quantity</TableCell> */}
-      {/* <TableCell sx={tableCellStyle}>Unit Price</TableCell> */}
-      <TableCell sx={tableCellStyle}>Status</TableCell>
-      <TableCell sx={tableCellStyle}>Notes</TableCell>
-      <TableCell></TableCell>
-    </TableRow>
-  </TableHead>
-  <TableBody>
-  {data?.workOrderReqs.map((item) => (
-  <TableRow key={item.id}>
-    {workOrder ? <></> : <TableCell sx={tableCellValueStyle}>
-      <Checkbox
-        checked={checkedRow === item}
-        onChange={() => handleCheckboxChange(item, data)}
-      />
-    </TableCell>}
-    <TableCell sx={tableCellValueStyle}>{item.subject}</TableCell>
-    <TableCell sx={tableCellValueStyle}>{item.description}</TableCell>
-    {/* <TableCell sx={tableCellValueStyle}>{item.LineItem.unit}</TableCell>
+    <TableContainer
+      component={Paper}
+      sx={{ boxShadow: "none" }}
+      style={{ height: workOrder ? "300px" : "50vh" }}
+    >
+      <Table>
+        <TableHead>
+          <TableRow>
+            {workOrder ? <></> : <TableCell>{/* <Checkbox  /> */}</TableCell>}
+            <TableCell sx={tableCellStyle}>Subject</TableCell>
+            <TableCell sx={tableCellStyle}>Description</TableCell>
+            {/* <TableCell sx={tableCellStyle}>Unit</TableCell> */}
+            {/* <TableCell sx={tableCellStyle}>Margin</TableCell> */}
+            <TableCell sx={tableCellStyle}>priority</TableCell>
+            <TableCell sx={tableCellStyle}>Total</TableCell>
+            <TableCell sx={tableCellStyle}>Start</TableCell>
+            <TableCell sx={tableCellStyle}>End</TableCell>
+            {/* <TableCell sx={tableCellStyle}>Quantity</TableCell> */}
+            {/* <TableCell sx={tableCellStyle}>Unit Price</TableCell> */}
+            <TableCell sx={tableCellStyle}>Status</TableCell>
+            <TableCell sx={tableCellStyle}>Notes</TableCell>
+            <TableCell></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data?.workOrderReqs.map((item) => {
+            if(status === item.status){ 
+            return (
+              <TableRow key={item.id}>
+                {workOrder ? (
+                  <></>
+                ) : (
+                  <TableCell sx={tableCellValueStyle}>
+                    <Checkbox
+                      checked={checkedRow === item}
+                      onChange={() => handleCheckboxChange(item, data)}
+                    />
+                  </TableCell>
+                )}
+                <TableCell sx={tableCellValueStyle}>{item.subject}</TableCell>
+                <TableCell sx={tableCellValueStyle}>
+                  {item.description}
+                </TableCell>
+                {/* <TableCell sx={tableCellValueStyle}>{item.LineItem.unit}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.LineItem.margin}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.LineItem.projectProfile}</TableCell> */}
-    <TableCell sx={tableCellValueStyle}>{item.priority}</TableCell>
-    <TableCell sx={tableCellValueStyle}>{item.total}</TableCell>
-    <TableCell sx={tableCellValueStyle}>{item.start_day}</TableCell>
-    <TableCell sx={tableCellValueStyle}>{item.end_day}</TableCell>
-    <TableCell sx={tableCellValueStyle}>
-      <Button
-        buttonText={item.status} // Assuming status property represents the status
-        color={item.status === 'pending' ? "#DF0404" : "#000000"} // Adjust colors based on status
-        backgroundColor={item.status === 'pending' ? "#FFDADA" : "#FFFFFF"} // Adjust background colors based on status
-        width="101px"
-        height="27px"
-        borderRadius="45px"
-      />
-    </TableCell>
-    {/* <TableCell sx={tableCellValueStyle}>{item.status}</TableCell> */}
-    <TableCell sx={tableCellValueStyle}>{item.notes}</TableCell>
-  </TableRow>
-))}
-
-  </TableBody>
-</Table>
+                <TableCell sx={tableCellValueStyle}>{item.priority}</TableCell>
+                <TableCell sx={tableCellValueStyle}>{item.total}</TableCell>
+                <TableCell sx={tableCellValueStyle}>{item.start_day}</TableCell>
+                <TableCell sx={tableCellValueStyle}>{item.end_day}</TableCell>
+                <TableCell sx={tableCellValueStyle}>
+                  <Button
+                    buttonText={item.status} // Assuming status property represents the status
+                    color={item.status === "pending" ? "#DF0404" : "#000000"} // Adjust colors based on status
+                    backgroundColor={
+                      item.status === "pending" ? "#FFDADA" : "#FFFFFF"
+                    } // Adjust background colors based on status
+                    width="101px"
+                    height="27px"
+                    borderRadius="45px"
+                  />
+                </TableCell>
+                {/* <TableCell sx={tableCellValueStyle}>{item.status}</TableCell> */}
+                <TableCell sx={tableCellValueStyle}>{item.notes}</TableCell>
+              </TableRow>
+            );} else{
+              return <></>
+            }
+          })}
+        </TableBody>
+      </Table>
     </TableContainer>
   );
 }

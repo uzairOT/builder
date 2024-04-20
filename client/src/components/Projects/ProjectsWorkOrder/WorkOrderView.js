@@ -44,14 +44,12 @@ const WorkOrderView = () => {
     const {requestWorkOrderData} = useGetRequestWorkOrderQuery(getUserIdFromLocalStorage());
   return (
     <Stack flex={1} pt={1} height={"100%"} >
-      <Paper style={{ ...themeStyle.borders, width: "99%", marginBottom:'4px' }}>
+      <Paper style={{ ...themeStyle.borders, width: "99%", marginBottom:'4px', height: '100%' }}>
         <Stack justifyContent={"space-between"} height={"95%"}>
           {!changeView ? (
-           <Stack height={'500px'}>
-           <ProjectsChangeOrder workOrder={true} setChangeView={setChangeView} />  
-           <Paper style={{ ...themeStyle.border, height: '91%' }}>
+           <Stack height={'470px'} gap={1}>
+           <ProjectsChangeOrder workOrder={true} view={'Work Order'} setChangeView={setChangeView} />  
             <TaskCalender dailyForecast={dailyForecast} eventsArr={events} isProjectPage={true} isDrawerOpen={true} />
-            </Paper>
            </Stack>
           ) : (
             <>

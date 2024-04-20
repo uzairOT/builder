@@ -49,7 +49,7 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
       try {
         //console.log("fetching data...");
         const response = await axios.get(
-          `http://192.168.0.104:8080/project/getPhases/${id}`
+          `http://3.135.107.71:8080/project/getPhases/${id}`
         );
         //console.log(response);
         dispatch(addPhase(response.data.phases));
