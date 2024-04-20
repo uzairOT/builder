@@ -118,7 +118,7 @@ function AssignNewProjectStep2({
 
   return (
     <>
-      <StepTitles
+      <StepTitles  
         stepHeading={"Step 2 of 3"}
         Heading={"invite your Team to the"}
         projectName={projectName}
@@ -178,6 +178,8 @@ function AssignNewProjectStep2({
           handleOpen={handleOpen}
           handleClose={handleClose}
           handleNextStep={handleNextStep}
+          isTab={isTab}
+          isMobile={isMobile}
         />
       )}
     </>

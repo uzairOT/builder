@@ -11,7 +11,7 @@ function AssignNewProjectStep3({projectId, onNextStep }) {
   return (
     <div >
       <AddPhaseView projectId={projectId} onNextStep={onNextStep} />
-    </div>
+    </div>      
   );
 }
 

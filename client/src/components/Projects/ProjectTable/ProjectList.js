@@ -34,8 +34,6 @@ const ProjectList = ({ rows, isLoading }) => {
   const tableHeader = [
     { id: "clientName", title: "Client" },
     { id: "projectName", title: "Project" },
-    { id: "clientName", title: "Client" },
-    { id: "projectName", title: "Project" },
     { id: "phoneNumber", title: "Phone Number" },
     { id: "approvedPrice", title: "Approved Price" },
     { id: "collected", title: "Collected" },
@@ -49,7 +47,7 @@ const ProjectList = ({ rows, isLoading }) => {
   const [project, setProject] = useState(null);
 
   const [page, setPage] = useState([]);
-  const [openEditModel, setOpenEditModel] = useState(false); 
+  const [openEditModel, setOpenEditModel] = useState(false);
 
   const rowsPerPage = 6;
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -67,16 +65,16 @@ const ProjectList = ({ rows, isLoading }) => {
     }
   };
 
-  const handleClickFeatureRemove = (filter) =>{
-    setSelectedFilters(selectedFilters.filter((item) => item !== filter ))
-  }
+  const handleClickFeatureRemove = (filter) => {
+    setSelectedFilters(selectedFilters.filter((item) => item !== filter));
+  };
   const handleOpenEditModel = (row) => {
     setProject(row);
     setOpenEditModel(true);
-  }
-  const handleCloseEditModel =() => {
-    setOpenEditModel(false)
-  }
+  };
+  const handleCloseEditModel = () => {
+    setOpenEditModel(false);
+  };
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
@@ -148,22 +146,26 @@ const ProjectList = ({ rows, isLoading }) => {
           </Stack>
           {/* Buttons Remodel And Filter */}
           <Stack direction={"row"} height={"35px"}>
-            {selectedFilters?.map((filter) => (<BuilderProButton
-              variant={"contained"}
-              backgroundColor={"#E7E7E7"}
-              Icon={CloseIcon}
-              iconProps={{ color: "#272727" }}
-              handleOnClick={() => { handleClickFeatureRemove(filter)}}
-            >
-              <Typography
-                color={"#272727"}
-                fontFamily={"Inter, sans serif"}
-                fontSize={"12px"}
-                fontWeight={"500"}
+            {selectedFilters?.map((filter) => (
+              <BuilderProButton
+                variant={"contained"}
+                backgroundColor={"#E7E7E7"}
+                Icon={CloseIcon}
+                iconProps={{ color: "#272727" }}
+                handleOnClick={() => {
+                  handleClickFeatureRemove(filter);
+                }}
               >
-                {filter}
-              </Typography>
-            </BuilderProButton>))}
+                <Typography
+                  color={"#272727"}
+                  fontFamily={"Inter, sans serif"}
+                  fontSize={"12px"}
+                  fontWeight={"500"}
+                >
+                  {filter}
+                </Typography>
+              </BuilderProButton>
+            ))}
             <BuilderProButton
               variant={"contained"}
               backgroundColor={"#FFAC00"}
@@ -362,7 +364,7 @@ const ProjectList = ({ rows, isLoading }) => {
                         <TableRow>
                           <TableCell sx={themeStyle.tableCell}>
                             <img
-                              src={row.image?row.image:logo}
+                              src={row.image ? row.image : logo}
                               alt="profile"
                               style={{
                                 borderRadius: "50%",
@@ -403,7 +405,10 @@ const ProjectList = ({ rows, isLoading }) => {
                             justifyContent={"center"}
                           >
                             <Paper>
-                              <IconButton variant={"contained"} onClick={() => handleOpenEditModel(row)} >
+                              <IconButton
+                                variant={"contained"}
+                                onClick={() => handleOpenEditModel(row)}
+                              >
                                 <EditOutlinedIcon
                                   style={{ color: "#4C8AB1" }}
                                 />
@@ -464,7 +469,11 @@ const ProjectList = ({ rows, isLoading }) => {
           rowsPerPageOptions={[1]}
         ></TablePagination> */}
       </Stack>
-      <EditProjectModal project={project} open={openEditModel} onClose={handleCloseEditModel} />
+      <EditProjectModal
+        project={project}
+        open={openEditModel}
+        onClose={handleCloseEditModel}
+      />
     </Stack>
   );
 };

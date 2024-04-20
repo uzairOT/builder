@@ -70,7 +70,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder }) => {
         >
           Change Order
         </Typography>
-        <Tabs defaultValue={0} sx={{ backgroundColor: "transparent" }}>
+        <Tabs defaultValue={0} sx={{ backgroundColor: "transparent",overflowX:"auto" }}>
           <Stack direction={"row"} justifyContent={"space-between"}>
             <TabList
               sx={{
@@ -119,7 +119,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder }) => {
                   fontFamily={"Inter, sans serif"}
                   fontSize={"16px"}
                   fontWeight={"600"}
-                  padding={"6px 32px 6px 32px"}
+                  padding={{md:"6px 32px 6px 32px"}}
                   handleOnClick={handleChangeView}
                 >
                   Request Work Order

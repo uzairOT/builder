@@ -60,7 +60,7 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
     } else {
       try {
         const response = await axios.get(
-          `http://192.168.0.104:8080/project/getPhases/${projectId}`
+          `http://192.168.0.104:8080/project/getPhases/${id}`
         );
         //console.log(response);
         dispatch(addPhase(response.data.phases));
@@ -221,8 +221,8 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
   };
   // //console.log(phases)
   return (
-    <Grid container sx={firstGrid}>
-      <Stack direction={"row"} justifyContent={"space-between"}>
+    <Grid container sx={{...firstGrid,width:"97%"}}>
+      <Stack direction={"row"} justifyContent={"space-between"} sx={{width:"100%"}}>
         <Stack>
           {adminProjectView && (
             <Typography
@@ -305,6 +305,7 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
               key={phase.id}
               style={{
                 ...slectedCardStyle,
+                width:"100%",
                 cursor: "pointer", // Add cursor pointer to indicate clickable
                 borderRadius: "8px", // Rounded corners
                 boxShadow:
