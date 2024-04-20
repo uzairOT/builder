@@ -22,7 +22,7 @@ useEffect(()=>{
   return (
     <>
     <Grid container height={"100vh"} backgroundColor={"#eff5ff"} spacing={1}>
-    <Grid item xl={2} lg={3} md={4} sm={12} xs={12} height={{xl:"99vh" ,lg:'99vh', md:'99vh', sm:'80vh', xs:'80vh' }}>
+    <Grid item xl={2} lg={3} md={4} sm={12} xs={12} height={{xl:"99vh" ,lg:'99vh', md:'99vh', sm:'80vh', xs:'80vh' }} sx={{display:{xs:"none",sm:"block"}}}>
           <Paper sx={{ height: "100%", borderRadius: "14px" }}>
             <Typography sx={themeStyle.title} p={2} pb={1.5}>Projects Dashboard</Typography>
             <ProjectsSidebar />

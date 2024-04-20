@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import dayjs from "dayjs";
 import {
   updateFormData,
   resetFormData,
@@ -19,15 +20,23 @@ import {
   Box,
   Typography,
   MenuItem,
-  Autocomplete
+  Autocomplete,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "../../../App.css";
 import "./LineItemElement.css";
-import {addPhase, updateLineItem} from "../../../redux/slices/Project/projectInitialProposal"
-import {useParams} from 'react-router-dom'
-import axios from 'axios'
+import {
+  addPhase,
+  updateLineItem,
+} from "../../../redux/slices/Project/projectInitialProposal";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import { toast } from "react-toastify";
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
+import { DemoItem } from "@mui/x-date-pickers/internals/demo";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import utc from "dayjs/plugin/utc"; // Optional if you need UTC handling
 
 
 function AddLineElement({
@@ -43,34 +52,44 @@ function AddLineElement({
   rowData,
   LineItem,
   assignPageview,
-  projectId
+  projectId,
 }) {
-  
-
   const [open, setOpen] = useState(false);
   const [addPhaseLine] = useAddPhaseLineMutation();
   const [updatePhaseLine] = useUpdatePhaseLineMutation();
   const [phaseName, setPhaseName] = useState(LineItem ? LineItem.title : "");
-  const [description, setDescription] = useState(LineItem ? LineItem.description : "");
+  const [description, setDescription] = useState(
+    LineItem ? LineItem.description : ""
+  );
   const [unit, setUnit] = useState(LineItem ? LineItem.unit : "");
   const [quantity, setQuantity] = useState(LineItem ? LineItem.quantity : "");
-  const [unitPrice, setUnitPrice] = useState(LineItem ? LineItem.unit_price : "");
+  const [unitPrice, setUnitPrice] = useState(
+    LineItem ? LineItem.unit_price : ""
+  );
   const [total, setTotal] = useState(LineItem ? LineItem.total : "");
-  const [start, setStart] = useState(LineItem ? LineItem.start_day : "");
-  const [end, setEnd] = useState(LineItem ? LineItem.end_day : "");
+
+  const [start, setStart] = useState(LineItem ? LineItem.start_day : null);
+  const [end, setEnd] = useState(LineItem ? LineItem.end_day : null);
+
+  const handleStartDateChange = (newValue) => {
+    setStart(newValue);
+  };
+
+  const handleEndDateChange = (newValue) => {
+    setEnd(newValue);
+  };
   const [longDescription, setLongDescription] = useState(
     LineItem ? LineItem.notes : ""
   );
   const [autoComplete, setAutoComplete] = useState();
   const dispatch = useDispatch();
-  const {id} = useParams();
-  const local = localStorage.getItem('projectId');
-  
+  const { id } = useParams();
+  const local = localStorage.getItem("projectId");
+
   const currentProject = JSON.parse(local);
   const phases = useSelector((state) => state.projectInitialProposal.phases);
   const userInfo = useSelector((state) => state.auth.userInfo);
   //console.log(userInfo)
-  
 
   const formData = {
     phaseName,
@@ -79,18 +98,20 @@ function AddLineElement({
     quantity,
     unitPrice,
     total,
-    start,
-    end,
+    start: dayjs(start),
+    end: dayjs(end),
     longDescription,
   };
-  useEffect(()=>{
-    //console.log(autoComplete);
-  },[autoComplete])
+  useEffect(() => {
+    console.log("-------------==========", autoComplete);
+  }, [autoComplete]);
 
   useEffect(() => {
     const getData = setTimeout(() => {
       axios
-        .get(`http://192.168.0.104:8080/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`)
+        .get(
+          `http://192.168.0.104:8080/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`
+        )
         .then((response) => {
           setAutoComplete(response.data.MasterLines);
           //console.log(response.data.MasterLines);
@@ -122,22 +143,22 @@ function AddLineElement({
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (LineHeading === "Update Line Item") {
-        //console.log("updading..")
-        const lineItemId =LineItem.id
-        const data = {
-            ...formData,
-            id:lineItemId,
-            projectId: id,
-        }
-        //console.log("Update Alin Item",data)
-   
-     const res = await updatePhaseLine(data);
-     //console.log(res.data)
-     dispatch(addPhase(res.data.data));
+      //console.log("updading..")
+      const lineItemId = LineItem.id;
+      const data = {
+        ...formData,
+        id: lineItemId,
+        projectId: projectId,
+      };
+      //console.log("Update Alin Item",data)
+
+      const res = await updatePhaseLine(data);
+      //console.log(res.data)
+      dispatch(addPhase(res.data.data));
       //console.log("form submitted succesfully", formData);
       //console.log(LineItem.id)
-    //   handleUpdateClose();
-    toast.success("Line Item added successfully")
+      //   handleUpdateClose();
+      toast.success("Line Item added successfully");
     } else {
       const {
         phaseName,
@@ -175,29 +196,23 @@ function AddLineElement({
   };
 
   const Units = [
-    {
-      value: "sqft",
-      label: "Square Feet",
-    },
+    { value: "sqft", label: "Square Feet", formula: (q, p) => q * p },
     {
       value: "sqm",
       label: "Square Meters",
+      formula: (q, p) => q * p * 0.092903,
     },
-    {
-      value: "acres",
-      label: "Acres",
-    },
-    {
-      value: "hectares",
-      label: "Hectares",
-    },
+    { value: "acres", label: "Acres", formula: (q, p) => q * p * 4048.54 },
+    { value: "hectares", label: "Hectares", formula: (q, p) => q * p * 10000 },
     {
       value: "sqyds",
       label: "Square Yards",
+      formula: (q, p) => q * p * 0.836127,
     },
     {
       value: "sqmi",
       label: "Square Miles",
+      formula: (q, p) => q * p * 2.58999e6,
     },
   ];
   return (
@@ -216,40 +231,44 @@ function AddLineElement({
           <DialogContent sx={{ padding: "3rem" }}>
             <Typography sx={typoText}>Phase</Typography>
             <>
-            <Autocomplete
-        freeSolo
-        id="phaseName"
-        options={autoComplete ? autoComplete.map((option)=> option.title) : []} // Add your options here
-        value={formData.phaseName}
-        name="phaseName"
-        onChange={(event, newValue) => {
-          const selectedOption = autoComplete?.find((option) => option.title === newValue);
-          if (selectedOption) {
-            setDescription(selectedOption.description);
-            setUnit(selectedOption.unit);
-            setQuantity(selectedOption.quantity);
-            setUnitPrice(selectedOption.unit_price);
-            setTotal(selectedOption.total);
-            setStart(selectedOption.start_day);
-            setEnd(selectedOption.end_day);
-            setLongDescription(selectedOption.notes);
-          } else {
-            // Handle case where newValue is not found in autoComplete
-          }
-          setPhaseName(newValue);
-        }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Phase Name"
-            margin="dense"
-            variant="standard"
-            onChange={(event) => setPhaseName(event.target.value)} // Assuming setPhaseName is your state updater function
-            required
-            InputLabelProps={{ shrink: true }}
-          />
-        )}
-      />
+              <Autocomplete
+                freeSolo
+                id="phaseName"
+                options={
+                  autoComplete ? autoComplete.map((option) => option.title) : []
+                } // Add your options here
+                value={formData.phaseName}
+                name="phaseName"
+                onChange={(event, newValue) => {
+                  const selectedOption = autoComplete?.find(
+                    (option) => option.title === newValue
+                  );
+                  if (selectedOption) {
+                    setDescription(selectedOption.description);
+                    setUnit(selectedOption.unit);
+                    setQuantity(selectedOption.quantity);
+                    setUnitPrice(selectedOption.unit_price);
+                    setTotal(selectedOption.total);
+                    setStart(dayjs(selectedOption.start_day));
+                    setEnd(dayjs(selectedOption.end_day));
+                    setLongDescription(selectedOption.notes);
+                  } else {
+                    // Handle case where newValue is not found in autoComplete
+                  }
+                  setPhaseName(newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Phase Name"
+                    margin="dense"
+                    variant="standard"
+                    onChange={(event) => setPhaseName(event.target.value)} // Assuming setPhaseName is your state updater function
+                    required
+                    InputLabelProps={{ shrink: true }}
+                  />
+                )}
+              />
               {/* <TextField
                 sx={inputStyle}
                 required
@@ -290,7 +309,7 @@ function AddLineElement({
                     value={formData.unit}
                     onChange={(e) => setUnit(e.target.value)}
                   >
-                    {Units.map((option,index) => (
+                    {Units.map((option, index) => (
                       <MenuItem key={index} value={option.value}>
                         {option.label}
                       </MenuItem>
@@ -340,31 +359,69 @@ function AddLineElement({
               <Box sx={parallelBox}>
                 <Box sx={innerBox}>
                   <Typography sx={typoText}>Start</Typography>
-                  <TextField
-                    sx={{ ...inputStyle, ...leftSpace }}
-                    required
-                    margin="dense"
-                    id="start"
-                    name="start"
-                    type="text"
-                    variant="standard"
-                    value={formData.start}
-                    onChange={(e) => setStart(e.target.value)}
-                  />
+                  <Box
+                    sx={{
+                      width: "100%", // Set width to 100% for responsiveness
+                      alignSelf: "center",
+                      fontSize: "14px",
+                      border: "1px solid #ccc",
+                      borderRadius: "12px",
+                      color: "#202227",
+                      fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+                      backgroundColor: "#EDF2F6",
+                      ...leftSpace,
+                    }}
+                  >
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <MobileDatePicker
+                        value={start}
+                        onChange={handleStartDateChange}
+                        format="YYYY/MM/DD"
+                        // renderInput={(params) => (
+                        //   <TextField
+                        //     {...params}
+                        //     value={PAstart}
+                        //     placeholder="Select start date"
+                        //     variant="standard"
+                        //     margin="dense"
+                        //   />
+                        // )}
+                      />
+                    </LocalizationProvider>
+                  </Box>
                 </Box>
                 <Box sx={innerBox}>
                   <Typography sx={typoText}>End</Typography>
-                  <TextField
-                    sx={{ ...inputStyle, ...leftSpace }}
-                    required
-                    margin="dense"
-                    id="end"
-                    name="end"
-                    type="text"
-                    variant="standard"
-                    value={formData.end}
-                    onChange={(e) => setEnd(e.target.value)}
-                  />
+                  <Box
+                    sx={{
+                      width: "100%", // Set width to 100% for responsiveness
+                      alignSelf: "center",
+                      fontSize: "14px",
+                      border: "1px solid #ccc",
+                      borderRadius: "12px",
+                      color: "#202227",
+                      fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+                      backgroundColor: "#EDF2F6",
+                      ...leftSpace,
+                    }}
+                  >
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <MobileDatePicker
+                        value={end} // Apply format
+                        placeholder="dede"
+                        format="YYYY/MM/DD"
+                        onChange={handleEndDateChange}
+                        // renderInput={(params) => (
+                        //   <TextField
+                        //     {...params}
+                        //     placeholder="Select end date"
+                        //     variant="standard"
+                        //     margin="dense"
+                        //   />
+                        // )}
+                      />
+                    </LocalizationProvider>
+                  </Box>
                 </Box>
               </Box>
               <Typography sx={typoText}>Description</Typography>
