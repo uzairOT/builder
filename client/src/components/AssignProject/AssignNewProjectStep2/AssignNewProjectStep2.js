@@ -13,6 +13,7 @@ import {
   updateUserEmail,
   updateUserRole,
   selectUsers,
+  resetUserAndRoleEmail
 } from "../../../redux/slices/projectFormSlice";
 
 import { Button, Box, useMediaQuery } from "@mui/material";
@@ -107,6 +108,7 @@ function AssignNewProjectStep2({
       setProjectId(res.project.id);
       await refetch();
       onNextStep();
+      dispatch(resetUserAndRoleEmail());
     } catch (error) {
       // If an error occurs during the process, handle it here
       toast.error("Error creating new project:", error.message);

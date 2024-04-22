@@ -51,7 +51,9 @@ const projectFormSlice = createSlice({
       const { index, role } = action.payload;
       state.users[index].role = role;
     },
-
+    resetUserAndRoleEmail : (state) =>{
+      state.users =  [{ email: '', role: 'admin' }];
+    }
   },
 });
 
@@ -69,6 +71,7 @@ export const {
   removeUser,
   updateUserEmail,
   updateUserRole,
+  resetUserAndRoleEmail
 } = projectFormSlice.actions;
 
 export const selectProjectForm = state => state.projectForm;

@@ -69,7 +69,7 @@ const ProjectList = ({ rows, isLoading }) => {
     setSelectedFilters(selectedFilters.filter((item) => item !== filter));
   };
   const handleOpenEditModel = (row) => {
-    setProject(row);
+    setProject(prev => row);
     setOpenEditModel(true);
   };
   const handleCloseEditModel = () => {

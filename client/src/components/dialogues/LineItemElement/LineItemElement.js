@@ -66,7 +66,7 @@ function AddLineElement({
   const [unitPrice, setUnitPrice] = useState(
     LineItem ? LineItem.unit_price : ""
   );
-  const [total, setTotal] = useState(LineItem ? LineItem.total : "");
+  const [total, setTotal] = useState(LineItem ? LineItem.total : "" );
 
   const [start, setStart] = useState(LineItem ? LineItem.start_day : null);
   const [end, setEnd] = useState(LineItem ? LineItem.end_day : null);
@@ -103,14 +103,16 @@ function AddLineElement({
     longDescription,
   };
   useEffect(() => {
-    console.log("-------------==========", autoComplete);
-  }, [autoComplete]);
+    console.log("-------------==========quantity", quantity);
+    console.log("-------------==========unitPrice", unitPrice);
+    console.log("-------------==========total", total);
+  }, [total, quantity, unitPrice]);
 
   useEffect(() => {
     const getData = setTimeout(() => {
       axios
         .get(
-          `http://192.168.0.104:8080/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`
+          `http://3.135.107.71:8080/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`
         )
         .then((response) => {
           setAutoComplete(response.data.MasterLines);
@@ -327,7 +329,11 @@ function AddLineElement({
                     type="number"
                     variant="standard"
                     value={formData.quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
+                    onChange={(e) => setQuantity(prev => {
+                      setTotal(e.target.value*unitPrice)
+                      return e.target.value
+                      
+                    })}
                   />
                 </Box>
               </Box>
@@ -341,7 +347,10 @@ function AddLineElement({
                 type="price"
                 variant="standard"
                 value={formData.unitPrice}
-                onChange={(e) => setUnitPrice(e.target.value)}
+                onChange={(e) => setUnitPrice(prev => {
+                  setTotal(e.target.value*quantity)
+                  return e.target.value
+                })}
               />
 
               <Typography sx={typoText}>Total</Typography>
@@ -354,7 +363,7 @@ function AddLineElement({
                 type="number"
                 variant="standard"
                 value={formData.total}
-                onChange={(e) => setTotal(e.target.value)}
+                
               />
               <Box sx={parallelBox}>
                 <Box sx={innerBox}>
@@ -469,6 +478,7 @@ const inputStyle = {
   fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
   paddingLeft: "-1.5rem",
   backgroundColor: "#EDF2F6",
+  outline: 'none !important'
 };
 
 const generalBox = {

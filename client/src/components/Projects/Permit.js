@@ -25,7 +25,7 @@ function Permit({ view, type }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.0.104:8080/project/files/${type}/204` 
+          `http://3.135.107.71:8080/project/files/${type}/204` 
         );
         //replace 123 with the project id
         // Assuming the response data is an array of file URLs

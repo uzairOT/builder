@@ -15,6 +15,9 @@ import {
   TextField,
   Checkbox,
   FormGroup,
+  ListItem,
+  ListItemText,
+  List,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
@@ -55,6 +58,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const projectId = location.pathname.split("/")[2];
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
+  const [showLineItems, setShowLineItems] = useState(false);
   const { addPhase } = useSelector(selectAddPhase);
   const [priority, setPriority] = useState("urgent");
   const [status, setStatus] = useState("pending");
@@ -80,20 +84,21 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const dispatch = useDispatch();
   const { emit } = useSocket();
   const phaseId = rowCheckboxes[0]?.rows[0]?.phase_id;
+  let counter = 0;
   console.log(assignedCheckboxes);
 
   let lineItemCounter = 0;
   Object?.values(rowCheckboxes)?.forEach((phaseData) => {
     lineItemCounter += phaseData.rows.length;
   });
-  // const lineItemIds = [];
-
+  console.log("FLAT ARRAY: ", Object.values(rowCheckboxes).flat(2));
+  console.log(Object.values(rowCheckboxes));
   // Object.values(rowCheckboxes).forEach((phaseData) => {
   //   phaseData.rows.forEach((row) => {
   //     lineItemIds.push(row.id);
   //   });
   // });
-  const ENDPOINT = "http://192.168.0.104:8080";
+  const ENDPOINT = "http://3.135.107.71:8080";
   //test new workd order
   let lineItemIds = [];
   Object?.values(rowCheckboxes)?.forEach((phaseData) => {
@@ -106,15 +111,16 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   //tes end..
   //console.log(assignedCheckboxes);
   const [requestWorkOrderPut] = useRequestWorkOrderMutation();
-  
-  console.log('rowCheckboxes--------------->', rowCheckboxes);
-  console.log('lineItemIds--------------->', lineItemIds);
+
+  console.log("rowCheckboxes--------------->", rowCheckboxes);
+  console.log("lineItemIds--------------->", lineItemIds);
   const isButtonDisabled = Object?.keys(rowCheckboxes)?.length === 0;
   const handleNotesChange = (e) => {
     setNotes(e.target.value);
   };
   const handleClose = () => {
     setOpen(false);
+    setShowLineItems(false);
   };
   const handleOpen = () => {
     setOpen(true);
@@ -141,16 +147,16 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const handleRequest = async () => {
     const formattedStartDate = startDate.format("MMM D, YYYY, h:mm a");
     const formattedEndDate = endDate.format("MMM D, YYYY, h:mm a");
-    console.log('CHEHCEH: ', checkedRow)
-    if(changeOrder){
-      var transformedPhaseItems = checkedRow.phaseItems.map(item => ({
+    console.log("CHEHCEH: ", checkedRow);
+    if (changeOrder) {
+      var transformedPhaseItems = checkedRow.phaseItems.map((item) => ({
         phaseId: item.phaseId,
-        lineItemId: item.lineItemId
+        lineItemId: item.lineItemId,
       }));
-      console.log("TRANSFORMED: ",transformedPhaseItems)
+      console.log("TRANSFORMED: ", transformedPhaseItems);
     }
     const requestForm = {
-      workOrder_id: changeOrder ? checkedRow.id : '',
+      workOrder_id: changeOrder ? checkedRow.id : "",
       subject: subject,
       description: description,
       startDate: formattedStartDate,
@@ -158,22 +164,24 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
       priority: priority,
       status: status,
       phase: phaseId,
-      lineItem: changeOrder ? checkedRow.LineItem_id : lineItemIds[0].lineItemId[0],
+      lineItem: changeOrder
+        ? checkedRow.LineItem_id
+        : lineItemIds[0].lineItemId[0],
       phaseItems: changeOrder ? transformedPhaseItems : lineItemIds,
       createdby: userId,
       teamIds: [...assignedCheckboxes, userId],
       notes: notes,
       projectId: projectId,
     };
-    console.log("--------------------------------------",requestForm)
+    console.log("--------------------------------------", requestForm);
     if (requestForm.teamIds.length === 0) {
       toast.error("Team member must be assigned");
     } else {
       //await requestWorkOrderPut(requestForm);
       emit("join", userId);
-      if(changeOrder){
-        await emit('updateWorkOrder', requestForm);
-      }else{
+      if (changeOrder) {
+        await emit("updateWorkOrder", requestForm);
+      } else {
         await emit("notification", requestForm);
       }
       dispatch(setIsLoading(true));
@@ -196,7 +204,6 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
     }
   };
 
-  console.log(lineItemIds);
   return (
     <>
       <Stack alignItems={"flex-end"} justifyContent={"flex-end"} pr={2}>
@@ -239,7 +246,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
             }}
             height={"100%"}
           >
-            <Stack p={3} spacing={1} width={'100%'}>
+            <Stack p={3} spacing={1} width={"100%"}>
               <Typography fontFamily={"inherit"}>
                 <strong>Subject: </strong>{" "}
                 <input
@@ -294,6 +301,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                       {changeOrder ? "" : Object?.keys(rowCheckboxes)?.length}
                     </Typography>
                   </Typography>
+                  {/*
+                  PREV CODE OF THAT WAS USING RADIO BUTTONS
                   <FormControl>
                     <RadioGroup
                       aria-labelledby="demo-radio-buttons-group-label"
@@ -327,6 +336,49 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                             );
                           })}
                     </RadioGroup>
+                  </FormControl> */}
+                  {/* <FormControl>
+                    {checkedRow
+                      ? checkedRow.phaseItems.map((phase) => (
+                          <FormControlLabel
+                            key={phase.phase_id}
+                            control={<Checkbox checked disabled />}
+                            label={phase.phase_name}
+                          />
+                        ))
+                      : Object.keys(rowCheckboxes).map((key, index) => {
+                          const phaseId = rowCheckboxes[key]?.rows[0]?.phase_id;
+
+                          return (
+                            <FormControlLabel
+                              key={phaseId}
+                              sx={themeStyle.radioText}
+                              control={
+                                <Checkbox
+                                  sx={themeStyle.radioChecked}
+                                  checked
+                                />
+                              }
+                              label={key}
+                            />
+                          );
+                        })}
+                  </FormControl> */}
+                  <FormControl>
+                    {checkedRow
+                      ? checkedRow.phaseItems.map((phase) => (
+                          <ListItem key={phase.phase_id}>
+                            <ListItemText secondary={phase.phase_name} />
+                          </ListItem>
+                        ))
+                      : Object.keys(rowCheckboxes).map((key, index) => {
+                          const phaseId = rowCheckboxes[key]?.rows[0]?.phase_id;
+                          return (
+                            <ListItem key={phaseId}>
+                              <ListItemText secondary={key} />
+                            </ListItem>
+                          );
+                        })}
                   </FormControl>
 
                   {/* <Button
@@ -349,41 +401,79 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                       {lineItemCounter}
                     </Typography>
                   </Typography>
-
-                  <FormGroup>
+                  <List>
                     {changeOrder
                       ? checkedRow?.phaseItems.map((phase) => {
-                          return phase.lineItem_names.map((lineItem) => (
-                            <Typography>{lineItem}</Typography>
-                          ));
-                        })
-                      : Object?.keys(rowCheckboxes)?.map((phase, index) => {
-                          const phaseData = rowCheckboxes[phase];
-                          return (
-                            <>
-                              {phaseData.rows.map((row, index) => {
-                                return (
-                                  <FormControlLabel
-                                    key={index}
-                                    sx={themeStyle.radioText}
-                                    control={
-                                      <Checkbox
-                                        value={row.id}
-                                        checked={true}
-                                        // Handle line item checkbox change
-                                        name={row.id.toString()}
-                                        sx={themeStyle.radioChecked}
-                                      />
-                                    }
-                                    label={row.title}
-                                  />
-                                );
-                              })}
-                            </>
-                          );
-                        })}
-                  </FormGroup>
+                          return phase.lineItem_names.map((lineItem, index) => {
+                            counter++;
+                            console.log("counter: ", counter);
+                            if (counter > 3 && !showLineItems) {
+                              if(counter > 4) {
+                                return <></>
+                              }
+                              else{
 
+                                return (
+                                  <ListItem style={{padding:0, justifyContent:'end'}}>
+                                  <Button
+                                    style={{padding:0, textTransform: 'lowercase'}}
+                                    variant="text"
+                                    color="primary"
+                                    onClick={() => {
+                                      setShowLineItems(!showLineItems);
+                                    }}
+                                    >
+                                    View more...
+                                  </Button>
+                                </ListItem>
+                              );
+                            }
+                            } else {
+                              return (
+                                <ListItem key={index}>
+                                  <ListItemText secondary={lineItem} />
+                                </ListItem>
+                              );
+                            }
+                          });
+                        })
+                      : Object?.keys(rowCheckboxes)?.map((phase) => {
+                          const phaseData = rowCheckboxes[phase];
+
+                          return phaseData.rows.map((row, index) => {
+                            counter++;
+                            console.log("counter: ", counter);
+                            if (counter > 3 && !showLineItems) {
+                              if(counter > 4) {
+                                return <></>
+                              }
+                              else{
+
+                                return (
+                                  <ListItem style={{padding:0, justifyContent:'end'}}>
+                                  <Button
+                                    style={{padding:0, textTransform: 'lowercase'}}
+                                    variant="text"
+                                    color="primary"
+                                    onClick={() => {
+                                      setShowLineItems(!showLineItems);
+                                    }}
+                                    >
+                                    View more...
+                                  </Button>
+                                </ListItem>
+                              );
+                            }
+                            } else{
+                              return (
+                                <ListItem key={index}>
+                                  <ListItemText secondary={row.title} />
+                                </ListItem>
+                              );
+                            } 
+                          });
+                        })}
+                  </List>
                   {/* <Button
                     sx={themeStyle.linkButton}
                     startIcon={<AddIcon sx={{ color: "#000" }} />}
@@ -492,7 +582,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                 </Stack>
               </Stack>
             </Stack>
-            <Stack backgroundColor={"#EFF5FF"} width={'100%'}>
+            <Stack backgroundColor={"#EFF5FF"} width={"100%"}>
               <Box>
                 <Typography
                   sx={{
@@ -520,14 +610,14 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                       src={user.user.image ? user?.user?.image : Avatarimg}
                     />
                   )}
-                  <Typography fontFamily={"inherit"} alignSelf={"end"}>
+                  <Typography fontFamily={"inherit"} alignSelf={"end"} pl={1}>
                     {changeOrder
                       ? checkedRow?.team.map((user) => {
-                        if (checkedRow?.createdby == user?.userId) {
-                          return <>{user?.firstName}</>;
-                        }
-                        return null; // Return null for users that don't match
-                      })
+                          if (checkedRow?.createdby == user?.userId) {
+                            return <>{user?.firstName}</>;
+                          }
+                          return null; // Return null for users that don't match
+                        })
                       : user?.user?.firstName}
                   </Typography>
                 </Box>
@@ -543,34 +633,36 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                   Assigned
                 </Typography>
                 <Box sx={themeStyle.avatarBox}>
-                  <Stack direction={"row"}>
-                    {assignedCheckboxes.length === 0 ? checkedRow?.team?.map((user) => {
-                      if (checkedRow?.createdby != user?.userId) {
-                        return (
-                          <Avatar
-                            sx={themeStyle.AvatarStyle}
-                            src={user.image}
-                          />
-                        );
-                      }
-                    }) : assignedCheckboxes?.map((id) => {
-                      return (
-                        <>
-                          {data?.team?.map((user, idx) => {
-                            if (user.userId === id) {
-                              return (
-                                <Avatar
-                                  key={idx}
-                                  sx={themeStyle.AvatarStyle}
-                                  src={user.image}
-                                />
-                              );
-                            }
-                            return null; // or <></>
-                          })}
-                        </>
-                      );
-                    })}
+                  <Stack direction={"row"} pr={1}>
+                    {assignedCheckboxes.length === 0
+                      ? checkedRow?.team?.map((user) => {
+                          if (checkedRow?.createdby != user?.userId) {
+                            return (
+                              <Avatar
+                                sx={themeStyle.AvatarStyle}
+                                src={user.image}
+                              />
+                            );
+                          }
+                        })
+                      : assignedCheckboxes?.map((id) => {
+                          return (
+                            <>
+                              {data?.team?.map((user, idx) => {
+                                if (user.userId === id) {
+                                  return (
+                                    <Avatar
+                                      key={idx}
+                                      sx={themeStyle.AvatarStyle}
+                                      src={user.image}
+                                    />
+                                  );
+                                }
+                                return null; // or <></>
+                              })}
+                            </>
+                          );
+                        })}
                   </Stack>
                   <AssignTeamMembers
                     assignedCheckboxes={assignedCheckboxes}
@@ -589,15 +681,18 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                 >
                   Notes
                 </Typography>
-                <Typography fontFamily={"inherit"} pb={4} pl={1}>
-                <input
-                  value={notes}
-                  placeholder="Type your description..."
-                  type="text"
-                  multiple
-                  style={themeStyle.inputFields}
-                  onChange={handleNotesChange}
-                ></input>
+                <Typography fontFamily={"inherit"} pb={4} pl={2}>
+                  <input
+                    value={notes}
+                    placeholder="Type your description..."
+                    type="text"
+                    multiple
+                    style={{
+                      ...themeStyle.inputFields,
+                      backgroundColor: "#EFF5FF",
+                    }}
+                    onChange={handleNotesChange}
+                  ></input>
                 </Typography>
                 {/* <Box sx={themeStyle.dateBox}>
                   <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -780,7 +875,7 @@ const style = {
   boxShadow: 24,
   p: 0,
   borderRadius: "14px",
-  width: '700px'
+  width: "700px",
 };
 const themeStyle = {
   inputFields: {
@@ -880,7 +975,7 @@ const themeStyle = {
   rightheadings: {
     fontSize: "0.9rem",
     color: "#636363",
-    margin: "1rem 0rem 0rem 2rem",
+    margin: "1rem 0rem 0rem 1rem",
   },
   linkButton: {
     fontFamily: "Inter",
@@ -907,9 +1002,8 @@ const themeStyle = {
   },
   avatarBox: {
     display: "flex",
-    margin: "0.2rem 0rem 1rem 1rem",
-    gap: "1rem",
-    ml: "30px",
+    margin: "0.2rem 0rem 1rem 1.5rem",
+    justifyContent: "flex-start",
   },
   AvatarStyle: {
     width: 30,
