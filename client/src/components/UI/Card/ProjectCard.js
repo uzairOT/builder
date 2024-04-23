@@ -95,15 +95,6 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
                 color: selected ? "white" : "#848484",
               }}
             >
-              Admin name: {projectProfileCard.adminName}
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{
-                ...themeStyle.cardBody,
-                color: selected ? "white" : "#848484",
-              }}
-            >
               Client name: {projectProfileCard.clientName}
             </Typography>
             <Typography

@@ -87,8 +87,27 @@ const AddPhaseCard = ({
   const [deletePhaseLine] = useDeletePhaseLineMutation();
   const dispatch = useDispatch();
   const { rowCheckbox } = useSelector(selectAddPhase);
-  let totalDays = 0;
+  let totalCost = 0; 
+  let minStartDay = moment(phaseData.LineItems[0].start_day);
+let maxEndDay = moment(phaseData.LineItems[0].end_day);
 
+  phaseData.LineItems.forEach((row) => {
+    totalCost += parseInt(row.total); // Accumulate the total cost
+    const startDay = moment(row.start_day);
+    const endDay = moment(row.end_day);
+  
+    if (startDay.isBefore(minStartDay)) {
+      minStartDay = startDay;
+    }
+  
+    if (endDay.isAfter(maxEndDay)) {
+      maxEndDay = endDay;
+    }
+
+  });
+const duration = moment.duration(maxEndDay.diff(minStartDay));
+const totalDays = duration.days();
+const totalHours = duration.asHours();
   const handleArrowDownClick = () => {
     onGridToggle(phaseData.current_position, phaseData.current_position + 1);
   };
@@ -215,37 +234,37 @@ const AddPhaseCard = ({
         <Box sx={headingsBox} onClick={() => handleSelectCard(phaseData.id)}>
           <Box sx={headingInnerBox}>
             <Box>
-              <Typography sx={{ ...blackHeading, cursor: "pointer" }}>
+              <Typography sx={{ ...blackHeading, cursor: "pointer", paddingLeft: '4rem' }}>
                 {phaseData.phase_name}
               </Typography>
             </Box>
             <Box>
-              <Typography sx={blackHeading}>Total Price:</Typography>
+              <Typography sx={blackHeading}>Total Price: {totalCost}</Typography>
             </Box>
             <Box>
-              <Typography sx={blackHeading}>Time: &nbsp; Days: </Typography>
+              <Typography sx={blackHeading}>Time: {totalHours} hours,  Days: {totalDays}</Typography>
             </Box>
           </Box>
           <Box sx={phaseBox}>
             <>
               {phaseData?.current_position === 0 ? (
                 <ArrowDown
-                  style={{ marginRight: "1rem", cursor: "pointer" }}
+                  style={{ marginRight: "1rem", cursor: "pointer", display: 'none' }}
                   onClick={handleArrowDownClick}
                 />
               ) : phaseData?.current_position === length - 1 ? (
                 <Arrowup
-                  style={{ marginRight: "1rem", cursor: "pointer" }}
+                  style={{ marginRight: "1rem", cursor: "pointer", display: 'none' }}
                   onClick={handleArrowUpClick}
                 />
               ) : (
                 <>
                   <ArrowDown
-                    style={{ marginRight: "1rem", cursor: "pointer" }}
+                    style={{ marginRight: "1rem", cursor: "pointer",  display: 'none' }}
                     onClick={handleArrowDownClick}
                   />
                   <Arrowup
-                    style={{ marginRight: "1rem", cursor: "pointer" }}
+                    style={{ marginRight: "1rem", cursor: "pointer",  display: 'none' }}
                     onClick={handleArrowUpClick}
                   />
                 </>
@@ -274,11 +293,11 @@ const AddPhaseCard = ({
         <Grid item sx={tableGrid}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography sx={listOfLineText}>List of Line Items</Typography>
-            <Button
+            {/* <Button
               sx={{ ...actionButton, ...approvalButton, ...displayButton }}
             >
               Send Approval
-            </Button>
+            </Button> */}
           </Box>
 
           <hr style={hrLine} />
@@ -309,11 +328,11 @@ const AddPhaseCard = ({
                   <TableCell sx={tableHeadings}>Total Cost</TableCell>
                   <TableCell sx={tableHeadings}>Notes</TableCell>
                   <TableCell sx={tableHeadings}>Status</TableCell>
-
+{/* 
                   <TableCell></TableCell>
                   <TableCell></TableCell>
 
-                  <TableCell></TableCell>
+                  <TableCell></TableCell> */}
                 </TableRow>
 
                 <TableRow style={hrLine}></TableRow>
@@ -321,7 +340,7 @@ const AddPhaseCard = ({
 
               <TableBody>
                 {phaseData.LineItems.map((row, index) => {
-                
+         
                   return (
                     <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
                       <TableCell>
@@ -350,13 +369,13 @@ const AddPhaseCard = ({
 
                       <TableCell>{row.notes}</TableCell>
                       <TableCell>{row.status}</TableCell>
-                      <TableCell>
+                      {/* <TableCell>
                         <EditIcon onClick={() => handleUpdateLine(row)} />
                         <DeleteIcon
                           onClick={() => handleDeleteSelectedRows(row.id)}
                           disabled={selectedRows.length === 0}
                         />
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   );
                 })}
@@ -410,14 +429,12 @@ const headingsBox = {
   display: "flex",
   flexDirection: { lg: "row", md: "row", sm: "column", xs: "column" },
   justifyContent: "space-between",
-  margin: { md: "0.2rem 4rem 0rem" },
   width: "100%",
 };
 
 const headingInnerBox = {
   display: "flex",
   flexDirection: "row",
-  justifyContent: "space-around",
   whiteSpace: "nowrap",
   gap: { lg: "9rem", md: "2rem", sm: "auto", xs: "auto" },
   width: "100%",
@@ -427,9 +444,10 @@ const phaseBox = {
   justifyContent: "center",
   alignItems: "center",
   gap: "1rem",
-  marginTop: "1rem",
-  marginRight: { lg: "4rem", md: "4rem", sm: "0rem", xs: "0rem" },
-  width: "100%",
+  marginTop: "0rem",
+  marginBottom: '1rem',
+  marginRight: { lg: "1rem", md: "1rem", sm: "1rem", xs: "1rem" },
+
 };
 const tableGrid = {
   background: "#FBFBFB",

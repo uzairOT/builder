@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, TextField ,Hidden,IconButton } from "@mui/material";
+import { Typography, Box, TextField ,Hidden,IconButton, Menu, MenuItem } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import Button from "../../UI/CustomButton";
 import Search from "../../UI/CustomSearchInput";
+import AddIcon from '@mui/icons-material/Add';
 import  axios  from "axios";
 
 function Header({ title, OpenAddModal }) {
  
 
-
+  const [anchorEl, setAnchorEl] = useState(null);
   const [searchInput, setSearchInput] = useState("");
 
   const handleSearchInputChange = (event) => {
     setSearchInput(event.target.value);
+  };
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   // useEffect(()=>{
@@ -44,9 +52,18 @@ function Header({ title, OpenAddModal }) {
       </div>
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
       <Hidden smUp>
-        <IconButton aria-label="menu">
+        <IconButton aria-label="menu" onClick={handleMenuClick}>
           <MenuIcon />
         </IconButton>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={OpenAddModal}>
+            <AddIcon /> Add
+          </MenuItem>
+        </Menu>
       </Hidden>
 
       {/* Existing content */}
@@ -61,7 +78,7 @@ function Header({ title, OpenAddModal }) {
 
         <Button
           onClick={OpenAddModal}
-          buttonText="Add more"
+          buttonText="Add"
           color="#ffffff"
           backgroundColor="#FFAC00"
           width="112px"

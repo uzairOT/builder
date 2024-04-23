@@ -1,6 +1,6 @@
 import { apiSlice } from '../apiSlice';
 
-const PROJECTS_URL = 'http://3.135.107.71:8080/project'; // Corrected base URL for projects
+const PROJECTS_URL = 'http://192.168.0.106:8080/project'; // Corrected base URL for projects
 
 export const projectApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

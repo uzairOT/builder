@@ -9,6 +9,7 @@ import {
   Paper,
   IconButton,
   Avatar,
+  Stack,
 } from "@mui/material";
 import EditIcon from "../../../assets/settings/edit.png";
 import DeleteIcon from "../../../assets/settings/delete.png";
@@ -74,7 +75,6 @@ function CustomTable({
     userRole: userRole,
     userId: currentUserId,
   });
-  //console.log("ERROR IN FETCHING TABLE:", data);
   const handleEmailIconClick = () => {
     setTemplateView(true); // Call the function to update the template view
   };
@@ -113,7 +113,7 @@ function CustomTable({
             <TableCell sx={tableCellStyle}>Phone Number</TableCell>
             <TableCell sx={tableCellStyle}>Email</TableCell>
             <TableCell sx={tableCellStyle}>Country</TableCell>
-            <TableCell sx={tableCellStyle}>Project Status</TableCell>
+            {/* <TableCell sx={tableCellStyle}>Project Status</TableCell> */}
             {showEmailAndRecords && (
               <TableCell sx={tableCellStyle}>
                 Email <br /> Records
@@ -122,9 +122,9 @@ function CustomTable({
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        {error ? <Stack p={2}>{error.data.error}</Stack>   : <TableBody>
           {isLoading ? (
-            <>Loading...</>
+            <Stack p={2}>Loading...</Stack>
           ) : data?.message === 'no records' ? (<>No Records</>):  (
             data?.users?.map((row) => (
               <TableRow key={row.id}>
@@ -132,13 +132,13 @@ function CustomTable({
                   <Avatar alt="Avatar" src={row.image} />
                 </TableCell>
                 <TableCell sx={tableCellValueStyle}>{row.firstName}</TableCell>
-                <TableCell sx={tableCellValueStyle}>{row.project}</TableCell>
+                <TableCell sx={tableCellValueStyle}>{row.projectName}</TableCell>
                 <TableCell sx={tableCellValueStyle}>
                   {row.phoneNumber}
                 </TableCell>
                 <TableCell sx={tableCellValueStyle}>{row.email}</TableCell>
                 <TableCell sx={tableCellValueStyle}>{row.country}</TableCell>
-                <TableCell sx={tableCellValueStyle}>
+                {/* <TableCell sx={tableCellValueStyle}>
                   {" "}
                   <Button
                     buttonText={row.status}
@@ -150,7 +150,7 @@ function CustomTable({
                     height="27px"
                     borderRadius="45px"
                   />
-                </TableCell>
+                </TableCell> */}
                 {showEmailAndRecords && (
                   <TableCell sx={tableCellValueStyle}>
                     <IconButton
@@ -181,7 +181,7 @@ function CustomTable({
               </TableRow>
             ))
           )}
-        </TableBody>
+        </TableBody>}
       </Table>
     </TableContainer>
   );

@@ -1,4 +1,4 @@
-import { ButtonGroup, Paper, Stack, Typography } from "@mui/material";
+import { Box, ButtonGroup, Paper, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import WorkOrder from "./WorkOrder";
 import Tabs from "@mui/joy/Tabs";
@@ -45,11 +45,13 @@ const WorkOrderView = () => {
   return (
     <Stack flex={1} pt={1} height={"100%"} >
       <Paper style={{ ...themeStyle.borders, width: "99%", marginBottom:'4px', height: '100%' }}>
-        <Stack justifyContent={"space-between"} height={"95%"}>
+        <Stack justifyContent={"flex-start"} height={"95%"}>
           {!changeView ? (
-           <Stack height={'470px'} gap={1}>
+           <Stack height={'475px'}>
            <ProjectsChangeOrder workOrder={true} view={'Work Order'} setChangeView={setChangeView} />  
+           <Box height={'inherit'}>
             <TaskCalender dailyForecast={dailyForecast} eventsArr={events} isProjectPage={true} isDrawerOpen={true} />
+           </Box>
            </Stack>
           ) : (
             <>
@@ -71,7 +73,6 @@ export default WorkOrderView;
 const themeStyle = {
   borders: {
     borderRadius: "14px",
-    padding: "8px",
   },
   border: {
     borderRadius: '14px'

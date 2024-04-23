@@ -23,7 +23,7 @@ const dispatch = useDispatch();
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
-        const res = await axios.post("http://3.135.107.71:8080/project/file",{fileName,fileType});
+        const res = await axios.post("http://192.168.0.106:8080/project/file",{fileName,fileType});
         //console.log(res);
         return res.data.data.url;
       } catch (error) {
@@ -110,7 +110,7 @@ const dispatch = useDispatch();
             </Grid>
   
             <Grid item xs={12}>
-              <Typography>Full Name</Typography>
+              <Typography>First Name</Typography>
               <TextField
                 name="fullName"
                 placeholder="Please enter your full name"
@@ -121,9 +121,9 @@ const dispatch = useDispatch();
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography>Username</Typography>
+              <Typography>Last name</Typography>
               <TextField
-                name="username"
+                name="lastName"
                 placeholder="Please enter your username"
                 value={formData.username}
                 onChange={handleChange}

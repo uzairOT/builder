@@ -34,36 +34,36 @@ const ChangeOrder = () => {
         <TableHead>
           <TableRow>
             <TableCell sx={themeStyle.tableHeader}>Subject</TableCell>
-            <TableCell sx={themeStyle.tableHeader}>Description</TableCell>
+            {/* <TableCell sx={themeStyle.tableHeader}>Description</TableCell> */}
             {/* <TableCell sx={tableCellStyle}>Unit</TableCell> */}
             {/* <TableCell sx={tableCellStyle}>Margin</TableCell> */}
             <TableCell sx={themeStyle.tableHeader}>priority</TableCell>
             <TableCell sx={themeStyle.tableHeader}>Total</TableCell>
-            <TableCell sx={themeStyle.tableHeader}>Start</TableCell>
-            <TableCell sx={themeStyle.tableHeader}>End</TableCell>
+            {/* <TableCell sx={themeStyle.tableHeader}>Start</TableCell> */}
+            {/* <TableCell sx={themeStyle.tableHeader}>End</TableCell> */}
             {/* <TableCell sx={tableCellStyle}>Quantity</TableCell> */}
             {/* <TableCell sx={tableCellStyle}>Unit Price</TableCell> */}
             <TableCell sx={themeStyle.tableHeader}>Status</TableCell>
-            <TableCell sx={themeStyle.tableHeader}>Notes</TableCell>
+            {/* <TableCell sx={themeStyle.tableHeader}>Notes</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody style={{ paddingLeft: "4px", paddingRight: "4px" }}>
           {data?.data?.workOrderReqs.map((row) => (
             <TableRow key={row.id}>
               <TableCell sx={themeStyle.tableBody}>{row.subject}</TableCell>
-              <TableCell sx={{ ...themeStyle.tableBody }}>
-                {/* <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} sx={{backgroundColor:'#FFC8C8', color:'#F03434'}} fontSize={'12px'} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'} > */}
+              {/* <TableCell sx={{ ...themeStyle.tableBody }}>
+                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} sx={{backgroundColor:'#FFC8C8', color:'#F03434'}} fontSize={'12px'} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'} >
                 {row.description}
-                {/* </Typography> */}
-              </TableCell>
+                </Typography>
+              </TableCell> */}
               <TableCell sx={themeStyle.tableBody}>{row.priority}</TableCell>
               <TableCell sx={{ ...themeStyle.tableBody }}>
                 {row.total}
               </TableCell>
-              <TableCell sx={{ ...themeStyle.tableBody }}>
+              {/* <TableCell sx={{ ...themeStyle.tableBody }}>
                 {row.start_day}
               </TableCell>
-              <TableCell sx={themeStyle.tableBody}>{row.end_day}</TableCell>
+              <TableCell sx={themeStyle.tableBody}>{row.end_day}</TableCell> */}
               <TableCell sx={themeStyle.tableBody}>
                 <Button
                   buttonText={row.status} // Assuming status property represents the status
@@ -76,7 +76,7 @@ const ChangeOrder = () => {
                   borderRadius="45px"
                 />
               </TableCell>
-              <TableCell
+              {/* <TableCell
                 sx={{
                   ...themeStyle.tableBody,
                   textOverflow: "ellipsis",
@@ -85,7 +85,7 @@ const ChangeOrder = () => {
                 }}
               >
                 {row.notes}
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           ))}
         </TableBody>

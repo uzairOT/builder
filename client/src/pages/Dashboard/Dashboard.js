@@ -93,6 +93,7 @@ const Dashboard = () => {
                   paddingLeft: "0px ",
                   overflow: "hidden",
                 }}
+                
               >
                 <Paper sx={themeStyle.progressCard} margin={1}>
                   <ProgressCard project={project} />
@@ -198,8 +199,8 @@ const themeStyle = {
   },
   progressCard: {
     height: "100%",
-    width: "100%",
-    margin: "1px",
+    width: "97%",
+    margin: "8px",
     borderRadius: "14px",
     overflow: "hidden",
   },

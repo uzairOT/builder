@@ -452,22 +452,22 @@ const ProjectList = ({ rows, isLoading }) => {
           )}
         </TableContainer>
         <Stack justifyContent={"flex-end"} alignItems={"flex-end"}>
-          <Pagination
+          {/* <Pagination
             count={10}
             variant="outlined"
             shape="rounded"
             sx={paginationStyle}
-          />
+          /> */}
         </Stack>
-        {/* <TablePagination
+        <TablePagination
           page={page}
           rowsPerPage={rowsPerPage}
           component={"div"}
           onPageChange={handlePageChange}
-          count={rows.length}
+          count={rows?.length}
           labelRowsPerPage={false}
           rowsPerPageOptions={[1]}
-        ></TablePagination> */}
+        ></TablePagination>
       </Stack>
       <EditProjectModal
         project={project}
