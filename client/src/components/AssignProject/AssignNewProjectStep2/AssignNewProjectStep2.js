@@ -183,6 +183,7 @@ function AssignNewProjectStep2({
           handleNextStep={handleNextStep}
           isTab={isTab}
           isMobile={isMobile}
+          isLoading={isLoading}
         />
       )}
     </>
