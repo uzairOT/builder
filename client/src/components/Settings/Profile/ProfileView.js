@@ -19,28 +19,28 @@ const [selectedFile,setSelectedFile] = useState("")
 const [image, setImage] = useState(user ?  user.user.image : null);
 const [updateProfile] = useUpdateProfileMutation()
 const dispatch = useDispatch();
-
-  const uploadFileToServer = async (selectedFile) => {
-    if (selectedFile) {
-      try {
-        const res = await axios.post("http://192.168.0.106:8080/project/file",{fileName,fileType});
-        //console.log(res);
-        return res.data.data.url;
-      } catch (error) {
-        console.error("Error uploading file:", error);
-        // Handle error
-      }
+const uploadFileToServer = async (selectedFile) => {
+  if (selectedFile) {
+    try {
+      const res = await axios.post("http://192.168.0.106:8080/project/file",{fileName,fileType});
+      //console.log(res);
+      return res.data.data.url;
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      // Handle error
     }
-  };
-  const [formData, setFormData] = useState({
-    fullName: `${user.user.firstName}`,
-    username: "uzair00",
-    email: user.user.email,
-    phoneNumber: user.user.phoneNumber,
-    address: "your address here",
-    userId: user.user.id,
-  });
+  }
+};
+const [formData, setFormData] = useState({
+  firstName: `${user.user.firstName}`,
+  lastName: `${user.user?.lastName}`,
+  email: user.user.email,
+  phoneNumber: user.user.phoneNumber,
+  address: "your address here",
+  userId: user.user.id,
+});
 
+console.log(formData);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -110,22 +110,22 @@ const dispatch = useDispatch();
             </Grid>
   
             <Grid item xs={12}>
-              <Typography>Full Name</Typography>
+              <Typography>First Name</Typography>
               <TextField
                 name="fullName"
                 placeholder="Please enter your full name"
-                value={formData.fullName}
+                value={formData.firstName}
                 onChange={handleChange}
                 fullWidth
                 sx={InputStyle}
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography>Username</Typography>
+              <Typography>Last name</Typography>
               <TextField
-                name="username"
-                placeholder="Please enter your username"
-                value={formData.username}
+                name="lastName"
+                placeholder="Please enter your last name"
+                value={formData.lastName}
                 onChange={handleChange}
                 fullWidth
                 sx={InputStyle}
@@ -221,18 +221,18 @@ const dispatch = useDispatch();
           <Box sx={{ display: "grid", justifyContent: "center" }}>
             <Box>
               <Typography variant="body1" sx={TextStyle}>
-                Name:
+                First Name:
               </Typography>
               <Typography variant="body1" sx={ValueStyle}>
-                {formData.fullName}
+                {formData.firstName}
               </Typography>
             </Box>
             <Box>
               <Typography variant="body1" sx={TextStyle}>
-                User:
+                Last Name:
               </Typography>
               <Typography variant="body1" sx={ValueStyle}>
-                {formData.username}
+                {formData.lastName}
               </Typography>
             </Box>
             <Box>

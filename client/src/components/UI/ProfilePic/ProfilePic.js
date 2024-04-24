@@ -1,11 +1,11 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Avatar, Box } from '@mui/material';
 
 const ProfileImage = ({ UserImage, border }) => {
     if(!border){
         return (
-            <Box
-                component="img"
+            <Avatar
+            
                 src={UserImage}
                 alt="Profile Pic"
                 sx={{
@@ -17,8 +17,8 @@ const ProfileImage = ({ UserImage, border }) => {
         );
     } else{
     return (
-        <Box
-            component="img"
+        <Avatar
+            
             src={UserImage}
             alt="Profile Pic"
             sx={{

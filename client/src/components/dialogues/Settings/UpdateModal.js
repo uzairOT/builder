@@ -20,6 +20,7 @@ import { settingsSchema } from "../../../utils/Validation/settingsPageSchema";
 import { useGetAssignedRolesQuery, useUpdateAssignRoleMutation } from "../../../redux/apis/Admin/assignRoleApiSlice";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 
 function UpdateModal({
   title,
@@ -40,10 +41,20 @@ function UpdateModal({
     userId: currentUserId,
   });
 
+  const { data, isLoading, error } = useGetUserProjectsQuery({
+    userId: currentUserId,
+  });
+
+  //console.log(data);
+  const projectNames = data
+    ? data?.projects.map((project) => ({
+        id: project.id,
+        projectName: project.projectName,
+      }))
+    : [];
   const onSubmit = async (values, action) => {
       const put = {
           ...values,
-          image: image,
           userRole: userRole,
           userId: userId,
           superAdminId: currentUserId,
@@ -58,13 +69,8 @@ function UpdateModal({
     initialValues: {
       userId: '',
       userRole: "",
-      image: "",
-      name: "",
       project: "",
       email: "",
-      phoneNumber: "",
-      country: "",
-      status: "",
     },
     validationSchema: settingsSchema,
     onSubmit,
@@ -106,8 +112,8 @@ function UpdateModal({
         <DialogContent
           sx={{ display: "flex", justifyContent: "center", margin: "30px" }}
         >
-          <Grid container spacing={2}>
-            <Grid
+          <Grid container spacing={4}>
+            {/* <Grid
               item
               xs={12}
               sx={{
@@ -127,7 +133,7 @@ function UpdateModal({
                 onDragEnter={(e) => e.preventDefault()}
                 onDrop={handleDrop}
               >
-                {/* Upload image icon */}
+              
                 <input
                   type="file"
                   accept="image/*"
@@ -139,16 +145,15 @@ function UpdateModal({
                 <label htmlFor="avatarInput">
                   <img src={image ? image : UploadIcon} alt=""  width={'120px'} height={'80px'}/>
 
-                  {/* Text */}
                   <Typography variant="body1" sx={labelStyle}>
                     Upload your photo
                   </Typography>
                 </label>
               </div>
-            </Grid>
+            </Grid> */}
 
-            <Grid item xs={12}  sm={6}>
-              {/* Name input */}
+            {/* <Grid item xs={12}  sm={6}>
+             
               <Typography variant="body1">Name</Typography>
               <TextField
                 error={errors.name ? true : false}
@@ -166,9 +171,9 @@ function UpdateModal({
                 onBlur={handleBlur}
                 helperText={errors.name && touched.name  ? errors.name : ''}
               />
-            </Grid>
-            <Grid item xs={12}  sm={6}>
-              {/* Phone Number input */}
+            </Grid> */}
+            {/* <Grid item xs={12}  sm={6}>
+              
               <Typography variant="body1">Phone Number</Typography>
               <TextField
                 error={errors.phoneNumber ?  true : false}
@@ -186,11 +191,11 @@ function UpdateModal({
                 onBlur={handleBlur}
                 helperText={errors.phoneNumber && touched.phoneNumber ? errors.phoneNumber : ''}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}  sm={6}>
               {/* Projects input */}
               <Typography variant="body1">Project</Typography>
-              <TextField
+              {/* <TextField
                 error={errors.project ? true : false}
                 value={values.project}
                 placeholder="Project"
@@ -205,10 +210,58 @@ function UpdateModal({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 helperText={errors.project && touched.project ? errors.project : ''}
-              />
+              /> */}
+               <FormControl fullWidth>
+                <Select
+                  error={errors.project ? true : false}
+                  displayEmpty
+                  labelId="demo-simple-select-label"
+                  value={values.project}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name="project"
+                  fullWidth
+                  renderValue={(selected) => {
+                    if (selected.length === 0) {
+                      return (
+                        <Typography
+                          style={{ fontSize: "1rem", color: "#969a9c" }}
+                        >
+                          Project
+                        </Typography>
+                      );
+                    }
+                    const selectedProject = projectNames.find(
+                      (project) => project.id === selected
+                    );
+                    return selectedProject ? selectedProject.projectName : "";
+                  }}
+                  sx={{
+                    ...InputStyle,
+                    height: "45px",
+                    border:
+                      errors.project && touched.project
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                    placeholder: "Project",
+                  }}
+                >
+                  {projectNames?.map((projectName) => (
+                    <MenuItem key={projectName.id} value={projectName.id}>
+                      {projectName.projectName}
+                    </MenuItem>
+                  ))}
+                </Select>
+
+                {errors.project && touched.project ? (
+                  <FormHelperText error>{errors.project}</FormHelperText>
+                ) : (
+                  <></>
+                )}
+              </FormControl>
             </Grid>
-            <Grid item xs={12}  sm={6}>
-              {/* Country input */}
+            {/* <Grid item xs={12}  sm={6}>
+           
               <Typography variant="body1">Country</Typography>
               <TextField
                 error={errors.country ? true : false}
@@ -226,7 +279,7 @@ function UpdateModal({
                 onBlur={handleBlur}
                 helperText={errors.country && touched.country ? errors.country : ''}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}  sm={6}>
               {/* Email input */}
               <Typography variant="body1">Email</Typography>
@@ -247,8 +300,8 @@ function UpdateModal({
                 helperText={errors.email && touched.email ? errors.email : ''}
               />
             </Grid>
-            <Grid item xs={12}  sm={6}>
-              {/* Status input */}
+            {/* <Grid item xs={12}  sm={6}>
+            
               <Typography variant="body1">Status</Typography>
               <FormControl fullWidth>
               <Select
@@ -286,14 +339,14 @@ function UpdateModal({
               </Select>
              {errors.status && touched.status ? <FormHelperText error>{errors.status}</FormHelperText> : <></>}
              </FormControl>
-              {/* <TextField placeholder="Status" fullWidth sx={InputStyle} name={'status'} /> */}
-            </Grid>
+             
+            </Grid> */}
           </Grid>
         </DialogContent>
         <DialogActions
-          sx={{ display: "flex", justifyContent: "center", mb: 2 }}
+          sx={{ display: "flex", justifyContent: "center", mb: 2, flexDirection: {xs:'column', sm:'row'}, gap: {xs: 1, sm:0} }}
         >
-          <Grid item xs={8} sm={4} md={3} lg={2} sx={{ textAlign: "center" }}>
+          <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center" }}>
             <Button
               buttonText={isSubmitting ? "Submitting" : "Update Profile"}
               color="#ffffff"
@@ -306,7 +359,7 @@ function UpdateModal({
              
             />
           </Grid>
-          <Grid item xs={8} sm={4} md={3} lg={2} sx={{ textAlign: "center" }}>
+          <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center" }}>
             <Button
               buttonText="Reset"
               color="#4C8AB1"
@@ -331,7 +384,7 @@ const InputStyle = {
   fontFamily: "Manrope, sans-serif",
     border: "1px solid #E0E4EC",
     padding: "10px",
-
+    width: {xl:'250px' ,lg:'100%',md: '100%', sm: '100%', xs:'100%'},
   "& .MuiOutlinedInputRoot": {
     "& fieldset": {
       border: "none",

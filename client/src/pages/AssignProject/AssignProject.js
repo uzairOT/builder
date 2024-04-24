@@ -42,6 +42,7 @@ function AssignProject() {
         projectName: projectName,
       };
       const res = await postExistingProject(data);
+
       if (res.data?.success) {
         setProjectType(value);
       } else {

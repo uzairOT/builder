@@ -13,6 +13,7 @@ import {
   TableCell,
   TableBody,
   Checkbox,
+  Stack,
 } from "@mui/material";
 import { useGetTeamMembersQuery } from "../../../redux/apis/Project/projectApiSlice";
 
@@ -63,8 +64,8 @@ const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes, data }) 
   };
 
   return (
-    <div>
-      <IconButton onClick={handleOpen} aria-label="Assign Team Members">
+    <Stack>
+      <IconButton onClick={handleOpen} aria-label="Assign Team Members" style={{marginLeft: '-14px'}}>
         <AddCircleOutlineIcon
           sx={{ ...themeStyle.AvatarStyle, color: "#A8A8A8" }}
         />
@@ -120,7 +121,7 @@ const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes, data }) 
           </Box>
         </Box>
       </Modal>
-    </div>
+    </Stack>
   );
 };
 

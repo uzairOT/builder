@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+  import React, { useState } from "react";
 import FooterCircles from "../FooterCircles/FooterCircles";
 import YellowBtn from "../../UI/button";
 import StepTitles from "../StepTitles/StepTitles";

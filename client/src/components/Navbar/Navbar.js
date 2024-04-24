@@ -175,7 +175,8 @@ const Navbar = () => {
     navbar: {
       background: "#FFF",
       boxShadow: "0px 1px 1.3px 0px rgba(0, 0, 0, 0.05)",
-      padding: "16px 16px 16px 16px",
+      padding: "4px 16px 4px 16px",
+      height: '8vh'
     },
     logo: {
       width: "130px",
@@ -234,11 +235,11 @@ const Navbar = () => {
             alignItems={"center"}
             gap={1}
           >
-            <IconButton aria-label="bell-notifications">
+            <IconButton aria-label="bell-notifications" onClick={handleClick}>
               <Badge
                 badgeContent={notifications?.length}
                 color="error"
-                onClick={handleClick}
+                
               >
                 <NotificationsIcon sx={{color:'#4C8AB1'}} />
               </Badge>

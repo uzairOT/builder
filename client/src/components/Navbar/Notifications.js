@@ -48,16 +48,18 @@ function Notification({ notification, refetch, userId }) {
       console.log(err);
     }
   }
+  console.log(notification);
+ 
   return (
     <div style={style}>
       <p></p>
       <div>
-        <Typography sx={{fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',}} p={1}>You have work order request of project: {notification.projectName}</Typography>
+        <Typography sx={{fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',}} p={1}>You have {notification.WorkOrderReq.version > 1 ? 'change order request':  'work order request'} of project: {notification.projectName}</Typography>
         <Divider />
         <Stack direction={"row"} gap={1} p={1} alignItems={'center'}>
-          <Avatar></Avatar>
+          <Avatar src={`${notification.User.image}`} alt="User Avatar"></Avatar>
           <Stack>
-            <Typography sx={{fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',}}>John</Typography>
+            <Typography sx={{fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',}}>{notification.User.firstName}</Typography>
           </Stack>
           <Stack direction={'row'} sx={{height:'35px'}}>
           <BuilderProButton

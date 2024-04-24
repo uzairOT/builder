@@ -25,7 +25,7 @@ function EditProjectModal({ title, open, onClose, project }) {
     const [projectUpdate] = useProjectUpdateMutation();
     const {refetch} = useGetUserProjectsQuery({userId: currentUserId})
 
-    //console.log(project)
+    console.log(project)
 
     const uploadFileToServer = async (selectedFile) => {
       if (selectedFile) {
@@ -70,10 +70,11 @@ function EditProjectModal({ title, open, onClose, project }) {
       isSubmitting,
       handleReset,
       setFieldValue,
+      setValues
     } = useFormik({
       initialValues: {
-        name: project ? project?.clientName : '',
-        project: project ? project?.projectName : '',
+        name: project ? project.clientName : '',
+        project: project ? project.projectName : '',
         phoneNumber: "",
         status: "",
       },
@@ -112,6 +113,24 @@ function EditProjectModal({ title, open, onClose, project }) {
         reader.readAsDataURL(file);
       }
     };
+    useEffect(() => {
+      // This will run whenever the project prop changes
+      console.log('Project has changed:', project);
+      
+      // Update form values if needed
+      setValues({
+        name: project ? project.clientName : '',
+        project: project ? project.projectName : '',
+        phoneNumber: "",
+        status: "",
+      });
+      setImage( prev => {
+        if(project){
+          return project.image
+        }
+      })
+    
+    }, [project]);  // Dependency array
   
     return (
       <form onSubmit={handleSubmit}>

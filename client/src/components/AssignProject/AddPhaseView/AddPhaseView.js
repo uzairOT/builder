@@ -60,7 +60,7 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
     } else {
       try {
         const response = await axios.get(
-          `http://192.168.0.106:8080/project/getPhases/${id}`
+          `http://192.168.0.106:8080/project/getPhases/${projectId}`
         );
         //console.log(response);
         dispatch(addPhase(response.data.phases));
@@ -267,9 +267,11 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
                 phases={phases}
               />
             ) : (
-              <Button sx={{ ...actionButton, ...approvalButton }}>
+              <>
+              {/* <Button sx={{ ...actionButton, ...approvalButton }}>
                 Send Approval
-              </Button>
+              </Button> */}
+              </>
             )}
           </Stack>
         )}
@@ -379,6 +381,7 @@ const firstGrid = {
     sm: "1rem 2rem",
     xs: "0rem 0rem",
   },
+  margin: 'auto'
   // border: "2px solid red",
 };
 const buttonBox = {

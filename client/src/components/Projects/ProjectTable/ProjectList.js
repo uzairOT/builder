@@ -29,7 +29,7 @@ import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
 import { useNavigate } from "react-router-dom";
 import EditProjectModal from "../../dialogues/EditProject/EditProjectModal";
 
-const ProjectList = ({ rows, isLoading }) => {
+const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) => {
   const navigate = useNavigate();
   const tableHeader = [
     { id: "clientName", title: "Client" },
@@ -46,12 +46,12 @@ const ProjectList = ({ rows, isLoading }) => {
   //console.log(rows);
   const [project, setProject] = useState(null);
 
-  const [page, setPage] = useState([]);
+  const [page, setPage] = useState(0);
   const [openEditModel, setOpenEditModel] = useState(false);
 
   const rowsPerPage = 6;
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedFilters, setSelectedFilters] = useState([]);
+ 
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -69,7 +69,7 @@ const ProjectList = ({ rows, isLoading }) => {
     setSelectedFilters(selectedFilters.filter((item) => item !== filter));
   };
   const handleOpenEditModel = (row) => {
-    setProject(row);
+    setProject(prev => row);
     setOpenEditModel(true);
   };
   const handleCloseEditModel = () => {
@@ -102,7 +102,7 @@ const ProjectList = ({ rows, isLoading }) => {
   //       setIsLoading(false);
   //     });
   // }, []); // Empty dependency array to execute the effect only once on component mount
-
+  console.log(rows);
   return (
     <Stack width={"100%"}>
       {/* Project List Header */}
@@ -345,14 +345,14 @@ const ProjectList = ({ rows, isLoading }) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell></TableCell>
+                  <TableCell sx={themeStyle.tableCell} style={{borderBottom: '1px solid #A1A1A1'}}></TableCell>
                   {tableHeader.map((header) => (
-                    <TableCell sx={themeStyle.tableCell} key={header.id}>
+                    <TableCell sx={themeStyle.tableCell} style={{borderBottom: '1px solid #A1A1A1'}} key={header.id}>
                       {header.title}
                     </TableCell>
                   ))}
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
+                  <TableCell sx={themeStyle.tableCell} style={{borderBottom: '1px solid #A1A1A1'}}></TableCell>
+                  <TableCell sx={themeStyle.tableCell} style={{borderBottom: '1px solid #A1A1A1'}}></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -361,7 +361,7 @@ const ProjectList = ({ rows, isLoading }) => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
                       return (
-                        <TableRow>
+                        <TableRow >
                           <TableCell sx={themeStyle.tableCell}>
                             <img
                               src={row.image ? row.image : logo}
@@ -429,7 +429,7 @@ const ProjectList = ({ rows, isLoading }) => {
                               </IconButton>
                             </Paper>
                           </Box>
-                          <TableCell>
+                          <TableCell sx={themeStyle.tableCell}>
                             <Typography
                               color={"#4C8AB1"}
                               fontSize={"14px"}
@@ -443,7 +443,7 @@ const ProjectList = ({ rows, isLoading }) => {
                       );
                     })}
                 {emptyRows > 0 && (
-                  <TableRow style={{ height: 53 * emptyRows }}>
+                  <TableRow sx={themeStyle.tableCell} style={{ height: 60 * emptyRows }}>
                     <TableCell colSpan={6} />
                   </TableRow>
                 )}
@@ -452,22 +452,22 @@ const ProjectList = ({ rows, isLoading }) => {
           )}
         </TableContainer>
         <Stack justifyContent={"flex-end"} alignItems={"flex-end"}>
-          <Pagination
+          {/* <Pagination
             count={10}
             variant="outlined"
             shape="rounded"
             sx={paginationStyle}
-          />
+          /> */}
         </Stack>
-        {/* <TablePagination
+        <TablePagination
           page={page}
           rowsPerPage={rowsPerPage}
           component={"div"}
           onPageChange={handlePageChange}
-          count={rows.length}
-          labelRowsPerPage={false}
+          count={isLoading ?  0 : rows.length}
+          labelRowsPerPage={true}
           rowsPerPageOptions={[1]}
-        ></TablePagination> */}
+        ></TablePagination>
       </Stack>
       <EditProjectModal
         project={project}
@@ -486,6 +486,8 @@ const themeStyle = {
     fontSize: "14px",
     fontFamily: "Montserrat, sans serif",
     color: "#8C8C8C",
+    padding: '4px',
+    border: 'none'
   },
   statusPending: {
     padding: "4px 8px 4px 8px",

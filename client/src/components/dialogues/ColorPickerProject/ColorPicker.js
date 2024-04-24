@@ -51,6 +51,7 @@ export default function ColorPicker() {
  
   const handleChangeColor = () => {
     dispatch(setProjectColor(color));
+    setColor('')
     handleClose();
   }
   React.useEffect(()=>{

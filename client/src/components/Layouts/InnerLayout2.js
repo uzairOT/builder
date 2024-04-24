@@ -53,18 +53,18 @@ const InnerLayout2 = () => {
               },
               boxShadow: 'none',
             }}>
-            <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:'15px'}}>Pending</Tab>
             <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:'15px'}}>Approved</Tab>
+            <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:'15px'}}>Pending</Tab>
             <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:'15px'}}>Declined</Tab>
             </TabList>
             <TabPanel sx={{padding: 0, width:{xl:'28.5vw'}}} value={0}>
-          <ChangeOrder />
+          <ChangeOrder value={0} />
             </TabPanel>
             <TabPanel sx={{padding: 0,width:{xl:'28.5vw'}}} value={1}>
-          <ChangeOrder />
+          <ChangeOrder value={1}  />
             </TabPanel>
             <TabPanel sx={{padding: 0, width:{xl:'28.5vw'}}} value={2}>
-          <ChangeOrder />
+          <ChangeOrder value={2}  />
             </TabPanel>
           </Tabs>
           </Stack>

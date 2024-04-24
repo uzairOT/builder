@@ -10,13 +10,14 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import ProjectNavbarDrawer from "./ProjectNavbarDrawer";
 
 const ProjectsNavbar = ({ project }) => {
   const params = useParams();
   const theme = useTheme();
   const showHamburger = useMediaQuery(theme.breakpoints.down("lg"));
+  const navigate = useNavigate();
   console.log(showHamburger);
   const navLinks = [
     {
@@ -60,6 +61,9 @@ const ProjectsNavbar = ({ project }) => {
   const handleNavClick = (path) => {
     setSelectedNav(path);
   };
+const navigateToDefault = () => {
+  navigate('')
+}
 
   return (
     <Stack
@@ -70,7 +74,7 @@ const ProjectsNavbar = ({ project }) => {
     >
       <Stack direction={"row"} alignItems={"center"} spacing={1}>
         <IconButton>
-          <ChevronLeftIcon style={{ color: "black" }} />
+          <ChevronLeftIcon style={{ color: "black" }} onClick={navigateToDefault}/>
         </IconButton>
         {/* <img src={project?.image} alt='Project' width={'60px'} height={'35px'} style={{borderRadius: '12px'}}></img> */}
         <Link to={``} style={{ textDecoration: "none" }}>
