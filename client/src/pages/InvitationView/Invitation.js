@@ -25,7 +25,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Bounce } from "react-toastify"; // Assuming you're using react-toastify
 import { useDispatch, useSelector } from "react-redux";
-import { useRegisterMutation } from "../../redux/apis/usersApiSlice";
+import { useCheckUserOnInvitationQuery, useRegisterMutation } from "../../redux/apis/usersApiSlice";
 import { setCredentials } from "../../redux/slices/authSlice";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -36,7 +36,10 @@ const Invitation = () => {
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
   const { projectId, email, userRole, companyName } = useParams();
-  console.log(projectId, email, userRole);
+  const role = userRole;
+  const params = {projectId, email,  role};
+  const {data} = useCheckUserOnInvitationQuery(params)
+  console.log("check :", data, params);
 
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";

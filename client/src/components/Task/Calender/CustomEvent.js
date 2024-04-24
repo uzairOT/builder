@@ -31,7 +31,7 @@ const CustomEventDayNotes = ({event, isProjectPage}) => {
         </Stack>
         <Stack flex={2} pl={0.5} justifyContent={'flex-start'}>
             <Typography sx={themeStyle.eventTask} fontSize={'10px'} fontStyle={'italic'} color={'#454545'} fontWeight={'300'}>Note:</Typography>
-            <Typography sx={{...themeStyle.eventNote, ...themeStyle.scrollable}}fontSize={'10px'} maxHeight={'45px'} fontWeight={'500'}>{`${event?.data?.note}`}</Typography>
+            <Typography sx={{...themeStyle.eventNote, ...themeStyle.scrollable}}fontSize={'10px'} maxHeight={'45px'} fontWeight={'500'}>{event.data.note ?  event?.data?.note : 'No notes added...' }</Typography>
         </Stack>
     </Stack>
   )
@@ -48,7 +48,7 @@ const CustomEventWeek = ({event, isProjectPage}) => {
                 </Box>
             </Stack>
             <Box pl={0.5}>
-                <Typography  fontSize={'7px'} height={'40px'} width={'100%'}>{event?.data?.note}</Typography>
+                <Typography  fontSize={'7px'} height={'40px'} width={'100%'}>{!event.data.note ? 'No notes added...' : event?.data?.note}</Typography>
             </Box>
 
         </Stack>

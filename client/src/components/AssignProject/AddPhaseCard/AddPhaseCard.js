@@ -88,8 +88,8 @@ const AddPhaseCard = ({
   const dispatch = useDispatch();
   const { rowCheckbox } = useSelector(selectAddPhase);
   let totalCost = 0; 
-  let minStartDay = moment(phaseData.LineItems[0].start_day);
-let maxEndDay = moment(phaseData.LineItems[0].end_day);
+  let minStartDay = moment(phaseData?.LineItems[0]?.start_day);
+let maxEndDay = moment(phaseData?.LineItems[0]?.end_day);
 
   phaseData.LineItems.forEach((row) => {
     totalCost += parseInt(row.total); // Accumulate the total cost

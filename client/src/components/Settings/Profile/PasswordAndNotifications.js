@@ -3,14 +3,54 @@ import Switch from "@mui/joy/Switch";
 import { Typography, Grid, TextField, Divider } from "@mui/material";
 import Button from "../../UI/CustomButton";
 import { useTheme } from "@mui/material/styles";
+import { useResetPasswordMutation } from "../../../redux/apis/usersApiSlice";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from "react-redux";
 
 export default function MyApp() {
   const theme = useTheme();
   const isXs = theme.breakpoints.down("xs");
-
-  
+  const [resetPassword] = useResetPasswordMutation();
+  const user = useSelector((state) => state.auth.userInfo);
   const [checked, setChecked] = useState(true);
+  
+  const [confrimPassword, setConfrimPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const passwordMatch= newPassword === confrimPassword;
+  const validationStyle = {
+    "& input": {
+      border: passwordMatch ? "1px solid #E0E4EC" : "1px solid #D02E2E",
+      borderRadius: "8px",
+      padding: "10px",
+    },
+  }
 
+  const handleSubmit = async () => {
+    if(!passwordMatch){
+      toast.error("Passwords don't match!");
+      return false
+    } else {
+    const resetBody = {
+      oldPassword: currentPassword,
+      newPassword: newPassword,
+      confirmPassword: confrimPassword,
+      userId: user.user.id,
+    } 
+   const res = await resetPassword(resetBody);
+   console.log(res);
+   if(res?.error){
+    toast.error(res.error.data.message);
+    return false
+   }
+   if(res?.data?.success){
+    toast.info(res.data.message);
+    return false
+   }
+    }
+  }
+  
   return (
     <div>
       {/* Password Section */}
@@ -26,6 +66,8 @@ export default function MyApp() {
             variant="outlined"
             type="password"
             sx={InputStyle}
+            value={currentPassword}
+            onChange={(e)=>{setCurrentPassword(e.target.value)}}
           />
         </Grid>
         <Grid item xs={6}>
@@ -36,6 +78,8 @@ export default function MyApp() {
             variant="outlined"
             type="password"
             sx={InputStyle}
+            value={newPassword}
+            onChange={(e)=>{setNewPassword(e.target.value)}}
           />
         </Grid>
         <Grid item xs={6}>
@@ -45,8 +89,11 @@ export default function MyApp() {
             placeholder="Confirm your password here"
             variant="outlined"
             type="password"
-            sx={InputStyle}
+            sx={{...InputStyle, ...validationStyle }}
+            value={confrimPassword}
+            onChange={(e)=>{setConfrimPassword(e.target.value)}}
           />
+          {!passwordMatch && <Typography fontSize={'11px'} color={'#D02E2E'}>Passwords dont match</Typography>}
         </Grid>
       </Grid>
 
@@ -148,6 +195,7 @@ export default function MyApp() {
             width="112px"
             height="38px"
             borderRadius="50px"
+            onClick={handleSubmit}
           />
 
           <Button

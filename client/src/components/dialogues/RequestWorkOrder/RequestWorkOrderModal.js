@@ -53,7 +53,7 @@ import { setNotifications } from "../../../redux/slices/Notifications/notificati
 import useSocket from "../../../utils/useSocket";
 
 const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
-  console.log("check12------>", rowCheckboxes);
+
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
   const [open, setOpen] = useState(false);
@@ -85,35 +85,39 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const { emit } = useSocket();
   const phaseId = rowCheckboxes[0]?.rows[0]?.phase_id;
   let counter = 0;
-  console.log(assignedCheckboxes);
-
+  let lineItemIds = [];
   let lineItemCounter = 0;
+  let totalWorkOrder = 0;
   Object?.values(rowCheckboxes)?.forEach((phaseData) => {
     lineItemCounter += phaseData.rows.length;
-  });
-  console.log("FLAT ARRAY: ", Object.values(rowCheckboxes).flat(2));
-  console.log(Object.values(rowCheckboxes));
-  // Object.values(rowCheckboxes).forEach((phaseData) => {
-  //   phaseData.rows.forEach((row) => {
-  //     lineItemIds.push(row.id);
-  //   });
-  // });
-  const ENDPOINT = "http://192.168.0.106:8080";
-  //test new workd order
-  let lineItemIds = [];
-  Object?.values(rowCheckboxes)?.forEach((phaseData) => {
     const lineItemGroup = {
       phaseId: phaseData.id,
       lineItemId: phaseData.rows.map((row) => row.id),
     };
     lineItemIds.push(lineItemGroup);
+    phaseData.rows.forEach((lineItem)=>{
+     totalWorkOrder += parseInt(lineItem.total);
+    })
+
   });
+
+  // });
+  const ENDPOINT = "http://192.168.0.106:8080";
+  //test new workd order
+
+  // Object?.values(rowCheckboxes)?.forEach((phaseData) => {
+  //   const lineItemGroup = {
+  //     phaseId: phaseData.id,
+  //     lineItemId: phaseData.rows.map((row) => row.id),
+  //   };
+  //   lineItemIds.push(lineItemGroup);
+  // });
   //tes end..
   //console.log(assignedCheckboxes);
   const [requestWorkOrderPut] = useRequestWorkOrderMutation();
 
-  console.log("rowCheckboxes--------------->", rowCheckboxes);
-  console.log("lineItemIds--------------->", lineItemIds);
+  console.log("rowCheckboxes--------------->", checkedRow);
+  // console.log("lineItemIds--------------->", lineItemIds);
   const isButtonDisabled = Object?.keys(rowCheckboxes)?.length === 0;
   const handleNotesChange = (e) => {
     setNotes(e.target.value);
@@ -172,6 +176,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
       teamIds: [...assignedCheckboxes, userId],
       notes: notes,
       projectId: projectId,
+      total: changeOrder ? checkedRow?.total : totalWorkOrder
     };
     console.log("--------------------------------------", requestForm);
     if (requestForm.teamIds.length === 0) {
@@ -277,9 +282,9 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                 <Typography
                   sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
                 >
-                  $545.66 US
+                  ${changeOrder? checkedRow?.total : totalWorkOrder}
                 </Typography>
-                <BorderColorIcon style={{ color: "#484848" }} />
+                {/* <BorderColorIcon style={{ color: "#484848" }} /> */}
               </Stack>
               <Divider />
               <Stack
@@ -407,8 +412,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                           return phase.lineItem_names.map((lineItem, index) => {
                             counter++;
                             console.log("counter: ", counter);
-                            if (counter > 3 && !showLineItems) {
-                              if(counter > 4) {
+                            if (counter > 2 && !showLineItems) {
+                              if(counter > 3) {
                                 return <></>
                               }
                               else{
@@ -443,8 +448,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                           return phaseData.rows.map((row, index) => {
                             counter++;
                             console.log("counter: ", counter);
-                            if (counter > 3 && !showLineItems) {
-                              if(counter > 4) {
+                            if (counter > 2 && !showLineItems) {
+                              if(counter > 3) {
                                 return <></>
                               }
                               else{
@@ -772,7 +777,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                   <MenuItem value={"normal"}>Normal</MenuItem>
                 </Select>
                 <hr style={themeStyle.hrLine} />
-                <Typography
+                {/* <Typography
                   sx={{
                     ...themeStyle.headingText,
                     ...themeStyle.rightheadings,
@@ -814,7 +819,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                 >
                   <MenuItem value={"pending"}>Pending</MenuItem>
                   <MenuItem value={"done"}>Done</MenuItem>
-                </Select>
+                </Select> */}
               </Box>
               <Stack spacing={0.5} p={1} px={3}>
                 <Typography

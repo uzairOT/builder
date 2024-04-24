@@ -234,11 +234,11 @@ const Navbar = () => {
             alignItems={"center"}
             gap={1}
           >
-            <IconButton aria-label="bell-notifications">
+            <IconButton aria-label="bell-notifications" onClick={handleClick}>
               <Badge
                 badgeContent={notifications?.length}
                 color="error"
-                onClick={handleClick}
+                
               >
                 <NotificationsIcon sx={{color:'#4C8AB1'}} />
               </Badge>

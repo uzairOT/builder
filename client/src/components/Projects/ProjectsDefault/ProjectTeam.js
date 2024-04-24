@@ -22,6 +22,7 @@ import {useLocation} from 'react-router-dom'
         //console.log(pathSegments)
         const {data, isLoading} = useGetProjectTeamQuery(projectId)
         const team = data?.team
+        console.log(team)
         const id = openShare ? "simple-popover" : undefined;
         const groupedData = isLoading ?  <>Loading...</> :  team?.reduce((acc, person) => {
           acc[person.role] = acc[person.role] || [];
@@ -183,9 +184,9 @@ import {useLocation} from 'react-router-dom'
                   },
                 }}
               >
-                <MenuItem value={"user"}>User</MenuItem>
                 <MenuItem value={"admin"}>Admin</MenuItem>
-                <MenuItem value={"super admin"}>Super admin</MenuItem>
+                <MenuItem value={"client"}>Client</MenuItem>
+                <MenuItem value={"projectManager"}>Project Manager</MenuItem>
               </Select>
             </FormControl>
           </Stack>
@@ -194,10 +195,10 @@ import {useLocation} from 'react-router-dom'
           </BuilderProButton>
         </Stack>
 
-        {users.map((user, index) => (
+        {team?.map((user, index) => (
           <Stack key={index} p={0.5} pl={2.5} pr={2.5}>
             <Stack
-              id={user.img}
+              id={user.userId}
               direction={"row"}
               justifyContent={"space-between"}
               alignItems={"center"}
@@ -210,7 +211,7 @@ import {useLocation} from 'react-router-dom'
                 pl={2}
               >
                 <img
-                  src={user.img}
+                  src={user.image}
                   alt="User Profile Pic"
                   width={"32px"}
                   height={"32px"}
@@ -222,28 +223,28 @@ import {useLocation} from 'react-router-dom'
                   pl={2}
                   fontFamily={"GT-Walsheim-Regular-Trial, sans-serif"}
                 >
-                  {user.name}
+                  {user.firstName}
                 </Typography>
               </Stack>
               <Typography
                 fontFamily={"GT-Walsheim-Regular-Trial, sans-serif"}
                 fontSize={"14px"}
               >
-                {user.userType}
+                {user.role}
               </Typography>
             </Stack>
-            {users.length - 1 === index ? <></> : <Divider />}
+            {team?.length - 1 === index ? <></> : <Divider />}
           </Stack>
         ))}
         <Divider />
         <Stack direction={"row"} p={2} pl={3}>
-          <BuilderProButton
+          {/* <BuilderProButton
             Icon={LinkIcon}
             iconProps={{ transform: "rotate(135deg)" }}
             variant={"text"}
           >
             Copy Link
-          </BuilderProButton>
+          </BuilderProButton> */}
         </Stack>
       </Popover>
     </Stack>

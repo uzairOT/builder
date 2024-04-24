@@ -1,5 +1,6 @@
 import { apiSlice } from './apiSlice';
 const USERS_URL = 'http://192.168.0.106:8080/user';
+const PROJECTS_URL = "http://192.168.0.106:8080/project";
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -93,7 +94,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     resetPassword: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}/resetPassword`,
+        url: `${USERS_URL}/resetProfilePassword`,
         method: "POST",
         body: data,
       }),
@@ -102,6 +103,12 @@ export const userApiSlice = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `${USERS_URL}/notifications/${data}`,
         method: 'GET',
+      })
+    }),
+    checkUserOnInvitation: builder.query({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/checkUserExistBeforeInvitations/${data.role}/${data.projectId}/${data.email}`,
+        method: "GET",
       })
     }),
   }),
@@ -122,4 +129,5 @@ export const {
   useResendOTPMutation,
   useResetPasswordMutation,
   useGetUserNotificationsQuery,
+  useCheckUserOnInvitationQuery
 } = userApiSlice;
