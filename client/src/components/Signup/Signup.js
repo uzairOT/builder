@@ -173,7 +173,6 @@ const SignupComp = () => {
     e.preventDefault();
     if (checked) {
       const data = { ...formData, phone };
-      //console.log(data)
       try {
         const res = await register(data).unwrap();
         console.log("Sign up: ", res);
@@ -187,7 +186,6 @@ const SignupComp = () => {
     } else {
       toast("Please agree to our Terms of use");
     }
-    // navigate('/assignproject');
   };
 
   const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "0.8rem" };

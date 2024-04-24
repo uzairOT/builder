@@ -133,23 +133,15 @@ const Login = () => {
   };
 
   const submitHandler = async (e) => {
-    e.preventDefault();
-    if (email === "") {
-      // alert("please enter email or password");
-      toast.error("please enter email or password");
-
-      return;
-    }
-
+     e.preventDefault();
     try {
       const res = await login({ email, password }).unwrap();
       console.log("login :", res);
       dispatch(setCredentials({ ...res }));
-      navigate("/");
+       navigate("/");
     } catch (err) {
       console.log(err);
-      // alert(err?.data?.message || err.error);
-      toast.error(err?.data?.message || err.error);
+        toast.error(err?.data?.error || err.error);
     }
   };
 
