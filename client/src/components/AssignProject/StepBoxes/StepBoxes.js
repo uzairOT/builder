@@ -60,7 +60,7 @@ const containerBox = {
 }
 const boxStyles = {
   width: { lg: "9.1875rem", md: "9rem", sm: "8rem", xs: "6rem" },
-  height: { lg: "7.7rem", md: "7rem", sm: "6rem", xs: "4rem" },
+  height: { xl: "7.7rem",lg: "4.7rem", md: "5rem", sm: "4.5rem", xs: "4rem" },
   borderRadius: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.4rem" },
   border: "1px solid #F9F9F9",
   background: "#F9F9F9",

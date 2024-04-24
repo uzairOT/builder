@@ -16,7 +16,7 @@ import {
   resetUserAndRoleEmail
 } from "../../../redux/slices/projectFormSlice";
 
-import { Button, Box, useMediaQuery } from "@mui/material";
+import { Button, Box, useMediaQuery, CircularProgress } from "@mui/material";
 import StepFormField from "../StepFormField/StepFormField";
 import {
   selectProjectForm,
@@ -27,6 +27,7 @@ import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+
 
 
 function AssignNewProjectStep2({
@@ -104,15 +105,14 @@ function AssignNewProjectStep2({
       localStorage.setItem("projectId", res.project.id);
       setProjectId(res.project.id);
       await refetch();
-      localStorage.setItem("projectId", res.project.id);
-      setProjectId(res.project.id);
-      await refetch();
+      // localStorage.setItem("projectId", res.project.id);
+      // setProjectId(res.project.id);
+      // await refetch();
       onNextStep();
       dispatch(resetUserAndRoleEmail());
     } catch (error) {
-      // If an error occurs during the process, handle it here
-      toast.error("Error creating new project:", error.message);
-      toast.error("Error creating new project:", error.message);
+      
+      toast.error(error?.data?.message || error.error||error?.data?.error );
       return;
     }
   };
@@ -151,8 +151,9 @@ function AssignNewProjectStep2({
           sx={buttonLnks}
           startIcon={<AddCircleOutlineIcon />}
           onClick={handleAddUser}
+          
         >
-          Add Another Email
+           Add Another Email
         </Button>
         {/* <Button
           sx={buttonLnks}
@@ -164,8 +165,8 @@ function AssignNewProjectStep2({
         </Button> */}
       </Box>
       <Box sx={{ ...buttonBox, ...buttoncontainer }}>
-        <Button sx={{ ...YellowBtn, ...buttonStyle }} onClick={handleNextStep}>
-          Next
+        <Button disabled={isLoading} sx={{ ...YellowBtn, ...buttonStyle }} onClick={handleNextStep}>
+         {isLoading ?  <CircularProgress size={'1.25rem'} /> : 'Next'}
         </Button>
         <Button sx={{ ...YellowBtn, ...buttonStyle }} onClick={handleSkip}>
           Skip

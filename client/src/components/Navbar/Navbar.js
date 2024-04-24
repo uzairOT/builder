@@ -175,7 +175,8 @@ const Navbar = () => {
     navbar: {
       background: "#FFF",
       boxShadow: "0px 1px 1.3px 0px rgba(0, 0, 0, 0.05)",
-      padding: "16px 16px 16px 16px",
+      padding: "4px 16px 4px 16px",
+      height: '8vh'
     },
     logo: {
       width: "130px",

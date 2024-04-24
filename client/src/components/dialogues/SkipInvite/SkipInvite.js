@@ -145,7 +145,7 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile }) {
 const paperPropsStyle = {
   borderRadius: "1rem",
   // width: { lg: "25%", md: "50%", sm: "50%", xs: "50%" },
-  width: "30%",
+  // width: "30%",
   maxWidth: "none",
   display: "flex",
   padding: "1rem", // Change background color here
@@ -166,8 +166,7 @@ const typoTitle = {
   fontWeight: 600,
   fontSize: "1.5rem",
   color: "#202227",
-  marginTop: "1rem",
-  marginBottom: "-0.5rem",
+  padding:"0px"
 };
 
 const typoTect = {

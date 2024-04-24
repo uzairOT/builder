@@ -105,10 +105,11 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       })
     }),
-    checkUserOnInvitation: builder.query({
+    checkUserOnInvitation: builder.mutation({
       query: (data) => ({
         url: `${PROJECTS_URL}/checkUserExistBeforeInvitations/${data.role}/${data.projectId}/${data.email}`,
-        method: "GET",
+        method: "POST",
+        body: data,
       })
     }),
   }),
@@ -129,5 +130,5 @@ export const {
   useResendOTPMutation,
   useResetPasswordMutation,
   useGetUserNotificationsQuery,
-  useCheckUserOnInvitationQuery
+  useCheckUserOnInvitationMutation
 } = userApiSlice;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import {
   Box,
   Grid,
@@ -25,7 +25,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Bounce } from "react-toastify"; // Assuming you're using react-toastify
 import { useDispatch, useSelector } from "react-redux";
-import { useCheckUserOnInvitationQuery, useRegisterMutation } from "../../redux/apis/usersApiSlice";
+import { useCheckUserOnInvitationMutation, useRegisterMutation } from "../../redux/apis/usersApiSlice";
 import { setCredentials } from "../../redux/slices/authSlice";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -37,10 +37,8 @@ const Invitation = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
   const { projectId, email, userRole, companyName } = useParams();
   const role = userRole;
+  const [checkUser] = useCheckUserOnInvitationMutation();
   const params = {projectId, email,  role};
-  const {data} = useCheckUserOnInvitationQuery(params)
-  console.log("check :", data, params);
-
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
 
@@ -72,6 +70,19 @@ const Invitation = () => {
     setPasswordVisible(!passwordVisible);
   };
 
+useEffect(()=> {
+  checkUserOnInvitation();
+
+},[])
+const checkUserOnInvitation = async () =>{
+      const res = await checkUser(params);
+      if(res?.data?.success){
+        console.log(res)
+        navigate('/login');
+      } else{
+        return false
+      }
+}
   const handleSubmit = async (e) => {
     e.preventDefault();
 

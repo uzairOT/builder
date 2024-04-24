@@ -1,128 +1,119 @@
-import React from "react";
-import { Box, Avatar, Typography, Stack, Divider } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Avatar } from "@mui/material";
 import { TextField, IconButton } from "@mui/material";
 import AttachFileIcon from "../../assets/Chat/attachment.png";
 import SendIcon from "../../assets/Chat/send.png";
-import CircleIcon from '@mui/icons-material/Circle';
-import Circle from "@mui/icons-material/Circle";
-import SearchIcon from '@mui/icons-material/Search';
+import { io } from "socket.io-client";
+import { useParams } from "react-router-dom";
 
-function ChatView({isAdminPage, project}) {
-  const dummyMessages = [
-    {
-      type: "receiver",
-      text: "Hi David, have you got the project report pdf?",
-    },
-    { type: "sender", text: "NO. I did not get it" },
+const socket = io("http://localhost:8080");
 
-    {
-      type: "receiver",
-      text: "Ok, I will just sent it here. Plz be sure to fill the details by today end of the day.",
-    },
-    { type: "receiver", text: "project_report.pdf" },
-    {
-      type: "sender",
-      text: "Ok. Should I send it over email as well after filling the details.",
-    },
-    { type: "receiver", text: "Ya. I’ll be adding more team members to it." },
-  ];
+function ChatView({ isAdminPage, project }) {
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const { id } = useParams();
+  let data = localStorage.getItem("userInfo");
+  let userInfo = JSON.parse(data);
+  const currentUser = userInfo.user; // Replace this with actual user identifier
+
+  const handleSend = () => {
+    socket.emit("clientMessage", { message, sender: currentUser });
+    setMessage(""); // Clear message input after sending
+  };
+
+  useEffect(() => {
+    console.log("-=-=-=-", currentUser);
+    socket.emit("joinchat", {
+      projectId: id,
+    });
+
+    const messageListener = (msg) => {
+      setMessages((prevMessages) => [...prevMessages, msg]);
+    };
+
+    socket.on("message", messageListener);
+
+    return () => {
+      socket.off("message", messageListener);
+    };
+  }, [id]);
 
   return (
     <>
-      {isAdminPage ?
-      <Stack p={4}>
-        {/* Image and online status */}
-      <Stack direction={'row'} justifyContent={'space-between'}>
-        <Stack direction={'row'} alignItems={'center'} spacing={1}>
-        {/* <img src={project.image} alt="/" ></img> */}
-        <Typography fontFamily={'Inter, sans serif'} fontWeight={'500'} color={'#3B9434'}>Online</Typography>
-        <Circle style={{color:'#3B9434', fontSize:'15px'}}/>
-        </Stack>
-        {/* Search Icon */}
-        <Stack>
-        <SearchIcon />
-        </Stack>
-      </Stack>
-      {/* Divider */}
-      <Divider variant="fullWidth" style={{paddingTop:'8px'}}/>
-       </Stack>:<Box
-        sx={{
-          bgcolor: "#FFECC5",
-          height: 58,
-          display: "flex",
-          alignItems: "center",
-          paddingLeft: 2,
-        }}
-      >
-        <Typography variant="h6">Chats</Typography>
-      </Box>}
+      <Box sx={{ height: "90%", overflowY: "scroll" }}>
+        {messages?.map((msg, index) => {
+          const isSender = msg.sender.id === currentUser.id;
+          const activeName = msg.sender.lastName
+            ? msg.sender.lastName
+            : msg.sender.firstName;
+          const messageBoxStyles = {
+            bgcolor: isSender ? "#FF5858" : "green",
+            borderRadius: "10px",
+            py: 1,
+            px: 2,
+            color: "white",
+            maxWidth: "265px",
+            alignSelf: isSender ? " flex-start" : "flex-end",
+          };
 
-      <Box
-        sx={{
-          mx: 4,
-        }}
-      >
+          const avatarStyles = {
+            width: 25,
+            height: 25,
+            mr: isSender ? 0 : 1,
+            ml: isSender ? 1 : 0,
+          };
 
-        <Box sx={{height:"100%"}}>
+          return (
+            <>
+              <Box
+                key={index}
+                sx={{
+                  display: "flex",
+                  alignItems: "flex-end",
+                  justifyContent: isSender ? "flex-start" : " flex-end",
+                  my: 2,
+                  overflow: "hidden",
+                }}
+              >
+                {isSender && <Avatar sx={avatarStyles} />}
 
+                <Box sx={messageBoxStyles}>{msg.message}</Box>
+                {!isSender && <Avatar sx={avatarStyles} />}
+              </Box>
+              <Box
+                sx={{
+                  marginLeft: isSender ? "10px" : "0px",
+                  marginRight: !isSender ? "10px" : "0px",
+                  justifyContent: isSender ? "flex-start" : " flex-end",
+                  display: "flex",
+                  alignItems: "flex-end",
+                  fontSize: "8px",
+                }}
+              >
+                {activeName}
+              </Box>
+            </>
+          );
+        })}
+      </Box>
 
-        {/* Message Cards */}
-        {dummyMessages.map((message, index) => (
-          <Box
-            key={index}
-            sx={{
-              display: "flex",
-              alignItems: message.type === "receiver" ? "flex-end" : "flex-end",
-              justifyContent:
-                message.type === "receiver" ? "flex-start" : "flex-end",
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+        <IconButton color="primary" aria-label="attach file">
+          <img src={AttachFileIcon} alt="" />
+        </IconButton>
 
-              my: 5,
-            //   borderRadius: '10px',
-             
-              overflow: 'hidden',
-              
-            }}
-          >
-            {message.type === "receiver" && (
-              <Avatar sx={{ width: 25, height: 25, mr: 1 }} />
-            )}
-            <Box
-              sx={{
-                bgcolor: message.type === "receiver" ? "#F2F2F2" : "#4C8AB1",
-                borderRadius: "10px",
-                borderBottomLeftRadius: message.type === 'sender' ? '10px' : '0px',
-                borderBottomRightRadius: message.type === 'receiver' ? '10px' : '0px',
-                py: 1,
-                px: 2,
-                color: message.type === "receiver" ? "black" : "white",
-                maxWidth: "265px",
-              }}
-            >
-              {message.text}
-            </Box>
-            {message.type === "sender" && (
-              <Avatar sx={{ width: 25, height: 25, ml: 1 }} />
-            )}
-          </Box>
-        ))}
-    </Box>
-        {/* Attachment and Input Field Row */}
-        <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-          <IconButton color="primary" aria-label="attach file">
-            <img src={AttachFileIcon} alt="" />
-          </IconButton>
+        <TextField
+          name="message"
+          placeholder="Please enter message"
+          fullWidth
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          sx={InputStyle}
+        />
 
-          <TextField
-            name="email"
-            placeholder="Please enter your email"
-            fullWidth
-            sx={InputStyle}
-          />
-
-          <IconButton color="primary" aria-label="send">
-            <img src={SendIcon} alt="" />
-          </IconButton>
-        </Box>
+        <IconButton color="primary" aria-label="send" onClick={handleSend}>
+          <img src={SendIcon} alt="" />
+        </IconButton>
       </Box>
     </>
   );

@@ -6,7 +6,7 @@ export const userProjectsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUserProjects: builder.query({
       query: (data) => ({
-        url: `${USER_PROJECTS_URL}/projects/${data.userId}`,
+        url: `${USER_PROJECTS_URL}/${data.userId}/projects?filter=${data.filter}`,
         method: "GET",
       }),
     }),

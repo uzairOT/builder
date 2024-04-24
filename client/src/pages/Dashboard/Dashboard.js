@@ -38,7 +38,7 @@ const Dashboard = () => {
       <main>
         <Grid sx={themeStyle.dashboard} container pt={1}>
           {/* Profile View */}
-          <Grid item xs={12} sm={4} md={4} xl={2} height={"97vh"}>
+          <Grid item xs={12} sm={4} md={4} xl={2} height={"91vh"}>
             <Paper
               sx={{
                 borderRadius: "0 14px 14px 0",
@@ -76,7 +76,7 @@ const Dashboard = () => {
               container
               sx={{ ...themeStyle.scrollable }}
               overflow={"hidden"}
-              height={"72vh"}
+              height={"66vh"}
               width={"98%"}
               pt={1}
               margin={"auto"}
@@ -166,7 +166,7 @@ const Dashboard = () => {
             </Grid>
           </Grid>
           {/* Calender Tracker View */}
-          <Grid item xs={12} sm={12} md={12} xl={3} pb={1} height={"97vh"}>
+          <Grid item xs={12} sm={12} md={12} xl={3} pb={1} height={"91vh"}>
             <Paper
               sx={{
                 borderRadius: " 14px 0 0 14px",
@@ -192,13 +192,13 @@ export default Dashboard;
 const themeStyle = {
   dashboard: {
     backgroundColor: "#eff5ff",
-    height: "100vh",
+    height: "92vh",
   },
   dashboardViews: {
     height: "100%",
   },
   progressCard: {
-    height: "100%",
+    height: "98%",
     width: "97%",
     margin: "8px",
     borderRadius: "14px",

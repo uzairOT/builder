@@ -376,13 +376,14 @@ const Login = () => {
 
 const firstGrid = {
   padding: {
-    lg: "0rem 3rem",
-    md: "4rem 2rem 2rem 2rem",
+    xl: "3rem 3rem 0rem 3rem",
+    lg: "1.19rem 3rem 0rem 3rem",
+    md: "2rem 2rem",
     sm: "1rem 2rem",
-    xs: "0rem 0rem",
+    xs: "0rem 0rem 0rem 0rem",
   },
   backgroundColor: "#4C8AB1",
-  marginTop: { lg: "0rem", sm: "-1rem", xs: "0rem" },
+  // marginTop: { lg: "0rem", sm: "-1rem", xs: "0rem" },
   // border: "2px solid red",
 };
 
@@ -397,11 +398,10 @@ const SecondGrid = {
   },
   display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
   flexDirection: "column",
-  paddingLeft: "4rem",
 };
 
 const downloadForMobBox = {
-  marginTop: "11rem",
+  marginTop: "9rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
   justifyContent: "center",
@@ -542,7 +542,7 @@ const bottomGrid = {
   display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
   flexDirection: "row",
   justifyContent: "space-between",
-  marginLeft: { lg: "3rem", md: "2rem", sm: "0rem", xs: "0rem" },
+  marginLeft: { lg: "3rem", md: "0rem", sm: "0rem", xs: "0rem" },
 
   width: { lg: "80%", md: "100%", sm: "100%", xs: "100%" },
   gap: { lg: "1rem", md: "4rem", sm: "3rem" },
@@ -590,8 +590,8 @@ const hptLinksBox = {
 const firstHeading = {
   color: "#FFF",
   fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
-  marginTop: { lg: "6rem", md: "5rem", sm: "1rem" },
-  fontSize: { lg: "2.7rem", md: "2rem", sm: "1.5rem" },
+  marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
+  fontSize: { xl: "2rem", lg: "2rem", md: "1.9rem", sm: "1rem" },
   fontWeight: 400,
   lineHeight: "4.25rem",
 };
@@ -601,7 +601,7 @@ const secondHeading = {
   width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
-  fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
+  fontSize: { xl: "2rem", lg: "1.5rem", md: "1rem", sm: "1rem" },
   fontWeight: 400,
 };
 
@@ -609,7 +609,7 @@ const thirdHeading = {
   color: "#FFF",
   marginTop: "2rem",
   fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
-  fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
+  fontSize: { xl: "2rem", lg: "1.5rem", md: "1rem", sm: "1rem" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontWeight: 400,
 };
