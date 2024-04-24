@@ -23,7 +23,7 @@ const dispatch = useDispatch();
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
-        const res = await axios.post("http://192.168.0.104:8080/project/file",{fileName,fileType});
+        const res = await axios.post("http://192.168.0.106:8080/project/file",{fileName,fileType});
         //console.log(res);
         return res.data.data.url;
       } catch (error) {

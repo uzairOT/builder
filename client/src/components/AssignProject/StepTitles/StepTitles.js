@@ -30,13 +30,13 @@ const firstGrid = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "2rem",
+  marginTop: "0.5rem",
   gap: "0.5rem"
 }
 const discriptionTypo = {
   color: "#202227",
   width: { lg: "40%", md: "60%", sm: "70%", xs: "90%" },
-  fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem", xs: "0.75rem" },
+  fontSize: { lg: "0.8rem", md: "0.7rem", sm: "0.6rem", xs: "0.6rem" },
 }
 const stepGeneralText = {
   fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
@@ -46,7 +46,7 @@ const stepGeneralText = {
   textAlign: 'center'
 }
 const headingStyle = {
-  fontSize: { lg: "3rem", md: "2.5rem", sm: "2rem", xs: "1.5rem" },
+  fontSize: { xl: "2.7rem",lg: "2.4rem", md: "2.2rem", sm: "1.9rem", xs: "1.5rem" },
   fontWeight: { lg: 400, md: 400, sm: 400, xs: 700 },
   // fontFamily: "Inter",
   width: { lg: "50%", md: "60%", sm: "70%", xs: "95%" },

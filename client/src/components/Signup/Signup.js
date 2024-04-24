@@ -41,6 +41,40 @@ const SignupComp = () => {
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
 
+  let heightValue;
+  if (isMobile) {
+    heightValue = "1rem";
+  } else if (isSM) {
+    heightValue = "1.2rem";
+  } else if (isMD) {
+    heightValue = "1.2rem";
+  } else {
+    heightValue = "1.8rem";
+  }
+  const inputStyle = {
+    width: "100%",
+    height: heightValue,
+    marginBottom: "0.5rem",
+    alignSelf: "stretch",
+    padding: "8px",
+    fontSize: "14px",
+    border: "1px solid #ccc",
+    borderRadius: "12px",
+    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    paddingLeft: "-1.5rem",
+  };
+  const customPhoneStyles = {
+    borderRadius: "12px",
+    border: "1px solid #D8D8D8",
+    background: "#FFF",
+    width: "100%",
+    // height: heightValue,
+    alignSelf: "stretch",
+    paddingLeft: "8px",
+    // paddingTop: "0.5rem",
+    // padding: "0.5rem",
+  };
+
   const [phone, setPhone] = useState("");
   const [checked, setChecked] = useState(false);
   const [formData, setFormData] = useState({
@@ -156,7 +190,7 @@ const SignupComp = () => {
     // navigate('/assignproject');
   };
 
-  const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "1rem" };
+  const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "0.8rem" };
   const linkResponsiveColor = { color: isMobile ? "#FFAC00" : "#4C8AB1" };
   const borderRadiusResponsive = {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
@@ -397,12 +431,12 @@ const SignupComp = () => {
                 Log in
               </Link>
             </Typography>
-            <Box sx={continueWithBox}>
+            {/* <Box sx={continueWithBox}>
               <hr style={hrLine} />
               <Typography sx={ContinuewithTextStyle}>
                 {isMobile ? "Or" : "or continue with"}
               </Typography>
-            </Box>
+            </Box> */}
 
             <GoogleLogin
               clientId="960267013158-g1avbe0m8oe44tcflp4urhe4gkh5olb1.apps.googleusercontent.com"
@@ -451,7 +485,7 @@ const SignupComp = () => {
             {/* <Typography sx={hptLinksStyle}>Terms</Typography> */}
           </Box>
         </Grid>
-        <Box
+        {/* <Box
           sx={{
             display: { lg: "none", md: "none", sm: "flex", xs: "none" },
             justifyContent: "center",
@@ -463,7 +497,7 @@ const SignupComp = () => {
         >
           <img src={googlePlay} width={widthValue} alt="" />
           <img src={appStore} width={widthValue} alt="" />
-        </Box>
+        </Box> */}
       </Grid>
     </Grid>
   );
@@ -479,7 +513,7 @@ const firstGrid = {
   justifyContent: "center",
   alignItems: "center",
   backgroundColor: "#4C8AB1",
-  marginTop: { lg: "0rem", sm: "-1rem", xs: "-2rem" },
+  marginTop: { lg: "0rem", sm: "0rem", xs: "0rem" },
 };
 
 const SecondGrid = {
@@ -493,11 +527,11 @@ const SecondGrid = {
   },
   display: { sm: "flex", xs: "none" },
   flexDirection: "column",
-  paddingLeft: "4rem",
+  // paddingLeft: "4rem",
 };
 
 const downloadForMobBox = {
-  marginTop: "14rem",
+  marginTop: "8rem",
   marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   justifyContent: "center",
@@ -507,7 +541,7 @@ const googleAppImgsBox = {
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "2rem",
+  marginTop: "1rem",
   marginLeft: { lg: "0rem", md: "-3rem", sm: "-3rem" },
   gap: "1rem",
 };
@@ -535,8 +569,8 @@ const formGrid = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  padding: "20px",
-  marginTop: "1rem",
+  padding: "25px 0 0 0",
+  marginTop: { sm: "0", md: "0", lg: "0rem", xl: "1rem" },
   paddingLeft: { lg: "2rem", md: "2rem", sm: "1rem", xs: "1rem" },
   paddingRight: { lg: "6rem", md: "3rem", sm: "2rem", xs: "2rem" },
   marginLeft: { lg: "6rem", md: "2rem", sm: "0rem", xs: "0rem" },
@@ -692,8 +726,8 @@ const firstHeading = {
   color: "#FFF",
   fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
   display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
-  marginTop: "1rem",
-  fontSize: { lg: "2.9375rem", md: "2rem", sm: "1.5rem" },
+  // marginTop: "1rem",
+  fontSize: { xl: "2rem", lg: "2rem", md: "1.9rem", sm: "1rem" },
   fontWeight: 400,
   lineHeight: "4.25rem",
 };
@@ -704,7 +738,7 @@ const secondHeading = {
   marginTop: "0.5rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
-  fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
+  fontSize: { xl: "2rem", lg: "1.5rem", md: "1rem", sm: "1rem" },
   fontWeight: 400,
 };
 
@@ -713,7 +747,7 @@ const thirdHeading = {
   fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
   marginTop: "1rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-  fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
+  fontSize: { xl: "2rem", lg: "1.5rem", md: "1rem", sm: "1rem" },
   fontWeight: 400,
 };
 
@@ -727,32 +761,9 @@ const formHeadingStyle = {
 };
 
 const customeInputStyles = {
-  width: "100%",
+  width: "85%",
   border: "none",
-  padding: "8px",
-};
-const customPhoneStyles = {
-  borderRadius: "12px",
-  border: "1px solid #D8D8D8",
-  background: "#FFF",
-  width: "100%",
-  height: "2rem",
-  alignSelf: "stretch",
-  paddingTop: "0.5rem",
-  padding: "0.5rem",
-};
-
-const inputStyle = {
-  width: "100%",
-  height: "2rem",
-  marginBottom: "0.5rem",
-  alignSelf: "stretch",
-  padding: "8px",
-  fontSize: "14px",
-  border: "1px solid #ccc",
-  borderRadius: "12px",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
-  paddingLeft: "-1.5rem",
+  padding: "0px 10px 0px 0px",
 };
 
 const placeholderStyle = {

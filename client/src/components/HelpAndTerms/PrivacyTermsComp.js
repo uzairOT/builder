@@ -58,7 +58,7 @@ const styles = {
     lineHeight: "24px",
   },
   heading: {
-    fontSize: "32px",
+    fontSize: {xs:"18px",sm:"27px",md:"32px"},
     fontWeight: 600,
     fontFamily: "GT Walsheim Trial",
     marginBottom: "2.5rem",

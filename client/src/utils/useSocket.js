@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import socketIOClient from 'socket.io-client';
 
-const SOCKET_SERVER_URL = 'http://192.168.0.104:8080';
+const SOCKET_SERVER_URL = 'http://192.168.0.106:8080';
 
 // const socket = socketIOClient(SOCKET_SERVER_URL);
 const useSocket = () => {

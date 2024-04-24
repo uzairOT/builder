@@ -7,11 +7,14 @@ import builder1 from "../Signup/Assets/pngs/builderProYellowLogo.png";
 import { useNavigate } from "react-router-dom";
 const Header = () => {
   const navigate = useNavigate();
+  const handleAccept = () => {
+    navigate(-1);
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ backgroundColor: "white" }}>
         <Toolbar sx={{ padding: "10px" }}>
-          <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1 }} onClick={handleAccept}>
             <img alt="logo" src={builder1} width={"130px"} />
           </Box>
           <Box sx={{ display: "flex", columnGap: "10px" }}>
@@ -54,10 +57,10 @@ const style = {
   buttonStyle: {
     backgroundColor: "#E9ECFF",
     color: "#4C8AB1",
-    fontSize: "16px",
+    fontSize: {xs:"9px",sm:"11px",md:"16px",},
     fontWeight: 600,
     fontFamily: "Poppins",
-    padding: "16px 50px 16px 50px",
+    padding: {md:"16px 50px 16px 50px",xs:"10px 20px 10px 20px",sm:"15px 50px 15px 50px"},
     borderRadius: "20px",
   },
 };
