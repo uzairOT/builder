@@ -13,13 +13,14 @@ import {
   Avatar,
   IconButton,
   Stack,
+  CircularProgress,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import YellowBtn from "../../UI/button";
 
-function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile }) {
+function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoading }) {
   const [open, setOpen] = useState(false);
-
+  console.log(isLoading)
   const handleSkip = () => {
     handleNextStep();
   };
@@ -87,7 +88,7 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile }) {
                 sx={{ ...YellowBtn, padding: "1rem 1rem" }}
                 onClick={handleSkip}
               >
-                Yes, Skip
+                {isLoading ?  <CircularProgress size={'1.25rem'} /> : 'Yes, Skip'}
               </Button>
             </DialogActions>
           </Dialog>

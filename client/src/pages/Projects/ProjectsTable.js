@@ -1,7 +1,7 @@
 import { Grid, Paper, Stack } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import ProjectList from '../../components/Projects/ProjectTable/ProjectList'
-import { useGetUserProjectsQuery } from '../../redux/apis/Project/userProjectApiSlice'
+import { useGetFilteredUserProjectsQuery, useGetUserProjectsQuery } from '../../redux/apis/Project/userProjectApiSlice'
 
 const ProjectsTable = () => {
   const [selectedFilters, setSelectedFilters] = useState([]);
@@ -9,7 +9,7 @@ const ProjectsTable = () => {
   const currentUser = JSON.parse(local);
   const currentUserId = currentUser.user.id
  const filter = selectedFilters.join(',')
-  const {data, isLoading, error} = useGetUserProjectsQuery({userId: currentUserId, filter: filter});
+  const {data, isLoading, error} = useGetFilteredUserProjectsQuery({userId: currentUserId, filter: filter});
   //console.log(data);
 
   return (
