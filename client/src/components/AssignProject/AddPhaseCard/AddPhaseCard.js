@@ -87,27 +87,26 @@ const AddPhaseCard = ({
   const [deletePhaseLine] = useDeletePhaseLineMutation();
   const dispatch = useDispatch();
   const { rowCheckbox } = useSelector(selectAddPhase);
-  let totalCost = 0; 
+  let totalCost = 0;
   let minStartDay = moment(phaseData?.LineItems[0]?.start_day);
-let maxEndDay = moment(phaseData?.LineItems[0]?.end_day);
+  let maxEndDay = moment(phaseData?.LineItems[0]?.end_day);
 
   phaseData.LineItems.forEach((row) => {
     totalCost += parseInt(row.total); // Accumulate the total cost
     const startDay = moment(row.start_day);
     const endDay = moment(row.end_day);
-  
+
     if (startDay.isBefore(minStartDay)) {
       minStartDay = startDay;
     }
-  
+
     if (endDay.isAfter(maxEndDay)) {
       maxEndDay = endDay;
     }
-
   });
-const duration = moment.duration(maxEndDay.diff(minStartDay));
-const totalDays = duration.days();
-const totalHours = duration.asHours();
+  const duration = moment.duration(maxEndDay.diff(minStartDay));
+  const totalDays = duration.days();
+  const totalHours = duration.asHours();
   const handleArrowDownClick = () => {
     onGridToggle(phaseData.current_position, phaseData.current_position + 1);
   };
@@ -169,7 +168,7 @@ const totalHours = duration.asHours();
     width: "100%", // Allow the table to take up the entire available width
     overflowY: "auto",
     height: "245px",
-    overflowX: { md: "hidden" },
+    overflowX: { md: "auto" },
     // Add horizontal scrollbar when needed
   };
 
@@ -234,37 +233,59 @@ const totalHours = duration.asHours();
         <Box sx={headingsBox} onClick={() => handleSelectCard(phaseData.id)}>
           <Box sx={headingInnerBox}>
             <Box>
-              <Typography sx={{ ...blackHeading, cursor: "pointer", paddingLeft: '4rem' }}>
+              <Typography
+                sx={{ ...blackHeading, cursor: "pointer", paddingLeft: "1rem" }}
+              >
                 {phaseData.phase_name}
               </Typography>
             </Box>
             <Box>
-              <Typography sx={blackHeading}>Total Price: {totalCost}</Typography>
+              <Typography sx={blackHeading}>
+                Price: {totalCost}
+              </Typography>
             </Box>
             <Box>
-              <Typography sx={blackHeading}>Time: {totalHours} hours,  Days: {totalDays}</Typography>
+              <Typography sx={blackHeading}>
+                {totalHours} hours, Days: {totalDays}
+              </Typography>
             </Box>
           </Box>
           <Box sx={phaseBox}>
             <>
               {phaseData?.current_position === 0 ? (
                 <ArrowDown
-                  style={{ marginRight: "1rem", cursor: "pointer", display: 'none' }}
+                  style={{
+                    marginRight: "1rem",
+                    cursor: "pointer",
+                    display: "none",
+                  }}
                   onClick={handleArrowDownClick}
                 />
               ) : phaseData?.current_position === length - 1 ? (
                 <Arrowup
-                  style={{ marginRight: "1rem", cursor: "pointer", display: 'none' }}
+                  style={{
+                    marginRight: "1rem",
+                    cursor: "pointer",
+                    display: "none",
+                  }}
                   onClick={handleArrowUpClick}
                 />
               ) : (
                 <>
                   <ArrowDown
-                    style={{ marginRight: "1rem", cursor: "pointer",  display: 'none' }}
+                    style={{
+                      marginRight: "1rem",
+                      cursor: "pointer",
+                      display: "none",
+                    }}
                     onClick={handleArrowDownClick}
                   />
                   <Arrowup
-                    style={{ marginRight: "1rem", cursor: "pointer",  display: 'none' }}
+                    style={{
+                      marginRight: "1rem",
+                      cursor: "pointer",
+                      display: "none",
+                    }}
                     onClick={handleArrowUpClick}
                   />
                 </>
@@ -302,7 +323,7 @@ const totalHours = duration.asHours();
 
           <hr style={hrLine} />
           <Box
-            sx={{ ...tableContainerStyle, marginLeft: "1rem", width: "100%" }}
+            sx={{ ...tableContainerStyle, marginLeft: "0rem", width: "100%" }}
           >
             <Table sx={{ width: "100%" }}>
               <TableHead sx={{ width: "100%" }}>
@@ -328,7 +349,7 @@ const totalHours = duration.asHours();
                   <TableCell sx={tableHeadings}>Total Cost</TableCell>
                   <TableCell sx={tableHeadings}>Notes</TableCell>
                   <TableCell sx={tableHeadings}>Status</TableCell>
-{/* 
+                  {/* 
                   <TableCell></TableCell>
                   <TableCell></TableCell>
 
@@ -340,7 +361,6 @@ const totalHours = duration.asHours();
 
               <TableBody>
                 {phaseData.LineItems.map((row, index) => {
-         
                   return (
                     <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
                       <TableCell>
@@ -436,7 +456,7 @@ const headingInnerBox = {
   display: "flex",
   flexDirection: "row",
   whiteSpace: "nowrap",
-  gap: { lg: "9rem", md: "2rem", sm: "auto", xs: "auto" },
+  gap: { xl: "9rem", lg: "6rem", md: "2rem", sm: "auto", xs: "auto" },
   width: "100%",
 };
 const phaseBox = {
@@ -445,9 +465,8 @@ const phaseBox = {
   alignItems: "center",
   gap: "1rem",
   marginTop: "0rem",
-  marginBottom: '1rem',
+  marginBottom: "1rem",
   marginRight: { lg: "1rem", md: "1rem", sm: "1rem", xs: "1rem" },
-
 };
 const tableGrid = {
   background: "#FBFBFB",

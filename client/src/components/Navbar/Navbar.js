@@ -179,9 +179,10 @@ const Navbar = () => {
       height: '8vh'
     },
     logo: {
-      width: "130px",
-      height: "69px",
+      width: "110px",
+      height: "50px",
       marginLeft: "28px",
+      marginBottom:"2px"
     },
     tabs: {
       margin: "auto",

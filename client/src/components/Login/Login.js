@@ -141,7 +141,7 @@ const Login = () => {
        navigate("/");
     } catch (err) {
       console.log(err);
-        toast.error(err?.data?.error || err.error);
+        toast.error(err?.data?.error || err.error ||err?.data?.message);
     }
   };
 

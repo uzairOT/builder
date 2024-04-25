@@ -217,20 +217,26 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
   };
   // //console.log(phases)
   return (
-    <Grid container sx={{ ...firstGrid, width: "97%" }}>
+    <Grid container sx={{ ...firstGrid, width: "99%" }}>
       <Stack
         direction={"row"}
         justifyContent={"space-between"}
         sx={{ width: "100%" }}
       >
-        <Stack>
+        <Stack sx={{ justifyContent: "center" }}>
           {adminProjectView && (
             <Typography
-              pl={3}
-              pt={1}
+              // pl={3}
+              // pt={1}
               color={"#4C8AB1"}
               fontFamily={"Poppins, san serif"}
-              fontSize={"22px"}
+              fontSize={{
+                xl: "22px",
+                lg: "15px",
+                md: "15px",
+                sm: "14px",
+                xs: "13px",
+              }}
               fontWeight={"600"}
             >
               {view}
@@ -267,11 +273,7 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
                 phases={phases}
               />
             ) : (
-              <>
-              {/* <Button sx={{ ...actionButton, ...approvalButton }}>
-                Send Approval
-              </Button> */}
-              </>
+              <></>
             )}
           </Stack>
         )}
@@ -377,11 +379,11 @@ const firstGrid = {
   flexDirection: "column",
   padding: {
     lg: "0rem 0rem",
-    md: "0.1rem 2rem",
+    md: "0.1rem 0.1rem",
     sm: "1rem 2rem",
     xs: "0rem 0rem",
   },
-  margin: 'auto'
+  margin: "auto",
   // border: "2px solid red",
 };
 const buttonBox = {
@@ -396,8 +398,8 @@ const buttonBox = {
   gap: "0.5rem",
   marginTop: "0.5rem",
   padding: {
-    lg: "0rem 5rem",
-    md: "0.1rem 2rem",
+    lg: "0rem 0rem",
+    md: "0.1rem 0rem",
     sm: "1rem 2rem",
     xs: "0rem 0rem",
   },

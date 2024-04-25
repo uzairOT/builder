@@ -53,7 +53,6 @@ import { setNotifications } from "../../../redux/slices/Notifications/notificati
 import useSocket from "../../../utils/useSocket";
 
 const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
-
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
   const [open, setOpen] = useState(false);
@@ -95,10 +94,9 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
       lineItemId: phaseData.rows.map((row) => row.id),
     };
     lineItemIds.push(lineItemGroup);
-    phaseData.rows.forEach((lineItem)=>{
-     totalWorkOrder += parseInt(lineItem.total);
-    })
-
+    phaseData.rows.forEach((lineItem) => {
+      totalWorkOrder += parseInt(lineItem.total);
+    });
   });
 
   // });
@@ -176,7 +174,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
       teamIds: [...assignedCheckboxes, userId],
       notes: notes,
       projectId: projectId,
-      total: changeOrder ? checkedRow?.total : totalWorkOrder
+      total: changeOrder ? checkedRow?.total : totalWorkOrder,
     };
     console.log("--------------------------------------", requestForm);
     if (requestForm.teamIds.length === 0) {
@@ -227,8 +225,11 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
       </Stack>
       <Modal open={open} onClose={handleClose}>
         <Stack
-          sx={{ ...style, ...themeStyle.scrollable }}
-          height={"90%"}
+          sx={{
+            ...style,
+            ...themeStyle.scrollable,
+            height: { xl: "100%", lg: "95%", md: "90%", sm: "90%", xs: "90%" },
+          }}
           overflow={"scroll"}
         >
           <Typography
@@ -245,7 +246,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
             direction={{
               xl: "row",
               lg: "row",
-              md: "column",
+              md: "row",
               sm: "column",
               xs: "column",
             }}
@@ -282,7 +283,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                 <Typography
                   sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
                 >
-                  ${changeOrder? checkedRow?.total : totalWorkOrder}
+                  ${changeOrder ? checkedRow?.total : totalWorkOrder}
                 </Typography>
                 {/* <BorderColorIcon style={{ color: "#484848" }} /> */}
               </Stack>
@@ -307,68 +308,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                     </Typography>
                   </Typography>
                   {/*
-                  PREV CODE OF THAT WAS USING RADIO BUTTONS
-                  <FormControl>
-                    <RadioGroup
-                      aria-labelledby="demo-radio-buttons-group-label"
-                      defaultValue={
-                        Object?.values(rowCheckboxes)[0]?.rows[0]?.phase_id
-                      }
-                      name="radio-buttons-group"
-                      onChange={handlePhaseRadioChange}
-                    >
-                      {checkedRow
-                        ? checkedRow?.phaseItems.map((phase) => (
-                            <Typography>{phase.phase_name}</Typography>
-                          ))
-                        : Object?.keys(rowCheckboxes)?.map((key, index) => {
-                            const phaseId =
-                              rowCheckboxes[key]?.rows[0]?.phase_id;
-                            const isFirstItem = index === 0;
-
-                            return (
-                              <FormControlLabel
-                                sx={themeStyle.radioText}
-                                value={phaseId}
-                                control={
-                                  <Radio
-                                    sx={themeStyle.radioChecked}
-                                    disabled={isFirstItem}
-                                  />
-                                }
-                                label={key}
-                              />
-                            );
-                          })}
-                    </RadioGroup>
-                  </FormControl> */}
-                  {/* <FormControl>
-                    {checkedRow
-                      ? checkedRow.phaseItems.map((phase) => (
-                          <FormControlLabel
-                            key={phase.phase_id}
-                            control={<Checkbox checked disabled />}
-                            label={phase.phase_name}
-                          />
-                        ))
-                      : Object.keys(rowCheckboxes).map((key, index) => {
-                          const phaseId = rowCheckboxes[key]?.rows[0]?.phase_id;
-
-                          return (
-                            <FormControlLabel
-                              key={phaseId}
-                              sx={themeStyle.radioText}
-                              control={
-                                <Checkbox
-                                  sx={themeStyle.radioChecked}
-                                  checked
-                                />
-                              }
-                              label={key}
-                            />
-                          );
-                        })}
-                  </FormControl> */}
+                  
                   <FormControl>
                     {checkedRow
                       ? checkedRow.phaseItems.map((phase) => (
@@ -406,33 +346,39 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                       {lineItemCounter}
                     </Typography>
                   </Typography>
-                  <List>
+                  <List sx={{maxHeight:"60px",overflow:"auto"}}>
                     {changeOrder
                       ? checkedRow?.phaseItems.map((phase) => {
                           return phase.lineItem_names.map((lineItem, index) => {
                             counter++;
                             console.log("counter: ", counter);
                             if (counter > 2 && !showLineItems) {
-                              if(counter > 3) {
-                                return <></>
-                              }
-                              else{
-
+                              if (counter > 3) {
+                                return <></>;
+                              } else {
                                 return (
-                                  <ListItem style={{padding:0, justifyContent:'end'}}>
-                                  <Button
-                                    style={{padding:0, textTransform: 'lowercase'}}
-                                    variant="text"
-                                    color="primary"
-                                    onClick={() => {
-                                      setShowLineItems(!showLineItems);
+                                  <ListItem
+                                    style={{
+                                      padding: 0,
+                                      justifyContent: "end",
                                     }}
+                                  >
+                                    <Button
+                                      style={{
+                                        padding: 0,
+                                        textTransform: "lowercase",
+                                      }}
+                                      variant="text"
+                                      color="primary"
+                                      onClick={() => {
+                                        setShowLineItems(!showLineItems);
+                                      }}
                                     >
-                                    View more...
-                                  </Button>
-                                </ListItem>
-                              );
-                            }
+                                      View more...
+                                    </Button>
+                                  </ListItem>
+                                );
+                              }
                             } else {
                               return (
                                 <ListItem key={index}>
@@ -449,33 +395,39 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                             counter++;
                             console.log("counter: ", counter);
                             if (counter > 2 && !showLineItems) {
-                              if(counter > 3) {
-                                return <></>
-                              }
-                              else{
-
+                              if (counter > 3) {
+                                return <></>;
+                              } else {
                                 return (
-                                  <ListItem style={{padding:0, justifyContent:'end'}}>
-                                  <Button
-                                    style={{padding:0, textTransform: 'lowercase'}}
-                                    variant="text"
-                                    color="primary"
-                                    onClick={() => {
-                                      setShowLineItems(!showLineItems);
+                                  <ListItem
+                                    style={{
+                                      padding: 0,
+                                      justifyContent: "end",
                                     }}
+                                  >
+                                    <Button
+                                      style={{
+                                        padding: 0,
+                                        textTransform: "lowercase",
+                                      }}
+                                      variant="text"
+                                      color="primary"
+                                      onClick={() => {
+                                        setShowLineItems(!showLineItems);
+                                      }}
                                     >
-                                    View more...
-                                  </Button>
-                                </ListItem>
-                              );
-                            }
-                            } else{
+                                      View more...
+                                    </Button>
+                                  </ListItem>
+                                );
+                              }
+                            } else {
                               return (
                                 <ListItem key={index}>
                                   <ListItemText secondary={row.title} />
                                 </ListItem>
                               );
-                            } 
+                            }
                           });
                         })}
                   </List>
@@ -571,7 +523,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                     </LocalizationProvider>
                   </Box>
                 </Typography>
-                <Stack width={"80%"} pt={8}>
+                <Stack width={"80%"} pt={2}>
                   <BuilderProButton
                     backgroundColor={"#4C8AB1"}
                     variant={"contained"}

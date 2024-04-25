@@ -1,98 +1,248 @@
-import { Stack, Typography, Popover, IconButton, Divider,Input, FormControl, Select, InputLabel, MenuItem } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import data1 from './assests/data/data.json'
-import BuilderProButton from '../../UI/Button/BuilderProButton';
+import {
+  Stack,
+  Typography,
+  Popover,
+  IconButton,
+  Divider,
+  Input,
+  FormControl,
+  Select,
+  InputLabel,
+  MenuItem,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import data1 from "./assests/data/data.json";
+import BuilderProButton from "../../UI/Button/BuilderProButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { ReactComponent as BuilderProNavbarShare } from "./assests/svgs/builder-pro-navbar-share.svg";
-import users from './assests/data/users.json'
+import users from "./assests/data/users.json";
 import LinkIcon from "@mui/icons-material/Link";
-import { useGetProjectTeamQuery } from '../../../redux/apis/Project/projectApiSlice';
-import {useLocation} from 'react-router-dom'
+import { useGetProjectTeamQuery } from "../../../redux/apis/Project/projectApiSlice";
+import { useLocation } from "react-router-dom";
 
+const ProjectTeam = () => {
+  const [open, setOpen] = useState(null);
+  const [userType, setUserType] = useState("");
+  const openShare = Boolean(open);
+  const [email, setEmail] = useState("");
+  const location = useLocation();
+  const pathSegments = location.pathname.split("/");
+  const projectId = pathSegments[2];
+  //console.log(pathSegments)
+  const { data, isLoading } = useGetProjectTeamQuery(projectId);
+  const team = [
+    {
+      role: "Admin",
+      userId: 1,
+      firstName: "John",
+      lastName: "Doe",
+      email: "john.doe@example.com",
+      image: "https://example.com/profiles/john_doe.jpg",
+    },
+    {
+      role: "Admin",
+      userId: 2,
+      firstName: "Alice",
+      lastName: "Smith",
+      email: "alice.smith@example.com",
+      image: "https://example.com/profiles/alice_smith.jpg",
+    },
+    {
+      role: "Admin",
+      userId: 3,
+      firstName: "Michael",
+      lastName: "Johnson",
+      email: "michael.johnson@example.com",
+      image: "https://example.com/profiles/michael_johnson.jpg",
+    },
+    {
+      role: "Admin",
+      userId: 4,
+      firstName: "Sarah",
+      lastName: "Brown",
+      email: "sarah.brown@example.com",
+      image: "https://example.com/profiles/sarah_brown.jpg",
+    },
+    {
+      role: "Manager",
+      userId: 5,
+      firstName: "Jane",
+      lastName: "Smith",
+      email: "jane.smith@example.com",
+      image: "https://example.com/profiles/jane_smith.jpg",
+    },
+    {
+      role: "Manager",
+      userId: 6,
+      firstName: "Robert",
+      lastName: "Johnson",
+      email: "robert.johnson@example.com",
+      image: "https://example.com/profiles/robert_johnson.jpg",
+    },
+    {
+      role: "Manager",
+      userId: 7,
+      firstName: "Emma",
+      lastName: "Williams",
+      email: "emma.williams@example.com",
+      image: "https://example.com/profiles/emma_williams.jpg",
+    },
+    {
+      role: "Manager",
+      userId: 8,
+      firstName: "David",
+      lastName: "Miller",
+      email: "david.miller@example.com",
+      image: "https://example.com/profiles/david_miller.jpg",
+    },
+    {
+      role: "Developer",
+      userId: 9,
+      firstName: "Chris",
+      lastName: "Davis",
+      email: "chris.davis@example.com",
+      image: "https://example.com/profiles/chris_davis.jpg",
+    },
+    {
+      role: "Developer",
+      userId: 10,
+      firstName: "Jessica",
+      lastName: "Martinez",
+      email: "jessica.martinez@example.com",
+      image: "https://example.com/profiles/jessica_martinez.jpg",
+    },
+  ];
 
+  console.log(team);
+  const id = openShare ? "simple-popover" : undefined;
+  const groupedData = isLoading ? (
+    <>Loading...</>
+  ) : (
+    team?.reduce((acc, person) => {
+      acc[person.role] = acc[person.role] || [];
+      acc[person.role].push(person);
+      return acc;
+    }, {})
+  );
 
-    const ProjectTeam = () => {
-        const [open, setOpen] = useState(null);
-        const [userType, setUserType] = useState("");
-        const openShare = Boolean(open);
-        const [email, setEmail] = useState('');
-        const location = useLocation();
-        const pathSegments = location.pathname.split('/')
-        const projectId = pathSegments[2];
-        //console.log(pathSegments)
-        const {data, isLoading} = useGetProjectTeamQuery(projectId)
-        const team = data?.team
-        console.log(team)
-        const id = openShare ? "simple-popover" : undefined;
-        const groupedData = isLoading ?  <>Loading...</> :  team?.reduce((acc, person) => {
-          acc[person.role] = acc[person.role] || [];
-          acc[person.role].push(person);
-          return acc;
-        }, {});
-        
-        //console.log("team: ", team, "groupedData :", groupedData)
-        const handleShare = (e) => {
-            setOpen(e.currentTarget);
-          };
-          const handleClose = () => {
-            setOpen(null);
-          };
-          const handleUserTypeChange = (event) => {
-            setUserType(event.target.value);
-          };
-         const  handleEmailChange = (e) =>{
-            setEmail(e.target.value)
-          }
+  //console.log("team: ", team, "groupedData :", groupedData)
+  const handleShare = (e) => {
+    setOpen(e.currentTarget);
+  };
+  const handleClose = () => {
+    setOpen(null);
+  };
+  const handleUserTypeChange = (event) => {
+    setUserType(event.target.value);
+  };
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
   return (
-    <Stack pl={{xl:5,lg:5,md:0}} >
+    <Stack pl={{ xl: 5, lg: 5, md: 0 }}>
+      <Stack direction={"row"} sx={{ justifyContent: "space-between" }}>
         <Typography sx={themeStyle.title}>Project Team</Typography>
-        <Stack direction={'row'} justifyContent={{xl:'space-between',lg:'space-between',md:'center'}}>
-            <Stack  width={'100%'} >
-            {isLoading ? <>Loading...</>  : Object?.keys(groupedData)?.map((role)=>{
-                let acc =0;
-                return(
-                <Stack direction={'row'} justifyContent={{xl:'space-between', lg:'space-between', md:'flex-start', sm:'flex-start', xs:'flex-start'}} >
-                <Stack direction={'row'}  width={{xl:'100%', lg:'100%', md:'50%', sm:'50%', xs:'70%'}} justifyContent={'space-between'}>
-                <Typography sx={themeStyle.subTitle}>{role}</Typography>
-                <Stack direction={'row'} width={'190px'}>
-
-                {groupedData[role].map((person, index)=>{
-                    if (index > 1){
-                        acc++;
-                        return(
-                            <Typography sx={{...themeStyle.subTitle}} style={{color: '#636363'}} position={'relative'} top={'-2px'} pl={0.5}>+{acc}</Typography>
-                      )
-                    }else{
-                        return(
-                      <Typography sx={themeStyle.subTitle}>{person.firstName} {person.lastName}{groupedData[role].length > 1 && index === 0 ? ',' :''}</Typography>
-                    )}
-                })}
+        <BuilderProButton
+          backgroundColor={"#FFAC00"}
+          variant={"contained"}
+          Icon={BuilderProNavbarShare}
+          handleOnClick={handleShare}
+        >
+          {true ? "Share" : ""}
+        </BuilderProButton>
+      </Stack>
+      <Stack
+        direction={"row"}
+        justifyContent={{
+          xl: "space-between",
+          lg: "space-between",
+          md: "center",
+        }}
+        mt={"14px"}
+      >
+        <Stack width={"100%"}>
+          {isLoading ? (
+            <>Loading...</>
+          ) : (
+            Object?.keys(groupedData)?.map((role) => {
+              let acc = 0;
+              return (
+                <Stack
+                  direction={"row"}
+                  justifyContent={{
+                    xl: "space-between",
+                    lg: "space-between",
+                    md: "flex-start",
+                    sm: "flex-start",
+                    xs: "flex-start",
+                  }}
+                >
+                  <Stack
+                    direction={"row"}
+                    width={{
+                      xl: "100%",
+                      lg: "100%",
+                      md: "50%",
+                      sm: "50%",
+                      xs: "70%",
+                    }}
+                    justifyContent={"space-between"}
+                  >
+                    <Typography sx={themeStyle.subTitle}>{role}</Typography>
+                    <Stack direction={"row"}>
+                      {groupedData[role].map((person, index) => {
+                        if (index > 1) {
+                          acc++;
+                          return (
+                            <Typography
+                              sx={{ ...themeStyle.subTitle }}
+                              style={{ color: "#636363" }}
+                              position={"relative"}
+                              top={"-2px"}
+                              pl={0.5}
+                            >
+                              +{acc}
+                            </Typography>
+                          );
+                        } else {
+                          return (
+                            <Typography sx={themeStyle.subTitle}>
+                              {person.firstName} {person.lastName}
+                              {groupedData[role].length > 1 && index === 0
+                                ? ","
+                                : ""}
+                            </Typography>
+                          );
+                        }
+                      })}
+                    </Stack>
+                    <Stack direction={"row"} width={"100px"}>
+                      {groupedData[role].map((person, index) => {
+                        return (
+                          <>
+                            <img
+                              key={index}
+                              src={person.image}
+                              alt="profile"
+                              width={"35px"}
+                              height={"35px"}
+                              style={{
+                                borderRadius: "50px",
+                                marginLeft: "-10px",
+                              }}
+                            ></img>
+                          </>
+                        );
+                      })}
+                    </Stack>
+                  </Stack>
                 </Stack>
-                </Stack>
-                <Stack direction={'row'} width={'100px'}>
-                {groupedData[role].map((person, index)=>{
-                    return( <>
-                        <img key={index} src={person.image} alt='profile' width={'35px'} height={'35px'} style={{borderRadius:'50px', marginLeft: '-10px'}} ></img>
-                        </>
-                        )
-                    })}
-                </Stack>
-                </Stack>
-                )})
-            }
-            </Stack>
-            <Stack mt={'-16px'}>
-            <BuilderProButton
-              backgroundColor={"#FFAC00"}
-              variant={"contained"}
-              Icon={BuilderProNavbarShare}
-              handleOnClick={handleShare}
-              >
-              {true ? "Share" : ""}
-            </BuilderProButton>
-                </Stack>
+              );
+            })
+          )}
         </Stack>
-        <Popover
+      </Stack>
+      <Popover
         id={id}
         open={openShare}
         anchorEl={open}
@@ -135,8 +285,10 @@ import {useLocation} from 'react-router-dom'
             pl={2}
           >
             <Input
-            value={email}
-            onChange={(e)=>{handleEmailChange(e)}}
+              value={email}
+              onChange={(e) => {
+                handleEmailChange(e);
+              }}
               placeholder="Enter an Email to invite"
               aria-describedby="my-helper-text"
               sx={{
@@ -248,22 +400,21 @@ import {useLocation} from 'react-router-dom'
         </Stack>
       </Popover>
     </Stack>
-  )
-}
+  );
+};
 
 export default ProjectTeam;
 
-const themeStyle ={
-    title: {
-        fontSize: '16px',
-        color: '#4C8AB1',
-        fontFamily:'GT-Walsheim-Regular-Trial, sans-serif',
-        
-    },
-    subTitle: {
-        fontSize: '13px',
-        color: '#202227',
-        fontFamily:'GT-Walsheim-Regular-Trial, sans-serif',
-        textAlign: 'left'
-    }
-}
+const themeStyle = {
+  title: {
+    fontSize: "16px",
+    color: "#4C8AB1",
+    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  },
+  subTitle: {
+    fontSize: "13px",
+    color: "#202227",
+    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    textAlign: "left",
+  },
+};

@@ -114,7 +114,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColor }) => {
           {" "}
           <Stack direction={"row"}>
             <Typography sx={themeStyle.toolbarTitle} pl={2}>
-              Daily Log
+              Work Log
             </Typography>
             {toolbar.view === "month" && (
               <Stack

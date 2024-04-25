@@ -500,6 +500,7 @@ const SignupComp = () => {
     </Grid>
   );
 };
+export default SignupComp;
 
 const firstGrid = {
   padding: {
@@ -854,4 +855,3 @@ const topSpace = {
   marginTop: "0.2rem",
 };
 
-export default SignupComp;

@@ -38,7 +38,7 @@ const Dashboard = () => {
       <main>
         <Grid sx={themeStyle.dashboard} container pt={1}>
           {/* Profile View */}
-          <Grid item xs={12} sm={4} md={4} xl={2} height={"91vh"}>
+          <Grid item xs={12} sm={4} md={3.5} xl={2}>
             <Paper
               sx={{
                 borderRadius: "0 14px 14px 0",
@@ -54,7 +54,7 @@ const Dashboard = () => {
             item
             xs={12}
             sm={8}
-            md={8}
+            md={8.5}
             xl={7}
             height={"100%"}
             overflow={"hidden"}
@@ -172,6 +172,7 @@ const Dashboard = () => {
                 borderRadius: " 14px 0 0 14px",
                 marginBottom: "8px",
                 height: "100%",
+                marginTop:"10px"
               }}
             >
               {loading ? (
@@ -192,7 +193,7 @@ export default Dashboard;
 const themeStyle = {
   dashboard: {
     backgroundColor: "#eff5ff",
-    height: "92vh",
+    height: {xl:"92vh",lg:"100%",md:"100%"},
   },
   dashboardViews: {
     height: "100%",

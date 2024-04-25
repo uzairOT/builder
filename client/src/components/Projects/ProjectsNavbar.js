@@ -52,18 +52,18 @@ const ProjectsNavbar = ({ project }) => {
       title: "Project Report",
       path: "project-report",
     },
-        {
-          title: 'Change Order',
-          path: 'change-order'
-        }
+    {
+      title: "Change Order",
+      path: "change-order",
+    },
   ];
   const [selectedNav, setSelectedNav] = useState(navLinks.path);
   const handleNavClick = (path) => {
     setSelectedNav(path);
   };
-const navigateToDefault = () => {
-  navigate('')
-}
+  const navigateToDefault = () => {
+    navigate("");
+  };
 
   return (
     <Stack
@@ -74,15 +74,24 @@ const navigateToDefault = () => {
     >
       <Stack direction={"row"} alignItems={"center"} spacing={1}>
         <IconButton>
-          <ChevronLeftIcon style={{ color: "black" }} onClick={navigateToDefault}/>
+          <ChevronLeftIcon
+            style={{ color: "black" }}
+            onClick={navigateToDefault}
+          />
         </IconButton>
         {/* <img src={project?.image} alt='Project' width={'60px'} height={'35px'} style={{borderRadius: '12px'}}></img> */}
         <Link to={``} style={{ textDecoration: "none" }}>
           <Typography
-            color={"#494A4A"}
-            fontSize={"20px"}
-            fontWeight={"600"}
-            fontFamily={"GT-Walsheim-Regular-Trial, sans-serif"}
+            sx={{
+              color: "#494A4A",
+              fontSize: "20px",
+              fontWeight: 600,
+              fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              maxWidth: {xl:"200px",lg:"100px",md:"250px",sm:"250px",xs:"160px"}, // Adjust this value based on your layout
+            }}
           >
             {project?.projectName}
           </Typography>

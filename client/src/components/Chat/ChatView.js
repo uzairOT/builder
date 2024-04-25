@@ -6,7 +6,7 @@ import SendIcon from "../../assets/Chat/send.png";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 
-const socket = io("http://localhost:8080");
+const socket = io("http://192.168.0.106:8080");
 
 function ChatView({ isAdminPage, project }) {
   const [message, setMessage] = useState("");
