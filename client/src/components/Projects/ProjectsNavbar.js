@@ -18,7 +18,6 @@ const ProjectsNavbar = ({ project }) => {
   const theme = useTheme();
   const showHamburger = useMediaQuery(theme.breakpoints.down("lg"));
   const navigate = useNavigate();
-  console.log(showHamburger);
   const navLinks = [
     {
       title: "Initial Proposal",

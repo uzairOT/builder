@@ -93,8 +93,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
 
     checkedRow?.phaseItems?.forEach((phase) => {
       lineItemCounter += phase.lineItemId.length;
-      console.log('lineItemCounter: ',lineItemCounter);
-      console.log('phase.lineItemId.length: ',phase.lineItemId.length);
+      // console.log('lineItemCounter: ',lineItemCounter);
+      // console.log('phase.lineItemId.length: ',phase.lineItemId.length);
     })
   } else{
 
@@ -113,7 +113,6 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
     });
   }
   
-  console.log('final lineItemCount: ', lineItemCounter)
   // });
   const ENDPOINT = "http://3.135.107.71/";
   //test new workd order
@@ -129,8 +128,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   //console.log(assignedCheckboxes);
   const [requestWorkOrderPut] = useRequestWorkOrderMutation();
 
-  console.log("checkedRow--------------->", checkedRow);
-  console.log("selectedItems--------------->", selectedItems);
+
   const isButtonDisabled = changeOrder ? checkedRow === null :  Object?.keys(rowCheckboxes)?.length === 0;
   const handleNotesChange = (e) => {
     setNotes(e.target.value);
@@ -222,7 +220,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const handleRequest = async () => {
     const formattedStartDate = startDate.format("MMM D, YYYY, h:mm a");
     const formattedEndDate = endDate.format("MMM D, YYYY, h:mm a");
-    console.log("CHEHCEH: ", selectedItems);
+
 
     const requestForm = {
       workOrder_id: changeOrder ? checkedRow.id : "",
@@ -243,7 +241,6 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
       projectId: projectId,
       total: changeOrder ? checkedRow?.total : totalWorkOrder,
     };
-    console.log("--------------------------------------", requestForm);
     if (requestForm.teamIds.length === 0) {
       toast.error("Team member must be assigned");
     } else {
@@ -255,7 +252,6 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
         await emit("notification", requestForm);
       }
       dispatch(setIsLoading(true));
-      console.log("sockect test");
       //emit('getNotifications', userId);
       const res = await getEvents({ userId, dailyForecast });
       const data = res?.data?.formattedWorkOrders;
@@ -483,8 +479,6 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                       ?checkedRow?.phaseItems.map((phase, phaseIndex) => {
                         return phase.lineItem_names.map((lineItem, index) => {
                           counter++;
-                          console.log(lineItem);
-                          console.log(counter);
                           if (counter <= 2) {
                             return (
                               <ListItem key={counter}>
@@ -512,10 +506,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                       })
                       : Object?.keys(rowCheckboxes)?.map((phase) => {
                           const phaseData = rowCheckboxes[phase];
-                        console.log(phase)
                           return phaseData.rows.map((row, index) => {
                             counter++;
-                            console.log("counter: ", counter);
                             if (counter <= 2) {
                              return( <ListItem key={counter}>
                               <ListItemText secondary={row.title} />

@@ -107,21 +107,11 @@ const SignupComp = () => {
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
-  useEffect(() => {
-    console.log(checked);
-  }, [checked]);
 
   const responseGoogle = async (response) => {
     // const auth2 = gapi.auth2.getAuthInstance();
     if (response?.profileObj) {
       const { givenName, googleId, email, familyName } = response.profileObj;
-      console.log(
-        "userData from google",
-        givenName,
-        familyName,
-        googleId,
-        email
-      );
       // Use Google profile info to authenticate the user
       const userData = {
         firstName: givenName,
@@ -136,10 +126,7 @@ const SignupComp = () => {
       localStorage.setItem("userData", userDataString);
       //
       try {
-        console.log("--------------------------------");
         const res = await googleLogin({ email }).unwrap();
-        console.log("login ::::::::::::::::::::::::::::::::", res);
-
         if (res.message === "Login Successful!") {
           dispatch(setCredentials({ ...res }));
           navigate("/");

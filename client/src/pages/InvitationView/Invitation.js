@@ -95,7 +95,6 @@ const checkUserOnInvitation = async () =>{
       projectId,
       companyName,
     };
-    console.log(data);
 
     try {
       // Make POST request using Axios

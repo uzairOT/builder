@@ -80,7 +80,6 @@ const CompanyForm = () => {
       console.log("Sign up: ", res);
       dispatch(setCredentials({ ...res }));
       navigate("/assignproject");
-      console.log("hi");
     } catch (err) {
       console.log("Login Error:", err);
       alert(err?.data?.message || err.error); // Display error message to the user

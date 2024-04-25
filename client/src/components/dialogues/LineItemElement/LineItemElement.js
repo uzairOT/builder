@@ -101,11 +101,7 @@ function AddLineElement({
     end: dayjs(end),
     longDescription,
   };
-  useEffect(() => {
-    console.log("-------------==========quantity", quantity);
-    console.log("-------------==========unitPrice", unitPrice);
-    console.log("-------------==========total", total);
-  }, [total, quantity, unitPrice]);
+
 
   useEffect(() => {
     const getData = setTimeout(() => {

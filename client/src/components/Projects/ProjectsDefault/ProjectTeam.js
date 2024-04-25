@@ -41,7 +41,6 @@ import "react-toastify/dist/ReactToastify.css";
         //console.log(pathSegments)
         const {data, isLoading} = useGetProjectTeamQuery(projectId)
         const team = data?.team
-        console.log(team)
         const id = openShare ? "simple-popover" : undefined;
         const groupedData = isLoading ?  <>Loading...</> :  team?.reduce((acc, person) => {
           acc[person.role] = acc[person.role] || [];

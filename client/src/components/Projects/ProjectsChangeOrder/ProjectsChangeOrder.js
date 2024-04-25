@@ -23,12 +23,10 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view }) => {
   const { id: currentProjectId } = params;
   const currentUser = localStorage.getItem("userInfo");
   const user = JSON.parse(currentUser);
-  console.log(checkedRow);
   const { data } = useGetProjectChangeOrderQuery({
     projectId: currentProjectId,
     userId: user.user.id,
   });
-  console.log("GET WORK ORDER DATA: ", data);
   const handleChangeView = () => {
     setChangeView(true);
   }

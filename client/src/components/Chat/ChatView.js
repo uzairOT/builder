@@ -22,7 +22,7 @@ function ChatView({ isAdminPage, project }) {
   };
 
   useEffect(() => {
-    console.log("-=-=-=-", currentUser);
+    // console.log("-=-=-=-", currentUser);
     socket.emit("joinchat", {
       projectId: id,
     });
