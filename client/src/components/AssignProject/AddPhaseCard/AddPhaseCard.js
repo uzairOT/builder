@@ -193,20 +193,20 @@ const AddPhaseCard = ({
     setRowCheckboxes((prevSelectedRows) => {
       const updatedRows = { ...prevSelectedRows };
 
-      if (!updatedRows[phaseName]) {
+      if (!updatedRows[phaseId]) {
         // If phaseName doesn't exist in selectedRows, initialize it
-        updatedRows[phaseName] = { id: phaseId, rows: [] };
+        updatedRows[phaseId] = { phaseName: phaseName, rows: [] };
       }
 
-      const rowExistsIndex = updatedRows[phaseName].rows.findIndex(
+      const rowExistsIndex = updatedRows[phaseId].rows.findIndex(
         (item) => item === row
       );
       if (rowExistsIndex !== -1) {
         // Row already exists, remove it
-        updatedRows[phaseName].rows.splice(rowExistsIndex, 1);
+        updatedRows[phaseId].rows.splice(rowExistsIndex, 1);
       } else {
         // Row doesn't exist, add it
-        updatedRows[phaseName].rows.push(row);
+        updatedRows[phaseId].rows.push(row);
       }
 
       return { ...updatedRows };
@@ -215,8 +215,8 @@ const AddPhaseCard = ({
 
   // Function to check if a row is selected
   const isRowSelected = (row) => {
-    const phaseName = phaseData.phase_name;
-    return selectedRows[phaseName]?.rows.includes(row);
+    const phaseId = phaseData.id;
+    return selectedRows[phaseId]?.rows.includes(row);
   };
 
   return (
