@@ -18,12 +18,13 @@ import {
   Button,
   MenuItem,
   Select,
+  CircularProgress,
 } from "@mui/material";
 import builder1 from "../Signup/Assets/pngs/builderProYellowLogo.png";
 import downloadForMob from "../Signup/Assets/pngs/downloadForMob.png";
 import googlePlay from "../Signup/Assets/pngs/googlePlay.png";
 import appStore from "../Signup/Assets/pngs/appStore.png";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Circle, Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "../Signup/Assets/svgs/GoogleIcon.svg";
 
 import YellowBtn from "../UI/button";
@@ -296,7 +297,10 @@ const Login = () => {
               onClick={submitHandler}
               type="submit"
             >
-              {isMobile ? "Login" : "Log in with Email"}
+              { isLoading ? <CircularProgress size={ ''}/> :
+
+                isMobile ? "Login" : "Log in with Email"
+              }
             </Button>
             <Typography sx={accountLinkText}>
               Don’t have an account?{"\u00a0"}{" "}

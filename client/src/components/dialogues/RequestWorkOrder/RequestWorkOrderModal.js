@@ -88,6 +88,11 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   let lineItemIds = [];
   let lineItemCounter = 0;
   let totalWorkOrder = 0;
+
+  checkedRow?.phaseItems?.forEach((phase) => {
+    lineItemCounter += phase.lineItemId.length;
+  })
+
   Object?.values(rowCheckboxes)?.forEach((phaseData) => {
     lineItemCounter += phaseData.rows.length;
     const lineItemGroup = {
@@ -303,7 +308,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                         marginTop: "0rem",
                       }}
                     >
-                      {changeOrder ? "" : Object?.keys(rowCheckboxes)?.length}
+                      {changeOrder ? checkedRow?.phaseItems?.length : Object?.keys(rowCheckboxes)?.length}
                     </Typography>
                   </Typography>
                   {/*
@@ -408,39 +413,31 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                   </Typography>
                   <List>
                     {changeOrder
-                      ? checkedRow?.phaseItems.map((phase) => {
+                      ? checkedRow?.phaseItems.map((phase, phaseIndex) => {
                           return phase.lineItem_names.map((lineItem, index) => {
                             counter++;
                             console.log("counter: ", counter);
-                            if (counter > 2 && !showLineItems) {
-                              if(counter > 3) {
-                                return <></>
-                              }
-                              else{
-
-                                return (
-                                  <ListItem style={{padding:0, justifyContent:'end'}}>
-                                  <Button
-                                    style={{padding:0, textTransform: 'lowercase'}}
-                                    variant="text"
-                                    color="primary"
-                                    onClick={() => {
-                                      setShowLineItems(!showLineItems);
-                                    }}
-                                    >
-                                    View more...
-                                  </Button>
-                                </ListItem>
-                              );
-                            }
-                            } else {
+                            if(counter <= 2){
                               return (
                                 <ListItem key={index}>
+                                <ListItemText secondary={lineItem} />
+                              </ListItem>
+                            );
+                          }
+                            
+                            if (counter > 2 &&  showLineItems) {
+                                return (
+                                  <ListItem key={index}>
                                   <ListItemText secondary={lineItem} />
                                 </ListItem>
                               );
+                            } else{
+                              return (
+                                <></>
+                              )
                             }
                           });
+                          
                         })
                       : Object?.keys(rowCheckboxes)?.map((phase) => {
                           const phaseData = rowCheckboxes[phase];
@@ -448,36 +445,34 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                           return phaseData.rows.map((row, index) => {
                             counter++;
                             console.log("counter: ", counter);
-                            if (counter > 2 && !showLineItems) {
-                              if(counter > 3) {
-                                return <></>
-                              }
-                              else{
-
-                                return (
-                                  <ListItem style={{padding:0, justifyContent:'end'}}>
-                                  <Button
-                                    style={{padding:0, textTransform: 'lowercase'}}
-                                    variant="text"
-                                    color="primary"
-                                    onClick={() => {
-                                      setShowLineItems(!showLineItems);
-                                    }}
-                                    >
-                                    View more...
-                                  </Button>
-                                </ListItem>
-                              );
-                            }
-                            } else{
+                            if (counter <= 2) {
+                              <ListItem key={index}>
+                              <ListItemText secondary={row.title} />
+                            </ListItem>
+                            } 
+                            if(counter >2 && showLineItems){
                               return (
                                 <ListItem key={index}>
                                   <ListItemText secondary={row.title} />
                                 </ListItem>
                               );
-                            } 
+                            }else {
+                              return<></>
+                            }
                           });
                         })}
+                         <ListItem style={{padding:0, justifyContent:'end'}}>
+                              <Button
+                                style={{padding:0, textTransform: 'lowercase'}}
+                                variant="text"
+                                color="primary"
+                                onClick={() => {
+                                  setShowLineItems(!showLineItems);
+                                }}
+                                >
+                                View more...
+                              </Button>
+                            </ListItem>
                   </List>
                   {/* <Button
                     sx={themeStyle.linkButton}
