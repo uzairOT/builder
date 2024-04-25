@@ -63,7 +63,7 @@ const Navbar = () => {
   const id = openShare ? "simple-popover" : undefined;
   const user = useSelector((state) => state.auth.userInfo);
   const userId = user.user.id;
-  const ENDPOINT = "http://192.168.0.106:8080";
+  const ENDPOINT = "http://3.135.107.71/";
   //console.log(user);
   const dispatch = useDispatch();
   const { emit, on } = useSocket();

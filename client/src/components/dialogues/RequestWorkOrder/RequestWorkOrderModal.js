@@ -115,7 +115,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   
   console.log('final lineItemCount: ', lineItemCounter)
   // });
-  const ENDPOINT = "http://192.168.0.106:8080";
+  const ENDPOINT = "http://3.135.107.71/";
   //test new workd order
 
   // Object?.values(rowCheckboxes)?.forEach((phaseData) => {

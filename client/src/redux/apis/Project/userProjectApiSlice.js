@@ -1,6 +1,6 @@
 import { apiSlice } from "../apiSlice";
 
-const USER_PROJECTS_URL = "http://192.168.0.106:8080/user";
+const USER_PROJECTS_URL = "http://3.135.107.71//user";
 
 export const userProjectsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

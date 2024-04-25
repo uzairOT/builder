@@ -1,6 +1,6 @@
 import { apiSlice } from "../apiSlice";
 
-const PROJECTS_URL = "http://192.168.0.106:8080/project";
+const PROJECTS_URL = "http://3.135.107.71//project";
 
 const wordOrderApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({

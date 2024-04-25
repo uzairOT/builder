@@ -111,7 +111,7 @@ function AddLineElement({
     const getData = setTimeout(() => {
       axios
         .get(
-          `http://192.168.0.106:8080/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`
+          `http://3.135.107.71//user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`
         )
         .then((response) => {
           setAutoComplete(response.data.MasterLines);
