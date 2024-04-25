@@ -28,6 +28,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
 import moment from "moment";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const initialRows = [
   {
@@ -136,8 +138,15 @@ const AddPhaseCard = ({
       lineItemId: lineItemId,
       projectId: projectId,
     };
-    const res = await deletePhaseLine(data);
-    dispatch(addPhase(res.data.allPhases));
+    try {
+      const res = await deletePhaseLine(data).unwrap();
+      console.log(res);
+
+      dispatch(addPhase(res.data.allPhases));
+    } catch (error) {
+      console.log(error);
+      toast.error(error.data.message || error.data.error);
+    }
   };
 
   const handleAddLine = () => {
@@ -240,9 +249,7 @@ const AddPhaseCard = ({
               </Typography>
             </Box>
             <Box>
-              <Typography sx={blackHeading}>
-                Price: {totalCost}
-              </Typography>
+              <Typography sx={blackHeading}>Price: {totalCost}</Typography>
             </Box>
             <Box>
               <Typography sx={blackHeading}>
@@ -349,11 +356,11 @@ const AddPhaseCard = ({
                   <TableCell sx={tableHeadings}>Total Cost</TableCell>
                   <TableCell sx={tableHeadings}>Notes</TableCell>
                   <TableCell sx={tableHeadings}>Status</TableCell>
-                  {/* 
+                  {/*                   
                   <TableCell></TableCell>
-                  <TableCell></TableCell>
-
                   <TableCell></TableCell> */}
+
+                  {/* <TableCell></TableCell> */}
                 </TableRow>
 
                 <TableRow style={hrLine}></TableRow>

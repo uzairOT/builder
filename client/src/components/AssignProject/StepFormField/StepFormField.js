@@ -52,7 +52,9 @@ function ProjectFormFields({ index, email, role, onUpdateEmail, onUpdateRole,}) 
 
               <TextField sx={{
                 ...inputStyle, ...borderRadiusResponsive,
-                borderButtom: "none",
+                '& input': {
+                  borderBottom: 'none', // Remove bottom border of the input
+              },
               }}
 
 

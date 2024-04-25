@@ -29,10 +29,9 @@ function NewProject() {
         setStep(step - 1);
     };
     useEffect(() => {
-        //console.log('step: ', step);
+        console.log('step: ', step);
         localStorage.setItem('step', step);
         const step1 = parseInt(localStorage.getItem('step'), 10); // Convert to number
-        //console.log('step1: ', step1);
         setStep(step1);
     }, [step]);
     
@@ -47,7 +46,7 @@ function NewProject() {
             case 0:
                 return (
                     <div>
-                        <Header step={step} handlePreviousStep={handlePreviousStep} />
+                        <Header step={step} btnStep={0}  handlePreviousStep={handlePreviousStep} />
                         <AssignNewProjectStep2 isSaveAs={isSaveAs} setProjectId={setProjectId} projectId={projectId} onNextStep={onNextStep} />
                     </div>
                 );

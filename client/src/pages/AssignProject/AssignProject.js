@@ -68,7 +68,7 @@ function AssignProject() {
         <>
           {" "}
           <div>
-            <Header handlePreviousStep={handlePreviousStep} />
+            <Header handlePreviousStep={handlePreviousStep} step={0} />
             <StepTitles
               stepHeading={"Step 1 of 3"}
               Heading={"What projects is your team currently engaged in"}

@@ -131,7 +131,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
 
   console.log("checkedRow--------------->", checkedRow);
   console.log("selectedItems--------------->", selectedItems);
-  const isButtonDisabled = Object?.keys(rowCheckboxes)?.length === 0;
+  const isButtonDisabled = changeOrder ? checkedRow === null :  Object?.keys(rowCheckboxes)?.length === 0;
   const handleNotesChange = (e) => {
     setNotes(e.target.value);
   };
@@ -478,7 +478,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                       {lineItemCounter}
                     </Typography>
                   </Typography>
-                  <List sx={{maxHeight:"60px",overflow:"auto"}}>
+                  <List sx={{...themeStyle.scrollable, maxHeight:"150px",overflow:"auto",}}>
                     {changeOrder
                       ?checkedRow?.phaseItems.map((phase, phaseIndex) => {
                         return phase.lineItem_names.map((lineItem, index) => {
@@ -541,7 +541,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                                   setShowLineItems(!showLineItems);
                                 }}
                                 >
-                                View more...
+                                {showLineItems ? 'Hide' : 'View more'}
                               </Button>
                             </ListItem>
                   </List>
@@ -949,6 +949,22 @@ const style = {
   width: "700px",
 };
 const themeStyle = {
+  
+  scrollable: {
+    scrollbarWidth: 'none',  // For Firefox
+    '-ms-overflow-style': 'none',  // For IE and Edge
+    '&::-webkit-scrollbar': {
+        width: '6px'
+    },
+    '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'transparent',
+        transition: 'background-color 0.3s',
+    },
+    '&:hover::-webkit-scrollbar-thumb': {
+        backgroundColor: '#ddd',
+    },
+    overflowY: 'scroll'
+},
   inputFields: {
     border: "0px solid #FFF",
     outline: "none",
