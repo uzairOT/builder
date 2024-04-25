@@ -83,29 +83,38 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const [getEvents] = useGetUserEventsMutation();
   const dispatch = useDispatch();
   const { emit } = useSocket();
+  const [selectedItems, setSelectedItems] = useState([]);
   const phaseId = rowCheckboxes[0]?.rows[0]?.phase_id;
   let counter = 0;
   let lineItemIds = [];
   let lineItemCounter = 0;
   let totalWorkOrder = 0;
 
-  checkedRow?.phaseItems?.forEach((phase) => {
-    lineItemCounter += phase.lineItemId.length;
-  })
+  if(changeOrder){
 
-  Object?.values(rowCheckboxes)?.forEach((phaseData) => {
-    lineItemCounter += phaseData.rows.length;
-    const lineItemGroup = {
-      phaseId: phaseData.id,
-      lineItemId: phaseData.rows.map((row) => row.id),
-    };
-    lineItemIds.push(lineItemGroup);
-    phaseData.rows.forEach((lineItem)=>{
-     totalWorkOrder += parseInt(lineItem.total);
+    checkedRow?.phaseItems?.forEach((phase) => {
+      lineItemCounter += phase.lineItemId.length;
+      console.log('lineItemCounter: ',lineItemCounter);
+      console.log('phase.lineItemId.length: ',phase.lineItemId.length);
     })
+  } else{
 
-  });
-
+    
+    Object?.keys(rowCheckboxes)?.forEach((phaseData) => {
+      lineItemCounter += rowCheckboxes[phaseData].rows.length;
+      const lineItemGroup = {
+        phaseId: phaseData,
+        lineItemId: rowCheckboxes[phaseData].rows.map((row) => row.id),
+      };
+      lineItemIds.push(lineItemGroup);
+      rowCheckboxes[phaseData].rows.forEach((lineItem)=>{
+        totalWorkOrder += parseInt(lineItem.total);
+      })
+      
+    });
+  }
+  
+  console.log('final lineItemCount: ', lineItemCounter)
   // });
   const ENDPOINT = "http://192.168.0.106:8080";
   //test new workd order
@@ -121,8 +130,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   //console.log(assignedCheckboxes);
   const [requestWorkOrderPut] = useRequestWorkOrderMutation();
 
-  console.log("rowCheckboxes--------------->", checkedRow);
-  // console.log("lineItemIds--------------->", lineItemIds);
+  console.log("checkedRow--------------->", checkedRow);
+  console.log("selectedItems--------------->", selectedItems);
   const isButtonDisabled = Object?.keys(rowCheckboxes)?.length === 0;
   const handleNotesChange = (e) => {
     setNotes(e.target.value);
@@ -153,17 +162,69 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
     setLineItems(event.target.value);
   };
 
+  const handlePhaseChange = (phaseId) => {
+    const existingPhase = selectedItems.find(item => item.phaseId === phaseId);
+
+    if (existingPhase) {
+      const updatedItems = selectedItems.filter(item => item.phaseId !== phaseId);
+      setSelectedItems(updatedItems);
+    } else {
+      const phaseItems = checkedRow.phaseItems.find(item => item.phaseId === phaseId);
+      const updatedItems = [...selectedItems, { phaseId, lineItemId: phaseItems.lineItemId }];
+      setSelectedItems(updatedItems);
+    }
+  };
+
+  const handleLineItemChange = (phaseId, lineItemId) => {
+    const existingPhaseIndex = selectedItems.findIndex(item => item.phaseId === phaseId);
+    
+    if (existingPhaseIndex !== -1) {
+      const existingLineItemIndex = selectedItems[existingPhaseIndex].lineItemId.indexOf(lineItemId);
+  
+      if (existingLineItemIndex !== -1) {
+        // Remove the line item
+        const updatedItems = [...selectedItems];
+        updatedItems[existingPhaseIndex] = {
+          ...updatedItems[existingPhaseIndex],
+          lineItemId: updatedItems[existingPhaseIndex].lineItemId.filter(id => id !== lineItemId),
+        };
+  
+        // If no line items are selected for the phase, remove the phase
+        if (updatedItems[existingPhaseIndex].lineItemId.length === 0) {
+          updatedItems.splice(existingPhaseIndex, 1);
+        }
+  
+        setSelectedItems(updatedItems);
+      } else {
+        // Add the line item
+        const updatedItems = [...selectedItems];
+        updatedItems[existingPhaseIndex] = {
+          ...updatedItems[existingPhaseIndex],
+          lineItemId: [...updatedItems[existingPhaseIndex].lineItemId, lineItemId],
+        };
+  
+        setSelectedItems(updatedItems);
+      }
+    } else {
+      // Add new phase and line item
+      const updatedItems = [
+        ...selectedItems,
+        {
+          phaseId,
+          lineItemId: [lineItemId],
+        },
+      ];
+  
+      setSelectedItems(updatedItems);
+    }
+  };
+  
+
   const handleRequest = async () => {
     const formattedStartDate = startDate.format("MMM D, YYYY, h:mm a");
     const formattedEndDate = endDate.format("MMM D, YYYY, h:mm a");
-    console.log("CHEHCEH: ", checkedRow);
-    if (changeOrder) {
-      var transformedPhaseItems = checkedRow.phaseItems.map((item) => ({
-        phaseId: item.phaseId,
-        lineItemId: item.lineItemId,
-      }));
-      console.log("TRANSFORMED: ", transformedPhaseItems);
-    }
+    console.log("CHEHCEH: ", selectedItems);
+
     const requestForm = {
       workOrder_id: changeOrder ? checkedRow.id : "",
       subject: subject,
@@ -176,7 +237,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
       lineItem: changeOrder
         ? checkedRow.LineItem_id
         : lineItemIds[0].lineItemId[0],
-      phaseItems: changeOrder ? transformedPhaseItems : lineItemIds,
+      phaseItems: changeOrder ? selectedItems : lineItemIds,
       createdby: userId,
       teamIds: [...assignedCheckboxes, userId],
       notes: notes,
@@ -377,15 +438,19 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                   <FormControl>
                     {checkedRow
                       ? checkedRow.phaseItems.map((phase) => (
-                          <ListItem key={phase.phase_id}>
-                            <ListItemText secondary={phase.phase_name} />
-                          </ListItem>
+                        <ListItem key={phase.phaseId}>
+                        <Checkbox
+                          checked={selectedItems.some(item => item.phaseId === phase.phaseId)}
+                          onChange={() => handlePhaseChange(phase.phaseId)}
+                        />
+                        <ListItemText secondary={phase.phase_name} />
+                        </ListItem>
                         ))
                       : Object.keys(rowCheckboxes).map((key, index) => {
                           const phaseId = rowCheckboxes[key]?.rows[0]?.phase_id;
                           return (
                             <ListItem key={phaseId}>
-                              <ListItemText secondary={key} />
+                              <ListItemText secondary={rowCheckboxes[key].phaseName} />
                             </ListItem>
                           );
                         })}
@@ -413,46 +478,50 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                   </Typography>
                   <List>
                     {changeOrder
-                      ? checkedRow?.phaseItems.map((phase, phaseIndex) => {
-                          return phase.lineItem_names.map((lineItem, index) => {
-                            counter++;
-                            console.log("counter: ", counter);
-                            if(counter <= 2){
-                              return (
-                                <ListItem key={index}>
+                      ?checkedRow?.phaseItems.map((phase, phaseIndex) => {
+                        return phase.lineItem_names.map((lineItem, index) => {
+                          counter++;
+                          console.log(lineItem);
+                          console.log(counter);
+                          if (counter <= 2) {
+                            return (
+                              <ListItem key={counter}>
+                                <Checkbox
+                                  checked={selectedItems.some(item => item.phaseId === phase.phaseId && item.lineItemId.includes(phase.lineItemId[index]))}
+                                  onChange={() => handleLineItemChange(phase.phaseId, phase.lineItemId[index])}
+                                />
                                 <ListItemText secondary={lineItem} />
                               </ListItem>
                             );
                           }
-                            
-                            if (counter > 2 &&  showLineItems) {
-                                return (
-                                  <ListItem key={index}>
-                                  <ListItemText secondary={lineItem} />
-                                </ListItem>
-                              );
-                            } else{
-                              return (
-                                <></>
-                              )
-                            }
-                          });
-                          
-                        })
+                          if (counter > 2 && showLineItems) {
+                            return (
+                              <ListItem key={counter}>
+                                <Checkbox
+                                  checked={selectedItems.some(item => item.phaseId === phase.phaseId && item.lineItemId.includes(phase.lineItemId[index]))}
+                                  onChange={() => handleLineItemChange(phase.phaseId, phase.lineItemId[index])}
+                                />
+                                <ListItemText secondary={lineItem} />
+                              </ListItem>
+                            );
+                          }
+                          return null;
+                        });
+                      })
                       : Object?.keys(rowCheckboxes)?.map((phase) => {
                           const phaseData = rowCheckboxes[phase];
-
+                        console.log(phase)
                           return phaseData.rows.map((row, index) => {
                             counter++;
                             console.log("counter: ", counter);
                             if (counter <= 2) {
-                              <ListItem key={index}>
+                             return( <ListItem key={counter}>
                               <ListItemText secondary={row.title} />
-                            </ListItem>
+                            </ListItem>)
                             } 
                             if(counter >2 && showLineItems){
                               return (
-                                <ListItem key={index}>
+                                <ListItem key={counter}>
                                   <ListItemText secondary={row.title} />
                                 </ListItem>
                               );
