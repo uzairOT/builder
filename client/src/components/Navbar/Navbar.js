@@ -71,6 +71,7 @@ const Navbar = () => {
   const notificationsArr = useSelector(selectNotificationsArr);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { data, refetch } = useGetNotificationsQuery(userId);
+  const [expanded, setExpanded] = useState(null);
   const [updateNotificationRead] = useUpdateWorkOrderReadMutation();
   dispatch(setNotificationsArr(data?.data));
   console.log("JOHN NOTIFICATION TEST",anchorEl)
@@ -89,11 +90,7 @@ const Navbar = () => {
 
   const openNotification = Boolean(anchorEl);
   const noti_id = open ? "simple-popper" : undefined;
-  const {
-    data: notifications1,
-    isLoading,
-    isError,
-  } = useGetUserNotificationsQuery(userId);
+  
   const location = useLocation();
   const path = location.pathname.split("/")[1];
 
@@ -246,18 +243,22 @@ const Navbar = () => {
               </Badge>
             </IconButton>
             <Popper
-              style={{ zIndex: "100", backgroundColor:'white' }}
+              style={{ zIndex: "100", backgroundColor:'white', borderRadius: '14px' }}
               id={noti_id}
               open={openNotification}
               anchorEl={anchorEl}
+              placement="bottom-end"
             >
               {Array.isArray(notificationsArr) ? (
-                notificationsArr.map((notification) => (
+                notificationsArr.map((notification, index) => (
                   <Notification
                     key={notification.workOrder_id}
                     notification={notification}
                     refetch={refetch}
                     userId={userId}
+                    index={index}
+                    setExpanded={setExpanded}
+                    expanded={expanded}
                   ></Notification>
                 ))
               ) : (

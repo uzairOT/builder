@@ -15,6 +15,7 @@ import upload from "./assets/upload.png";
 import "../../../App.css";
 import { getPresignedUrl, uploadToS3 } from "../../../utils/S3";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 function AddImage({ handleOpen, handleClose, heading, type }) {
   const [open, setOpen] = useState(false);
@@ -24,7 +25,7 @@ function AddImage({ handleOpen, handleClose, heading, type }) {
   const [fileName, setFileName] = useState("");
   const [fileType, setFileType] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
-
+  const {id} = useParams()
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
@@ -93,8 +94,7 @@ function AddImage({ handleOpen, handleClose, heading, type }) {
       const fileUrl = await uploadFileToServer(selectedFile);
       const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
       const fileType = getFileType(heading);
-      const projectId = 204; // Replace with the actual projectId
-      const apiUrl = `http://192.168.0.106:8080/project/files/${projectId}`;
+      const apiUrl = `http://192.168.0.106:8080/project/files/${id}`;
       const requestBody = {
         fileUrl: uploadedFileUrl,
         fileType: fileType

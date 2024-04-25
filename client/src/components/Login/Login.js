@@ -18,12 +18,13 @@ import {
   Button,
   MenuItem,
   Select,
+  CircularProgress,
 } from "@mui/material";
 import builder1 from "../Signup/Assets/pngs/builderProYellowLogo.png";
 import downloadForMob from "../Signup/Assets/pngs/downloadForMob.png";
 import googlePlay from "../Signup/Assets/pngs/googlePlay.png";
 import appStore from "../Signup/Assets/pngs/appStore.png";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Circle, Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "../Signup/Assets/svgs/GoogleIcon.svg";
 
 import YellowBtn from "../UI/button";
@@ -133,15 +134,15 @@ const Login = () => {
   };
 
   const submitHandler = async (e) => {
-     e.preventDefault();
+    e.preventDefault();
     try {
       const res = await login({ email, password }).unwrap();
       console.log("login :", res);
       dispatch(setCredentials({ ...res }));
-       navigate("/");
+      navigate("/");
     } catch (err) {
       console.log(err);
-        toast.error(err?.data?.error || err.error ||err?.data?.message);
+      toast.error(err?.data?.error || err.error || err?.data?.message);
     }
   };
 
@@ -160,8 +161,27 @@ const Login = () => {
           <img src={downloadForMob} width={DoMobWidth} alt="" />
         </Box>
         <Box sx={googleAppImgsBox}>
-          <img src={googlePlay} width={widthValue} alt="" />
-          <img src={appStore} width={widthValue} alt="" />
+          <a
+            href="https://play.google.com/store/apps?hl=en&gl=US&pli=1"
+            target="blank"
+          >
+            {" "}
+            <img
+              src={googlePlay}
+              width={widthValue}
+              style={{ cursor: "pointer" }}
+              alt=""
+            />
+          </a>
+
+          <a href="https://www.apple.com/store" target="blank">
+            <img
+              src={appStore}
+              width={widthValue}
+              style={{ cursor: "pointer" }}
+              alt=""
+            />
+          </a>
         </Box>
       </Grid>
       <Grid
@@ -288,7 +308,13 @@ const Login = () => {
               onClick={submitHandler}
               type="submit"
             >
-              {isMobile ? "Login" : "Log in with Email"}
+              {isLoading ? (
+                <CircularProgress size={""} />
+              ) : isMobile ? (
+                "Login"
+              ) : (
+                "Log in with Email"
+              )}
             </Button>
             <Typography sx={accountLinkText}>
               Don’t have an account?{"\u00a0"}{" "}
@@ -358,8 +384,18 @@ const Login = () => {
           </Box>
         </Grid>
         <Box sx={googleAppImgsMobile}>
-          <img src={googlePlay} width={widthValue} alt="" />
-          <img src={appStore} width={widthValue} alt="" />
+          <img
+            src={googlePlay}
+            width={widthValue}
+            style={{ cursor: "pointer" }}
+            alt=""
+          />
+          <img
+            src={appStore}
+            width={widthValue}
+            style={{ cursor: "pointer" }}
+            alt=""
+          />
         </Box>
       </Grid>
     </Grid>
@@ -393,7 +429,7 @@ const SecondGrid = {
 };
 
 const downloadForMobBox = {
-  marginTop: "9rem",
+  marginTop: "3rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
   justifyContent: "center",
@@ -413,6 +449,7 @@ const googleAppImgsMobile = {
   alignItems: "center",
   marginTop: "1rem",
   gap: "1rem",
+  cursor: "pointer",
 };
 
 const formGridContainer = {

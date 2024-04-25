@@ -9,6 +9,7 @@ const WeatherView = ({dailyForecast, loading, error, userGreetings='Admin'}) => 
   //console.log(dailyForecast)
   const userInfo = useSelector(state => state.auth.userInfo)
   const firstName = userInfo?.user?.firstName;
+  console.log( '-------------------------------------------------------------', dailyForecast)
   return (
     <Stack direction={{xs:'column-reverse',xm:'column-reverse',md:'column-reverse', lg: 'column-reverse', xl:'row'}} spacing={2} padding={2}>
     <Box flex={2}>

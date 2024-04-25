@@ -44,12 +44,12 @@ const WorkOrderView = () => {
     const {requestWorkOrderData} = useGetRequestWorkOrderQuery(getUserIdFromLocalStorage());
   return (
     <Stack flex={1} pt={1} height={"100%"} >
-      <Paper style={{ ...themeStyle.borders, width: "99%", marginBottom:'4px', height: '100%' }}>
+      <Paper  style={{ ...themeStyle.borders, width: "99%", marginBottom:'4px', height: changeView ? '': '100%'}}>
         <Stack justifyContent={"flex-start"} height={"95%"}>
           {!changeView ? (
-           <Stack height={'475px'}>
+           <Stack height={{xl:'475px', lg:'450px', md:'450px', sm:'450px', xs:'400px'}}>
            <ProjectsChangeOrder workOrder={true} view={'Work Order'} setChangeView={setChangeView} />  
-           <Box height={'inherit'}>
+           <Box height={{xl:'455px', lg:'450px', md:'450px', sm:'450px', xs:'400px'}}>
             <TaskCalender dailyForecast={dailyForecast} eventsArr={events} isProjectPage={true} isDrawerOpen={true} />
            </Box>
            </Stack>

@@ -17,127 +17,72 @@ import CloseIcon from "@mui/icons-material/Close";
 import { ReactComponent as BuilderProNavbarShare } from "./assests/svgs/builder-pro-navbar-share.svg";
 import users from "./assests/data/users.json";
 import LinkIcon from "@mui/icons-material/Link";
-import { useGetProjectTeamQuery } from "../../../redux/apis/Project/projectApiSlice";
-import { useLocation } from "react-router-dom";
+import { useGetProjectTeamQuery } from '../../../redux/apis/Project/projectApiSlice';
+import {useLocation} from 'react-router-dom'
+import { useCheckUserOnInvitationMutation } from '../../../redux/apis/usersApiSlice';
+import { useAddAssignRoleMutation } from '../../../redux/apis/Admin/assignRoleApiSlice';
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
-const ProjectTeam = () => {
-  const [open, setOpen] = useState(null);
-  const [userType, setUserType] = useState("");
-  const openShare = Boolean(open);
-  const [email, setEmail] = useState("");
-  const location = useLocation();
-  const pathSegments = location.pathname.split("/");
-  const projectId = pathSegments[2];
-  //console.log(pathSegments)
-  const { data, isLoading } = useGetProjectTeamQuery(projectId);
-  const team = [
-    {
-      role: "Admin",
-      userId: 1,
-      firstName: "John",
-      lastName: "Doe",
-      email: "john.doe@example.com",
-      image: "https://example.com/profiles/john_doe.jpg",
-    },
-    {
-      role: "Admin",
-      userId: 2,
-      firstName: "Alice",
-      lastName: "Smith",
-      email: "alice.smith@example.com",
-      image: "https://example.com/profiles/alice_smith.jpg",
-    },
-    {
-      role: "Admin",
-      userId: 3,
-      firstName: "Michael",
-      lastName: "Johnson",
-      email: "michael.johnson@example.com",
-      image: "https://example.com/profiles/michael_johnson.jpg",
-    },
-    {
-      role: "Admin",
-      userId: 4,
-      firstName: "Sarah",
-      lastName: "Brown",
-      email: "sarah.brown@example.com",
-      image: "https://example.com/profiles/sarah_brown.jpg",
-    },
-    {
-      role: "Manager",
-      userId: 5,
-      firstName: "Jane",
-      lastName: "Smith",
-      email: "jane.smith@example.com",
-      image: "https://example.com/profiles/jane_smith.jpg",
-    },
-    {
-      role: "Manager",
-      userId: 6,
-      firstName: "Robert",
-      lastName: "Johnson",
-      email: "robert.johnson@example.com",
-      image: "https://example.com/profiles/robert_johnson.jpg",
-    },
-    {
-      role: "Manager",
-      userId: 7,
-      firstName: "Emma",
-      lastName: "Williams",
-      email: "emma.williams@example.com",
-      image: "https://example.com/profiles/emma_williams.jpg",
-    },
-    {
-      role: "Manager",
-      userId: 8,
-      firstName: "David",
-      lastName: "Miller",
-      email: "david.miller@example.com",
-      image: "https://example.com/profiles/david_miller.jpg",
-    },
-    {
-      role: "Developer",
-      userId: 9,
-      firstName: "Chris",
-      lastName: "Davis",
-      email: "chris.davis@example.com",
-      image: "https://example.com/profiles/chris_davis.jpg",
-    },
-    {
-      role: "Developer",
-      userId: 10,
-      firstName: "Jessica",
-      lastName: "Martinez",
-      email: "jessica.martinez@example.com",
-      image: "https://example.com/profiles/jessica_martinez.jpg",
-    },
-  ];
 
-  console.log(team);
-  const id = openShare ? "simple-popover" : undefined;
-  const groupedData = isLoading ? (
-    <>Loading...</>
-  ) : (
-    team?.reduce((acc, person) => {
-      acc[person.role] = acc[person.role] || [];
-      acc[person.role].push(person);
-      return acc;
-    }, {})
-  );
 
-  //console.log("team: ", team, "groupedData :", groupedData)
-  const handleShare = (e) => {
-    setOpen(e.currentTarget);
-  };
-  const handleClose = () => {
-    setOpen(null);
-  };
-  const handleUserTypeChange = (event) => {
-    setUserType(event.target.value);
-  };
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
+    const ProjectTeam = () => {
+        const [open, setOpen] = useState(null);
+        const [userType, setUserType] = useState("");
+        const openShare = Boolean(open);
+        const [email, setEmail] = useState('');
+        const location = useLocation();
+        const pathSegments = location.pathname.split('/')
+        const local = localStorage.getItem("userInfo");
+        const projectId = pathSegments[2];
+        const currentUser = JSON.parse(local);
+        const currentUserId = currentUser.user.id;
+        const [assignRolePost] = useAddAssignRoleMutation();
+        //console.log(pathSegments)
+        const {data, isLoading} = useGetProjectTeamQuery(projectId)
+        const team = data?.team
+        console.log(team)
+        const id = openShare ? "simple-popover" : undefined;
+        const groupedData = isLoading ?  <>Loading...</> :  team?.reduce((acc, person) => {
+          acc[person.role] = acc[person.role] || [];
+          acc[person.role].push(person);
+          return acc;
+        }, {});
+        
+        //console.log("team: ", team, "groupedData :", groupedData)
+        const handleShare = (e) => {
+            setOpen(e.currentTarget);
+          };
+          const handleClose = () => {
+            setOpen(null);
+          };
+          const handleUserTypeChange = (event) => {
+            setUserType(event.target.value);
+          };
+         const  handleEmailChange = (e) =>{
+            setEmail(e.target.value)
+          }
+          const handleInviteUser = async () => {
+            const userRole = userType;
+            const userId = currentUserId;
+            const companyName = currentUser.user.companyName;
+            const userInviteBody = { project: projectId, userRole, email, userId, companyName }
+            try {
+              if(userRole === ""){
+                toast.warning('Please Select Role.')
+                return false;
+              }
+              if(email === ""){
+                toast.warning('Please Enter An Email.')
+                return false;
+              }
+              const res = await assignRolePost(userInviteBody).unwrap();
+              console.log(res);
+              toast.info(res?.data?.message || res?.message);
+            } catch (error) {
+              toast.error(error?.data?.message)
+            }
+          }
   return (
     <Stack pl={{ xl: 5, lg: 5, md: 0 }}>
       <Stack direction={"row"} sx={{ justifyContent: "space-between" }}>
@@ -342,7 +287,7 @@ const ProjectTeam = () => {
               </Select>
             </FormControl>
           </Stack>
-          <BuilderProButton backgroundColor={"#FFAC00"} variant={"contained"}>
+          <BuilderProButton backgroundColor={"#FFAC00"} variant={"contained"} handleOnClick={handleInviteUser}>
             <Typography>Invite</Typography>
           </BuilderProButton>
         </Stack>
