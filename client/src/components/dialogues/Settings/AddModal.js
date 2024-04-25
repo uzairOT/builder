@@ -90,17 +90,15 @@ function AddModal({ title, open, onClose }) {
         companyName: currentUser.user.companyName,
       };
       //console.log(post);
-      const res = await assignRolePost(post);
+      const res = await assignRolePost(post).unwrap();
       console.log(res);
       toast.info(res?.data?.message);
       refetch();
-      if (res.error) {
-        toast.error(res?.error.data.error);
-      }
       action.resetForm();
       setImage(null);
     } catch (err) {
       //console.log(err);
+      toast.error(err.data.error);
     }
   };
 

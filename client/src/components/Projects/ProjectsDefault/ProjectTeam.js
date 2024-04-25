@@ -8,6 +8,10 @@ import users from './assests/data/users.json'
 import LinkIcon from "@mui/icons-material/Link";
 import { useGetProjectTeamQuery } from '../../../redux/apis/Project/projectApiSlice';
 import {useLocation} from 'react-router-dom'
+import { useCheckUserOnInvitationMutation } from '../../../redux/apis/usersApiSlice';
+import { useAddAssignRoleMutation } from '../../../redux/apis/Admin/assignRoleApiSlice';
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 
 
@@ -18,7 +22,11 @@ import {useLocation} from 'react-router-dom'
         const [email, setEmail] = useState('');
         const location = useLocation();
         const pathSegments = location.pathname.split('/')
+        const local = localStorage.getItem("userInfo");
         const projectId = pathSegments[2];
+        const currentUser = JSON.parse(local);
+        const currentUserId = currentUser.user.id;
+        const [assignRolePost] = useAddAssignRoleMutation();
         //console.log(pathSegments)
         const {data, isLoading} = useGetProjectTeamQuery(projectId)
         const team = data?.team
@@ -42,6 +50,27 @@ import {useLocation} from 'react-router-dom'
           };
          const  handleEmailChange = (e) =>{
             setEmail(e.target.value)
+          }
+          const handleInviteUser = async () => {
+            const userRole = userType;
+            const userId = currentUserId;
+            const companyName = currentUser.user.companyName;
+            const userInviteBody = { project: projectId, userRole, email, userId, companyName }
+            try {
+              if(userRole === ""){
+                toast.warning('Please Select Role.')
+                return false;
+              }
+              if(email === ""){
+                toast.warning('Please Enter An Email.')
+                return false;
+              }
+              const res = await assignRolePost(userInviteBody).unwrap();
+              console.log(res);
+              toast.info(res?.data?.message || res?.message);
+            } catch (error) {
+              toast.error(error?.data?.message)
+            }
           }
   return (
     <Stack pl={{xl:5,lg:5,md:0}} >
@@ -190,7 +219,7 @@ import {useLocation} from 'react-router-dom'
               </Select>
             </FormControl>
           </Stack>
-          <BuilderProButton backgroundColor={"#FFAC00"} variant={"contained"}>
+          <BuilderProButton backgroundColor={"#FFAC00"} variant={"contained"} handleOnClick={handleInviteUser}>
             <Typography>Invite</Typography>
           </BuilderProButton>
         </Stack>

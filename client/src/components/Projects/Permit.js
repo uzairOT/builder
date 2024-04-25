@@ -4,6 +4,7 @@ import { Grid, Paper, Box, Typography, Button, Avatar } from "@mui/material";
 import "../../App.css";
 import YellowBtn from "../UI/button";
 import AddImage from "../dialogues/AddImage/AddImage";
+import { useParams } from "react-router-dom";
 function Permit({ view, type }) {
   const objectFit = { objectFit: "none" };
   const permitsData = [
@@ -21,11 +22,12 @@ function Permit({ view, type }) {
   };
   const [RecentfileUrls, setRecentFilesUrls] = useState([]);
   const [OlderfileUrls, setOlderFilesUrls] = useState([]);
+  const {id} = useParams()
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.0.106:8080/project/files/${type}/204` 
+          `http://192.168.0.106:8080/project/files/${type}/${id}` 
         );
         //replace 123 with the project id
         // Assuming the response data is an array of file URLs
@@ -69,11 +71,11 @@ function Permit({ view, type }) {
           </Box>
           {/* Render avatars dynamically with image URLs */}
           {RecentfileUrls.map((url, index) => (
-            <Avatar
+            <img
               key={index}
               alt={`Avatar ${index + 1}`}
               src={url.fileUrl || placeholderImg} // Use the image URL or fallback to placeholder image
-              sx={themeStyle.AvatarBox} // Adjust size as needed
+              style={themeStyle.AvatarBox} // Adjust size as needed
             />
           ))}
         </Box>
@@ -172,7 +174,6 @@ const themeStyle = {
     borderRadius: "0.4rem",
     background: "none",
     width: "100px",
-    height: "100px",
     margin: "2rem 0.5rem",
     ObjectFit: "cover",
   },

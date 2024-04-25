@@ -59,10 +59,16 @@ function UpdateModal({
           userId: userId,
           superAdminId: currentUserId,
       }
-      const res = await assignRolePut(put);
-      refetch();
-      action.resetForm();
-      setImage(null);
+      try{
+
+        const res = await assignRolePut(put);
+        refetch();
+        toast.info(res?.data?.message);
+        action.resetForm();
+        setImage(null);
+      } catch(error){
+        toast.error(error.data.error);
+      }
   };
 
   const { handleBlur, handleChange, values, errors, touched, handleSubmit, isSubmitting, handleReset } = useFormik({
