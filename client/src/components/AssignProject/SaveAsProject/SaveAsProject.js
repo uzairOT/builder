@@ -11,14 +11,26 @@ import shallowButton from "../../UI/shallowButton";
 import "../../../App.css"
 import StepTitles from '../StepTitles/StepTitles';
 import ProjectFormFields from '../ProjectFormFields/ProjectFormFields';
+import { useSelector } from 'react-redux';
+import { selectProjectForm } from '../../../redux/slices/projectFormSlice';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function SaveAsProject({ onSaveStep, onNextStep , setIsSaveAs}) {
-
+  const { projectName, location, projectColor } = useSelector(selectProjectForm);
 
 
   const handleDone = () => {
+     if (projectName === "") {
+      toast.warning("Please enter project name");
+    } else if(projectColor === ''){
+      toast.warning("Please select project color");
+    } else if (location === "") {
+      toast.warning("Please enter project location");
+    } else{
 
-    onSaveStep();
-    setIsSaveAs(true)
+      onSaveStep();
+      setIsSaveAs(true)
+    }
     // onNextStep();
   };
 
@@ -37,7 +49,7 @@ function SaveAsProject({ onSaveStep, onNextStep , setIsSaveAs}) {
       <Box sx={buttonBox}>
         <Button
           variant="outlined"
-          sx={{ ...YellowBtn, ...shallowButton, ...responsiveDone }}
+          sx={{ ...YellowBtn, ...shallowButton, ...responsiveDone, width:'fit-content', margin: 'auto', }}
           onClick={handleDone}
         >
           Done

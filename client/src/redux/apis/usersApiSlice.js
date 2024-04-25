@@ -1,6 +1,6 @@
 import { apiSlice } from './apiSlice';
-const USERS_URL = 'http://3.135.107.71//user';
-const PROJECTS_URL = "http://3.135.107.71//project";
+const USERS_URL = 'http://3.135.107.71/user';
+const PROJECTS_URL = "http://3.135.107.71/project";
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -94,6 +94,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     resetPassword: builder.mutation({
       query: (data) => ({
+        url: `${USERS_URL}/resetPassword`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    resetProfilePassword: builder.mutation({
+      query: (data) => ({
         url: `${USERS_URL}/resetProfilePassword`,
         method: "POST",
         body: data,
@@ -123,5 +130,6 @@ export const {
   useVerifyOTPMutation,
   useResendOTPMutation,
   useResetPasswordMutation,
-  useCheckUserOnInvitationMutation
+  useCheckUserOnInvitationMutation,
+  useResetProfilePasswordMutation
 } = userApiSlice;

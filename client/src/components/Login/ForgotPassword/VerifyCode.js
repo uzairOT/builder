@@ -47,7 +47,7 @@ const VerifyCode = () => {
       toast.success("OTP matched successfully");
       navigate("/setnewpassword");
     } catch (err) {
-      toast.error(err?.data?.error || err.data.message);
+      toast.error(err?.data?.error || err.data.message|| err.error);
     }
   };
   const handleInputChange = (index, value) => {

@@ -29,7 +29,7 @@ function AssignProject() {
   const currentUser = JSON.parse(local);
   const currentUserId = currentUser?.user.id;
   const [projectType, setProjectType] = useState(null);
-  const { projectName, location } = useSelector(selectProjectForm);
+  const { projectName, location, projectColor } = useSelector(selectProjectForm);
   const [postExistingProject] = useExistingProjectMutation();
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate();
@@ -42,13 +42,20 @@ function AssignProject() {
         projectName: projectName,
       };
       const res = await postExistingProject(data);
-
+      
       if (res.data?.success) {
         setProjectType(value);
       } else {
         toast.error(res.error.data.message);
       }
+    } else if (projectName === "") {
+      toast.warning("Please enter project name");
+    } else if(projectColor === ''){
+      toast.warning("Please select project color");
+    } else if (location === "") {
+      toast.warning("Please enter project location");
     } else if (projectName !== "") {
+      
       setProjectType(value);
     }
   };

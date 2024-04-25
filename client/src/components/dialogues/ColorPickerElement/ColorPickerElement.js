@@ -30,6 +30,8 @@ import { yellow } from "@mui/material/colors";
 import { useDispatch,useSelector  } from 'react-redux';
 import { addPhase } from '../../../redux/slices/Project/projectInitialProposal'; 
 import {useParams} from 'react-router-dom';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ColorPickerElement({
   handleUpdateOpen,
@@ -80,6 +82,10 @@ function ColorPickerElement({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if(phaseName === ''){
+      toast.warning('Please enter a phase name')
+      return
+    }
     if (PhaseHeading === "Update Phase") {
       const updatedPhaseData = {
         phaseName,
@@ -102,7 +108,7 @@ function ColorPickerElement({
         projectId: adminProjectView ? id : projectId,
       };
       //console.log(data)
-      const res = await addProjectPhase(data).unwrap().then().catch(e=>{ alert(e.message)});
+      const res = await addProjectPhase(data).unwrap().then().catch(e=>{ toast.error(e.message || e.data.message || e.error)});
       //console.log('Response:', res.phase);
       setPhaseData((phaseData) => ({ ...phaseData, ...data }));
       //console.log(data);
@@ -144,6 +150,7 @@ function ColorPickerElement({
               variant="standard"
               value={phaseName}
               onChange={handlePhaseName}
+             
             />
             <Typography sx={typoText}>Select Color</Typography>
             <div className="custom-pointers example">

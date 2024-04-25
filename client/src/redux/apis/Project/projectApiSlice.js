@@ -1,6 +1,6 @@
 import { apiSlice } from "../apiSlice";
 
-const PROJECTS_URL = "http://3.135.107.71//project";
+const PROJECTS_URL = "http://3.135.107.71/project";
 const projectId = 47;
 
 const projectApiSlice = apiSlice.injectEndpoints({

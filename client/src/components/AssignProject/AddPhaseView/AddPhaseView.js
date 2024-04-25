@@ -49,7 +49,7 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
       try {
         //console.log("fetching data...");
         const response = await axios.get(
-          `http://3.135.107.71//project/getPhases/${id}`
+          `http://3.135.107.71/project/getPhases/${id}`
         );
         //console.log(response);
         dispatch(addPhase(response.data.phases));
@@ -60,7 +60,7 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
     } else {
       try {
         const response = await axios.get(
-          `http://3.135.107.71//project/getPhases/${projectId}`
+          `http://3.135.107.71/project/getPhases/${projectId}`
         );
         //console.log(response);
         dispatch(addPhase(response.data.phases));

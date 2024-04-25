@@ -301,7 +301,7 @@ const Login = () => {
               type="submit"
             >
               {isLoading ? (
-                <CircularProgress size={""} />
+                <CircularProgress size={"1.25rem"} />
               ) : isMobile ? (
                 "Login"
               ) : (

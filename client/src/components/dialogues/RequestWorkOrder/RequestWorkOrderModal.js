@@ -88,6 +88,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   let lineItemIds = [];
   let lineItemCounter = 0;
   let totalWorkOrder = 0;
+  console.log("START DATE", startDate);
+  console.log("START DATE",endDate);
 
   if(changeOrder){
 
@@ -216,6 +218,12 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
     }
   };
   
+  useEffect(()=>{
+    setSubject(checkedRow?.subject)
+    setDescription(checkedRow?.description)
+    setStartDate(moment(checkedRow?.start_day))
+    setEndDate(moment(checkedRow?.end_day))
+  }, [checkedRow])
 
   const handleRequest = async () => {
     const formattedStartDate = startDate.format("MMM D, YYYY, h:mm a");
