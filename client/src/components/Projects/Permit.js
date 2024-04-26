@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Grid, Paper, Box, Typography, Button, Avatar } from "@mui/material";
+import {Box, Typography, Button, Avatar } from "@mui/material";
 import "../../App.css";
-import YellowBtn from "../UI/button";
 import AddImage from "../dialogues/AddImage/AddImage";
 import { useParams } from "react-router-dom";
 function Permit({ view, type }) {
-  const objectFit = { objectFit: "none" };
-  const permitsData = [
-    { type: "Recent", count: "4" },
-    { type: "Last Week", count: "16" },
-  ];
-  const img = `https://source.unsplash.com/random/100x100`;
   const placeholderImg = `https://source.unsplash.com/random/100x100`;
   const [open, setOpen] = useState(false);
   const handleOpen = () => {

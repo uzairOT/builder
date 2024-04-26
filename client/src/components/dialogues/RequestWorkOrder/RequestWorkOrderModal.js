@@ -4,32 +4,24 @@ import {
   Button,
   Divider,
   FormControl,
-  FormControlLabel,
   Modal,
-  Radio,
-  RadioGroup,
   Stack,
   Typography,
   Select,
   MenuItem,
-  TextField,
   Checkbox,
-  FormGroup,
   ListItem,
   ListItemText,
   List,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-import AddIcon from "@mui/icons-material/Add";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Avatarimg from "../Assets/pngs/woman.png";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import moment from "moment";
@@ -48,8 +40,6 @@ import {
 } from "../../../redux/slices/Events/eventsSlice";
 import { useGetTeamMembersQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { useLocation } from "react-router-dom";
-import socketIOClient from "socket.io-client";
-import { setNotifications } from "../../../redux/slices/Notifications/notificationSlice";
 import useSocket from "../../../utils/useSocket";
 
 const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
@@ -59,7 +49,6 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
   const [showLineItems, setShowLineItems] = useState(false);
-  const { addPhase } = useSelector(selectAddPhase);
   const [priority, setPriority] = useState("urgent");
   const [status, setStatus] = useState("pending");
   const [subject, setSubject] = useState(
@@ -113,25 +102,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
       
     });
   }
-  
-  console.log('final lineItemCount: ', lineItemCounter)
-  // });
-  const ENDPOINT = "http://192.168.0.106:8080";
-  //test new workd order
-
-  // Object?.values(rowCheckboxes)?.forEach((phaseData) => {
-  //   const lineItemGroup = {
-  //     phaseId: phaseData.id,
-  //     lineItemId: phaseData.rows.map((row) => row.id),
-  //   };
-  //   lineItemIds.push(lineItemGroup);
-  // });
-  //tes end..
-  //console.log(assignedCheckboxes);
-  const [requestWorkOrderPut] = useRequestWorkOrderMutation();
-
-  console.log("checkedRow--------------->", checkedRow);
-  console.log("selectedItems--------------->", selectedItems);
+ 
   const isButtonDisabled = Object?.keys(rowCheckboxes)?.length === 0;
   const handleNotesChange = (e) => {
     setNotes(e.target.value);
@@ -146,21 +117,14 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const handlePriorityChange = (event) => {
     setPriority(event.target.value);
   };
-  const handleStatusChange = (event) => {
-    setStatus(event.target.value);
-  };
+
   const handleSubjectChange = (event) => {
     setSubject(event.target.value);
   };
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
   };
-  const handlePhaseRadioChange = (event) => {
-    setPhase(event.target.value);
-  };
-  const handleLineItemRadioChange = (event) => {
-    setLineItems(event.target.value);
-  };
+
 
   const handlePhaseChange = (phaseId) => {
     const existingPhase = selectedItems.find(item => item.phaseId === phaseId);

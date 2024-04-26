@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid, Button, Stack, Typography } from "@mui/material";
+import { Grid, Button, Stack, Typography } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import PhaseCard from "../AddPhaseCard/AddPhaseCard";
 import actionButton from "../../UI/actionButton";
-import ColorPickerElement from "../../dialogues/ColorPickerElement/ColorPickerElement";
 import { useDeleteProjectPhaseMutation } from "../../../redux/apis/Project/projectApiSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetPhasesQuery } from "../../../redux/apis/Project/projectApiSlice";
 import UpdatePhaseDialogue from "../../dialogues/UpdatePhaseDialogue/UpdatePhaseDialogue";
 import AddPhaseDialogue from "../../dialogues/AddPhaseDialogue/AddPhaseDialogue";
 import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
 import RequestWorkOrderModal from "../../dialogues/RequestWorkOrder/RequestWorkOrderModal";
 import {
   selectAddPhase,
-  setRowCheckbox,
 } from "../../../redux/slices/addPhaseSlice";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -25,16 +22,11 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
   const [cardPhase, setCardPhase] = useState([]);
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
   const [selectedPhaseData, setSelectedPhaseData] = useState(null);
-  const local = localStorage.getItem("userInfo");
   const { id } = useParams();
-  const currentUser = JSON.parse(local);
-  // //console.log("Add PhaseView:", currentUser);
   const [deleteProjectPhase] = useDeleteProjectPhaseMutation();
   const phases = useSelector((state) => state.projectInitialProposal.phases);
-  // const  [getPhases  { data, error, isLoading}] = useGetPhasesQuery({projectId: projectId});
   const [showUpdatePhaseDialogue, setShowUpdatePhaseDialogue] = useState(false);
   const [showAddPhaseDialogue, setShowAddPhaseDialogue] = useState(false);
-  const { rowCheckbox } = useSelector(selectAddPhase);
   const [rowCheckboxes, setRowCheckboxes] = useState({}); // State to track the checked state of each checkbox in the table rows
 
   const dispatch = useDispatch();
@@ -219,7 +211,6 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
     setShowUpdatePhaseDialogue(false);
      fetchData();
   };
-  // //console.log(phases)
   return (
     <Grid container sx={{...firstGrid,width:"97%"}}>
       <Stack direction={"row"} justifyContent={"space-between"} sx={{width:"100%"}}>
@@ -343,7 +334,7 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
             textAlign: "center",
           }}
         >
-          No data available
+         No Phases Available
         </div>
       )}
       {showUpdatePhaseDialogue && (
