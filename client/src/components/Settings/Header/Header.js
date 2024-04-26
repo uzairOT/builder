@@ -85,7 +85,7 @@ function Header({ title, OpenAddModal }) {
           height="38px"
           borderRadius="50px"
         />
-
+{/* 
         <Button
           buttonText="Block"
           color="#ffffff"
@@ -93,7 +93,7 @@ function Header({ title, OpenAddModal }) {
           width="80px"
           height="38px"
           borderRadius="50px"
-        />
+        /> */}
       </Hidden>
       </Box>
     </Box>

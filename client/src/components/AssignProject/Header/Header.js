@@ -4,6 +4,7 @@ import { Box, Grid, Button, useMediaQuery } from "@mui/material";
 
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import builder1 from "../../Signup/Assets/pngs/builderProYellowLogo.png";
+import { useNavigate } from "react-router-dom";
 
 function Header({ step, gap, handlePreviousStep }) {
   //console.log("Header step: ", step);
@@ -11,30 +12,35 @@ function Header({ step, gap, handlePreviousStep }) {
   const isTab = useMediaQuery("(max-width:900px)");
   const isMd = useMediaQuery("(max-width:1200px)");
   const imgWidth = isMd ? "18%" : "12%";
-
+  const navigate = useNavigate();
   const buttonStyle = {
     height: "50%",
     marginTop: { lg: "2rem", sm: "2rem", xs: "0rem" },
     fontFamily: "Inter",
-    color: step === 1 ? 'gray' : ''
+    color: step === 1 ? "gray" : "",
   };
 
   const handleStep = () => {
-    if(step === 1){
-      return
-    }else{
-
+    if (step === 1) {
+      return;
+    } else {
       handlePreviousStep();
     }
   };
-
+  const handleLogoClcik = () => {
+    navigate("/");
+  };
   return (
     <div>
       <Grid item lg={12} sx={firstGrid}>
         {isMobile ? (
           <>
-            <Box display={"flex"} flexDirection={"row"}>
-              <Box sx={mobileImageBox}  >
+            <Box
+              display={"flex"}
+              flexDirection={"row"}
+              onClick={handleLogoClcik}
+            >
+              <Box sx={mobileImageBox}>
                 <img src={builder1} width={"45%"} alt="" />
               </Box>
               {/* <Box sx={mobileButtonBox}>
@@ -50,7 +56,11 @@ function Header({ step, gap, handlePreviousStep }) {
             </Box>
           </>
         ) : (
-          <Box sx={headerBox} gap={gap}>
+          <Box
+            sx={{ ...headerBox, cursor: "pointer" }}
+            gap={gap}
+            onClick={handleLogoClcik}
+          >
             <img src={builder1} width={imgWidth} alt="" />
             {/* <Button
               sx={buttonStyle}
@@ -94,6 +104,5 @@ const headerBox = {
   display: "flex",
   justifyContent: "space-between",
 };
-
 
 export default Header;

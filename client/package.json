@@ -16,6 +16,7 @@
     "@testing-library/user-event": "^13.5.0",
     "apexcharts": "^3.45.2",
     "axios": "^1.6.7",
+    "compress-create-react-app": "^1.4.5",
     "formik": "^2.4.5",
     "gapi-script": "^1.2.0",
     "react": "^18.2.0",
@@ -39,10 +40,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && compress-cra",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "analyze": "webpack-bundle-analyzer build-stats.json"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -63,8 +63,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "webpack-bundle-analyzer": "^4.10.2"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   },
   "moduleAliases": {
     "@mui/styled-engine": "@mui/styled-engine-sc"

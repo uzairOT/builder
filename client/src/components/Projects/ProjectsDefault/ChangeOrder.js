@@ -49,7 +49,7 @@ const ChangeOrder = ({value}) => {
         </TableHead>
         <TableBody style={{ paddingLeft: "4px", paddingRight: "4px" }}>
           {data?.data?.workOrderReqs.map((row,index) => { 
-            if(value === 0 && row.status === 'pending') {
+            if(value === 1 && row.status === 'pending') {
             return(
             <TableRow key={row.id}>
               {/* <TableCell sx={themeStyle.tableBody}>{index+1}.</TableCell> */}
@@ -62,7 +62,7 @@ const ChangeOrder = ({value}) => {
               <TableCell sx={themeStyle.tableBody}>{row.priority}</TableCell>
             </TableRow>
           )}
-            if(value === 1 && row.status === 'approved') {
+            if(value === 0 && row.status === 'approved') {
             return(
             <TableRow key={row.id}>
               {/* <TableCell sx={themeStyle.tableBody}>{index+1}.</TableCell> */}

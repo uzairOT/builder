@@ -21,9 +21,9 @@ const WorkOrderView = () => {
       <Paper  style={{ ...themeStyle.borders, width: "99%", marginBottom:'4px', height: changeView ? '': '100%'}}>
         <Stack justifyContent={"flex-start"} height={"95%"}>
           {!changeView ? (
-           <Stack height={{xl:'475px', lg:'450px', md:'450px', sm:'450px', xs:'400px'}}>
+           <Stack height={{xl:'50vh', lg:'50vh', md:'50vh', sm:'50vh', xs:'50vh'}}>
            <ProjectsChangeOrder workOrder={true} view={'Work Order'} setChangeView={setChangeView} />  
-           <Box height={{xl:'455px', lg:'450px', md:'450px', sm:'450px', xs:'400px'}}>
+           <Box height={'inherit'}>
             <TaskCalender dailyForecast={dailyForecast} eventsArr={events} isProjectPage={true} isDrawerOpen={true} />
            </Box>
            </Stack>

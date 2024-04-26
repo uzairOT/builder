@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 export default function MyApp() {
   const theme = useTheme();
   const isXs = theme.breakpoints.down("xs");
-  const [resetPassword] = useResetProfilePasswordMutation();
+  const [resetPassword, {isLoading}] = useResetProfilePasswordMutation();
   const user = useSelector((state) => state.auth.userInfo);
   const [checked, setChecked] = useState(true);
   
@@ -27,30 +27,49 @@ export default function MyApp() {
     },
   }
 
+  // const handleSubmit = async () => {
+  //   if(!passwordMatch){
+  //     toast.error("Passwords don't match!");
+  //     return false
+  //   } else {
+  //   const resetBody = {
+  //     oldPassword: currentPassword,
+  //     newPassword: newPassword,
+  //     confirmPassword: confrimPassword,
+  //     userId: user.user.id,
+  //   } 
+  //  const res = await resetPassword(resetBody);
+  //  console.log(res);
+  //  if(res?.error){
+  //   toast.error(res.error.data.message);
+  //   return false
+  //  }
+  //  if(res?.data?.success){
+  //   toast.info(res.data.message);
+  //   return false
+  //  }
+  //   }
+  // }
+   
   const handleSubmit = async () => {
     if(!passwordMatch){
       toast.error("Passwords don't match!");
       return false
     } else {
-    const resetBody = {
+ try {   const resetBody = {
       oldPassword: currentPassword,
       newPassword: newPassword,
       confirmPassword: confrimPassword,
       userId: user.user.id,
     } 
-   const res = await resetPassword(resetBody);
-   console.log(res);
-   if(res?.error){
-    toast.error(res.error.data.message);
-    return false
-   }
-   if(res?.data?.success){
-    toast.info(res.data.message);
-    return false
-   }
+   const res = await resetPassword(resetBody).unwrap();
+   toast.success("Profile updated successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message || error.error||error?.data?.error );
     }
-  }
-  
+  } }
+
   return (
     <div>
       {/* Password Section */}
@@ -196,6 +215,7 @@ export default function MyApp() {
             height="38px"
             borderRadius="50px"
             onClick={handleSubmit}
+            isLoading={isLoading}
           />
 
           <Button

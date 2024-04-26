@@ -37,7 +37,7 @@ const Login = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
 
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
-  const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
+  const widthValue = isSM ? "35%" : isMD ? "70%" : "100%";
 
   const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
   const linkResponsiveColor = { color: isMobile ? "#FFAC00" : "#4C8AB1" };
@@ -399,7 +399,7 @@ const firstGrid = {
     xl: "3rem 3rem 0rem 3rem",
     lg: "1.19rem 3rem 0rem 3rem",
     md: "2rem 2rem",
-    sm: "1rem 2rem",
+    sm: "0rem 2rem",
     xs: "0rem 0rem 0rem 0rem",
   },
   backgroundColor: "#4C8AB1",
@@ -432,7 +432,7 @@ const googleAppImgsBox = {
   justifyContent: "center",
   alignItems: "center",
   marginTop: "3rem",
-  marginLeft: { lg: "0rem", md: "-3rem", sm: "-3rem" },
+  marginLeft: { lg: "3rem", md: "3rem", sm: "3rem" },
   gap: "1rem",
 };
 const googleAppImgsMobile = {

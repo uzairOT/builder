@@ -112,7 +112,7 @@ function CustomTable({
             <TableCell sx={tableCellStyle}>Job/Project</TableCell>
             <TableCell sx={tableCellStyle}>Phone Number</TableCell>
             <TableCell sx={tableCellStyle}>Email</TableCell>
-            <TableCell sx={tableCellStyle}>Country</TableCell>
+            {/* <TableCell sx={tableCellStyle}>Country</TableCell> */}
             {/* <TableCell sx={tableCellStyle}>Project Status</TableCell> */}
             {showEmailAndRecords && (
               <TableCell sx={tableCellStyle}>
@@ -137,7 +137,7 @@ function CustomTable({
                   {row.phoneNumber}
                 </TableCell>
                 <TableCell sx={tableCellValueStyle}>{row.email}</TableCell>
-                <TableCell sx={tableCellValueStyle}>{row.country}</TableCell>
+                {/* <TableCell sx={tableCellValueStyle}>{row.country}</TableCell> */}
                 {/* <TableCell sx={tableCellValueStyle}>
                   {" "}
                   <Button

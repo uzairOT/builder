@@ -430,7 +430,7 @@ function AddLineElement({
                   </Box>
                 </Box>
               </Box>
-              <Typography sx={typoText}>Description</Typography>
+              <Typography sx={typoText}>Notes</Typography>
               <TextField
                 sx={{ ...inputStyle, height: "5rem" }}
                 required

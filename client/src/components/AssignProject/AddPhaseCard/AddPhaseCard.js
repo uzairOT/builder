@@ -177,7 +177,6 @@ const AddPhaseCard = ({
     width: "100%", // Allow the table to take up the entire available width
     overflowY: "auto",
     height: "245px",
-    overflowX: { md: "auto" },
     // Add horizontal scrollbar when needed
   };
 
@@ -330,7 +329,7 @@ const AddPhaseCard = ({
 
           <hr style={hrLine} />
           <Box
-            sx={{ ...tableContainerStyle, marginLeft: "0rem", width: "100%" }}
+            sx={{ ...tableContainerStyle, marginLeft: "0rem", width: "100%", ...scrollable }}
           >
             <Table sx={{ width: "100%" }}>
               <TableHead sx={{ width: "100%" }}>
@@ -437,13 +436,23 @@ const AddPhaseCard = ({
     </div>
   );
 };
-const approvalButton = {
-  background: "#FFAC00",
-  padding: "1rem 0.5rem",
-};
-const displayButton = {
-  display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-};
+const scrollable = {
+
+    scrollbarWidth: 'none',  // For Firefox
+    '-ms-overflow-style': 'none',  // For IE and Edge
+    '&::-webkit-scrollbar': {
+        width: '6px'
+    },
+    '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'transparent',
+        transition: 'background-color 0.3s',
+    },
+    '&:hover::-webkit-scrollbar-thumb': {
+        backgroundColor: '#ddd',
+    },
+    overflowY: 'scroll'
+
+}
 const firstGrid = {
   display: "flex",
   flexDirection: "column",

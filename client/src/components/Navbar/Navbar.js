@@ -243,7 +243,7 @@ const Navbar = () => {
               placement="bottom-end"
             >
               {Array.isArray(notificationsArr) ? (
-                notificationsArr.map((notification, index) => (
+                notificationsArr?.map((notification, index) => (
                   <Notification
                     key={notification.workOrder_id}
                     notification={notification}

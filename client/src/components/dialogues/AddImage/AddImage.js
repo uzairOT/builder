@@ -9,6 +9,7 @@ import {
   DialogTitle,
   Box,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
 import upload from "./assets/upload.png";
@@ -16,20 +17,25 @@ import "../../../App.css";
 import { getPresignedUrl, uploadToS3 } from "../../../utils/S3";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
-function AddImage({ handleOpen, handleClose, heading, type }) {
+function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState(null);
   const objectFit = { objectFit: image ? "cover" : "none" };
   const dotBorder = { border: image ? "none" : "2px dashed #D9D9D9" };
   const [fileName, setFileName] = useState("");
   const [fileType, setFileType] = useState("");
+  const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState("");
-  const {id} = useParams()
+  const { id } = useParams();
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
-        const res = await axios.post("http://3.135.107.71/project/file", { fileName, fileType });
+        const res = await axios.post("http://3.135.107.71/project/file", {
+          fileName,
+          fileType,
+        });
         return res.data.data.url;
       } catch (error) {
         console.error("Error uploading file:", error);
@@ -83,12 +89,13 @@ function AddImage({ handleOpen, handleClose, heading, type }) {
   };
 
   const handleSubmit = async (event) => {
-    if (!selectedFile) {
-      alert("Please select a file");
-      return;
-    }
     event.preventDefault();
+    if (!selectedFile) {
+      toast.warning("Please select a file");
+      return false;
+    }
     try {
+      setLoading(true);
       const formData = new FormData(event.currentTarget);
       const formJson = Object.fromEntries(formData.entries());
       const fileUrl = await uploadFileToServer(selectedFile);
@@ -97,25 +104,33 @@ function AddImage({ handleOpen, handleClose, heading, type }) {
       const apiUrl = `http://3.135.107.71/project/files/${id}`;
       const requestBody = {
         fileUrl: uploadedFileUrl,
-        fileType: fileType
+        fileType: fileType,
       };
-      const response = await axios.post(apiUrl, requestBody);
+      const response = await axios
+        .post(apiUrl, requestBody)
+        .then()
+        .finally(() => {
+          setLoading(false);
+          handleClickClose();
+          fetchData();
+        });
       if (response.status !== 200) {
-        throw new Error('Failed to save file URL');
+        throw new Error("Failed to save file URL");
       }
+      
     } catch (error) {
-      console.error('Error:', error.message);
+      console.error("Error:", error.message);
     }
   };
 
   const getFileType = (heading) => {
     const lowerCaseHeading = heading.toLowerCase();
-    if (lowerCaseHeading.includes('images')) {
-      return 'image';
-    } else if (lowerCaseHeading.includes('drawing')) {
-      return 'drawing';
-    } else if (lowerCaseHeading.includes('permit')) {
-      return 'permit';
+    if (lowerCaseHeading.includes("images")) {
+      return "image";
+    } else if (lowerCaseHeading.includes("drawing")) {
+      return "drawing";
+    } else if (lowerCaseHeading.includes("permit")) {
+      return "permit";
     }
     return null;
   };
@@ -180,8 +195,13 @@ function AddImage({ handleOpen, handleClose, heading, type }) {
           <Button
             sx={{ ...actionButton, ...themeStyle.sendButton }}
             type="submit"
+            disabled={loading}
           >
-            Send
+            {loading ? (
+              <CircularProgress size={"20px"} sx={{ color: "white" }} />
+            ) : (
+              "Send"
+            )}
           </Button>
         </DialogActions>
       </Dialog>

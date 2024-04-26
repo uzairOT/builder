@@ -50,10 +50,10 @@ function AssignProject() {
       }
     } else if (projectName === "") {
       toast.warning("Please enter project name");
-    } else if(projectColor === ''){
-      toast.warning("Please select project color");
-    } else if (location === "") {
+    }  else if (location === "") {
       toast.warning("Please enter project location");
+    }else if(projectColor === ''){
+      toast.warning("Please select project color");
     } else if (projectName !== "") {
       
       setProjectType(value);
