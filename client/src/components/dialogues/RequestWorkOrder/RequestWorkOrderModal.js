@@ -145,21 +145,21 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const handlePriorityChange = (event) => {
     setPriority(event.target.value);
   };
-  const handleStatusChange = (event) => {
-    setStatus(event.target.value);
-  };
+  // const handleStatusChange = (event) => {
+  //   setStatus(event.target.value);
+  // };
   const handleSubjectChange = (event) => {
     setSubject(event.target.value);
   };
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
   };
-  const handlePhaseRadioChange = (event) => {
-    setPhase(event.target.value);
-  };
-  const handleLineItemRadioChange = (event) => {
-    setLineItems(event.target.value);
-  };
+  // const handlePhaseRadioChange = (event) => {
+  //   setPhase(event.target.value);
+  // };
+  // const handleLineItemRadioChange = (event) => {
+  //   setLineItems(event.target.value);
+  // };
 
   const handlePhaseChange = (phaseId) => {
     const existingPhase = selectedItems.find(item => item.phaseId === phaseId);
@@ -532,7 +532,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                             }
                           });
                         })}
-                         <ListItem style={{padding:0, justifyContent:'end'}}>
+                         <ListItem style={{padding:0}}>
                               <Button
                                 style={{padding:0, textTransform: 'lowercase'}}
                                 variant="text"

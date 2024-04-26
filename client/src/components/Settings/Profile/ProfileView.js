@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Grid, Typography, TextField } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import AvatarImg from "../../../assets/settings/UploadProfileIcon.png";
@@ -9,38 +9,44 @@ import { uploadToS3 } from "../../../utils/S3";
 import { useUpdateProfileMutation } from "../../../redux/apis/usersApiSlice";
 import { setCredentials } from "../../../redux/slices/authSlice";
 import { Textarea } from "@mui/joy";
-
+import {  useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ProfileView() {
   const user = useSelector((state) => state.auth.userInfo);
-  const [fileName,setFileName] = useState("")
-const [fileType,setFileType] = useState("")
-const [selectedFile,setSelectedFile] = useState("")
-const [image, setImage] = useState(user ?  user.user.image : null);
-const [updateProfile] = useUpdateProfileMutation()
-const dispatch = useDispatch();
-const uploadFileToServer = async (selectedFile) => {
-  if (selectedFile) {
-    try {
-      const res = await axios.post("http://3.135.107.71/project/file",{fileName,fileType});
-      //console.log(res);
-      return res.data.data.url;
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      // Handle error
+  const [fileName, setFileName] = useState("");
+  const [fileType, setFileType] = useState("");
+  const [selectedFile, setSelectedFile] = useState("");
+  const [image, setImage] = useState(user ? user.user.image : null);
+  const navigate = useNavigate();
+  const [updateProfile, {isLoading}] = useUpdateProfileMutation();
+  const dispatch = useDispatch();
+  const uploadFileToServer = async (selectedFile) => {
+    if (selectedFile) {
+      try {
+        const res = await axios.post("http://3.135.107.71/project/file", {
+          fileName,
+          fileType,
+        });
+        //console.log(res);
+        return res.data.data.url;
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        // Handle error
+      }
     }
-  }
-};
-const [formData, setFormData] = useState({
-  firstName: `${user.user.firstName}`,
-  lastName: `${user.user?.lastName}`,
-  email: user.user.email,
-  phoneNumber: user.user.phoneNumber,
-  address: "your address here",
-  userId: user.user.id,
-});
+  };
+  const [formData, setFormData] = useState({
+    firstName: `${user.user.firstName}`,
+    lastName: `${user.user?.lastName}`,
+    email: user.user.email,
+    phoneNumber: user.user.phoneNumber,
+    address: "your address here",
+    userId: user.user.id,
+  });
 
-console.log(formData);
+  console.log(formData);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -63,7 +69,7 @@ console.log(formData);
     const file = e.dataTransfer.files[0];
     setFileName(file.name);
     setFileType(file.type);
-    setSelectedFile(file)
+    setSelectedFile(file);
     previewImage(file);
   };
 
@@ -72,12 +78,12 @@ console.log(formData);
     //console.log(file)
     setFileName(file.name);
     setFileType(file.type);
-    setSelectedFile(file)
+    setSelectedFile(file);
     const reader = new FileReader();
     reader.onloadend = () => {
       setImage(reader.result);
     };
-    setImage(file)
+    setImage(file);
     if (file) {
       reader.readAsDataURL(file);
     }
@@ -86,18 +92,44 @@ console.log(formData);
     try {
       const fileUrl = await uploadFileToServer(selectedFile);
       const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
-      const put = {
-      ...formData,
-      image: uploadedFileUrl
+      if (uploadedFileUrl) {
+        const put = {
+          ...formData,
+          image: uploadedFileUrl,
+        };
+        const res = await updateProfile(put);
+        localStorage.setItem("userInfo", JSON.stringify(res.data));
+        dispatch(setCredentials(res.data));
+        toast.success("Profile updated successfully");
+      } else {
+        const put = {
+          ...formData,
+          image: user.user.image,
+        };
+        const res = await updateProfile(put);
+        localStorage.setItem("userInfo", JSON.stringify(res.data));
+        dispatch(setCredentials(res.data));
+        toast.success("Profile updated successfully");
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || error.error||error?.data?.error );
     }
-    const res = await updateProfile(put);
-    localStorage.setItem('userInfo', JSON.stringify(res.data))
-    dispatch(setCredentials(res.data))
-   
-  } catch (err) {
-    //console.log(err);
-  }
-  }
+  };
+  const handleReset = () => {
+    setFormData({
+      firstName: `${user.user.firstName}`,
+      lastName: `${user.user?.lastName}`,
+      email: user.user.email,
+      phoneNumber: user.user.phoneNumber,
+      address: "your address here",
+      userId: user.user.id,
+    });
+  };
+  useEffect(() => {
+    if(selectedFile !== ""){
+      handleSubmit();
+    }
+  }, [selectedFile]);
   return (
     <Box sx={{ mb: 2 }}>
       <Grid container spacing={2}>
@@ -108,12 +140,12 @@ console.log(formData);
                 Profile
               </Typography>
             </Grid>
-  
+
             <Grid item xs={12}>
               <Typography>First Name</Typography>
               <TextField
-                name="fullName"
-                placeholder="Please enter your full name"
+                name="firstName"
+                placeholder="Please enter your first name"
                 value={formData.firstName}
                 onChange={handleChange}
                 fullWidth
@@ -175,6 +207,7 @@ console.log(formData);
                 height="38px"
                 borderRadius="50px"
                 onClick={handleSubmit}
+                isLoading={isLoading}
               />
               <Button
                 buttonText="Reset"
@@ -184,6 +217,7 @@ console.log(formData);
                 height="38px"
                 borderRadius="50px"
                 fontSize={"13px"}
+                onClick={handleReset}
               />
             </Grid>
           </Grid>
@@ -193,7 +227,7 @@ console.log(formData);
             <Typography variant="subtitle1" sx={changeProfile}>
               Your Profile Picture
             </Typography>
-            <div 
+            <div
               onDragOver={(e) => e.preventDefault()}
               onDragEnter={(e) => e.preventDefault()}
               onDrop={handleDrop}
@@ -251,16 +285,16 @@ console.log(formData);
                 {formData.phoneNumber}
               </Typography>
             </Box>
-            <Box>
+            {/* <Box>
               <Typography variant="body1" sx={TextStyle}>
                 Address:
               </Typography>
               <Typography variant="body1" sx={ValueStyle}>
                 {formData.address}
               </Typography>
-            </Box>
-  
-            <Box sx={{ textAlign: "center", mt: 15 }}>
+            </Box> */}
+
+            {/* <Box sx={{ textAlign: "center", mt: 15 }}>
               <Button
                 buttonText="Delete Profile"
                 color="#E03535"
@@ -270,13 +304,12 @@ console.log(formData);
                 borderRadius="50px"
                 fontSize={"13px"}
               />
-            </Box>
+            </Box> */}
           </Box>
         </Grid>
       </Grid>
     </Box>
   );
-  
 }
 
 export default ProfileView;
@@ -303,7 +336,6 @@ const textAreaStyle = {
   border: "1px solid #E0E4EC",
   padding: "10px",
   height: "135px",
-  height: "135px",
   "&:focus": {
     outline: "none", // Remove the default focus outline
     borderColor: "#1a73e8", // Example color for focused state
@@ -316,17 +348,18 @@ const TextStyle = {
   fontFamily: "GT Walsheim Trial",
   fontWeight: 400,
   marginBottom: "8px",
-  fontFamily: "Manrope, sans-serif",
-  fontWeight: "500",
+  fontSize: "1.2rem",
+
 };
 const ValueStyle = {
-  whiteSpace: "nowrape",
+  whiteSpace: "nowrap",
   color: "#535353C9",
-  display: "inline-block",
-  width: 100,
+  display: "flex",
   fontFamily: "GT Walsheim Trial",
   fontWeight: 400,
   marginBottom: "8px",
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
 };
 const Profile = {
   marginTop: "20px",

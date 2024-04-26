@@ -60,10 +60,10 @@ function Notification({ notification, refetch, userId, index, setExpanded, expan
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Avatar src={`${notification.User.image}`} alt="User Avatar" />
+          <Avatar src={`${notification.WorkOrderReq.User.image}`} alt="User Avatar" />
 
           <Typography fontFamily={"inherit"} fontSize={"12px"}>
-            {notification.User.firstName} &nbsp;
+            {notification.WorkOrderReq.User.firstName} &nbsp;
           </Typography>
 
           <Typography fontFamily={"inherit"} fontSize={"12px"}>

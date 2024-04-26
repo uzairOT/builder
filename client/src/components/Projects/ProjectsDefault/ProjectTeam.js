@@ -83,7 +83,7 @@ import "react-toastify/dist/ReactToastify.css";
             }
           }
   return (
-    <Stack pl={{ xl: 5, lg: 5, md: 0 }}>
+    <Stack pl={{ xl: 5, lg: 5, md: 1 }}>
       <Stack direction={"row"} sx={{ justifyContent: "space-between" }}>
         <Typography sx={themeStyle.title}>Project Team</Typography>
         <BuilderProButton

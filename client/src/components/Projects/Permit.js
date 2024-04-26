@@ -23,25 +23,26 @@ function Permit({ view, type }) {
   const [RecentfileUrls, setRecentFilesUrls] = useState([]);
   const [OlderfileUrls, setOlderFilesUrls] = useState([]);
   const {id} = useParams()
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `http://3.135.107.71/project/files/${type}/${id}` 
+      );
+      //replace 123 with the project id
+      // Assuming the response data is an array of file URLs
+      setRecentFilesUrls(response.data.recentFiles);
+      setOlderFilesUrls(response.data.olderFiles);
+    } catch (error) {
+      console.error("Error fetching file URLs:", error);
+      // Handle errors, such as displaying an error message
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `http://3.135.107.71/project/files/${type}/${id}` 
-        );
-        //replace 123 with the project id
-        // Assuming the response data is an array of file URLs
-        setRecentFilesUrls(response.data.recentFiles);
-        setOlderFilesUrls(response.data.olderFiles);
-      } catch (error) {
-        console.error("Error fetching file URLs:", error);
-        // Handle errors, such as displaying an error message
-      }
-    };
+
     fetchData();
   }, []);
   return (
-    <div>
+    <div style={{width:'100%'}}>
       <Box sx={themeStyle.titleBox}>
         <Typography sx={themeStyle.titleTypo}>{view}</Typography>
         <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>
@@ -66,7 +67,7 @@ function Permit({ view, type }) {
             <Typography
               sx={{ ...themeStyle.titleTypo, ...themeStyle.permitNumber }}
             >
-              4 Permits
+              Permits
             </Typography>
           </Box>
           {/* Render avatars dynamically with image URLs */}
@@ -89,7 +90,7 @@ function Permit({ view, type }) {
             <Typography
               sx={{ ...themeStyle.titleTypo, ...themeStyle.permitNumber }}
             >
-              16 Permits
+              Permits
             </Typography>
           </Box>
           {/* Render avatars dynamically with image URLs */}
@@ -108,6 +109,7 @@ function Permit({ view, type }) {
           handleOpen={handleOpen}
           handleClose={handleClose}
           heading={view}
+          fetchData={fetchData}
         ></AddImage>
       )}
     </div>
@@ -116,7 +118,7 @@ function Permit({ view, type }) {
 const themeStyle = {
   titleBox: {
     display: "flex",
-    width: "52vw",
+    width: {xl:"52vw"},
     justifyContent: "space-between",
     alignItems: "center",
     background: "#4C8AB1",

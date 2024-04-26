@@ -40,7 +40,7 @@ function ChatView({ isAdminPage, project }) {
 
   return (
     <>
-      <Stack  direction={'column'} justifyContent={'space-between'} height={'100%'}>
+      <Stack  direction={'column'} justifyContent={'flex-start'} height={'100%'}>
         <Box sx={{ height: "70vh", overflowY: "scroll" }}>
           {messages?.map((msg, index) => {
             const isSender = msg.sender.id === currentUser.id;

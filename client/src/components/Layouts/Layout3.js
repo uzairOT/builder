@@ -76,7 +76,7 @@ function Layout3() {
         <Grid sx={themeStyle.dashboard} container pt={1}>
           {/* Side bar */}
           <Grid item xs={12} sm={12} md={12} lg={2}>
-            <Paper sx={{ borderRadius: "0 14px 14px 0", height: "97%" }}>
+            <Paper sx={{ borderRadius: "0 14px 14px 0", height: "98%" }}>
               <SideBar />{" "}
             </Paper>
           </Grid>
@@ -104,13 +104,13 @@ export default Layout3;
 const themeStyle = {
   dashboard: {
     backgroundColor: "#eff5ff",
-    height: "100vh",
+    height: "92vh",
   },
   dashboardViews: {
     height: "100%",
   },
   Layout3Pages: {
-    // height: "100%",
+    height: "98.5%",
     width: "100%",
     // margin: "1px",
     borderRadius: "14px",

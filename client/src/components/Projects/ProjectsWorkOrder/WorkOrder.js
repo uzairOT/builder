@@ -89,7 +89,7 @@ function WorkOrder({
     <TableContainer
       component={Paper}
       sx={{ boxShadow: "none" }}
-      style={{ height: workOrder ? "300px" : "50vh" }}
+      style={{ height: workOrder ? "300px" : "100%", scrollbarWidth:"thin" }}
     >
       <Table>
         <TableHead>
