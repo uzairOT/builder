@@ -81,7 +81,9 @@ const [project, setProject]=useState();
               sx={{
                 ...inputStyle,
                 ...borderRadiusResponsive,
-                borderButtom: "none",
+                '& input': {
+                  borderBottom: 'none', // Remove bottom border of the input
+              },
               }}
               id="standard-select-currency"
               type="text"

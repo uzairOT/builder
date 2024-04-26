@@ -1,6 +1,6 @@
 import { apiSlice } from "../apiSlice";
 
-const ASSIGN_ROLE_URL = 'http://192.168.0.106:8080/v1/userRole';
+const ASSIGN_ROLE_URL = 'http://3.135.107.71/v1/userRole';
 
  export const assignRoleApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({

@@ -21,7 +21,6 @@ function Notification({ notification, refetch, userId, index, setExpanded, expan
 
 
   const handleAccordionChange = (panel) => (event, newExpanded) => {
-    console.log(newExpanded)
     setExpanded(newExpanded ? panel : -1);
   };
 

@@ -3,7 +3,7 @@ import Switch from "@mui/joy/Switch";
 import { Typography, Grid, TextField, Divider } from "@mui/material";
 import Button from "../../UI/CustomButton";
 import { useTheme } from "@mui/material/styles";
-import { useResetPasswordMutation } from "../../../redux/apis/usersApiSlice";
+import { useResetProfilePasswordMutation } from "../../../redux/apis/usersApiSlice";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 export default function MyApp() {
   const theme = useTheme();
   const isXs = theme.breakpoints.down("xs");
-  const [resetPassword] = useResetPasswordMutation();
+  const [resetPassword] = useResetProfilePasswordMutation();
   const user = useSelector((state) => state.auth.userInfo);
   const [checked, setChecked] = useState(true);
   

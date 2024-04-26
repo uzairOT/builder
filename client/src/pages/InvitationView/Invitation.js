@@ -95,11 +95,10 @@ const checkUserOnInvitation = async () =>{
       projectId,
       companyName,
     };
-    console.log(data);
 
     try {
       // Make POST request using Axios
-      await axios.post("http://192.168.0.106:8080/project/addme", data);
+      await axios.post("http://3.135.107.71/project/addme", data);
 
       // Navigate to the desired location upon successful request
       navigate("/login");

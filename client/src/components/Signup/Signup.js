@@ -107,21 +107,11 @@ const SignupComp = () => {
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
-  useEffect(() => {
-    console.log(checked);
-  }, [checked]);
 
   const responseGoogle = async (response) => {
     // const auth2 = gapi.auth2.getAuthInstance();
     if (response?.profileObj) {
       const { givenName, googleId, email, familyName } = response.profileObj;
-      console.log(
-        "userData from google",
-        givenName,
-        familyName,
-        googleId,
-        email
-      );
       // Use Google profile info to authenticate the user
       const userData = {
         firstName: givenName,
@@ -136,10 +126,7 @@ const SignupComp = () => {
       localStorage.setItem("userData", userDataString);
       //
       try {
-        console.log("--------------------------------");
         const res = await googleLogin({ email }).unwrap();
-        console.log("login ::::::::::::::::::::::::::::::::", res);
-
         if (res.message === "Login Successful!") {
           dispatch(setCredentials({ ...res }));
           navigate("/");
@@ -173,7 +160,6 @@ const SignupComp = () => {
     e.preventDefault();
     if (checked) {
       const data = { ...formData, phone };
-      //console.log(data)
       try {
         const res = await register(data).unwrap();
         console.log("Sign up: ", res);
@@ -187,7 +173,6 @@ const SignupComp = () => {
     } else {
       toast("Please agree to our Terms of use");
     }
-    // navigate('/assignproject');
   };
 
   const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "0.8rem" };
@@ -502,6 +487,7 @@ const SignupComp = () => {
     </Grid>
   );
 };
+export default SignupComp;
 
 const firstGrid = {
   padding: {
@@ -856,4 +842,3 @@ const topSpace = {
   marginTop: "0.2rem",
 };
 
-export default SignupComp;

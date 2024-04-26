@@ -4,7 +4,7 @@ import ChatView from '../../Chat/ChatView'
 
 const Chat = ({project}) => {
   return (
-    <Paper style={{height: '92%', borderRadius:'14px'}}>
+    <Paper sx={{height: {xl:'92%',lg:'92%',md:"100%",sm:"100%",xs:"100%"}, borderRadius:'14px'}}>
       <ChatView project={project} isAdminPage={true}/>
     </Paper>
   )

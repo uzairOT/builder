@@ -38,7 +38,6 @@ import { DemoItem } from "@mui/x-date-pickers/internals/demo";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc"; // Optional if you need UTC handling
 
-
 function AddLineElement({
   phaseData,
   handleAddOpen,
@@ -66,7 +65,7 @@ function AddLineElement({
   const [unitPrice, setUnitPrice] = useState(
     LineItem ? LineItem.unit_price : ""
   );
-  const [total, setTotal] = useState(LineItem ? LineItem.total : "" );
+  const [total, setTotal] = useState(LineItem ? LineItem.total : "");
 
   const [start, setStart] = useState(LineItem ? LineItem.start_day : null);
   const [end, setEnd] = useState(LineItem ? LineItem.end_day : null);
@@ -102,17 +101,13 @@ function AddLineElement({
     end: dayjs(end),
     longDescription,
   };
-  useEffect(() => {
-    console.log("-------------==========quantity", quantity);
-    console.log("-------------==========unitPrice", unitPrice);
-    console.log("-------------==========total", total);
-  }, [total, quantity, unitPrice]);
+
 
   useEffect(() => {
     const getData = setTimeout(() => {
       axios
         .get(
-          `http://192.168.0.106:8080/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`
+          `http://3.135.107.71/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`
         )
         .then((response) => {
           setAutoComplete(response.data.MasterLines);
@@ -231,7 +226,7 @@ function AddLineElement({
         >
           <DialogTitle sx={typoTitle}>{LineHeading}</DialogTitle>
           <DialogContent sx={{ padding: "3rem" }}>
-            <Typography sx={typoText}>Phase</Typography>
+            <Typography sx={typoText}>Line Item</Typography>
             <>
               <Autocomplete
                 freeSolo
@@ -262,7 +257,7 @@ function AddLineElement({
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Phase Name"
+                    label="Line Item Name"
                     margin="dense"
                     variant="standard"
                     onChange={(event) => setPhaseName(event.target.value)} // Assuming setPhaseName is your state updater function
@@ -285,7 +280,7 @@ function AddLineElement({
 
               <Typography sx={typoText}>Description</Typography>
               <TextField
-                sx={inputStyle}
+                sx={{ ...inputStyle }}
                 required
                 margin="dense"
                 id="description"
@@ -329,11 +324,12 @@ function AddLineElement({
                     type="number"
                     variant="standard"
                     value={formData.quantity}
-                    onChange={(e) => setQuantity(prev => {
-                      setTotal(e.target.value*unitPrice)
-                      return e.target.value
-                      
-                    })}
+                    onChange={(e) =>
+                      setQuantity((prev) => {
+                        setTotal(e.target.value * unitPrice);
+                        return e.target.value;
+                      })
+                    }
                   />
                 </Box>
               </Box>
@@ -347,10 +343,12 @@ function AddLineElement({
                 type="price"
                 variant="standard"
                 value={formData.unitPrice}
-                onChange={(e) => setUnitPrice(prev => {
-                  setTotal(e.target.value*quantity)
-                  return e.target.value
-                })}
+                onChange={(e) =>
+                  setUnitPrice((prev) => {
+                    setTotal(e.target.value * quantity);
+                    return e.target.value;
+                  })
+                }
               />
 
               <Typography sx={typoText}>Total</Typography>
@@ -363,7 +361,6 @@ function AddLineElement({
                 type="number"
                 variant="standard"
                 value={formData.total}
-                
               />
               <Box sx={parallelBox}>
                 <Box sx={innerBox}>
@@ -478,7 +475,10 @@ const inputStyle = {
   fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
   paddingLeft: "-1.5rem",
   backgroundColor: "#EDF2F6",
-  outline: 'none !important'
+  outline: "none !important",
+  '& input': {
+    borderBottom: 'none', // Remove bottom border of the input
+},
 };
 
 const generalBox = {

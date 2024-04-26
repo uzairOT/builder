@@ -20,7 +20,6 @@ import YellowBtn from "../../UI/button";
 
 function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoading }) {
   const [open, setOpen] = useState(false);
-  console.log(isLoading)
   const handleSkip = () => {
     handleNextStep();
   };

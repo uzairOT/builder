@@ -79,13 +79,7 @@ const Login = () => {
     // const auth2 = gapi.auth2.getAuthInstance();
     if (response?.profileObj) {
       const { givenName, googleId, email, familyName } = response.profileObj;
-      console.log(
-        "userData from google",
-        givenName,
-        familyName,
-        googleId,
-        email
-      );
+      
       // Use Google profile info to authenticate the user
       const userData = {
         firstName: givenName,
@@ -100,9 +94,7 @@ const Login = () => {
       localStorage.setItem("userData", userDataString);
       //
       try {
-        console.log("--------------------------------");
         const res = await googleLogin({ email }).unwrap();
-        console.log("login ::::::::::::::::::::::::::::::::", res);
 
         if (res.message === "Login Successful!") {
           dispatch(setCredentials({ ...res }));
@@ -135,13 +127,6 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (email === "") {
-      // alert("please enter email or password");
-      toast.error("please enter email or password");
-
-      return;
-    }
-
     try {
       const res = await login({ email, password }).unwrap();
       console.log("login :", res);
@@ -149,8 +134,7 @@ const Login = () => {
       navigate("/");
     } catch (err) {
       console.log(err);
-      // alert(err?.data?.message || err.error);
-      toast.error(err?.data?.message || err.error);
+      toast.error(err?.data?.error || err.error || err?.data?.message);
     }
   };
 
@@ -169,8 +153,27 @@ const Login = () => {
           <img src={downloadForMob} width={DoMobWidth} alt="" />
         </Box>
         <Box sx={googleAppImgsBox}>
-          <img src={googlePlay} width={widthValue} alt="" />
-          <img src={appStore} width={widthValue} alt="" />
+          <a
+            href="https://play.google.com/store/apps?hl=en&gl=US&pli=1"
+            target="blank"
+          >
+            {" "}
+            <img
+              src={googlePlay}
+              width={widthValue}
+              style={{ cursor: "pointer" }}
+              alt=""
+            />
+          </a>
+
+          <a href="https://www.apple.com/store" target="blank">
+            <img
+              src={appStore}
+              width={widthValue}
+              style={{ cursor: "pointer" }}
+              alt=""
+            />
+          </a>
         </Box>
       </Grid>
       <Grid
@@ -297,10 +300,13 @@ const Login = () => {
               onClick={submitHandler}
               type="submit"
             >
-              { isLoading ? <CircularProgress size={ ''}/> :
-
-                isMobile ? "Login" : "Log in with Email"
-              }
+              {isLoading ? (
+                <CircularProgress size={"1.25rem"} />
+              ) : isMobile ? (
+                "Login"
+              ) : (
+                "Log in with Email"
+              )}
             </Button>
             <Typography sx={accountLinkText}>
               Don’t have an account?{"\u00a0"}{" "}
@@ -370,8 +376,18 @@ const Login = () => {
           </Box>
         </Grid>
         <Box sx={googleAppImgsMobile}>
-          <img src={googlePlay} width={widthValue} alt="" />
-          <img src={appStore} width={widthValue} alt="" />
+          <img
+            src={googlePlay}
+            width={widthValue}
+            style={{ cursor: "pointer" }}
+            alt=""
+          />
+          <img
+            src={appStore}
+            width={widthValue}
+            style={{ cursor: "pointer" }}
+            alt=""
+          />
         </Box>
       </Grid>
     </Grid>
@@ -405,7 +421,7 @@ const SecondGrid = {
 };
 
 const downloadForMobBox = {
-  marginTop: "9rem",
+  marginTop: "3rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
   justifyContent: "center",
@@ -425,6 +441,7 @@ const googleAppImgsMobile = {
   alignItems: "center",
   marginTop: "1rem",
   gap: "1rem",
+  cursor: "pointer",
 };
 
 const formGridContainer = {

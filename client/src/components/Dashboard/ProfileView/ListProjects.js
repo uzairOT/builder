@@ -19,7 +19,7 @@ import {addProjects} from '../../../redux/slices/Project/userProjectsSlice'
  
 
     return (
-      <Box sx={{ padding: 1}} >
+      <Box sx={{ padding: "0 8px"}} >
         <Typography
           sx={{
             color: "#4C8AB1",
@@ -43,7 +43,7 @@ import {addProjects} from '../../../redux/slices/Project/userProjectsSlice'
         >
           All Listed Projects
         </Typography>
-        <Box sx={{...themeStyle.scrollable }}  style={{height:'49vh'}} pb={2}>
+        <Box sx={{...themeStyle.scrollable,height:{xl:'47vh',lg:'59vh',md:"57vh",sm:"75vh",xs:"48vh"} }} pb={2}>
        {error ? <>{error?.data?.message}</> : <Stack spacing={1} pl={'14px'} pr={'14px'} >
           {isLoading ? <Stack justifyContent={'center'} alignItems={'center'}><CircularProgress/></Stack>: <>
           {data?.projects?.map((projectProfileCard) => {

@@ -17,7 +17,7 @@ import { useForgetPasswordMutation } from "../../../redux/apis/usersApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setForgetPasswordEmail } from "../../../redux/slices/authSlice";
 import { toast } from "react-toastify";
-
+import "react-toastify/dist/ReactToastify.css";
 const ForgotPassword = () => {
   const [forgetPassword] = useForgetPasswordMutation();
   const [email, setEmail] = useState();
@@ -26,19 +26,23 @@ const ForgotPassword = () => {
   const forgetPasswordEmail = useSelector(
     (state) => state.auth.forgetPasswordEmail
   );
-  const submitHandler = async () => {
-    console.log("email", forgetPasswordEmail);
-    const res = await forgetPassword({
-      email: forgetPasswordEmail,
-    });
-    console.log("res", res);
-    if (res?.data?.success) {
-      
-      navigate("/verifycode");
-    } else if (res?.error) {
-      toast.error(res.error.data.message);
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    if (email) {
+      try {
+        const res = await forgetPassword({
+          email: forgetPasswordEmail,
+        }).unwrap();
+        toast.success(res.message || res.data.message);
+          navigate("/verifycode");
+        
+        } catch (err) {
+          console.log(err);
+          toast.error(err?.data?.error || err.error || err.data.message);
+        }
+    } else {
+      toast.error("Please Enter Email");
     }
-    setEmail("");
   };
 
   return (
@@ -142,7 +146,6 @@ const ForgotPassword = () => {
                   }}
                   value={email}
                   placeholder="john.doe@gmail.com"
-                  
                 ></input>
               </Box>
 

@@ -36,7 +36,7 @@ export default Profile;
 const themeStyle = {
   container: {
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "start",
     alignItems: "center",
   },
   containerTitle: {

@@ -1,10 +1,21 @@
-import { Stack, Typography, Popover, IconButton, Divider,Input, FormControl, Select, InputLabel, MenuItem } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import data1 from './assests/data/data.json'
-import BuilderProButton from '../../UI/Button/BuilderProButton';
+import {
+  Stack,
+  Typography,
+  Popover,
+  IconButton,
+  Divider,
+  Input,
+  FormControl,
+  Select,
+  InputLabel,
+  MenuItem,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import data1 from "./assests/data/data.json";
+import BuilderProButton from "../../UI/Button/BuilderProButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { ReactComponent as BuilderProNavbarShare } from "./assests/svgs/builder-pro-navbar-share.svg";
-import users from './assests/data/users.json'
+import users from "./assests/data/users.json";
 import LinkIcon from "@mui/icons-material/Link";
 import { useGetProjectTeamQuery } from '../../../redux/apis/Project/projectApiSlice';
 import {useLocation} from 'react-router-dom'
@@ -30,7 +41,6 @@ import "react-toastify/dist/ReactToastify.css";
         //console.log(pathSegments)
         const {data, isLoading} = useGetProjectTeamQuery(projectId)
         const team = data?.team
-        console.log(team)
         const id = openShare ? "simple-popover" : undefined;
         const groupedData = isLoading ?  <>Loading...</> :  team?.reduce((acc, person) => {
           acc[person.role] = acc[person.role] || [];
@@ -73,55 +83,110 @@ import "react-toastify/dist/ReactToastify.css";
             }
           }
   return (
-    <Stack pl={{xl:5,lg:5,md:0}} >
+    <Stack pl={{ xl: 5, lg: 5, md: 0 }}>
+      <Stack direction={"row"} sx={{ justifyContent: "space-between" }}>
         <Typography sx={themeStyle.title}>Project Team</Typography>
-        <Stack direction={'row'} justifyContent={{xl:'space-between',lg:'space-between',md:'center'}}>
-            <Stack  width={'100%'} >
-            {isLoading ? <>Loading...</>  : Object?.keys(groupedData)?.map((role)=>{
-                let acc =0;
-                return(
-                <Stack direction={'row'} justifyContent={{xl:'space-between', lg:'space-between', md:'flex-start', sm:'flex-start', xs:'flex-start'}} >
-                <Stack direction={'row'}  width={{xl:'100%', lg:'100%', md:'50%', sm:'50%', xs:'70%'}} justifyContent={'space-between'}>
-                <Typography sx={themeStyle.subTitle}>{role}</Typography>
-                <Stack direction={'row'} width={'190px'}>
-
-                {groupedData[role].map((person, index)=>{
-                    if (index > 1){
-                        acc++;
-                        return(
-                            <Typography sx={{...themeStyle.subTitle}} style={{color: '#636363'}} position={'relative'} top={'-2px'} pl={0.5}>+{acc}</Typography>
-                      )
-                    }else{
-                        return(
-                      <Typography sx={themeStyle.subTitle}>{person.firstName} {person.lastName}{groupedData[role].length > 1 && index === 0 ? ',' :''}</Typography>
-                    )}
-                })}
+        <BuilderProButton
+          backgroundColor={"#FFAC00"}
+          variant={"contained"}
+          Icon={BuilderProNavbarShare}
+          handleOnClick={handleShare}
+        >
+          {true ? "Share" : ""}
+        </BuilderProButton>
+      </Stack>
+      <Stack
+        direction={"row"}
+        justifyContent={{
+          xl: "space-between",
+          lg: "space-between",
+          md: "center",
+        }}
+        mt={"14px"}
+      >
+        <Stack width={"100%"}>
+          {isLoading ? (
+            <>Loading...</>
+          ) : (
+            Object?.keys(groupedData)?.map((role) => {
+              let acc = 0;
+              return (
+                <Stack
+                  direction={"row"}
+                  justifyContent={{
+                    xl: "space-between",
+                    lg: "space-between",
+                    md: "flex-start",
+                    sm: "flex-start",
+                    xs: "flex-start",
+                  }}
+                >
+                  <Stack
+                    direction={"row"}
+                    width={{
+                      xl: "100%",
+                      lg: "100%",
+                      md: "50%",
+                      sm: "50%",
+                      xs: "70%",
+                    }}
+                    justifyContent={"space-between"}
+                  >
+                    <Typography sx={themeStyle.subTitle}>{role}</Typography>
+                    <Stack direction={"row"}>
+                      {groupedData[role].map((person, index) => {
+                        if (index > 1) {
+                          acc++;
+                          return (
+                            <Typography
+                              sx={{ ...themeStyle.subTitle }}
+                              style={{ color: "#636363" }}
+                              position={"relative"}
+                              top={"-2px"}
+                              pl={0.5}
+                            >
+                              +{acc}
+                            </Typography>
+                          );
+                        } else {
+                          return (
+                            <Typography sx={themeStyle.subTitle}>
+                              {person.firstName} {person.lastName}
+                              {groupedData[role].length > 1 && index === 0
+                                ? ","
+                                : ""}
+                            </Typography>
+                          );
+                        }
+                      })}
+                    </Stack>
+                    <Stack direction={"row"} width={"100px"}>
+                      {groupedData[role].map((person, index) => {
+                        return (
+                          <>
+                            <img
+                              key={index}
+                              src={person.image}
+                              alt="profile"
+                              width={"35px"}
+                              height={"35px"}
+                              style={{
+                                borderRadius: "50px",
+                                marginLeft: "-10px",
+                              }}
+                            ></img>
+                          </>
+                        );
+                      })}
+                    </Stack>
+                  </Stack>
                 </Stack>
-                </Stack>
-                <Stack direction={'row'} width={'100px'}>
-                {groupedData[role].map((person, index)=>{
-                    return( <>
-                        <img key={index} src={person.image} alt='profile' width={'35px'} height={'35px'} style={{borderRadius:'50px', marginLeft: '-10px'}} ></img>
-                        </>
-                        )
-                    })}
-                </Stack>
-                </Stack>
-                )})
-            }
-            </Stack>
-            <Stack mt={'-16px'}>
-            <BuilderProButton
-              backgroundColor={"#FFAC00"}
-              variant={"contained"}
-              Icon={BuilderProNavbarShare}
-              handleOnClick={handleShare}
-              >
-              {true ? "Share" : ""}
-            </BuilderProButton>
-                </Stack>
+              );
+            })
+          )}
         </Stack>
-        <Popover
+      </Stack>
+      <Popover
         id={id}
         open={openShare}
         anchorEl={open}
@@ -164,8 +229,10 @@ import "react-toastify/dist/ReactToastify.css";
             pl={2}
           >
             <Input
-            value={email}
-            onChange={(e)=>{handleEmailChange(e)}}
+              value={email}
+              onChange={(e) => {
+                handleEmailChange(e);
+              }}
               placeholder="Enter an Email to invite"
               aria-describedby="my-helper-text"
               sx={{
@@ -277,22 +344,21 @@ import "react-toastify/dist/ReactToastify.css";
         </Stack>
       </Popover>
     </Stack>
-  )
-}
+  );
+};
 
 export default ProjectTeam;
 
-const themeStyle ={
-    title: {
-        fontSize: '16px',
-        color: '#4C8AB1',
-        fontFamily:'GT-Walsheim-Regular-Trial, sans-serif',
-        
-    },
-    subTitle: {
-        fontSize: '13px',
-        color: '#202227',
-        fontFamily:'GT-Walsheim-Regular-Trial, sans-serif',
-        textAlign: 'left'
-    }
-}
+const themeStyle = {
+  title: {
+    fontSize: "16px",
+    color: "#4C8AB1",
+    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  },
+  subTitle: {
+    fontSize: "13px",
+    color: "#202227",
+    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    textAlign: "left",
+  },
+};

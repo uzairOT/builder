@@ -7,6 +7,7 @@ import {
   CardActions,
   CardContent,
   Container,
+  TextField,
   Typography,
 } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -28,21 +29,25 @@ const VerifyCode = () => {
   );
   const [code, setCode] = useState(["", "", "", "", ""]);
   const inputRefs = useRef([]);
-  const submitHandler = async () => {
+  const submitHandler = async (e) => {
+    e.preventDefault();
     console.log("forgetPasswordEmail", forgetPasswordEmail);
     const otpString = code.join("");
-    const res = await verifycode({
-      otp: otpString,
-      email: forgetPasswordEmail,
-    });
-    if (res?.error) {
-      // alert(res.error);
-      console.log("=-q=a-a=a=",res.error);
-      setCode(["", "", "", "", ""]);
-      toast.error(res.error.data.message);
-    } else {
+    // Check if all verification code fields are filled
+    if (code.some((value) => value === "")) {
+      // If any field is empty, show toast and prevent submission
+      toast.error("Please fill in the verification code.");
+      return;
+    }
+    try {
+      const res = await verifycode({
+        otp: otpString,
+        email: forgetPasswordEmail,
+      }).unwrap();
       toast.success("OTP matched successfully");
-      navigate("/passwordreset");
+      navigate("/setnewpassword");
+    } catch (err) {
+      toast.error(err?.data?.error || err.data.message|| err.error);
     }
   };
   const handleInputChange = (index, value) => {
@@ -67,7 +72,12 @@ const VerifyCode = () => {
     }
   };
   const resendHandler = async () => {
-    const res = await resendOTP({ email: forgetPasswordEmail });
+    try {
+      const res = await resendOTP({ email: forgetPasswordEmail }).unwrap();
+      toast.success("OTP resend successfully");
+    } catch (err) {
+      toast.error(err?.data?.error || err.error);
+    }
   };
   return (
     <div
@@ -159,18 +169,20 @@ const VerifyCode = () => {
                 </Typography>
                 <Box sx={{ display: "flex", gap: "10px", marginTop: "10px" }}>
                   {code.map((value, index) => (
-                    <input
+                    <TextField
                       key={index}
-                      ref={(el) => (inputRefs.current[index] = el)}
+                      inputRef={(el) => (inputRefs.current[index] = el)}
                       type="text"
-                      maxLength={1}
-                      style={{
-                        width: "80px",
-                        height: "80px",
-                        fontSize: "20px",
-                        textAlign: "center",
-                        border: "2px solid #E1E1E1",
-                        borderRadius: "12px",
+                      inputProps={{
+                        maxLength: 1,
+                        style: {
+                          width: "80px",
+                          height: "80px",
+                          fontSize: "20px",
+                          textAlign: "center",
+                          border: "2px solid #E1E1E1",
+                          borderRadius: "12px",
+                        },
                       }}
                       value={value}
                       onChange={(e) => handleInputChange(index, e.target.value)}

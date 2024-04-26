@@ -14,7 +14,7 @@ import {
   ListItemText,
   List,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -43,7 +43,6 @@ import { useLocation } from "react-router-dom";
 import useSocket from "../../../utils/useSocket";
 
 const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
-
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
   const [open, setOpen] = useState(false);
@@ -78,13 +77,15 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   let lineItemIds = [];
   let lineItemCounter = 0;
   let totalWorkOrder = 0;
+  console.log("START DATE", startDate);
+  console.log("START DATE",endDate);
 
   if(changeOrder){
 
     checkedRow?.phaseItems?.forEach((phase) => {
       lineItemCounter += phase.lineItemId.length;
-      console.log('lineItemCounter: ',lineItemCounter);
-      console.log('phase.lineItemId.length: ',phase.lineItemId.length);
+      // console.log('lineItemCounter: ',lineItemCounter);
+      // console.log('phase.lineItemId.length: ',phase.lineItemId.length);
     })
   } else{
 
@@ -183,11 +184,17 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
     }
   };
   
+  useEffect(()=>{
+    setSubject(checkedRow?.subject)
+    setDescription(checkedRow?.description)
+    setStartDate(moment(checkedRow?.start_day))
+    setEndDate(moment(checkedRow?.end_day))
+  }, [checkedRow])
 
   const handleRequest = async () => {
     const formattedStartDate = startDate.format("MMM D, YYYY, h:mm a");
     const formattedEndDate = endDate.format("MMM D, YYYY, h:mm a");
-    console.log("CHEHCEH: ", selectedItems);
+
 
     const requestForm = {
       workOrder_id: changeOrder ? checkedRow.id : "",
@@ -206,9 +213,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
       teamIds: [...assignedCheckboxes, userId],
       notes: notes,
       projectId: projectId,
-      total: changeOrder ? checkedRow?.total : totalWorkOrder
+      total: changeOrder ? checkedRow?.total : totalWorkOrder,
     };
-    console.log("--------------------------------------", requestForm);
     if (requestForm.teamIds.length === 0) {
       toast.error("Team member must be assigned");
     } else {
@@ -220,7 +226,6 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
         await emit("notification", requestForm);
       }
       dispatch(setIsLoading(true));
-      console.log("sockect test");
       //emit('getNotifications', userId);
       const res = await getEvents({ userId, dailyForecast });
       const data = res?.data?.formattedWorkOrders;
@@ -257,8 +262,11 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
       </Stack>
       <Modal open={open} onClose={handleClose}>
         <Stack
-          sx={{ ...style, ...themeStyle.scrollable }}
-          height={"90%"}
+          sx={{
+            ...style,
+            ...themeStyle.scrollable,
+            height: { xl: "100%", lg: "95%", md: "90%", sm: "90%", xs: "90%" },
+          }}
           overflow={"scroll"}
         >
           <Typography
@@ -275,7 +283,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
             direction={{
               xl: "row",
               lg: "row",
-              md: "column",
+              md: "row",
               sm: "column",
               xs: "column",
             }}
@@ -312,7 +320,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                 <Typography
                   sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
                 >
-                  ${changeOrder? checkedRow?.total : totalWorkOrder}
+                  ${changeOrder ? checkedRow?.total : totalWorkOrder}
                 </Typography>
                 {/* <BorderColorIcon style={{ color: "#484848" }} /> */}
               </Stack>
@@ -440,13 +448,11 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                       {lineItemCounter}
                     </Typography>
                   </Typography>
-                  <List>
+                  <List sx={{...themeStyle.scrollable, maxHeight:"150px",overflow:"auto",}}>
                     {changeOrder
                       ?checkedRow?.phaseItems.map((phase, phaseIndex) => {
                         return phase.lineItem_names.map((lineItem, index) => {
                           counter++;
-                          console.log(lineItem);
-                          console.log(counter);
                           if (counter <= 2) {
                             return (
                               <ListItem key={counter}>
@@ -474,10 +480,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                       })
                       : Object?.keys(rowCheckboxes)?.map((phase) => {
                           const phaseData = rowCheckboxes[phase];
-                        console.log(phase)
                           return phaseData.rows.map((row, index) => {
                             counter++;
-                            console.log("counter: ", counter);
                             if (counter <= 2) {
                              return( <ListItem key={counter}>
                               <ListItemText secondary={row.title} />
@@ -503,7 +507,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                                   setShowLineItems(!showLineItems);
                                 }}
                                 >
-                                View more...
+                                {showLineItems ? 'Hide' : 'View more'}
                               </Button>
                             </ListItem>
                   </List>
@@ -599,7 +603,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                     </LocalizationProvider>
                   </Box>
                 </Typography>
-                <Stack width={"80%"} pt={8}>
+                <Stack width={"80%"} pt={4}>
                   <BuilderProButton
                     backgroundColor={"#4C8AB1"}
                     variant={"contained"}
@@ -911,6 +915,22 @@ const style = {
   width: "700px",
 };
 const themeStyle = {
+  
+  scrollable: {
+    scrollbarWidth: 'none',  // For Firefox
+    '-ms-overflow-style': 'none',  // For IE and Edge
+    '&::-webkit-scrollbar': {
+        width: '6px'
+    },
+    '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'transparent',
+        transition: 'background-color 0.3s',
+    },
+    '&:hover::-webkit-scrollbar-thumb': {
+        backgroundColor: '#ddd',
+    },
+    overflowY: 'scroll'
+},
   inputFields: {
     border: "0px solid #FFF",
     outline: "none",

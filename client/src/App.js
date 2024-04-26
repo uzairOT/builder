@@ -89,7 +89,6 @@ const ReportView = lazy(() =>
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.userInfo);
   const userId = isAuthenticated ? isAuthenticated.user.id : null;
-  console.log("USER ID: ", userId);
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
   // const [dailyForecast, setDailyForecast] = useState(null);

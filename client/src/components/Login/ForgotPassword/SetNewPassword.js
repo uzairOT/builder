@@ -34,17 +34,17 @@ const SetNewPassword = () => {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
   const submitHandler = async () => {
-    const res = await resetPassword({
-      email: forgetPasswordEmail,
-      password: password,
-      confirmPassword: confirmPassword,
-    });
-    if (res?.error) {
-      alert(res.error);
-    } else {
+    try {
+      const res = await resetPassword({
+        email: forgetPasswordEmail,
+        password: password,
+        confirmPassword: confirmPassword,
+      }).unwrap();
       handleOpen();
       toast.success("Password changed successfully");
       navigate("/login");
+    } catch(err) {
+      toast.error(err?.data?.error || err.error || err?.data?.message);
     }
 
     // navigate("/verifycode");
