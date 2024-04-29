@@ -1,7 +1,7 @@
-import { Box, Divider, Link, Stack, Typography } from '@mui/material'
+import { Box, Divider, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import BuilderProButton from '../../UI/Button/BuilderProButton'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import ProjectCard from '../../UI/Card/ProjectCard'
 import projects from './assets/data/projects.json'
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
@@ -65,7 +65,7 @@ const ProjectsSidebar = () => {
             const selected = projectProfileCard.id == id;
             if(projectProfileCard.buildType === activeBtn){
             return (
-              <Link key={projectProfileCard.id} underline="none">
+              <Link key={projectProfileCard.id} to={`/projects/${projectProfileCard.id}`} style={{textDecoration:'none'}}>
               <ProjectCard
               projectProfileCard={projectProfileCard}
               selected={selected}

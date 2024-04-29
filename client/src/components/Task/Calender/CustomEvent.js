@@ -30,16 +30,14 @@ const CustomEventDayTasks = ({ event, isProjectPage, projectId }) => {
         spacing={0.2}
         borderRadius={"6px"}
         borderRight={
-          isProjectPage
-            ? "6px solid #563c91"
-            : `6px solid ${event?.data?.projectColor}`
+         `6px solid ${event?.data?.projectColor}`
         }
         onClick={handleOnClick}
       >
         <Stack
           sx={themeStyle.weather}
           backgroundColor={
-            isProjectPage ? "#563c91" : `${event?.data?.projectColor}`
+          `${event?.data?.projectColor}`
           }
           max-height={"90%"}
           max-width={"50%"}
@@ -103,15 +101,13 @@ const CustomEventDayNotes = ({ event, isProjectPage }) => {
       spacing={0.2}
       borderRadius={"6px"}
       borderRight={
-        isProjectPage
-          ? "6px solid #563c91"
-          : `6px solid ${event?.data?.projectColor}`
+        `6px solid ${event?.data?.projectColor}`
       }
     >
       <Stack
         sx={themeStyle.weather}
         backgroundColor={
-          isProjectPage ? "#563c91" : `${event?.data?.projectColor}`
+          `${event?.data?.projectColor}`
         }
         max-height={"90%"}
         max-width={"50%"}
@@ -161,9 +157,7 @@ const CustomEventWeek = ({ event, isProjectPage }) => {
       sx={themeStyle.eventBox}
       height={"100%"}
       borderRight={
-        isProjectPage
-          ? "6px solid #563c91"
-          : `6px solid ${event?.data?.projectColor}`
+        `6px solid ${event?.data?.projectColor}`
       }
       borderRadius={"6px"}
     >
@@ -211,9 +205,7 @@ const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
     <Stack
       sx={themeStyle.eventBox}
       borderRight={
-        isProjectPage
-          ? "6px solid #563c91"
-          : `6px solid ${event?.data?.projectColor}`
+        `6px solid ${event?.data?.projectColor}`
       }
       borderRadius={"6px"}
       height={"100%"}
@@ -299,7 +291,7 @@ const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
 const CustomEventMonthTasks = ({ event, isProjectPage }) => {
   return (
     <Box
-      sx={{ background: isProjectPage ? "#C7EBE8" : event?.data?.projectColor }}
+      sx={{ background: event?.data?.projectColor }}
       height={"100%"}
     >
       <Typography fontSize={"10px"} color={"#454545"}>

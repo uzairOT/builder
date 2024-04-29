@@ -182,7 +182,7 @@ const SignupComp = () => {
   };
 
   return (
-    <Grid container sx={{ ...firstGrid, height: "100vh" }}>
+    <Grid container sx={{ ...firstGrid }}>
       <ToastContainer />
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
         <Typography sx={firstHeading}>Construction Management</Typography>
@@ -841,4 +841,3 @@ const buttonBox = {
 const topSpace = {
   marginTop: "0.2rem",
 };
-
