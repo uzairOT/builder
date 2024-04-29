@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import SignupComp from '../../components/Signup/Signup';
-import Splash from '../../components/Splash/Splash';
-import { Box } from '@mui/material';
-
+import React, { useState, useEffect } from "react";
+import SignupComp from "../../components/Signup/Signup";
+import Splash from "../../components/Splash/Splash";
+import { Box } from "@mui/material";
 
 function Signup() {
   const [showSplash, setShowSplash] = useState(true);
@@ -22,7 +21,7 @@ function Signup() {
   }, []);
 
   return (
-    <Box sx={{ height: "100vh" }}>
+    <Box sx={{ height: "100vh", backgroundColor: "#4c8ab1" }}>
       {showSplash && <Splash />}
       {showSignup && <SignupComp />}
     </Box>
@@ -30,4 +29,3 @@ function Signup() {
 }
 
 export default Signup;
-

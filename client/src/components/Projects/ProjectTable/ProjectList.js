@@ -422,7 +422,7 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
                                 />
                               </IconButton>
                             </Paper>
-                            <Paper style={{ backgroundColor: "#FFDADA" }}>
+                            {/* <Paper style={{ backgroundColor: "#FFDADA" }}>
                               <IconButton>
                                 <DeleteOutlineOutlinedIcon
                                   style={{ color: "#DF0404" }}
@@ -435,7 +435,7 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
                                   style={{ color: "#545454" }}
                                 />
                               </IconButton>
-                            </Paper>
+                            </Paper> */}
                           </Box>
                           <TableCell sx={themeStyle.tableCell}>
                             <Link to={`/projects/${row.id}`} style={{textDecoration: 'none'}}>
@@ -448,7 +448,7 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
                               >
                               View Details
                             </Typography>
-                              </Link>
+                            </Link>
                           </TableCell>
                         </TableRow>
                       );

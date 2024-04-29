@@ -5,6 +5,8 @@ import { Box, Grid, Button, useMediaQuery } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import builder1 from "../../Signup/Assets/pngs/builderProYellowLogo.png";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { resetUserAndRoleEmail } from "../../../redux/slices/projectFormSlice";
 
 function Header({ step, gap, handlePreviousStep }) {
   //console.log("Header step: ", step);
@@ -13,6 +15,7 @@ function Header({ step, gap, handlePreviousStep }) {
   const isMd = useMediaQuery("(max-width:1200px)");
   const imgWidth = isMd ? "18%" : "12%";
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const buttonStyle = {
     height: "50%",
     marginTop: { lg: "2rem", sm: "2rem", xs: "0rem" },
@@ -28,6 +31,7 @@ function Header({ step, gap, handlePreviousStep }) {
     }
   };
   const handleLogoClcik = () => {
+    dispatch(resetUserAndRoleEmail());
     navigate("/");
   };
   return (
