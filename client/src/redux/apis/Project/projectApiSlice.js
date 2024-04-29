@@ -6,14 +6,14 @@ const projectId = 47;
 
 const projectApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    assignProject: builder.mutation({
-      query: (data) => ({
-        url: `${PROJECTS_URL}/assignproject`,
-        method: "POST",
-        body: data,
-      }),
-      providesTags: ["Project"],
-    }),
+    // assignProject: builder.mutation({
+    //   query: (data) => ({
+    //     url: `${PROJECTS_URL}/assignproject`,
+    //     method: "POST",
+    //     body: data,
+    //   }),
+    //   providesTags: ["Project"],
+    // }),
 
     // Phase ApiSlices ................. //
     addProjectPhase: builder.mutation({

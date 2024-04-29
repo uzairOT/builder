@@ -37,11 +37,11 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     assignProject: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}/assignproject`,
+        url: `http://3.135.107.71/user/assignproject`,
         method: "POST",
         body: data,
       }),
-      providesTags: ["User"],
+      
     }),
     existingProject: builder.mutation({
       query: (data) => ({

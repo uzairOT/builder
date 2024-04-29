@@ -83,7 +83,6 @@ function AssignNewProjectStep2({
 
   const handleCreateNewProject = async () => {
     localStorage.removeItem("projectId");
-    localStorage.removeItem("projectId");
     try {
       const userdata = userInfo.user.id;
       //console.log(userdata);
