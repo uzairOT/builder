@@ -54,6 +54,7 @@ const projectFormSlice = createSlice({
     resetUserAndRoleEmail : (state) =>{
       state.users =  [{ email: '', role: 'admin' }];
       state.projectColor = '';
+      state.location = '';
     }
   },
 });
