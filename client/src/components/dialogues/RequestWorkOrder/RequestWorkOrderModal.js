@@ -4,32 +4,24 @@ import {
   Button,
   Divider,
   FormControl,
-  FormControlLabel,
   Modal,
-  Radio,
-  RadioGroup,
   Stack,
   Typography,
   Select,
   MenuItem,
-  TextField,
   Checkbox,
-  FormGroup,
   ListItem,
   ListItemText,
   List,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-import AddIcon from "@mui/icons-material/Add";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Avatarimg from "../Assets/pngs/woman.png";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import moment from "moment";
@@ -48,8 +40,6 @@ import {
 } from "../../../redux/slices/Events/eventsSlice";
 import { useGetTeamMembersQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { useLocation } from "react-router-dom";
-import socketIOClient from "socket.io-client";
-import { setNotifications } from "../../../redux/slices/Notifications/notificationSlice";
 import useSocket from "../../../utils/useSocket";
 
 const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
@@ -69,8 +59,6 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const [description, setDescription] = useState(
     changeOrder ? checkedRow?.description : ""
   );
-  const [phase, setPhase] = useState("");
-  const [lineItems, setLineItems] = useState("");
   const { data } = useGetTeamMembersQuery(projectId);
   const [assignedCheckboxes, setAssignedCheckboxes] = useState([]);
   const userInfo = localStorage.getItem("userInfo");
@@ -89,18 +77,15 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   let lineItemCounter = 0;
   let totalWorkOrder = 0;
   console.log("START DATE", startDate);
-  console.log("START DATE",endDate);
+  console.log("START DATE", endDate);
 
-  if(changeOrder){
-
+  if (changeOrder) {
     checkedRow?.phaseItems?.forEach((phase) => {
       lineItemCounter += phase.lineItemId.length;
       // console.log('lineItemCounter: ',lineItemCounter);
       // console.log('phase.lineItemId.length: ',phase.lineItemId.length);
-    })
-  } else{
-
-    
+    });
+  } else {
     Object?.keys(rowCheckboxes)?.forEach((phaseData) => {
       lineItemCounter += rowCheckboxes[phaseData].rows.length;
       const lineItemGroup = {
@@ -108,13 +93,12 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
         lineItemId: rowCheckboxes[phaseData].rows.map((row) => row.id),
       };
       lineItemIds.push(lineItemGroup);
-      rowCheckboxes[phaseData].rows.forEach((lineItem)=>{
+      rowCheckboxes[phaseData].rows.forEach((lineItem) => {
         totalWorkOrder += parseInt(lineItem.total);
-      })
-      
+      });
     });
   }
-  
+
   // });
   const ENDPOINT = "http://3.135.107.71/";
   //test new workd order
@@ -130,8 +114,9 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   //console.log(assignedCheckboxes);
   const [requestWorkOrderPut] = useRequestWorkOrderMutation();
 
-
-  const isButtonDisabled = changeOrder ? checkedRow === null :  Object?.keys(rowCheckboxes)?.length === 0;
+  const isButtonDisabled = changeOrder
+    ? checkedRow === null
+    : Object?.keys(rowCheckboxes)?.length === 0;
   const handleNotesChange = (e) => {
     setNotes(e.target.value);
   };
@@ -162,46 +147,63 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   // };
 
   const handlePhaseChange = (phaseId) => {
-    const existingPhase = selectedItems.find(item => item.phaseId === phaseId);
+    const existingPhase = selectedItems.find(
+      (item) => item.phaseId === phaseId
+    );
 
     if (existingPhase) {
-      const updatedItems = selectedItems.filter(item => item.phaseId !== phaseId);
+      const updatedItems = selectedItems.filter(
+        (item) => item.phaseId !== phaseId
+      );
       setSelectedItems(updatedItems);
     } else {
-      const phaseItems = checkedRow.phaseItems.find(item => item.phaseId === phaseId);
-      const updatedItems = [...selectedItems, { phaseId, lineItemId: phaseItems.lineItemId }];
+      const phaseItems = checkedRow.phaseItems.find(
+        (item) => item.phaseId === phaseId
+      );
+      const updatedItems = [
+        ...selectedItems,
+        { phaseId, lineItemId: phaseItems.lineItemId },
+      ];
       setSelectedItems(updatedItems);
     }
   };
 
   const handleLineItemChange = (phaseId, lineItemId) => {
-    const existingPhaseIndex = selectedItems.findIndex(item => item.phaseId === phaseId);
-    
+    const existingPhaseIndex = selectedItems.findIndex(
+      (item) => item.phaseId === phaseId
+    );
+
     if (existingPhaseIndex !== -1) {
-      const existingLineItemIndex = selectedItems[existingPhaseIndex].lineItemId.indexOf(lineItemId);
-  
+      const existingLineItemIndex =
+        selectedItems[existingPhaseIndex].lineItemId.indexOf(lineItemId);
+
       if (existingLineItemIndex !== -1) {
         // Remove the line item
         const updatedItems = [...selectedItems];
         updatedItems[existingPhaseIndex] = {
           ...updatedItems[existingPhaseIndex],
-          lineItemId: updatedItems[existingPhaseIndex].lineItemId.filter(id => id !== lineItemId),
+          lineItemId: updatedItems[existingPhaseIndex].lineItemId.filter(
+            (id) => id !== lineItemId
+          ),
         };
-  
+
         // If no line items are selected for the phase, remove the phase
         if (updatedItems[existingPhaseIndex].lineItemId.length === 0) {
           updatedItems.splice(existingPhaseIndex, 1);
         }
-  
+
         setSelectedItems(updatedItems);
       } else {
         // Add the line item
         const updatedItems = [...selectedItems];
         updatedItems[existingPhaseIndex] = {
           ...updatedItems[existingPhaseIndex],
-          lineItemId: [...updatedItems[existingPhaseIndex].lineItemId, lineItemId],
+          lineItemId: [
+            ...updatedItems[existingPhaseIndex].lineItemId,
+            lineItemId,
+          ],
         };
-  
+
         setSelectedItems(updatedItems);
       }
     } else {
@@ -213,22 +215,21 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
           lineItemId: [lineItemId],
         },
       ];
-  
+
       setSelectedItems(updatedItems);
     }
   };
-  
-  useEffect(()=>{
-    setSubject(checkedRow?.subject)
-    setDescription(checkedRow?.description)
-    setStartDate(moment(checkedRow?.start_day))
-    setEndDate(moment(checkedRow?.end_day))
-  }, [checkedRow])
+
+  useEffect(() => {
+    setSubject(checkedRow?.subject);
+    setDescription(checkedRow?.description);
+    setStartDate(moment(checkedRow?.start_day));
+    setEndDate(moment(checkedRow?.end_day));
+  }, [checkedRow]);
 
   const handleRequest = async () => {
     const formattedStartDate = startDate.format("MMM D, YYYY, h:mm a");
     const formattedEndDate = endDate.format("MMM D, YYYY, h:mm a");
-
 
     const requestForm = {
       workOrder_id: changeOrder ? checkedRow.id : "",
@@ -375,99 +376,36 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                         marginTop: "0rem",
                       }}
                     >
-                      {changeOrder ? checkedRow?.phaseItems?.length : Object?.keys(rowCheckboxes)?.length}
+                      {changeOrder
+                        ? checkedRow?.phaseItems?.length
+                        : Object?.keys(rowCheckboxes)?.length}
                     </Typography>
                   </Typography>
-                  {/*
-                  PREV CODE OF THAT WAS USING RADIO BUTTONS
-                  <FormControl>
-                    <RadioGroup
-                      aria-labelledby="demo-radio-buttons-group-label"
-                      defaultValue={
-                        Object?.values(rowCheckboxes)[0]?.rows[0]?.phase_id
-                      }
-                      name="radio-buttons-group"
-                      onChange={handlePhaseRadioChange}
-                    >
-                      {checkedRow
-                        ? checkedRow?.phaseItems.map((phase) => (
-                            <Typography>{phase.phase_name}</Typography>
-                          ))
-                        : Object?.keys(rowCheckboxes)?.map((key, index) => {
-                            const phaseId =
-                              rowCheckboxes[key]?.rows[0]?.phase_id;
-                            const isFirstItem = index === 0;
 
-                            return (
-                              <FormControlLabel
-                                sx={themeStyle.radioText}
-                                value={phaseId}
-                                control={
-                                  <Radio
-                                    sx={themeStyle.radioChecked}
-                                    disabled={isFirstItem}
-                                  />
-                                }
-                                label={key}
-                              />
-                            );
-                          })}
-                    </RadioGroup>
-                  </FormControl> */}
-                  {/* <FormControl>
+                  <FormControl>
                     {checkedRow
                       ? checkedRow.phaseItems.map((phase) => (
-                          <FormControlLabel
-                            key={phase.phase_id}
-                            control={<Checkbox checked disabled />}
-                            label={phase.phase_name}
-                          />
-                        ))
-                      : Object.keys(rowCheckboxes).map((key, index) => {
-                          const phaseId = rowCheckboxes[key]?.rows[0]?.phase_id;
-
-                          return (
-                            <FormControlLabel
-                              key={phaseId}
-                              sx={themeStyle.radioText}
-                              control={
-                                <Checkbox
-                                  sx={themeStyle.radioChecked}
-                                  checked
-                                />
-                              }
-                              label={key}
+                          <ListItem key={phase.phaseId}>
+                            <Checkbox
+                              checked={selectedItems.some(
+                                (item) => item.phaseId === phase.phaseId
+                              )}
+                              onChange={() => handlePhaseChange(phase.phaseId)}
                             />
-                          );
-                        })}
-                  </FormControl> */}
-                  <FormControl>
-                    {checkedRow
-                      ? checkedRow.phaseItems.map((phase) => (
-                        <ListItem key={phase.phaseId}>
-                        <Checkbox
-                          checked={selectedItems.some(item => item.phaseId === phase.phaseId)}
-                          onChange={() => handlePhaseChange(phase.phaseId)}
-                        />
-                        <ListItemText secondary={phase.phase_name} />
-                        </ListItem>
+                            <ListItemText secondary={phase.phase_name} />
+                          </ListItem>
                         ))
                       : Object.keys(rowCheckboxes).map((key, index) => {
                           const phaseId = rowCheckboxes[key]?.rows[0]?.phase_id;
                           return (
                             <ListItem key={phaseId}>
-                              <ListItemText secondary={rowCheckboxes[key].phaseName} />
+                              <ListItemText
+                                secondary={rowCheckboxes[key].phaseName}
+                              />
                             </ListItem>
                           );
                         })}
                   </FormControl>
-
-                  {/* <Button
-                    sx={themeStyle.linkButton}
-                    startIcon={<AddIcon sx={{ color: "#000" }} />}
-                  >
-                    Add Phase
-                  </Button> */}
                 </Stack>
                 <Stack>
                   <Typography sx={themeStyle.headingText}>
@@ -482,75 +420,99 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                       {lineItemCounter}
                     </Typography>
                   </Typography>
-                  <List sx={{...themeStyle.scrollable, maxHeight:"150px",overflow:"auto",}}>
+                  <List
+                    sx={{
+                      ...themeStyle.scrollable,
+                      maxHeight: "150px",
+                      overflow: "auto",
+                    }}
+                  >
                     {changeOrder
-                      ?checkedRow?.phaseItems.map((phase, phaseIndex) => {
-                        return phase.lineItem_names.map((lineItem, index) => {
-                          counter++;
-                          if (counter <= 2) {
-                            return (
-                              <ListItem key={counter}>
-                                <Checkbox
-                                  checked={selectedItems.some(item => item.phaseId === phase.phaseId && item.lineItemId.includes(phase.lineItemId[index]))}
-                                  onChange={() => handleLineItemChange(phase.phaseId, phase.lineItemId[index])}
-                                />
-                                <ListItemText secondary={lineItem} />
-                              </ListItem>
-                            );
-                          }
-                          if (counter > 2 && showLineItems) {
-                            return (
-                              <ListItem key={counter}>
-                                <Checkbox
-                                  checked={selectedItems.some(item => item.phaseId === phase.phaseId && item.lineItemId.includes(phase.lineItemId[index]))}
-                                  onChange={() => handleLineItemChange(phase.phaseId, phase.lineItemId[index])}
-                                />
-                                <ListItemText secondary={lineItem} />
-                              </ListItem>
-                            );
-                          }
-                          return null;
-                        });
-                      })
+                      ? checkedRow?.phaseItems.map((phase, phaseIndex) => {
+                          return phase.lineItem_names.map((lineItem, index) => {
+                            counter++;
+                            if (counter <= 2) {
+                              return (
+                                <ListItem key={counter}>
+                                  <Checkbox
+                                    checked={selectedItems.some(
+                                      (item) =>
+                                        item.phaseId === phase.phaseId &&
+                                        item.lineItemId.includes(
+                                          phase.lineItemId[index]
+                                        )
+                                    )}
+                                    onChange={() =>
+                                      handleLineItemChange(
+                                        phase.phaseId,
+                                        phase.lineItemId[index]
+                                      )
+                                    }
+                                  />
+                                  <ListItemText secondary={lineItem} />
+                                </ListItem>
+                              );
+                            }
+                            if (counter > 2 && showLineItems) {
+                              return (
+                                <ListItem key={counter}>
+                                  <Checkbox
+                                    checked={selectedItems.some(
+                                      (item) =>
+                                        item.phaseId === phase.phaseId &&
+                                        item.lineItemId.includes(
+                                          phase.lineItemId[index]
+                                        )
+                                    )}
+                                    onChange={() =>
+                                      handleLineItemChange(
+                                        phase.phaseId,
+                                        phase.lineItemId[index]
+                                      )
+                                    }
+                                  />
+                                  <ListItemText secondary={lineItem} />
+                                </ListItem>
+                              );
+                            }
+                            return null;
+                          });
+                        })
                       : Object?.keys(rowCheckboxes)?.map((phase) => {
                           const phaseData = rowCheckboxes[phase];
                           return phaseData.rows.map((row, index) => {
                             counter++;
                             if (counter <= 2) {
-                             return( <ListItem key={counter}>
-                              <ListItemText secondary={row.title} />
-                            </ListItem>)
-                            } 
-                            if(counter >2 && showLineItems){
                               return (
                                 <ListItem key={counter}>
                                   <ListItemText secondary={row.title} />
                                 </ListItem>
                               );
-                            }else {
-                              return<></>
+                            }
+                            if (counter > 2 && showLineItems) {
+                              return (
+                                <ListItem key={counter}>
+                                  <ListItemText secondary={row.title} />
+                                </ListItem>
+                              );
+                            } else {
+                              return <></>;
                             }
                           });
                         })}
-                         <ListItem style={{padding:0}}>
-                              <Button
-                                style={{padding:0, textTransform: 'lowercase'}}
-                                variant="text"
-                                color="primary"
-                                onClick={() => {
-                                  setShowLineItems(!showLineItems);
-                                }}
-                                >
-                                {showLineItems ? 'Hide' : 'View more'}
-                              </Button>
-                            </ListItem>
+                    <ListItem style={{ padding: 0 }}>
+                      <Button
+                        style={{ padding: 0, textTransform: "lowercase" }}
+                        variant="text"
+                        color="primary"
+                        onClick={() => {
+                          setShowLineItems(!showLineItems);
+                        }}
+                      >
+                        {showLineItems ? "Hide" : "View more"}
+                      </Button>
+                    </ListItem>
                   </List>
-                  {/* <Button
-                    sx={themeStyle.linkButton}
-                    startIcon={<AddIcon sx={{ color: "#000" }} />}
-                  >
-                    Add Line Item
-                  </Button> */}
                 </Stack>
               </Stack>
               <Divider />
@@ -765,39 +727,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                     onChange={handleNotesChange}
                   ></input>
                 </Typography>
-                {/* <Box sx={themeStyle.dateBox}>
-                  <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DemoContainer components={["DateTimePicker"]}>
-                      <DateTimePicker
-                      value={dueDate}
-                      onChange={(newValue) => setDueDate(newValue)}
-                        format="MMM D, YYYY,h:mm a"
-                        viewRenderers={{
-                          hours: renderTimeViewClock,
-                          minutes: renderTimeViewClock,
-                          seconds: renderTimeViewClock,
-                        }}
-                        defaultValue={moment("2024-04-17T15:30")}
-                        slotProps={{
-                          // Targets the `IconButton` component.
-                          openPickerButton: {
-                            color: "#5B5B5B",
-                          },
-                          // Targets the `InputAdornment` component.
-                          inputAdornment: {
-                            position: "start",
-                          },
-                        }}
-                        sx={{
-                          input: {
-                            fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
-                          },
-                        }}
-                      />
-                    </DemoContainer>
-                  </LocalizationProvider>
-                </Box> */}
-                {/* Divider  */}
+
                 <hr style={themeStyle.hrLine} />
                 <Typography
                   sx={{
@@ -843,49 +773,6 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                   <MenuItem value={"normal"}>Normal</MenuItem>
                 </Select>
                 <hr style={themeStyle.hrLine} />
-                {/* <Typography
-                  sx={{
-                    ...themeStyle.headingText,
-                    ...themeStyle.rightheadings,
-                  }}
-                >
-                  Status
-                </Typography>
-                <Select
-                  displayEmpty
-                  renderValue={(value) => {
-                    return (
-                      <Stack direction={"row"} gap={1}>
-                        <FlagOutlinedIcon sx={{ color: "#EB1717" }} />
-                        <Typography
-                          color={"#EB1717"}
-                          textTransform={"capitalize"}
-                          fontFamily={"Inter"}
-                          fontWeight={"500"}
-                          fontSize={{
-                            lg: "0.9rem",
-                            md: "0.9rem",
-                            sm: "0.8rem",
-                            xs: "0.6rem",
-                          }}
-                        >
-                          {value}
-                        </Typography>
-                      </Stack>
-                    );
-                  }}
-                  value={status}
-                  onChange={handleStatusChange}
-                  IconComponent={KeyboardArrowDownIcon}
-                  sx={{
-                    ...themeStyle.linkButton,
-                    ...themeStyle.priorityButton,
-                  }}
-                  startIcon={<FlagOutlinedIcon sx={{ color: "#EB1717" }} />}
-                >
-                  <MenuItem value={"pending"}>Pending</MenuItem>
-                  <MenuItem value={"done"}>Done</MenuItem>
-                </Select> */}
               </Box>
               <Stack spacing={0.5} p={1} px={3}>
                 <Typography
@@ -949,22 +836,21 @@ const style = {
   width: "700px",
 };
 const themeStyle = {
-  
   scrollable: {
-    scrollbarWidth: 'none',  // For Firefox
-    '-ms-overflow-style': 'none',  // For IE and Edge
-    '&::-webkit-scrollbar': {
-        width: '6px'
+    scrollbarWidth: "none", // For Firefox
+    "-ms-overflow-style": "none", // For IE and Edge
+    "&::-webkit-scrollbar": {
+      width: "6px",
     },
-    '&::-webkit-scrollbar-thumb': {
-        backgroundColor: 'transparent',
-        transition: 'background-color 0.3s',
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "transparent",
+      transition: "background-color 0.3s",
     },
-    '&:hover::-webkit-scrollbar-thumb': {
-        backgroundColor: '#ddd',
+    "&:hover::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ddd",
     },
-    overflowY: 'scroll'
-},
+    overflowY: "scroll",
+  },
   inputFields: {
     border: "0px solid #FFF",
     outline: "none",

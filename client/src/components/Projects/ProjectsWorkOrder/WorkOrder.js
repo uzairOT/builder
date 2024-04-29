@@ -16,6 +16,9 @@ import {
 } from "@mui/material";
 import Button from "../../UI/CustomButton";
 import ChangeOrder from "../ProjectsDefault/ChangeOrder";
+import NotificationDetailModal from "../../Navbar/NotificationDetailModal";
+import { useGetWorkOrderDetailsMutation } from "../../../redux/apis/Project/projectApiSlice";
+import BuilderProButton from "../../UI/Button/BuilderProButton";
 const dummyData = [
   {
     id: 1,
@@ -72,6 +75,15 @@ function WorkOrder({
   status,
 }) {
   // console.log('INSIDE WORKORDER: ',data)
+  const [open, setOpen] = useState(false);
+  const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation();
+  const [data1, setData1] = useState(null);
+  const handleOnClick = async (workOrderId) => {
+ 
+    const res = await getWorkOrder({workOrderId: workOrderId});
+    setData1(res.data);
+    setOpen(true);
+  };
   const handleUnitChange = (event, id) => {
     const selectedUnit = event.target.value;
     // Assuming you have a function to update the unit value in your data structure
@@ -89,7 +101,7 @@ function WorkOrder({
     <TableContainer
       component={Paper}
       sx={{ boxShadow: "none" }}
-      style={{ height: workOrder ? "300px" : "100%", scrollbarWidth:"thin" }}
+      style={{ height: workOrder ? "300px" : "100%", scrollbarWidth: "thin" }}
     >
       <Table>
         <TableHead>
@@ -112,47 +124,74 @@ function WorkOrder({
         </TableHead>
         <TableBody>
           {data?.workOrderReqs.map((item) => {
-            if(status === item.status){ 
-            return (
-              <TableRow key={item.id}>
-                {workOrder ? (
-                  <></>
-                ) : (
+            if (status === item.status) {
+              return (
+                <TableRow key={item.id}>
+                  {workOrder ? (
+                    <></>
+                  ) : (
+                    <TableCell sx={tableCellValueStyle}>
+                      <Checkbox
+                        checked={checkedRow === item}
+                        onChange={() => handleCheckboxChange(item, data)}
+                      />
+                    </TableCell>
+                  )}
+                  <TableCell sx={tableCellValueStyle}>{item.subject}</TableCell>
                   <TableCell sx={tableCellValueStyle}>
-                    <Checkbox
-                      checked={checkedRow === item}
-                      onChange={() => handleCheckboxChange(item, data)}
-                    />
+                    {item.description}
                   </TableCell>
-                )}
-                <TableCell sx={tableCellValueStyle}>{item.subject}</TableCell>
-                <TableCell sx={tableCellValueStyle}>
-                  {item.description}
-                </TableCell>
-                {/* <TableCell sx={tableCellValueStyle}>{item.LineItem.unit}</TableCell>
+                  {/* <TableCell sx={tableCellValueStyle}>{item.LineItem.unit}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.LineItem.margin}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.LineItem.projectProfile}</TableCell> */}
-                <TableCell sx={tableCellValueStyle}>{item.priority}</TableCell>
-                <TableCell sx={tableCellValueStyle}>{item.total}</TableCell>
-                <TableCell sx={tableCellValueStyle}>{item.start_day}</TableCell>
-                <TableCell sx={tableCellValueStyle}>{item.end_day}</TableCell>
-                <TableCell sx={tableCellValueStyle}>
-                  <Button
-                    buttonText={item.status} // Assuming status property represents the status
-                    color={item.status === "pending" ? "#DF0404" : "#000000"} // Adjust colors based on status
-                    backgroundColor={
-                      item.status === "pending" ? "#FFDADA" : "#FFFFFF"
-                    } // Adjust background colors based on status
-                    width="101px"
-                    height="27px"
-                    borderRadius="45px"
-                  />
-                </TableCell>
-                {/* <TableCell sx={tableCellValueStyle}>{item.status}</TableCell> */}
-                <TableCell sx={tableCellValueStyle}>{item.notes}</TableCell>
-              </TableRow>
-            );} else{
-              return <></>
+                  <TableCell sx={tableCellValueStyle}>
+                    {item.priority}
+                  </TableCell>
+                  <TableCell sx={tableCellValueStyle}>{item.total}</TableCell>
+                  <TableCell sx={tableCellValueStyle}>
+                    {item.start_day}
+                  </TableCell>
+                  <TableCell sx={tableCellValueStyle}>{item.end_day}</TableCell>
+                  <TableCell sx={tableCellValueStyle}>
+                    <Button
+                      buttonText={item.status} // Assuming status property represents the status
+                      color={item.status === "pending" ? "#DF0404" : "#000000"} // Adjust colors based on status
+                      backgroundColor={
+                        item.status === "pending" ? "#FFDADA" : "#FFFFFF"
+                      } // Adjust background colors based on status
+                      width="101px"
+                      height="27px"
+                      borderRadius="45px"
+                    />
+                  </TableCell>
+                  {/* <TableCell sx={tableCellValueStyle}>{item.status}</TableCell> */}
+                  <TableCell sx={tableCellValueStyle}>{item.notes}</TableCell>
+                  <TableCell sx={tableCellValueStyle}>
+                    <BuilderProButton
+                      variant={"contained"}
+                      backgroundColor={"#4C8AB1"}
+                      fontSize={"11px"}
+                      fontFamily={"Inter, sans serif"}
+                      marginLeft={"5px"}
+                      handleOnClick={() => handleOnClick(item.id)}
+                    >
+                      Detail
+                    </BuilderProButton>
+                    {data1 === null ? (
+                      <></>
+                    ) : (
+                      <NotificationDetailModal
+                        notification={data1}
+                        isEvent={true}
+                        open={open}
+                        setOpen={setOpen}
+                      />
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            } else {
+              return <></>;
             }
           })}
         </TableBody>

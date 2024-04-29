@@ -1,6 +1,7 @@
 import { apiSlice } from "../apiSlice";
 
 const PROJECTS_URL = "http://3.135.107.71/project";
+const EVENT_URL = "http://3.135.107.71/user/events";
 const projectId = 47;
 
 const projectApiSlice = apiSlice.injectEndpoints({
@@ -177,6 +178,13 @@ const projectApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: data.body
       })
+    }),
+    getWorkOrderDetails: builder.mutation({
+      query: (data) => ({
+        url: `${EVENT_URL}/workOrderDetails/${data.workOrderId}`,
+        method: 'POST',
+        body: data
+      })
     })
   }),
 });
@@ -205,5 +213,6 @@ export const {
   useGetProjectNotesQuery,
   useAddProjectNotesMutation,
   useEditProjectNotesMutation,
-  useDeleteProjectNotesMutation
+  useDeleteProjectNotesMutation,
+  useGetWorkOrderDetailsMutation
 } = projectApiSlice;

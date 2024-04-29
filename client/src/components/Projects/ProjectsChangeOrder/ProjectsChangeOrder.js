@@ -13,12 +13,14 @@ import RequestWorkOrderModal from "../../dialogues/RequestWorkOrder/RequestWorkO
 import {
   useGetProjectChangeOrderQuery,
   useGetProjectWorkOrderQuery,
+  useGetWorkOrderDetailsMutation,
 } from "../../../redux/apis/Project/projectApiSlice";
 import { useGetRequestWorkOrderQuery } from "../../../redux/apis/Project/workOrderApiSlice";
 import { useParams } from "react-router-dom";
 
 const ProjectsChangeOrder = ({ setChangeView, workOrder, view }) => {
   const [checkedRow, setCheckedRow] = useState(null);
+  const [getWorkOrder, {isLoading}] = useGetWorkOrderDetailsMutation()
   const params = useParams();
   const { id: currentProjectId } = params;
   const currentUser = localStorage.getItem("userInfo");
@@ -128,6 +130,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view }) => {
                   rowCheckboxes={rowCheckboxes}
                   checkedRow={checkedRow}
                   changeOrder={true}
+                 
                 />
               )}
             </Stack>
