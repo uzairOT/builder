@@ -14,6 +14,7 @@ function SideBar() {
         '/settings/admin',
         '/settings/projectManager',
         '/settings/client',
+        '/settings/employee',
         '/settings/subcontractor',
         '/settings/supplier',
         '/settings/materline'
@@ -63,9 +64,18 @@ function SideBar() {
                 </ListItem>
                 <ListItem
                 component={Link}
-                    to="/settings/subcontractor"
+                    to="/settings/employee"
                   
                     selected={selectedItem === 4}
+                    sx={listItemStyle}
+                >
+                    Employee
+                </ListItem>
+                <ListItem
+                component={Link}
+                    to="/settings/subcontractor"
+                  
+                    selected={selectedItem === 5}
                     sx={listItemStyle}
                 >
                     Subcontractor
@@ -74,7 +84,7 @@ function SideBar() {
                 component={Link}
                     to="/settings/supplier"
                     
-                    selected={selectedItem === 5}
+                    selected={selectedItem === 6}
                     sx={listItemStyle}
                 >
                     Supplier List
@@ -83,7 +93,7 @@ function SideBar() {
                 component={Link}
                     to="/settings/materline"
                     
-                    selected={selectedItem === 6}
+                    selected={selectedItem === 7}
                     sx={listItemStyle}
                 >
                     Master Line List

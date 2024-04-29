@@ -67,7 +67,7 @@ const Navbar = () => {
   const [expanded, setExpanded] = useState(null);
   const [updateNotificationRead] = useUpdateWorkOrderReadMutation();
   dispatch(setNotificationsArr(data?.data));
-  console.log("JOHN NOTIFICATION TEST",anchorEl)
+  // console.log("JOHN NOTIFICATION TEST",anchorEl)
   const handleClick = async (event) => {
     if(anchorEl){
       setAnchorEl(null)
@@ -89,7 +89,7 @@ const Navbar = () => {
 
   useEffect(() => {
     switch (path) {
-      case undefined:
+      case '':
         setSelectedTab(0);
         break;
       case "projects":
@@ -136,13 +136,14 @@ const Navbar = () => {
     // console.log('=-------------------> notifications on')
     emit("join", userId);
     on("newNotification", (data) => {
-      console.log("newNotification---------->", data);
+      // console.log("newNotification---------->", data);
       dispatch(setNotifications(data));
     });
   }, [on]);
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
+    console.log(newValue, " navbar click")
     const lowercasedValue = `${event.target.textContent}`.toLowerCase();
     navigate(lowercasedValue === "dashboard" ? "/" : lowercasedValue);
   };
@@ -207,18 +208,18 @@ const Navbar = () => {
           <Tabs
             sx={themeStyle.tabs}
             value={selectedTab}
-            onChange={handleTabChange}
+            // onClick={handleTabChange}
             indicatorColor=""
             centered
           >
-            <Tab label="Dashboard" style={themeStyle.getTabColor(0)} />
-            <Tab label="Projects" style={themeStyle.getTabColor(1)} />
-            <Tab label="Reports" style={themeStyle.getTabColor(2)} />
+            <Tab label="Dashboard" style={themeStyle.getTabColor(0)} onClick={(e) => handleTabChange(e,0)} />
+            <Tab label="Projects" style={themeStyle.getTabColor(1)}  onClick={(e) => handleTabChange(e,1)}/>
+            <Tab label="Reports" style={themeStyle.getTabColor(2)} onClick={(e) => handleTabChange(e,2)}/>
             <Box sx={themeStyle.search}>
               <SearchBar />
             </Box>
-            <Tab label="Subscription" style={themeStyle.getTabColor(4)} />
-            <Tab label="Settings" style={themeStyle.getTabColor(5)} />
+            <Tab label="Subscription" style={themeStyle.getTabColor(4)} onClick={(e) => handleTabChange(e,4)} />
+            <Tab label="Settings" style={themeStyle.getTabColor(5)}  onClick={(e) => handleTabChange(e,5)}/>
           </Tabs>
           <Box
             display={"flex"}

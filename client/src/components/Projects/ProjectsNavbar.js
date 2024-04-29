@@ -10,11 +10,12 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import ProjectNavbarDrawer from "./ProjectNavbarDrawer";
 
 const ProjectsNavbar = ({ project }) => {
-  const params = useParams();
+  const location = useLocation();
+  const page = location.pathname.split('/',)[3];
   const theme = useTheme();
   const showHamburger = useMediaQuery(theme.breakpoints.down("lg"));
   const navigate = useNavigate();
@@ -62,6 +63,7 @@ const ProjectsNavbar = ({ project }) => {
   };
   const navigateToDefault = () => {
     navigate("");
+    handleNavClick('');
   };
 
   return (
@@ -79,7 +81,7 @@ const ProjectsNavbar = ({ project }) => {
           />
         </IconButton>
         {/* <img src={project?.image} alt='Project' width={'60px'} height={'35px'} style={{borderRadius: '12px'}}></img> */}
-        <Link to={``} style={{ textDecoration: "none" }}>
+        <Link to={``} onClick={() => handleNavClick('')} style={{ textDecoration: "none" }}>
           <Typography
             sx={{
               color: "#494A4A",

@@ -111,17 +111,17 @@ const Login = () => {
           toast.warning("Profile doesn't exist");
           navigate("/signup");
         } else {
-          console.log("+(+(+++2", err);
+          // console.log("+(+(+++2", err);
           //navigate("/signup");
         }
 
-        console.log("+(+(+++1", err);
+        // console.log("+(+(+++1", err);
         // alert("---",err?.data?.message || "---",err.error);
       }
       //
       // console.log("User data stored in localStorage:", userData);
     } else {
-      console.log("Google login failed");
+      // console.log("Google login failed");
     }
   };
 
@@ -129,11 +129,11 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await login({ email, password }).unwrap();
-      console.log("login :", res);
+      // console.log("login :", res);
       dispatch(setCredentials({ ...res }));
       navigate("/");
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       toast.error(err?.data?.error || err.error || err?.data?.message);
     }
   };

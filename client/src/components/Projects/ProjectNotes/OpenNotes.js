@@ -15,6 +15,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import NotesModal from "./NotesModal";
 import { useParams } from "react-router-dom";
 import { useDeleteProjectNotesMutation, useGetProjectNotesQuery } from "../../../redux/apis/Project/projectApiSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const OpenNotes = ({ notes }) => {
     const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -38,6 +40,10 @@ const OpenNotes = ({ notes }) => {
         setShowEditModal(!showEditModal)
       }
       const handleDelete = async ()=>{
+        if(noteId === undefined){
+          toast.warning('No notes selected');
+      return;
+        }
         await deleteProjectNote(noteId); 
         await refetch();
       }
@@ -103,7 +109,7 @@ const OpenNotes = ({ notes }) => {
             {notes?.content}
           </Typography>
         </Stack>
-        <Stack spacing={1}>
+        {/* <Stack spacing={1}>
               <Stack direction={'row'}  p={1} backgroundColor={'#F1F1F1'} width={'300px'} borderRadius={'10px'} justifyContent={'space-between'}>
                 <Stack direction={'row'} spacing={1} alignItems={'center'}>
                     <img src={pdf} alt="PDF icon" style={{width:'28px', height:'28px'}}></img>
@@ -157,7 +163,7 @@ const OpenNotes = ({ notes }) => {
                 </Stack>
                 </Stack>
               </Stack>
-        </Stack>
+        </Stack> */}
       </Stack>
     </Stack>
   );

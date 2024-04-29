@@ -91,7 +91,7 @@ function AddModal({ title, open, onClose }) {
       };
       //console.log(post);
       const res = await assignRolePost(post).unwrap();
-      console.log(res);
+      // console.log(res);
       toast.info(res?.data?.message);
       refetch();
       action.resetForm();

@@ -133,7 +133,7 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoadi
               sx={{ ...YellowBtn, padding: "1rem 1rem" }}
               onClick={handleSkip}
             >
-              Yes, Skip
+               {isLoading ?  <CircularProgress size={'1.25rem'} /> : 'Yes, Skip'}
             </Button>
           </DialogActions>
         </Dialog>

@@ -15,6 +15,8 @@ import {
   useEditProjectNotesMutation,
   useGetProjectNotesQuery,
 } from "../../../redux/apis/Project/projectApiSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const NotesModal = ({ showEditModal, setShowEditModal, notes}) => {
   const [open, setOpen] = useState(false);
@@ -46,6 +48,10 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes}) => {
 
   const handleSubmit = async () => {
     const noteId = notes?.id;
+    if(noteId === undefined){
+      toast.warning('No notes selected');
+      return;
+    }
     const form = {
       subject: noteSubject,
       content: noteBody,

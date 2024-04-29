@@ -71,6 +71,7 @@ import SetNewPassword from "./components/Login/ForgotPassword/SetNewPassword.js"
 import Help from "./pages/Help/Help.jsx";
 import PrivacyTerms from "./pages/PrivacyTerms/PrivacyTerms.jsx";
 import ChangeOrder from "./pages/Projects/ChangeOrder.js";
+import Employee from "./components/Settings/Employee/Employee.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -139,7 +140,7 @@ function App() {
 
           if (data) {
             // Use `data` safely here
-            console.log(data);
+            // console.log(data);
             dispatch(addEvents(data));
             dispatch(setIsLoading(false));
           } else {
@@ -159,7 +160,7 @@ function App() {
           // setEvents(eventArr);
         } catch (err) {
           dispatch(setError(err));
-          console.log(err);
+          // console.log(err);
         } finally {
           dispatch(setIsLoading(false));
         }
@@ -222,6 +223,7 @@ function App() {
               <Route path="admin" element={<Admin />} />
               <Route path="projectManager" element={<ProjectManager />} />
               <Route path="client" element={<Client />} />
+              <Route path="employee" element={<Employee />} />
               <Route path="subcontractor" element={<Subcontractor />} />
               <Route path="supplier" element={<SupplierList />} />
               <Route path="materline" element={<MasterLineItem />} />
