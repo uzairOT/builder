@@ -26,7 +26,7 @@ import SearchBar from "../../UI/SearchBar/SearchBar";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EditProjectModal from "../../dialogues/EditProject/EditProjectModal";
 
 const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) => {
@@ -34,16 +34,24 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
   const tableHeader = [
     { id: "clientName", title: "Client" },
     { id: "projectName", title: "Project" },
-    { id: "phoneNumber", title: "Phone Number" },
-    { id: "approvedPrice", title: "Approved Price" },
-    { id: "collected", title: "Collected" },
-    { id: "remainingBalance", title: "Remaining Balance" },
-    { id: "costToComplete", title: "Cost To Complete" },
-    { id: "projectProfit", title: "Projected Profit" },
-    { id: "projectMargin", title: "Projected Margin" },
-    { id: "projectStatus", title: "Project Status" },
+    { id: "phoneNumber", title: "" },
+    { id: "approvedPrice", title: "" },
+    { id: "collected", title: "" },
+    { id: "remainingBalance", title: "" },
+    { id: "costToComplete", title: "" },
+    { id: "projectProfit", title: "" },
+    { id: "projectMargin", title: "" },
+    { id: "projectStatus", title: "" },
   ];
   //console.log(rows);
+  //Phone Number
+  //Approved Price
+  //Collected
+  //Remaining Balance
+  //Cost To Complete
+  //Projected Profit
+  //Projected Margin
+  //Project Status
   const [project, setProject] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -102,7 +110,7 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
   //       setIsLoading(false);
   //     });
   // }, []); // Empty dependency array to execute the effect only once on component mount
-  console.log(rows);
+  // console.log(rows);
   return (
     <Stack width={"100%"}>
       {/* Project List Header */}
@@ -429,16 +437,19 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
                               </IconButton>
                             </Paper> */}
                           </Box>
-                          {/* <TableCell sx={themeStyle.tableCell}>
+                          <TableCell sx={themeStyle.tableCell}>
+                            <Link to={`/projects/${row.id}`} style={{textDecoration: 'none'}}>
                             <Typography
                               color={"#4C8AB1"}
                               fontSize={"14px"}
                               pl={1}
                               width={"80px"}
-                            >
+                              
+                              >
                               View Details
                             </Typography>
-                          </TableCell> */}
+                            </Link>
+                          </TableCell>
                         </TableRow>
                       );
                     })}

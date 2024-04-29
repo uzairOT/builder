@@ -4,10 +4,11 @@ import ProgressCardHeader from './ProgressCardHeader'
 import ProjectProgress from './ProjectProgress'
 import PaymentDetails from './PaymentDetails'
 import ProfitDetails from './ProfitDetails'
+import { Link } from 'react-router-dom'
 
 const ProgressCard = ({project}) => {
   return (
-    <> 
+    <Link style={{textDecoration: 'none'}} to={`/projects/${project.id}`}> 
         <ProgressCardHeader project={project} />
         <Divider variant='fullWidth'></Divider>
         <Stack direction={'row'} pt={2}>
@@ -17,7 +18,7 @@ const ProgressCard = ({project}) => {
         </Stack>
         <Divider variant='fullWidth'></Divider>
         <ProfitDetails />
-    </>
+    </Link>
   )
 }
 

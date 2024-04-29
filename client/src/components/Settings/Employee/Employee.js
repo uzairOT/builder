@@ -12,7 +12,7 @@ import { useOutletContext } from 'react-router-dom';
 
 
 
-function Admin() {
+function Employee() {
   
 
   const [userId, setUserId] = useState();
@@ -40,7 +40,7 @@ function Admin() {
 //console.log(userId)
   return (
     <div style={{padding:"20px"}}>
-      <Header title="Admin"   OpenAddModal={OpenAddModal}/>
+      <Header title="Employee"   OpenAddModal={OpenAddModal}/>
       <CustomTable setUpdateModalOpen={setUpdateModalOpen} userId={userId} setUserId={setUserId}/>
 
       <Box mt={2} mb={2}>
@@ -58,13 +58,13 @@ function Admin() {
         </Typography>
         {/* <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/> */}
       </Box>
-      <AddModal title={"Admin"} open={isAddModalOpen} onClose={handleCloseAddModal} />
-      <UpdateModal title={"Admin"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} />
+      <AddModal title={"Employee"} open={isAddModalOpen} onClose={handleCloseAddModal} />
+      <UpdateModal title={"Employee"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} />
     </div>
   );
 }
 
-export default Admin;
+export default Employee;
 
 // <div><ChatView /></div>
 const paginationStyle = {

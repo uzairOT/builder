@@ -35,7 +35,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
       end: moment(item.end).toDate(),
     }
   })
-  console.log("In Task Calender View: ", eventsArr);
+  // console.log("In Task Calender View: ", eventsArr);
 
   // const [events, setEvents] = useState([
   //   {

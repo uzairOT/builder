@@ -49,7 +49,7 @@ function Notification({
       });
       await refetch(userId);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -61,7 +61,7 @@ function Notification({
       });
       await refetch(userId);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
   const isExpanded = expanded === index;

@@ -15,6 +15,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import NotesModal from "./NotesModal";
 import { useParams } from "react-router-dom";
 import { useDeleteProjectNotesMutation, useGetProjectNotesQuery } from "../../../redux/apis/Project/projectApiSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const OpenNotes = ({ notes }) => {
     const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -38,6 +40,10 @@ const OpenNotes = ({ notes }) => {
         setShowEditModal(!showEditModal)
       }
       const handleDelete = async ()=>{
+        if(noteId === undefined){
+          toast.warning('No notes selected');
+      return;
+        }
         await deleteProjectNote(noteId); 
         await refetch();
       }

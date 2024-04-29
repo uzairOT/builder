@@ -25,7 +25,7 @@ function EditProjectModal({ title, open, onClose, project }) {
     const [projectUpdate] = useProjectUpdateMutation();
     const {refetch} = useGetUserProjectsQuery({userId: currentUserId})
 
-    console.log(project)
+    // console.log(project)
 
     const uploadFileToServer = async (selectedFile) => {
       if (selectedFile) {
@@ -115,7 +115,7 @@ function EditProjectModal({ title, open, onClose, project }) {
     };
     useEffect(() => {
       // This will run whenever the project prop changes
-      console.log('Project has changed:', project);
+      // console.log('Project has changed:', project);
       
       // Update form values if needed
       setValues({

@@ -22,7 +22,7 @@ const useSocket = () => {
         //     setIsConnected(false);
         // });
         const newSocket = socketIOClient(SOCKET_SERVER_URL);
-        console.log('Connected to server');
+        // console.log('Connected to server');
         setIsConnected(true);
         setSocket(newSocket);
 
@@ -34,9 +34,9 @@ const useSocket = () => {
 
     const emit = (event, data) => {
         if(socket){
-            console.log('socket emit event: ', event, ' data : ', data);
+            // console.log('socket emit event: ', event, ' data : ', data);
             socket.emit(event, data, (response) => {
-              console.log('Server response:', response);
+            //   console.log('Server response:', response);
             });
           }
     }

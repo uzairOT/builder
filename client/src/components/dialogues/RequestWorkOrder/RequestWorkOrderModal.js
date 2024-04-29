@@ -78,8 +78,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   let lineItemIds = [];
   let lineItemCounter = 0;
   let totalWorkOrder = 0;
-
-  console.log("START DATE", startDate);
+  // console.log("START DATE", startDate);
+  // console.log("START DATE", endDate);
 
   if (changeOrder) {
     checkedRow?.phaseItems?.forEach((phase) => {
