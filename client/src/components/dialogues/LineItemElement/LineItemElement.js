@@ -102,7 +102,6 @@ function AddLineElement({
     longDescription,
   };
 
-
   useEffect(() => {
     const getData = setTimeout(() => {
       axios
@@ -139,6 +138,14 @@ function AddLineElement({
   //console.log("Line Item Element",)
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(start === null){
+      toast.warning('Please enter a valid date');
+      return
+    }
+    if(end === null){
+      toast.warning('Please enter a valid date');
+      return
+    }
     if (LineHeading === "Update Line Item") {
       //console.log("updading..")
       const lineItemId = LineItem.id;
@@ -383,15 +390,6 @@ function AddLineElement({
                         value={start}
                         onChange={handleStartDateChange}
                         format="YYYY/MM/DD"
-                        // renderInput={(params) => (
-                        //   <TextField
-                        //     {...params}
-                        //     value={PAstart}
-                        //     placeholder="Select start date"
-                        //     variant="standard"
-                        //     margin="dense"
-                        //   />
-                        // )}
                       />
                     </LocalizationProvider>
                   </Box>
@@ -417,14 +415,6 @@ function AddLineElement({
                         placeholder="dede"
                         format="YYYY/MM/DD"
                         onChange={handleEndDateChange}
-                        // renderInput={(params) => (
-                        //   <TextField
-                        //     {...params}
-                        //     placeholder="Select end date"
-                        //     variant="standard"
-                        //     margin="dense"
-                        //   />
-                        // )}
                       />
                     </LocalizationProvider>
                   </Box>
@@ -476,9 +466,9 @@ const inputStyle = {
   paddingLeft: "-1.5rem",
   backgroundColor: "#EDF2F6",
   outline: "none !important",
-  '& input': {
-    borderBottom: 'none', // Remove bottom border of the input
-},
+  "& input": {
+    borderBottom: "none", // Remove bottom border of the input
+  },
 };
 
 const generalBox = {
