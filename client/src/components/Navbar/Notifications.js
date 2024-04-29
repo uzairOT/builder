@@ -31,7 +31,7 @@ function Notification({
   const [data1, setData1] = useState(null);
   const [getWorkOrder, {isLoading}] = useGetWorkOrderDetailsMutation()
   const handleOnClick = async () => {
-      const res = await getWorkOrder({workOrderId:notification.WorkOrderReq.workOrderId})
+      const res = await getWorkOrder({workOrderId:notification.WorkOrderReq.id})
       setData1(res.data);
       setOpen(true)
   }
