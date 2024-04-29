@@ -340,7 +340,7 @@ const checkUserOnInvitation = async () =>{
             </Box>
           </form>
         </Grid>
-        <Grid sx={bottomGrid}>
+        {/* <Grid sx={bottomGrid}>
           <Box sx={selectLanguageBox}>
             <Select defaultValue={1} sx={selectStyle}>
               <MenuItem value={1}>English (United States)</MenuItem>
@@ -353,7 +353,7 @@ const checkUserOnInvitation = async () =>{
             <Typography sx={hptLinksStyle}>Privacy</Typography>
             <Typography sx={hptLinksStyle}>Terms</Typography>
           </Box>
-        </Grid>
+        </Grid> */}
         <Box
           sx={{
             display: { lg: "none", md: "none", sm: "flex", xs: "none" },
@@ -383,8 +383,8 @@ const firstGrid = {
   justifyContent: "center",
   alignItems: "center",
   backgroundColor: "#4C8AB1",
-  marginTop: { lg: "-0.3rem", sm: "-1rem", xs: "-2rem" },
-  height: "100.5vh",
+  // marginTop: { lg: "-0.3rem", sm: "-1rem", xs: "-2rem" },
+  minHeight: "100vh",
 };
 
 const SecondGrid = {
@@ -402,7 +402,7 @@ const SecondGrid = {
 };
 
 const downloadForMobBox = {
-  marginTop: "14rem",
+  marginTop: "1rem",
   marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   justifyContent: "center",

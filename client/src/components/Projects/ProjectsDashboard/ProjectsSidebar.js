@@ -58,7 +58,7 @@ const ProjectsSidebar = () => {
                 </Typography>
                 </BuilderProButton>
             </Stack>
-        <Box sx={{...themeStyle.scrollable,height:{xl:'70vh',lg:'70vh',md:"70vh",sm:"50vh",xs:"48vh"} }} >
+        <Box sx={{...themeStyle.scrollable,height:{xl:'60vh',lg:'70vh',md:"70vh",sm:"50vh",xs:"48vh"} }} >
         <Stack spacing={1} pl={2} pr={2} pt={1} >
           <>
           {data?.projects?.map((projectProfileCard) => {

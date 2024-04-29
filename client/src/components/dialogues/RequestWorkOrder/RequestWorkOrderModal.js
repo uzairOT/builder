@@ -41,6 +41,7 @@ import {
 import { useGetTeamMembersQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { useLocation } from "react-router-dom";
 import useSocket from "../../../utils/useSocket";
+import { ArrowDropDownIcon, MobileDatePicker } from "@mui/x-date-pickers";
 
 const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const location = useLocation();
@@ -54,8 +55,9 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const [subject, setSubject] = useState(
     changeOrder ? checkedRow?.subject : ""
   );
+
   const [startDate, setStartDate] = useState(moment());
-  const [endDate, setEndDate] = useState(moment());
+  const [endDate, setEndDate] = useState(moment().add(1, "hour"));
   const [description, setDescription] = useState(
     changeOrder ? checkedRow?.description : ""
   );
@@ -64,7 +66,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const userInfo = localStorage.getItem("userInfo");
   const user = JSON.parse(userInfo);
   const userId = user?.user.id;
-  const [notes, setNotes] = useState();
+  const [notes, setNotes] = useState("");
   const forecast = useSelector(getForecast);
   const dailyForecast = forecast.dailyForecast || [];
   const [getEvents] = useGetUserEventsMutation();
@@ -76,8 +78,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   let lineItemIds = [];
   let lineItemCounter = 0;
   let totalWorkOrder = 0;
+
   console.log("START DATE", startDate);
-  console.log("START DATE", endDate);
 
   if (changeOrder) {
     checkedRow?.phaseItems?.forEach((phase) => {
@@ -221,13 +223,22 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   };
 
   useEffect(() => {
-    setSubject(checkedRow?.subject);
-    setDescription(checkedRow?.description);
-    setStartDate(moment(checkedRow?.start_day));
-    setEndDate(moment(checkedRow?.end_day));
+    if (changeOrder) {
+      setSubject(checkedRow?.subject);
+      setDescription(checkedRow?.description);
+      setStartDate(moment(checkedRow?.start_day));
+      setEndDate(moment(checkedRow?.end_day));
+    } else {
+      return;
+    }
   }, [checkedRow]);
 
   const handleRequest = async () => {
+    if (subject === "" || description === "" || notes === "") {
+      toast.warning("Please complete the Request work order form");
+      return;
+    }
+
     const formattedStartDate = startDate.format("MMM D, YYYY, h:mm a");
     const formattedEndDate = endDate.format("MMM D, YYYY, h:mm a");
 
@@ -328,6 +339,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
               <Typography fontFamily={"inherit"}>
                 <strong>Subject: </strong>{" "}
                 <input
+                  required
                   value={subject}
                   placeholder="Type your subject..."
                   type="text"
@@ -526,7 +538,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                   <Box sx={themeStyle.dateBox}>
                     <LocalizationProvider dateAdapter={AdapterMoment}>
                       <DemoContainer components={["DateTimePicker"]}>
-                        <DateTimePicker
+                        <MobileDatePicker
                           value={startDate}
                           onChange={(newValue) => setStartDate(newValue)}
                           format="MMM D, YYYY,h:mm a"
@@ -535,6 +547,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                             minutes: renderTimeViewClock,
                             seconds: renderTimeViewClock,
                           }}
+                          minDate={moment()}
                           defaultValue={moment("2024-04-17T15:30")}
                           slotProps={{
                             // Targets the `IconButton` component.
@@ -568,7 +581,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                   <Box sx={themeStyle.dateBox}>
                     <LocalizationProvider dateAdapter={AdapterMoment}>
                       <DemoContainer components={["DateTimePicker"]}>
-                        <DateTimePicker
+                        <MobileDatePicker
+                          minDate={moment().add(1, "hour")}
                           value={endDate}
                           onChange={(newValue) => setEndDate(newValue)}
                           format="MMM D, YYYY,h:mm a"
@@ -577,7 +591,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                             minutes: renderTimeViewClock,
                             seconds: renderTimeViewClock,
                           }}
-                          defaultValue={moment("2024-04-17T15:30")}
+                          defaultValue={moment(startDate).add(1, "hour")}
                           slotProps={{
                             // Targets the `IconButton` component.
                             openPickerButton: {
