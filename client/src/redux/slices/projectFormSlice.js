@@ -6,7 +6,7 @@ const initialState = {
   buildType: 'remodel',
   workDone: '',
   estimatedPrice: '',
-  location: 'Islamabad',
+  location: '',
   clientName: '',
   projectColor:'',
   users: [{ email: '', role: 'admin' }],

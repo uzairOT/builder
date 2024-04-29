@@ -1,40 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid, Button, Stack, Typography } from "@mui/material";
+import { Grid, Button, Stack, Typography } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import PhaseCard from "../AddPhaseCard/AddPhaseCard";
 import actionButton from "../../UI/actionButton";
-import ColorPickerElement from "../../dialogues/ColorPickerElement/ColorPickerElement";
 import { useDeleteProjectPhaseMutation } from "../../../redux/apis/Project/projectApiSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetPhasesQuery } from "../../../redux/apis/Project/projectApiSlice";
 import UpdatePhaseDialogue from "../../dialogues/UpdatePhaseDialogue/UpdatePhaseDialogue";
 import AddPhaseDialogue from "../../dialogues/AddPhaseDialogue/AddPhaseDialogue";
-import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
-import RequestWorkOrderModal from "../../dialogues/RequestWorkOrder/RequestWorkOrderModal";
 import {
-  selectAddPhase,
-  setRowCheckbox,
-} from "../../../redux/slices/addPhaseSlice";
+  addInitialPhase,
+  addPhase,
+} from "../../../redux/slices/Project/projectInitialProposal";
+import RequestWorkOrderModal from "../../dialogues/RequestWorkOrder/RequestWorkOrderModal";
+import { selectAddPhase } from "../../../redux/slices/addPhaseSlice";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function AddPhaseView({ adminProjectView, view, projectId }) {
+function AddPhaseView({
+  adminProjectView,
+  view,
+  projectId,
+  InitialProposalView,
+}) {
   const [cardPhase, setCardPhase] = useState([]);
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
   const [selectedPhaseData, setSelectedPhaseData] = useState(null);
-  const local = localStorage.getItem("userInfo");
   const { id } = useParams();
-  const currentUser = JSON.parse(local);
-  // //console.log("Add PhaseView:", currentUser);
   const [deleteProjectPhase] = useDeleteProjectPhaseMutation();
   const phases = useSelector((state) => state.projectInitialProposal.phases);
-  // const  [getPhases  { data, error, isLoading}] = useGetPhasesQuery({projectId: projectId});
+  const initialPhases = useSelector(
+    (state) => state.projectInitialProposal.initialPhases
+  );
   const [showUpdatePhaseDialogue, setShowUpdatePhaseDialogue] = useState(false);
   const [showAddPhaseDialogue, setShowAddPhaseDialogue] = useState(false);
-  const { rowCheckbox } = useSelector(selectAddPhase);
   const [rowCheckboxes, setRowCheckboxes] = useState({}); // State to track the checked state of each checkbox in the table rows
 
   const dispatch = useDispatch();
@@ -46,24 +47,37 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
     if (projectId === null) {
       return;
     } else if (adminProjectView) {
-      try {
-        //console.log("fetching data...");
-        const response = await axios.get(
-          `http://3.135.107.71/project/getPhases/${id}`
-        );
-        //console.log(response);
-        dispatch(addPhase(response.data.phases));
-      } catch (error) {
-        setError(error);
+      if(InitialProposalView){
+        try {
+          const response = await axios.get(
+            `http://3.135.107.71/project/getInitialPhases/${id}`
+          );
+          //console.log(response);
+          dispatch(addInitialPhase(response.data.phases));
+        } catch (error) {
+          setError(error);
+        }
+      } else{
+
+        try {
+          //console.log("fetching data...");
+          const response = await axios.get(
+            `http://3.135.107.71/project/getPhases/${id}`
+          );
+          //console.log(response);
+          dispatch(addPhase(response.data.phases));
+        } catch (error) {
+          setError(error);
+        }
       }
       setIsLoading(false);
     } else {
       try {
         const response = await axios.get(
-          `http://3.135.107.71/project/getPhases/${projectId}`
+          `http://3.135.107.71/project/getInitialPhases/${projectId}`
         );
         //console.log(response);
-        dispatch(addPhase(response.data.phases));
+        dispatch(addInitialPhase(response.data.phases));
       } catch (error) {
         setError(error);
       }
@@ -215,7 +229,6 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
     setShowUpdatePhaseDialogue(false);
     fetchData();
   };
-  // //console.log(phases)
   return (
     <Grid container sx={{ ...firstGrid, width: "99%" }}>
       <Stack
@@ -278,75 +291,109 @@ function AddPhaseView({ adminProjectView, view, projectId }) {
           </Stack>
         )}
       </Stack>
-      {/* <Box sx={buttonBox}>
-        <Button
-          sx={{ ...actionButton, ...displayButton }}
-          startIcon={<ModeEditOutlinedIcon />}
-          onClick={handleEditPhase}
-        >
-          Edit
-        </Button>
-        <Button
-          sx={{ ...actionButton, ...displayButton }}
-          startIcon={<DeleteOutlinedIcon />}
-          onClick={handleDeletePhase}
-        >
-          Delete
-        </Button>
-        <Button
-          sx={{ ...actionButton, background: "#FFAC00" }}
-          onClick={handleAddPhase}
-        >
-          Add Phase
-        </Button>
-      
-      </Box> */}
 
-      {phases !== null && phases[0] !== undefined && phases[0].length !== 0 ? (
-        phases[0]?.map((phase, index) => {
-          return (
-            <Stack
-              key={phase.id}
+      {InitialProposalView ? (
+        <>
+          {initialPhases !== null &&
+          initialPhases[0] !== undefined &&
+          initialPhases[0].length !== 0 ? (
+            initialPhases[0]?.map((phase, index) => {
+              return (
+                <Stack
+                  key={phase.id}
+                  style={{
+                    ...slectedCardStyle,
+                    width: "100%",
+                    cursor: "pointer", // Add cursor pointer to indicate clickable
+                    borderRadius: "8px", // Rounded corners
+                    boxShadow:
+                      selectedPhaseId === phase.id
+                        ? `0 0 0 1px #1B1B1B, 0 5px 20px ${phase.color}`
+                        : "none", // Border and glow effect
+                    transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
+                    marginTop: "1rem",
+                  }}
+                >
+                  <PhaseCard
+                    projectId={adminProjectView ? id : projectId}
+                    key={phase?.id}
+                    phaseData={phase}
+                    length={phase.length}
+                    onGridToggle={() =>
+                      handleGridToggle(index, phase?.previousIndex)
+                    }
+                    handleSelectCard={handleSelectCard}
+                    adminProjectView={adminProjectView}
+                    setRowCheckboxes={setRowCheckboxes}
+                    handleAddRow={handleAddRow}
+                  />
+                </Stack>
+              );
+            })
+          ) : (
+            <div
               style={{
-                ...slectedCardStyle,
-                width: "100%",
-                cursor: "pointer", // Add cursor pointer to indicate clickable
-                borderRadius: "8px", // Rounded corners
-                boxShadow:
-                  selectedPhaseId === phase.id
-                    ? `0 0 0 1px #1B1B1B, 0 5px 20px ${phase.color}`
-                    : "none", // Border and glow effect
-                transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
-                marginTop: "1rem",
+                height: "60vh",
+                alignItems: "center",
+                display: "grid",
+                textAlign: "center",
               }}
             >
-              <PhaseCard
-                projectId={adminProjectView ? id : projectId}
-                key={phase?.id}
-                phaseData={phase}
-                length={phase.length}
-                onGridToggle={() =>
-                  handleGridToggle(index, phase?.previousIndex)
-                }
-                handleSelectCard={handleSelectCard}
-                adminProjectView={adminProjectView}
-                setRowCheckboxes={setRowCheckboxes}
-                handleAddRow={handleAddRow}
-              />
-            </Stack>
-          );
-        })
+              No Phases Available
+            </div>
+          )}
+        </>
       ) : (
-        <div
-          style={{
-            height: "60vh",
-            alignItems: "center",
-            display: "grid",
-            textAlign: "center",
-          }}
-        >
-          No data available
-        </div>
+        <>
+          {phases !== null &&
+          phases[0] !== undefined &&
+          phases[0].length !== 0 ? (
+            phases[0]?.map((phase, index) => {
+              return (
+                <Stack
+                  key={phase.id}
+                  style={{
+                    ...slectedCardStyle,
+                    width: "100%",
+                    cursor: "pointer", // Add cursor pointer to indicate clickable
+                    borderRadius: "8px", // Rounded corners
+                    boxShadow:
+                      selectedPhaseId === phase.id
+                        ? `0 0 0 1px #1B1B1B, 0 5px 20px ${phase.color}`
+                        : "none", // Border and glow effect
+                    transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
+                    marginTop: "1rem",
+                  }}
+                >
+                  <PhaseCard
+                    projectId={adminProjectView ? id : projectId}
+                    key={phase?.id}
+                    phaseData={phase}
+                    length={phase.length}
+                    onGridToggle={() =>
+                      handleGridToggle(index, phase?.previousIndex)
+                    }
+                    handleSelectCard={handleSelectCard}
+                    adminProjectView={adminProjectView}
+                    setRowCheckboxes={setRowCheckboxes}
+                    handleAddRow={handleAddRow}
+                  />
+                </Stack>
+              );
+            })
+          ) : (
+            <div
+              style={{
+                height: "60vh",
+                alignItems: "center",
+                display: "grid",
+                textAlign: "center",
+              }}
+            >
+              No Phases Available
+            </div>
+          )}
+        </>
       )}
       {showUpdatePhaseDialogue && (
         <UpdatePhaseDialogue

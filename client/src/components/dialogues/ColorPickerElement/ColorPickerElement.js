@@ -106,6 +106,7 @@ function ColorPickerElement({
         color,
         colorMode,
         projectId: adminProjectView ? id : projectId,
+        initial: adminProjectView ? false : true,
       };
       //console.log(data)
       const res = await addProjectPhase(data).unwrap().then().catch(e=>{ toast.error(e.message || e.data.message || e.error)});

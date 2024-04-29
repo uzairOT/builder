@@ -16,7 +16,6 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Button,
   Badge,
   Popper,
 } from "@mui/material";
@@ -32,12 +31,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import users from "./assets/data/users.json";
 import LinkIcon from "@mui/icons-material/Link";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { useGetUserNotificationsQuery } from "../../redux/apis/usersApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Notification from "./Notifications";
-import socketIOClient from "socket.io-client";
 import {
-  addNotification,
   selectNotifications,
   selectNotificationsArr,
   setNotifications,
@@ -51,8 +47,6 @@ import {
 
 const Navbar = () => {
   const [selectedTab, setSelectedTab] = useState(0);
-
-  const [showNotifications, setShowNotifications] = useState(false);
   const [open, setOpen] = useState(null);
   const [userType, setUserType] = useState("");
   const theme = useTheme();
@@ -63,7 +57,6 @@ const Navbar = () => {
   const id = openShare ? "simple-popover" : undefined;
   const user = useSelector((state) => state.auth.userInfo);
   const userId = user.user.id;
-  const ENDPOINT = "http://3.135.107.71/";
   //console.log(user);
   const dispatch = useDispatch();
   const { emit, on } = useSocket();
