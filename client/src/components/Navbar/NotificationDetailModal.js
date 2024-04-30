@@ -55,7 +55,7 @@ const NotificationDetailModal = ({
   const handleOpen = () => {
     setOpen(true);
   };
-
+// console.log(notification.WorkOrderReq)
 
   return (
     <>
@@ -203,14 +203,14 @@ const NotificationDetailModal = ({
                     <LocalizationProvider dateAdapter={AdapterMoment}>
                       <DemoContainer components={["DateTimePicker"]}>
                         <DateTimePicker
-                          value={moment(notification.WorkOrderReq.start_day)}
-                          format="MMM D, YYYY,h:mm a"
+                          value={moment(notification.WorkOrderReq.start_day).utc()}
+                          format="MMM D, YYYY, h:mm a"
                           viewRenderers={{
                             hours: renderTimeViewClock,
                             minutes: renderTimeViewClock,
                             seconds: renderTimeViewClock,
                           }}
-                          defaultValue={moment("2024-04-17T15:30")}
+                          // defaultValue={moment("2024-04-17T15:30")}
                           slotProps={{
                             // Targets the `IconButton` component.
                             openPickerButton: {
@@ -244,14 +244,15 @@ const NotificationDetailModal = ({
                     <LocalizationProvider dateAdapter={AdapterMoment}>
                       <DemoContainer components={["DateTimePicker"]}>
                         <DateTimePicker
-                          value={moment(notification.WorkOrderReq.end_day)}
-                          format="MMM D, YYYY,h:mm a"
+                        disabled
+                          value={moment(notification.WorkOrderReq.end_day).utc()}
+                          format="MMM D, YYYY, h:mm a"
                           viewRenderers={{
                             hours: renderTimeViewClock,
                             minutes: renderTimeViewClock,
                             seconds: renderTimeViewClock,
                           }}
-                          defaultValue={moment("2024-04-17T15:30")}
+                          // defaultValue={moment("2024-04-17T15:30")}
                           slotProps={{
                             // Targets the `IconButton` component.
                             openPickerButton: {

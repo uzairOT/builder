@@ -80,6 +80,7 @@ const AddPhaseCard = ({
   adminProjectView,
   setRowCheckboxes,
   projectId,
+  InitialProposalView
 }) => {
   const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
   const [showAddLine, setShowAddLine] = useState(false);
@@ -140,11 +141,11 @@ const AddPhaseCard = ({
     };
     try {
       const res = await deletePhaseLine(data).unwrap();
-      console.log(res);
+      // console.log(res);
 
       dispatch(addPhase(res.data.allPhases));
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error(error.data.message || error.data.error);
     }
   };
@@ -304,7 +305,7 @@ const AddPhaseCard = ({
             <DeleteIcon
               onClick={handleDeleteSelectedRows}
               disabled={selectedRows.length === 0} /> */}
-            <Button
+            {!InitialProposalView && <Button
               sx={{
                 ...actionButton,
                 background: "#4C8AB1",
@@ -313,7 +314,7 @@ const AddPhaseCard = ({
               onClick={handleAddLine}
             >
               Add Line Item
-            </Button>
+            </Button>}
           </Box>
         </Box>
 
@@ -385,10 +386,10 @@ const AddPhaseCard = ({
                       <TableCell>{row.unit_price}</TableCell>
                       <TableCell>{row.quantity}</TableCell>
                       <TableCell>
-                        {moment(row.start_day).format("YYYY-MM-DD HH A")}
+                        {moment(row.start_day).format("YYYY-MM-DD")}
                       </TableCell>
                       <TableCell>
-                        {moment(row.end_day).format("YYYY-MM-DD HH A")}
+                        {moment(row.end_day).format("YYYY-MM-DD")}
                       </TableCell>
 
                       <TableCell>{row.total}</TableCell>

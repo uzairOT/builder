@@ -7,6 +7,7 @@ import {
 } from "../../../redux/slices/addLineSlice";
 import {
   useAddPhaseLineMutation,
+  useGetLineItemQuery,
   useUpdatePhaseLineMutation,
 } from "../../../redux/apis/Project/projectApiSlice";
 import {
@@ -53,10 +54,13 @@ function AddLineElement({
   assignPageview,
   projectId,
 }) {
+  const { data, isLoading, isSuccess } = useGetLineItemQuery({
+    lineItemId: LineItem,
+  });
   const [open, setOpen] = useState(false);
   const [addPhaseLine] = useAddPhaseLineMutation();
   const [updatePhaseLine] = useUpdatePhaseLineMutation();
-  const [phaseName, setPhaseName] = useState(LineItem ? LineItem.title : "");
+  const [phaseName, setPhaseName] = useState("");
   const [description, setDescription] = useState(
     LineItem ? LineItem.description : ""
   );
@@ -135,34 +139,38 @@ function AddLineElement({
     setOpen(false);
   };
 
-  //console.log("Line Item Element",)
+  // console.log("Line Item Element", LineItem);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(start === null){
-      toast.warning('Please enter a valid date');
-      return
+    if (start === null) {
+      toast.warning("Please enter a valid date");
+      return;
     }
-    if(end === null){
-      toast.warning('Please enter a valid date');
-      return
+    if (end === null) {
+      toast.warning("Please enter a valid date");
+      return;
     }
     if (LineHeading === "Update Line Item") {
       //console.log("updading..")
-      const lineItemId = LineItem.id;
-      const data = {
+      const lineItemId = data.lineItem.id;
+      const data1 = {
         ...formData,
         id: lineItemId,
-        projectId: projectId,
+        projectId: id ,
       };
-      //console.log("Update Alin Item",data)
+      // console.log("Update Alin Item",data1)
 
-      const res = await updatePhaseLine(data);
-      //console.log(res.data)
-      dispatch(addPhase(res.data.data));
-      //console.log("form submitted succesfully", formData);
-      //console.log(LineItem.id)
-      //   handleUpdateClose();
-      toast.success("Line Item added successfully");
+      try {
+        const res = await updatePhaseLine(data1);
+        dispatch(addPhase(res.data.data));
+        //   handleUpdateClose();
+        toast.success(
+          "Line Item added successfully, Changes will appear on reload"
+        );
+      } catch (error) {
+        toast.error(error?.data?.message || error.error||error?.data?.error );
+        return;
+      }
     } else {
       const {
         phaseName,
@@ -219,6 +227,22 @@ function AddLineElement({
       formula: (q, p) => q * p * 2.58999e6,
     },
   ];
+  useEffect(() => {
+    // console.log(isSuccess);
+
+    if (isSuccess) {
+      setPhaseName(data.lineItem.title);
+      setUnit(data.lineItem.unit);
+      setDescription(data.lineItem.description);
+      setQuantity(data.lineItem.quantity);
+      setUnitPrice(data.lineItem.unit_price);
+      setTotal(data.lineItem.total);
+      setStart(dayjs(data.lineItem.start_day));
+      setEnd(dayjs(data.lineItem.end_day));
+      setLongDescription(data.lineItem.notes);
+    }
+  }, [isSuccess, data]);
+  console.log(formData);
   return (
     <div className="App">
       <>
@@ -241,7 +265,7 @@ function AddLineElement({
                 options={
                   autoComplete ? autoComplete.map((option) => option.title) : []
                 } // Add your options here
-                value={formData.phaseName}
+                value={formData?.phaseName}
                 name="phaseName"
                 onChange={(event, newValue) => {
                   const selectedOption = autoComplete?.find(
@@ -267,6 +291,7 @@ function AddLineElement({
                     label="Line Item Name"
                     margin="dense"
                     variant="standard"
+                    value={formData?.phaseName}
                     onChange={(event) => setPhaseName(event.target.value)} // Assuming setPhaseName is your state updater function
                     required
                     InputLabelProps={{ shrink: true }}
@@ -310,7 +335,7 @@ function AddLineElement({
                     type="text"
                     select
                     variant="standard"
-                    value={formData.unit}
+                    value={`${formData?.unit}`}
                     onChange={(e) => setUnit(e.target.value)}
                   >
                     {Units.map((option, index) => (

@@ -56,7 +56,7 @@ function ColorPickerElement({
     phaseData?.phase_name ? phaseData.phase_name : ""
   );
   const [updateProjectPhase] = useUpdateProjectPhaseMutation();
-  const [addProjectPhase] = useAddProjectPhaseMutation();
+  const [addProjectPhase, {isError, isLoading, }] = useAddProjectPhaseMutation();
   const toggleColorMode = () => {
     setColorMode((prevMode) => (prevMode === "rgba" ? "hex" : "rgba"));
   };
@@ -124,6 +124,7 @@ function ColorPickerElement({
       return e.target.value;
     })
   }
+
 
   return (
     <div className="App">

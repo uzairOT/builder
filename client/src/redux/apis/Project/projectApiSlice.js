@@ -57,6 +57,13 @@ const projectApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["Project"],
     }),
+    getLineItem: builder.query({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/getLineItem/${data.lineItemId}`,
+        method: "GET",
+      }),
+      providesTags: ["Project"],
+    }),
     updatePhaseLine: builder.mutation({
       query: (data) => ({
         url: `${PROJECTS_URL}/updatePhaseLine/${data.id}`,
@@ -214,5 +221,6 @@ export const {
   useAddProjectNotesMutation,
   useEditProjectNotesMutation,
   useDeleteProjectNotesMutation,
-  useGetWorkOrderDetailsMutation
+  useGetWorkOrderDetailsMutation,
+  useGetLineItemQuery
 } = projectApiSlice;

@@ -9,9 +9,12 @@ import { selectProjectForm } from "../../../redux/slices/projectFormSlice";
 import YellowBtn from "../../UI/button";
 import FooterCircles from "../FooterCircles/FooterCircles";
 import "../../../App.css"
+import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
 
 function Footer({ onNextStep }) {
   const navigate = useNavigate()
+  
+  const dispatch = useDispatch();
 
   
   const handleSaveAs = () => {
@@ -32,6 +35,7 @@ function Footer({ onNextStep }) {
     //console.log(res);
   };
   const handleDone = () => {
+    dispatch(addPhase([]));
     navigate('/')
   }
 

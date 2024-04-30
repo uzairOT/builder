@@ -52,7 +52,7 @@ function AddPhaseView({
           const response = await axios.get(
             `http://3.135.107.71/project/getInitialPhases/${id}`
           );
-          //console.log(response);
+          
           dispatch(addInitialPhase(response.data.phases));
         } catch (error) {
           setError(error);
@@ -65,6 +65,7 @@ function AddPhaseView({
             `http://3.135.107.71/project/getPhases/${id}`
           );
           //console.log(response);
+          
           dispatch(addPhase(response.data.phases));
         } catch (error) {
           setError(error);
@@ -74,10 +75,11 @@ function AddPhaseView({
     } else {
       try {
         const response = await axios.get(
-          `http://3.135.107.71/project/getInitialPhases/${projectId}`
+          `http://3.135.107.71/project/getPhases/${projectId}`
         );
         //console.log(response);
-        dispatch(addInitialPhase(response.data.phases));
+        
+        dispatch(addPhase(response.data.phases));
       } catch (error) {
         setError(error);
       }
@@ -97,9 +99,7 @@ function AddPhaseView({
     fetchData();
   };
 
-  useEffect(() => {
-    //console.log(rowCheckboxes);
-  }, [rowCheckboxes]);
+
 
   const handleGridToggle = (currentIndex, previousIndex) => {
     // Ensure indices are within the valid range
@@ -326,6 +326,7 @@ function AddPhaseView({
                     adminProjectView={adminProjectView}
                     setRowCheckboxes={setRowCheckboxes}
                     handleAddRow={handleAddRow}
+                    InitialProposalView={InitialProposalView}
                   />
                 </Stack>
               );

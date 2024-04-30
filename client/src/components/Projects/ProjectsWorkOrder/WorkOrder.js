@@ -19,6 +19,7 @@ import ChangeOrder from "../ProjectsDefault/ChangeOrder";
 import NotificationDetailModal from "../../Navbar/NotificationDetailModal";
 import { useGetWorkOrderDetailsMutation } from "../../../redux/apis/Project/projectApiSlice";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
+import moment from 'moment';
 const dummyData = [
   {
     id: 1,
@@ -101,7 +102,7 @@ function WorkOrder({
     <TableContainer
       component={Paper}
       sx={{ boxShadow: "none" }}
-      style={{ height: workOrder ? "300px" : "100%", scrollbarWidth: "thin" }}
+      style={{ height: workOrder ? "300px" : "80vh", scrollbarWidth: "thin" }}
     >
       <Table>
         <TableHead>
@@ -148,10 +149,10 @@ function WorkOrder({
                     {item.priority}
                   </TableCell>
                   <TableCell sx={tableCellValueStyle}>{item.total}</TableCell>
-                  <TableCell sx={tableCellValueStyle}>
-                    {item.start_day}
+                  <TableCell sx={{...tableCellValueStyle, whiteSpace:'nowrap'}}>
+                    {moment(item.start_day).format('MMM D, YYYY, h:mm a')}
                   </TableCell>
-                  <TableCell sx={tableCellValueStyle}>{item.end_day}</TableCell>
+                  <TableCell sx={{...tableCellValueStyle, whiteSpace:'nowrap'}}>{moment(item.end_day).format('MMM D, YYYY, h:mm a')}</TableCell>
                   <TableCell sx={tableCellValueStyle}>
                     <Button
                       buttonText={item.status} // Assuming status property represents the status
@@ -177,16 +178,7 @@ function WorkOrder({
                     >
                       Detail
                     </BuilderProButton>
-                    {data1 === null ? (
-                      <></>
-                    ) : (
-                      <NotificationDetailModal
-                        notification={data1}
-                        isEvent={true}
-                        open={open}
-                        setOpen={setOpen}
-                      />
-                    )}
+                  
                   </TableCell>
                 </TableRow>
               );
@@ -196,6 +188,16 @@ function WorkOrder({
           })}
         </TableBody>
       </Table>
+      {data1 === null ? (
+                      <></>
+                    ) : (
+                      <NotificationDetailModal
+                        notification={data1}
+                        isEvent={true}
+                        open={open}
+                        setOpen={setOpen}
+                      />
+                    )}
     </TableContainer>
   );
 }
@@ -211,4 +213,5 @@ const tableCellValueStyle = {
   borderBottom: "none",
   fontFamily: "Montserrat",
   color: "#000000",
+
 };

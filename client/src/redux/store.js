@@ -10,6 +10,7 @@ import eventsReducer from './slices/Events/eventsSlice';
 import dailyForecastSlice from './slices/DailyForecast/dailyForecastSlice';
 import notificationSlice from './slices/Notifications/notificationSlice';
 
+
 export const store = configureStore({
   reducer: {
     auth: authReducer,

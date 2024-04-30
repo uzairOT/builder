@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment from "moment";
+import moment from 'moment-timezone';
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "../../../App.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
@@ -15,10 +15,10 @@ import CustomToolbarProjects from "./CustomToolbarProjects";
 import { useParams } from "react-router-dom";
 
 
+moment.tz.setDefault('UTC');
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
-
 const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClient, eventsArr }) => {
   const {id}= useParams();
   const [monthEventView, setMonthEventView] = useState(true);
@@ -28,13 +28,19 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
   const currentDate = moment();
   const startTime = moment(currentDate).set({ hour: 9, minute: 0, second: 0, millisecond: 0 });
   const endTime = moment(currentDate).set({ hour: 23, minute: 0, second: 0, millisecond: 0 });
+
     const events = eventsArr?.map((item)=>{
+     const parsedStart = moment(item.start).toDate();
+      const parsedEnd = moment(item.end).toDate();
+     
     return{
       ...item,
-      start: moment(item.start).toDate(),
-      end: moment(item.end).toDate(),
+      start: parsedStart,
+      end: parsedEnd,
     }
   })
+  // console.log(events);
+  
   // console.log("In Task Calender View: ", eventsArr);
 
   // const [events, setEvents] = useState([
@@ -180,7 +186,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
         <>
             <CalenderWrapper className="calendar-wrapper" style={{height:'100%' }}>
           <DnDCalendar
-            defaultDate={moment().toDate()}
+            defaultDate={moment().toISOString()}
             defaultView="day"
             views={["day", "week", "month"]}
             events={events}
@@ -190,8 +196,8 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
             components={components()}
             formats={DateFormat}
             messages={messages}
-            min={startTime.toDate()}
-            max={endTime.toDate()}
+            min={startTime.toISOString()}
+            max={endTime.toISOString()}
           />
           </CalenderWrapper>
         </>

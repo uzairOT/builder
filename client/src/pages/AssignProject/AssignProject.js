@@ -21,19 +21,21 @@ import ProjectFormFields from "../../components/AssignProject/ProjectFormFields/
 import { useExistingProjectMutation } from "../../redux/apis/usersApiSlice";
 import { selectProjectForm } from "../../redux/slices/projectFormSlice";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AssignProject() {
   const local = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(local);
   const currentUserId = currentUser?.user.id;
   const [projectType, setProjectType] = useState(null);
-  const { projectName, location, projectColor } = useSelector(selectProjectForm);
+  const { projectName, location, projectColor } =
+    useSelector(selectProjectForm);
   const [postExistingProject] = useExistingProjectMutation();
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate();
   const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
+  const notify = () => toast.success("Wow so easy!");
 
   const handleProjectChange = async (value) => {
     if (value === "Existing") {
@@ -42,21 +44,28 @@ function AssignProject() {
         projectName: projectName,
       };
       const res = await postExistingProject(data);
-      
+
       if (res.data?.success) {
         setProjectType(value);
       } else {
         toast.error(res.error.data.message);
+        return;
       }
     } else if (projectName === "") {
+
       toast.warning("Please enter project name");
-    }  else if (location === "") {
+      // console.log("Please enter project name");
+      return;
+    } else if (location === "") {
       toast.warning("Please enter project location");
-    }else if(projectColor === ''){
+      // console.log("Please enter project location");
+      return;
+    } else if (projectColor === "") {
       toast.warning("Please select project color");
+      return;
     } else if (projectName !== "") {
-      
       setProjectType(value);
+      return;
     }
   };
 
@@ -94,7 +103,10 @@ function AssignProject() {
                     ...YellowBtn,
                     ...NewProjectButton,
                   }}
-                  onClick={() => handleProjectChange("New")}
+                  onClick={() => {
+                    toast.success("Wow so easy!KKKK");
+                    handleProjectChange("New");
+                  }}
                 >
                   New Project
                 </Button>

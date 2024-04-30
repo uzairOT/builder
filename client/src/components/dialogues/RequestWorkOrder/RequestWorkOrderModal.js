@@ -41,7 +41,8 @@ import {
 import { useGetTeamMembersQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { useLocation } from "react-router-dom";
 import useSocket from "../../../utils/useSocket";
-import { ArrowDropDownIcon, MobileDatePicker } from "@mui/x-date-pickers";
+import { ArrowDropDownIcon, MobileDatePicker, MobileDateTimePicker } from "@mui/x-date-pickers";
+import UpdateLineDialogue from "../UpdateLineDialogue/UpdateLineDialogue";
 
 const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const location = useLocation();
@@ -57,7 +58,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   );
 
   const [startDate, setStartDate] = useState(moment());
-  const [endDate, setEndDate] = useState(moment().add(1, "hour"));
+  const [endDate, setEndDate] = useState(moment().add(1, "day"));
   const [description, setDescription] = useState(
     changeOrder ? checkedRow?.description : ""
   );
@@ -73,11 +74,14 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const dispatch = useDispatch();
   const { emit } = useSocket();
   const [selectedItems, setSelectedItems] = useState([]);
+  const [showUpdateLine, setShowUpdateLine] = useState(false);
   const phaseId = rowCheckboxes[0]?.rows[0]?.phase_id;
+  const [lineItemId, setLineItemId] = useState();
   let counter = 0;
   let lineItemIds = [];
   let lineItemCounter = 0;
   let totalWorkOrder = 0;
+  
   // console.log("START DATE", startDate);
   // console.log("START DATE", endDate);
 
@@ -222,6 +226,14 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
     }
   };
 
+  const handleUpdateOpen = (id) => {
+   setLineItemId(id);
+    setShowUpdateLine(true);
+  };
+
+  const handleUpdateClose = () => {
+    setShowUpdateLine(false);
+  };
   useEffect(() => {
     if (changeOrder) {
       setSubject(checkedRow?.subject);
@@ -261,6 +273,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
       projectId: projectId,
       total: changeOrder ? checkedRow?.total : totalWorkOrder,
     };
+    // console.log(requestForm);
     if (requestForm.teamIds.length === 0) {
       toast.error("Team member must be assigned");
     } else {
@@ -375,8 +388,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
               <Stack
                 direction={{ xl: "row", lg: "row", md: "column" }}
                 justifyContent={"space-around"}
-                spacing={8}
-                p={2}
+                spacing={1}
+                p={1}
               >
                 <Stack>
                   <Typography sx={themeStyle.headingText}>
@@ -442,49 +455,74 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                     {changeOrder
                       ? checkedRow?.phaseItems.map((phase, phaseIndex) => {
                           return phase.lineItem_names.map((lineItem, index) => {
+                            
                             counter++;
                             if (counter <= 2) {
                               return (
-                                <ListItem key={counter}>
-                                  <Checkbox
-                                    checked={selectedItems.some(
-                                      (item) =>
-                                        item.phaseId === phase.phaseId &&
-                                        item.lineItemId.includes(
+                                <>
+                                  <ListItem
+                                    key={counter}
+                                    alignItems="center"
+                                    justifyContent="center"
+                                  >
+                                    <Checkbox
+                                      checked={selectedItems.some(
+                                        (item) =>
+                                          item.phaseId === phase.phaseId &&
+                                          item.lineItemId.includes(
+                                            phase.lineItemId[index]
+                                          )
+                                      )}
+                                      onChange={() =>
+                                        handleLineItemChange(
+                                          phase.phaseId,
                                           phase.lineItemId[index]
                                         )
-                                    )}
-                                    onChange={() =>
-                                      handleLineItemChange(
-                                        phase.phaseId,
-                                        phase.lineItemId[index]
-                                      )
-                                    }
-                                  />
-                                  <ListItemText secondary={lineItem} />
-                                </ListItem>
+                                      }
+                                    />
+                                    <ListItemText secondary={lineItem} />
+                                    <Typography
+                                      color={"#4C8AB1"}
+                                      fontSize={"11px"}
+                                      textAlign={"right"}
+                                      onClick={() => handleUpdateOpen(phase.lineItemId[index])}
+                                    >
+                                      edit
+                                    </Typography>
+                                  </ListItem>
+                                </>
                               );
                             }
                             if (counter > 2 && showLineItems) {
                               return (
-                                <ListItem key={counter}>
-                                  <Checkbox
-                                    checked={selectedItems.some(
-                                      (item) =>
-                                        item.phaseId === phase.phaseId &&
-                                        item.lineItemId.includes(
+                                <>
+                                  <ListItem key={counter}>
+                                    <Checkbox
+                                      checked={selectedItems.some(
+                                        (item) =>
+                                          item.phaseId === phase.phaseId &&
+                                          item.lineItemId.includes(
+                                            phase.lineItemId[index]
+                                          )
+                                      )}
+                                      onChange={() =>
+                                        handleLineItemChange(
+                                          phase.phaseId,
                                           phase.lineItemId[index]
                                         )
-                                    )}
-                                    onChange={() =>
-                                      handleLineItemChange(
-                                        phase.phaseId,
-                                        phase.lineItemId[index]
-                                      )
-                                    }
-                                  />
-                                  <ListItemText secondary={lineItem} />
-                                </ListItem>
+                                      }
+                                    />
+                                    <ListItemText secondary={lineItem} />
+                                    <Typography
+                                      color={"#4C8AB1"}
+                                      fontSize={"11px"}
+                                      onClick={handleUpdateOpen}
+                                    >
+                                      edit
+                                    </Typography>
+                                  </ListItem>
+                                  
+                                </>
                               );
                             }
                             return null;
@@ -512,18 +550,20 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                             }
                           });
                         })}
-                    <ListItem style={{ padding: 0 }}>
-                      <Button
-                        style={{ padding: 0, textTransform: "lowercase" }}
-                        variant="text"
-                        color="primary"
-                        onClick={() => {
-                          setShowLineItems(!showLineItems);
-                        }}
-                      >
-                        {showLineItems ? "Hide" : "View more"}
-                      </Button>
-                    </ListItem>
+                    {counter > 2 && (
+                      <ListItem style={{ padding: 0 }}>
+                        <Button
+                          style={{ padding: 0, textTransform: "lowercase" }}
+                          variant="text"
+                          color="primary"
+                          onClick={() => {
+                            setShowLineItems(!showLineItems);
+                          }}
+                        >
+                          {showLineItems ? "Hide" : "View more"}
+                        </Button>
+                      </ListItem>
+                    )}
                   </List>
                 </Stack>
               </Stack>
@@ -538,7 +578,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                   <Box sx={themeStyle.dateBox}>
                     <LocalizationProvider dateAdapter={AdapterMoment}>
                       <DemoContainer components={["DateTimePicker"]}>
-                        <MobileDatePicker
+                        <MobileDateTimePicker
                           value={startDate}
                           onChange={(newValue) => setStartDate(newValue)}
                           format="MMM D, YYYY,h:mm a"
@@ -581,8 +621,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                   <Box sx={themeStyle.dateBox}>
                     <LocalizationProvider dateAdapter={AdapterMoment}>
                       <DemoContainer components={["DateTimePicker"]}>
-                        <MobileDatePicker
-                          minDate={moment().add(1, "hour")}
+                        <MobileDateTimePicker
+                          minDate={moment().add(1, "day")}
                           value={endDate}
                           onChange={(newValue) => setEndDate(newValue)}
                           format="MMM D, YYYY,h:mm a"
@@ -591,7 +631,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                             minutes: renderTimeViewClock,
                             seconds: renderTimeViewClock,
                           }}
-                          defaultValue={moment(startDate).add(1, "hour")}
+                          defaultValue={moment(startDate).add(1, "day")}
                           slotProps={{
                             // Targets the `IconButton` component.
                             openPickerButton: {
@@ -830,6 +870,13 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
           </Stack>
         </Stack>
       </Modal>
+      {showUpdateLine && (
+          <UpdateLineDialogue
+            handleUpdateOpen={handleUpdateOpen}
+            handleUpdateClose={handleUpdateClose}
+            LineItem={lineItemId}         
+          />
+        )}
       {done && <GenerateInvoiceDone setDone={setDone} />}
     </>
   );

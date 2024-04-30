@@ -7,7 +7,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 // import Signup from "./pages/SignUp/Signup";
-import {lazy, Suspense, useEffect, useState} from 'react';
+import { lazy, Suspense, useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout3 from "./components/Layouts/Layout3";
 import Profile from "./components/Settings/Profile/Profile";
@@ -44,11 +44,11 @@ import ChatView from "./components/Projects/ProjectsChat/ChatView";
 import Subscription from "./pages/Subscription/Subscription";
 import { useDispatch, useSelector } from "react-redux";
 import Invitation from "./pages/InvitationView/Invitation";
-import {ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { getFormattedFiveDayWeather } from "./services/WeatherService.js";
 import { addEvents } from "./redux/slices/Events/eventsSlice.js";
-import "react-toastify/dist/ReactToastify.css";
+
 import ProjectsChangeOrder from "./components/Projects/ProjectsChangeOrder/ProjectsChangeOrder";
 import { useGetUserEventsMutation } from "./redux/apis/usersApiSlice.js";
 import moment from "moment";
@@ -72,6 +72,7 @@ import Help from "./pages/Help/Help.jsx";
 import PrivacyTerms from "./pages/PrivacyTerms/PrivacyTerms.jsx";
 import ChangeOrder from "./pages/Projects/ChangeOrder.js";
 import Employee from "./components/Settings/Employee/Employee.js";
+import NoInternetConnection from "./pages/NoInternetPage/NoInternetConnection.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -210,10 +211,7 @@ function App() {
               <Route path="chat" element={<ChatView />} />
               <Route path="notes" element={<NotesView />} />
               <Route path="project-report" element={<ReportView />} />
-              <Route
-                path="change-order"
-                element={<ChangeOrder />}
-              ></Route>
+              <Route path="change-order" element={<ChangeOrder />}></Route>
             </Route>
             <Route path="reports" element={<ReportsPage />} />
             <Route path="subscription" element={<Subscription />} />
@@ -253,10 +251,25 @@ function App() {
 
   return (
     <>
-      <Suspense fallback={<PageLoader />}>
-        <RouterProvider router={router} />
-        <ToastContainer />
-      </Suspense>
+      <NoInternetConnection>
+        <Suspense fallback={<PageLoader />}>
+          <RouterProvider router={router} />
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            limit={1}
+            pauseOnFocusLoss={false}
+            draggable
+            pauseOnHover
+            theme="light"
+          
+          />
+        </Suspense>
+      </NoInternetConnection>
     </>
   );
 }
