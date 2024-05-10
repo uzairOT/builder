@@ -32,11 +32,11 @@ const InnerLayout2 = () => {
         <Stack flex={{xl:2}}display={{xl:"flex",lg:'none'}}><Paper style={themeStyle.border}><MonitoringFinances /></Paper></Stack>
         <Stack flex={{xl:8,lg:7}}><Paper style={themeStyle.border}><ProjectInfoAndTeam /></Paper></Stack>
         </Stack>
-        <Stack direction={{xl:'row',}} pt={1} spacing={1} sx={{height:'80%'}}>
+        <Stack direction={{xl:'row',}} pt={1} spacing={1} sx={{height:'68%'}}>
         <Outlet />
         {/* Change Order Tab navigation */}
         <Stack flex={1} >
-          <Paper style={{...themeStyle.border, height:'80vh', width: '99%'}}>
+          <Paper style={{...themeStyle.border, height:'100%', width: '99%'}}>
           {/* First Item of Stack */}
           <Stack>
           <Typography p={3} pb={1} color={'#4C8AB1'}>Change Order</Typography>

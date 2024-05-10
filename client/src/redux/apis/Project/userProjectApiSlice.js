@@ -1,3 +1,4 @@
+import UpdateMasterLine from "../../../components/dialogues/UpdateMasterLine/UpdateMasterLine";
 import { apiSlice } from "../apiSlice";
 
 const USER_PROJECTS_URL = "http://3.135.107.71/user";
@@ -17,12 +18,24 @@ export const userProjectsApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getMasterLineItems: builder.query({
-      query: (data) => ({ 
+      query: (data) => ({
         url: `${USER_PROJECTS_URL}/masterLine/${data}`,
-        method: 'GET'
+        method: "GET",
+      }),
     }),
+    updateMasterLineItem: builder.mutation({
+      query: (data) => ({
+        url: `${USER_PROJECTS_URL}/updateMasterLine/${data.id}`,
+        method: "POST",
+        body: data,
+      }),
     }),
   }),
 });
 
-export const { useGetUserProjectsQuery, useGetMasterLineItemsQuery, useGetFilteredUserProjectsQuery } = userProjectsApiSlice;
+export const {
+  useGetUserProjectsQuery,
+  useGetMasterLineItemsQuery,
+  useGetFilteredUserProjectsQuery,
+  useUpdateMasterLineItemMutation
+} = userProjectsApiSlice;

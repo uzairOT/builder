@@ -13,6 +13,9 @@ const notificationsSlice = createSlice({
     setNotifications: (state, action) => {
       state.notifications = action.payload;
     },
+    addNotifications: (state, action) => {
+      state.notifications.push(action.payload);
+    },
     setNotificationsArr: (state, action) => {
       state.notificationsArr = action.payload;
     },
@@ -22,7 +25,7 @@ const notificationsSlice = createSlice({
   },
 });
 
-export const { setNotifications, setNotificationsArr, setError } = notificationsSlice.actions;
+export const { setNotifications, setNotificationsArr, setError, addNotifications } = notificationsSlice.actions;
 
 export const selectNotifications = (state) => state.notifications.notifications;
 export const selectNotificationsArr = (state) => state.notifications.notificationsArr;

@@ -34,6 +34,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useDispatch, useSelector } from "react-redux";
 import Notification from "./Notifications";
 import {
+  addNotifications,
   selectNotifications,
   selectNotificationsArr,
   setNotifications,
@@ -42,8 +43,12 @@ import {
 import useSocket from "../../utils/useSocket";
 import {
   useGetNotificationsQuery,
+  useGetNotificationsUnreadQuery,
   useUpdateWorkOrderReadMutation,
 } from "../../redux/apis/Project/workOrderApiSlice";
+import { io } from "socket.io-client";
+
+const socket = io("http://3.135.107.71");
 
 const Navbar = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -59,37 +64,37 @@ const Navbar = () => {
   const userId = user.user.id;
   //console.log(user);
   const dispatch = useDispatch();
-  const { emit, on } = useSocket();
+  // const { emit, on } = useSocket();
   const notifications = useSelector(selectNotifications);
   const notificationsArr = useSelector(selectNotificationsArr);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { data: data1, refetch: refetchNotifcations } = useGetNotificationsUnreadQuery(userId);
   const { data, refetch } = useGetNotificationsQuery(userId);
   const [expanded, setExpanded] = useState(null);
+
   const [updateNotificationRead] = useUpdateWorkOrderReadMutation();
   dispatch(setNotificationsArr(data?.data));
   // console.log("JOHN NOTIFICATION TEST",anchorEl)
   const handleClick = async (event) => {
-    if(anchorEl){
-      setAnchorEl(null)
-    } else{
+    if (anchorEl) {
+      setAnchorEl(null);
+    } else {
       setAnchorEl(event.currentTarget);
-      if(notifications?.length > 0){
-        await updateNotificationRead({ userId });
-        await refetch(userId)
-        dispatch(setNotifications([]));
-      }
+      await updateNotificationRead({ userId });
+      await refetchNotifcations(userId);
+      dispatch(setNotifications([]));
     }
   };
 
   const openNotification = Boolean(anchorEl);
   const noti_id = open ? "simple-popper" : undefined;
-  
+
   const location = useLocation();
   const path = location.pathname.split("/")[1];
 
   useEffect(() => {
     switch (path) {
-      case '':
+      case "":
         setSelectedTab(0);
         break;
       case "projects":
@@ -130,20 +135,34 @@ const Navbar = () => {
   //     socket.disconnect();
   //   };
   // }, []);
+  const refetchCall = async () => {
+    try{
+      await refetch(userId);
+    } catch(err){
+      console.log('err:', err)
+    }
+  };
 
   useEffect(() => {
     //listen for notifications
     // console.log('=-------------------> notifications on')
-    emit("join", userId);
-    on("newNotification", (data) => {
-      // console.log("newNotification---------->", data);
+
+    socket.emit("join", userId);
+    socket.on("newNotification", async (data) => {
+      await refetchCall();
       dispatch(setNotifications(data));
     });
-  }, [on]);
+    return () => {
+      socket.off("newNotification", async (data) => {
+        await refetchCall();
+        dispatch(setNotifications(data));
+      });
+    };
+  }, [dispatch]);
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
-    console.log(newValue, " navbar click")
+    console.log(newValue, " navbar click");
     const lowercasedValue = `${event.target.textContent}`.toLowerCase();
     navigate(lowercasedValue === "dashboard" ? "/" : lowercasedValue);
   };
@@ -167,13 +186,13 @@ const Navbar = () => {
       background: "#FFF",
       boxShadow: "0px 1px 1.3px 0px rgba(0, 0, 0, 0.05)",
       padding: "4px 16px 4px 16px",
-      minHeight: '8vh'
+      minHeight: "8vh",
     },
     logo: {
       width: "110px",
       height: "50px",
       marginLeft: "28px",
-      marginBottom:"2px"
+      marginBottom: "2px",
     },
     tabs: {
       margin: "auto",
@@ -202,7 +221,9 @@ const Navbar = () => {
             <BuilderProNavbarLogo
               aria-label="Builder Pro Logo"
               style={themeStyle.logo}
-              onClick={()=>{setSelectedTab(0)}}
+              onClick={() => {
+                setSelectedTab(0);
+              }}
             />
           </Link>
           <Tabs
@@ -212,14 +233,34 @@ const Navbar = () => {
             indicatorColor=""
             centered
           >
-            <Tab label="Dashboard" style={themeStyle.getTabColor(0)} onClick={(e) => handleTabChange(e,0)} />
-            <Tab label="Projects" style={themeStyle.getTabColor(1)}  onClick={(e) => handleTabChange(e,1)}/>
-            <Tab label="Reports" style={themeStyle.getTabColor(2)} onClick={(e) => handleTabChange(e,2)}/>
+            <Tab
+              label="Dashboard"
+              style={themeStyle.getTabColor(0)}
+              onClick={(e) => handleTabChange(e, 0)}
+            />
+            <Tab
+              label="Projects"
+              style={themeStyle.getTabColor(1)}
+              onClick={(e) => handleTabChange(e, 1)}
+            />
+            <Tab
+              label="Reports"
+              style={themeStyle.getTabColor(2)}
+              onClick={(e) => handleTabChange(e, 2)}
+            />
             <Box sx={themeStyle.search}>
               <SearchBar />
             </Box>
-            <Tab label="Subscription" style={themeStyle.getTabColor(4)} onClick={(e) => handleTabChange(e,4)} />
-            <Tab label="Settings" style={themeStyle.getTabColor(5)}  onClick={(e) => handleTabChange(e,5)}/>
+            <Tab
+              label="Subscription"
+              style={themeStyle.getTabColor(4)}
+              onClick={(e) => handleTabChange(e, 4)}
+            />
+            <Tab
+              label="Settings"
+              style={themeStyle.getTabColor(5)}
+              onClick={(e) => handleTabChange(e, 5)}
+            />
           </Tabs>
           <Box
             display={"flex"}
@@ -229,34 +270,61 @@ const Navbar = () => {
           >
             <IconButton aria-label="bell-notifications" onClick={handleClick}>
               <Badge
-                badgeContent={notifications?.length}
+                badgeContent={
+                  notifications?.length === 0
+                    ? data1?.count
+                    : notifications?.length
+                }
                 color="error"
-                
               >
-                <NotificationsIcon sx={{color:'#4C8AB1'}} />
+                <NotificationsIcon sx={{ color: "#4C8AB1" }} />
               </Badge>
             </IconButton>
             <Popper
-              style={{ zIndex: "100", backgroundColor:'white', borderRadius: '14px' }}
+              style={{
+                zIndex: "100",
+                backgroundColor: "white",
+                borderRadius: "14px",
+              }}
               id={noti_id}
               open={openNotification}
               anchorEl={anchorEl}
               placement="bottom-end"
             >
               {Array.isArray(notificationsArr) ? (
-                notificationsArr?.map((notification, index) => (
-                  <Notification
-                    key={notification.workOrder_id}
-                    notification={notification}
-                    refetch={refetch}
-                    userId={userId}
-                    index={index}
-                    setExpanded={setExpanded}
-                    expanded={expanded}
-                  ></Notification>
-                ))
+                notificationsArr?.map((notification, index) => {
+                  if (index < 6) {
+                    return (
+                      <Notification
+                        key={notification.workOrder_id}
+                        notification={notification}
+                        refetch={refetch}
+                        userId={userId}
+                        index={index}
+                        setExpanded={setExpanded}
+                        expanded={expanded}
+                      ></Notification>
+                    );
+                  } else {
+                    return index === 6 ? (
+                      <Stack textAlign={"right"}>
+                        +{notificationsArr.length - 6} more
+                      </Stack>
+                    ) : (
+                      <> </>
+                    );
+                  }
+                })
               ) : (
-                <div style={{backgroundColor: 'lightgray', padding:20, borderRadius:'14px',}}>No new notifications available</div>
+                <div
+                  style={{
+                    backgroundColor: "lightgray",
+                    padding: 20,
+                    borderRadius: "14px",
+                  }}
+                >
+                  No new notifications available
+                </div>
               )}
             </Popper>
 

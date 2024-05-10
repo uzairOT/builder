@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment from 'moment-timezone';
+
+import moment from 'moment-timezone'; // or .min.js
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "../../../App.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
@@ -15,32 +16,43 @@ import CustomToolbarProjects from "./CustomToolbarProjects";
 import { useParams } from "react-router-dom";
 
 
-moment.tz.setDefault('UTC');
 
+
+moment.tz.setDefault("UTC");
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClient, eventsArr }) => {
+  console.log("Current time: "); console.log(moment().format());
+  console.log("Currrent timezone after updating: "); console.log(moment().tz());
   const {id}= useParams();
   const [monthEventView, setMonthEventView] = useState(true);
   const [eventView, setEventView] = useState('Work Order')
   const eventViewRef = useRef(eventView);
   eventViewRef.current = eventView;
   const currentDate = moment();
+
   const startTime = moment(currentDate).set({ hour: 9, minute: 0, second: 0, millisecond: 0 });
   const endTime = moment(currentDate).set({ hour: 23, minute: 0, second: 0, millisecond: 0 });
+  // console.log(eventsArr)
 
     const events = eventsArr?.map((item)=>{
+
+
      const parsedStart = moment(item.start).toDate();
-      const parsedEnd = moment(item.end).toDate();
-     
-    return{
-      ...item,
-      start: parsedStart,
-      end: parsedEnd,
-    }
-  })
-  // console.log(events);
-  
+      const parsedEnd =  moment(item.end).toDate();
+      // const utcParsedStart = parsedStart.utc();
+      // const utcParsedEnd = parsedEnd.utc();
+      // const dateParsedStart = utcParsedStart.toDate();
+      // const dateParseEnd = utcParsedEnd.toDate();
+      
+      return{
+        ...item,
+        start:  parsedStart,
+        end: parsedEnd,
+      }
+    })
+    console.log(id);
+
   // console.log("In Task Calender View: ", eventsArr);
 
   // const [events, setEvents] = useState([
@@ -174,7 +186,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
 
     }
 
-  }), [monthEventView, setMonthEventView, isDrawerOpen, isProjectPage, bgColorClient,dailyForecast,toolbarKey])
+  }), [monthEventView, setMonthEventView, isDrawerOpen, isProjectPage, bgColorClient,dailyForecast,toolbarKey, id])
   const messages = {
     allDay: 'Week'
   }
@@ -186,7 +198,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
         <>
             <CalenderWrapper className="calendar-wrapper" style={{height:'100%' }}>
           <DnDCalendar
-            defaultDate={moment().toISOString()}
+            defaultDate={moment()}
             defaultView="day"
             views={["day", "week", "month"]}
             events={events}
@@ -196,8 +208,8 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
             components={components()}
             formats={DateFormat}
             messages={messages}
-            min={startTime.toISOString()}
-            max={endTime.toISOString()}
+            min={startTime}
+            max={endTime}
           />
           </CalenderWrapper>
         </>

@@ -29,7 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
 import moment from "moment";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+//import "react-toastify/dist/ReactToastify.css";
 
 const initialRows = [
   {
@@ -80,7 +80,8 @@ const AddPhaseCard = ({
   adminProjectView,
   setRowCheckboxes,
   projectId,
-  InitialProposalView
+  InitialProposalView,
+  authUserRole
 }) => {
   const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
   const [showAddLine, setShowAddLine] = useState(false);
@@ -93,6 +94,8 @@ const AddPhaseCard = ({
   let totalCost = 0;
   let minStartDay = moment(phaseData?.LineItems[0]?.start_day);
   let maxEndDay = moment(phaseData?.LineItems[0]?.end_day);
+let totalHours = 0;
+  // console.log(maxEndDay);
 
   phaseData.LineItems.forEach((row) => {
     totalCost += parseInt(row.total); // Accumulate the total cost
@@ -109,7 +112,13 @@ const AddPhaseCard = ({
   });
   const duration = moment.duration(maxEndDay.diff(minStartDay));
   const totalDays = duration.days();
-  const totalHours = duration.asHours();
+  if(minStartDay.isSame(maxEndDay, 'day')){
+
+    totalHours = 0;
+  } else{
+    
+    totalHours = duration.asHours();
+  }
   const handleArrowDownClick = () => {
     onGridToggle(phaseData.current_position, phaseData.current_position + 1);
   };
@@ -146,7 +155,7 @@ const AddPhaseCard = ({
       dispatch(addPhase(res.data.allPhases));
     } catch (error) {
       // console.log(error);
-      toast.error(error.data.message || error.data.error);
+      toast.error(error?.data?.message || error.error||error?.data?.error );
     }
   };
 
@@ -253,7 +262,7 @@ const AddPhaseCard = ({
             </Box>
             <Box>
               <Typography sx={blackHeading}>
-                {totalHours} hours, Days: {totalDays}
+                Duration: {totalHours} hours  Days: {totalDays}
               </Typography>
             </Box>
           </Box>
@@ -305,7 +314,16 @@ const AddPhaseCard = ({
             <DeleteIcon
               onClick={handleDeleteSelectedRows}
               disabled={selectedRows.length === 0} /> */}
-            {!InitialProposalView && <Button
+            {InitialProposalView ? (authUserRole ==='superadmin' || authUserRole=== 'projectManager') &&<Button
+              sx={{
+                ...actionButton,
+                background: "#4C8AB1",
+                marginTop: "0.7rem",
+              }}
+              onClick={handleAddLine}
+            >
+              Add Line Item
+            </Button> : <Button
               sx={{
                 ...actionButton,
                 background: "#4C8AB1",
@@ -335,14 +353,14 @@ const AddPhaseCard = ({
             <Table sx={{ width: "100%" }}>
               <TableHead sx={{ width: "100%" }}>
                 <TableRow>
-                  <TableCell>
+                  {!InitialProposalView &&<TableCell>
                     {!adminProjectView && (
                       <Checkbox
                         checked={selectAll}
                         onChange={handleSelectAllChange}
                       />
                     )}
-                  </TableCell>
+                  </TableCell>}
                   <TableCell sx={{ ...tableHeadings, width: "15%" }}>
                     Line Item
                   </TableCell>
@@ -370,14 +388,14 @@ const AddPhaseCard = ({
                 {phaseData.LineItems.map((row, index) => {
                   return (
                     <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
-                      <TableCell>
-                        <Checkbox
+                      {!InitialProposalView && <TableCell>
+                        {(row.status === 'Work Order Not requested' || row.status === 'Work Order declined' || row.status === 'Change Order declined') &&<Checkbox
                           // checked={checkedRow === row}
-                          // onChange={() => handleCheckboxChange(row)}
+                          sx={{ '& .MuiSvgIcon-root': { fontSize: 16 } }}
                           checked={isRowSelected(row)}
                           onChange={() => handleCheckboxChange(row)}
-                        />
-                      </TableCell>
+                        /> }
+                      </TableCell>}
                       <TableCell component="th" scope="row">
                         {row.title}
                       </TableCell>
@@ -418,6 +436,7 @@ const AddPhaseCard = ({
             handleAddClose={handleAddClose}
             handleAddRow={handleAddRow}
             projectId={projectId}
+            InitialProposalView={InitialProposalView}
           />
         )}
         {showUpdateLine && (

@@ -1,325 +1,850 @@
-import { Box, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import PartlySunny from "./assets/partly-cloudy.png";
 import moment from "moment";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import NotificationDetailModal from "../../Navbar/NotificationDetailModal";
 import { useGetWorkOrderDetailsMutation } from "../../../redux/apis/Project/projectApiSlice";
+import { useParams } from "react-router-dom";
 
-
-
-const CustomEventDayTasks = ({ event, isProjectPage, projectId }) => {
-    const [getWorkOrder, {isLoading}] = useGetWorkOrderDetailsMutation({workOrderId:event?.data?.workOrderId})
-    const [open, setOpen] = useState(false);
-    const [data, setData] = useState(null);
-    const handleOnClick = async () => {
-        const res = await getWorkOrder({workOrderId:event?.data?.workOrderId})
-        setData(res.data);
-        setOpen(true)
-    }
+const CustomEventDayTasks = ({ event, isProjectPage }) => {
+  const { id } = useParams();
+  const projectId = id;
+  const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation({
+    workOrderId: event?.data?.workOrderId,
+  });
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState(null);
+  const handleOnClick = async () => {
+    const res = await getWorkOrder({ workOrderId: event?.data?.workOrderId });
+    setData(res.data);
+    setOpen(true);
+  };
 
   return (
     <>
-      <Stack
-        sx={themeStyle.eventBox}
-        width={"176px"}
-        direction={"row"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-        height={"inherit"}
-        spacing={0.2}
-        borderRadius={"6px"}
-        borderRight={
-         `6px solid ${event?.data?.projectColor}`
-        }
-        onClick={handleOnClick}
-      >
-        <Stack
-          sx={themeStyle.weather}
-          backgroundColor={
-          `${event?.data?.projectColor}`
-          }
-          max-height={"90%"}
-          max-width={"50%"}
-          alignItems={"center"}
-          justifyContent={"center"}
-          flex={1}
-          spacing={-0.5}
-        >
-          <img
-            src={PartlySunny}
-            alt={PartlySunny}
-            style={themeStyle.eventIcon}
-            fontSize={"10px"}
-          ></img>
-          <Typography sx={themeStyle.eventText} fontSize={"10px"}>
-            {event?.data?.weather?.temp}
-          </Typography>
-          <Typography sx={themeStyle.eventText} fontSize={"10px"}>
-            {event?.data?.weather?.description}
-          </Typography>
-        </Stack>
-        <Stack height={"inherit"} pl={0.5} flex={2} justifyContent={"center"}>
-          <Typography
-            sx={themeStyle.eventTask}
-            fontSize={"10px"}
-            fontStyle={"italic"}
-            color={"#454545"}
-            fontWeight={"300"}
+      {isProjectPage ? (
+        projectId === event.data.projectId && (
+          <>
+            <Stack
+              sx={themeStyle.eventBox}
+              width={"176px"}
+              direction={"row"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              height={"inherit"}
+              spacing={0.2}
+              borderRadius={"6px"}
+              borderRight={`6px solid ${event?.data?.projectColor}`}
+              onClick={handleOnClick}
+            >
+              <Stack
+                sx={themeStyle.weather}
+                backgroundColor={`${event?.data?.projectColor}`}
+                max-height={"90%"}
+                max-width={"50%"}
+                alignItems={"center"}
+                justifyContent={"center"}
+                flex={1}
+                spacing={-0.5}
+              >
+                {isLoading ? (
+                  <Box p={1.75}>
+                    <CircularProgress size={"20px"} />
+                  </Box>
+                ) : (
+                  <>
+                    {" "}
+                    <img
+                      src={PartlySunny}
+                      alt={PartlySunny}
+                      style={themeStyle.eventIcon}
+                      fontSize={"10px"}
+                    ></img>
+                    <Typography sx={themeStyle.eventText} fontSize={"10px"}>
+                      {event?.data?.weather?.temp}
+                    </Typography>
+                    <Typography sx={themeStyle.eventText} fontSize={"10px"}>
+                      {event?.data?.weather?.description}
+                    </Typography>
+                  </>
+                )}
+              </Stack>
+              <Stack
+                height={"inherit"}
+                pl={0.5}
+                flex={2}
+                justifyContent={"center"}
+              >
+                <Typography
+                  sx={themeStyle.eventTask}
+                  fontSize={"10px"}
+                  fontStyle={"italic"}
+                  color={"#454545"}
+                  fontWeight={"300"}
+                >
+                  Work Order:
+                </Typography>
+                <Typography
+                  sx={themeStyle.eventTask}
+                  fontSize={"10px"}
+                  overflow={"hidden"}
+                  fontWeight={"500"}
+                >
+                  {event?.data?.task}
+                </Typography>
+              </Stack>
+            </Stack>
+            {data === null ? (
+              <></>
+            ) : (
+              <NotificationDetailModal
+                changeOrder={true}
+                notification={data}
+                isEvent={true}
+                open={open}
+                setOpen={setOpen}
+              />
+            )}
+          </>
+        )
+      ) : (
+        <>
+          <Stack
+            sx={themeStyle.eventBox}
+            width={"176px"}
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            height={"inherit"}
+            spacing={0.2}
+            borderRadius={"6px"}
+            borderRight={`6px solid ${event?.data?.projectColor}`}
+            onClick={handleOnClick}
           >
-            Work Order:
-          </Typography>
-          <Typography
-            sx={themeStyle.eventTask}
-            fontSize={"10px"}
-            overflow={"hidden"}
-            fontWeight={"500"}
-          >
-            {event?.data?.task}
-          </Typography>
-        </Stack>
-      </Stack>
-      {data === null ? <></> :<NotificationDetailModal
-        changeOrder={true}
-        notification={data}
-        isEvent={true}
-        open={open}
-        setOpen={setOpen}
-      />}
+            <Stack
+              sx={themeStyle.weather}
+              backgroundColor={`${event?.data?.projectColor}`}
+              max-height={"90%"}
+              max-width={"50%"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              flex={1}
+              spacing={-0.5}
+            >
+              {isLoading ? (
+                <Box p={1.75}>
+                  <CircularProgress size={"20px"} />
+                </Box>
+              ) : (
+                <>
+                  <img
+                    src={PartlySunny}
+                    alt={PartlySunny}
+                    style={themeStyle.eventIcon}
+                    fontSize={"10px"}
+                  ></img>
+                  <Typography sx={themeStyle.eventText} fontSize={"10px"}>
+                    {event?.data?.weather?.temp}
+                  </Typography>
+                  <Typography sx={themeStyle.eventText} fontSize={"10px"}>
+                    {event?.data?.weather?.description}
+                  </Typography>
+                </>
+              )}
+            </Stack>
+            <Stack
+              height={"inherit"}
+              pl={0.5}
+              flex={2}
+              justifyContent={"center"}
+            >
+              <Typography
+                sx={themeStyle.eventTask}
+                fontSize={"10px"}
+                fontStyle={"italic"}
+                color={"#454545"}
+                fontWeight={"300"}
+              >
+                Work Order:
+              </Typography>
+              <Typography
+                sx={themeStyle.eventTask}
+                fontSize={"10px"}
+                overflow={"hidden"}
+                fontWeight={"500"}
+              >
+                {event?.data?.task}
+              </Typography>
+            </Stack>
+          </Stack>
+          {data === null ? (
+            <></>
+          ) : (
+            <NotificationDetailModal
+              changeOrder={true}
+              notification={data}
+              isEvent={true}
+              open={open}
+              setOpen={setOpen}
+            />
+          )}
+        </>
+      )}
     </>
   );
 };
 const CustomEventDayNotes = ({ event, isProjectPage }) => {
+  const { id } = useParams();
+  const projectId = id;
+  const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation({
+    workOrderId: event?.data?.workOrderId,
+  });
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState(null);
+  const handleOnClick = async () => {
+    const res = await getWorkOrder({ workOrderId: event?.data?.workOrderId });
+    setData(res.data);
+    setOpen(true);
+  };
+
   return (
-    <Stack
-      sx={themeStyle.eventBox}
-      width={"176px"}
-      direction={"row"}
-      justifyContent={"space-between"}
-      alignItems={"center"}
-      height={"100%"}
-      spacing={0.2}
-      borderRadius={"6px"}
-      borderRight={
-        `6px solid ${event?.data?.projectColor}`
-      }
-    >
-      <Stack
-        sx={themeStyle.weather}
-        backgroundColor={
-          `${event?.data?.projectColor}`
-        }
-        max-height={"90%"}
-        max-width={"50%"}
-        alignItems={"center"}
-        justifyContent={"center"}
-        flex={1}
-        spacing={-0.5}
-      >
-        <img
-          src={PartlySunny}
-          alt={PartlySunny}
-          style={themeStyle.eventIcon}
-          fontSize={"10px"}
-        ></img>
-        <Typography sx={themeStyle.eventText} fontSize={"10px"}>
-          {event?.data?.weather?.temp}
-        </Typography>
-        <Typography sx={themeStyle.eventText} fontSize={"10px"}>
-          {event?.data?.weather?.description}
-        </Typography>
-      </Stack>
-      <Stack flex={2} pl={0.5} justifyContent={"flex-start"}>
-        <Typography
-          sx={themeStyle.eventTask}
-          fontSize={"10px"}
-          fontStyle={"italic"}
-          color={"#454545"}
-          fontWeight={"300"}
-        >
-          Note:
-        </Typography>
-        <Typography
-          sx={{ ...themeStyle.eventNote, ...themeStyle.scrollable }}
-          fontSize={"10px"}
-          maxHeight={"45px"}
-          fontWeight={"500"}
-        >
-          {event.data.note ? event?.data?.note : "No notes added..."}
-        </Typography>
-      </Stack>
-    </Stack>
+    <>
+      {isProjectPage ? (
+        projectId === event.data.projectId && (
+          <>
+            <Stack
+              sx={themeStyle.eventBox}
+              width={"176px"}
+              direction={"row"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              height={"100%"}
+              spacing={0.2}
+              borderRadius={"6px"}
+              borderRight={`6px solid ${event?.data?.projectColor}`}
+              onClick={handleOnClick}
+            >
+              <Stack
+                sx={themeStyle.weather}
+                backgroundColor={`${event?.data?.projectColor}`}
+                max-height={"90%"}
+                max-width={"50%"}
+                alignItems={"center"}
+                justifyContent={"center"}
+                flex={1}
+                spacing={-0.5}
+              >
+                {isLoading ? (
+                  <Box p={1.75}>
+                    <CircularProgress size={"20px"} />
+                  </Box>
+                ) : (
+                  <>
+                    <img
+                      src={PartlySunny}
+                      alt={PartlySunny}
+                      style={themeStyle.eventIcon}
+                      fontSize={"10px"}
+                    ></img>
+                    <Typography sx={themeStyle.eventText} fontSize={"10px"}>
+                      {event?.data?.weather?.temp}
+                    </Typography>
+                    <Typography sx={themeStyle.eventText} fontSize={"10px"}>
+                      {event?.data?.weather?.description}
+                    </Typography>
+                  </>
+                )}
+              </Stack>
+              <Stack flex={2} pl={0.5} justifyContent={"flex-start"}>
+                <Typography
+                  sx={themeStyle.eventTask}
+                  fontSize={"10px"}
+                  fontStyle={"italic"}
+                  color={"#454545"}
+                  fontWeight={"300"}
+                >
+                  Note:
+                </Typography>
+                <Typography
+                  sx={{ ...themeStyle.eventNote, ...themeStyle.scrollable }}
+                  fontSize={"10px"}
+                  maxHeight={"45px"}
+                  fontWeight={"500"}
+                >
+                  {event.data.note ? event?.data?.note : "No notes added..."}
+                </Typography>
+              </Stack>
+            </Stack>
+            {data === null ? (
+              <></>
+            ) : (
+              <NotificationDetailModal
+                changeOrder={true}
+                notification={data}
+                isEvent={true}
+                open={open}
+                setOpen={setOpen}
+              />
+            )}
+          </>
+        )
+      ) : (
+        <>
+          <Stack
+            sx={themeStyle.eventBox}
+            width={"176px"}
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            height={"100%"}
+            spacing={0.2}
+            borderRadius={"6px"}
+            borderRight={`6px solid ${event?.data?.projectColor}`}
+            onClick={handleOnClick}
+          >
+            <Stack
+              sx={themeStyle.weather}
+              backgroundColor={`${event?.data?.projectColor}`}
+              max-height={"90%"}
+              max-width={"50%"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              flex={1}
+              spacing={-0.5}
+            >
+              {isLoading ? (
+                <Box p={1.75}>
+                  <CircularProgress size={"20px"} />
+                </Box>
+              ) : (
+                <>
+                  <img
+                    src={PartlySunny}
+                    alt={PartlySunny}
+                    style={themeStyle.eventIcon}
+                    fontSize={"10px"}
+                  ></img>
+                  <Typography sx={themeStyle.eventText} fontSize={"10px"}>
+                    {event?.data?.weather?.temp}
+                  </Typography>
+                  <Typography sx={themeStyle.eventText} fontSize={"10px"}>
+                    {event?.data?.weather?.description}
+                  </Typography>
+                </>
+              )}
+            </Stack>
+            <Stack flex={2} pl={0.5} justifyContent={"flex-start"}>
+              <Typography
+                sx={themeStyle.eventTask}
+                fontSize={"10px"}
+                fontStyle={"italic"}
+                color={"#454545"}
+                fontWeight={"300"}
+              >
+                Note:
+              </Typography>
+              <Typography
+                sx={{ ...themeStyle.eventNote, ...themeStyle.scrollable }}
+                fontSize={"10px"}
+                maxHeight={"45px"}
+                fontWeight={"500"}
+              >
+                {event.data.note ? event?.data?.note : "No notes added..."}
+              </Typography>
+            </Stack>
+          </Stack>
+          {data === null ? (
+            <></>
+          ) : (
+            <NotificationDetailModal
+              changeOrder={true}
+              notification={data}
+              isEvent={true}
+              open={open}
+              setOpen={setOpen}
+            />
+          )}
+        </>
+      )}
+    </>
   );
 };
 const CustomEventWeek = ({ event, isProjectPage }) => {
+  const { id } = useParams();
+  const projectId = id;
+  const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation({
+    workOrderId: event?.data?.workOrderId,
+  });
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState(null);
+  const handleOnClick = async () => {
+    const res = await getWorkOrder({ workOrderId: event?.data?.workOrderId });
+    setData(res.data);
+    setOpen(true);
+  };
   return (
-    <Stack
-      sx={themeStyle.eventBox}
-      height={"100%"}
-      borderRight={
-        `6px solid ${event?.data?.projectColor}`
-      }
-      borderRadius={"6px"}
-    >
-      <Stack
-        direction={"row"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-        pl={0.5}
-      >
-        <Box>
-          <Typography
-            height={"30px"}
-            width={"40px"}
-            sx={themeStyle.eventTask}
-            textOverflow={"ellipsis"}
-            overflow={"hidden"}
-            fontSize={"7px"}
+    <>
+      {isProjectPage ? (
+        projectId === event.data.projectId && (
+          <>
+            <Stack
+              sx={themeStyle.eventBox}
+              height={"100%"}
+              borderRight={`6px solid ${event?.data?.projectColor}`}
+              borderRadius={"6px"}
+              onClick={handleOnClick}
+            >
+              <Stack
+                direction={"row"}
+                justifyContent={"space-between"}
+                alignItems={"center"}
+                pl={0.5}
+              >
+                <Box>
+                  {isLoading ? (
+                    <>
+                      <CircularProgress size={"20px"} />
+                    </>
+                  ) : (
+                    <Typography
+                      height={"30px"}
+                      width={"40px"}
+                      sx={themeStyle.eventTask}
+                      textOverflow={"ellipsis"}
+                      overflow={"hidden"}
+                      fontSize={"7px"}
+                    >
+                      {event?.data?.task}
+                    </Typography>
+                  )}
+                </Box>
+                <Box width={"fit-content"}>
+                  <img
+                    src={PartlySunny}
+                    alt={PartlySunny}
+                    width={"fit-content"}
+                    style={themeStyle.eventIcon}
+                    fontSize={"10px"}
+                  ></img>
+                </Box>
+              </Stack>
+              <Box pl={0.5}>
+                <Typography fontSize={"7px"} height={"40px"} width={"100%"}>
+                  {!event.data.note ? "No notes added..." : event?.data?.note}
+                </Typography>
+              </Box>
+            </Stack>
+            {data === null ? (
+              <></>
+            ) : (
+              <NotificationDetailModal
+                changeOrder={true}
+                notification={data}
+                isEvent={true}
+                open={open}
+                setOpen={setOpen}
+              />
+            )}
+          </>
+        )
+      ) : (
+        <>
+          <Stack
+            sx={themeStyle.eventBox}
+            height={"100%"}
+            borderRight={`6px solid ${event?.data?.projectColor}`}
+            borderRadius={"6px"}
+            onClick={handleOnClick}
           >
-            {event?.data?.task}
-          </Typography>
-        </Box>
-        <Box width={"fit-content"}>
-          <img
-            src={PartlySunny}
-            alt={PartlySunny}
-            width={"fit-content"}
-            style={themeStyle.eventIcon}
-            fontSize={"10px"}
-          ></img>
-        </Box>
-      </Stack>
-      <Box pl={0.5}>
-        <Typography fontSize={"7px"} height={"40px"} width={"100%"}>
-          {!event.data.note ? "No notes added..." : event?.data?.note}
-        </Typography>
-      </Box>
-    </Stack>
+            <Stack
+              direction={"row"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              pl={0.5}
+            >
+              <Box>
+                {isLoading ? (
+                  <>
+                    <CircularProgress size={"20px"} />
+                  </>
+                ) : (
+                  <Typography
+                    height={"30px"}
+                    width={"40px"}
+                    sx={themeStyle.eventTask}
+                    textOverflow={"ellipsis"}
+                    overflow={"hidden"}
+                    fontSize={"7px"}
+                  >
+                    {event?.data?.task}
+                  </Typography>
+                )}
+              </Box>
+              <Box width={"fit-content"}>
+                <img
+                  src={PartlySunny}
+                  alt={PartlySunny}
+                  width={"fit-content"}
+                  style={themeStyle.eventIcon}
+                  fontSize={"10px"}
+                ></img>
+              </Box>
+            </Stack>
+            <Box pl={0.5}>
+              <Typography fontSize={"7px"} height={"40px"} width={"100%"}>
+                {!event.data.note ? "No notes added..." : event?.data?.note}
+              </Typography>
+            </Box>
+          </Stack>
+          {data === null ? (
+            <></>
+          ) : (
+            <NotificationDetailModal
+              changeOrder={true}
+              notification={data}
+              isEvent={true}
+              open={open}
+              setOpen={setOpen}
+            />
+          )}
+        </>
+      )}
+    </>
   );
 };
 
 const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
+  const { id } = useParams();
+  const projectId = id;
   const start = moment(event.start).format("HH:mm");
   const end = moment(event.end).format("HH:mm");
+  const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation({
+    workOrderId: event?.data?.workOrderId,
+  });
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState(null);
+  const handleOnClick = async () => {
+    const res = await getWorkOrder({ workOrderId: event?.data?.workOrderId });
+    setData(res.data);
+    setOpen(true);
+  };
   return (
-    <Stack
-      sx={themeStyle.eventBox}
-      borderRight={
-        `6px solid ${event?.data?.projectColor}`
-      }
-      borderRadius={"6px"}
-      height={"100%"}
-    >
-      <Stack
-        direction={"row"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-        pl={1}
-        pr={1}
-        flex={1}
-      >
-        <Box flex={1}>
-          <Typography
-            sx={themeStyle.eventTask}
-            textOverflow={"ellipsis"}
-            fontSize={"8px"}
-            overflow={"hidden"}
-          >
-            {event?.data?.task}
-          </Typography>
-        </Box>
-        <Stack
-          flex={1}
-          direction={"row"}
-          justifyContent={"center"}
-          alignItems={"center"}
-          spacing={0}
-        >
-          <ScheduleIcon
-            fontSize="6px"
-            color="#1C1C1C"
-            fontWeight={"200"}
-          ></ScheduleIcon>
-          <Typography
-            color={"#1C1C1C"}
-            textOverflow={"ellipsis"}
+    <>
+      {isProjectPage ? (
+        projectId === event.data.projectId && (
+          <>
+            <Stack
+              sx={themeStyle.eventBox}
+              borderRight={`6px solid ${event?.data?.projectColor}`}
+              borderRadius={"6px"}
+              height={"100%"}
+              onClick={handleOnClick}
+            >
+              <Stack
+                direction={"row"}
+                justifyContent={"space-between"}
+                alignItems={"center"}
+                pl={1}
+                pr={1}
+                flex={1}
+              >
+                <Box flex={1}>
+                  {isLoading ? (
+                    <>
+                      <CircularProgress size={"20px"} />
+                    </>
+                  ) : (
+                    <Typography
+                      sx={themeStyle.eventTask}
+                      textOverflow={"ellipsis"}
+                      fontSize={"8px"}
+                      overflow={"hidden"}
+                    >
+                      {event?.data?.task}
+                    </Typography>
+                  )}
+                </Box>
+                <Stack
+                  flex={1}
+                  direction={"row"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  spacing={0}
+                >
+                  <ScheduleIcon
+                    fontSize="6px"
+                    color="#1C1C1C"
+                    fontWeight={"200"}
+                  ></ScheduleIcon>
+                  <Typography
+                    color={"#1C1C1C"}
+                    textOverflow={"ellipsis"}
+                    height={"100%"}
+                    fontSize={"9px"}
+                    overflow={"hidden"}
+                    textAlign={"center"}
+                    fontWeight={"300"}
+                  >
+                    {`${start}-${end}`}
+                  </Typography>
+                </Stack>
+                <Box>
+                  <img
+                    src={PartlySunny}
+                    alt={PartlySunny}
+                    style={themeStyle.eventIcon}
+                    fontSize={"8px"}
+                  ></img>
+                </Box>
+              </Stack>
+              <Stack direction={"row"} pl={1} pr={1} flex={1}>
+                <Box flex={1} alignSelf={"flex-end"} height={"100%"}>
+                  <Typography
+                    sx={themeStyle.eventNote}
+                    height={"40px"}
+                    width={"100%"}
+                    pt={1}
+                    textOverflow={"ellipsis"}
+                    fontSize={"6px"}
+                  >{`Note: ${event?.data?.note}`}</Typography>
+                </Box>
+                <Box flex={1} textAlign={"right"}>
+                  <Typography
+                    overflow={"hidden"}
+                    textOverflow={"ellipsis"}
+                    fontSize={"10px"}
+                  >{`${event?.data?.weather?.description}`}</Typography>
+                  <Typography fontSize={"12px"}>
+                    {" "}
+                    {`${event?.data?.weather?.temp}°`}
+                  </Typography>
+                </Box>
+              </Stack>
+            </Stack>
+            {data === null ? (
+              <></>
+            ) : (
+              <NotificationDetailModal
+                changeOrder={true}
+                notification={data}
+                isEvent={true}
+                open={open}
+                setOpen={setOpen}
+              />
+            )}
+          </>
+        )
+      ) : (
+        <>
+          <Stack
+            sx={themeStyle.eventBox}
+            borderRight={`6px solid ${event?.data?.projectColor}`}
+            borderRadius={"6px"}
             height={"100%"}
-            fontSize={"9px"}
-            overflow={"hidden"}
-            textAlign={"center"}
-            fontWeight={"300"}
+            onClick={handleOnClick}
           >
-            {`${start}-${end}`}
-          </Typography>
-        </Stack>
-        <Box>
-          <img
-            src={PartlySunny}
-            alt={PartlySunny}
-            style={themeStyle.eventIcon}
-            fontSize={"8px"}
-          ></img>
-        </Box>
-      </Stack>
-      <Stack direction={"row"} pl={1} pr={1} flex={1}>
-        <Box flex={1} alignSelf={"flex-end"} height={"100%"}>
-          <Typography
-            sx={themeStyle.eventNote}
-            height={"40px"}
-            width={"100%"}
-            pt={1}
-            textOverflow={"ellipsis"}
-            fontSize={"6px"}
-          >{`Note: ${event?.data?.note}`}</Typography>
-        </Box>
-        <Box flex={1} textAlign={"right"}>
-          <Typography
-            overflow={"hidden"}
-            textOverflow={"ellipsis"}
-            fontSize={"10px"}
-          >{`${event?.data?.weather?.description}`}</Typography>
-          <Typography fontSize={"12px"}>
-            {" "}
-            {`${event?.data?.weather?.temp}°`}
-          </Typography>
-        </Box>
-      </Stack>
-    </Stack>
+            <Stack
+              direction={"row"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              pl={1}
+              pr={1}
+              flex={1}
+            >
+              <Box flex={1}>
+                {isLoading ? (
+                  <>
+                    <CircularProgress size={"20px"} />
+                  </>
+                ) : (
+                  <Typography
+                    sx={themeStyle.eventTask}
+                    textOverflow={"ellipsis"}
+                    fontSize={"8px"}
+                    overflow={"hidden"}
+                  >
+                    {event?.data?.task}
+                  </Typography>
+                )}
+              </Box>
+              <Stack
+                flex={1}
+                direction={"row"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                spacing={0}
+              >
+                <ScheduleIcon
+                  fontSize="6px"
+                  color="#1C1C1C"
+                  fontWeight={"200"}
+                ></ScheduleIcon>
+                <Typography
+                  color={"#1C1C1C"}
+                  textOverflow={"ellipsis"}
+                  height={"100%"}
+                  fontSize={"9px"}
+                  overflow={"hidden"}
+                  textAlign={"center"}
+                  fontWeight={"300"}
+                >
+                  {`${start}-${end}`}
+                </Typography>
+              </Stack>
+              <Box>
+                <img
+                  src={PartlySunny}
+                  alt={PartlySunny}
+                  style={themeStyle.eventIcon}
+                  fontSize={"8px"}
+                ></img>
+              </Box>
+            </Stack>
+            <Stack direction={"row"} pl={1} pr={1} flex={1}>
+              <Box flex={1} alignSelf={"flex-end"} height={"100%"}>
+                <Typography
+                  sx={themeStyle.eventNote}
+                  height={"40px"}
+                  width={"100%"}
+                  pt={1}
+                  textOverflow={"ellipsis"}
+                  fontSize={"6px"}
+                >{`Note: ${event?.data?.note}`}</Typography>
+              </Box>
+              <Box flex={1} textAlign={"right"}>
+                <Typography
+                  overflow={"hidden"}
+                  textOverflow={"ellipsis"}
+                  fontSize={"10px"}
+                >{`${event?.data?.weather?.description}`}</Typography>
+                <Typography fontSize={"12px"}>
+                  {" "}
+                  {`${event?.data?.weather?.temp}°`}
+                </Typography>
+              </Box>
+            </Stack>
+          </Stack>
+          {data === null ? (
+            <></>
+          ) : (
+            <NotificationDetailModal
+              changeOrder={true}
+              notification={data}
+              isEvent={true}
+              open={open}
+              setOpen={setOpen}
+            />
+          )}
+        </>
+      )}
+    </>
   );
 };
 
 const CustomEventMonthTasks = ({ event, isProjectPage }) => {
+  const start = moment(event.start).format("HH:mm");
+  const end = moment(event.end).format("HH:mm");
+  const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation({
+    workOrderId: event?.data?.workOrderId,
+  });
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState(null);
+  const handleOnClick = async () => {
+    const res = await getWorkOrder({ workOrderId: event?.data?.workOrderId });
+    setData(res.data);
+    setOpen(true);
+  };
   return (
-    <Box
-      sx={{ background: event?.data?.projectColor }}
-      height={"100%"}
-    >
-      <Typography fontSize={"10px"} color={"#454545"}>
-        {event?.data?.task}
-      </Typography>
-    </Box>
+    <>
+      <Box
+        sx={{ background: event?.data?.projectColor }}
+        height={"100%"}
+        onClick={handleOnClick}
+      >
+        {isLoading ? (
+          <>
+            <Skeleton
+              sx={{
+                bgcolor: `rgba(${event?.data?.projectColor}, 0.6)`,// Set background color dynamically
+                animation: "wave 1s infinite", // Make the wave animation more prominent and continuous
+              }}
+              animation="wave"
+              variant="rectangle"
+            >
+            </Skeleton>
+          </>
+        ) : (
+          <Typography fontSize={"10px"} color={"#454545"}>
+            {event?.data?.task}
+          </Typography>
+        )}
+      </Box>
+      {data === null ? (
+        <></>
+      ) : (
+        <NotificationDetailModal
+          changeOrder={true}
+          notification={data}
+          isEvent={true}
+          open={open}
+          setOpen={setOpen}
+        />
+      )}
+    </>
   );
 };
 const CustomEventMonthWeatherNotes = ({ event, isDrawerOpen }) => {
-  //console.log("isDrawer open in CustomEventMonthWeatherNotes: ",isDrawerOpen);
+  const start = moment(event.start).format("HH:mm");
+  const end = moment(event.end).format("HH:mm");
+  const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation({
+    workOrderId: event?.data?.workOrderId,
+  });
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState(null);
+  const handleOnClick = async () => {
+    const res = await getWorkOrder({ workOrderId: event?.data?.workOrderId });
+    setData(res.data);
+    setOpen(true);
+  };
   return (
-    <Stack
-      width={"fit-content"}
-      backgroundColor={"transparent"}
-      alignItems={"flex-end"}
-      pl={1}
-      pt={4}
-    >
-      <Typography
-        fontSize={"10px"}
-        sx={themeStyle.eventNote}
-        overflow={"hidden"}
-        height={"47px"}
-        width={isDrawerOpen ? "100%" : "42px"}
+    <>
+      <Stack
+        width={"fit-content"}
+        backgroundColor={"transparent"}
+        alignItems={"flex-end"}
+        pl={1}
+        pt={4}
+        onClick={handleOnClick}
       >
-        Note: {event?.data?.note}
-      </Typography>
-    </Stack>
+        <Typography
+          fontSize={"10px"}
+          sx={themeStyle.eventNote}
+          overflow={"hidden"}
+          height={"47px"}
+          width={isDrawerOpen ? "100%" : "42px"}
+        >
+          Note: {event?.data?.note}
+        </Typography>
+      </Stack>
+      {data === null ? (
+        <></>
+      ) : (
+        <NotificationDetailModal
+          changeOrder={true}
+          notification={data}
+          isEvent={true}
+          open={open}
+          setOpen={setOpen}
+        />
+      )}
+    </>
   );
 };
 

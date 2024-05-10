@@ -28,7 +28,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCheckUserOnInvitationMutation, useRegisterMutation } from "../../redux/apis/usersApiSlice";
 import { setCredentials } from "../../redux/slices/authSlice";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useFormik } from "formik";
+import { inviteSchemea } from "../../utils/Validation/settingsPageSchema";
+//import "react-toastify/dist/ReactToastify.css";
 
 const Invitation = () => {
   const isLG = useMediaQuery("(min-width: 1280px)");
@@ -48,7 +50,7 @@ const Invitation = () => {
     lastName: "",
     email: email,
     password: "",
-    conformPassword: "",
+    confirmPassword: "",
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -56,13 +58,13 @@ const Invitation = () => {
   const [register, { isLoading }] = useRegisterMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target || e;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target || e;
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     [name]: value,
+  //   }));
+  // };
 
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -76,19 +78,20 @@ useEffect(()=> {
 },[])
 const checkUserOnInvitation = async () =>{
       const res = await checkUser(params);
+      console.log(res)
       if(res?.data?.success){
-        console.log(res)
         navigate('/login');
       } else{
         return false
       }
 }
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (e) => {
+  
+
 
     // Prepare data to be sent in the request body
     const data = {
-      ...formData,
+      ...values,
       phone,
       userRole,
       email,
@@ -98,7 +101,7 @@ const checkUserOnInvitation = async () =>{
 
     try {
       // Make POST request using Axios
-      await axios.post("http://3.135.107.71/project/addme", data);
+      await axios.post("http://3.135.107.71/auth/addme", data);
 
       // Navigate to the desired location upon successful request
       navigate("/login");
@@ -118,6 +121,18 @@ const checkUserOnInvitation = async () =>{
       });
     }
   };
+  const {values, handleBlur,handleChange,handleSubmit, errors, touched, isSubmitting, handleReset} = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: email,
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema: inviteSchemea,
+    onSubmit
+  });
+
 
   const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "1rem" };
   const linkResponsiveColor = { color: isMobile ? "#FFAC00" : "#4C8AB1" };
@@ -125,6 +140,9 @@ const checkUserOnInvitation = async () =>{
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
 
+  useEffect(()=>{
+    console.log(values);
+  }, [values])
   return (
     <Grid container sx={firstGrid}>
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
@@ -170,10 +188,18 @@ const checkUserOnInvitation = async () =>{
                 <input
                   type="text"
                   name="firstName"
-                  style={inputStyle}
-                  value={formData.firstName}
+                  style={{
+                    ...inputStyle,
+                    border:
+                      errors.firstName && touched.firstName
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                  }}
+                  value={values.firstName}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
+                <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-1rem'}>{errors.firstName && touched.firstName ? errors.firstName : ""}</Typography>
               </Box>
               <Box sx={{ marginTop: "0.2rem" }}>
                 <label
@@ -188,10 +214,18 @@ const checkUserOnInvitation = async () =>{
                 <input
                   type="text"
                   name="lastName"
-                  style={inputStyle}
-                  value={formData.lastName}
+                  style={{
+                    ...inputStyle,
+                    border:
+                      errors.lastName && touched.lastName
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                  }}
+                  value={values.lastName}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
+                <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-1rem'}>{errors.lastName && touched.lastName ? errors.lastName : ""}</Typography>
               </Box>
             </Box>
 
@@ -209,10 +243,19 @@ const checkUserOnInvitation = async () =>{
                 readOnly
                 type="text"
                 name="email"
-                style={inputStyle}
-                value={formData.email}
+                style={{
+                  ...inputStyle,
+                  border:
+                    errors.email && touched.email
+                      ? "1px solid #d32f2f"
+                      : "1px solid #E0E4EC",
+                }}
+                value={values.email}
                 onChange={handleChange}
+                onBlur={handleBlur}
               />
+             <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-1rem'}>{errors.email && touched.email ? errors.email : ""}</Typography>
+
             </Box>
 
             <Box sx={{ marginTop: "0.5rem" }}>
@@ -227,9 +270,9 @@ const checkUserOnInvitation = async () =>{
               </label>
 
               <PhoneInput
-                style={{ ...customPhoneStyles }}
+                style={{ ...customPhoneStyles,  }}
                 defaultCountry="pk"
-                value={formData.phone}
+                value={phone}
                 onChange={(phone) => setPhone(phone)}
                 inputStyle={{ ...customeInputStyles }}
                 inputProps={{
@@ -260,13 +303,20 @@ const checkUserOnInvitation = async () =>{
 
               <Box style={{ position: "relative" }}>
                 <input
-                  style={inputStyle}
+                  style={{
+                    ...inputStyle,
+                    border:
+                      errors.password && touched.password
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                  }}
                   type={passwordVisible ? "text" : "password"}
                   name="password"
-                  value={formData.password}
+                  value={values.password}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
-
+                 <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-1rem'}>{errors.password && touched.password ? errors.password : ""}</Typography>
                 <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
                   {passwordVisible ? <VisibilityOff /> : <Visibility />}
                   {!isMobile && (
@@ -298,13 +348,20 @@ const checkUserOnInvitation = async () =>{
 
               <Box style={{ position: "relative" }}>
                 <input
-                  style={inputStyle}
+                  style={{
+                    ...inputStyle,
+                    border:
+                      errors.confirmPassword && touched.confirmPassword
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                  }}
                   type={passwordVisible ? "text" : "password"}
-                  name="conformPassword"
-                  value={formData.conformPassword}
+                  name="confirmPassword"
+                  value={values.confirmPassword}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
-
+                 <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-1rem'}>{errors.confirmPassword && touched.confirmPassword ? errors.confirmPassword : ""}</Typography>
                 <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
                   {passwordVisible ? <VisibilityOff /> : <Visibility />}
                   {!isMobile && (
@@ -531,7 +588,7 @@ const firstHeading = {
   fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
   display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
   marginTop: "1rem",
-  fontSize: { lg: "2.9375rem", md: "2rem", sm: "1.5rem" },
+  fontSize: { lg: "2.9375rem", md: "1.5rem", sm: "1rem" },
   fontWeight: 400,
   lineHeight: "4.25rem",
 };
@@ -542,7 +599,7 @@ const secondHeading = {
   marginTop: "0.5rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
-  fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
+  fontSize: { lg: "2rem", md: "1rem", sm: "0.8rem" },
   fontWeight: 400,
 };
 

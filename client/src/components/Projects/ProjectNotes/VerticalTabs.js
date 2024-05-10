@@ -3,6 +3,7 @@ import Button from "@mui/joy/Button";
 import ButtonGroup from "@mui/joy/ButtonGroup";
 import Stack from "@mui/joy/Stack";
 import { Typography } from "@mui/material";
+import moment from "moment-timezone";
 
 const VerticalTabs = ({ notes, handleSelectedButton , selectedButton}) => {
   return (
@@ -30,7 +31,7 @@ const VerticalTabs = ({ notes, handleSelectedButton , selectedButton}) => {
                  fontSize={'12px'}
                  fontWeight={'200'}
                  color={'#202227'}
-                textAlign={"left"}>{note?.createdAt}</Typography>
+                textAlign={"left"}>{moment(note?.createdAt).format('MMM, D, YYYY HH:mm a')}</Typography>
               </Stack>
             </Button>
           );

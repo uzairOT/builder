@@ -27,7 +27,7 @@ function ProjectFormFields() {
   const borderRadiusResponsive = {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
-const [project, setProject]=useState();
+const [project, setProject]=useState("");
   const { projectName, location, projectColor } =
     useSelector(selectProjectForm);
   const dispatch = useDispatch();

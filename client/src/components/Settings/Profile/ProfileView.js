@@ -11,7 +11,7 @@ import { setCredentials } from "../../../redux/slices/authSlice";
 import { Textarea } from "@mui/joy";
 import {  useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+//import "react-toastify/dist/ReactToastify.css";
 
 function ProfileView() {
   const user = useSelector((state) => state.auth.userInfo);

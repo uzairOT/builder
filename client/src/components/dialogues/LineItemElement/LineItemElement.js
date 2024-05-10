@@ -28,6 +28,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "../../../App.css";
 import "./LineItemElement.css";
 import {
+  addInitialPhase,
   addPhase,
   updateLineItem,
 } from "../../../redux/slices/Project/projectInitialProposal";
@@ -53,14 +54,16 @@ function AddLineElement({
   LineItem,
   assignPageview,
   projectId,
+  setPhaseItems,
+  InitialProposalView
 }) {
-  const { data, isLoading, isSuccess } = useGetLineItemQuery({
-    lineItemId: LineItem,
-  });
+  // const { data, isLoading, isSuccess } = useGetLineItemQuery({
+  //   lineItemId: LineItem,
+  // });
   const [open, setOpen] = useState(false);
   const [addPhaseLine] = useAddPhaseLineMutation();
   const [updatePhaseLine] = useUpdatePhaseLineMutation();
-  const [phaseName, setPhaseName] = useState("");
+  const [phaseName, setPhaseName] = useState(LineItem ? LineItem.title : "");
   const [description, setDescription] = useState(
     LineItem ? LineItem.description : ""
   );
@@ -71,8 +74,8 @@ function AddLineElement({
   );
   const [total, setTotal] = useState(LineItem ? LineItem.total : "");
 
-  const [start, setStart] = useState(LineItem ? LineItem.start_day : null);
-  const [end, setEnd] = useState(LineItem ? LineItem.end_day : null);
+  const [start, setStart] = useState(LineItem ? dayjs(LineItem.start_day) : null);
+  const [end, setEnd] = useState(LineItem ? dayjs(LineItem.end_day) : null);
 
   const handleStartDateChange = (newValue) => {
     setStart(newValue);
@@ -110,14 +113,19 @@ function AddLineElement({
     const getData = setTimeout(() => {
       axios
         .get(
-          `http://3.135.107.71/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`
+          `http://3.135.107.71/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`,
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.token}` // Add authorization header
+            }
+          }
         )
         .then((response) => {
           setAutoComplete(response.data.MasterLines);
           //console.log(response.data.MasterLines);
         });
     }, 500);
-
+  
     return () => clearTimeout(getData);
   }, [formData.phaseName]);
 
@@ -152,7 +160,7 @@ function AddLineElement({
     }
     if (LineHeading === "Update Line Item") {
       //console.log("updading..")
-      const lineItemId = data.lineItem.id;
+      const lineItemId = LineItem.id;
       const data1 = {
         ...formData,
         id: lineItemId,
@@ -162,10 +170,11 @@ function AddLineElement({
 
       try {
         const res = await updatePhaseLine(data1);
+        setPhaseItems(null);
         dispatch(addPhase(res.data.data));
         //   handleUpdateClose();
         toast.success(
-          "Line Item added successfully, Changes will appear on reload"
+          "Line Item added successfully"
         );
       } catch (error) {
         toast.error(error?.data?.message || error.error||error?.data?.error );
@@ -195,10 +204,15 @@ function AddLineElement({
         start,
         end,
         longDescription,
+        userId: userInfo.user.id
       };
-
       const response = await addPhaseLine(newLineItem);
-      dispatch(addPhase(response?.data?.allPhases));
+      if(InitialProposalView){
+        dispatch(addInitialPhase(response?.data?.allPhases));
+      }else{
+        dispatch(addPhase(response?.data?.allPhases));
+
+      }
       //console.log(newLineItem);
       //console.log(response);
       // handleAddRow(newLineItem);
@@ -227,21 +241,21 @@ function AddLineElement({
       formula: (q, p) => q * p * 2.58999e6,
     },
   ];
-  useEffect(() => {
-    // console.log(isSuccess);
+  // useEffect(() => {
+  //   // console.log(isSuccess);
 
-    if (isSuccess) {
-      setPhaseName(data.lineItem.title);
-      setUnit(data.lineItem.unit);
-      setDescription(data.lineItem.description);
-      setQuantity(data.lineItem.quantity);
-      setUnitPrice(data.lineItem.unit_price);
-      setTotal(data.lineItem.total);
-      setStart(dayjs(data.lineItem.start_day));
-      setEnd(dayjs(data.lineItem.end_day));
-      setLongDescription(data.lineItem.notes);
-    }
-  }, [isSuccess, data]);
+  //   if (LineItem) {
+  //     setPhaseName(LineItem.title);
+  //     setUnit(data.ineItem.unit);
+  //     setDescription(data.lineItem.description);
+  //     setQuantity(data.lineItem.quantity);
+  //     setUnitPrice(data.lineItem.unit_price);
+  //     setTotal(data.lineItem.total);
+  //     setStart(dayjs(data.lineItem.start_day));
+  //     setEnd(dayjs(data.lineItem.end_day));
+  //     setLongDescription(data.lineItem.notes);
+  //   }
+  // }, [isSuccess, data]);
   console.log(formData);
   return (
     <div className="App">

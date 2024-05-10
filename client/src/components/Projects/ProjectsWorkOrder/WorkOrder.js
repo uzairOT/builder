@@ -74,6 +74,7 @@ function WorkOrder({
   checkedRow,
   workOrder,
   status,
+  setPhaseItems
 }) {
   // console.log('INSIDE WORKORDER: ',data)
   const [open, setOpen] = useState(false);
@@ -96,13 +97,13 @@ function WorkOrder({
     setUpdateModalOpen(true);
   };
   const handleCheckboxChange = (row) => {
+    setPhaseItems(null);
     setCheckedRow((prevCheckedRow) => (prevCheckedRow === row ? null : row));
   };
   return (
     <TableContainer
       component={Paper}
-      sx={{ boxShadow: "none" }}
-      style={{ height: workOrder ? "300px" : "80vh", scrollbarWidth: "thin" }}
+      sx={{ height: workOrder ? {xl:'300px', lg:'200px', md:'200px', sm:'300px'} : "80vh", scrollbarWidth: "thin",  boxShadow: "none"  }}
     >
       <Table>
         <TableHead>
@@ -154,8 +155,9 @@ function WorkOrder({
                   </TableCell>
                   <TableCell sx={{...tableCellValueStyle, whiteSpace:'nowrap'}}>{moment(item.end_day).format('MMM D, YYYY, h:mm a')}</TableCell>
                   <TableCell sx={tableCellValueStyle}>
-                    <Button
-                      buttonText={item.status} // Assuming status property represents the status
+                  {item.version> 1 ? `change order ${item.status}` : item.status}
+                    {/* <Button
+                      buttonText= // Assuming status property represents the status
                       color={item.status === "pending" ? "#DF0404" : "#000000"} // Adjust colors based on status
                       backgroundColor={
                         item.status === "pending" ? "#FFDADA" : "#FFFFFF"
@@ -163,7 +165,7 @@ function WorkOrder({
                       width="101px"
                       height="27px"
                       borderRadius="45px"
-                    />
+                    /> */}
                   </TableCell>
                   {/* <TableCell sx={tableCellValueStyle}>{item.status}</TableCell> */}
                   <TableCell sx={tableCellValueStyle}>{item.notes}</TableCell>
@@ -193,7 +195,7 @@ function WorkOrder({
                     ) : (
                       <NotificationDetailModal
                         notification={data1}
-                        isEvent={true}
+                        
                         open={open}
                         setOpen={setOpen}
                       />

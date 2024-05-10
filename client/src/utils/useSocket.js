@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { io } from 'socket.io-client';
 import socketIOClient from 'socket.io-client';
 
@@ -32,12 +33,10 @@ const useSocket = () => {
         }
     }, []);
 
-    const emit = (event, data) => {
+    const emit = (event, data, callback) => {
         if(socket){
             // console.log('socket emit event: ', event, ' data : ', data);
-            socket.emit(event, data, (response) => {
-            //   console.log('Server response:', response);
-            });
+            socket.emit(event, data, callback);
           }
     }
     const on = (event, callback) => {

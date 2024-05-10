@@ -37,6 +37,12 @@ const wordOrderApiSlice = apiSlice.injectEndpoints({
                 method: 'GET'
             })
         }),
+        getNotificationsUnread: builder.query({
+            query: (data) => ({
+                url: `${PROJECTS_URL}/workOrderNotificationReadCount/${data}`,
+                method: 'GET',
+            })
+        }),
        
     })
 })
@@ -46,5 +52,6 @@ export const {
     useGetRequestWorkOrderQuery,
     useUpdateRequestWorkOrderMutation,
     useUpdateWorkOrderReadMutation,
-    useGetNotificationsQuery
+    useGetNotificationsQuery,
+    useGetNotificationsUnreadQuery
 } = wordOrderApiSlice;

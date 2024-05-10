@@ -17,7 +17,7 @@ import { useForgetPasswordMutation } from "../../../redux/apis/usersApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setForgetPasswordEmail } from "../../../redux/slices/authSlice";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+//import "react-toastify/dist/ReactToastify.css";
 const ForgotPassword = () => {
   const [forgetPassword] = useForgetPasswordMutation();
   const [email, setEmail] = useState();

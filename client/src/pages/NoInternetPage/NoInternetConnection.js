@@ -24,7 +24,7 @@ const NoInternetConnection = (props) => {
         props.children
     )
     } else {
-        return(<h1>No Interner Connection...</h1>)
+        return(<h1>No Internet Connection...</h1>)
     }
 }
 

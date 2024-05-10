@@ -17,13 +17,16 @@ import { selectAddPhase } from "../../../redux/slices/addPhaseSlice";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
+//import "react-toastify/dist/ReactToastify.css";
 
 function AddPhaseView({
   adminProjectView,
   view,
   projectId,
   InitialProposalView,
+  authUserRole,
+  refetchChangeOrder
 }) {
   const [cardPhase, setCardPhase] = useState([]);
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
@@ -40,32 +43,42 @@ function AddPhaseView({
 
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const fetchData = async () => {
     setIsLoading(true);
+    setSelectedPhaseId(null);
     if (projectId === null) {
       return;
     } else if (adminProjectView) {
-      if(InitialProposalView){
+      if (InitialProposalView) {
         try {
           const response = await axios.get(
-            `http://3.135.107.71/project/getInitialPhases/${id}`
+            `http://3.135.107.71/project/getInitialPhases/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+              },
+            }
           );
-          
+
           dispatch(addInitialPhase(response.data.phases));
         } catch (error) {
           setError(error);
         }
-      } else{
-
+      } else {
         try {
           //console.log("fetching data...");
           const response = await axios.get(
-            `http://3.135.107.71/project/getPhases/${id}`
+            `http://3.135.107.71/project/getPhases/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+              },
+            }
           );
           //console.log(response);
-          
+
           dispatch(addPhase(response.data.phases));
         } catch (error) {
           setError(error);
@@ -75,10 +88,15 @@ function AddPhaseView({
     } else {
       try {
         const response = await axios.get(
-          `http://3.135.107.71/project/getPhases/${projectId}`
+          `http://3.135.107.71/project/getPhases/${projectId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+            },
+          }
         );
         //console.log(response);
-        
+
         dispatch(addPhase(response.data.phases));
       } catch (error) {
         setError(error);
@@ -87,6 +105,7 @@ function AddPhaseView({
     }
   };
   useEffect(() => {
+    console.log("UserEffect run");
     fetchData();
 
     // Cleanup function
@@ -98,8 +117,6 @@ function AddPhaseView({
   const handleAddRow = () => {
     fetchData();
   };
-
-
 
   const handleGridToggle = (currentIndex, previousIndex) => {
     // Ensure indices are within the valid range
@@ -174,19 +191,18 @@ function AddPhaseView({
       setSelectedPhaseId(null);
     } else {
       setSelectedPhaseId(id);
-      const selectedPhase = phases[0].find((phase) => phase.id === id);
+      if (InitialProposalView) {
+        const selectedPhase = initialPhases[0]?.find(
+          (phase) => phase.id === id
+        );
+        setSelectedPhaseData(selectedPhase);
+      } else {
+        const selectedPhase = phases[0]?.find((phase) => phase.id === id);
+        setSelectedPhaseData(selectedPhase);
+      }
       //console.log(selectedPhase);
-      setSelectedPhaseData(selectedPhase);
     }
   };
-  // useEffect(() => {
-  //   //console.log(
-  //     "Selected Phase: ",
-  //     selectedPhaseId,
-  //     " SelectedPhaseData: ",
-  //     selectedPhaseData
-  //   );
-  // }, [selectedPhaseId, selectedPhaseData]);
 
   const handleDeletePhase = async () => {
     //console.log('clicked!')
@@ -257,7 +273,37 @@ function AddPhaseView({
           )}
         </Stack>
         {view === "Initial Proposal" ? (
-          <></>
+          <>
+            {(authUserRole === "superadmin" ||
+              authUserRole === "projectManager" ||
+              authUserRole === "client") && (
+              <>
+                <Stack direction={"row"} sx={buttonBox}>
+                  <Button
+                    sx={{ ...actionButton }}
+                    startIcon={<ModeEditOutlinedIcon />}
+                    onClick={handleEditPhase}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    sx={{ ...actionButton }}
+                    startIcon={<DeleteOutlinedIcon />}
+                    onClick={handleDeletePhase}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    sx={{ ...actionButton, background: "#FFAC00" }}
+                    onClick={handleAddPhase}
+                  >
+                    Add Phase
+                  </Button>
+                 
+                </Stack>
+              </>
+            )}
+          </>
         ) : (
           <Stack direction={"row"} sx={buttonBox}>
             <Button
@@ -284,6 +330,8 @@ function AddPhaseView({
               <RequestWorkOrderModal
                 rowCheckboxes={rowCheckboxes}
                 phases={phases}
+                fetchData={fetchData}
+                refetchChangeOrder={refetchChangeOrder}
               />
             ) : (
               <></>
@@ -296,7 +344,8 @@ function AddPhaseView({
         <>
           {initialPhases !== null &&
           initialPhases[0] !== undefined &&
-          initialPhases[0].length !== 0 ? (
+          initialPhases[0].length !== 0 &&
+          !isLoading ? (
             initialPhases[0]?.map((phase, index) => {
               return (
                 <Stack
@@ -308,7 +357,7 @@ function AddPhaseView({
                     borderRadius: "8px", // Rounded corners
                     boxShadow:
                       selectedPhaseId === phase.id
-                        ? `0 0 0 1px #1B1B1B, 0 5px 20px ${phase.color}`
+                        ? `0 0 0 2px #1B1B1B, 0 5px 20px ${phase.color}`
                         : "none", // Border and glow effect
                     transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
                     marginTop: "1rem",
@@ -327,6 +376,7 @@ function AddPhaseView({
                     setRowCheckboxes={setRowCheckboxes}
                     handleAddRow={handleAddRow}
                     InitialProposalView={InitialProposalView}
+                    authUserRole={authUserRole}
                   />
                 </Stack>
               );
@@ -348,7 +398,8 @@ function AddPhaseView({
         <>
           {phases !== null &&
           phases[0] !== undefined &&
-          phases[0].length !== 0 ? (
+          phases[0].length !== 0 &&
+          !isLoading ? (
             phases[0]?.map((phase, index) => {
               return (
                 <Stack
@@ -360,7 +411,7 @@ function AddPhaseView({
                     borderRadius: "8px", // Rounded corners
                     boxShadow:
                       selectedPhaseId === phase.id
-                        ? `0 0 0 1px #1B1B1B, 0 5px 20px ${phase.color}`
+                        ? `0 0 0 2px #1B1B1B, 0 5px 20px ${phase.color}`
                         : "none", // Border and glow effect
                     transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
                     marginTop: "1rem",
@@ -403,6 +454,7 @@ function AddPhaseView({
           phaseData={selectedPhaseData}
           setPhaseData={setSelectedPhaseData}
           // onSubmit={handleColorPickerSubmit}
+          InitialProposalView={InitialProposalView}
           onSubmit={(phaseName, color) => {
             handleUpdateSubmit(phaseName, color, selectedPhaseData);
           }}
@@ -414,6 +466,7 @@ function AddPhaseView({
           handleAddClose={handleAddClose}
           setPhaseData={setSelectedPhaseData}
           onSubmit={handleAddSubmit}
+          InitialProposalView={InitialProposalView}
           adminProjectView={adminProjectView}
         />
       )}

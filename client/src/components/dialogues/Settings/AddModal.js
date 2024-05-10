@@ -23,8 +23,8 @@ import {
   useAddAssignRoleMutation,
   useGetAssignedRolesQuery,
 } from "../../../redux/apis/Admin/assignRoleApiSlice";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+//import "react-toastify/dist/ReactToastify.css";
 import { allUserProjects } from "../../../redux/slices/Project/userProjectsSlice";
 import { useSelector } from "react-redux";
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
@@ -91,14 +91,14 @@ function AddModal({ title, open, onClose }) {
       };
       //console.log(post);
       const res = await assignRolePost(post).unwrap();
-      // console.log(res);
-      toast.info(res?.data?.message);
+      console.log(res);
+      toast.info('Email Invitation sent!');
       refetch();
       action.resetForm();
       setImage(null);
     } catch (err) {
       //console.log(err);
-      toast.error(err.data.error);
+      toast.error(error?.data?.message || error.error||error?.data?.error );
     }
   };
 
@@ -159,7 +159,7 @@ function AddModal({ title, open, onClose }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <ToastContainer />
+      
       <Dialog open={open} onClose={onClose} maxWidth="md" sx={{}}>
         <DialogTitle sx={headingStyle}>Add {title}</DialogTitle>
         <DialogContent

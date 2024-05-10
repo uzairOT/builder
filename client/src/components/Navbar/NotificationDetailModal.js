@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { json, useLocation, useParams } from "react-router-dom";
 import moment from "moment";
-import { useGetTeamMembersQuery } from "../../redux/apis/Project/projectApiSlice";
+import { useGetTeamMembersQuery, useGetWorkOrderDetailsMutation } from "../../redux/apis/Project/projectApiSlice";
 import {
   Avatar,
   Box,
@@ -30,6 +30,12 @@ import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import GenerateInvoiceDone from "../dialogues/GenerateInvoice/GenerateInvoiceDone";
 import WorkOrder from "../Projects/ProjectsWorkOrder/WorkOrder";
+import LineItemDetailModal from "../dialogues/LineItemDetailModal/LineItemDetailModal";
+import { projectUserRoleAuth } from "../Projects/ProjectsInitialProposal/InitialProposalView";
+import axios from "axios";
+import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
+import { useUpdateRequestWorkOrderMutation } from "../../redux/apis/Project/workOrderApiSlice";
+import { toast } from "react-toastify";
 
 const NotificationDetailModal = ({
   rowCheckboxes,
@@ -39,14 +45,20 @@ const NotificationDetailModal = ({
   isEvent,
   open,
   setOpen,
-  handleOnClick
+  handleOnClick,
 }) => {
   const { data } = useGetTeamMembersQuery(notification.WorkOrderReq.projectId);
-  
+
   const [done, setDone] = useState(false);
-  
-
-
+  const [disable, setDisable] = useState(true)
+  const [updateWorkOrder] = useUpdateRequestWorkOrderMutation();
+  const [authUserRole, setAuthUserRole] = useState();
+  const [selectedLineItem, setSelectedLineItem] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const user = localStorage.getItem('userInfo')
+  const currentUser = JSON.parse(user);
+    const userId = currentUser.user.id;
+    console.log(notification)
   const [assignedCheckboxes, setAssignedCheckboxes] = useState([]);
 
   const handleClose = () => {
@@ -55,8 +67,50 @@ const NotificationDetailModal = ({
   const handleOpen = () => {
     setOpen(true);
   };
-// console.log(notification.WorkOrderReq)
+  // console.log(notification.WorkOrderReq)
+  const handleListItemClick = (lineItem) => {
+    setSelectedLineItem(lineItem);
+    setModalOpen(true);
+  };
+  const handleCompleteWorkOrder = async () => {
+    try {
+     const res = await updateWorkOrder({
+        workOrder_id: notification.WorkOrderReq.id,
+        status: "complete",
+      }).unwrap();
+      toast.success('Work Order Completed!') 
+      handleClose(); 
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
+  useEffect(()=>{
+    const authUserRole = async () => {
+      setDisable(true);
+      try {
+        const response = await axios.post('http://3.135.107.71/project/getUserProjectRole', 
+        {
+          projectId: notification.WorkOrderReq.projectId,
+          userId: userId
+        }
+        ,{
+          headers: {
+            Authorization: `Bearer ${getTokenFromLocalStorage()}`
+          }
+        })
+        if(response.data.role === 'superadmin' || response.data.role ==='client' || response.data.role ==='projectManager' ){
+          setDisable(false)
+        }
+        console.log(response)
+      } catch (error){
+        console.log(error)
+      }
+    }
+
+    if(isEvent) authUserRole();
+  },[])
   return (
     <>
       <Stack alignItems={"flex-end"} justifyContent={"flex-end"} pr={2}>
@@ -151,7 +205,7 @@ const NotificationDetailModal = ({
                         <React.Fragment key={phaseItem.Phase.id}>
                           <ListItem
                             key={phaseItem.Phase.id}
-                            style={{ padding: 0 }}
+                            style={{ padding: "4px" }}
                           >
                             <label>{phaseItem.Phase.phase_name}</label>
                           </ListItem>
@@ -175,14 +229,29 @@ const NotificationDetailModal = ({
                     sx={{
                       maxHeight: "150px",
                       overflow: "auto",
+                      ...themeStyle.scrollable,
                     }}
                   >
                     {notification?.WorkOrderReq?.phaseItems?.map(
                       (phaseItem) => (
                         <React.Fragment key={phaseItem.phaseId}>
                           {phaseItem?.LineItems?.map((lineItem) => (
-                            <ListItem key={lineItem.id} style={{ padding: 0 }}>
-                              <label>{lineItem.title}</label>
+                            <ListItem
+                              key={lineItem?.id}
+                              sx={{
+                                padding: 1,
+                                cursor: "pointer", // Change cursor to pointer to indicate clickable
+                                backgroundColor: "#f0f0f0", // Add background color on hover
+                                transition: "background-color 0.3s ease", // Add transition effect
+                                borderRadius: "8px",
+                                marginBottom: "4px",
+                                "&:hover": {
+                                  backgroundColor: "#e0e0e0", // Change background color on hover
+                                },
+                              }}
+                              onClick={() => handleListItemClick(lineItem)}
+                            >
+                              <label>{lineItem?.title}</label>
                             </ListItem>
                           ))}
                         </React.Fragment>
@@ -203,7 +272,10 @@ const NotificationDetailModal = ({
                     <LocalizationProvider dateAdapter={AdapterMoment}>
                       <DemoContainer components={["DateTimePicker"]}>
                         <DateTimePicker
-                          value={moment(notification.WorkOrderReq.start_day).utc()}
+                          disabled
+                          value={moment(
+                            notification.WorkOrderReq.start_day
+                          ).utc()}
                           format="MMM D, YYYY, h:mm a"
                           viewRenderers={{
                             hours: renderTimeViewClock,
@@ -244,8 +316,10 @@ const NotificationDetailModal = ({
                     <LocalizationProvider dateAdapter={AdapterMoment}>
                       <DemoContainer components={["DateTimePicker"]}>
                         <DateTimePicker
-                        disabled
-                          value={moment(notification.WorkOrderReq.end_day).utc()}
+                          disabled
+                          value={moment(
+                            notification.WorkOrderReq.end_day
+                          ).utc()}
                           format="MMM D, YYYY, h:mm a"
                           viewRenderers={{
                             hours: renderTimeViewClock,
@@ -359,11 +433,45 @@ const NotificationDetailModal = ({
                 </Typography>
 
                 <hr style={themeStyle.hrLine} />
+                <Typography
+                  sx={{
+                    ...themeStyle.headingText,
+                    ...themeStyle.rightheadings,
+                  }}
+                >
+                  Status
+                </Typography>
+                <Typography fontFamily={"inherit"} pb={4} pl={2}>
+                  {notification.WorkOrderReq.status}
+                </Typography>
+
+                <hr style={themeStyle.hrLine} />
+                {isEvent && (
+                  <BuilderProButton
+                    backgroundColor={"#4C8AB1"}
+                    variant={"contained"}
+                    fontFamily={"Inter, sans serif"}
+                    fontSize={"16px"}
+                    fontWeight={"600"}
+                    padding={"6px 32px 6px 32px"}
+                    disabled={disable}
+                    handleOnClick={handleCompleteWorkOrder}
+                  >
+                    Complete Work Order
+                  </BuilderProButton>
+                )}
               </Box>
             </Stack>
           </Stack>
         </Stack>
       </Modal>
+      {modalOpen && (
+        <LineItemDetailModal
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          lineItem={selectedLineItem}
+        />
+      )}
       {done && <GenerateInvoiceDone setDone={setDone} />}
     </>
   );
@@ -388,7 +496,7 @@ const themeStyle = {
     scrollbarWidth: "none", // For Firefox
     "-ms-overflow-style": "none", // For IE and Edge
     "&::-webkit-scrollbar": {
-      width: "6px",
+      width: "0px",
     },
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: "transparent",
@@ -536,20 +644,5 @@ const themeStyle = {
     display: "flex",
     paddingLeft: "1.5rem",
     marginTop: "-1rem",
-  },
-
-  scrollable: {
-    scrollbarWidth: "none", // For Firefox
-    "-ms-overflow-style": "none", // For IE and Edge
-    "&::-webkit-scrollbar": {
-      width: "6px",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "transparent",
-      transition: "background-color 0.3s",
-    },
-    "&:hover::-webkit-scrollbar-thumb": {
-      backgroundColor: "#ddd",
-    },
   },
 };

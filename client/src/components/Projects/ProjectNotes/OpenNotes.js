@@ -16,7 +16,7 @@ import NotesModal from "./NotesModal";
 import { useParams } from "react-router-dom";
 import { useDeleteProjectNotesMutation, useGetProjectNotesQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+//import "react-toastify/dist/ReactToastify.css";
 
 const OpenNotes = ({ notes }) => {
     const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({

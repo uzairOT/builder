@@ -1,12 +1,13 @@
 import { apiSlice } from './apiSlice';
 const USERS_URL = 'http://3.135.107.71/user';
+const AUTH_URL = 'http://3.135.107.71/auth';
 const PROJECTS_URL = "http://3.135.107.71/project";
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}/login`,
+        url: `${AUTH_URL}/login`,
         method: "POST",
         body: data,
       }),
@@ -14,7 +15,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     googleLogin: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}/loginWithGoogle`,
+        url: `${AUTH_URL}/loginWithGoogle`,
         method: "POST",
         body: data,
       }),
@@ -22,14 +23,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     logout: builder.mutation({
       query: () => ({
-        url: `${USERS_URL}/logout`,
+        url: `${AUTH_URL}/logout`,
         method: "POST",
       }),
       providesTags: ["User"],
     }),
     register: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}/register`,
+        url: `${AUTH_URL}/register`,
         method: "POST",
         body: data,
       }),
@@ -73,42 +74,42 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     forgetPassword: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}/forgotPassword`,
+        url: `${AUTH_URL}/forgotPassword`,
         method: "POST",
         body: data,
       }),
     }),
     verifyOTP: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}/verifyOtp`,
+        url: `${AUTH_URL}/verifyOtp`,
         method: "POST",
         body: data,
       }),
     }),
     resendOTP: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}/resendOtp`,
+        url: `${AUTH_URL}/resendOtp`,
         method: "POST",
         body: data,
       }),
     }),
     resetPassword: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}/resetPassword`,
+        url: `${AUTH_URL}/resetPassword`,
         method: "POST",
         body: data,
       }),
     }),
     resetProfilePassword: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}/resetProfilePassword`,
+        url: `${AUTH_URL}/resetProfilePassword`,
         method: "POST",
         body: data,
       }),
     }),
     checkUserOnInvitation: builder.mutation({
       query: (data) => ({
-        url: `${PROJECTS_URL}/checkUserExistBeforeInvitations/${data.role}/${data.projectId}/${data.email}`,
+        url: `${AUTH_URL}/checkUserExistBeforeInvitations/${data.role}/${data.projectId}/${data.email}`,
         method: "POST",
         body: data,
       })

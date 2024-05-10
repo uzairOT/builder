@@ -16,6 +16,7 @@ import BuilderProButton from "../UI/Button/BuilderProButton";
 import { useUpdateRequestWorkOrderMutation } from "../../redux/apis/Project/workOrderApiSlice";
 import NotificationDetailModal from "./NotificationDetailModal";
 import { useGetWorkOrderDetailsMutation } from "../../redux/apis/Project/projectApiSlice";
+import moment from 'moment';
 
 function Notification({
   notification,
@@ -47,7 +48,8 @@ function Notification({
         workOrder_id: notification.workOrder_id,
         status: "approved",
       });
-      await refetch(userId);
+      // await refetch(userId);
+      window.location.reload();
     } catch (err) {
       // console.log(err);
     }
@@ -59,7 +61,8 @@ function Notification({
         workOrder_id: notification.workOrder_id,
         status: "declined",
       });
-      await refetch(userId);
+      // await refetch(userId);
+      window.location.reload();
     } catch (err) {
       // console.log(err);
     }
@@ -90,6 +93,7 @@ function Notification({
       ],
     },
   };
+  console.log(notification)
   return (
     <Accordion
       disableGutters
@@ -177,7 +181,7 @@ function Notification({
                         Start
                       </Typography>
                     }
-                    secondary={notification.WorkOrderReq.start_day}
+                    secondary={moment(notification.WorkOrderReq.start_day).format('MMM, D,YYYY HH:mm a')}
                   />
                 </ListItem>
                 <ListItem style={listItemStyle}>
@@ -187,7 +191,7 @@ function Notification({
                         End
                       </Typography>
                     }
-                    secondary={notification.WorkOrderReq.end_day}
+                    secondary={moment(notification.WorkOrderReq.end_day).format('MMM, D,YYYY HH:mm a')}
                   />
                 </ListItem>
                 <ListItem style={listItemStyle}>

@@ -22,7 +22,7 @@ import { useExistingProjectMutation } from "../../redux/apis/usersApiSlice";
 import { selectProjectForm } from "../../redux/slices/projectFormSlice";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 
 function AssignProject() {
   const local = localStorage.getItem("userInfo");
@@ -104,7 +104,7 @@ function AssignProject() {
                     ...NewProjectButton,
                   }}
                   onClick={() => {
-                    toast.success("Wow so easy!KKKK");
+                    
                     handleProjectChange("New");
                   }}
                 >

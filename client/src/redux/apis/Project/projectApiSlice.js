@@ -192,6 +192,13 @@ const projectApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data
       })
+    }),
+    getPhasesAndLineItemsById : builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/lineItemPhaseItem`,
+        method: 'POST',
+        body: data
+      })
     })
   }),
 });
@@ -222,5 +229,6 @@ export const {
   useEditProjectNotesMutation,
   useDeleteProjectNotesMutation,
   useGetWorkOrderDetailsMutation,
-  useGetLineItemQuery
+  useGetLineItemQuery,
+  useGetPhasesAndLineItemsByIdMutation
 } = projectApiSlice;

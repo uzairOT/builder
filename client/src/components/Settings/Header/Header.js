@@ -76,7 +76,7 @@ function Header({ title, OpenAddModal }) {
           backgroundColor="#E7E7E7"
         />
 
-        <Button
+        {!(title ==='Master Line Item') && <Button
           onClick={OpenAddModal}
           buttonText="Add"
           color="#ffffff"
@@ -84,7 +84,7 @@ function Header({ title, OpenAddModal }) {
           width="112px"
           height="38px"
           borderRadius="50px"
-        />
+        />}
 {/* 
         <Button
           buttonText="Block"

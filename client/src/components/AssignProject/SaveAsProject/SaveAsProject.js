@@ -14,7 +14,7 @@ import ProjectFormFields from '../ProjectFormFields/ProjectFormFields';
 import { useSelector } from 'react-redux';
 import { selectProjectForm } from '../../../redux/slices/projectFormSlice';
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+//import "react-toastify/dist/ReactToastify.css";
 function SaveAsProject({ onSaveStep, onNextStep , setIsSaveAs}) {
   const { projectName, location, projectColor } = useSelector(selectProjectForm);
 

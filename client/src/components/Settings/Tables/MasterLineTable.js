@@ -19,6 +19,9 @@ import EmailIcon from "../../../assets/settings/email.png";
 import Button from "../../UI/CustomButton";
 import { useGetMasterLineItemsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 import { useSelector } from "react-redux";
+import UpdateLineDialogue from "../../dialogues/UpdateLineDialogue/UpdateLineDialogue";
+import moment from 'moment';
+import UpdateMasterLine from "../../dialogues/UpdateMasterLine/UpdateMasterLine";
 
 const dummyData = [
   {
@@ -80,7 +83,40 @@ const dummyData = [
 
 function MasterLineTable({ setUpdateModalOpen }) {
   const userInfo = useSelector((state) => state.auth.userInfo);
-  const { data, isLoading } = useGetMasterLineItemsQuery(userInfo.user.id);
+  const { data, isLoading, refetch } = useGetMasterLineItemsQuery(userInfo.user.id);
+  const [showUpdateLine, setShowUpdateLine] = useState(false);
+  const [masterLine, setMasterLine] = useState();
+console.log(data);
+
+const Units = [
+  { value: "sqft", label: "Square Feet", formula: (q, p) => q * p },
+  {
+    value: "sqm",
+    label: "Square Meters",
+    formula: (q, p) => q * p * 0.092903,
+  },
+  { value: "acres", label: "Acres", formula: (q, p) => q * p * 4048.54 },
+  { value: "hectares", label: "Hectares", formula: (q, p) => q * p * 10000 },
+  {
+    value: "sqyds",
+    label: "Square Yards",
+    formula: (q, p) => q * p * 0.836127,
+  },
+  {
+    value: "sqmi",
+    label: "Square Miles",
+    formula: (q, p) => q * p * 2.58999e6,
+  },
+];
+  const handleUpdateOpen = (row) => {
+    setMasterLine(row);
+     setShowUpdateLine(true);
+   };
+ 
+   const handleUpdateClose = () => {
+     setShowUpdateLine(false);
+   };
+
 
   const handleUnitChange = (event, id) => {
     const selectedUnit = event.target.value;
@@ -95,7 +131,7 @@ function MasterLineTable({ setUpdateModalOpen }) {
   };
 
   return (
-    <TableContainer component={Paper} sx={{ boxShadow: "none", height: '73.5vh' }}>
+    <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
       <Table>
         <TableHead>
           <TableRow>
@@ -109,8 +145,11 @@ function MasterLineTable({ setUpdateModalOpen }) {
                   onChange={(e) => handleUnitChange(e)} // Assuming you have a function to handle unit changes
                   input={<Input sx={{ underline: "none" }} />} // Apply underline: 'none' style here
                 >
-                  <MenuItem value="kg">kg</MenuItem>
-                  <MenuItem value="lbs">lbs</MenuItem>
+                   {Units.map((option, index) => (
+                      <MenuItem key={index} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
                   {/* Add more menu items as needed */}
                 </Select>
               </IconButton>
@@ -134,25 +173,34 @@ function MasterLineTable({ setUpdateModalOpen }) {
               <TableCell sx={tableCellValueStyle}>{row.quantity}</TableCell>
               <TableCell sx={tableCellValueStyle}>{row.unit_price}</TableCell>
               <TableCell sx={tableCellValueStyle}>{row.total}</TableCell>
-              <TableCell sx={tableCellValueStyle}>{row.start_day}</TableCell>
-              <TableCell sx={tableCellValueStyle}>{row.end_day}</TableCell>
+              <TableCell sx={tableCellValueStyle}>{moment(row.start_day).format('YYYY-MM-DD')}</TableCell>
+              <TableCell sx={tableCellValueStyle}>{moment(row.end_day).format('YYYY-MM-DD')}</TableCell>
               <TableCell sx={tableCellValueStyle}>{row.notes}</TableCell>
               <TableCell sx={tableCellValueStyle}>
                 <IconButton
                   aria-label="edit"
                   size="small"
-                  onClick={() => OpenUpdateModal(row)} // Pass row data to the function
+                  onClick={() => handleUpdateOpen(row)} // Pass row data to the function
                 >
-                  <img src={EditIcon} alt="" />
+                  <img src={EditIcon} alt="" style={{width:'35px'}}/>
                 </IconButton>
-                <IconButton aria-label="delete" size="small">
-                  <img src={DeleteIcon} alt="" />
-                </IconButton>
+                {/* <IconButton aria-label="delete" size="small">
+                  <img src={DeleteIcon} alt="" style={{width:'35px'}} />
+                </IconButton> */}
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+      {showUpdateLine && (
+          <UpdateMasterLine
+            handleUpdateOpen={handleUpdateOpen}
+            handleUpdateClose={handleUpdateClose}
+            MasterLineItem={masterLine}  
+            refetch={refetch}
+            userId={userInfo.user.id}       
+          />
+        )}
     </TableContainer>
   );
 }

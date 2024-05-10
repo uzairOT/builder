@@ -29,7 +29,7 @@ import { ReactComponent as GoogleLogo } from "../Signup/Assets/svgs/GoogleIcon.s
 
 import YellowBtn from "../UI/button";
 import "../../App.css";
-import "react-toastify/dist/ReactToastify.css";
+//import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
@@ -130,6 +130,7 @@ const Login = () => {
     try {
       const res = await login({ email, password }).unwrap();
       // console.log("login :", res);
+      // localStorage.setItem('userInfo', JSON.stringify({...res}));
       dispatch(setCredentials({ ...res }));
       navigate("/");
     } catch (err) {

@@ -28,10 +28,10 @@ import "../../../App.css";
 import "./ColorPickerElement.css";
 import { yellow } from "@mui/material/colors";
 import { useDispatch,useSelector  } from 'react-redux';
-import { addPhase } from '../../../redux/slices/Project/projectInitialProposal'; 
+import { addInitialPhase, addPhase } from '../../../redux/slices/Project/projectInitialProposal'; 
 import {useParams} from 'react-router-dom';
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+//import "react-toastify/dist/ReactToastify.css";
 
 function ColorPickerElement({
   handleUpdateOpen,
@@ -42,7 +42,8 @@ function ColorPickerElement({
   setPhaseData,
   PhaseHeading,
   onSubmit,
-  adminProjectView
+  adminProjectView,
+  InitialProposalView
 }) {
   const dispatch = useDispatch();
   const local = localStorage.getItem('projectId');
@@ -100,21 +101,26 @@ function ColorPickerElement({
       setPhaseName(phaseName);
       handleUpdateClose();
     } else {
-      onSubmit(phaseName, color);
+      // onSubmit(phaseName, color);
       const data = {
         phaseName,
         color,
         colorMode,
         projectId: adminProjectView ? id : projectId,
-        initial: adminProjectView ? false : true,
+        initial: InitialProposalView ? true : adminProjectView ? false : true,
       };
       //console.log(data)
       const res = await addProjectPhase(data).unwrap().then().catch(e=>{ toast.error(e.message || e.data.message || e.error)});
       //console.log('Response:', res.phase);
       setPhaseData((phaseData) => ({ ...phaseData, ...data }));
       //console.log(data);
-      //console.log(phaseData);
-      dispatch(addPhase(res.phase))
+      if(InitialProposalView){
+
+        dispatch(addInitialPhase(res.phase))
+      } else{
+
+        dispatch(addPhase(res.phase))
+      }
       handleAddClose();
     }
   };

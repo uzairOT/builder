@@ -31,20 +31,40 @@ import GenerateInvoiceDone from "../GenerateInvoice/GenerateInvoiceDone";
 import { useRequestWorkOrderMutation } from "../../../redux/apis/Project/workOrderApiSlice";
 import AssignTeamMembers from "./AssignTeamMembers";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+//import "react-toastify/dist/ReactToastify.css";
 import { useGetUserEventsMutation } from "../../../redux/apis/usersApiSlice";
 import { getForecast } from "../../../redux/slices/DailyForecast/dailyForecastSlice";
 import {
   addEvents,
   setIsLoading,
 } from "../../../redux/slices/Events/eventsSlice";
-import { useGetTeamMembersQuery } from "../../../redux/apis/Project/projectApiSlice";
+import {
+  useGetPhasesAndLineItemsByIdMutation,
+  useGetTeamMembersQuery,
+} from "../../../redux/apis/Project/projectApiSlice";
 import { useLocation } from "react-router-dom";
 import useSocket from "../../../utils/useSocket";
-import { ArrowDropDownIcon, MobileDatePicker, MobileDateTimePicker } from "@mui/x-date-pickers";
+import {
+  ArrowDropDownIcon,
+  MobileDatePicker,
+  MobileDateTimePicker,
+} from "@mui/x-date-pickers";
 import UpdateLineDialogue from "../UpdateLineDialogue/UpdateLineDialogue";
+import { io } from "socket.io-client";
 
-const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
+
+const socket = io("http://3.135.107.71");
+
+const RequestWorkOrderModal = ({
+  rowCheckboxes,
+  checkedRow,
+  changeOrder,
+  refetch,
+  phaseItems,
+  setPhaseItems,
+  fetchData,
+  refetchChangeOrder,
+}) => {
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
   const [open, setOpen] = useState(false);
@@ -76,20 +96,32 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [showUpdateLine, setShowUpdateLine] = useState(false);
   const phaseId = rowCheckboxes[0]?.rows[0]?.phase_id;
-  const [lineItemId, setLineItemId] = useState();
+  const [getPhasesAndLineItems] = useGetPhasesAndLineItemsByIdMutation();
+  const [lineItem, setLineItem] = useState();
+  const [loading, setLoading] = useState(false);
+
   let counter = 0;
   let lineItemIds = [];
   let lineItemCounter = 0;
   let totalWorkOrder = 0;
-  
+
   // console.log("START DATE", startDate);
   // console.log("START DATE", endDate);
+  // const fetchPhasesAndLineItems = async (data) => {
+  //   try{
+
+  //     const res = await getPhasesAndLineItems(data).unwrap();
+  //     const response = await res;
+  //     console.log(response)
+  //     return response;
+  //   } catch (error){
+  //     console.log(error);
+  //   }
+  // }
 
   if (changeOrder) {
     checkedRow?.phaseItems?.forEach((phase) => {
       lineItemCounter += phase.lineItemId.length;
-      // console.log('lineItemCounter: ',lineItemCounter);
-      // console.log('phase.lineItemId.length: ',phase.lineItemId.length);
     });
   } else {
     Object?.keys(rowCheckboxes)?.forEach((phaseData) => {
@@ -127,8 +159,9 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
     setNotes(e.target.value);
   };
   const handleClose = () => {
-    setOpen(false);
     setShowLineItems(false);
+    setSelectedItems([]);
+    setOpen(false);
   };
   const handleOpen = () => {
     setOpen(true);
@@ -226,33 +259,53 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
     }
   };
 
-  const handleUpdateOpen = (id) => {
-   setLineItemId(id);
+  const handleUpdateOpen = (lineItem) => {
+    setLineItem(lineItem);
     setShowUpdateLine(true);
   };
 
   const handleUpdateClose = () => {
     setShowUpdateLine(false);
   };
+  const handleLineItemClick = (e, row) => {
+    e.preventDefault();
+    console.log(row);
+  };
   useEffect(() => {
+    const fetchData = async () => {
+      console.log("in useEffect changerOrder: ", changeOrder);
+      console.log("in useEffect checkRow.phaseItems: ", checkedRow?.phaseItems);
+      if (changeOrder && checkedRow?.phaseItems && phaseItems === null) {
+        try {
+          console.log(phaseItems, " in useEffect rerender");
+          const res = await getPhasesAndLineItems(
+            checkedRow?.phaseItems
+          ).unwrap();
+          setPhaseItems(res); // Set phaseItems after the async operation is complete
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
     if (changeOrder) {
       setSubject(checkedRow?.subject);
       setDescription(checkedRow?.description);
       setStartDate(moment(checkedRow?.start_day));
       setEndDate(moment(checkedRow?.end_day));
-    } else {
-      return;
     }
-  }, [checkedRow]);
+
+    fetchData(); // Call the fetchData function
+  }, [changeOrder, checkedRow, phaseItems]);
 
   const handleRequest = async () => {
+    
     if (subject === "" || description === "" || notes === "") {
       toast.warning("Please complete the Request work order form");
       return;
     }
 
-    const formattedStartDate = startDate.format("MMM D, YYYY, h:mm a");
-    const formattedEndDate = endDate.format("MMM D, YYYY, h:mm a");
+    const formattedStartDate = startDate.utc().format("MMM D, YYYY, h:mm a");
+    const formattedEndDate = endDate.utc().format("MMM D, YYYY, h:mm a");
 
     const requestForm = {
       workOrder_id: changeOrder ? checkedRow.id : "",
@@ -273,35 +326,71 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
       projectId: projectId,
       total: changeOrder ? checkedRow?.total : totalWorkOrder,
     };
-    // console.log(requestForm);
+    console.log(requestForm);
     if (requestForm.teamIds.length === 0) {
       toast.error("Team member must be assigned");
     } else {
+      
       //await requestWorkOrderPut(requestForm);
-      emit("join", userId);
+      socket.emit("join", userId);
       if (changeOrder) {
-        await emit("updateWorkOrder", requestForm);
+        //Changes implemented
+        await socket.emit("updateWorkOrder", requestForm, (response) => {
+          console.log(response);
+          if (response.success) {
+            setDone(true);
+            toast.success("Change Order request sent!");
+            refetch({ projectId, userId: userId });
+          } else {
+            toast.error(
+              response?.data?.message ||
+                response.error ||
+                response?.data?.error ||
+                response.message
+            );
+          }
+        });
       } else {
-        await emit("notification", requestForm);
+        const socketRes = await socket.emit(
+          "notification",
+          requestForm,
+           async (response) => {
+            if (response.success) {
+              console.log(response);
+              setDone(true);
+              toast.success("Work Order request sent!");
+              await refetchChangeOrder({ projectId, userId: userId });
+              await fetchData();
+              return response;
+            } else {
+              console.log(response);
+              toast.error(
+                response?.data?.message ||
+                  response.error ||
+                  response?.data?.error ||
+                  response.message
+              );
+              return response;
+            }
+          }
+        );
+
+        // console.log(socketRes)
       }
       dispatch(setIsLoading(true));
-      //emit('getNotifications', userId);
       const res = await getEvents({ userId, dailyForecast });
       const data = res?.data?.formattedWorkOrders;
-      // const eventArr = data.map((item)=>{
-      //     return{
-      //       ...item,
-      //       start: moment(item.start).toDate(),
-      //       end: moment(item.end).toDate(),
-      //     }
-      // })
-      //console.log("EVENT ARR", data);
-      // setEvents(eventArr);
       dispatch(addEvents(data));
       dispatch(setIsLoading(false));
-      setDone(true);
+      // setDone(true);
+      setSubject('');
+      setDescription('');
+      setNotes('');
     }
+    handleClose();
   };
+
+  console.log(checkedRow);
 
   return (
     <>
@@ -409,7 +498,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
 
                   <FormControl>
                     {checkedRow
-                      ? checkedRow.phaseItems.map((phase) => (
+                      ? phaseItems?.map((phase) => (
                           <ListItem key={phase.phaseId}>
                             <Checkbox
                               checked={selectedItems.some(
@@ -453,9 +542,8 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                     }}
                   >
                     {changeOrder
-                      ? checkedRow?.phaseItems.map((phase, phaseIndex) => {
-                          return phase.lineItem_names.map((lineItem, index) => {
-                            
+                      ? phaseItems?.map((phase, phaseIndex) => {
+                          return phase.lineItems?.map((lineItem, index) => {
                             counter++;
                             if (counter <= 2) {
                               return (
@@ -470,22 +558,24 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                                         (item) =>
                                           item.phaseId === phase.phaseId &&
                                           item.lineItemId.includes(
-                                            phase.lineItemId[index]
+                                            phase.lineItems[index].id
                                           )
                                       )}
                                       onChange={() =>
                                         handleLineItemChange(
                                           phase.phaseId,
-                                          phase.lineItemId[index]
+                                          phase.lineItems[index].id
                                         )
                                       }
                                     />
-                                    <ListItemText secondary={lineItem} />
+                                    <ListItemText secondary={lineItem.title} />
                                     <Typography
                                       color={"#4C8AB1"}
                                       fontSize={"11px"}
                                       textAlign={"right"}
-                                      onClick={() => handleUpdateOpen(phase.lineItemId[index])}
+                                      onClick={() =>
+                                        handleUpdateOpen(phase.lineItems[index])
+                                      }
                                     >
                                       edit
                                     </Typography>
@@ -502,26 +592,27 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                                         (item) =>
                                           item.phaseId === phase.phaseId &&
                                           item.lineItemId.includes(
-                                            phase.lineItemId[index]
+                                            phase.lineItems[index].id
                                           )
                                       )}
                                       onChange={() =>
                                         handleLineItemChange(
                                           phase.phaseId,
-                                          phase.lineItemId[index]
+                                          phase.lineItems[index].id
                                         )
                                       }
                                     />
-                                    <ListItemText secondary={lineItem} />
+                                    <ListItemText secondary={lineItem.title} />
                                     <Typography
                                       color={"#4C8AB1"}
                                       fontSize={"11px"}
-                                      onClick={handleUpdateOpen}
+                                      onClick={() =>
+                                        handleUpdateOpen(phase.lineItems[index])
+                                      }
                                     >
                                       edit
                                     </Typography>
                                   </ListItem>
-                                  
                                 </>
                               );
                             }
@@ -534,14 +625,24 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                             counter++;
                             if (counter <= 2) {
                               return (
-                                <ListItem key={counter}>
+                                <ListItem
+                                  key={counter}
+                                  onClick={(e) => {
+                                    handleLineItemClick(e, row);
+                                  }}
+                                >
                                   <ListItemText secondary={row.title} />
                                 </ListItem>
                               );
                             }
                             if (counter > 2 && showLineItems) {
                               return (
-                                <ListItem key={counter}>
+                                <ListItem
+                                  key={counter}
+                                  onClick={(e) => {
+                                    handleLineItemClick(e, row);
+                                  }}
+                                >
                                   <ListItemText secondary={row.title} />
                                 </ListItem>
                               );
@@ -663,6 +764,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                     padding={"6px 32px 6px 32px"}
                     handleOnClick={handleRequest}
                     marginLeft={"0px"}
+                    disabled={loading}
                   >
                     {changeOrder ? "Request Change" : "Request Work Order"}
                   </BuilderProButton>
@@ -845,7 +947,11 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                     fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
                   }}
                 >
-                  Feb 6,2023,10:30 AM
+                  {changeOrder
+                    ? moment(checkedRow?.createdAt).format(
+                        "MMM D,YYYY, HH:MM a"
+                      )
+                    : "Feb 6,2023,10:30 AM"}
                 </Typography>
                 <Typography
                   fontSize={"13px"}
@@ -863,7 +969,11 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
                     fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
                   }}
                 >
-                  CreatFeb 6,2023,10:30 AM
+                  {changeOrder
+                    ? moment(checkedRow?.updatedAt).format(
+                        "MMM D,YYYY, HH:MM a"
+                      )
+                    : ""}
                 </Typography>
               </Stack>
             </Stack>
@@ -871,12 +981,13 @@ const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
         </Stack>
       </Modal>
       {showUpdateLine && (
-          <UpdateLineDialogue
-            handleUpdateOpen={handleUpdateOpen}
-            handleUpdateClose={handleUpdateClose}
-            LineItem={lineItemId}         
-          />
-        )}
+        <UpdateLineDialogue
+          handleUpdateOpen={handleUpdateOpen}
+          setPhaseItems={setPhaseItems}
+          handleUpdateClose={handleUpdateClose}
+          LineItem={lineItem}
+        />
+      )}
       {done && <GenerateInvoiceDone setDone={setDone} />}
     </>
   );

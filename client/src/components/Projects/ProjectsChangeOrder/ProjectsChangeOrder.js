@@ -18,17 +18,12 @@ import {
 import { useGetRequestWorkOrderQuery } from "../../../redux/apis/Project/workOrderApiSlice";
 import { useParams } from "react-router-dom";
 
-const ProjectsChangeOrder = ({ setChangeView, workOrder, view }) => {
+const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) => {
   const [checkedRow, setCheckedRow] = useState(null);
-  const [getWorkOrder, {isLoading}] = useGetWorkOrderDetailsMutation()
-  const params = useParams();
-  const { id: currentProjectId } = params;
-  const currentUser = localStorage.getItem("userInfo");
-  const user = JSON.parse(currentUser);
-  const { data } = useGetProjectChangeOrderQuery({
-    projectId: currentProjectId,
-    userId: user.user.id,
-  });
+  // const [getWorkOrder, {isLoading}] = useGetWorkOrderDetailsMutation()
+  const [phaseItems, setPhaseItems ] = useState();
+
+
   const handleChangeView = () => {
     setChangeView(true);
   }
@@ -130,7 +125,9 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view }) => {
                   rowCheckboxes={rowCheckboxes}
                   checkedRow={checkedRow}
                   changeOrder={true}
-                 
+                  refetch={refetch}
+                  setPhaseItems={setPhaseItems}
+                  phaseItems={phaseItems}
                 />
               )}
             </Stack>
@@ -146,6 +143,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view }) => {
               checkedRow={checkedRow}
               data={data?.data}
               workOrder={workOrder}
+              setPhaseItems={setPhaseItems}
             />
           </TabPanel>
           <TabPanel
@@ -159,6 +157,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view }) => {
               checkedRow={checkedRow}
               data={data?.data}
               workOrder={workOrder}
+              setPhaseItems={setPhaseItems}
             />
           </TabPanel>
           <TabPanel
@@ -172,6 +171,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view }) => {
               checkedRow={checkedRow}
               data={data?.data}
               workOrder={workOrder}
+              setPhaseItems={setPhaseItems}
             />
           </TabPanel>
         </Tabs>

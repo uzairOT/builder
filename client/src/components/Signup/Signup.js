@@ -23,7 +23,7 @@ import YellowBtn from "../UI/button";
 import "../../App.css";
 import "./Signup.css";
 import axios from "axios";
-import "react-toastify/dist/ReactToastify.css";
+//import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useGoogleLoginMutation,
@@ -31,6 +31,8 @@ import {
 } from "../../redux/apis/usersApiSlice";
 import { setCredentials } from "../../redux/slices/authSlice";
 import { toast, ToastContainer } from "react-toastify";
+import { useFormik } from "formik";
+import { signupSchemea } from "../../utils/Validation/settingsPageSchema";
 
 const SignupComp = () => {
   const isLG = useMediaQuery("(min-width: 1280px)");
@@ -91,13 +93,13 @@ const SignupComp = () => {
   const [register, { isLoading }] = useRegisterMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target || e;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target || e;
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     [name]: value,
+  //   }));
+  // };
 
   const handleChecked = (e) => {
     setChecked(e.target.checked);
@@ -156,10 +158,10 @@ const SignupComp = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (e) => {
+    // e.preventDefault();
     if (checked) {
-      const data = { ...formData, phone };
+      const data = { ...values, phone };
       try {
         const res = await register(data).unwrap();
         console.log("Sign up: ", res);
@@ -175,12 +177,28 @@ const SignupComp = () => {
     }
   };
 
-  const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "0.8rem" };
+  const { values, handleBlur, handleChange, handleSubmit, errors, touched, } = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      company: "",
+      password: "",
+      confirmPassword: '',
+    },
+    validationSchema: signupSchemea,
+    onSubmit,
+  });
+
+  const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "1rem" };
   const linkResponsiveColor = { color: isMobile ? "#FFAC00" : "#4C8AB1" };
   const borderRadiusResponsive = {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
 
+  useEffect(() => {
+    console.log(values);
+  }, [values]);
   return (
     <Grid container sx={{ ...firstGrid }}>
       <ToastContainer />
@@ -227,10 +245,18 @@ const SignupComp = () => {
                 <input
                   type="text"
                   name="firstName"
-                  style={inputStyle}
-                  value={formData.firstName}
+                  style={{
+                    ...inputStyle,
+                    border:
+                      errors.firstName && touched.firstName
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                  }}
+                  value={values.firstName}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
+                <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.firstName && touched.firstName ? errors.firstName : ""}</Typography>
               </Box>
               <Box sx={{ ...topSpace, width: "100%" }}>
                 <label
@@ -245,10 +271,19 @@ const SignupComp = () => {
                 <input
                   type="text"
                   name="lastName"
-                  style={inputStyle}
-                  value={formData.lastName}
+                  style={{
+                    ...inputStyle,
+                    border:
+                      errors.lastName && touched.lastName
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                  }}
+                  value={values.lastName}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
+                <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.lastName && touched.lastName ? errors.lastName : ""}</Typography>
+
               </Box>
             </Box>
 
@@ -271,11 +306,19 @@ const SignupComp = () => {
                   fontFamily: "GTWalsheimTrial",
                   paddingLeft: "-1.5rem",
                   fontSize: isMobile ? "0.8rem" : "1rem",
+                  border:
+                      errors.lastName && touched.lastName
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                  
                 }}
                 placeholder="workemail@gmail.com"
-                value={formData.email}
+                value={values.email}
                 onChange={handleChange}
+                onBlur={handleBlur}
               />
+            <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.email && touched.email ? errors.email : ""}</Typography>
+
             </Box>
 
             <Box sx={{ marginTop: "0.5rem" }}>
@@ -316,10 +359,18 @@ const SignupComp = () => {
               <input
                 type="text"
                 name="company"
-                style={inputStyle}
-                value={formData.company}
+                style={{
+                  ...inputStyle,
+                  border:
+                    errors.company && touched.company
+                      ? "1px solid #d32f2f"
+                      : "1px solid #E0E4EC",
+                }}
+                value={values.company}
                 onChange={handleChange}
+                onBlur={handleBlur}
               />
+              <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.company && touched.company ? errors.company : ""}</Typography>
             </Box>
 
             <Box sx={{ marginTop: "0.5rem" }}>
@@ -342,13 +393,63 @@ const SignupComp = () => {
 
               <Box style={{ position: "relative" }}>
                 <input
-                  style={inputStyle}
+                  style={{
+                    ...inputStyle,
+                    border:
+                      errors.password && touched.password
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                  }}
                   type={passwordVisible ? "text" : "password"}
                   name="password"
-                  value={formData.password}
+                  value={values.password}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
+                <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.password && touched.password ? errors.password : ""}</Typography>
+                <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
+                  {passwordVisible ? <VisibilityOff /> : <Visibility />}
+                  {!isMobile && (
+                    <span style={{ marginLeft: "5px" }}>
+                      {passwordVisible ? "Hide" : "Show"}
+                    </span>
+                  )}
+                </Box>
+              </Box>
 
+              {isMobile && (
+                <Box sx={subtitleStyle}>
+                  Use 8 or more characters with a mix of letters, numbers &
+                  symbols
+                </Box>
+              )}
+            </Box>
+            <Box sx={{ marginTop: "0.5rem" }}>
+              <label
+                style={{
+                  ...labelStyle,
+                  fontSize: isMobile ? "0.8rem" : "1rem",
+                }}
+                htmlFor="confirmPassword"
+              >
+                Confirm Password
+              </label>
+              <Box style={{ position: "relative" }}>
+                <input
+                  style={{
+                    ...inputStyle,
+                    border:
+                      errors.confirmPassword && touched.confirmPassword
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                  }}
+                  type={passwordVisible ? "text" : "password"}
+                  name="confirmPassword"
+                  value={values.confirmPassword}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.confirmPassword && touched.confirmPassword ? errors.confirmPassword : ""}</Typography>
                 <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
                   {passwordVisible ? <VisibilityOff /> : <Visibility />}
                   {!isMobile && (
@@ -558,7 +659,7 @@ const formGrid = {
   padding: "25px 0 0 0",
   marginTop: { sm: "0", md: "0", lg: "0rem", xl: "1rem" },
   paddingLeft: { lg: "2rem", md: "2rem", sm: "1rem", xs: "1rem" },
-  paddingRight: { lg: "6rem", md: "3rem", sm: "2rem", xs: "2rem" },
+  paddingRight: { lg: "2rem", md: "2rem", sm: "2rem", xs: "2rem" },
   marginLeft: { lg: "6rem", md: "2rem", sm: "0rem", xs: "0rem" },
   borderRadius: { lg: "1.5rem", md: "1.5rem", sm: "1.5rem", xs: "0rem" },
   width: { lg: "80%", md: "90%", sm: "85%", xs: "100%" },

@@ -40,14 +40,14 @@ const ProjectsDefault = () => {
   return (
     <>
       {loading ? (
-        <Stack flex={2}>
-          <Paper style={{ ...themeStyle.border, height: '91%' }}>
+        <Stack flex={2}>  
+          <Paper style={{ ...themeStyle.border }}>
             <>Loading..</>
           </Paper>
         </Stack>
       ) : (
-        <Stack flex={2}>
-          <Paper style={{ ...themeStyle.border, height: '91%' }}>
+        <Stack flex={2} height={'100%'}>
+          <Paper style={{ ...themeStyle.border, height:'inherit'}}>
             <TaskCalender dailyForecast={dailyForecast} eventsArr={events} isProjectPage={true} isDrawerOpen={true} />
           </Paper>
         </Stack>

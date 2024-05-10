@@ -34,7 +34,7 @@ import { loader } from "./pages/Projects/ProjectsTable";
 import PageLoader from "./components/UI/Loaders/PageLoader/PageLoader";
 import InnerLayout2 from "./components/Layouts/InnerLayout2";
 import ProjectsDefault from "./components/Projects/ProjectsDefault/ProjectsDefault";
-import InitialProposalView from "./components/Projects/ProjectsInitialProposal/InitialProposalView";
+import InitialProposalView, { projectUserRoleAuth } from "./components/Projects/ProjectsInitialProposal/InitialProposalView";
 import WorkOrderView from "./components/Projects/ProjectsWorkOrder/WorkOrderView";
 import NotesView from "./components/Projects/ProjectNotes/NotesView";
 import Layout1 from "./components/Layouts/Layout1";
@@ -45,7 +45,7 @@ import Subscription from "./pages/Subscription/Subscription";
 import { useDispatch, useSelector } from "react-redux";
 import Invitation from "./pages/InvitationView/Invitation";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+//import "react-toastify/dist/ReactToastify.css";
 import { getFormattedFiveDayWeather } from "./services/WeatherService.js";
 import { addEvents } from "./redux/slices/Events/eventsSlice.js";
 
@@ -73,6 +73,7 @@ import PrivacyTerms from "./pages/PrivacyTerms/PrivacyTerms.jsx";
 import ChangeOrder from "./pages/Projects/ChangeOrder.js";
 import Employee from "./components/Settings/Employee/Employee.js";
 import NoInternetConnection from "./pages/NoInternetPage/NoInternetConnection.js";
+import useSocket from "./utils/useSocket.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -89,11 +90,13 @@ const ReportView = lazy(() =>
 );
 
 function App() {
+
   const isAuthenticated = useSelector((state) => state.auth.userInfo);
   const userId = isAuthenticated ? isAuthenticated.user.id : null;
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
   // const [dailyForecast, setDailyForecast] = useState(null);
+  const { emit, on } = useSocket();
   const [events, setEvents] = useState();
   const [getEvents] = useGetUserEventsMutation();
   const allEvent = useSelector(allEvents);
@@ -171,9 +174,11 @@ function App() {
     getFormattedEvents();
   }, [userId, dailyForecast]); // Run this effect whenever userId or dailyForecast changes
 
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
+      
         <Route index path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/userinfo" element={<GoogleLogin />} />
@@ -205,7 +210,8 @@ function App() {
               </Route>
               <Route
                 path="initial-proposal"
-                element={<InitialProposalView />}
+                element={<InitialProposalView  />}
+                loader={projectUserRoleAuth}
               />
               <Route path="work-order" element={<WorkOrderView />} />
               <Route path="chat" element={<ChatView />} />
@@ -253,21 +259,19 @@ function App() {
     <>
       <NoInternetConnection>
         <Suspense fallback={<PageLoader />}>
-          <RouterProvider router={router} />
-          <ToastContainer
+        <ToastContainer
             position="top-right"
             autoClose={5000}
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick
             rtl={false}
-            limit={1}
             pauseOnFocusLoss={false}
             draggable
             pauseOnHover
             theme="light"
-          
           />
+          <RouterProvider router={router} />
         </Suspense>
       </NoInternetConnection>
     </>
