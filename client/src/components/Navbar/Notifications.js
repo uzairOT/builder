@@ -17,6 +17,9 @@ import { useUpdateRequestWorkOrderMutation } from "../../redux/apis/Project/work
 import NotificationDetailModal from "./NotificationDetailModal";
 import { useGetWorkOrderDetailsMutation } from "../../redux/apis/Project/projectApiSlice";
 import moment from 'moment';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchEvents } from "../../redux/slices/Events/eventsSlice";
+import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice";
 
 function Notification({
   notification,
@@ -25,12 +28,17 @@ function Notification({
   index,
   setExpanded,
   expanded,
+
 }) {
   const [updateWorkOrder] = useUpdateRequestWorkOrderMutation();
+  
   const [checkedRow, setCheckedRow] = useState(null);
   const [open, setOpen] = useState(false);
   const [data1, setData1] = useState(null);
   const [getWorkOrder, {isLoading}] = useGetWorkOrderDetailsMutation()
+  const forecast = useSelector(getForecast);
+  const dailyForecast = forecast.dailyForecast || [];
+  const dispatch = useDispatch();
   const handleOnClick = async () => {
       const res = await getWorkOrder({workOrderId:notification.WorkOrderReq.id})
       setData1(res.data);
@@ -48,8 +56,9 @@ function Notification({
         workOrder_id: notification.workOrder_id,
         status: "approved",
       });
-      // await refetch(userId);
-      window.location.reload();
+      await refetch(userId);
+      dispatch(fetchEvents({userId: userId, dailyForecast: dailyForecast}));
+      // window.location.reload();
     } catch (err) {
       // console.log(err);
     }

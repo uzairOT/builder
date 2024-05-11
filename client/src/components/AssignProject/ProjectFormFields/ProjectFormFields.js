@@ -14,9 +14,25 @@ import {
   setProjectName,
   setLocation,
   selectProjectForm,
+  setProjectColor,
 } from "../../../redux/slices/projectFormSlice";
 import "../../../App.css";
 import ColorPicker from "../../dialogues/ColorPickerProject/ColorPicker";
+
+const colors = [
+  "#93D0EC",
+  "#9BDFEB",
+  "#9FF2CA",
+  "#E5F29F",
+  "#F3DE9E",
+  "#F5C79F",
+  "#F9B4A1",
+  "#FBA8A4",
+  "#F9A0CB",
+  "#FCA8F1",
+  "#DA9CF0",
+  "#ADA1F5",
+];
 
 function ProjectFormFields() {
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -27,14 +43,14 @@ function ProjectFormFields() {
   const borderRadiusResponsive = {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
-const [project, setProject]=useState("");
+  const [project, setProject] = useState("");
   const { projectName, location, projectColor } =
     useSelector(selectProjectForm);
   const dispatch = useDispatch();
 
   // Event handler to update the projectName state
   const handleProjectNameChange = (event) => {
-    setProject(event.target.value)
+    setProject(event.target.value);
     dispatch(setProjectName(event.target.value));
   };
 
@@ -81,9 +97,9 @@ const [project, setProject]=useState("");
               sx={{
                 ...inputStyle,
                 ...borderRadiusResponsive,
-                '& input': {
-                  borderBottom: 'none', // Remove bottom border of the input
-              },
+                "& input": {
+                  borderBottom: "none", // Remove bottom border of the input
+                },
               }}
               id="standard-select-currency"
               type="text"
@@ -112,15 +128,23 @@ const [project, setProject]=useState("");
               >
                 Select Color
               </label>
-              <Stack direction={"row"} alignItems={"center"} gap={2} p={1}>
-                <Box
-                  width={"40px"}
-                  height={"40px"}
-                  bgcolor={projectColor}
-                  borderRadius={"999999px"}
-                ></Box>
+              <Stack direction={"row"} alignItems={"center"} justifyContent={'space-between'} gap={2} p={1}>
+                {colors.map((color) => {
+                  return (
+                    <>
+                      <Box
+                        width={"40px"}
+                        height={"40px"}
+                        bgcolor={color}
+                        borderRadius={"999999px"}
+                        onClick={()=>{setProjectColor(color)}}
+                        border={projectColor === color ? '1px solid black' : ''}
+                      ></Box>
+                    </>
+                  );
+                })}
 
-                <ColorPicker />
+                {/* <ColorPicker /> */}
               </Stack>
             </Box>
           </Stack>

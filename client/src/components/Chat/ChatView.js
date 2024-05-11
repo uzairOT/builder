@@ -5,10 +5,13 @@ import AttachFileIcon from "../../assets/Chat/attachment.png";
 import SendIcon from "../../assets/Chat/send.png";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
+import { useGetChatMessagesMutation } from "../../redux/apis/Chat/chatApiSlice";
+import moment from 'moment';
 
 const socket = io("http://3.135.107.71");
 
 function ChatView({ isAdminPage, project }) {
+  const [ getChatMessages, {isLoading}] = useGetChatMessagesMutation();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const { id } = useParams();
@@ -17,12 +20,24 @@ function ChatView({ isAdminPage, project }) {
   const currentUser = userInfo.user; // Replace this with actual user identifier
 
   const handleSend = () => {
-    socket.emit("clientMessage", { message, sender: currentUser });
+    socket.emit("message", { content: message, userId: currentUser.id });
     setMessage(""); // Clear message input after sending
   };
 
+  const fetchProjectChat = async () => {
+    try{
+      const res = await getChatMessages({projectId: id}).unwrap();
+      setMessages(res.data);
+    } catch(error){
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     // console.log("-=-=-=-", currentUser);
+    if(messages.length < 1){
+      fetchProjectChat();
+    }
     socket.emit("joinchat", {
       projectId: id,
     });
@@ -37,16 +52,16 @@ function ChatView({ isAdminPage, project }) {
       socket.off("message", messageListener);
     };
   }, [id]);
-
+console.log(messages);
   return (
     <>
       <Stack  direction={'column'} justifyContent={'flex-start'} height={'100%'}>
         <Box sx={{ height: "70vh", overflowY: "scroll" }}>
           {messages?.map((msg, index) => {
-            const isSender = msg.sender.id === currentUser.id;
-            const activeName = msg.sender.lastName
-              ? msg.sender.lastName
-              : msg.sender.firstName;
+            const isSender = msg.User.id === currentUser.id;
+            const activeName = msg.User.lastName
+              ? msg.User.lastName
+              : msg.User.firstName;
             const messageBoxStyles = {
               bgcolor: isSender ? "#F2F2F2" : "#B8E0FA",
               borderRadius: "10px",
@@ -78,7 +93,7 @@ function ChatView({ isAdminPage, project }) {
                 >
                   {isSender && <Avatar sx={avatarStyles} />}
 
-                  <Box sx={messageBoxStyles}>{msg.message}</Box>
+                  <Box sx={messageBoxStyles}>{msg.content}</Box>
                   {!isSender && <Avatar sx={avatarStyles} />}
                 </Box>
                 <Box
@@ -91,7 +106,7 @@ function ChatView({ isAdminPage, project }) {
                     fontSize: "8px",
                   }}
                 >
-                  {activeName}
+                  {activeName} {moment(msg.createdAt).format('HH:mm a')}
                 </Box>
               </>
             );

@@ -47,7 +47,7 @@ import Invitation from "./pages/InvitationView/Invitation";
 import { ToastContainer } from "react-toastify";
 //import "react-toastify/dist/ReactToastify.css";
 import { getFormattedFiveDayWeather } from "./services/WeatherService.js";
-import { addEvents } from "./redux/slices/Events/eventsSlice.js";
+import { addEvents, fetchEvents } from "./redux/slices/Events/eventsSlice.js";
 
 import ProjectsChangeOrder from "./components/Projects/ProjectsChangeOrder/ProjectsChangeOrder";
 import { useGetUserEventsMutation } from "./redux/apis/usersApiSlice.js";
@@ -129,49 +129,14 @@ function App() {
     }
   }, [dailyForecast]); // Run this effect whenever dailyForecast changes or on initial mount
 
+
   useEffect(() => {
-    const getFormattedEvents = async () => {
-      // console.log("INSIDE USEEFECT: ", dailyForecast.length)
-      if (dailyForecast.length > 1) {
-        // console.log("CONDITION STATISFIED ", dailyForecast.length, "USER ID: ", userId)
-        try {
-          const res = await getEvents({ userId, dailyForecast });
 
-          const data = res?.data?.formattedWorkOrders; // Using optional chaining (?.)
+    // getFormattedEvents();
+    if (dailyForecast.length > 1) {
+      dispatch(fetchEvents({userId: userId, dailyForecast:dailyForecast}));
 
-          // Equivalent to:
-          // const data = (res && res.data && res.data.formattedWorkOrders) ? res.data.formattedWorkOrders : undefined;
-
-          if (data) {
-            // Use `data` safely here
-            // console.log(data);
-            dispatch(addEvents(data));
-            dispatch(setIsLoading(false));
-          } else {
-            // Handle case where `formattedWorkOrders` is undefined or null
-            console.error("formattedWorkOrders is undefined or null");
-          }
-          // const data = res.data.formattedWorkOrders;
-
-          // const eventArr = data.map((item)=>{
-          //     return{
-          //       ...item,
-          //       start: moment(item.start).toDate(),
-          //       end: moment(item.end).toDate(),
-          //     }
-          // })
-          // console.log("EVENT ARR", data);
-          // setEvents(eventArr);
-        } catch (err) {
-          dispatch(setError(err));
-          // console.log(err);
-        } finally {
-          dispatch(setIsLoading(false));
-        }
-      }
-    };
-
-    getFormattedEvents();
+    }
   }, [userId, dailyForecast]); // Run this effect whenever userId or dailyForecast changes
 
 

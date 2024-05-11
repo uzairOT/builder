@@ -334,7 +334,7 @@ const SignupComp = () => {
 
               <PhoneInput
                 style={{ ...customPhoneStyles }}
-                defaultCountry="pk"
+                defaultCountry="us"
                 value={formData.phone}
                 onChange={(phone) => setPhone(phone)}
                 inputStyle={{ ...customeInputStyles }}

@@ -1,4 +1,14 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import axios from 'axios';
+
+export const fetchEvents = createAsyncThunk('fetch/events', async (body, thunkApi) => {
+    try{
+        const res= await axios.post(`http://3.135.107.71/user/events/${body.userId}`, body)
+        return res.data.formattedWorkOrders;
+    } catch(error){
+        return error
+    }
+})
 
 const initialState = {
     isLoading: true,
@@ -19,6 +29,16 @@ const eventsSlice = createSlice({
         setError: (state,action) => {
             state.error = action.payload;
         },
+    },
+    extraReducers: (builder) =>{
+        builder.addCase(fetchEvents.fulfilled, (state, action) =>{
+            state.isLoading = false;
+            state.events = action.payload;
+        }).addCase(fetchEvents.pending, (state, action) => {
+            state.isLoading = true;
+        }).addCase(fetchEvents.rejected, (state, action) => {
+            state.error = action.payload;
+        })
     }
 })
 

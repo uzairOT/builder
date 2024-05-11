@@ -36,6 +36,9 @@ import axios from "axios";
 import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 import { useUpdateRequestWorkOrderMutation } from "../../redux/apis/Project/workOrderApiSlice";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice";
+import { fetchEvents } from "../../redux/slices/Events/eventsSlice";
 
 const NotificationDetailModal = ({
   rowCheckboxes,
@@ -53,6 +56,9 @@ const NotificationDetailModal = ({
   const [disable, setDisable] = useState(true)
   const [updateWorkOrder] = useUpdateRequestWorkOrderMutation();
   const [authUserRole, setAuthUserRole] = useState();
+  const forecast = useSelector(getForecast);
+  const dailyForecast = forecast.dailyForecast || [];
+  const dispatch = useDispatch();
   const [selectedLineItem, setSelectedLineItem] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const user = localStorage.getItem('userInfo')
@@ -80,7 +86,7 @@ const NotificationDetailModal = ({
       }).unwrap();
       toast.success('Work Order Completed!') 
       handleClose(); 
-      window.location.reload();
+      dispatch(fetchEvents({userId:userId, dailyForecast:dailyForecast}));
     } catch (err) {
       console.log(err);
     }
