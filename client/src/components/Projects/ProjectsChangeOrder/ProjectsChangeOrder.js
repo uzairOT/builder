@@ -109,7 +109,8 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
             </TabList>
             <Stack direction={"row"} style={{ paddingRight: "16px" }}>
               {workOrder ? (
-                <BuilderProButton
+                <>
+                {/* <BuilderProButton
                   backgroundColor={"#4C8AB1"}
                   variant={"contained"}
                   fontFamily={"Inter, sans serif"}
@@ -117,13 +118,16 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
                   fontWeight={"600"}
                   padding={{md:"6px 32px 6px 32px"}}
                   handleOnClick={handleChangeView}
-                >
-                  Request Work Order
-                </BuilderProButton>
+                  
+                  >
+                  Request New Work Order
+                </BuilderProButton> */}
+                  </>
               ) : (
                 <RequestWorkOrderModal
                   rowCheckboxes={rowCheckboxes}
                   checkedRow={checkedRow}
+                  setCheckedRow={setCheckedRow}
                   changeOrder={true}
                   refetch={refetch}
                   setPhaseItems={setPhaseItems}

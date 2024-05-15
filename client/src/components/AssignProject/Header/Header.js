@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { resetUserAndRoleEmail } from "../../../redux/slices/projectFormSlice";
 
-function Header({ step, gap, handlePreviousStep }) {
+function Header({ step, gap, handlePreviousStep, step2 }) {
   //console.log("Header step: ", step);
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTab = useMediaQuery("(max-width:900px)");
@@ -23,12 +23,14 @@ function Header({ step, gap, handlePreviousStep }) {
     color: step === 1 ? "gray" : "",
   };
 
-  const handleStep = () => {
-    if (step === 1) {
-      return;
-    } else {
-      handlePreviousStep();
-    }
+  const handleStep = (e) => {
+    // if (step === 1) {
+    //   return;
+    // } else {
+    //   handlePreviousStep();
+    // }
+    e.preventDefault();
+    handlePreviousStep();
   };
   const handleLogoClcik = () => {
     dispatch(resetUserAndRoleEmail());
@@ -42,38 +44,38 @@ function Header({ step, gap, handlePreviousStep }) {
             <Box
               display={"flex"}
               flexDirection={"row"}
-              onClick={handleLogoClcik}
+              
             >
-              <Box sx={mobileImageBox}>
+              <Box sx={mobileImageBox} onClick={handleLogoClcik}>
                 <img src={builder1} width={"45%"} alt="" />
               </Box>
-              {/* <Box sx={mobileButtonBox}>
+              {step2 && <Box sx={mobileButtonBox}>
                 <Button
                   sx={buttonStyle}
                   startIcon={<ArrowBackIosIcon />}
-                  onClick={handleStep}
+                  onClick={(e) => handleStep(e)}
                  
                 >
                   Back
                 </Button>
-              </Box> */}
+              </Box>}
             </Box>
           </>
         ) : (
           <Box
             sx={{ ...headerBox, cursor: "pointer" }}
             gap={gap}
-            onClick={handleLogoClcik}
+           
           >
-            <img src={builder1} width={imgWidth} alt="" />
-            {/* <Button
+            <img src={builder1} width={imgWidth} alt=""  onClick={handleLogoClcik}/>
+            {step2 && <Button
               sx={buttonStyle}
               startIcon={<ArrowBackIosIcon />}
-              onClick={handleStep}
-              disabled
+              onClick={(e) => handleStep(e)}
+             
             >
               Back
-            </Button> */}
+            </Button>}
           </Box>
         )}
       </Grid>

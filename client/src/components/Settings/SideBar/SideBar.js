@@ -17,7 +17,8 @@ function SideBar() {
         '/settings/employee',
         '/settings/subcontractor',
         '/settings/supplier',
-        '/settings/materline'
+        '/settings/materline',
+        '/settings/units',
       ];
 
       const selectedItem = paths.findIndex(path => path === location.pathname);
@@ -97,6 +98,15 @@ function SideBar() {
                     sx={listItemStyle}
                 >
                     Master Line List
+                </ListItem>
+                <ListItem
+                component={Link}
+                    to="/settings/units"
+                    
+                    selected={selectedItem === 8}
+                    sx={listItemStyle}
+                >
+                    Units
                 </ListItem>
             </List>
         </Box>

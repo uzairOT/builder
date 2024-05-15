@@ -9,6 +9,7 @@ import { allEvents } from "../../../redux/slices/Events/eventsSlice";
 import { getForecast } from "../../../redux/slices/DailyForecast/dailyForecastSlice";
 import { useGetProjectChangeOrderQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { ref } from "yup";
+import BuilderProButton from "../../UI/Button/BuilderProButton";
 
 const WorkOrderView = () => {
   const [changeView, setChangeView] = useState(false);
@@ -25,17 +26,37 @@ const WorkOrderView = () => {
   });
   const dailyForecast = forecast.dailyForecast;
     const {id} = useParams();
+    
+  const handleChangeView = () => {
+    setChangeView(!changeView);
+  }
 
   return (
-      <Paper  style={{ ...themeStyle.borders, width: "99%", marginBottom:'4px', height: changeView ? '': '100%'}}>
-    <Stack flex={1} pt={1} height={"100%"} >
+      <Paper  style={{ ...themeStyle.borders, width: "99%", marginBottom:'4px', height: !changeView ? '': '100%'}}>
+        <Box pt={1} pb={0}>
+
+        <BuilderProButton
+                  backgroundColor={"#4C8AB1"}
+                  variant={"contained"}
+                  fontFamily={"Inter, sans serif"}
+                  fontSize={"16px"}
+                  fontWeight={"600"}
+                  padding={{md:"6px 32px 6px 32px"}}
+                  marginLeft={'4px'}
+                  handleOnClick={handleChangeView}
+                  >
+                  {changeView ? 'Request New Work Order' : 'View  Work Logs'}
+                </BuilderProButton>
+                  </Box>
+    <Stack  pt={1} >
         <Stack justifyContent={"flex-start"} height={"95%"}>
-          {!changeView ? (
-           <Stack height={{xl:'50vh', lg:'50vh', md:'50vh', sm:'50vh', xs:'50vh'}}>
-           <ProjectsChangeOrder workOrder={true} view={'Work Order'} setChangeView={setChangeView} data={data} refetch={refetch}/>  
-           <Box height={'inherit'} bgcolor={'white'}>
+          {changeView ? (
+           <Stack >
+           <Box height={{xl:'45vh', lg:'45vh', md:'45vh', sm:'45vh', xs:'45vh'}} bgcolor={'white'}>
             <TaskCalender dailyForecast={dailyForecast} eventsArr={events} isProjectPage={true} isDrawerOpen={true} />
            </Box>
+           <ProjectsChangeOrder workOrder={true} view={'Work Order Logs'} setChangeView={setChangeView} data={data} refetch={refetch}/>  
+           
            </Stack>
           ) : (
             <>

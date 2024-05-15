@@ -18,6 +18,9 @@ import { getPresignedUrl, uploadToS3 } from "../../../utils/S3";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { fileTypeIcons } from "./assets/fileTypes";
+import filePlaceHolder from '../../../assets/FileSvg/file.svg'
+
 
 function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
   const [open, setOpen] = useState(false);
@@ -29,6 +32,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
   const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState("");
   const { id } = useParams();
+  const [notes, setNotes] =useState('');
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
@@ -43,19 +47,24 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
     }
   };
 
-  const handleClickOpen = () => {
-    handleOpen();
-    setOpen(true);
-    setImage(null);
-  };
-
+  // const handleClickOpen = () => {
+  //   handleOpen();
+  //   setOpen(true);
+  // };
+  
   const handleClickClose = () => {
     handleClose();
+    setImage(null);
     setOpen(false);
   };
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
+    const fileSizeLimit = 25 * 1024 * 1024;
+    if(file.size > fileSizeLimit){
+      toast.warning('Please upload file size less than 25mb.');
+      return;
+    }
     setFileName(file.name);
     setFileType(file.type);
     setSelectedFile(file);
@@ -72,6 +81,11 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
+    const fileSizeLimit = 25 * 1024 * 1024;
+    if(file.size > fileSizeLimit){
+      toast.warning('Please upload file size less than 25mb.');
+      return
+    }
     setFileName(file.name);
     setFileType(file.type);
     setSelectedFile(file);
@@ -105,6 +119,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
       const requestBody = {
         fileUrl: uploadedFileUrl,
         fileType: fileType,
+        notes: notes
       };
       const response = await axios
         .post(apiUrl, requestBody)
@@ -114,10 +129,9 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
           handleClickClose();
           fetchData();
         });
-      if (response.status !== 200) {
+      if (response.status !== 201) {
         throw new Error("Failed to save file URL");
       }
-      
     } catch (error) {
       console.error("Error:", error.message);
     }
@@ -125,7 +139,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
 
   const getFileType = (heading) => {
     const lowerCaseHeading = heading.toLowerCase();
-    if (lowerCaseHeading.includes("images")) {
+    if (lowerCaseHeading.includes("image")) {
       return "image";
     } else if (lowerCaseHeading.includes("drawing")) {
       return "drawing";
@@ -134,11 +148,13 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
     }
     return null;
   };
-
+  console.log(heading);
+  console.log(fileTypeIcons);
+  console.log(fileTypeIcons.get(selectedFile?.name?.split(".").pop()));
   return (
     <div className="App">
       <Dialog
-        open={handleClickOpen}
+        open={true}
         onClose={handleClickClose}
         PaperProps={{
           sx: { ...themeStyle.paperPropsStyle },
@@ -156,22 +172,43 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
           >
             <input
               type="file"
-              accept="image/*"
               onChange={handleImageUpload}
               style={{ display: "none" }}
               id="avatarInput"
-              multiple
+              
             />
             <label htmlFor="avatarInput">
               <div style={{ ...themeStyle.avatarBox, ...dotBorder }}>
-                <img
-                  src={image ? image : upload}
-                  alt={image ? "Uploaded Avatar" : "Placeholder Avatar"}
+                {selectedFile?.type?.split("/")[0] === "image" ? (
+                  <img
+                    src={image ? image : upload}
+                    alt={image ? "Uploaded Avatar" : "Placeholder Avatar"}
+                    style={{
+                      ...themeStyle.uploadedImg,
+                      
+                    }}
+                  />
+                ) : selectedFile?.name?.split(".").pop() ? (
+                  <img
+                    src={filePlaceHolder}
+                    alt={`Uploaded ${selectedFile?.name?.split(".").pop().toUpperCase()} File`}
+                    style={{
+                      ...themeStyle.uploadedImg,
+                      
+                    }}
+                  />
+                ) : (
+                  <>
+                  <img
+                  src={upload}
+                  alt={"Placeholder Avatar"}
                   style={{
                     ...themeStyle.avatarImg,
                     ...objectFit,
                   }}
                 />
+                  </>
+                )}
                 <Typography sx={themeStyle.avatarText}>
                   {image ? "" : "Drag your file here"}
                 </Typography>
@@ -184,10 +221,11 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
               required
               placeholder="Type Note Here ....."
               margin="dense"
-              id="name"
-              name="name"
-              type="name"
+              id="notes"
+              name="notes"
+              type="notes"
               variant="standard"
+              onChange={(e) => setNotes(e.target.value)}
             />
           </Box>
         </DialogContent>
@@ -249,14 +287,19 @@ const themeStyle = {
   },
   avatarImg: {
     position: "absolute",
-    top: 0,
+    top: '-25px',
     left: 0,
     width: "100%",
     height: "100%",
   },
+  uploadedImg: {
+    width: "200px",
+    height: "200px",
+    objectFit: 'scale-down'
+  },
   avatarBox: {
     width: "90%",
-    height: 150,
+    height: 200,
     borderRadius: "0.5rem",
     overflow: "hidden",
     display: "inline-block",

@@ -1,9 +1,22 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {Box, Typography, Button, Avatar } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Avatar,
+  CircularProgress,
+  Stack,
+  Modal,
+  IconButton,
+
+} from "@mui/material";
 import "../../App.css";
 import AddImage from "../dialogues/AddImage/AddImage";
 import { useParams } from "react-router-dom";
+import { fileTypeIcons } from "../dialogues/AddImage/assets/fileTypes";
+import { handleDownload } from "../../utils/S3";
+import filePlaceHolder from '../../assets/FileSvg/file.svg'
 function Permit({ view, type }) {
   const placeholderImg = `https://source.unsplash.com/random/100x100`;
   const [open, setOpen] = useState(false);
@@ -15,11 +28,22 @@ function Permit({ view, type }) {
   };
   const [RecentfileUrls, setRecentFilesUrls] = useState([]);
   const [OlderfileUrls, setOlderFilesUrls] = useState([]);
-  const {id} = useParams()
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [modalUrl, setModalUrl] = useState('')
+  const handleModalOpen = (url) => {
+    setModalUrl(url);
+    setOpenModal(true);
+  };
+  const handleModalClose = (url) => {
+    setModalUrl('');
+    setOpenModal(false);
+  };
+  const { id } = useParams();
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://3.135.107.71/project/files/${type}/${id}` 
+        `http://3.135.107.71/project/files/${type}/${id}`
       );
       //replace 123 with the project id
       // Assuming the response data is an array of file URLs
@@ -30,12 +54,12 @@ function Permit({ view, type }) {
       // Handle errors, such as displaying an error message
     }
   };
+ 
   useEffect(() => {
-
     fetchData();
-  }, []);
+  }, [id]);
   return (
-    <div style={{width:'100%'}}>
+    <div style={{ width: "100%" }}>
       <Box sx={themeStyle.titleBox}>
         <Typography sx={themeStyle.titleTypo}>{view}</Typography>
         <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>
@@ -62,16 +86,62 @@ function Permit({ view, type }) {
             >
               Permits
             </Typography>
+            <Box sx={{ margin: "1rem 2rem" }}>
+              {isDownloading && <CircularProgress size={"18px"} />}
+            </Box>
           </Box>
           {/* Render avatars dynamically with image URLs */}
-          {RecentfileUrls.map((url, index) => (
-            <img
-              key={index}
-              alt={`Avatar ${index + 1}`}
-              src={url.fileUrl || placeholderImg} // Use the image URL or fallback to placeholder image
-              style={themeStyle.AvatarBox} // Adjust size as needed
-            />
-          ))}
+          <Stack direction={"row"} maxWidth={"800px"} sx={scrollable}>
+            {RecentfileUrls.map((url, index) => {
+              const fileType = url.fileUrl.split(".").pop().toLowerCase();
+              const fileName = url.fileUrl.split("/").pop().toLowerCase();
+              const isImage = [
+                "jpg",
+                "jpeg",
+                "png",
+                "gif",
+                "bmp",
+                "svg",
+              ].includes(fileType);
+              return isImage ? ( // Check if url.fileUrl exists before splitting
+                <>
+                  <Box
+                    onClick={() => {
+                      handleModalOpen(url.fileUrl);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <img
+                      key={index}
+                      alt={`Avatar ${index + 1}`}
+                      src={url.fileUrl || placeholderImg}
+                      style={themeStyle.AvatarBox}
+                      download="image"
+                    />
+                  </Box>
+                </>
+              ) : (
+                <>
+                  <Box
+                    onClick={() => {
+                      handleDownload(url.fileUrl, fileName, setIsDownloading);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <img
+                      src={filePlaceHolder}
+                      alt={`${fileType.toUpperCase()} File`}
+                      download="document"
+                      style={{
+                        ...themeStyle.AvatarBox,
+                        border: "none",
+                      }}
+                    />
+                  </Box>
+                </>
+              ) 
+            })}
+          </Stack>
         </Box>
         <Box sx={themeStyle.permitBox}>
           <Box sx={{ width: "15%" }}>
@@ -97,21 +167,76 @@ function Permit({ view, type }) {
           ))}
         </Box>
       </Box>
+      {openModal && <Modal
+        open={true}
+        onClose={handleModalClose}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      
+      >
+        <Box sx={style} >
+          <IconButton
+            onClick={handleClose}
+            aria-label="close"
+            
+          >
+            {/* <CloseIcon /> */}
+          </IconButton>
+          <img
+            src={modalUrl}
+            alt={`file`}
+            style={
+              {
+                width: '100%', // Adjust width as needed
+                maxWidth: '700px', // Set a maximum width for responsiveness
+                maxHeight: '500px', // Set a maximum height for responsiveness
+              }
+            }
+          />
+        </Box>
+      </Modal>}
       {open && (
         <AddImage
           handleOpen={handleOpen}
           handleClose={handleClose}
-          heading={view}
+          heading={type}
           fetchData={fetchData}
         ></AddImage>
       )}
     </div>
   );
 }
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+const scrollable = {
+  scrollbarWidth: "thin", // For Firefox
+  "-ms-overflow-style": "none", // For IE and Edge
+  "&::-webkit-scrollbar": {
+    width: "6px",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "transparent",
+    transition: "background-color 0.3s",
+  },
+  "&:hover::-webkit-scrollbar-thumb": {
+    backgroundColor: "#ddd",
+  },
+  overflowX: "scroll",
+};
 const themeStyle = {
   titleBox: {
     display: "flex",
-    width: {xl:"52vw"},
+    width: { xl: "52vw" },
     justifyContent: "space-between",
     alignItems: "center",
     background: "#4C8AB1",
@@ -169,8 +294,9 @@ const themeStyle = {
     borderRadius: "0.4rem",
     background: "none",
     width: "100px",
+    height: "100px",
     margin: "2rem 0.5rem",
-    ObjectFit: "cover",
+    ObjectFit: "contain",
   },
 };
 export default Permit;

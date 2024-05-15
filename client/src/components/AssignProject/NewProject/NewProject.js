@@ -5,7 +5,7 @@ import AssignNewProjectStep3 from "../AssignNewProjectStep3/AssignNewProjectStep
 
 import Header from "../Header/Header";
 import AssignProject from "../../../pages/AssignProject/AssignProject";
-import { useNavigate } from "react-router-dom";
+import { UNSAFE_NavigationContext, useNavigate } from "react-router-dom";
 import SaveAsProject from "../SaveAsProject/SaveAsProject";
 import Footer from "../Footer/Footer";
 
@@ -14,10 +14,13 @@ function NewProject() {
     const [step, setStep] = useState(0);
     const [isSaveAs,setIsSaveAs] = useState(false)
     const [projectId, setProjectId] = useState(null);
+    const [locationKeys, setLocationKeys] = useState([]);
 
 
 
 
+    
+ 
     const onSaveStep = () => {
         setStep(0);
     }
@@ -34,7 +37,7 @@ function NewProject() {
         const step1 = parseInt(localStorage.getItem('step'), 10); // Convert to number
         setStep(step1);
     }, [step]);
-    
+
     const renderStep = () => {
         switch (step) {
             case -1:
@@ -46,7 +49,7 @@ function NewProject() {
             case 0:
                 return (
                     <div>
-                        <Header step={step} btnStep={0}  handlePreviousStep={handlePreviousStep} />
+                        <Header step={step} step2={true}  handlePreviousStep={handlePreviousStep} />
                         <AssignNewProjectStep2 isSaveAs={isSaveAs} setProjectId={setProjectId} projectId={projectId} onNextStep={onNextStep} />
                     </div>
                 );

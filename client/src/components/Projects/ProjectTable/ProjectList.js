@@ -34,14 +34,16 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
   const tableHeader = [
     { id: "clientName", title: "Client" },
     { id: "projectName", title: "Project" },
-    { id: "phoneNumber", title: "" },
-    { id: "approvedPrice", title: "" },
-    { id: "collected", title: "" },
-    { id: "remainingBalance", title: "" },
-    { id: "costToComplete", title: "" },
-    { id: "projectProfit", title: "" },
-    { id: "projectMargin", title: "" },
-    { id: "projectStatus", title: "" },
+    {id:'start_time', title:'Start Date'},
+    {id:'end_time', title:'End Date'},
+    // { id: "phoneNumber", title: "" },
+    // { id: "approvedPrice", title: "" },
+    // { id: "collected", title: "" },
+    // { id: "remainingBalance", title: "" },
+    // { id: "costToComplete", title: "" },
+    // { id: "projectProfit", title: "" },
+    // { id: "projectMargin", title: "" },
+    // { id: "projectStatus", title: "" },
   ];
   //console.log(rows);
   //Phone Number

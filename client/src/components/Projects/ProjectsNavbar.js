@@ -33,7 +33,7 @@ const ProjectsNavbar = ({ project }) => {
       path: "permit",
     },
     {
-      title: "Drawing Files",
+      title: "Drawing & Files",
       path: "drawing-files",
     },
     {

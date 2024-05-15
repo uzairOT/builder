@@ -48,7 +48,11 @@ import {
 } from "../../redux/apis/Project/workOrderApiSlice";
 import { io } from "socket.io-client";
 
-const socket = io("http://3.135.107.71");
+const local = localStorage.getItem('userInfo');
+const currentUser = JSON.parse(local);
+const socket = io("http://3.135.107.71", {
+  query: { userId: currentUser?.user?.id },
+});
 
 const Navbar = () => {
   const [selectedTab, setSelectedTab] = useState(0);

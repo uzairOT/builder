@@ -26,7 +26,7 @@ import {
   setRowCheckbox,
 } from "../../../redux/slices/addPhaseSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
+import { addInitialPhase, addPhase } from "../../../redux/slices/Project/projectInitialProposal";
 import moment from "moment";
 import { toast } from "react-toastify";
 //import "react-toastify/dist/ReactToastify.css";
@@ -81,7 +81,7 @@ const AddPhaseCard = ({
   setRowCheckboxes,
   projectId,
   InitialProposalView,
-  authUserRole
+  authUserRole,
 }) => {
   const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
   const [showAddLine, setShowAddLine] = useState(false);
@@ -89,12 +89,13 @@ const AddPhaseCard = ({
   const [selectedRows, setSelectedRows] = useState([]);
   const [rows, setRows] = useState(initialRows);
   const [deletePhaseLine] = useDeletePhaseLineMutation();
+
   const dispatch = useDispatch();
   const { rowCheckbox } = useSelector(selectAddPhase);
   let totalCost = 0;
   let minStartDay = moment(phaseData?.LineItems[0]?.start_day);
   let maxEndDay = moment(phaseData?.LineItems[0]?.end_day);
-let totalHours = 0;
+  let totalHours = 0;
   // console.log(maxEndDay);
 
   phaseData.LineItems.forEach((row) => {
@@ -112,11 +113,9 @@ let totalHours = 0;
   });
   const duration = moment.duration(maxEndDay.diff(minStartDay));
   const totalDays = duration.days();
-  if(minStartDay.isSame(maxEndDay, 'day')){
-
+  if (minStartDay.isSame(maxEndDay, "day")) {
     totalHours = 0;
-  } else{
-    
+  } else {
     totalHours = duration.asHours();
   }
   const handleArrowDownClick = () => {
@@ -148,15 +147,17 @@ let totalHours = 0;
       lineItemId: lineItemId,
       projectId: projectId,
     };
-    try {
-      const res = await deletePhaseLine(data).unwrap();
-      // console.log(res);
+    
+      const res = await deletePhaseLine(data);
+      if(InitialProposalView){
 
-      dispatch(addPhase(res.data.allPhases));
-    } catch (error) {
-      // console.log(error);
-      toast.error(error?.data?.message || error.error||error?.data?.error );
-    }
+        dispatch(addInitialPhase(res.data.allPhases));
+      }else{
+
+        dispatch(addPhase(res.data.allPhases));
+      }
+      
+   
   };
 
   const handleAddLine = () => {
@@ -226,7 +227,9 @@ let totalHours = 0;
         // Row doesn't exist, add it
         updatedRows[phaseId].rows.push(row);
       }
-
+      if(updatedRows[phaseId].rows.length === 0){
+        delete updatedRows[phaseId];
+      }
       return { ...updatedRows };
     });
   };
@@ -258,13 +261,13 @@ let totalHours = 0;
               </Typography>
             </Box>
             <Box>
-              <Typography sx={blackHeading}>Price: {totalCost}</Typography>
+              <Typography sx={blackHeading}>Price: ${totalCost}</Typography>
             </Box>
-            <Box>
+            {/* <Box>
               <Typography sx={blackHeading}>
                 Duration: {totalHours} hours  Days: {totalDays}
               </Typography>
-            </Box>
+            </Box> */}
           </Box>
           <Box sx={phaseBox}>
             <>
@@ -314,25 +317,32 @@ let totalHours = 0;
             <DeleteIcon
               onClick={handleDeleteSelectedRows}
               disabled={selectedRows.length === 0} /> */}
-            {InitialProposalView ? (authUserRole ==='superadmin' || authUserRole=== 'projectManager') &&<Button
-              sx={{
-                ...actionButton,
-                background: "#4C8AB1",
-                marginTop: "0.7rem",
-              }}
-              onClick={handleAddLine}
-            >
-              Add Line Item
-            </Button> : <Button
-              sx={{
-                ...actionButton,
-                background: "#4C8AB1",
-                marginTop: "0.7rem",
-              }}
-              onClick={handleAddLine}
-            >
-              Add Line Item
-            </Button>}
+            {InitialProposalView ? (
+              (authUserRole === "superadmin" ||
+                authUserRole === "projectManager") && (
+                <Button
+                  sx={{
+                    ...actionButton,
+                    background: "#4C8AB1",
+                    marginTop: "0.7rem",
+                  }}
+                  onClick={handleAddLine}
+                >
+                  Add Line Item
+                </Button>
+              )
+            ) : (
+              <Button
+                sx={{
+                  ...actionButton,
+                  background: "#4C8AB1",
+                  marginTop: "0.7rem",
+                }}
+                onClick={handleAddLine}
+              >
+                Add Line Item
+              </Button>
+            )}
           </Box>
         </Box>
 
@@ -348,35 +358,40 @@ let totalHours = 0;
 
           <hr style={hrLine} />
           <Box
-            sx={{ ...tableContainerStyle, marginLeft: "0rem", width: "100%", ...scrollable }}
+            sx={{
+              ...tableContainerStyle,
+              marginLeft: "0rem",
+              width: "100%",
+              ...scrollable,
+            }}
           >
             <Table sx={{ width: "100%" }}>
               <TableHead sx={{ width: "100%" }}>
                 <TableRow>
-                  {!InitialProposalView &&<TableCell>
-                    {!adminProjectView && (
+                  {!InitialProposalView && (
+                    <TableCell>
+                      {/* {!adminProjectView && (
                       <Checkbox
                         checked={selectAll}
                         onChange={handleSelectAllChange}
                       />
-                    )}
-                  </TableCell>}
-                  <TableCell sx={{ ...tableHeadings, width: "15%" }}>
-                    Line Item
-                  </TableCell>
+                    )} */}
+                    </TableCell>
+                  )}
+                  <TableCell sx={{ ...tableHeadings }}>Line Item</TableCell>
 
-                  <TableCell sx={tableHeadings}>Description</TableCell>
+                  {/* <TableCell sx={tableHeadings}>Description</TableCell> */}
                   <TableCell sx={tableHeadings}>Unit</TableCell>
                   <TableCell sx={tableHeadings}>Unit Cost</TableCell>
                   <TableCell sx={tableHeadings}>Quantity</TableCell>
-                  <TableCell sx={tableHeadings}>Start</TableCell>
-                  <TableCell sx={tableHeadings}>End</TableCell>
+                  {/* <TableCell sx={tableHeadings}>Start</TableCell>
+                  <TableCell sx={tableHeadings}>End</TableCell> */}
                   <TableCell sx={tableHeadings}>Total Cost</TableCell>
                   <TableCell sx={tableHeadings}>Notes</TableCell>
                   <TableCell sx={tableHeadings}>Status</TableCell>
-                  {/*                   
+
                   <TableCell></TableCell>
-                  <TableCell></TableCell> */}
+                  {/* <TableCell></TableCell> */}
 
                   {/* <TableCell></TableCell> */}
                 </TableRow>
@@ -388,39 +403,49 @@ let totalHours = 0;
                 {phaseData.LineItems.map((row, index) => {
                   return (
                     <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
-                      {!InitialProposalView && <TableCell>
-                        {(row.status === 'Work Order Not requested' || row.status === 'Work Order declined' || row.status === 'Change Order declined') &&<Checkbox
-                          // checked={checkedRow === row}
-                          sx={{ '& .MuiSvgIcon-root': { fontSize: 16 } }}
-                          checked={isRowSelected(row)}
-                          onChange={() => handleCheckboxChange(row)}
-                        /> }
-                      </TableCell>}
+                      {!InitialProposalView && (
+                        <TableCell>
+                          {(row.status === "Work Order Not requested" ||
+                            row.status === "Work Order declined" ||
+                            row.status === "Change Order declined") && (
+                            <Checkbox
+                              // checked={checkedRow === row}
+                              sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
+                              checked={isRowSelected(row)}
+                              onChange={() => handleCheckboxChange(row)}
+                            />
+                          )}
+                        </TableCell>
+                      )}
                       <TableCell component="th" scope="row">
                         {row.title}
                       </TableCell>
-                      <TableCell>{row.description}</TableCell>
+                      {/* <TableCell>{row.description}</TableCell> */}
                       <TableCell>{row.unit}</TableCell>
-                      <TableCell>{row.unit_price}</TableCell>
+                      <TableCell>${row.unit_price}</TableCell>
                       <TableCell>{row.quantity}</TableCell>
-                      <TableCell>
+                      {/* <TableCell>
                         {moment(row.start_day).format("YYYY-MM-DD")}
                       </TableCell>
                       <TableCell>
                         {moment(row.end_day).format("YYYY-MM-DD")}
-                      </TableCell>
+                      </TableCell> */}
 
-                      <TableCell>{row.total}</TableCell>
+                      <TableCell>${row.total}</TableCell>
 
                       <TableCell>{row.notes}</TableCell>
                       <TableCell>{row.status}</TableCell>
-                      {/* <TableCell>
+                      <TableCell>
                         <EditIcon onClick={() => handleUpdateLine(row)} />
-                        <DeleteIcon
-                          onClick={() => handleDeleteSelectedRows(row.id)}
-                          disabled={selectedRows.length === 0}
-                        />
-                      </TableCell> */}
+                        {(row.status === "Work Order Not requested" ||
+                          row.status === "Work Order declined" ||
+                          row.status === "Change Order declined") && (
+                          <DeleteIcon
+                            onClick={() => handleDeleteSelectedRows(row.id)}
+                            disabled={selectedRows.length === 0}
+                          />
+                        )}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -443,13 +468,10 @@ let totalHours = 0;
           <UpdateLineDialogue
             handleUpdateOpen={handleUpdateOpen}
             handleUpdateClose={handleUpdateClose}
-            handleUpdateRow={handleUpdateRow} // Pass the update function
-            selectedRowIndex={selectedRows[0]}
-            rowData={
-              selectedRows[0] !== undefined ? rows[selectedRows[0]] : null
-            }
+            handleUpdateRow={handleUpdateRow} // Pass the update functio
             LineItem={checkedRow}
-            adminProjectView={adminProjectView}
+            projectId={projectId}
+            InitialProposalView={InitialProposalView}
           />
         )}
       </Grid>
@@ -457,22 +479,20 @@ let totalHours = 0;
   );
 };
 const scrollable = {
-
-    scrollbarWidth: 'none',  // For Firefox
-    '-ms-overflow-style': 'none',  // For IE and Edge
-    '&::-webkit-scrollbar': {
-        width: '6px'
-    },
-    '&::-webkit-scrollbar-thumb': {
-        backgroundColor: 'transparent',
-        transition: 'background-color 0.3s',
-    },
-    '&:hover::-webkit-scrollbar-thumb': {
-        backgroundColor: '#ddd',
-    },
-    overflowY: 'scroll'
-
-}
+  scrollbarWidth: "none", // For Firefox
+  "-ms-overflow-style": "none", // For IE and Edge
+  "&::-webkit-scrollbar": {
+    width: "6px",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "transparent",
+    transition: "background-color 0.3s",
+  },
+  "&:hover::-webkit-scrollbar-thumb": {
+    backgroundColor: "#ddd",
+  },
+  overflowY: "scroll",
+};
 const firstGrid = {
   display: "flex",
   flexDirection: "column",
@@ -534,7 +554,7 @@ const tableHeadings = {
   fontWeight: 500,
   fontSize: "0.9rem",
   color: "#8C8C8C",
-  paddingLeft: "0rem",
+  // paddingLeft: "0rem",
 };
 const hrLine = {
   width: "100%",

@@ -30,6 +30,33 @@ export const userProjectsApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getUnits : builder.query({
+      query: (data) => ({
+        url: `http://3.135.107.71/units/${data.userId}`,
+        method: 'GET'
+      })
+    }),
+    addUnit : builder.mutation({
+      query: (data) => ({
+        url: `http://3.135.107.71/units`,
+        method: 'POST',
+        body: data
+      })
+    }),
+    editUnit:  builder.mutation({
+      query: (data) => ({
+        url: `http://3.135.107.71/units/${data.id}`,
+        method: 'PUT',
+        body: data
+      })
+    }),
+    deleteUnit:  builder.mutation({
+      query: (data) => ({
+        url: `http://3.135.107.71/units/${data.id}`,
+        method: 'DELETE',
+        body: data
+      })
+    }),
   }),
 });
 
@@ -37,5 +64,9 @@ export const {
   useGetUserProjectsQuery,
   useGetMasterLineItemsQuery,
   useGetFilteredUserProjectsQuery,
-  useUpdateMasterLineItemMutation
+  useUpdateMasterLineItemMutation,
+  useGetUnitsQuery,
+  useAddUnitMutation,
+  useEditUnitMutation,
+  useDeleteUnitMutation
 } = userProjectsApiSlice;

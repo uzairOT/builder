@@ -22,6 +22,7 @@ import { useExistingProjectMutation } from "../../redux/apis/usersApiSlice";
 import { selectProjectForm } from "../../redux/slices/projectFormSlice";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
+import dayjs from 'dayjs'
 
 
 function AssignProject() {
@@ -29,7 +30,7 @@ function AssignProject() {
   const currentUser = JSON.parse(local);
   const currentUserId = currentUser?.user.id;
   const [projectType, setProjectType] = useState(null);
-  const { projectName, location, projectColor } =
+  const { projectName, location, projectColor, start_time, end_time } =
     useSelector(selectProjectForm);
   const [postExistingProject] = useExistingProjectMutation();
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -63,7 +64,24 @@ function AssignProject() {
     } else if (projectColor === "") {
       toast.warning("Please select project color");
       return;
-    } else if (projectName !== "") {
+    } 
+    else if (dayjs(start_time)?.isAfter(end_time)) {
+      toast.warning("Start date must be before end date");
+      return;
+    }
+    else if (dayjs(end_time)?.isBefore(start_time)) {
+      toast.warning("End date must be after start date");
+      return;
+    }
+    else if (start_time ===  null) {
+      toast.warning("Please enter a start data");
+      return;
+    }
+    else if (end_time ===  null) {
+      toast.warning("Please enter an end date");
+      return;
+    }
+    else if (projectName !== "") {
       setProjectType(value);
       return;
     }
@@ -110,23 +128,23 @@ function AssignProject() {
                 >
                   New Project
                 </Button>
-                <Typography sx={orTypo}>OR</Typography>
+                {/* <Typography sx={orTypo}>OR</Typography>
                 <Button
                   sx={{ ...YellowBtn, padding: "1rem 2.5rem" }}
                   onClick={() => handleProjectChange("Existing")}
                 >
                   Existing Project
-                </Button>
+                </Button> */}
               </Box>
             ) : (
               <Box sx={buttonBox}>
-                <Button
+                {/* <Button
                   sx={{ ...YellowBtn, ...buttonStyle }}
                   onClick={() => handleProjectChange("Existing")}
                 >
                   Existing Project
                 </Button>
-                <Typography sx={orTypo}>OR</Typography>
+                <Typography sx={orTypo}>OR</Typography> */}
                 <Button
                   variant="outlined"
                   sx={{

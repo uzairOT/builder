@@ -22,6 +22,8 @@ import {
   Typography,
   MenuItem,
   Autocomplete,
+  Stack,
+  IconButton,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -39,6 +41,14 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { DemoItem } from "@mui/x-date-pickers/internals/demo";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc"; // Optional if you need UTC handling
+import Close from "@mui/icons-material/Close";
+import CreateableSelect from 'react-select/creatable';
+import { useAddUnitMutation, useGetUnitsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+const options = [
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'vanilla', label: 'Vanilla' },
+];
 
 function AddLineElement({
   phaseData,
@@ -55,7 +65,8 @@ function AddLineElement({
   assignPageview,
   projectId,
   setPhaseItems,
-  InitialProposalView
+  InitialProposalView,
+  reqWorkOrderModal
 }) {
   // const { data, isLoading, isSuccess } = useGetLineItemQuery({
   //   lineItemId: LineItem,
@@ -64,16 +75,18 @@ function AddLineElement({
   const [addPhaseLine] = useAddPhaseLineMutation();
   const [updatePhaseLine] = useUpdatePhaseLineMutation();
   const [phaseName, setPhaseName] = useState(LineItem ? LineItem.title : "");
+  
   const [description, setDescription] = useState(
     LineItem ? LineItem.description : ""
   );
-  const [unit, setUnit] = useState(LineItem ? LineItem.unit : "");
+  const [unitList, setUnitList] = useState()
+  const [unit, setUnit] = useState(LineItem ? LineItem.unit.value : "");
   const [quantity, setQuantity] = useState(LineItem ? LineItem.quantity : "");
   const [unitPrice, setUnitPrice] = useState(
     LineItem ? LineItem.unit_price : ""
   );
   const [total, setTotal] = useState(LineItem ? LineItem.total : "");
-
+  const [selectedOption, setSelectedOption] = useState(null);
   const [start, setStart] = useState(LineItem ? dayjs(LineItem.start_day) : null);
   const [end, setEnd] = useState(LineItem ? dayjs(LineItem.end_day) : null);
 
@@ -95,6 +108,9 @@ function AddLineElement({
   const currentProject = JSON.parse(local);
   const phases = useSelector((state) => state.projectInitialProposal.phases);
   const userInfo = useSelector((state) => state.auth.userInfo);
+  console.log(LineItem)
+  const {data, isLoading, refetch} = useGetUnitsQuery({userId: userInfo.user.id})
+  const [addUnit] = useAddUnitMutation()
   //console.log(userInfo)
 
   const formData = {
@@ -104,11 +120,14 @@ function AddLineElement({
     quantity,
     unitPrice,
     total,
-    start: dayjs(start),
-    end: dayjs(end),
     longDescription,
   };
 
+  // useEffect(()=>{
+  //   if(data){
+  //     setUnitList(data);
+  //   }
+  // },[data])
   useEffect(() => {
     const getData = setTimeout(() => {
       axios
@@ -150,34 +169,50 @@ function AddLineElement({
   // console.log("Line Item Element", LineItem);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (start === null) {
-      toast.warning("Please enter a valid date");
-      return;
-    }
-    if (end === null) {
-      toast.warning("Please enter a valid date");
-      return;
-    }
+    // if (start === null) {
+    //   toast.warning("Please enter a date");
+    //   return;
+    // }
+    // if (end === null) {
+    //   toast.warning("Please enter a date");
+    //   return;
+    // }
+    // if (start.isAfter(end)) {
+    //   toast.warning("Start date cannot be after end date");
+    //   return;
+    // }
+    // if (end.isBefore(start)) {
+    //   toast.warning("End date cannot be after start date");
+    //   return;
+    // }
     if (LineHeading === "Update Line Item") {
       //console.log("updading..")
       const lineItemId = LineItem.id;
       const data1 = {
         ...formData,
         id: lineItemId,
-        projectId: id ,
+        projectId: reqWorkOrderModal ? id : projectId ,
       };
       // console.log("Update Alin Item",data1)
 
       try {
         const res = await updatePhaseLine(data1);
-        setPhaseItems(null);
-        dispatch(addPhase(res.data.data));
+        if(reqWorkOrderModal){
+          setPhaseItems(null);
+        }
+        if(InitialProposalView){
+          dispatch(addInitialPhase(res.data.data));
+        }else{
+
+          dispatch(addPhase(res.data.data));
+        }
+
         //   handleUpdateClose();
         toast.success(
           "Line Item added successfully"
         );
       } catch (error) {
-        toast.error(error?.data?.message || error.error||error?.data?.error );
+        toast.error(error?.data?.message || error?.error||error?.data?.error || 'Some error' );
         return;
       }
     } else {
@@ -188,8 +223,6 @@ function AddLineElement({
         quantity,
         unitPrice,
         total,
-        start,
-        end,
         longDescription,
       } = formData;
       const newLineItem = {
@@ -197,15 +230,17 @@ function AddLineElement({
         phaseId: phaseData.id,
         phaseName,
         description,
-        unit,
+        unit: unit,
         quantity,
         unitPrice,
         total,
-        start,
-        end,
         longDescription,
         userId: userInfo.user.id
       };
+      if(!newLineItem.unit){
+        toast.warning('Please enter unit');
+        return;
+      }
       const response = await addPhaseLine(newLineItem);
       if(InitialProposalView){
         dispatch(addInitialPhase(response?.data?.allPhases));
@@ -221,26 +256,36 @@ function AddLineElement({
     }
   };
 
-  const Units = [
-    { value: "sqft", label: "Square Feet", formula: (q, p) => q * p },
-    {
-      value: "sqm",
-      label: "Square Meters",
-      formula: (q, p) => q * p * 0.092903,
-    },
-    { value: "acres", label: "Acres", formula: (q, p) => q * p * 4048.54 },
-    { value: "hectares", label: "Hectares", formula: (q, p) => q * p * 10000 },
-    {
-      value: "sqyds",
-      label: "Square Yards",
-      formula: (q, p) => q * p * 0.836127,
-    },
-    {
-      value: "sqmi",
-      label: "Square Miles",
-      formula: (q, p) => q * p * 2.58999e6,
-    },
-  ];
+  // const Units = [
+  //   { value: "sqft", label: "Square Feet"},
+  //   {
+  //     value: "sqm",
+  //     label: "Square Meters",
+    
+  //   },
+  //   { value: "acres", label: "Acres"},
+  //   { value: "hectares", label: "Hectares" },
+  //   {
+  //     value: "sqyds",
+  //     label: "Square Yards",
+      
+  //   },
+  //   {
+  //     value: "sqmi",
+  //     label: "Square Miles",
+     
+  //   },
+  // ];
+  const selectStyles ={
+    control: (styles) => ({
+      ...styles,
+      ...inputStyle,
+     marginBottom:'0',
+      height: '',
+      padding: '4px'
+     
+    })
+  }
   // useEffect(() => {
   //   // console.log(isSuccess);
 
@@ -256,7 +301,26 @@ function AddLineElement({
   //     setLongDescription(data.lineItem.notes);
   //   }
   // }, [isSuccess, data]);
-  console.log(formData);
+const handleSetUnit = async (selectedOption) => {
+  // console.log(selectedOption);
+  if(selectedOption === null){
+    return;
+  }
+  const existingUnit = data?.some(unit => unit?.value === selectedOption?.value);
+  if(existingUnit){
+    setUnit(selectedOption.value);
+  }else{
+    setUnit(selectedOption.value);
+    await addUnit({...selectedOption, userId: userInfo.user.id})
+    await refetch({userId: userInfo.user.id});
+  } 
+}
+
+
+useEffect(()=>{
+  console.log(unit)
+},[unit])
+
   return (
     <div className="App">
       <>
@@ -269,12 +333,18 @@ function AddLineElement({
             onSubmit: handleSubmit,
           }}
         >
+          <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
           <DialogTitle sx={typoTitle}>{LineHeading}</DialogTitle>
-          <DialogContent sx={{ padding: "3rem" }}>
+          <IconButton style={{width: '40px', height:'40px'}} onClick={handleClickClose}>
+            <Close />
+          </IconButton>
+          </Stack>
+          <DialogContent sx={{ padding: "0rem 3rem 3rem 3rem" }}>
             <Typography sx={typoText}>Line Item</Typography>
             <>
               <Autocomplete
                 freeSolo
+                disableClearable
                 id="phaseName"
                 options={
                   autoComplete ? autoComplete.map((option) => option.title) : []
@@ -327,7 +397,7 @@ function AddLineElement({
               <Typography sx={typoText}>Description</Typography>
               <TextField
                 sx={{ ...inputStyle }}
-                required
+                
                 margin="dense"
                 id="description"
                 name="description"
@@ -338,9 +408,23 @@ function AddLineElement({
               />
               <Box sx={parallelBox}>
                 <Box sx={innerBox}>
-                  <Typography sx={typoText}>Unit</Typography>
+                  <Typography sx={{...typoText}}>Unit</Typography>
+                  <Box mt={'8px'} mb={'8px'}>
 
-                  <TextField
+                  <CreateableSelect
+                  defaultOptions
+                  styles={selectStyles}
+                  defaultValue={selectedOption}
+                  onChange={handleSetUnit}
+                  options={data ? data : []}
+                  isLoading={isLoading}
+                  isClearable
+                  >
+
+                  </CreateableSelect>
+                    </Box>
+
+                  {/* <TextField
                     sx={{ ...inputStyle, ...leftSpace }}
                     required
                     margin="dense"
@@ -357,7 +441,7 @@ function AddLineElement({
                         {option.label}
                       </MenuItem>
                     ))}
-                  </TextField>
+                  </TextField> */}
                 </Box>
                 <Box sx={innerBox}>
                   <Typography sx={typoText}>Quantity</Typography>
@@ -408,7 +492,7 @@ function AddLineElement({
                 variant="standard"
                 value={formData.total}
               />
-              <Box sx={parallelBox}>
+              {/* <Box sx={parallelBox}>
                 <Box sx={innerBox}>
                   <Typography sx={typoText}>Start</Typography>
                   <Box
@@ -458,11 +542,11 @@ function AddLineElement({
                     </LocalizationProvider>
                   </Box>
                 </Box>
-              </Box>
+              </Box> */}
               <Typography sx={typoText}>Notes</Typography>
               <TextField
                 sx={{ ...inputStyle, height: "5rem" }}
-                required
+                
                 margin="dense"
                 id="longDescription"
                 name="longDescription"

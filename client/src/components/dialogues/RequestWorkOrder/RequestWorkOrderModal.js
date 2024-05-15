@@ -53,7 +53,11 @@ import UpdateLineDialogue from "../UpdateLineDialogue/UpdateLineDialogue";
 import { io } from "socket.io-client";
 
 
-const socket = io("http://3.135.107.71");
+const local = localStorage.getItem('userInfo');
+const currentUser = JSON.parse(local);
+const socket = io("http://3.135.107.71", {
+  query: { userId: currentUser?.user?.id },
+});
 
 const RequestWorkOrderModal = ({
   rowCheckboxes,
@@ -326,7 +330,7 @@ const RequestWorkOrderModal = ({
       projectId: projectId,
       total: changeOrder ? checkedRow?.total : totalWorkOrder,
     };
-    console.log(requestForm);
+    console.log(requestForm); 
     if (requestForm.teamIds.length === 0) {
       toast.error("Team member must be assigned");
     } else {
@@ -390,7 +394,7 @@ const RequestWorkOrderModal = ({
     handleClose();
   };
 
-  console.log(checkedRow);
+  console.log(rowCheckboxes);
 
   return (
     <>
@@ -986,6 +990,7 @@ const RequestWorkOrderModal = ({
           setPhaseItems={setPhaseItems}
           handleUpdateClose={handleUpdateClose}
           LineItem={lineItem}
+          reqWorkOrderModal={true}
         />
       )}
       {done && <GenerateInvoiceDone setDone={setDone} />}

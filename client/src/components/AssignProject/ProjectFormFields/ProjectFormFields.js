@@ -15,9 +15,14 @@ import {
   setLocation,
   selectProjectForm,
   setProjectColor,
+  setStartTime,
+  setEndTime,
 } from "../../../redux/slices/projectFormSlice";
 import "../../../App.css";
 import ColorPicker from "../../dialogues/ColorPickerProject/ColorPicker";
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from 'dayjs'
 
 const colors = [
   "#93D0EC",
@@ -44,7 +49,7 @@ function ProjectFormFields() {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
   const [project, setProject] = useState("");
-  const { projectName, location, projectColor } =
+  const { projectName, location, projectColor, start_time, end_time } =
     useSelector(selectProjectForm);
   const dispatch = useDispatch();
 
@@ -57,6 +62,15 @@ function ProjectFormFields() {
   // Event handler to update the location state
   const handleLocationChange = (event) => {
     dispatch(setLocation(event.target.value));
+  };
+  const handleProjectColorChange = (color) => {
+    dispatch(setProjectColor(color));
+  };
+  const handleStartDateChange = (newValue) => {
+    dispatch(setStartTime(newValue.format('YYYY/MM/DD')));
+  };
+  const handleEndDateChange = (newValue) => {
+    dispatch(setEndTime(newValue.format('YYYY/MM/DD')));
   };
 
   return (
@@ -110,12 +124,76 @@ function ProjectFormFields() {
             >
               {/* <MenuItem value={""}  disabled sx={{ ...menuItem, color: 'gray', }}>
                                 Select Location
-                            </MenuItem>
-                            <MenuItem sx={menuItem} value={"Islamabad"}>Islamabad</MenuItem>
+                                </MenuItem>
+                                <MenuItem sx={menuItem} value={"Islamabad"}>Islamabad</MenuItem>
                             <MenuItem sx={menuItem} value={"Lahore"}>Lahore</MenuItem>
                             <MenuItem sx={menuItem} value={"Karachi"}>Karachi</MenuItem> */}
             </TextField>
           </Box>
+          <Stack direction={"row"} justifyContent={"space-between"}>
+            <Box sx={{ marginTop: "0.5rem", width: "45%" }}>
+              <label
+                style={{
+                  ...labelStyle,
+                  ...labelDisplay,
+                  ...labelResponsiveFont,
+                }}
+                htmlFor="start_time"
+              >
+                Start Time
+              </label>
+              <Box
+                sx={{
+                  width: "100%", // Set width to 100% for responsiveness
+                  alignSelf: "center",
+                  fontSize: "14px",
+                  border: "1px solid #ccc",
+                  borderRadius: "12px",
+                  color: "#202227",
+                  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+                }}
+              >
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <MobileDatePicker
+                    value={dayjs(start_time)}
+                    onChange={handleStartDateChange}
+                    format="YYYY/MM/DD"
+                  />
+                </LocalizationProvider>
+              </Box>
+            </Box>
+            <Box sx={{ marginTop: "0.5rem", width: "45%" }}>
+              <label
+                style={{
+                  ...labelStyle,
+                  ...labelDisplay,
+                  ...labelResponsiveFont,
+                }}
+                htmlFor="end_time"
+              >
+                End time
+              </label>
+              <Box
+                sx={{
+                  width: "100%", // Set width to 100% for responsiveness
+                  alignSelf: "center",
+                  fontSize: "14px",
+                  border: "1px solid #ccc",
+                  borderRadius: "12px",
+                  color: "#202227",
+                  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+                }}
+              >
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <MobileDatePicker
+                    value={dayjs(end_time)}
+                    onChange={handleEndDateChange}
+                    format="YYYY/MM/DD"
+                  />
+                </LocalizationProvider>
+              </Box>
+            </Box>
+          </Stack>
           <Stack direction={"column"}>
             <Box sx={{ marginTop: "0.2rem" }}>
               <label
@@ -128,22 +206,33 @@ function ProjectFormFields() {
               >
                 Select Color
               </label>
-              <Stack direction={"row"} alignItems={"center"} justifyContent={'space-between'} gap={2} p={1}>
+              <Stack
+                direction={"row"}
+                alignItems={"center"}
+                justifyContent={"space-between"}
+                gap={2}
+                p={1}
+              >
                 {colors.map((color) => {
                   return (
                     <>
                       <Box
                         width={"40px"}
-                        height={"40px"}
+                        height={"60px"}
                         bgcolor={color}
-                        borderRadius={"999999px"}
-                        onClick={()=>{setProjectColor(color)}}
-                        border={projectColor === color ? '1px solid black' : ''}
+                        boxShadow={projectColor === color ? 'rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;' :''}
+                        borderRadius={"7px"}
+                        onClick={() => {
+                          handleProjectColorChange(color);
+                        }}
+                        border={
+                          projectColor === color ? "2px solid #ADADAD" : ""
+                        }
                       ></Box>
                     </>
                   );
                 })}
-
+                {/* Req change to display an array of 12 colors */}
                 {/* <ColorPicker /> */}
               </Stack>
             </Box>

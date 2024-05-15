@@ -46,9 +46,6 @@ function Header({ title, OpenAddModal }) {
         <Typography variant="h4" sx={headingStyle}>
           {title}
         </Typography>
-        <Typography variant="subtitle1" sx={subheadingStyle}>
-          All Active Members
-        </Typography>
       </div>
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
       <Hidden smUp>

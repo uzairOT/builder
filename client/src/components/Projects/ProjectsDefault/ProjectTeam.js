@@ -39,7 +39,7 @@ import { toast } from 'react-toastify';
         const currentUserId = currentUser.user.id;
         const [assignRolePost] = useAddAssignRoleMutation();
         //console.log(pathSegments)
-        const {data, isLoading} = useGetProjectTeamQuery(projectId)
+        const {data, isLoading, isError} = useGetProjectTeamQuery(projectId)
         const team = data?.team
         const id = openShare ? "simple-popover" : undefined;
         const groupedData = isLoading ?  <>Loading...</> :  team?.reduce((acc, person) => {
@@ -92,7 +92,7 @@ import { toast } from 'react-toastify';
           Icon={BuilderProNavbarShare}
           handleOnClick={handleShare}
         >
-          {true ? "Share" : ""}
+          {true ? "Add" : ""}
         </BuilderProButton>
       </Stack>
       <Stack
@@ -105,7 +105,7 @@ import { toast } from 'react-toastify';
         mt={"14px"}
       >
         <Stack width={"100%"}>
-          {isLoading ? (
+          {isError ? <>Something went wrong..</> : isLoading ? (
             <>Loading...</>
           ) : (
             Object?.keys(groupedData)?.map((role) => {

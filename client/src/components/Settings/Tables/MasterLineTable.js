@@ -139,7 +139,7 @@ const Units = [
             <TableCell sx={tableCellStyle}>Description</TableCell>
             <TableCell sx={tableCellStyle}>
               Unit
-              <IconButton>
+              {/* <IconButton>
                 <Select
                   value={""}
                   onChange={(e) => handleUnitChange(e)} // Assuming you have a function to handle unit changes
@@ -150,9 +150,9 @@ const Units = [
                         {option.label}
                       </MenuItem>
                     ))}
-                  {/* Add more menu items as needed */}
+                  
                 </Select>
-              </IconButton>
+              </IconButton> */}
             </TableCell>
 
             <TableCell sx={tableCellStyle}>Quantity</TableCell>

@@ -21,6 +21,8 @@ import {
   DialogTitle,
   Box,
   Typography,
+  Stack,
+  IconButton,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
 import "../../../App.css";
@@ -31,7 +33,22 @@ import { useDispatch,useSelector  } from 'react-redux';
 import { addInitialPhase, addPhase } from '../../../redux/slices/Project/projectInitialProposal'; 
 import {useParams} from 'react-router-dom';
 import { toast } from "react-toastify";
+import Close from "@mui/icons-material/Close";
 //import "react-toastify/dist/ReactToastify.css";
+const colors = [
+  "#93D0EC",
+  "#9BDFEB",
+  "#9FF2CA",
+  "#E5F29F",
+  "#F3DE9E",
+  "#F5C79F",
+  "#F9B4A1",
+  "#FBA8A4",
+  "#F9A0CB",
+  "#FCA8F1",
+  "#DA9CF0",
+  "#ADA1F5",
+];
 
 function ColorPickerElement({
   handleUpdateOpen,
@@ -51,7 +68,7 @@ function ColorPickerElement({
   
   const {id} = useParams();
   const [open, setOpen] = useState(false);
-  const [color, setColor] = useState(phaseData ? phaseData.color : "");
+  const [color, setColor] = useState(phaseData ? phaseData.color : "#93D0EC");
   const [colorMode, setColorMode] = useState("");
   const [phaseName, setPhaseName] = useState(
     phaseData?.phase_name ? phaseData.phase_name : ""
@@ -144,8 +161,13 @@ function ColorPickerElement({
             onSubmit: handleSubmit,
           }}
         >
-          <DialogTitle sx={typoTitle}>{PhaseHeading}</DialogTitle>
-          <DialogContent sx={{ padding: "3rem" }}>
+          <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+          <DialogTitle  sx={typoTitle} >{PhaseHeading}</DialogTitle>
+          <IconButton style={{width: '40px', height:'40px'}} onClick={handleClickClose}>
+            <Close />
+          </IconButton>
+          </Stack>
+          <DialogContent sx={{ padding: "0rem 3rem 3rem 3rem" }}>
             <Typography sx={typoText}>Phase</Typography>
             <TextField
               sx={inputStyle}         
@@ -161,7 +183,26 @@ function ColorPickerElement({
              
             />
             <Typography sx={typoText}>Select Color</Typography>
-            <div className="custom-pointers example">
+              {/* Req change to display an array of 12 colors */}
+            <Stack direction={"row"} alignItems={"center"} flexWrap={'wrap'} justifyContent={'center'} gap={2} p={1}>
+                {colors.map((color1) => {
+                  return (
+                    <>
+                      <Box
+                         width={"40px"}
+                         height={"60px"}
+                         bgcolor={color1}
+                         boxShadow={color === color1 ? 'rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;' :''}
+                         borderRadius={"7px"}
+                        onClick={()=>{ setColor(color1)}}
+                        border={color === color1 ? '2px solid #ADADAD' : ''}
+                      ></Box>
+                    </>
+                  );
+                })}
+               
+              </Stack>
+            {/* <div className="custom-pointers example">
               {colorMode === "rgba" ? ( // Render RGBA color picker if colorMode is 'rgba'
                 <Box sx={generalBox}>
                   <RgbaStringColorPicker
@@ -189,7 +230,7 @@ function ColorPickerElement({
                   {colorMode === "rgba" ? "RGBA" : "HEX"}
                 </Typography>
               </Box>
-            </div>
+            </div> */}
           </DialogContent>
           <DialogActions sx={generalBox}>
             <Button

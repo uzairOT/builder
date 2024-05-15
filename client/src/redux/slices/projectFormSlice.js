@@ -9,6 +9,8 @@ const initialState = {
   location: '',
   clientName: '',
   projectColor:'',
+  start_time: null,
+  end_time: null,
   users: [{ email: '', role: 'admin' }],
 };
 
@@ -37,6 +39,12 @@ const projectFormSlice = createSlice({
     setProjectColor: (state, action)=>{
       state.projectColor = action.payload;
     },
+    setStartTime: (state, action)=>{
+      state.start_time = action.payload;
+    },
+    setEndTime: (state, action)=>{
+      state.end_time = action.payload;
+    },
     addUser: (state) => {
       state.users.push({ email: '', role: '' });
     },
@@ -55,6 +63,9 @@ const projectFormSlice = createSlice({
       state.users =  [{ email: '', role: 'admin' }];
       state.projectColor = '';
       state.location = '';
+      state.projectName ='';
+      state.start_time = null;
+      state.end_time = null;
     }
   },
 });
@@ -73,7 +84,9 @@ export const {
   removeUser,
   updateUserEmail,
   updateUserRole,
-  resetUserAndRoleEmail
+  resetUserAndRoleEmail,
+  setEndTime,
+  setStartTime
 } = projectFormSlice.actions;
 
 export const selectProjectForm = state => state.projectForm;

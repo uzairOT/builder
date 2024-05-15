@@ -74,6 +74,7 @@ import ChangeOrder from "./pages/Projects/ChangeOrder.js";
 import Employee from "./components/Settings/Employee/Employee.js";
 import NoInternetConnection from "./pages/NoInternetPage/NoInternetConnection.js";
 import useSocket from "./utils/useSocket.js";
+import Units from "./components/Settings/Units/Units.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -196,6 +197,7 @@ function App() {
               <Route path="subcontractor" element={<Subcontractor />} />
               <Route path="supplier" element={<SupplierList />} />
               <Route path="materline" element={<MasterLineItem />} />
+              <Route path="units" element={<Units />} />
             </Route>
           </Route>
         ) : (

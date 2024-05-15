@@ -4,6 +4,7 @@
  * The code uses axios for making HTTP requests and messageService for getting the presigned URL.
  */
 import axios from "axios";
+import fileDownload from "js-file-download";
 // import messageService from "services/APIs/services/messageService";
 /**
  * Uploads an image to S3 using a presigned URL.
@@ -33,8 +34,26 @@ import axios from "axios";
  * @param {String} presignedUrl - The presigned URL for uploading the file.
  * @param {File} FileObject - The file object to be uploaded.
  * @param {Function} onUploadProgress - Callback function for upload progress.
- * @returns {String} - The media URL of the uploaded file.
+ * @returns {String} - The media URL of the uploaded file.\
+ * 
+ *
  */
+
+export const handleDownload = async (url, filename, setIsDownloading) => {
+    setIsDownloading(true)
+	try {
+		await axios.get(url, { responseType: "blob" })
+			.then((res) => {
+				fileDownload(res.data, filename);
+			}).finally(()=>{
+                setIsDownloading(false)
+            });
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+
 export const uploadToS3 = async (presignedUrl, FileObject, onUploadProgress = () => { }) => {
     try {
         if (!presignedUrl) return;
