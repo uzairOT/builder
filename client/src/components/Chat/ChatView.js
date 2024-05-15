@@ -335,18 +335,21 @@ function ChatView({ isAdminPage, project }) {
                               ".bmp",
                               ".tiff",
                             ].some((ext) => msg?.fileUrl?.endsWith(ext)) ? (
-                              <img
-                                src={msg.fileUrl}
-                                onClick={() => handleOpenModal(msg.fileUrl)}
-                                download="image"
-                                alt="file"
-                                style={{
-                                  width: "220px",
-                                  height: "220px",
-                                  objectFit: "contain",
-                                  wordWrap: "break-word",
-                                }}
-                              />
+                              <>
+                                <img
+                                  src={msg.fileUrl}
+                                  onClick={() => handleOpenModal(msg.fileUrl)}
+                                  download="image"
+                                  alt="file"
+                                  style={{
+                                    width: "220px",
+                                    height: "220px",
+                                    objectFit: "contain",
+                                    wordWrap: "break-word",
+                                  }}
+                                />
+                                <br />
+                              </>
                             ) : msg?.fileUrl?.endsWith(".pdf") ||
                               msg?.fileUrl?.endsWith(".docx") ||
                               msg?.fileUrl?.endsWith(".doc") ||
@@ -376,7 +379,7 @@ function ChatView({ isAdminPage, project }) {
                               <></>
                             )}
                           </>
-                          <br />
+
                           {msg.content}
                           {/* <div ref={messageBoxRef} /> */}
                         </Box>
