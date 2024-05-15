@@ -18,9 +18,9 @@ const TaskCalender = () => {
   const forecastError = forecast.error;
   //console.log( "IN DASHBOARD EVENTS: ", events)
   return (
-    <Paper style={{height:'91.9%', borderRadius:'14px'}}>
+    <Paper style={{height:'100%', borderRadius:'14px'}}>
           {loading ? (
-                <>Loading</>
+                <>Loading...</>
               ) : (
                 <TaskCalenderView dailyForecast={dailyForecast} eventsArr={events} />
               )}
