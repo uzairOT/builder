@@ -195,7 +195,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
               placeholder="Type Note Subject..."
             />
             <Textarea
-              maxRows={8}
+              minRows={8}
               value={noteBody}
               onChange={handleNoteBody}
               variant="soft"

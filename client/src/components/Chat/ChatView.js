@@ -113,7 +113,7 @@ function ChatView({ isAdminPage, project }) {
     const userStatusListener = (data) => {
       setUsersOnline((prevUsersOnline) => ({
         ...prevUsersOnline,
-        [data.userId]: data.status === "online",
+        [data?.userId]: data.status === "online",
       }));
     };
     socket.on("userStatusChanged", userStatusListener);
@@ -263,7 +263,7 @@ function ChatView({ isAdminPage, project }) {
             </Box>
           ) : (
             <>
-              {!messages || !Array.isArray(messages) ? (
+              {!messages || !Array?.isArray(messages) ? (
                 <div
                   style={{
                     marginLeft: "1rem",
@@ -275,10 +275,10 @@ function ChatView({ isAdminPage, project }) {
                 </div>
               ) : (
                 messages?.map((msg, index) => {
-                  const isSender = msg.User.id === currentUser.id;
-                  const activeName = msg.User.lastName
-                    ? msg.User.lastName
-                    : msg.User.firstName;
+                  const isSender = msg?.User?.id === currentUser?.id;
+                  const activeName = msg?.User?.lastName
+                    ? msg?.User?.lastName
+                    : msg?.User?.firstName;
                   const messageBoxStyles = {
                     bgcolor: isSender ? "#F2F2F2" : "#B8E0FA",
                     borderRadius: isSender
@@ -354,6 +354,8 @@ function ChatView({ isAdminPage, project }) {
                               msg?.fileUrl?.endsWith(".docx") ||
                               msg?.fileUrl?.endsWith(".doc") ||
                               msg?.fileUrl?.endsWith(".zip") ? (
+                                <>
+
                               <IconButton
                                 href={msg.fileUrl}
                                 download="document"
@@ -375,6 +377,8 @@ function ChatView({ isAdminPage, project }) {
                                   )}
                                 </Typography>
                               </IconButton>
+                              <br />
+                              </>
                             ) : (
                               <></>
                             )}

@@ -132,7 +132,8 @@ const OpenNotes = ({ notes }) => {
             {notes?.content}
           </Typography>
         </Stack>
-        <Grid container xl={12} gap={1}>
+        
+        <Stack gap={1}>
           {notes?.files.map((file, index) => {
             const fileType = file.split(".").pop().toLowerCase();
             const fileName = file.split("/").pop().toLowerCase();
@@ -198,12 +199,13 @@ const OpenNotes = ({ notes }) => {
                   </Stack>
                 </Stack>
                 <Stack direction={"row"} alignItems={"center"} spacing={1}>
-                  {isDownloading ? <CircularProgress size={'20px'} /> : <img
+                   <img
                     src={download}
                     alt="PDF icon"
                     style={{ width: "25px", height: "25px", color: "#71839B" }}
-                  ></img>}
+                  ></img>
                 </Stack>
+                
               </Stack>
             );
           })}
@@ -235,8 +237,9 @@ const OpenNotes = ({ notes }) => {
                 </Stack>
                 </Stack>
               </Stack> */}
-        </Grid>
+        </Stack>
       </Stack>
+              <Stack alignItems={'flex-end'} justifyContent={'flex-end'} height={'20px'} p={0.5}>  <>{isDownloading && <CircularProgress size={'20px'} /> }</></Stack>
     </Stack>
   );
 };

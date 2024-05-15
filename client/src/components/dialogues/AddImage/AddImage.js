@@ -61,7 +61,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     const fileSizeLimit = 25 * 1024 * 1024;
-    if(file.size > fileSizeLimit){
+    if(file?.size > fileSizeLimit){
       toast.warning('Please upload file size less than 25mb.');
       return;
     }
