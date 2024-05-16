@@ -19,15 +19,15 @@ import axios from "axios";
 import { uploadToS3 } from "../../utils/S3";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import {socket} from "../../socket";
 let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
-const currentUser = userInfo?.user; // Replace this with actual user identifier
-const socket = io("http://3.135.107.71", {
-  query: { userId: currentUser?.id },
-});
+const currentUser = userInfo?.user;
+// const socket = io("http://3.135.107.71", {
+//   query: { userId: currentUser?.id },
+// });
 
 function ChatView({ isAdminPage, project }) {
-  const socketRef = useRef(null);
   const [openModal, setOpenModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const handleCloseModal = () => {
@@ -96,9 +96,10 @@ function ChatView({ isAdminPage, project }) {
   };
 
   useEffect(() => {
-    if (messages.length < 1) {
+    console.log('================================', id)
+    // if (messages.length < 1) {
       fetchProjectChat();
-    }
+    // }
     socket.emit("joinchat", {
       pId: id,
       userId: currentUser?.id,
@@ -149,7 +150,7 @@ function ChatView({ isAdminPage, project }) {
     if (selectedFile) {
       handleAtachmentSubmit();
     }
-  }, [selectedFile]);
+  }, [selectedFile, id]);
 
   const handleAtachmentSubmit = async () => {
     setLoading(true);
@@ -354,30 +355,30 @@ function ChatView({ isAdminPage, project }) {
                               msg?.fileUrl?.endsWith(".docx") ||
                               msg?.fileUrl?.endsWith(".doc") ||
                               msg?.fileUrl?.endsWith(".zip") ? (
-                                <>
-
-                              <IconButton
-                                href={msg.fileUrl}
-                                download="document"
-                                aria-label="download"
-                              >
-                                <Typography variant="body2" component="span">
-                                  <Box sx={{ color: "primary.main" }}>
-                                    <InsertDriveFileIcon />
-                                  </Box>
-                                  {msg.ChatFiles && msg.ChatFiles.length > 0 ? (
-                                    msg.ChatFiles.map((file, index) => (
-                                      <span key={index}>
-                                        {file.fileName}{" "}
-                                        {/* Display each file's name */}
-                                      </span>
-                                    ))
-                                  ) : (
-                                    <span>File</span>
-                                  )}
-                                </Typography>
-                              </IconButton>
-                              <br />
+                              <>
+                                <IconButton
+                                  href={msg.fileUrl}
+                                  download="document"
+                                  aria-label="download"
+                                >
+                                  <Typography variant="body2" component="span">
+                                    <Box sx={{ color: "primary.main" }}>
+                                      <InsertDriveFileIcon />
+                                    </Box>
+                                    {msg.ChatFiles &&
+                                    msg.ChatFiles.length > 0 ? (
+                                      msg.ChatFiles.map((file, index) => (
+                                        <span key={index}>
+                                          {file.fileName}{" "}
+                                          {/* Display each file's name */}
+                                        </span>
+                                      ))
+                                    ) : (
+                                      <span>File</span>
+                                    )}
+                                  </Typography>
+                                </IconButton>
+                                <br />
                               </>
                             ) : (
                               <></>

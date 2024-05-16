@@ -51,13 +51,13 @@ import {
 } from "@mui/x-date-pickers";
 import UpdateLineDialogue from "../UpdateLineDialogue/UpdateLineDialogue";
 import { io } from "socket.io-client";
+import { socket } from "../../../socket";
 
-
-const local = localStorage.getItem('userInfo');
+const local = localStorage.getItem("userInfo");
 const currentUser = JSON.parse(local);
-const socket = io("http://3.135.107.71", {
-  query: { userId: currentUser?.user?.id },
-});
+// const socket = io("http://3.135.107.71", {
+//   query: { userId: currentUser?.user?.id },
+// });
 
 const RequestWorkOrderModal = ({
   rowCheckboxes,
@@ -302,7 +302,6 @@ const RequestWorkOrderModal = ({
   }, [changeOrder, checkedRow, phaseItems]);
 
   const handleRequest = async () => {
-    
     if (subject === "" || description === "" || notes === "") {
       toast.warning("Please complete the Request work order form");
       return;
@@ -330,11 +329,10 @@ const RequestWorkOrderModal = ({
       projectId: projectId,
       total: changeOrder ? checkedRow?.total : totalWorkOrder,
     };
-    console.log(requestForm); 
+    console.log(requestForm);
     if (requestForm.teamIds.length === 0) {
       toast.error("Team member must be assigned");
     } else {
-      
       //await requestWorkOrderPut(requestForm);
       socket.emit("join", userId);
       if (changeOrder) {
@@ -358,7 +356,7 @@ const RequestWorkOrderModal = ({
         const socketRes = await socket.emit(
           "notification",
           requestForm,
-           async (response) => {
+          async (response) => {
             if (response.success) {
               console.log(response);
               setDone(true);
@@ -387,9 +385,9 @@ const RequestWorkOrderModal = ({
       dispatch(addEvents(data));
       dispatch(setIsLoading(false));
       // setDone(true);
-      setSubject('');
-      setDescription('');
-      setNotes('');
+      setSubject("");
+      setDescription("");
+      setNotes("");
     }
     handleClose();
   };

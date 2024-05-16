@@ -40,19 +40,17 @@ import {
   setNotifications,
   setNotificationsArr,
 } from "../../redux/slices/Notifications/notificationSlice";
-import useSocket from "../../utils/useSocket";
 import {
   useGetNotificationsQuery,
   useGetNotificationsUnreadQuery,
   useUpdateWorkOrderReadMutation,
 } from "../../redux/apis/Project/workOrderApiSlice";
-import { io } from "socket.io-client";
-
-const local = localStorage.getItem('userInfo');
+import { socket } from "../../socket";
+const local = localStorage.getItem("userInfo");
 const currentUser = JSON.parse(local);
-const socket = io("http://3.135.107.71", {
-  query: { userId: currentUser?.user?.id },
-});
+// const socket = io("http://3.135.107.71", {
+//   query: { userId: currentUser?.user?.id },
+// });
 
 const Navbar = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -72,7 +70,8 @@ const Navbar = () => {
   const notifications = useSelector(selectNotifications);
   const notificationsArr = useSelector(selectNotificationsArr);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { data: data1, refetch: refetchNotifcations } = useGetNotificationsUnreadQuery(userId);
+  const { data: data1, refetch: refetchNotifcations } =
+    useGetNotificationsUnreadQuery(userId);
   const { data, refetch } = useGetNotificationsQuery(userId);
   const [expanded, setExpanded] = useState(null);
 
@@ -140,10 +139,10 @@ const Navbar = () => {
   //   };
   // }, []);
   const refetchCall = async () => {
-    try{
+    try {
       await refetch(userId);
-    } catch(err){
-      console.log('err:', err)
+    } catch (err) {
+      console.log("err:", err);
     }
   };
 
@@ -303,7 +302,6 @@ const Navbar = () => {
                         key={notification.workOrder_id}
                         notification={notification}
                         refetch={refetch}
-                        
                         userId={userId}
                         index={index}
                         setExpanded={setExpanded}
