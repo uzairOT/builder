@@ -26,6 +26,7 @@ import { toast } from "react-toastify";
 import { uploadToS3 } from "../../../utils/S3";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { fileTypeIcons } from "../../dialogues/AddImage/assets/fileTypes";
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 //import "react-toastify/dist/ReactToastify.css";
 
 const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
@@ -196,6 +197,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
             />
             <Textarea
               minRows={8}
+              maxRows={8}
               value={noteBody}
               onChange={handleNoteBody}
               variant="soft"
@@ -277,17 +279,17 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
           </Stack>
           <Stack
             direction={"row"}
-            pt={6}
+            pt={2}
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <Stack direction={"row"} spacing={1}>
-              <FormatColorTextIcon style={{ color: "#4C8AB1" }} />
-              <EmojiEmotionsOutlinedIcon style={{ color: "#4C8AB1" }} />
-              <AddToDriveIcon style={{ color: "#4C8AB1" }} />
+            <Stack direction={"row"} spacing={0}>
+              {/* <FormatColorTextIcon style={{ color: "#4C8AB1" }} /> */}
+              {/* <EmojiEmotionsOutlinedIcon style={{ color: "#4C8AB1" }} /> */}
+              {/* <AddToDriveIcon style={{ color: "#4C8AB1" }} /> */}
               <Stack>
                 <label htmlFor="file-input">
-                  <ImageIcon style={{ color: "#4C8AB1" }} />
+                  <AttachFileIcon style={{ color: "#4C8AB1", cursor: 'pointer' }} />
                 </label>
                 <input
                   multiple
@@ -297,10 +299,10 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
                   style={{ display: "none" }}
                 />
               </Stack>
-              <CreateIcon style={{ color: "#4C8AB1" }} />
-              <LinkIcon
+              {/* <CreateIcon style={{ color: "#4C8AB1" }} /> */}
+              {/* <LinkIcon
                 style={{ transform: "rotate(135deg)", color: "#4C8AB1" }}
-              />
+              /> */}
             </Stack>
             <BuilderProButton
               variant={"contained"}

@@ -16,6 +16,7 @@ useEffect(()=>{
     const {data} = useGetProjectDataQuery({projectId: currentProjectId});
     // projects.find(project => project.id === parseInt(currentProjectId));
     const selectedProjectId = data?.data;
+    const projectName = selectedProjectId?.projectName;
     //console.log(selectedProjectId, params);
     //console.log("cascasc");
 
@@ -30,7 +31,7 @@ useEffect(()=>{
         </Grid>
         <Grid item  xl={10} lg={9} md={8} sm={12} xs={12}  pr={1}  sx={{ ...themeStyle.scrollable}} overflow={'hidden'}>
         <Stack><Paper sx={{ borderRadius: '14px', }}><ProjectsNavbar project={selectedProjectId} /></Paper></Stack>
-        <Outlet  />
+        <Outlet context={[projectName]}  />
         </Grid>
     </Grid>
 

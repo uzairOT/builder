@@ -385,7 +385,7 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
                           </TableCell>
                           {tableHeader &&
                             tableHeader.map((column, index) => {
-                              let value = row[column.id];
+                              const value = row[column.id];
                               const status = column.id === "projectStatus";
 
                               return (

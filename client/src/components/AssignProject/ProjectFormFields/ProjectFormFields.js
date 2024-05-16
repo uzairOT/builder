@@ -155,6 +155,7 @@ function ProjectFormFields() {
               >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <MobileDatePicker
+                  sx={{width:'100%'}}
                     value={dayjs(start_time)}
                     onChange={handleStartDateChange}
                     format="YYYY/MM/DD"
@@ -186,6 +187,7 @@ function ProjectFormFields() {
               >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <MobileDatePicker
+                  sx={{width:'100%', paddingRight: '0px'}}
                     value={dayjs(end_time)}
                     onChange={handleEndDateChange}
                     format="YYYY/MM/DD"

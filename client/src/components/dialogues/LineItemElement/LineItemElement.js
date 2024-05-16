@@ -24,6 +24,7 @@ import {
   Autocomplete,
   Stack,
   IconButton,
+  InputAdornment,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -89,6 +90,8 @@ function AddLineElement({
   const [selectedOption, setSelectedOption] = useState(null);
   const [start, setStart] = useState(LineItem ? dayjs(LineItem.start_day) : null);
   const [end, setEnd] = useState(LineItem ? dayjs(LineItem.end_day) : null);
+  const [margin, setMargin] = useState('');
+  const [percentage, setPercentage] = useState('');
 
   const handleStartDateChange = (newValue) => {
     setStart(newValue);
@@ -121,6 +124,8 @@ function AddLineElement({
     unitPrice,
     total,
     longDescription,
+    margin,
+    percentage
   };
 
   // useEffect(()=>{
@@ -166,6 +171,35 @@ function AddLineElement({
     setOpen(false);
   };
 
+  const handlePercentageChange = (e) => {
+    if(total){
+      const percent = e.target.value
+      const result = (total*percent)/100
+      const roundedResult = Math.round(result*10)/10
+      setPercentage(()=> {
+        setMargin(roundedResult);
+        return percent;
+      })
+    } else{
+      //toastId added to prevent duplication
+      toast.warning('Total field is empty!', {toastId: 12})
+    }
+  }
+
+  const handleMarginChange = (e) => {
+    if(total){
+      const inputMargin = e.target.value
+      const result = (inputMargin*100)/total
+      const roundedResult = Math.round(result*10)/10
+      setMargin(()=> {
+        setPercentage(roundedResult);
+        return inputMargin;
+      })
+    } else{
+      //toastId added to prevent duplication
+      toast.warning('Total field is empty!', {toastId: 12})
+    }
+  }
   // console.log("Line Item Element", LineItem);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -224,6 +258,8 @@ function AddLineElement({
         unitPrice,
         total,
         longDescription,
+        margin,
+        percentage,
       } = formData;
       const newLineItem = {
         projectId: projectId,
@@ -235,7 +271,9 @@ function AddLineElement({
         unitPrice,
         total,
         longDescription,
-        userId: userInfo.user.id
+        userId: userInfo.user.id,
+        margin,
+        percentage
       };
       if(!newLineItem.unit){
         toast.warning('Please enter unit');
@@ -480,6 +518,7 @@ useEffect(()=>{
                   })
                 }
               />
+               
 
               <Typography sx={typoText}>Total</Typography>
               <TextField
@@ -492,6 +531,42 @@ useEffect(()=>{
                 variant="standard"
                 value={formData.total}
               />
+               <Box sx={parallelBox}>
+                <Box sx={innerBox}>
+                  <Typography sx={typoText}>Margin</Typography>
+                 
+                    <TextField
+                sx={{...inputStyle, marginLeft:'18px'}}
+                required
+                margin="dense"
+                id="margin"
+                name="margin"
+                type="margin"
+                variant="standard"
+                value={formData.margin}
+                onChange={handleMarginChange}
+              />
+                 
+                </Box>
+                <Box sx={innerBox}>
+                  <Typography sx={typoText}>Percentage</Typography>
+                  <TextField
+                sx={{...inputStyle, marginLeft:'18px'}}
+                required
+                margin="dense"
+                id="margin"
+                name="margin"
+                type="margin"
+                variant="standard"
+                value={formData.percentage}
+                onChange={handlePercentageChange}
+                InputProps={{
+                  endAdornment: <InputAdornment position="start">%</InputAdornment>,
+                }}
+                
+              />
+                </Box>
+              </Box>
               {/* <Box sx={parallelBox}>
                 <Box sx={innerBox}>
                   <Typography sx={typoText}>Start</Typography>

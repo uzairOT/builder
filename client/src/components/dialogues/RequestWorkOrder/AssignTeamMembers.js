@@ -37,7 +37,7 @@ const themeStyle = {
   },
 };
 
-const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes, data }) => {
+const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes, data, hideCheck }) => {
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
   //console.log("location: ", location, " projectId: ", projectId);
@@ -78,14 +78,14 @@ const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes, data }) 
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Assign Users
+           {hideCheck ? "Assigned Users" : "Assign Users"}
           </Typography>
           <Divider />
           <Box>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell></TableCell>
+                  {!hideCheck &&<TableCell></TableCell>}
                   <TableCell>Name</TableCell>
                   <TableCell>Role</TableCell>
                   <TableCell>Email</TableCell>
@@ -100,14 +100,14 @@ const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes, data }) 
                 ) : (
                   team?.map((row, index) => (
                     <TableRow key={index}>
-                      <TableCell>
+                      {!hideCheck && <TableCell>
                         <Checkbox
                           checked={assignedCheckboxes.includes(row.userId)}
                           onChange={(event) =>
                             handleEmailCheckBoxes(event, row)
                           }
                         />
-                      </TableCell>
+                      </TableCell>}
                       <TableCell>
                         {row.firstName} {row.lastName}
                       </TableCell>
