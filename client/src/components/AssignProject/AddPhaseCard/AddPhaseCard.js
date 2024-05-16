@@ -388,6 +388,7 @@ const AddPhaseCard = ({
                   <TableCell sx={tableHeadings}>Start</TableCell>
                   <TableCell sx={tableHeadings}>End</TableCell>
                   <TableCell sx={tableHeadings}>Total Cost</TableCell>
+                  <TableCell sx={tableHeadings}>Margin</TableCell>
                   <TableCell sx={tableHeadings}>Notes</TableCell>
                   <TableCell sx={tableHeadings}>Status</TableCell>
 
@@ -433,6 +434,7 @@ const AddPhaseCard = ({
                       </TableCell>
 
                       <TableCell>${row.total}</TableCell>
+                      <TableCell>${row?.margin}</TableCell>
 
                       <TableCell>{row.notes}</TableCell>
                       <TableCell>{row.status}</TableCell>
