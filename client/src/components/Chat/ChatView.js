@@ -6,7 +6,10 @@ import {
   Typography,
   CircularProgress,
   Modal,
+  Button,
+  LinearProgress,
 } from "@mui/material";
+import { animateScroll as scroll, Events, scrollSpy } from "react-scroll";
 import { TextField, IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { io } from "socket.io-client";
@@ -19,7 +22,7 @@ import axios from "axios";
 import { uploadToS3 } from "../../utils/S3";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import {socket} from "../../socket";
+import { socket } from "../../socket";
 let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
 const currentUser = userInfo?.user;
@@ -40,6 +43,7 @@ function ChatView({ isAdminPage, project }) {
   const [fileName, setFileName] = useState("");
   const [fileType, setFileType] = useState("");
   const [loading, setLoading] = useState(false);
+  const [msgLoading, setMsgLoading] = useState(true);
   const [image, setImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState("");
   const [s3Url, setS3Url] = useState("");
@@ -47,7 +51,10 @@ function ChatView({ isAdminPage, project }) {
   const messageBoxRef = useRef(null);
   const [usersOnline, setUsersOnline] = useState({}); // State to store online status of users
   const [recipientType, setRecipentType] = useState("team");
-
+  const [offset, setOffset] = useState(0);
+  const [hasMoreMessages, setHasMoreMessages] = useState(true);
+  const boxRef = useRef(null);
+  const [scrollingUp, setScrollingUp] = useState(false);
   const handleOpenModal = (imageUrl) => {
     setSelectedImage(imageUrl);
     setOpenModal(true);
@@ -58,13 +65,6 @@ function ChatView({ isAdminPage, project }) {
   const handleTeamClick = () => {
     setRecipentType("team");
   };
-
-  useEffect(() => {
-    // Scroll to the bottom when msg updates
-    if (messageBoxRef.current) {
-      messageBoxRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages]);
 
   const handleSend = () => {
     if (message === "") {
@@ -84,33 +84,75 @@ function ChatView({ isAdminPage, project }) {
     setSelectedFile("");
     setImage(null);
     setS3Url(""); // Clear message input after sending
+    if (boxRef.current) {
+      boxRef.current.scrollTop = boxRef.current.scrollHeight;
+    }
   };
-
-  const fetchProjectChat = async () => {
+  //
+  const fetchProjectChat = async (newOffset, direction) => {
+    setMsgLoading(true);
     try {
-      const res = await getChatMessages({ projectId: id }).unwrap();
-      setMessages(res.data);
+      const res = await getChatMessages({
+        projectId: id,
+        offset: newOffset,
+      }).unwrap();
+      if (res.data.length === 0) {
+        setHasMoreMessages(false);
+        setMsgLoading(false);
+        return;
+      }
+      if (direction === "up") {
+        setMessages((prevMessages) => {
+          const revArray = [...res.data].reverse();
+          const newMessages = [...revArray, ...prevMessages];
+          const uniqueMessages = Array.from(
+            new Set(newMessages.map((msg) => msg.id))
+          ).map((id) => newMessages.find((msg) => msg.id === id));
+          return uniqueMessages;
+        });
+        if (boxRef.current) {
+          boxRef.current.scrollTop += 200; // Add some space for user to scroll up again
+        }
+        // if (boxRef.current) {
+        //   boxRef.current.scrollTop +=
+        //     boxRef.current.scrollHeight - boxRef.current.clientHeight;
+        // }
+        return;
+      } else {
+        setMessages([...res.data].reverse());
+        if (messageBoxRef.current) {
+          messageBoxRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+      }
     } catch (error) {
       console.log(error);
     }
+    setMsgLoading(false);
   };
-
+  //
   useEffect(() => {
-    console.log('================================', id)
-    // if (messages.length < 1) {
-      fetchProjectChat();
-    // }
+    fetchProjectChat(offset, "down");
     socket.emit("joinchat", {
       pId: id,
       userId: currentUser?.id,
     });
 
     const messageListener = (msg) => {
-      setMessages((prevMessages) => [...prevMessages, msg]);
+      setMessages((prevMessages) => {
+        const newMessages = [...prevMessages, msg];
+        // const uniqueMessages = Array.from(new Set(newMessages.map(m => m.id)))
+        //   .map(id => newMessages.find(m => m.id === id));
+        scroll.scrollToBottom({
+          containerId: "chatBox",
+          duration: 300,
+          smooth: true,
+        });
+        return newMessages;
+      });
     };
 
     socket.on("message", messageListener);
-    // Listen for user status changes
+
     const userStatusListener = (data) => {
       setUsersOnline((prevUsersOnline) => ({
         ...prevUsersOnline,
@@ -118,15 +160,13 @@ function ChatView({ isAdminPage, project }) {
       }));
     };
     socket.on("userStatusChanged", userStatusListener);
+
     return () => {
       socket.off("message", messageListener);
       socket.off("userStatusChanged", userStatusListener);
     };
   }, [id]);
-  // Function to get user status class
-  // useEffect(() => {
-  //   console.log(messages);
-  // }, [messages]);
+
   const handleImageUpload = (e) => {
     const file = e.target?.files[0];
     setFileName(file?.name);
@@ -135,7 +175,6 @@ function ChatView({ isAdminPage, project }) {
     if (selectedFile) {
       handleAtachmentSubmit();
     }
-    // handleAtachmentSubmit();
     const reader = new FileReader();
     reader.onloadend = () => {
       setImage(reader.result);
@@ -145,7 +184,7 @@ function ChatView({ isAdminPage, project }) {
       reader.readAsDataURL(file);
     }
   };
-  // Attachment function
+
   useEffect(() => {
     if (selectedFile) {
       handleAtachmentSubmit();
@@ -163,6 +202,7 @@ function ChatView({ isAdminPage, project }) {
       console.log(e);
     }
   };
+
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
@@ -176,6 +216,13 @@ function ChatView({ isAdminPage, project }) {
       }
     }
   };
+  // useEffect(() => {
+  //   // Scroll to the bottom when messages update (when not scrolling up)
+  //   if (messageBoxRef.current && !scrollingUp) {
+  //     messageBoxRef.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // }, [messages]);
+
   const handleClearImageState = () => {
     setFileName("");
     setFileType("");
@@ -183,6 +230,34 @@ function ChatView({ isAdminPage, project }) {
     setImage(null);
     setS3Url("");
   };
+
+  const handleLoadOld = () => {
+    const newOffset = offset + 10;
+    setOffset(newOffset);
+    fetchProjectChat(newOffset, "up");
+    setScrollingUp(true);
+  };
+
+  const handleScroll = () => {
+    if (!boxRef.current) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = boxRef.current;
+
+    if (scrollTop === 0 && hasMoreMessages) {
+      handleLoadOld();
+    }
+  };
+
+  useEffect(() => {
+    const boxElement = boxRef.current;
+    if (boxElement) {
+      boxElement.addEventListener("scroll", handleScroll);
+      return () => {
+        boxElement.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [offset, hasMoreMessages]);
+
   return (
     <>
       <Stack direction={"column"} justifyContent={"flex-start"} height={"100%"}>
@@ -199,6 +274,7 @@ function ChatView({ isAdminPage, project }) {
           </IconButton>
         </Box>
         <Box
+          ref={boxRef}
           sx={{
             height: {
               xl: "72.5vh",
@@ -211,6 +287,16 @@ function ChatView({ isAdminPage, project }) {
             ...scrollable,
           }}
         >
+          <Box sx={{ color: "primary.main" }}>
+            {msgLoading ? (
+              <Box sx={{ width: "100%" }}>
+                <LinearProgress />
+              </Box>
+            ) : (
+              <></>
+            )}
+          </Box>
+          {/* <Button onClick={handleLoadMore}>Load More</Button> */}
           {image ? (
             <Box
               height={"95%"}
@@ -324,7 +410,7 @@ function ChatView({ isAdminPage, project }) {
                             borderBottomRightRadius: 10,
                             borderBottomLeftRadius: 30,
                           }}
-                          ref={messageBoxRef}
+                          // ref={messageBoxRef}
                         >
                           <>
                             {[
@@ -385,6 +471,9 @@ function ChatView({ isAdminPage, project }) {
                             )}
                           </>
 
+                          {/* Time:{moment
+                          .utc(msg.createdAt).tz(moment.tz.guess())
+                          .format("MMM, D, YYYY HH:mm A")} || mesg:   */}
                           {msg.content}
                           {/* <div ref={messageBoxRef} /> */}
                         </Box>
@@ -416,6 +505,7 @@ function ChatView({ isAdminPage, project }) {
               )}
             </>
           )}
+          {/* <Button onClick={handleLoadOld}>Load Below</Button> */}
         </Box>
         <Box
           sx={{ display: "flex", alignItems: "center", mb: 2, ml: 2, mr: 2 }}
