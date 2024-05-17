@@ -13,7 +13,7 @@ import { animateScroll as scroll, Events, scrollSpy } from "react-scroll";
 import { TextField, IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { io } from "socket.io-client";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { useGetChatMessagesMutation } from "../../redux/apis/Chat/chatApiSlice";
 import moment from "moment";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
@@ -30,7 +30,7 @@ const currentUser = userInfo?.user;
 //   query: { userId: currentUser?.id },
 // });
 
-function ChatView({ isAdminPage, project }) {
+function ChatView({ isAdminPage }) {
   const [openModal, setOpenModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const handleCloseModal = () => {
@@ -51,7 +51,8 @@ function ChatView({ isAdminPage, project }) {
   const messageBoxRef = useRef(null);
   const [usersOnline, setUsersOnline] = useState({}); // State to store online status of users
   const [recipientType, setRecipentType] = useState("team");
-  const [offset, setOffset] = useState(0);
+ const [projectName] = useOutletContext()
+   const [offset, setOffset] = useState(0);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const boxRef = useRef(null);
   const [scrollingUp, setScrollingUp] = useState(false);
@@ -267,7 +268,7 @@ function ChatView({ isAdminPage, project }) {
             sx={{ marginRight: "1rem" }}
           ></Avatar>
           <Typography sx={{ fontSize: "15px", fontWeight: 600 }}>
-            {usersOnline ? "Online" : "Ofline"}
+          {projectName}
           </Typography>
           <IconButton>
             <FiberManualRecordIcon sx={{ fontSize: 15, color: "#3B9434" }} />

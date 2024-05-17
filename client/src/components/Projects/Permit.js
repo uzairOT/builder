@@ -61,7 +61,7 @@ function Permit({ view, type }) {
   return (
     <div style={{ width: "100%" }}>
       <Box sx={themeStyle.titleBox}>
-        <Typography sx={themeStyle.titleTypo}>{view}</Typography>
+        <Typography sx={themeStyle.titleTypo}>{view} ({RecentfileUrls?.length} items) </Typography>
         <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>
           Add {view}
         </Button>
@@ -75,7 +75,7 @@ function Permit({ view, type }) {
         }}
       >
         <Box sx={themeStyle.permitBox}>
-          <Box sx={{ width: "15%" }}>
+          {/* <Box sx={{ width: "15%" }}>
             <Typography
               sx={{ ...themeStyle.titleTypo, ...themeStyle.permitType }}
             >
@@ -89,9 +89,9 @@ function Permit({ view, type }) {
             <Box sx={{ margin: "1rem 2rem" }}>
               {isDownloading && <CircularProgress size={"18px"} />}
             </Box>
-          </Box>
+          </Box> */}
           {/* Render avatars dynamically with image URLs */}
-          <Stack direction={"row"} maxWidth={"800px"} sx={scrollable}>
+          <Stack direction={"row"} flexWrap={'wrap'} maxWidth={"900px"} maxHeight={'500px'} sx={scrollable} >
             {RecentfileUrls.map((url, index) => {
               const fileType = url.fileUrl.split(".").pop().toLowerCase();
               const fileName = url.fileUrl.split("/").pop().toLowerCase();
@@ -102,12 +102,13 @@ function Permit({ view, type }) {
                 "gif",
                 "bmp",
                 "svg",
+                "webp",
               ].includes(fileType);
               return isImage ? ( // Check if url.fileUrl exists before splitting
                 <>
                   <Box
                     onClick={() => {
-                      handleModalOpen(url.fileUrl);
+                      handleModalOpen(url);
                     }}
                     style={{ cursor: "pointer" }}
                   >
@@ -118,6 +119,7 @@ function Permit({ view, type }) {
                       style={themeStyle.AvatarBox}
                       download="image"
                     />
+                    <Typography ml={'0.5rem'} fontFamily={'inherit'} fontSize={'12px'} width={'100px'} whiteSpace={'nowrap'} textOverflow={'ellipsis'} overflow={'hidden'}>{url?.notes}</Typography>
                   </Box>
                 </>
               ) : (
@@ -137,13 +139,14 @@ function Permit({ view, type }) {
                         border: "none",
                       }}
                     />
+                    <Typography ml={'0.5rem'}  fontFamily={'inherit'} fontSize={'12px'} width={'100px'} whiteSpace={'nowrap'} textOverflow={'ellipsis'} overflow={'hidden'} >{url?.notes}</Typography>
                   </Box>
                 </>
               ) 
             })}
           </Stack>
         </Box>
-        <Box sx={themeStyle.permitBox}>
+        {/* <Box sx={themeStyle.permitBox}>
           <Box sx={{ width: "15%" }}>
             <Typography
               sx={{ ...themeStyle.titleTypo, ...themeStyle.permitType }}
@@ -156,7 +159,7 @@ function Permit({ view, type }) {
               Permits
             </Typography>
           </Box>
-          {/* Render avatars dynamically with image URLs */}
+          Render avatars dynamically with image URLs
           {OlderfileUrls.map((url, index) => (
             <Avatar
               key={index}
@@ -165,7 +168,7 @@ function Permit({ view, type }) {
               sx={themeStyle.AvatarBox} // Adjust size as needed
             />
           ))}
-        </Box>
+        </Box> */}
       </Box>
       {openModal && <Modal
         open={true}
@@ -174,7 +177,7 @@ function Permit({ view, type }) {
         aria-describedby="modal-description"
       
       >
-        <Box sx={style} >
+        <Box style={{...style, outline: 'none'}} >
           <IconButton
             onClick={handleClose}
             aria-label="close"
@@ -183,16 +186,18 @@ function Permit({ view, type }) {
             {/* <CloseIcon /> */}
           </IconButton>
           <img
-            src={modalUrl}
+            src={modalUrl.fileUrl}
             alt={`file`}
             style={
               {
                 width: '100%', // Adjust width as needed
-                maxWidth: '700px', // Set a maximum width for responsiveness
-                maxHeight: '500px', // Set a maximum height for responsiveness
+                // maxWidth: '700px', // Set a maximum width for responsiveness
+                // maxHeight: '500px', // Set a maximum height for responsiveness
+
               }
             }
           />
+        <Typography fontFamily={'inherit'} fontSize={'12px'}  textOverflow={'ellipsis'}>{modalUrl?.notes}</Typography>
         </Box>
       </Modal>}
       {open && (
@@ -214,7 +219,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
+  borderRadius:'14px',
   boxShadow: 24,
   p: 4,
 };
@@ -231,7 +236,7 @@ const scrollable = {
   "&:hover::-webkit-scrollbar-thumb": {
     backgroundColor: "#ddd",
   },
-  overflowX: "scroll",
+  overflowY: "scroll",
 };
 const themeStyle = {
   titleBox: {
@@ -276,8 +281,8 @@ const themeStyle = {
     background: "#EFF5FF",
     width: "93%",
     display: "flex",
-    flexDirection: "row",
     marginTop: "2rem",
+    
   },
   permitType: {
     color: "#4C8AB1",
@@ -295,7 +300,7 @@ const themeStyle = {
     background: "none",
     width: "100px",
     height: "100px",
-    margin: "2rem 0.5rem",
+    margin: "2rem 0.5rem 0rem 0.5rem",
     ObjectFit: "contain",
   },
 };

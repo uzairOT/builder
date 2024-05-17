@@ -239,6 +239,7 @@ const AddPhaseCard = ({
     const phaseId = phaseData.id;
     return selectedRows[phaseId]?.rows.includes(row);
   };
+  console.log('PHASE :', phaseData)
 
   return (
     <div style={{ width: "100%" }}>
@@ -384,9 +385,10 @@ const AddPhaseCard = ({
                   <TableCell sx={tableHeadings}>Unit</TableCell>
                   <TableCell sx={tableHeadings}>Unit Cost</TableCell>
                   <TableCell sx={tableHeadings}>Quantity</TableCell>
-                  {/* <TableCell sx={tableHeadings}>Start</TableCell>
-                  <TableCell sx={tableHeadings}>End</TableCell> */}
+                  <TableCell sx={tableHeadings}>Start</TableCell>
+                  <TableCell sx={tableHeadings}>End</TableCell>
                   <TableCell sx={tableHeadings}>Total Cost</TableCell>
+                  <TableCell sx={tableHeadings}>Margin</TableCell>
                   <TableCell sx={tableHeadings}>Notes</TableCell>
                   <TableCell sx={tableHeadings}>Status</TableCell>
 
@@ -424,14 +426,15 @@ const AddPhaseCard = ({
                       <TableCell>{row.unit}</TableCell>
                       <TableCell>${row.unit_price}</TableCell>
                       <TableCell>{row.quantity}</TableCell>
-                      {/* <TableCell>
-                        {moment(row.start_day).format("YYYY-MM-DD")}
+                      <TableCell>
+                        {row?.WorkOrderReqs ? moment(row?.WorkOrderReqs[0]?.start_day).format("MMM, DD, YYYY HH:mm a") : '-'}
                       </TableCell>
                       <TableCell>
-                        {moment(row.end_day).format("YYYY-MM-DD")}
-                      </TableCell> */}
+                        {row?.WorkOrderReqs ? moment(row?.WorkOrderReqs[0]?.end_day).format("MMM, DD, YYYY HH:mm a") : '-'}
+                      </TableCell>
 
                       <TableCell>${row.total}</TableCell>
+                      <TableCell>${row?.margin}</TableCell>
 
                       <TableCell>{row.notes}</TableCell>
                       <TableCell>{row.status}</TableCell>

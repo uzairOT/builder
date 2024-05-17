@@ -417,7 +417,8 @@ const NotificationDetailModal = ({
                       return null; // or <></>
                     })}
                   </Stack>
-                  <AssignTeamMembers
+                  <AssignTeamMembers 
+                    hideCheck={true}
                     assignedCheckboxes={assignedCheckboxes}
                     setAssignedCheckboxes={setAssignedCheckboxes}
                     data={data}
