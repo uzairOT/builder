@@ -204,7 +204,7 @@ function App() {
           <Route path="/" element={<Login />} />
         )}
         <Route
-          path="/invitation/:projectId/:email/:userRole/:companyName"
+          path="/invitation/:invitationId/:email/:companyName"
           element={<Invitation />}
         />
 

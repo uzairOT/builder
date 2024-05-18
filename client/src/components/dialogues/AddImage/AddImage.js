@@ -10,6 +10,8 @@ import {
   Box,
   Typography,
   CircularProgress,
+  Stack,
+  IconButton,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
 import upload from "./assets/upload.png";
@@ -20,6 +22,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { fileTypeIcons } from "./assets/fileTypes";
 import filePlaceHolder from '../../../assets/FileSvg/file.svg'
+import CloseIcon from '@mui/icons-material/Close';
 
 
 function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
@@ -162,7 +165,12 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
           onSubmit: handleSubmit,
         }}
       >
+        <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} >
         <DialogTitle sx={themeStyle.typoTitle}>{heading}</DialogTitle>
+        <IconButton onClick={handleClickClose}>
+          <CloseIcon />
+          </IconButton>
+        </Stack>
         <DialogContent>
           <div
             style={{ textAlign: "center" }}

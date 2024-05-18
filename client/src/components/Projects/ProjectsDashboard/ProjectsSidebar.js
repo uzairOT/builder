@@ -125,16 +125,15 @@ const ProjectsSidebar = () => {
             </Typography>
           </BuilderProButton>
         </Stack>
-        <Box
-          sx={{
-            ...themeStyle.scrollable,
-            height: {
-              xl: "50vh",
+        {/* xl: "50vh",
               lg: "45vh",
               md: "45vh",
               sm: "48vh",
-              xs: "48vh",
-            },
+              xs: "48vh", */}
+        <Box
+          sx={{
+            ...themeStyle.scrollable,
+            height: 'calc(92vh - 220px)'
           }}
         >
           <Stack spacing={1} pl={2} pr={2} pt={1}>

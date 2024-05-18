@@ -13,8 +13,8 @@ const InitialProposalView = () => {
   const projectId = id;
   return (
     <>
-    <Paper  style={{ ...themeStyle.borders, width: "99%", marginBottom:'4px'}}>
-   <Stack p={1} borderRadius={'14px'}>
+    <Paper  style={{ ...themeStyle.borders, ...themeStyle.scrollable,  width: "100%", marginBottom:'4px', marginTop:'8px'}}>
+   <Stack p={1} borderRadius={'14px'} >
       <AddPhaseView projectId={projectId} InitialProposalView={true} adminProjectView={true} view={'Initial Proposal'} authUserRole={authUserRole}/>
     </Stack>
     </Paper>
@@ -26,6 +26,21 @@ const themeStyle = {
   borders: {
     borderRadius: "14px",
   },
+  scrollable: {
+    scrollbarWidth: 'none',  // For Firefox
+    '-ms-overflow-style': 'none',  // For IE and Edge
+    '&::-webkit-scrollbar': {
+      width: '6px'
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: 'transparent',
+      transition: 'background-color 0.3s',
+    },
+    '&:hover::-webkit-scrollbar-thumb': {
+      backgroundColor: '#ddd',
+    },
+    overflowY: 'scroll'
+  }
 }
 export const projectUserRoleAuth = async ({params, request}) =>{
   const user = localStorage.getItem('userInfo')

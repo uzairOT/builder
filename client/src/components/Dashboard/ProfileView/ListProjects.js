@@ -6,6 +6,7 @@
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 import {useDispatch} from 'react-redux';
 import {addProjects} from '../../../redux/slices/Project/userProjectsSlice'
+import { Height } from "@mui/icons-material";
   
   const ListProjects = () => {
     const dispatch = useDispatch();
@@ -43,7 +44,7 @@ import {addProjects} from '../../../redux/slices/Project/userProjectsSlice'
         >
           All Listed Projects
         </Typography>
-        <Box sx={{...themeStyle.scrollable,height:{xl:'47vh',lg:'59vh',md:"57vh",sm:"75vh",xs:"48vh"} }} pb={2}>
+        <Box sx={{...themeStyle.scrollable,height: 'calc(90vh - 370px)' }} pb={2}>
        {error ? <>{error?.data?.message}</> : <Stack spacing={1} pl={'14px'} pr={'14px'} >
           {isLoading ? <Stack justifyContent={'center'} alignItems={'center'}><CircularProgress/></Stack>: <>
           {data?.projects?.map((projectProfileCard) => {

@@ -8,6 +8,7 @@ import {
   Button,
   Divider,
   FormControl,
+  IconButton,
   List,
   ListItem,
   ListItemText,
@@ -39,6 +40,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice";
 import { fetchEvents } from "../../redux/slices/Events/eventsSlice";
+import CloseIcon from '@mui/icons-material/Close';
 
 const NotificationDetailModal = ({
   rowCheckboxes,
@@ -143,15 +145,21 @@ const NotificationDetailModal = ({
           }}
           overflow={"scroll"}
         >
+          <Stack p={2} direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+
           <Typography
-            p={2}
+            
             color={"#4C8AB1"}
             fontFamily={"inherit"}
             fontSize={"22px"}
             fontWeight={"600"}
-          >
+            >
             Work Order Details
           </Typography>
+          <IconButton onClick={handleClose}>
+          <CloseIcon />
+          </IconButton>
+            </Stack>
           <Divider />
           <Stack
             direction={{

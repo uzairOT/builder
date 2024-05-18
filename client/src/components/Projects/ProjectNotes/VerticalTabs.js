@@ -7,7 +7,7 @@ import moment from "moment-timezone";
 
 const VerticalTabs = ({ notes, handleSelectedButton , selectedButton}) => {
   return (
-    <Stack direction={"column"}  p={1} overflow='scroll' height={'70vh'}>
+    <Stack direction={"column"}  p={1} sx={scrollable} height='calc(93vh - 221px)'>
       <ButtonGroup orientation="vertical" variant="plan" >
         {notes?.map((note, index) => {
           return (
@@ -20,7 +20,7 @@ const VerticalTabs = ({ notes, handleSelectedButton , selectedButton}) => {
                  color={'#202227'}
                   textAlign={"left"}
                   width={"200px"}
-                  textOverflow={"ellipsis"}
+                  overflow={"hidden"}
                   whiteSpace={"nowrap"}
                   height={'100%'}
                 >
@@ -39,6 +39,21 @@ const VerticalTabs = ({ notes, handleSelectedButton , selectedButton}) => {
       </ButtonGroup>
     </Stack>
   );
+};
+const scrollable = {
+  scrollbarWidth: "none", // For Firefox
+  "-ms-overflow-style": "none", // For IE and Edge
+  "&::-webkit-scrollbar": {
+    width: "6px",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "transparent",
+    transition: "background-color 0.3s",
+  },
+  "&:hover::-webkit-scrollbar-thumb": {
+    backgroundColor: "#ddd",
+  },
+  overflowY: "scroll",
 };
 
 export default VerticalTabs;

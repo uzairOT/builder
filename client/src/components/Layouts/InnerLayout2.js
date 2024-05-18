@@ -19,6 +19,7 @@ const InnerLayout2 = () => {
 
   const handleOpen = () => {
       navigate(`/projects/${id}/change-order`);
+    //This component is depreciated
       // setOpen(true);
   }
   const handleClose = () => {
@@ -32,7 +33,7 @@ const InnerLayout2 = () => {
         <Stack flex={{xl:2}}display={{xl:"flex",lg:'none'}}><Paper style={themeStyle.border}><MonitoringFinances /></Paper></Stack>
         <Stack flex={{xl:8,lg:7}}><Paper style={themeStyle.border}><ProjectInfoAndTeam /></Paper></Stack>
         </Stack>
-        <Stack direction={{xl:'row',}} pt={1} spacing={1} sx={{height:'68%'}}>
+        <Stack direction={{xl:'row',}} pt={1} spacing={1} sx={{height:'calc(92vh - 295px)'}}>
         <Outlet />
         {/* Change Order Tab navigation */}
         <Stack flex={1} >
@@ -71,6 +72,7 @@ const InnerLayout2 = () => {
             {/* Second Item of Stack */}
             <Stack alignItems={'flex-end'} pr={4} pt={2}>
             <BuilderProButton variant={'contained'} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'} fontSize={'14px'} backgroundColor={'#4C8AB1'} handleOnClick={handleOpen}>Change Order Request</BuilderProButton>
+            {/* This component is depreciated */}
             {
                 open && <ChangeOrderRequest handleClose={handleClose} handleOpen={handleOpen} heading={'Change Order'} admin={true}/>
             }

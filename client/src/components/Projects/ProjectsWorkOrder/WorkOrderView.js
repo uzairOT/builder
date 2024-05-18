@@ -37,10 +37,12 @@ const WorkOrderView = () => {
         ...themeStyle.borders,
         width: "99%",
         marginBottom: "4px",
+        marginTop: '8px',
         height: !changeView ? "" : "100%",
+        ...themeStyle.scrollable,
       }}
     >
-      <Box pt={1} pb={0}>
+      <Box pt={0.5} pb={0}>
         <BuilderProButton
           backgroundColor={"#4C8AB1"}
           variant={"contained"}
@@ -54,7 +56,7 @@ const WorkOrderView = () => {
           {changeView ? "Request New Work Order" : "View Work Order Logs"}
         </BuilderProButton>
       </Box>
-      <Stack pt={1}>
+      <Stack pt={1} width={'inherit'}>
         <Stack justifyContent={"flex-start"} height={"95%"}>
           {changeView ? (
             <Stack>
@@ -69,13 +71,7 @@ const WorkOrderView = () => {
           ) : (
             <>
               <Box
-                height={{
-                  xl: "45vh",
-                  lg: "45vh",
-                  md: "45vh",
-                  sm: "45vh",
-                  xs: "45vh",
-                }}
+                height= '250px'
                 bgcolor={"white"}
               >
                 <TaskCalender
@@ -85,7 +81,7 @@ const WorkOrderView = () => {
                   isDrawerOpen={true}
                 />
               </Box>
-              <Stack p={1} borderRadius={"14px"}>
+              <Stack p={1} borderRadius={"14px"} width={'99%'}>
                 <AddPhaseView
                   refetchChangeOrder={refetch}
                   projectId={id}
@@ -106,6 +102,21 @@ export default WorkOrderView;
 const themeStyle = {
   borders: {
     borderRadius: "14px",
+  },
+  scrollable: {
+    scrollbarWidth: 'none',  // For Firefox
+    '-ms-overflow-style': 'none',  // For IE and Edge
+    '&::-webkit-scrollbar': {
+      width: '6px'
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: 'transparent',
+      transition: 'background-color 0.3s',
+    },
+    '&:hover::-webkit-scrollbar-thumb': {
+      backgroundColor: '#ddd',
+    },
+    overflowY: 'scroll'
   },
   border: {
     borderRadius: "14px",

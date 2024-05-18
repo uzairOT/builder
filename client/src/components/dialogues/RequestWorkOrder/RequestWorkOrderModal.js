@@ -13,6 +13,7 @@ import {
   ListItem,
   ListItemText,
   List,
+  IconButton,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
@@ -51,6 +52,7 @@ import {
 } from "@mui/x-date-pickers";
 import UpdateLineDialogue from "../UpdateLineDialogue/UpdateLineDialogue";
 import { io } from "socket.io-client";
+import CloseIcon from "@mui/icons-material/Close";
 import { socket } from "../../../socket";
 
 const local = localStorage.getItem("userInfo");
@@ -419,15 +421,24 @@ const RequestWorkOrderModal = ({
           }}
           overflow={"scroll"}
         >
-          <Typography
+          <Stack
+            direction={"row"}
             p={2}
-            color={"#4C8AB1"}
-            fontFamily={"inherit"}
-            fontSize={"22px"}
-            fontWeight={"600"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
           >
-            {changeOrder ? "Request Change Order" : "Request Work Order"}
-          </Typography>
+            <Typography
+              color={"#4C8AB1"}
+              fontFamily={"inherit"}
+              fontSize={"22px"}
+              fontWeight={"600"}
+            >
+              {changeOrder ? "Request Change Order" : "Request Work Order"}
+            </Typography>
+            <IconButton onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Stack>
           <Divider />
           <Stack
             direction={{

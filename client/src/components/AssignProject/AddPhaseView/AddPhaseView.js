@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Button, Stack, Typography } from "@mui/material";
+import { Grid, Button, Stack, Typography, Box } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import PhaseCard from "../AddPhaseCard/AddPhaseCard";
@@ -246,11 +246,11 @@ function AddPhaseView({
     fetchData();
   };
   return (
-    <Grid container sx={{ ...firstGrid, width: "99%" }}>
+    <Grid container sx={{ ...firstGrid, width: "100%",  }}>
       <Stack
         direction={"row"}
         justifyContent={"space-between"}
-        sx={{ width: "100%" }}
+        // sx={{ width: "100%" }}
       >
         <Stack sx={{ justifyContent: "center" }}>
           {adminProjectView && (
@@ -341,7 +341,7 @@ function AddPhaseView({
       </Stack>
 
       {InitialProposalView ? (
-        <>
+        <Box sx={{height: 'calc(93vh - 140px)', ...themeStyle.scrollable}}>
           {initialPhases !== null &&
           initialPhases[0] !== undefined &&
           initialPhases[0].length !== 0 &&
@@ -352,7 +352,7 @@ function AddPhaseView({
                   key={phase.id}
                   style={{
                     ...slectedCardStyle,
-                    width: "100%",
+                    // width: "100%",
                     cursor: "pointer", // Add cursor pointer to indicate clickable
                     borderRadius: "8px", // Rounded corners
                     boxShadow:
@@ -393,9 +393,10 @@ function AddPhaseView({
               No Phases Available
             </div>
           )}
-        </>
+        </Box>
       ) : (
-        <>
+        <Box sx={{height: adminProjectView ?'calc(92vh - 250px)' : '', ...themeStyle.scrollable, width: {xl:'100%', lg:'100%', md:'100%', sm:'100%', xs:'95vw'}}}>
+        
           {phases !== null &&
           phases[0] !== undefined &&
           phases[0].length !== 0 &&
@@ -406,7 +407,7 @@ function AddPhaseView({
                   key={phase.id}
                   style={{
                     ...slectedCardStyle,
-                    width: "100%",
+                    // width: "100%",
                     cursor: "pointer", // Add cursor pointer to indicate clickable
                     borderRadius: "8px", // Rounded corners
                     boxShadow:
@@ -415,6 +416,7 @@ function AddPhaseView({
                         : "none", // Border and glow effect
                     transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
                     marginTop: "1rem",
+                    
                   }}
                 >
                   <PhaseCard
@@ -445,7 +447,7 @@ function AddPhaseView({
               No Phases Available
             </div>
           )}
-        </>
+        </Box>
       )}
       {showUpdatePhaseDialogue && (
         <UpdatePhaseDialogue
@@ -518,5 +520,22 @@ const slectedCardStyle = {
   margin: "0rem",
   cursor: "pointer",
 };
+const themeStyle = {
+  scrollable: {
+    scrollbarWidth: 'thin',  // For Firefox
+    '-ms-overflow-style': 'none',  // For IE and Edge
+    '&::-webkit-scrollbar': {
+      width: '6px'
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: 'transparent',
+      transition: 'background-color 0.3s',
+    },
+    '&:hover::-webkit-scrollbar-thumb': {
+      backgroundColor: '#ddd',
+    },
+    overflowY: 'scroll'
+  }
+}
 
 export default AddPhaseView;

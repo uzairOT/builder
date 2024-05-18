@@ -457,7 +457,7 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
                     })}
                 {emptyRows > 0 && (
                   <TableRow sx={themeStyle.tableCell} style={{ height: 60 * emptyRows }}>
-                    <TableCell colSpan={6} />
+                    <TableCell rowSpan={6} />
                   </TableRow>
                 )}
               </TableBody>

@@ -37,10 +37,12 @@ const Invitation = () => {
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
-  const { projectId, email, userRole, companyName } = useParams();
-  const role = userRole;
+  const {invitationId,email,companyName } = useParams();
+  // console.log(projectId, email, userRole, companyName);
+  // const role = userRole;
   const [checkUser] = useCheckUserOnInvitationMutation();
-  const params = {projectId, email,  role};
+  const params = {invitationId};
+  console.log(params);
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
 
@@ -93,10 +95,7 @@ const checkUserOnInvitation = async () =>{
     const data = {
       ...values,
       phone,
-      userRole,
-      email,
-      projectId,
-      companyName,
+      invitationId
     };
 
     try {
@@ -271,7 +270,7 @@ const checkUserOnInvitation = async () =>{
 
               <PhoneInput
                 style={{ ...customPhoneStyles,  }}
-                defaultCountry="pk"
+                defaultCountry="us"
                 value={phone}
                 onChange={(phone) => setPhone(phone)}
                 inputStyle={{ ...customeInputStyles }}
