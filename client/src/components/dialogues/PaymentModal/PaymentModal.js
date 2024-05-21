@@ -14,10 +14,12 @@ import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
-import LockIcon from '@mui/icons-material/Lock';
+import LockIcon from "@mui/icons-material/Lock";
 import PayNowTab from "./PayNowTab";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
-
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements, PaymentElement } from "@stripe/react-stripe-js";
+import CheckoutForm from "./CheckoutForm";
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -40,19 +42,41 @@ const PromoCodeButton = styled(Button)({
   textTransform: "capitalize",
 });
 
-const PaymentModal = () => {
+const PaymentModal = (currentPlan) => {
   const [values, setValues] = useState(initialValues);
   const [countries, setCountries] = useState([]);
   const [selectedTab, setSelectedTab] = useState(0);
+  const [stripePromise, setStripePromise] = useState(null);
+  const [clientSecret, setClientSecret] = useState("");
+  const amount = currentPlan;
+  useEffect(() => {
+    fetch("http://localhost:8080/payment/config").then(async (r) => {
+      const { publishableKey } = await r.json();
+      setStripePromise(loadStripe(publishableKey));
+    });
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/payment/create-payment-intent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ amount: amount }),
+    }).then(async (result) => {
+      // console.log("-=-=-=-result ", result);
+      var { clientSecret } = await result.json();
+      setClientSecret(clientSecret);
+    });
+  }, [amount]);
 
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const handleSelectTab = (e, newValue)=> {
+  const handleSelectTab = (e, newValue) => {
     setSelectedTab(newValue);
-  }
-
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,6 +85,7 @@ const PaymentModal = () => {
           "https://countriesnow.space/api/v0.1/countries/flag/images"
         );
         const data = await res.json();
+
         setCountries(data.data);
       } catch (error) {
         console.error(error);
@@ -78,16 +103,15 @@ const PaymentModal = () => {
       fontSize: "14px",
       color: "gray",
     },
-    getTabColor: (index) =>({
-     color: 'gray',
-     "--Tab-indicatorColor" : selectedTab === index ? 'green' : 'transparent',
-     backgroundColor:'transparent'
-    })
+    getTabColor: (index) => ({
+      color: "gray",
+      "--Tab-indicatorColor": selectedTab === index ? "green" : "transparent",
+      backgroundColor: "transparent",
+    }),
   };
-  
 
   return (
-    <Paper style={{ borderRadius: "14px", overflowX:'hidden', width:'100%'  }}>
+    <Paper style={{ borderRadius: "14px", overflowX: "hidden", width: "100%" }}>
       {/* Stack of the Form*/}
       <form>
         <Stack p={3} px={4}>
@@ -161,26 +185,36 @@ const PaymentModal = () => {
               </PromoCodeButton>
             </Stack>
           </Stack>
-          <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} py={1}>
-          <Typography
-            fontFamily={"Inter, sans serif"}
-            fontSize={"18px"}
-            fontWeight={"500"}
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            py={1}
           >
-            2. Payment Method
-          </Typography>
-          <Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-          <LockIcon fontSize="12px" /> 
-          <Typography fontSize={'12px'}>Secure form</Typography>
+            <Typography
+              fontFamily={"Inter, sans serif"}
+              fontSize={"18px"}
+              fontWeight={"500"}
+            >
+              2. Payment Method
+            </Typography>
+            <Stack direction={"row"} alignItems={"center"} spacing={0.5}>
+              <LockIcon fontSize="12px" />
+              <Typography fontSize={"12px"}>Secure form</Typography>
+            </Stack>
           </Stack>
-          </Stack>
-          <Stack py={1} pb={4}>
-            <Tabs 
-            aria-label="Payment tabs" 
-            defaultValue={0} 
-            value={selectedTab}
-            onChange={handleSelectTab}
-            sx={{backgroundColor: 'transparent'}}
+          {clientSecret && stripePromise && (
+            <Elements stripe={stripePromise} options={{ clientSecret }}>
+              <CheckoutForm />
+            </Elements>
+          )}
+          {/* <Stack py={1} pb={4}>
+            <Tabs
+              aria-label="Payment tabs"
+              defaultValue={0}
+              value={selectedTab}
+              onChange={handleSelectTab}
+              sx={{ backgroundColor: "transparent" }}
             >
               <TabList>
                 <Tab style={themeStyle.getTabColor(0)}>Pay now</Tab>
@@ -194,9 +228,13 @@ const PaymentModal = () => {
               </TabPanel>
             </Tabs>
           </Stack>
-          <BuilderProButton variant={'contained'} backgroundColor={'#4C8AB1'}>
-                Purchase
-          </BuilderProButton>
+          <BuilderProButton
+            variant={"contained"}
+            backgroundColor={"#4C8AB1"}
+            onClick={makePayment}
+          >
+            Purchase
+          </BuilderProButton> */}
         </Stack>
       </form>
     </Paper>
@@ -204,4 +242,3 @@ const PaymentModal = () => {
 };
 
 export default PaymentModal;
-

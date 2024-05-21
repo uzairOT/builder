@@ -1,25 +1,48 @@
 import { Divider, Grid, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import SubscriptionCard from "../UI/Card/SubscriptionCard";
 
-const SubscriptionPlans = () => {
+const SubscriptionPlans = ({setCurrentPlan,currentPlan}) => {
+  
   return (
     <Stack p={1} pl={4}>
-      <Typography sx={themeStyle.title} pl={1}>Your Current Plan</Typography>
-        <Stack spacing={2} pb={1} p={1}>
-      <SubscriptionCard current={true} planType={"Business"} />
-      <Divider />
-        </Stack>
-      <Typography sx={themeStyle.title} pb={2}>Update Plan</Typography>
+      {/* <Typography sx={themeStyle.title} pl={1}>
+        Your Current Plan
+      </Typography>
+      <Stack spacing={2} pb={1} p={1}>
+        <SubscriptionCard
+          currentPlan={currentPlan}
+          setCurrentPlan={setCurrentPlan}
+          current={true}
+          planType={"Business"}
+        />
+        <Divider />
+      </Stack> */}
+      <Typography sx={themeStyle.title} pb={2}>
+        {/* Update Plan */}
+        Choose plan
+      </Typography>
       <Grid container spacing={4} p={1}>
         <Grid item xl={6}>
-          <SubscriptionCard planType={"Pro"} />
+          <SubscriptionCard
+            currentPlan={currentPlan}
+            setCurrentPlan={setCurrentPlan}
+            planType={"Pro"}
+          />
         </Grid>
         <Grid item xl={6}>
-          <SubscriptionCard planType={"Business"} />
+          <SubscriptionCard
+            currentPlan={currentPlan}
+            setCurrentPlan={setCurrentPlan}
+            planType={"Business"}
+          />
         </Grid>
         <Grid item xl={6}>
-          <SubscriptionCard planType={"EnterpriseGrid"} />
+          <SubscriptionCard
+            currentPlan={currentPlan}
+            setCurrentPlan={setCurrentPlan}
+            planType={"EnterpriseGrid"}
+          />
         </Grid>
       </Grid>
     </Stack>

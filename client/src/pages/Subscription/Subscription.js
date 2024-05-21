@@ -1,11 +1,11 @@
 import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import SubscriptionSidebar from "../../components/Subscription/SubscriptionSidebar";
 import SubscriptionPlans from "../../components/Subscription/SubscriptionPlans";
 import SubscriptionForm from "../../components/Subscription/SubscriptionForm";
 
 const Subscription = () => {
-
+  const [currentPlan, setCurrentPlan] = useState();
   return (
     <>
       <Grid container height={"100vh"} backgroundColor={"#eff5ff"} spacing={1} overflow={'hidden'} sx={themeStyle.scrollable}>
@@ -14,10 +14,10 @@ const Subscription = () => {
         </Grid>
         <Grid item container xl={10} lg={8} md={8} sm={12} xs={12} spacing={2} height={"99vh"} style={{overflow:'hidden', ...themeStyle.scrollable}}>
         <Grid item xl={7} lg={12} md={12} sm={12} xs={12}>
-        <SubscriptionPlans />
+        <SubscriptionPlans setCurrentPlan={setCurrentPlan} currentPlan={currentPlan}/>
         </Grid>
         <Grid item xl={5} lg={12} md={12} sm={12} xs={12}>
-        <SubscriptionForm />
+        <SubscriptionForm currentPlan={currentPlan}/>
         </Grid>
         </Grid>
       </Grid>

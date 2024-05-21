@@ -75,6 +75,7 @@ import Employee from "./components/Settings/Employee/Employee.js";
 import NoInternetConnection from "./pages/NoInternetPage/NoInternetConnection.js";
 import useSocket from "./utils/useSocket.js";
 import Units from "./components/Settings/Units/Units.js";
+import Completion from "./components/dialogues/PaymentModal/Completion.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -187,6 +188,7 @@ function App() {
             </Route>
             <Route path="reports" element={<ReportsPage />} />
             <Route path="subscription" element={<Subscription />} />
+            <Route path="/completion" element={<Completion />} />
             <Route path="/settings" element={<Layout3 />}>
               <Route index element={<Profile />} />
               <Route path="profile" element={<Profile />} />

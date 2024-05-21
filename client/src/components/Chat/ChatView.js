@@ -168,7 +168,7 @@ function ChatView({ isAdminPage }) {
     };
   }, [id]);
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = (e) => { 
     const file = e.target?.files[0];
     setFileName(file?.name);
     setFileType(file?.type);
@@ -217,12 +217,12 @@ function ChatView({ isAdminPage }) {
       }
     }
   };
-  // useEffect(() => {
-  //   // Scroll to the bottom when messages update (when not scrolling up)
-  //   if (messageBoxRef.current && !scrollingUp) {
-  //     messageBoxRef.current.scrollIntoView({ behavior: "smooth" });
-  //   }
-  // }, [messages]);
+  useEffect(() => {
+    if (boxRef.current && !scrollingUp) {
+      boxRef.current.scrollTop = boxRef.current.scrollHeight;
+    }
+  }, [messages]);
+  
 
   const handleClearImageState = () => {
     setFileName("");
@@ -588,7 +588,7 @@ function ChatView({ isAdminPage }) {
           <img
             src={selectedImage}
             alt="Preview"
-            style={{ width: "100%", height: "auto" }}
+            style={{ width: 300, height: 300 }}
           />
         </Box>
       </Modal>
