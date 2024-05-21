@@ -3,7 +3,7 @@ import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
-const CustomToolbarProjects = ({ toolbar, setEventView, bgColor }) => {
+const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
   const [activeButton, setActiveButton] = useState("day");
   const [activeHeader, setActiveHeader] = useState("Work Order");
   const goToDayView = (view) => {
@@ -48,7 +48,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColor }) => {
   // Styles
   const themeStyle = {
     toolbarTitle: {
-      color: "white",
+      color: bgColorClient ? "black" : "white",
       fontFamily: "inherit",
       fontSize: "20px",
       fontStyle: "normal",
@@ -109,7 +109,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColor }) => {
           width={"100%"}
           pr={1}
           borderRadius={" 10px 10px 0 0"}
-          backgroundColor={"#4C8AB1"}
+          backgroundColor={ bgColorClient ? "#FFE09F" : "#4C8AB1"}
         >
           {" "}
           <Stack direction={"row"}>
@@ -128,9 +128,8 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColor }) => {
                 <button
                   style={{
                     ...themeStyle.toolbarButton,
-                    backgroundColor:
-                      activeHeader === "Work Order" ? "white" : "",
-                    color: activeHeader === "Work Order" ? "#4C8AB1" : "white",
+                    backgroundColor: (activeHeader === "Work Order" ? "white" : ""),
+                    color:  bgColorClient ? activeHeader === "Work Order" ? "#4C8AB1" : "black" : activeHeader === "Work Order" ? "#4C8AB1" : "white",
                   }}
                   onClick={() => {
                     handleActiveHeader("Work Order");
@@ -160,7 +159,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColor }) => {
                     fontSize={"12px"}
                     style={{
                       ...themeStyle.monthEventHeader,
-                      color: activeHeader === "Notes" ? "#4C8AB1" : "white",
+                      color:  bgColorClient ? activeHeader === "Notes" ? "#4C8AB1" : "black" : activeHeader === "Notes" ? "#4C8AB1" : "white",
                       textDecoration:
                         activeHeader === "Notes" ? "underline" : "",
                     }}
@@ -194,7 +193,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColor }) => {
                     fontSize={"12px"}
                     style={{
                       ...themeStyle.monthEventHeader,
-                      color: activeHeader === "Work Order" ? "#4C8AB1" : "",
+                      color:  bgColorClient ? activeHeader === "Work Order" ? "#4C8AB1" : "black" : activeHeader === "Work Order" ? "#4C8AB1" : "",
                       textDecoration:
                         activeHeader === "Work Order" ? "underline" : "",
                     }}
@@ -215,7 +214,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColor }) => {
                     fontSize={"12px"}
                     style={{
                       ...themeStyle.monthEventHeader,
-                      color: activeHeader === "Notes" ? "#4C8AB1" : "white",
+                      color:  bgColorClient ? activeHeader === "Notes" ? "#4C8AB1" : "black" : activeHeader === "Notes" ? "#4C8AB1" : "white",
                       textDecoration:
                         activeHeader === "Notes" ? "underline" : "",
                     }}

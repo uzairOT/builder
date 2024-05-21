@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, CircularProgress, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, ButtonGroup, CircularProgress, Grid, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import ShareIcon from "@mui/icons-material/Share";
@@ -57,7 +57,7 @@ const OpenNotes = ({ notes }) => {
     await refetch();
   };
   return (
-    <Stack height={"100%"}>
+    <Stack >
       <Stack direction={"row"} justifyContent={"space-between"} p={2}>
         <Stack
           direction={"row"}
@@ -112,8 +112,17 @@ const OpenNotes = ({ notes }) => {
           </Typography>
         </BuilderProButton>
       </Stack>
-      <Stack p={4} justifyContent={"space-between"} height={"100%"}>
+      <Stack p={4} pt={2} justifyContent={"space-between"} height='calc(92vh - 165px)'>
         <Stack>
+          <Typography
+            textAlign={"right"}
+            fontSize={"15px"}
+            fontWeight={"500"}
+            color={"#535353"}
+            pt={0}
+          >
+            {notes?.files?.length ? `attachments ${notes?.files?.length}` : ''}
+          </Typography>
           <Typography
             textAlign={"left"}
             fontSize={"24px"}
@@ -127,16 +136,21 @@ const OpenNotes = ({ notes }) => {
             fontSize={"15px"}
             fontWeight={"500"}
             color={"#535353"}
-            pt={4}
+            pt={2}
           >
             {notes?.content}
           </Typography>
         </Stack>
-        
-        <Stack gap={1}>
-          {notes?.files.map((file, index) => {
-            const fileType = file.split(".").pop().toLowerCase();
-            const fileName = file.split("/").pop().toLowerCase();
+        <Box>
+        <Box>
+          <Typography>
+          {notes?.files?.length ? 'attachments:' : ''}
+          </Typography>
+          </Box>
+        <Grid container height='100px' spacing={0.5} p={'6px'} overflow={'hidden'} sx={scrollable}>
+          {notes?.files?.map((file, index) => {
+            const fileType = file?.split(".").pop().toLowerCase();
+            const fileName = file?.split("/").pop().toLowerCase();
             const isImage = [
               "jpg",
               "jpeg",
@@ -147,12 +161,13 @@ const OpenNotes = ({ notes }) => {
               "webp"
             ].includes(fileType);
             return (
+              <Grid item xl={4}    >
               <Stack
                 direction={"row"}
                 p={1}
                 backgroundColor={"#F1F1F1"}
-                width={"300px"}
-                height={'45px'}
+                
+                height={'40px'}
                 borderRadius={"10px"}
                 justifyContent={"space-between"}
                 style={{cursor:'pointer'}}
@@ -179,10 +194,11 @@ const OpenNotes = ({ notes }) => {
                   <Stack>
                     <Typography
                       textAlign={"left"}
-                      fontSize={"14px"}
+                      fontSize={"0.7rem"}
                       fontWeight={"500"}
                       color={"#324054"}
                       fontFamily={"Inter, sans serif"}
+                      overflow={'hidden'}
                     >
                       
                       {fileName}
@@ -207,6 +223,8 @@ const OpenNotes = ({ notes }) => {
                 </Stack>
                 
               </Stack>
+              </Grid>
+              
             );
           })}
           {/* <Stack direction={'row'}  p={1} backgroundColor={'#F1F1F1'} width={'300px'} borderRadius={'10px'}>
@@ -237,11 +255,27 @@ const OpenNotes = ({ notes }) => {
                 </Stack>
                 </Stack>
               </Stack> */}
-        </Stack>
+        </Grid>
+        </Box>
       </Stack>
               <Stack alignItems={'flex-end'} justifyContent={'flex-end'} height={'20px'} p={0.5}>  <>{isDownloading && <CircularProgress size={'20px'} /> }</></Stack>
     </Stack>
   );
 };
 
+const scrollable = {
+  scrollbarWidth: "none", // For Firefox
+  "-ms-overflow-style": "none", // For IE and Edge
+  "&::-webkit-scrollbar": {
+    width: "6px",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "transparent",
+    transition: "background-color 0.3s",
+  },
+  "&:hover::-webkit-scrollbar-thumb": {
+    backgroundColor: "#ddd",
+  },
+  overflowY: "scroll",
+};
 export default OpenNotes;

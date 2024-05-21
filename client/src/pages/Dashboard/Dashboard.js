@@ -76,7 +76,7 @@ const Dashboard = () => {
               container
               sx={{ ...themeStyle.scrollable }}
               overflow={"hidden"}
-              height={"66vh"}
+              height={"calc(92vh - 240px)"}
               width={"98%"}
               pt={1}
               margin={"auto"}
@@ -193,7 +193,7 @@ export default Dashboard;
 const themeStyle = {
   dashboard: {
     backgroundColor: "#eff5ff",
-    height: {xl:"92vh",lg:"100%",md:"100%"},
+    height: {xl:"93vh",lg:"100%",md:"100%"},
   },
   dashboardViews: {
     height: "100%",

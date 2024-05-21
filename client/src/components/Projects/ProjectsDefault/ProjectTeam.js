@@ -9,6 +9,12 @@ import {
   Select,
   InputLabel,
   MenuItem,
+  Badge,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import data1 from "./assests/data/data.json";
@@ -28,8 +34,10 @@ import { toast } from 'react-toastify';
 
     const ProjectTeam = () => {
         const [open, setOpen] = useState(null);
+        const [openPending, setOpenPending] = useState(null);
         const [userType, setUserType] = useState("");
         const openShare = Boolean(open);
+        const openPendingInvitations = Boolean(openPending);
         const [email, setEmail] = useState('');
         const location = useLocation();
         const pathSegments = location.pathname.split('/')
@@ -39,7 +47,9 @@ import { toast } from 'react-toastify';
         const currentUserId = currentUser.user.id;
         const [assignRolePost] = useAddAssignRoleMutation();
         //console.log(pathSegments)
-        const {data, isLoading, isError} = useGetProjectTeamQuery(projectId)
+        const {data, isLoading, isError, refetch} = useGetProjectTeamQuery(projectId)
+        const pendingInvitations = data?.invitation;
+        const pendingInvitationsLength = data?.invitation?.length;
         const team = data?.team
         const id = openShare ? "simple-popover" : undefined;
         const groupedData = isLoading ?  <>Loading...</> :  team?.reduce((acc, person) => {
@@ -51,6 +61,12 @@ import { toast } from 'react-toastify';
         //console.log("team: ", team, "groupedData :", groupedData)
         const handleShare = (e) => {
             setOpen(e.currentTarget);
+          };
+        const handleOpenPendingInvitations = (e) => {
+            setOpenPending(e.currentTarget);
+          };
+        const handleClosePendingInvitations = (e) => {
+            setOpenPending(null);
           };
           const handleClose = () => {
             setOpen(null);
@@ -82,18 +98,24 @@ import { toast } from 'react-toastify';
               toast.error(error?.data?.message)
             }
           }
+          console.log(pendingInvitations)
   return (
     <Stack pl={{ xl: 5, lg: 5, md: 1 }}>
       <Stack direction={"row"} sx={{ justifyContent: "space-between" }}>
         <Typography sx={themeStyle.title}>Project Team</Typography>
+        <Stack direction={'row'} justifyContent={'center'} alignItems={'center'}>
+          {pendingInvitationsLength >= 1 ? <Badge badgeContent={pendingInvitationsLength} color="warning" >
+            <BuilderProButton variant={"outlined"} handleOnClick={handleOpenPendingInvitations} fontFamily={'inherit'} fontSize={'15px'}>Pending Invitations</BuilderProButton>
+          </Badge> : <></>}
         <BuilderProButton
           backgroundColor={"#FFAC00"}
           variant={"contained"}
           Icon={BuilderProNavbarShare}
           handleOnClick={handleShare}
-        >
+          >
           {true ? "Add" : ""}
         </BuilderProButton>
+          </Stack>
       </Stack>
       <Stack
         direction={"row"}
@@ -342,6 +364,67 @@ import { toast } from 'react-toastify';
             Copy Link
           </BuilderProButton> */}
         </Stack>
+      </Popover>
+      <Popover
+        id={id}
+        open={openPendingInvitations}
+        anchorEl={openPending}
+        onClose={handleClosePendingInvitations}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "center",
+          horizontal: "right",
+        }}
+        slotProps={{
+          paper: {
+            sx: {
+              marginTop: "30px",
+              borderRadius: "15px",
+            },
+          },
+        }}
+      >
+     {pendingInvitations?.length > 0 && (
+        <>
+          <Typography variant="h6" sx={{ padding: '7px' }}>
+            Pending Invitations
+          </Typography>
+          <Divider />
+          <List>
+            {pendingInvitations.map((pending) => (
+              <ListItem key={pending.id}>
+                <ListItemText
+                  primary={pending.userEmail}
+                  secondary={
+                    <>
+                      <Typography variant="body2" component="span">
+                        Project Manager ({pending.userRole})
+                      </Typography>
+                      <Typography variant="body2" component="span">
+                        {pending.userCompany}
+                      </Typography>
+                    </>
+                  }
+                />
+                {/* Add "Accept" and "Reject" buttons if needed */}
+                <ListItemSecondaryAction>
+                  <IconButton edge="end" aria-label="delete">
+                    {/* Replace with your "Accept" or "Reject" icon */}
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))}
+          </List>
+        </>
+      )}
+      {pendingInvitations?.length === 0 && (
+        <Typography variant="body2" sx={{ padding: '10px' }}>
+          No pending invitations.
+        </Typography>
+      )}
       </Popover>
     </Stack>
   );

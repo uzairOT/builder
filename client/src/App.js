@@ -5,6 +5,7 @@ import {
   Link,
   createRoutesFromElements,
   useNavigate,
+  useParams,
 } from "react-router-dom";
 // import Signup from "./pages/SignUp/Signup";
 import { lazy, Suspense, useEffect, useState } from "react";
@@ -34,7 +35,9 @@ import { loader } from "./pages/Projects/ProjectsTable";
 import PageLoader from "./components/UI/Loaders/PageLoader/PageLoader";
 import InnerLayout2 from "./components/Layouts/InnerLayout2";
 import ProjectsDefault from "./components/Projects/ProjectsDefault/ProjectsDefault";
-import InitialProposalView, { projectUserRoleAuth } from "./components/Projects/ProjectsInitialProposal/InitialProposalView";
+import InitialProposalView, {
+  projectUserRoleAuth,
+} from "./components/Projects/ProjectsInitialProposal/InitialProposalView";
 import WorkOrderView from "./components/Projects/ProjectsWorkOrder/WorkOrderView";
 import NotesView from "./components/Projects/ProjectNotes/NotesView";
 import Layout1 from "./components/Layouts/Layout1";
@@ -75,6 +78,9 @@ import Employee from "./components/Settings/Employee/Employee.js";
 import NoInternetConnection from "./pages/NoInternetPage/NoInternetConnection.js";
 import useSocket from "./utils/useSocket.js";
 import Units from "./components/Settings/Units/Units.js";
+import ClientLayout from "./components/Layouts/ClientLayout.js";
+import { useGetProjectUserRoleMutation } from "./redux/apis/Project/userProjectApiSlice.js";
+import { getUserRoleFromRedux } from "./redux/slices/auth/userRoleSlice.js";
 import Completion from "./components/dialogues/PaymentModal/Completion.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
@@ -92,9 +98,10 @@ const ReportView = lazy(() =>
 );
 
 function App() {
-
   const isAuthenticated = useSelector((state) => state.auth.userInfo);
   const userId = isAuthenticated ? isAuthenticated.user.id : null;
+  const [getUserRole] = useGetProjectUserRoleMutation();
+  const userRole = useSelector(getUserRoleFromRedux);
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
   // const [dailyForecast, setDailyForecast] = useState(null);
@@ -105,6 +112,8 @@ function App() {
   const forecast = useSelector(getForecast);
   const dailyForecast = forecast.dailyForecast || [];
   const dispatch = useDispatch();
+  console.log("IN APP JS: ", userRole);
+
   useEffect(() => {
     const fetchWeather = async () => {
       // setLoading(true);
@@ -131,21 +140,16 @@ function App() {
     }
   }, [dailyForecast]); // Run this effect whenever dailyForecast changes or on initial mount
 
-
   useEffect(() => {
-
     // getFormattedEvents();
     if (dailyForecast.length > 1) {
-      dispatch(fetchEvents({userId: userId, dailyForecast:dailyForecast}));
-
+      dispatch(fetchEvents({ userId: userId, dailyForecast: dailyForecast }));
     }
   }, [userId, dailyForecast]); // Run this effect whenever userId or dailyForecast changes
-
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-      
         <Route index path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/userinfo" element={<GoogleLogin />} />
@@ -169,22 +173,48 @@ function App() {
               }}
             />
             <Route path="/projects/:id" element={<Layout2 />}>
-              <Route path="" element={<InnerLayout2 />}>
-                <Route path="" element={<ProjectsDefault />} />
-                <Route path="images" element={<ImagesView />} />
-                <Route path="permit" element={<PermitView />} />
-                <Route path="drawing-files" element={<DrawingFilesView />} />
-              </Route>
-              <Route
-                path="initial-proposal"
-                element={<InitialProposalView  />}
-                loader={projectUserRoleAuth}
-              />
-              <Route path="work-order" element={<WorkOrderView />} />
-              <Route path="chat" element={<ChatView />} />
-              <Route path="notes" element={<NotesView />} />
-              <Route path="project-report" element={<ReportView />} />
-              <Route path="change-order" element={<ChangeOrder />}></Route>
+              {userRole.userRole === "client" ? (
+                <>
+                  <Route path="" element={<ClientLayout />}>
+                    <Route path="" element={<ClientDashboardCards />} />
+                    <Route path="permit" element={<Permit />} />
+                    <Route path="drawing-files" element={<Drawing />} />
+                    <Route path="images" element={<Images />} />
+                    <Route path="change-order" element={<ChangeOrders />} />
+                    <Route path="invoices" element={<Invoices />} />
+                    <Route path="dailylog" element={<DailyLog />} />
+                    <Route path="chat" element={<Chats />} />
+                    <Route
+                    path="initial-proposal"
+                    element={<InitialProposalView />}
+                    // loader={projectUserRoleAuth}
+                  />
+                    <Route path="work-order" element={<WorkOrderView />} />
+                  </Route>
+                </>
+              ) : (
+                <>
+                  <Route path="" element={<InnerLayout2 />}>
+                    <Route path="" element={<ProjectsDefault />} />
+                    <Route path="images" element={<ImagesView />} />
+                    <Route path="permit" element={<PermitView />} />
+                    <Route
+                      path="drawing-files"
+                      element={<DrawingFilesView />}
+                    />
+                  </Route>
+                  <Route
+                    path="initial-proposal"
+                    element={<InitialProposalView />}
+                    loader={projectUserRoleAuth}
+                  />
+                  <Route path="work-order" element={<WorkOrderView />} />
+                  <Route path="chat" element={<ChatView />} />
+                  <Route path="notes" element={<NotesView />} />
+                  <Route path="project-report" element={<ReportView />} />
+                  <Route path="change-order" element={<ChangeOrder />}></Route>
+                </>
+              )}
             </Route>
             <Route path="reports" element={<ReportsPage />} />
             <Route path="subscription" element={<Subscription />} />
@@ -206,7 +236,7 @@ function App() {
           <Route path="/" element={<Login />} />
         )}
         <Route
-          path="/invitation/:projectId/:email/:userRole/:companyName"
+          path="/invitation/:invitationId/:email/:companyName"
           element={<Invitation />}
         />
 
@@ -228,7 +258,7 @@ function App() {
     <>
       <NoInternetConnection>
         <Suspense fallback={<PageLoader />}>
-        <ToastContainer
+          <ToastContainer
             position="top-right"
             autoClose={5000}
             hideProgressBar={false}

@@ -4,30 +4,42 @@ import BuilderProButton from "../../UI/Button/BuilderProButton";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import ProjectCard from "../../UI/Card/ProjectCard";
 import projects from "./assets/data/projects.json";
-import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
-import { useDispatch } from "react-redux";
+import { useGetProjectUserRoleMutation, useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { addProjects } from "../../../redux/slices/Project/userProjectsSlice";
 import { addInitialPhase } from "../../../redux/slices/Project/projectInitialProposal";
+import { authUserRole } from "../../../redux/slices/auth/userRoleSlice";
 
 const ProjectsSidebar = () => {
   const [activeBtn, setActiveBtn] = useState("remodel");
   const dispatch = useDispatch();
+  const [getUserRole] = useGetProjectUserRoleMutation();
   const local = localStorage.getItem("userInfo");
+  const userRole = useSelector(authUserRole);
   const currentUser = JSON.parse(local);
   const currentUserId = currentUser.user.id;
   const location = useLocation();
-  const path = location.pathname.split("/")[3]
-    ? location.pathname.split("/")[3]
-    : "";
+  const path = !location.pathname.split("/")[3] || location.pathname.split("/")[3] ==='client'
+    ? ""
+    :  location.pathname.split("/")[3];
   const handleListedProjectsButton = (btn) => {
     setActiveBtn(btn);
   };
   const navigate = useNavigate();
 
 
-  const handleClick = (projectId, path, e) => {
+  const handleClick = async (projectId, path, e) => {
+    console.log(path)
     dispatch(addInitialPhase([]));
-    navigate(`/projects/${projectId}/${path}`);
+    // const res = await getUserRole({projectId, userId: currentUserId});
+    // // console.log(res)
+    // dispatch(authUserRole(res.data.role));
+    if(userRole.userRole === 'client'){
+      navigate(`/projects/${projectId}/client`);
+    } else{
+      
+      navigate(`/projects/${projectId}/${path}`);
+    }
     
   };
   const { id } = useParams();
@@ -125,16 +137,15 @@ const ProjectsSidebar = () => {
             </Typography>
           </BuilderProButton>
         </Stack>
-        <Box
-          sx={{
-            ...themeStyle.scrollable,
-            height: {
-              xl: "50vh",
+        {/* xl: "50vh",
               lg: "45vh",
               md: "45vh",
               sm: "48vh",
-              xs: "48vh",
-            },
+              xs: "48vh", */}
+        <Box
+          sx={{
+            ...themeStyle.scrollable,
+            height: 'calc(92vh - 220px)'
           }}
         >
           <Stack spacing={1} pl={2} pr={2} pt={1}>

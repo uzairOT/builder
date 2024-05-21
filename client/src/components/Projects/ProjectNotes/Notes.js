@@ -30,7 +30,7 @@ const Notes = () => {
   return (
     <Stack direction={{xl:'row', lg:'row', md:'column-reverse'}} spacing={1} height={'100%'}>
     <Stack flex={1}>
-    <Paper sx={{height: {xl:'94.5%', lg:'99%'}, borderRadius:'14px'}} >
+    <Paper sx={{borderRadius:'14px'}} >
       <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} p={2} >
         <Typography fontSize={'20px'} fontFamily={'Poppins, sans serif'} fontWeight={'600'} color={'#4C8AB1'}>Notes</Typography>
         <Stack direction={'row'} alignItems={'center'}>
@@ -47,8 +47,8 @@ const Notes = () => {
     </Stack>
 
 
-        <Stack flex={2} >
-         <Paper sx={{height:{ xl:'94.5%', lg:'99%'}, borderRadius:'14px'}}>
+        <Stack flex={2}  >
+         <Paper sx={{ borderRadius:'14px', height:'98%'}}>
            <OpenNotes notes={data?.notes[selectedButton]} />
         </Paper>
           </Stack>
@@ -56,5 +56,6 @@ const Notes = () => {
     </Stack>
   )
 }
+
 
 export default Notes

@@ -2,6 +2,7 @@ import UpdateMasterLine from "../../../components/dialogues/UpdateMasterLine/Upd
 import { apiSlice } from "../apiSlice";
 
 const USER_PROJECTS_URL = "http://3.135.107.71/user";
+const PROJECTS_URL = "http://3.135.107.71/project";
 
 export const userProjectsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -57,6 +58,13 @@ export const userProjectsApiSlice = apiSlice.injectEndpoints({
         body: data
       })
     }),
+    getProjectUserRole: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/getUserProjectRole`,
+        method: 'POST',
+        body: data
+      })
+    })
   }),
 });
 
@@ -68,5 +76,6 @@ export const {
   useGetUnitsQuery,
   useAddUnitMutation,
   useEditUnitMutation,
-  useDeleteUnitMutation
+  useDeleteUnitMutation,
+  useGetProjectUserRoleMutation,
 } = userProjectsApiSlice;

@@ -43,12 +43,12 @@ const ClientDashboard = () => {
             <main>
                 <Grid sx={themeStyle.dashboard} container pt={1} >
                     {/* Profile View */}
-                    <Grid item xs={12} sm={4} md={3} lg={2.5} height={"auto"}>
+                    <Grid item xs={12} sm={4} md={3} lg={2} height={"auto"}>
                         <Paper sx={themeStyle.dashboardViews}>
                             {heading === "Messages" ? <ProfileChatView /> : <ProfileView heading={heading} />}
                         </Paper>
                     </Grid>
-                    <Grid item xs={12} sm={8} md={6} lg={6.5} height={themeStyle.dashboardViews}>
+                    <Grid item xs={12} sm={8} md={6} lg={7} height={themeStyle.dashboardViews}>
                         <Grid container sx={themeStyle.scrollable} height={'100%'} margin={'auto'}>
                             <Grid item xs={12} sm={12} md={12} lg={12} style={{ height: "auto", paddingTop: '0px', paddingLeft: '8px' }}>
                                 <Paper sx={themeStyle.progressCard} padding={5} >

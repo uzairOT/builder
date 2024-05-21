@@ -9,12 +9,6 @@ import React, { useEffect, useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import Input from "@mui/joy/Input";
 import Textarea from "@mui/joy/Textarea";
-import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
-import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
-import AddToDriveIcon from "@mui/icons-material/AddToDrive";
-import ImageIcon from "@mui/icons-material/Image";
-import CreateIcon from "@mui/icons-material/Create";
-import LinkIcon from "@mui/icons-material/Link";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import {
@@ -27,6 +21,7 @@ import { uploadToS3 } from "../../../utils/S3";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { fileTypeIcons } from "../../dialogues/AddImage/assets/fileTypes";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import CloseIcon from '@mui/icons-material/Close';
 //import "react-toastify/dist/ReactToastify.css";
 
 const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
@@ -181,13 +176,19 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
       )}
       <Modal open={showEditModal ? showEditModal : open} onClose={handleClose}>
         <Stack sx={style}>
+          <Stack pb={1} direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+
           <Typography
             fontFamily={"inherit"}
             fontSize={"24px"}
             fontWeight={"500"}
-          >
+            >
             {showEditModal ? "Edit" : "Add"} Notes
           </Typography>
+          <IconButton onClick={handleClose}>
+          <CloseIcon fontSize={'small'}/>
+          </IconButton>
+            </Stack>
           <Stack spacing={2}>
             <Input
               variant="soft"

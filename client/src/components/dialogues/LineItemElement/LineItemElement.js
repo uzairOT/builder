@@ -50,6 +50,14 @@ const options = [
   { value: 'strawberry', label: 'Strawberry' },
   { value: 'vanilla', label: 'Vanilla' },
 ];
+const UnitsMap = new Map([
+  ["sqft", "Square Feet"],
+  ["sqm", "Square Meters"],
+  ["acres", "Acres"],
+  ["hectares", "Hectares"],
+  ["sqyds", "Square Yards"],
+  ["sqmi", "Square Miles"],
+]);
 
 function AddLineElement({
   phaseData,
@@ -90,8 +98,8 @@ function AddLineElement({
   const [selectedOption, setSelectedOption] = useState(null);
   const [start, setStart] = useState(LineItem ? dayjs(LineItem.start_day) : null);
   const [end, setEnd] = useState(LineItem ? dayjs(LineItem.end_day) : null);
-  const [margin, setMargin] = useState('');
-  const [percentage, setPercentage] = useState('');
+  const [margin, setMargin] = useState( LineItem ? LineItem.margin :'');
+  const [percentage, setPercentage] = useState(  LineItem ? LineItem.percentage : '');
 
   const handleStartDateChange = (newValue) => {
     setStart(newValue);
@@ -450,6 +458,7 @@ useEffect(()=>{
                   <Box mt={'8px'} mb={'8px'}>
 
                   <CreateableSelect
+                  defaultInputValue={LineItem ? UnitsMap.get(LineItem.unit) : ''}
                   defaultOptions
                   styles={selectStyles}
                   defaultValue={selectedOption}
@@ -511,6 +520,9 @@ useEffect(()=>{
                 type="price"
                 variant="standard"
                 value={formData.unitPrice}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                }}
                 onChange={(e) =>
                   setUnitPrice((prev) => {
                     setTotal(e.target.value * quantity);
@@ -530,6 +542,9 @@ useEffect(()=>{
                 type="number"
                 variant="standard"
                 value={formData.total}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                }}
               />
                <Box sx={parallelBox}>
                 <Box sx={innerBox}>
@@ -545,6 +560,9 @@ useEffect(()=>{
                 variant="standard"
                 value={formData.margin}
                 onChange={handleMarginChange}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                }}
               />
                  
                 </Box>

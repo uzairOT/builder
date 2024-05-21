@@ -109,7 +109,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     checkUserOnInvitation: builder.mutation({
       query: (data) => ({
-        url: `${AUTH_URL}/checkUserExistBeforeInvitations/${data.role}/${data.projectId}/${data.email}`,
+        url: `${AUTH_URL}/checkUserExistBeforeInvitations`,
         method: "POST",
         body: data,
       })

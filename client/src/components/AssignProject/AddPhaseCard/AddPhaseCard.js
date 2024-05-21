@@ -10,6 +10,7 @@ import {
   TableCell,
   TableBody,
   Checkbox,
+  IconButton,
 } from "@mui/material";
 import { ReactComponent as ArrowDown } from "../Assets/svgs/ArrowDown.svg";
 import { ReactComponent as Arrowup } from "../Assets/svgs/Arrowup.svg";
@@ -28,6 +29,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addInitialPhase, addPhase } from "../../../redux/slices/Project/projectInitialProposal";
 import moment from "moment";
+import AssignmentTurnedInRoundedIcon from '@mui/icons-material/AssignmentTurnedInRounded';
 import { toast } from "react-toastify";
 //import "react-toastify/dist/ReactToastify.css";
 
@@ -392,8 +394,8 @@ const AddPhaseCard = ({
                   <TableCell sx={tableHeadings}>Notes</TableCell>
                   <TableCell sx={tableHeadings}>Status</TableCell>
 
+                  <TableCell  sx={tableHeadings}>Update Status</TableCell>
                   <TableCell></TableCell>
-                  {/* <TableCell></TableCell> */}
 
                   {/* <TableCell></TableCell> */}
                 </TableRow>
@@ -438,6 +440,11 @@ const AddPhaseCard = ({
 
                       <TableCell>{row.notes}</TableCell>
                       <TableCell>{row.status}</TableCell>
+                      <TableCell sx={{display:'flex', justifyContent:'center', alignItems:'center', border: 'none'}}>
+                        <IconButton> 
+                        <AssignmentTurnedInRoundedIcon  fontSize="large"/>
+                        </IconButton>
+                        </TableCell>
                       <TableCell>
                         <EditIcon onClick={() => handleUpdateLine(row)} />
                         {(row.status === "Work Order Not requested" ||
