@@ -10,6 +10,8 @@ function SideBar() {
 
 
     const paths = [
+        '/settings/materline',
+        '/settings/units',
         '/settings/profile',
         '/settings/admin',
         '/settings/projectManager',
@@ -17,8 +19,6 @@ function SideBar() {
         '/settings/employee',
         '/settings/subcontractor',
         '/settings/supplier',
-        '/settings/materline',
-        '/settings/units',
       ];
 
       const selectedItem = paths.findIndex(path => path === location.pathname);
@@ -27,6 +27,24 @@ function SideBar() {
         <Box padding={"2rem"}>
             <Typography sx={listHeading}>My Profile</Typography>
             <List sx={{ ...listHeading, fontSize: "1rem", marginTop: "2rem" }}>
+            <ListItem
+                component={Link}
+                    to="/settings/materline"
+                    
+                    selected={selectedItem === 7}
+                    sx={listItemStyle}
+                >
+                    Master Line List
+                </ListItem>
+                <ListItem
+                component={Link}
+                    to="/settings/units"
+                    
+                    selected={selectedItem === 8}
+                    sx={listItemStyle}
+                >
+                    Units
+                </ListItem>
                 <ListItem
                     component={Link}
                     to="/settings/profile"
@@ -90,24 +108,7 @@ function SideBar() {
                 >
                     Supplier List
                 </ListItem>
-                <ListItem
-                component={Link}
-                    to="/settings/materline"
-                    
-                    selected={selectedItem === 7}
-                    sx={listItemStyle}
-                >
-                    Master Line List
-                </ListItem>
-                <ListItem
-                component={Link}
-                    to="/settings/units"
-                    
-                    selected={selectedItem === 8}
-                    sx={listItemStyle}
-                >
-                    Units
-                </ListItem>
+
             </List>
         </Box>
     );

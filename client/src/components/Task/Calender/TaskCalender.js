@@ -163,7 +163,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
   const components = useCallback(() => ({
 
     toolbar: (props) => (isProjectPage ? 
-    <CustomToolbarProjects bgColor={bgColorClient} toolbar={props} setEventView={setEventView} setMonthEventView={setMonthEventView} monthEventView={monthEventView} key={toolbarKey} /> : 
+    <CustomToolbarProjects bgColorClient={bgColorClient} toolbar={props} setEventView={setEventView} setMonthEventView={setMonthEventView} monthEventView={monthEventView} key={toolbarKey} /> : 
     <CustomToolbar dailyForecast={dailyForecast} toolbar={props} setEventView={setEventView} setMonthEventView={setMonthEventView} monthEventView={monthEventView} key={toolbarKey} />),
     day: {
       event: (props) => (eventViewRef.current === 'Work Order' ? <CustomEventDayTasks {...props} projectId={id} isProjectPage={isProjectPage} /> : <CustomEventDayNotes {...props} projectId={id} isProjectPage={isProjectPage}  />)

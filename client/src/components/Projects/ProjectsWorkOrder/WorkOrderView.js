@@ -71,7 +71,7 @@ const WorkOrderView = () => {
           ) : (
             <>
               <Box
-                height= '250px'
+                height= '500px'
                 bgcolor={"white"}
               >
                 <TaskCalender

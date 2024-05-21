@@ -192,8 +192,8 @@ const Navbar = () => {
       height: "65px",
     },
     logo: {
-      width: "110px",
-      height: "50px",
+      width: "100px",
+      height: "40px",
       marginLeft: "28px",
       marginBottom: "2px",
     },

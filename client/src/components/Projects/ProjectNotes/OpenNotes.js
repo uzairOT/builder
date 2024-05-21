@@ -148,9 +148,9 @@ const OpenNotes = ({ notes }) => {
           </Typography>
           </Box>
         <Grid container height='100px' spacing={0.5} p={'6px'} overflow={'hidden'} sx={scrollable}>
-          {notes?.files.map((file, index) => {
-            const fileType = file.split(".").pop().toLowerCase();
-            const fileName = file.split("/").pop().toLowerCase();
+          {notes?.files?.map((file, index) => {
+            const fileType = file?.split(".").pop().toLowerCase();
+            const fileName = file?.split("/").pop().toLowerCase();
             const isImage = [
               "jpg",
               "jpeg",

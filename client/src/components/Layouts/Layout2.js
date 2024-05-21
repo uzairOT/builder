@@ -1,10 +1,13 @@
-import { Grid, Paper, Stack, Typography } from '@mui/material'
+import { CircularProgress, Grid, Paper, Stack, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
 import ProjectsSidebar from '../Projects/ProjectsDashboard/ProjectsSidebar'
 import { Outlet, useParams } from 'react-router-dom'
 import ProjectsNavbar from '../Projects/ProjectsNavbar'
 import projects from './assets/data/projects'
 import {useGetProjectDataQuery} from '../../redux/apis/Project/projectApiSlice';
+import { useDispatch, useSelector } from 'react-redux'
+import { useGetProjectUserRoleMutation } from '../../redux/apis/Project/userProjectApiSlice'
+import { authUserRole, getUserRoleFromRedux, setUserRoleError, setUserRoleIsLoading } from '../../redux/slices/auth/userRoleSlice'
 
 
 const Layout2 = () => {
@@ -14,11 +17,43 @@ useEffect(()=>{
     const params = useParams();
     const {id: currentProjectId} = params;
     const {data} = useGetProjectDataQuery({projectId: currentProjectId});
+    const isAuthenticated = useSelector((state) => state.auth.userInfo);
+    const userId = isAuthenticated ? isAuthenticated.user.id : null;
+    const [getUserRole, {isLoading}] = useGetProjectUserRoleMutation();
+    const userRole = useSelector(getUserRoleFromRedux);
+    const dispatch = useDispatch();
     // projects.find(project => project.id === parseInt(currentProjectId));
     const selectedProjectId = data?.data;
     const projectName = selectedProjectId?.projectName;
     //console.log(selectedProjectId, params);
     //console.log("cascasc");
+    // console.log('APP.JS: ',id)
+
+    const getUserRoleAuth = async () => {
+      if(currentProjectId){
+        try{
+          dispatch(setUserRoleIsLoading(true));
+          const res = await getUserRole({projectId: currentProjectId, userId: userId});
+          dispatch(authUserRole(res.data.role));
+        } catch(error){
+          console.log(error)
+          dispatch(setUserRoleError(error));
+        } finally{
+          dispatch(setUserRoleIsLoading(false));
+        }
+      }
+      // if(res.data.role === 'client'){
+      //   navigate(`/projects/${projectId}/client`);
+      // } else{
+        
+      //   navigate(`/projects/${projectId}/${path}`);
+      // }
+      
+    };
+    
+  useEffect(() => {
+    getUserRoleAuth();
+  }, [currentProjectId]);
 
   return (
     <>
@@ -31,7 +66,7 @@ useEffect(()=>{
         </Grid>
         <Grid item  xl={10} lg={9} md={8} sm={12} xs={12}  pr={1}  height={{xl:"93vh" ,lg:'93vh', md:'99vh', sm:'93vh', xs:'93vh' }} sx={themeStyle.scrollable} overflow={'hidden'}>
         <Stack><Paper sx={{ borderRadius: '14px', }}><ProjectsNavbar project={selectedProjectId} /></Paper></Stack>
-        <Outlet context={[projectName]}  />
+        {userRole.isLoading ?<Stack m={'auto'} width={'100%'} height={'100%'} justifyContent={'center'} alignItems={'center'}><CircularProgress /></Stack> : <Outlet context={[projectName]}  />}
         </Grid>
     </Grid>
 

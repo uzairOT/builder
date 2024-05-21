@@ -3,14 +3,30 @@ import { Grid, Paper, Box } from "@mui/material";
 import WhatsHappeningCard from '../WhatsHappeningCard/WhatsHappeningCard';
 import ProjectCard from '../ProjectCard/ProjectCard';
 import ScheduleCard from '../ScheduleCard/ScheduleCard';
+import TaskCalender from '../../Task/Calender/TaskCalender';
+import { useSelector } from 'react-redux';
+import { allEvents } from '../../../redux/slices/Events/eventsSlice';
+import { getForecast } from '../../../redux/slices/DailyForecast/dailyForecastSlice';
 
 
 function ClientDashboardCards() {
+    const allEvent = useSelector(allEvents);
+    const forecast = useSelector(getForecast);
+    const local = localStorage.getItem('userInfo');
+    const currentUser = JSON.parse(local);
+    const { id } = currentUser.user;
+    const loading = allEvent.isLoading;
+    const error = allEvent.error;
+    const events = allEvent.events;
+    const dailyForecast = forecast.dailyForecast;
+    const forecastIsLoading = forecast.isLoading;
+    const forecastError = forecast.error;
+  
 
 
 
     return (
-        <div style={{ width: "100%", marginBottom: "1rem" }}>
+        <Paper style={{ width: "100%", borderRadius: '14px' }}>
             <Box sx={themeStyle.boxStyle}>
 
                 <Box sx={themeStyle.projectCard}>
@@ -21,10 +37,10 @@ function ClientDashboardCards() {
                 </Box>
             </Box>
             <Box sx={themeStyle.scheduleCard}>
-                <ScheduleCard />
-
+                {/* <ScheduleCard /> */}
+                <TaskCalender bgColorClient={true} dailyForecast={dailyForecast} eventsArr={events} isProjectPage={true} isDrawerOpen={true} />
             </Box>
-        </div>
+        </Paper>
     )
 }
 const themeStyle = {
@@ -34,27 +50,29 @@ const themeStyle = {
         justifyContent: "center",
         alignItems: "center",
         gap: "1rem",
-        height: { lg: "40vh", xs: "100vh" },
-        margin: { lg: "1rem", xs: "0rem" },
+        padding: '0.5rem',
+        margin: { lg: "0.5rem", xs: "0rem" }, 
+        
     },
     projectCard: {
-        width: { lg: "50%", md: "80%", sm: "85%", xs: "90%" },
+        width: { lg: "100%", md: "80%", sm: "85%", xs: "90%" },
         height: "100%",
         backgroundColor: "#eff5ff",
-        marginTop: { lg: "2rem", xs: "0.5rem" },
+        marginTop: { lg: "0.5rem", xs: "0.5rem" },
         borderRadius: "1rem",
-        padding: "1.5rem 0.7rem",
-        contain: "content"
+        padding: "0.5rem 0.5rem",
+        contain: "content",
+        
     },
     scheduleCard: {
         height: { lg: "auto", md: "100vh", xs: "100vh" },
         backgroundColor: "#eff5ff",
         margin: {
-            lg: "3.5rem 1rem 0rem 1rem", xs: "0.5rem 0.5rem 0rem 0.5rem"
+            lg: "0rem 1rem 1rem 1rem", xs: "0rem 0.5rem 0rem 0.5rem"
         },
         borderRadius: "1rem",
-        padding: "1rem 2rem",
         overflowY: 'auto',
+
     },
 }
 export default ClientDashboardCards
