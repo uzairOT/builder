@@ -44,26 +44,27 @@ const themeStyle = {
   }
 }
 export const projectUserRoleAuth = async ({params, request}) =>{
-  const user = localStorage.getItem('userInfo')
-  const currentUser = JSON.parse(user);
-    const userId = currentUser.user.id;
-    const projectId = params.id;
-    try {
-      const response = await fetch('http://3.135.107.71/project/getUserProjectRole', {
-        method: 'POST',
-        body: JSON.stringify({ projectId, userId }), // Stringify the body data
-        headers: { 'Content-Type': 'application/json', 'Authorization' : `Bearer ${getTokenFromLocalStorage()}` }, // Set content type header
-      });
+  // const user = localStorage.getItem('userInfo')
+  // const currentUser = JSON.parse(user);
+  //   const userId = currentUser.user.id;
+  //   const projectId = params.id;
+  //   try {
+  //     const response = await fetch('http://3.135.107.71/project/getUserProjectRole', {
+  //       method: 'POST',
+  //       body: JSON.stringify({ projectId, userId }), // Stringify the body data
+  //       headers: { 'Content-Type': 'application/json', 'Authorization' : `Bearer ${getTokenFromLocalStorage()}` }, // Set content type header
+  //     });
   
-      if (!response.ok) {
-        throw new Error(`Error fetching user role: ${response.statusText}`); // Throw error for non-2xx responses
-      }
+  //     if (!response.ok) {
+  //       throw new Error(`Error fetching user role: ${response.statusText}`); // Throw error for non-2xx responses
+  //     }
   
-      return await response.json();
-    } catch (error) {
-      console.error('Error fetching user role:', error); // Log the error for debugging
-      // Handle the error in a more appropriate way (e.g., display an error message to the user)
-    }
+  //     return await response.json();
+  //   } catch (error) {
+  //     console.error('Error fetching user role:', error); // Log the error for debugging
+  //     // Handle the error in a more appropriate way (e.g., display an error message to the user)
+  //   }
+  return null
 }
 
 export default InitialProposalView

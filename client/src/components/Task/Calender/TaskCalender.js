@@ -35,7 +35,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
   const endTime = moment(currentDate).set({ hour: 23, minute: 0, second: 0, millisecond: 0 });
   // console.log(eventsArr)
 
-    const events = eventsArr?.map((item)=>{
+    const events =  eventsArr?.map((item)=>{
 
 
      const parsedStart = moment(item.start).toDate();

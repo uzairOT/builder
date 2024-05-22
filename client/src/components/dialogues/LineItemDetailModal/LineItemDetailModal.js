@@ -2,12 +2,44 @@ import { Box, Button, Modal, Stack, Typography } from "@mui/material";
 import React from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import CloseIcon from "@mui/icons-material/Close";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { useUpdateUserLineItemStatusMutation } from "../../../redux/apis/Project/projectApiSlice";
+import { useSelector } from "react-redux";
 
-const LineItemDetailModal = ({ modalOpen, setModalOpen, lineItem }) => {
+const LineItemDetailModal = ({
+  modalOpen,
+  setModalOpen,
+  lineItem,
+  userRole,
+  userId
+}) => {
+
+  const [updateStatus, { isLoading }] = useUpdateUserLineItemStatusMutation();
   const handleClose = () => {
     setModalOpen(false);
   };
-
+  const handleDone = async () => {
+    try {
+      const res = updateStatus({
+        LineItem_id: lineItem.id,
+        userId: userId,
+        status: "done",
+      });
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(lineItem)
+  const disableButton = () => {
+    const userStatus = lineItem?.UserLineItemStatuses?.find( user => user.userId === userId);
+    if(userStatus?.status === 'done'){
+      return true;
+    }else{
+      return false;
+    }
+  }
+ 
   return (
     <Modal
       open={modalOpen}
@@ -46,7 +78,11 @@ const LineItemDetailModal = ({ modalOpen, setModalOpen, lineItem }) => {
           <Typography variant="body1" gutterBottom>
             <strong>Notes:</strong> {lineItem?.notes}
           </Typography>
-          <Stack bgcolor={"aliceblue"} width={"100px"} alignSelf={"right"}>
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
             <BuilderProButton
               backgroundColor={"#FFAC00"}
               variant={"contained"}
@@ -56,6 +92,50 @@ const LineItemDetailModal = ({ modalOpen, setModalOpen, lineItem }) => {
             >
               Close
             </BuilderProButton>
+            <Stack>
+              {userRole === "employee" ? (
+                <>
+                  <BuilderProButton
+                    backgroundColor={"#4C8AB1"}
+                    variant={"contained"}
+                    Icon={CheckCircleOutlineIcon}
+                    handleOnClick={handleDone}
+                    marginLeft={"0px"}
+                    disabled={isLoading || disableButton()}
+                  >
+                    Done
+                  </BuilderProButton>
+                </>
+              ) : userRole === "subcontractor" ? (
+                <>
+                  <BuilderProButton
+                    backgroundColor={"#4C8AB1"}
+                    variant={"contained"}
+                    Icon={CheckCircleOutlineIcon}
+                    handleOnClick={handleDone}
+                    marginLeft={"0px"}
+                    disabled={isLoading || disableButton()}
+                  >
+                    Done
+                  </BuilderProButton>
+                </>
+              ) : userRole === "supplier" ? (
+                <>supplier</>
+              ) : (
+                <>
+                  <BuilderProButton
+                    backgroundColor={"#4C8AB1"}
+                    variant={"contained"}
+                    Icon={CheckCircleOutlineIcon}
+                    handleOnClick={handleDone}
+                    marginLeft={"0px"}
+                    disabled={isLoading || disableButton()}
+                  >
+                    Done
+                  </BuilderProButton>
+                </>
+              )}
+            </Stack>
           </Stack>
         </Stack>
       </Box>

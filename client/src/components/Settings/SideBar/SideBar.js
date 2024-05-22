@@ -10,9 +10,9 @@ function SideBar() {
 
 
     const paths = [
+        '/settings/profile',
         '/settings/materline',
         '/settings/units',
-        '/settings/profile',
         '/settings/admin',
         '/settings/projectManager',
         '/settings/client',
@@ -27,11 +27,20 @@ function SideBar() {
         <Box padding={"2rem"}>
             <Typography sx={listHeading}>My Profile</Typography>
             <List sx={{ ...listHeading, fontSize: "1rem", marginTop: "2rem" }}>
+                <ListItem
+                    component={Link}
+                    to="/settings/profile"
+                  
+                    selected={selectedItem  ===0}
+                    sx={listItemStyle}
+                >
+                    Profile
+                </ListItem>
             <ListItem
                 component={Link}
                     to="/settings/materline"
                     
-                    selected={selectedItem === 7}
+                    selected={selectedItem === 1}
                     sx={listItemStyle}
                 >
                     Master Line List
@@ -40,25 +49,16 @@ function SideBar() {
                 component={Link}
                     to="/settings/units"
                     
-                    selected={selectedItem === 8}
+                    selected={selectedItem === 2}
                     sx={listItemStyle}
                 >
                     Units
                 </ListItem>
                 <ListItem
                     component={Link}
-                    to="/settings/profile"
-                  
-                    selected={selectedItem === 0}
-                    sx={listItemStyle}
-                >
-                    Profile
-                </ListItem>
-                <ListItem
-                    component={Link}
                     to="/settings/admin"
                     
-                    selected={selectedItem === 1}
+                    selected={selectedItem === 3}
                     sx={listItemStyle}
                 >
                     Admin
@@ -67,7 +67,7 @@ function SideBar() {
                 component={Link}
                     to="/settings/projectManager"
                     
-                    selected={selectedItem === 2}
+                    selected={selectedItem === 4}
                     sx={listItemStyle}
                 >
                     Project Manager
@@ -76,7 +76,7 @@ function SideBar() {
                 component={Link}
                     to="/settings/client"
                     
-                    selected={selectedItem === 3}
+                    selected={selectedItem === 5}
                     sx={listItemStyle}
                 >
                     Clients
@@ -85,7 +85,7 @@ function SideBar() {
                 component={Link}
                     to="/settings/employee"
                   
-                    selected={selectedItem === 4}
+                    selected={selectedItem === 6}
                     sx={listItemStyle}
                 >
                     Employee
@@ -94,7 +94,7 @@ function SideBar() {
                 component={Link}
                     to="/settings/subcontractor"
                   
-                    selected={selectedItem === 5}
+                    selected={selectedItem === 7}
                     sx={listItemStyle}
                 >
                     Subcontractor
@@ -103,7 +103,7 @@ function SideBar() {
                 component={Link}
                     to="/settings/supplier"
                     
-                    selected={selectedItem === 6}
+                    selected={selectedItem === 8}
                     sx={listItemStyle}
                 >
                     Supplier List

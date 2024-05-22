@@ -305,6 +305,9 @@ import { toast } from 'react-toastify';
                 <MenuItem value={"admin"}>Admin</MenuItem>
                 <MenuItem value={"client"}>Client</MenuItem>
                 <MenuItem value={"projectManager"}>Project Manager</MenuItem>
+                <MenuItem value={"subcontractor"}>Subcontractor</MenuItem>
+                <MenuItem value={"employee"}>Employee</MenuItem>
+                <MenuItem value={"supplier"}>Supplier</MenuItem>
               </Select>
             </FormControl>
           </Stack>

@@ -27,10 +27,19 @@ import {
   setRowCheckbox,
 } from "../../../redux/slices/addPhaseSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { addInitialPhase, addPhase } from "../../../redux/slices/Project/projectInitialProposal";
+import {
+  addInitialPhase,
+  addPhase,
+} from "../../../redux/slices/Project/projectInitialProposal";
 import moment from "moment";
-import AssignmentTurnedInRoundedIcon from '@mui/icons-material/AssignmentTurnedInRounded';
+import AssignmentTurnedInRoundedIcon from "@mui/icons-material/AssignmentTurnedInRounded";
 import { toast } from "react-toastify";
+import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
+import UpdateLineItemUserStatus from "../../dialogues/UpdateLineItemUserStatus/UpdateLineItemUserStatus";
+import LineItemDetailModal from "../../dialogues/LineItemDetailModal/LineItemDetailModal";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import BuilderProButton from "../../UI/Button/BuilderProButton";
+import LineItemTeamStatus from "../../dialogues/LineItemTeamStatus/LineItemTeamStatus";
 //import "react-toastify/dist/ReactToastify.css";
 
 const initialRows = [
@@ -88,8 +97,14 @@ const AddPhaseCard = ({
   const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
   const [showAddLine, setShowAddLine] = useState(false);
   const [showUpdateLine, setShowUpdateLine] = useState(false);
+  const [showUpdateUserStatus, setShowUpdateUserStatus] = useState(false);
+  const [showTeamStatus, setShowTeamStatus] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [rows, setRows] = useState(initialRows);
+  const user = useSelector((state) => state.auth.userInfo);
+  const userId = user.user.id;
+  const userRoleAuth = useSelector(getUserRoleFromRedux);
+  console.log(userRoleAuth);
   const [deletePhaseLine] = useDeletePhaseLineMutation();
 
   const dispatch = useDispatch();
@@ -149,17 +164,13 @@ const AddPhaseCard = ({
       lineItemId: lineItemId,
       projectId: projectId,
     };
-    
-      const res = await deletePhaseLine(data);
-      if(InitialProposalView){
 
-        dispatch(addInitialPhase(res.data.allPhases));
-      }else{
-
-        dispatch(addPhase(res.data.allPhases));
-      }
-      
-   
+    const res = await deletePhaseLine(data);
+    if (InitialProposalView) {
+      dispatch(addInitialPhase(res.data.allPhases));
+    } else {
+      dispatch(addPhase(res.data.allPhases));
+    }
   };
 
   const handleAddLine = () => {
@@ -177,13 +188,25 @@ const AddPhaseCard = ({
     setCheckedRow(row);
     setShowUpdateLine(true);
   };
+  const handleUpdateUserStatus = (row) => {
+    setCheckedRow(row);
+    setShowUpdateUserStatus(true);
+  };
 
+  const handleUpdateUserStatusClose = () => {
+    setShowUpdateUserStatus(false);
+  };
   const handleUpdateOpen = () => {
     setShowUpdateLine(true);
   };
 
   const handleUpdateClose = () => {
     setShowUpdateLine(false);
+  };
+
+  const handleShowTeamStatus = (row) => {
+    setCheckedRow(row);
+    setShowTeamStatus(true);
   };
 
   const tableContainerStyle = {
@@ -229,7 +252,7 @@ const AddPhaseCard = ({
         // Row doesn't exist, add it
         updatedRows[phaseId].rows.push(row);
       }
-      if(updatedRows[phaseId].rows.length === 0){
+      if (updatedRows[phaseId].rows.length === 0) {
         delete updatedRows[phaseId];
       }
       return { ...updatedRows };
@@ -241,7 +264,7 @@ const AddPhaseCard = ({
     const phaseId = phaseData.id;
     return selectedRows[phaseId]?.rows.includes(row);
   };
-  console.log('PHASE :', phaseData)
+  // console.log('PHASE :', phaseData)
 
   return (
     <div style={{ width: "100%" }}>
@@ -264,7 +287,9 @@ const AddPhaseCard = ({
               </Typography>
             </Box>
             <Box>
-              <Typography sx={blackHeading}>Price: ${totalCost}</Typography>
+              {(userRoleAuth.userRole === "superadmin" ||
+                    userRoleAuth.userRole === "admin" ||
+                    userRoleAuth.userRole === "projectManager") && <Typography sx={blackHeading}>Price: ${totalCost}</Typography>}
             </Box>
             {/* <Box>
               <Typography sx={blackHeading}>
@@ -394,10 +419,17 @@ const AddPhaseCard = ({
                   <TableCell sx={tableHeadings}>Notes</TableCell>
                   <TableCell sx={tableHeadings}>Status</TableCell>
 
-                  <TableCell  sx={tableHeadings}>Update Status</TableCell>
+                  {(userRoleAuth.userRole === "employee" ||
+                    userRoleAuth.userRole === "subcontractor" ||
+                    userRoleAuth.userRole === "supplier") && (
+                    <TableCell sx={tableHeadings}>Update Status</TableCell>
+                  )}
+                  {(userRoleAuth.userRole === "superadmin" ||
+                    userRoleAuth.userRole === "admin" ||
+                    userRoleAuth.userRole === "projectManager") && (
+                    <TableCell sx={tableHeadings}>Team Status</TableCell>
+                  )}
                   <TableCell></TableCell>
-
-                  {/* <TableCell></TableCell> */}
                 </TableRow>
 
                 <TableRow style={hrLine}></TableRow>
@@ -405,6 +437,16 @@ const AddPhaseCard = ({
 
               <TableBody>
                 {phaseData.LineItems.map((row, index) => {
+                  if(userRoleAuth.userRole === "employee" ||
+                  userRoleAuth.userRole === "subcontractor" ||
+                  userRoleAuth.userRole === "supplier"){
+                    const userLineItem = row.UserLineItemStatuses?.find(user => user.userId === userId);
+                    if(Boolean(userLineItem)){
+                      
+                    }else{
+                      return <></>
+                    }
+                  }
                   return (
                     <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
                       {!InitialProposalView && (
@@ -429,10 +471,18 @@ const AddPhaseCard = ({
                       <TableCell>${row.unit_price}</TableCell>
                       <TableCell>{row.quantity}</TableCell>
                       <TableCell>
-                        {row?.WorkOrderReqs ? moment(row?.WorkOrderReqs[0]?.start_day).format("MMM, DD, YYYY HH:mm a") : '-'}
+                        {row?.WorkOrderReqs
+                          ? moment(row?.WorkOrderReqs[0]?.start_day).format(
+                              "MMM, DD, YYYY HH:mm a"
+                            )
+                          : "-"}
                       </TableCell>
                       <TableCell>
-                        {row?.WorkOrderReqs ? moment(row?.WorkOrderReqs[0]?.end_day).format("MMM, DD, YYYY HH:mm a") : '-'}
+                        {row?.WorkOrderReqs
+                          ? moment(row?.WorkOrderReqs[0]?.end_day).format(
+                              "MMM, DD, YYYY HH:mm a"
+                            )
+                          : "-"}
                       </TableCell>
 
                       <TableCell>${row.total}</TableCell>
@@ -440,11 +490,49 @@ const AddPhaseCard = ({
 
                       <TableCell>{row.notes}</TableCell>
                       <TableCell>{row.status}</TableCell>
-                      <TableCell sx={{display:'flex', justifyContent:'center', alignItems:'center', border: 'none'}}>
-                        <IconButton> 
-                        <AssignmentTurnedInRoundedIcon  fontSize="large"/>
-                        </IconButton>
+                      {(userRoleAuth.userRole === "superadmin" ||
+                        userRoleAuth.userRole === "admin" ||
+                        userRoleAuth.userRole === "projectManager") && (
+                        <TableCell >
+                          <Button
+                            sx={{
+                              height: "2rem",
+                              padding: { lg: "0.75rem 1.5rem" },
+                              justifyContent: "center",
+                              alignItems: "center",
+                              flexShrink: 0,
+                              alignSelf: "stretch",
+                              borderRadius: "2.8125rem",
+                              background: row.UserLineItemStatuses.length < 1 ? 'lightgray' : "#4C8AB1",
+                              color: "#FFF",
+                              textTransform: "none",
+                              "&:hover": {
+                                background: "#357899",
+                              },
+                              marginTop: "0.3rem",
+                            }}
+                            onClick={() => {
+                              handleShowTeamStatus(row);
+                            }}
+                            disabled={row.UserLineItemStatuses.length < 1}
+                          >
+                            Details
+                          </Button>
                         </TableCell>
+                      )}
+                      {(userRoleAuth.userRole === "employee" ||
+                        userRoleAuth.userRole === "subcontractor" ||
+                        userRoleAuth.userRole === "supplier") &&  (
+                        <TableCell sx={{}}>
+                          {(row.status === 'Work Order approved')&& <IconButton
+                            onClick={() => {
+                              handleUpdateUserStatus(row);
+                            }}
+                          >
+                            <AssignmentTurnedInRoundedIcon fontSize="large" />
+                          </IconButton>}
+                        </TableCell>
+                      )}
                       <TableCell>
                         <EditIcon onClick={() => handleUpdateLine(row)} />
                         {(row.status === "Work Order Not requested" ||
@@ -463,6 +551,24 @@ const AddPhaseCard = ({
             </Table>
           </Box>
         </Grid>
+
+        {showTeamStatus && (
+          <LineItemTeamStatus
+            modalOpen={showTeamStatus}
+            setModalOpen={setShowTeamStatus}
+            UserLineItemStatuses={checkedRow?.UserLineItemStatuses}
+          />
+        )}
+
+        {showUpdateUserStatus && (
+          <LineItemDetailModal
+          userId={userId}
+            lineItem={checkedRow}
+            modalOpen={showUpdateUserStatus}
+            setModalOpen={setShowUpdateUserStatus}
+            userRole={userRoleAuth.userRole}
+          />
+        )}
 
         {showAddLine && (
           <AddLineDialogue
@@ -564,6 +670,7 @@ const tableHeadings = {
   fontWeight: 500,
   fontSize: "0.9rem",
   color: "#8C8C8C",
+  padding: "8px !important",
   // paddingLeft: "0rem",
 };
 const hrLine = {

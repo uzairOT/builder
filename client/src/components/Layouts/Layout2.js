@@ -37,7 +37,7 @@ useEffect(()=>{
           dispatch(authUserRole(res.data.role));
         } catch(error){
           console.log(error)
-          dispatch(setUserRoleError(error));
+          dispatch(setUserRoleError(error.message));
         } finally{
           dispatch(setUserRoleIsLoading(false));
         }

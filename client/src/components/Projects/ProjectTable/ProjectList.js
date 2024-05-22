@@ -30,6 +30,7 @@ import { Link, useNavigate } from "react-router-dom";
 import EditProjectModal from "../../dialogues/EditProject/EditProjectModal";
 
 const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) => {
+  console.log(rows);
   const navigate = useNavigate();
   const tableHeader = [
     { id: "clientName", title: "Client" },
@@ -59,7 +60,7 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
   const [page, setPage] = useState(0);
   const [openEditModel, setOpenEditModel] = useState(false);
 
-  const rowsPerPage = 6;
+  const rowsPerPage = 7;
   const [anchorEl, setAnchorEl] = React.useState(null);
  
 
@@ -383,7 +384,11 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
                               }}
                             />
                           </TableCell>
-                          {tableHeader &&
+                          <TableCell sx={themeStyle.tableCell}>{row.clientName}</TableCell>
+                          <TableCell sx={themeStyle.tableCell}>{row.projectName}</TableCell>
+                          <TableCell sx={themeStyle.tableCell}>{row.start_time}</TableCell>
+                          <TableCell sx={themeStyle.tableCell}>{row.end_time}</TableCell>
+                          {/* {tableHeader &&
                             tableHeader.map((column, index) => {
                               const value = row[column.id];
                               const status = column.id === "projectStatus";
@@ -406,7 +411,7 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
                                   </Typography>
                                 </TableCell>
                               );
-                            })}
+                            })} */}
                           <Box
                             display="flex"
                             pt={2.5}

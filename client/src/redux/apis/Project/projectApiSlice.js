@@ -199,6 +199,13 @@ const projectApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data
       })
+    }),
+    updateUserLineItemStatus: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/updateUserLineItemsStatus`,
+        method: 'PUT',
+        body: data
+      })
     })
   }),
 });
@@ -230,5 +237,6 @@ export const {
   useDeleteProjectNotesMutation,
   useGetWorkOrderDetailsMutation,
   useGetLineItemQuery,
-  useGetPhasesAndLineItemsByIdMutation
+  useGetPhasesAndLineItemsByIdMutation,
+  useUpdateUserLineItemStatusMutation
 } = projectApiSlice;

@@ -748,7 +748,7 @@ const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
   );
 };
 
-const CustomEventMonthTasks = ({ event, isProjectPage }) => {
+const CustomEventMonthTasks = ({ event, isProjectPage, projectId }) => {
   const start = moment(event.start).format("HH:mm");
   const end = moment(event.end).format("HH:mm");
   const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation({
@@ -763,39 +763,80 @@ const CustomEventMonthTasks = ({ event, isProjectPage }) => {
   };
   return (
     <>
-      <Box
-        sx={{ background: event?.data?.projectColor }}
-        height={"100%"}
-        onClick={handleOnClick}
-      >
-        {isLoading ? (
+      {isProjectPage ? (
+        projectId === event.data.projectId && (
           <>
-            <Skeleton
-              sx={{
-                bgcolor: `rgba(${event?.data?.projectColor}, 0.6)`,// Set background color dynamically
-                animation: "wave 1s infinite", // Make the wave animation more prominent and continuous
-              }}
-              animation="wave"
-              variant="rectangle"
+            <Box
+              sx={{ background: event?.data?.projectColor }}
+              height={"100%"}
+              onClick={handleOnClick}
             >
-            </Skeleton>
+              {isLoading ? (
+                <>
+                  <Skeleton
+                    sx={{
+                      bgcolor: `rgba(${event?.data?.projectColor}, 0.6)`, // Set background color dynamically
+                      animation: "wave 1s infinite", // Make the wave animation more prominent and continuous
+                    }}
+                    animation="wave"
+                    variant="rectangle"
+                  ></Skeleton>
+                </>
+              ) : (
+                <Typography fontSize={"10px"} color={"#454545"}>
+                  {event?.data?.task}
+                </Typography>
+              )}
+            </Box>
+            {data === null ? (
+              <></>
+            ) : (
+              <NotificationDetailModal
+                changeOrder={true}
+                notification={data}
+                isEvent={true}
+                open={open}
+                setOpen={setOpen}
+              />
+            )}
           </>
-        ) : (
-          <Typography fontSize={"10px"} color={"#454545"}>
-            {event?.data?.task}
-          </Typography>
-        )}
-      </Box>
-      {data === null ? (
-        <></>
+        )
       ) : (
-        <NotificationDetailModal
-          changeOrder={true}
-          notification={data}
-          isEvent={true}
-          open={open}
-          setOpen={setOpen}
-        />
+        <>
+          <Box
+            sx={{ background: event?.data?.projectColor }}
+            height={"100%"}
+            onClick={handleOnClick}
+          >
+            {isLoading ? (
+              <>
+                <Skeleton
+                  sx={{
+                    bgcolor: `rgba(${event?.data?.projectColor}, 0.6)`, // Set background color dynamically
+                    animation: "wave 1s infinite", // Make the wave animation more prominent and continuous
+                  }}
+                  animation="wave"
+                  variant="rectangle"
+                ></Skeleton>
+              </>
+            ) : (
+              <Typography fontSize={"10px"} color={"#454545"}>
+                {event?.data?.task}
+              </Typography>
+            )}
+          </Box>
+          {data === null ? (
+            <></>
+          ) : (
+            <NotificationDetailModal
+              changeOrder={true}
+              notification={data}
+              isEvent={true}
+              open={open}
+              setOpen={setOpen}
+            />
+          )}
+        </>
       )}
     </>
   );

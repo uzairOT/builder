@@ -119,7 +119,7 @@ function AddLineElement({
   const currentProject = JSON.parse(local);
   const phases = useSelector((state) => state.projectInitialProposal.phases);
   const userInfo = useSelector((state) => state.auth.userInfo);
-  console.log(LineItem)
+  // console.log(autoComplete)
   const {data, isLoading, refetch} = useGetUnitsQuery({userId: userInfo.user.id})
   const [addUnit] = useAddUnitMutation()
   //console.log(userInfo)
@@ -136,11 +136,7 @@ function AddLineElement({
     percentage
   };
 
-  // useEffect(()=>{
-  //   if(data){
-  //     setUnitList(data);
-  //   }
-  // },[data])
+  
   useEffect(() => {
     const getData = setTimeout(() => {
       axios
@@ -156,7 +152,7 @@ function AddLineElement({
           setAutoComplete(response.data.MasterLines);
           //console.log(response.data.MasterLines);
         });
-    }, 500);
+    }, 300);
   
     return () => clearTimeout(getData);
   }, [formData.phaseName]);
@@ -361,10 +357,16 @@ const handleSetUnit = async (selectedOption) => {
     await refetch({userId: userInfo.user.id});
   } 
 }
+const findValueInData = (value) => {
+  const dataObject = data?.find(obj => obj.value === value);
+  console.log(dataObject)
+  return dataObject?.label;
+}
 
 
 useEffect(()=>{
   console.log(unit)
+  console.log(findValueInData(unit) )
 },[unit])
 
   return (
@@ -389,6 +391,7 @@ useEffect(()=>{
             <Typography sx={typoText}>Line Item</Typography>
             <>
               <Autocomplete
+              disabled={isLoading}
                 freeSolo
                 disableClearable
                 id="phaseName"
@@ -410,6 +413,8 @@ useEffect(()=>{
                     setStart(dayjs(selectedOption.start_day));
                     setEnd(dayjs(selectedOption.end_day));
                     setLongDescription(selectedOption.notes);
+                    setMargin(selectedOption.margin);
+                    setPercentage(selectedOption.percentage);
                   } else {
                     // Handle case where newValue is not found in autoComplete
                   }
@@ -458,13 +463,14 @@ useEffect(()=>{
                   <Box mt={'8px'} mb={'8px'}>
 
                   <CreateableSelect
-                  defaultInputValue={LineItem ? UnitsMap.get(LineItem.unit) : ''}
-                  defaultOptions
+                  // defaultInputValue={LineItem ? UnitsMap.get(LineItem.unit) : unit ? findValueInData(unit) : ''}
+                  inputValue={LineItem ? findValueInData(LineItem.unit) : unit ? findValueInData(unit) : ''}
                   styles={selectStyles}
-                  defaultValue={selectedOption}
+                  defaultValue={unit}
                   onChange={handleSetUnit}
                   options={data ? data : []}
                   isLoading={isLoading}
+                  isDisabled={isLoading}
                   isClearable
                   >
 
