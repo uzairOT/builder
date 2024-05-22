@@ -23,14 +23,16 @@ import { uploadToS3 } from "../../utils/S3";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { socket } from "../../socket";
+import { getUserRoleFromRedux } from "../../redux/slices/auth/userRoleSlice";
+import { useSelector } from "react-redux";
 let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
 const currentUser = userInfo?.user;
 // const socket = io("http://3.135.107.71", {
 //   query: { userId: currentUser?.id },
 // });
-
 function ChatView({ isAdminPage }) {
+  const userRoleProject = useSelector(getUserRoleFromRedux);
   const [openModal, setOpenModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const handleCloseModal = () => {
@@ -50,9 +52,9 @@ function ChatView({ isAdminPage }) {
   const { id } = useParams();
   const messageBoxRef = useRef(null);
   const [usersOnline, setUsersOnline] = useState({}); // State to store online status of users
-  const [recipientType, setRecipentType] = useState("team");
- const [projectName] = useOutletContext()
-   const [offset, setOffset] = useState(0);
+  const [recipientType, setRecipentType] = useState("team+client");
+  const [projectName] = useOutletContext();
+  const [offset, setOffset] = useState(0);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const boxRef = useRef(null);
   const [scrollingUp, setScrollingUp] = useState(false);
@@ -90,12 +92,14 @@ function ChatView({ isAdminPage }) {
     }
   };
   //
+  const projectRole = userRoleProject.userRole;
   const fetchProjectChat = async (newOffset, direction) => {
     setMsgLoading(true);
     try {
       const res = await getChatMessages({
         projectId: id,
         offset: newOffset,
+        recipientType: "team+client",
       }).unwrap();
       if (res.data.length === 0) {
         setHasMoreMessages(false);
@@ -217,12 +221,11 @@ function ChatView({ isAdminPage }) {
       }
     }
   };
-  // useEffect(() => {
-  //   // Scroll to the bottom when messages update (when not scrolling up)
-  //   if (messageBoxRef.current && !scrollingUp) {
-  //     messageBoxRef.current.scrollIntoView({ behavior: "smooth" });
-  //   }
-  // }, [messages]);
+  useEffect(() => {
+    if (boxRef.current && !scrollingUp) {
+      boxRef.current.scrollTop = boxRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const handleClearImageState = () => {
     setFileName("");
@@ -268,7 +271,7 @@ function ChatView({ isAdminPage }) {
             sx={{ marginRight: "1rem" }}
           ></Avatar>
           <Typography sx={{ fontSize: "15px", fontWeight: 600 }}>
-          {projectName}
+            {projectName}
           </Typography>
           <IconButton>
             <FiberManualRecordIcon sx={{ fontSize: 15, color: "#3B9434" }} />
@@ -530,30 +533,32 @@ function ChatView({ isAdminPage }) {
             onChange={(e) => setMessage(e.target.value)}
             sx={InputStyle}
           />
-          <Box sx={{ display: "flex", columnGap: 1, margin: "0 8px 0 10px" }}>
-            <button
-              onClick={handleTeamClick}
-              style={{
-                ...buttonStyle,
-                backgroundColor:
-                  recipientType === "team" ? "#4C8AB1" : "#FFFFFF",
-                color: recipientType === "team" ? "#FFF" : "#4C8AB1",
-              }}
-            >
-              Team
-            </button>
-            <button
-              onClick={handleTeamClientClick}
-              style={{
-                ...buttonStyle,
-                backgroundColor:
-                  recipientType === "team+client" ? "#4C8AB1" : "#FFFFFF",
-                color: recipientType === "team+client" ? "#FFF" : "#4C8AB1",
-              }}
-            >
-              Team + Client
-            </button>
-          </Box>
+          {projectRole !== "client" && (
+            <Box sx={{ display: "flex", columnGap: 1, margin: "0 8px 0 10px" }}>
+              <button
+                onClick={handleTeamClick}
+                style={{
+                  ...buttonStyle,
+                  backgroundColor:
+                    recipientType === "team" ? "#4C8AB1" : "#FFFFFF",
+                  color: recipientType === "team" ? "#FFF" : "#4C8AB1",
+                }}
+              >
+                Team
+              </button>
+              <button
+                onClick={handleTeamClientClick}
+                style={{
+                  ...buttonStyle,
+                  backgroundColor:
+                    recipientType === "team+client" ? "#4C8AB1" : "#FFFFFF",
+                  color: recipientType === "team+client" ? "#FFF" : "#4C8AB1",
+                }}
+              >
+                Team + Client
+              </button>
+            </Box>
+          )}
           <IconButton
             color="primary"
             aria-label="send"
@@ -588,7 +593,7 @@ function ChatView({ isAdminPage }) {
           <img
             src={selectedImage}
             alt="Preview"
-            style={{ width: "100%", height: "auto" }}
+            style={{ width: 300, height: 300 }}
           />
         </Box>
       </Modal>
