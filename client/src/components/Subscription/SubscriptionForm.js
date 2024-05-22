@@ -2,10 +2,10 @@ import Stack from '@mui/joy/Stack'
 import React from 'react'
 import PaymentModal from '../dialogues/PaymentModal/PaymentModal'
 
-const SubscriptionForm = ({currentPlan}) => {
+const SubscriptionForm = ({currentPlan,currentPakage}) => {
   return (
     <Stack p={4} mt={1} sx={themeStyle.scrollable} overflow={'hidden'}>
-      <PaymentModal currentPlan={currentPlan}/>
+      <PaymentModal currentPlan={currentPlan} currentPakage={currentPakage}/>
     </Stack>
   )
 }

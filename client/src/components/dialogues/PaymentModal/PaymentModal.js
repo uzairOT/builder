@@ -27,14 +27,7 @@ function a11yProps(index) {
   };
 }
 const initialValues = {
-  organizationName: "",
-  country: "",
   address: "",
-  promoCode: "",
-  paymentMethod: "",
-  cardNumber: "",
-  expirationMethod: "",
-  cvc: "",
 };
 const PromoCodeButton = styled(Button)({
   backgroundColor: "black",
@@ -42,22 +35,29 @@ const PromoCodeButton = styled(Button)({
   textTransform: "capitalize",
 });
 
-const PaymentModal = (currentPlan) => {
+let data = localStorage.getItem("userInfo");
+let userInfo = JSON.parse(data);
+const currentUser = userInfo?.user;
+
+const PaymentModal = ({ currentPlan, currentPakage }) => {
   const [values, setValues] = useState(initialValues);
   const [countries, setCountries] = useState([]);
   const [selectedTab, setSelectedTab] = useState(0);
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
+  const [userAddress, setUserAddress] = useState("");
+
   const amount = currentPlan;
   useEffect(() => {
-    fetch("http://localhost:8080/payment/config").then(async (r) => {
+    console.log("==============1111111111 ", currentUser);
+    fetch("http://3.135.107.71/payment/config").then(async (r) => {
       const { publishableKey } = await r.json();
       setStripePromise(loadStripe(publishableKey));
     });
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8080/payment/create-payment-intent", {
+    fetch("http://3.135.107.71/payment/create-payment-intent", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -132,12 +132,13 @@ const PaymentModal = (currentPlan) => {
               variant="outlined"
               size="small"
               name="organizationName"
-              value={values.organizationName}
+              value={currentUser.companyName} // Set the value to currentUser.companyName
               onChange={handleInputChange}
+              disabled // Make the TextField disabled
             />
-            <label id="countryOrRegion" style={themeStyle.inputLabels}>
+            {/* <label id="countryOrRegion" style={themeStyle.inputLabels}>
               Country or Region
-            </label>
+            </label> */}
             {/* <TextField
                 id="countryOrRegion"
                 label=""
@@ -145,7 +146,7 @@ const PaymentModal = (currentPlan) => {
                 size="small"
                 value={values.country}
               /> */}
-            <Autocomplete
+            {/* <Autocomplete
               size="small"
               id="countryOrRegion"
               options={countries}
@@ -153,16 +154,18 @@ const PaymentModal = (currentPlan) => {
               renderInput={(params) => (
                 <TextField {...params} label="Country" />
               )}
-            ></Autocomplete>
+            ></Autocomplete> */}
             <label id="address" style={themeStyle.inputLabels}>
               Address Line 1
             </label>
             <OutlinedInput
               id="address"
+              name="address"
               placeholder={"Street address"}
               variant="outlined"
               size="small"
               value={values.address}
+              onChange={handleInputChange}
             />
           </Stack>
           <Stack p={1} py={4} spacing={1}>
@@ -203,9 +206,28 @@ const PaymentModal = (currentPlan) => {
               <Typography fontSize={"12px"}>Secure form</Typography>
             </Stack>
           </Stack>
+          <Stack
+            pt={2}
+            spacing={1}
+            direction={"row"}
+            alignItems={"center"}
+            py={0.1}
+          >
+            <Typography>
+              <b>Choosen Plan: </b>
+              {currentPakage}
+            </Typography>
+            <Typography>{amount}$</Typography>
+          </Stack>
           {clientSecret && stripePromise && (
             <Elements stripe={stripePromise} options={{ clientSecret }}>
-              <CheckoutForm />
+              <CheckoutForm
+                address={values.address}
+                currentPlan={amount}
+                currentPakage={currentPakage}
+                orgName={currentUser.companyName}
+                userId={currentUser.id}
+              />
             </Elements>
           )}
           {/* <Stack py={1} pb={4}>

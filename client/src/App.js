@@ -43,7 +43,6 @@ import NotesView from "./components/Projects/ProjectNotes/NotesView";
 import Layout1 from "./components/Layouts/Layout1";
 import ProjectsTable from "./pages/Projects/ProjectsTable";
 import Layout2 from "./components/Layouts/Layout2";
-import ChatView from "./components/Projects/ProjectsChat/ChatView";
 import Subscription from "./pages/Subscription/Subscription";
 import { useDispatch, useSelector } from "react-redux";
 import Invitation from "./pages/InvitationView/Invitation";
@@ -82,6 +81,7 @@ import ClientLayout from "./components/Layouts/ClientLayout.js";
 import { useGetProjectUserRoleMutation } from "./redux/apis/Project/userProjectApiSlice.js";
 import { getUserRoleFromRedux } from "./redux/slices/auth/userRoleSlice.js";
 import Completion from "./components/dialogues/PaymentModal/Completion.js";
+import ChatViewMain from "./components/Projects/ProjectsChat/ChatViewMain.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -209,7 +209,7 @@ function App() {
                     loader={projectUserRoleAuth}
                   />
                   <Route path="work-order" element={<WorkOrderView />} />
-                  <Route path="chat" element={<ChatView />} />
+                  <Route path="chat" element={<ChatViewMain />} />
                   <Route path="notes" element={<NotesView />} />
                   <Route path="project-report" element={<ReportView />} />
                   <Route path="change-order" element={<ChangeOrder />}></Route>

@@ -1,9 +1,11 @@
 import { Box, Grid, Paper } from "@mui/material";
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useOutletContext } from "react-router-dom";
 import RecentImagesAndComments from "../ClientDashboard/RecentImagesAndComments/RecentImagesAndComments";
 
 const ClientLayout = () => {
+  const [projectName] = useOutletContext();
+
   return (
     <div>
       <Grid sx={themeStyle.dashboard} container pt={1}>
@@ -30,7 +32,7 @@ const ClientLayout = () => {
               style={{ height: { lg: "100%", xs: "100%" } }}
             >
               <Box sx={themeStyle.alternativeBox}>
-                <Outlet />
+                <Outlet context={[projectName]} />
               </Box>
             </Grid>
           </Grid>

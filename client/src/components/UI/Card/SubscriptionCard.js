@@ -7,10 +7,11 @@ const SubscriptionCard = ({
   current,
   setCurrentPlan,
   currentPlan,
+  setCurrentPakage,
 }) => {
   const plan = (() => {
     switch (planType) {
-      case "Business":
+      case "Business +":
         return {
           name: "Business +",
           color: "#22506C",
@@ -33,6 +34,7 @@ const SubscriptionCard = ({
   const handleClick = () => {
     console.log("Cost:", plan.cost);
     setCurrentPlan(plan.cost);
+    setCurrentPakage(plan.name);
   };
   // console.log("plan",plan)
   return (
