@@ -4,21 +4,26 @@ import SunnyWindy from "./assets/images/sunny-windy.png";
 import HumidityImg from './assets/images/humidity.png'
 import WindImg from './assets/images/wind.png'
 import {getFormattedWeatherData} from "../../../services/WeatherService";
+import { useDispatch, useSelector } from "react-redux";
+import { setDailyForecast, setTemperatureUnit } from "../../../redux/slices/DailyForecast/dailyForecastSlice";
+// import { setTemperatureUnit } from "../../../redux/slices/Weather/weatherSlice";
 // import { WiHumidity, WiStrongWind } from 'react-icons/wi';
 
 const WeatherAppCurrentForecast = () => {
 
-  const [temperatureUnit, setTemperatureUnit] = useState("metric");
+const temperatureUnit = useSelector(state => state.dailyForecast.temperatureUnit);
+const dispatch =useDispatch();
   const [currentWeather, setCurrentWeather] = useState({})
 
   const handleUnitChange = (event) => {
-    setTemperatureUnit(event.target.value);
+    dispatch(setDailyForecast([]))
+    dispatch(setTemperatureUnit(event.target.value))
   };
 
 useEffect(()=>{  
     const fetchWeather = async () => {
     try {
-      const data = await getFormattedWeatherData({lat: "33.6844", lon: "73.0479", units: temperatureUnit});
+      const data = await getFormattedWeatherData({lat: "36.7783", lon: "119.4179", units: temperatureUnit});
       //console.log(data);
       setCurrentWeather(data);} catch(error) { //console.log(error); 
       }

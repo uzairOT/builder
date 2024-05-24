@@ -271,7 +271,7 @@ const inputStyle = {
 const generalBox = {
   display: "flex",
   justifyContent: "center",
-  marginTop: "1rem",
+  marginTop: "2rem",
 };
 
 const paperPropsStyle = {

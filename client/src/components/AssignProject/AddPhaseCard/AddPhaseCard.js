@@ -116,7 +116,7 @@ console.log(adminProjectView)
   // console.log(maxEndDay);
 
   phaseData.LineItems.forEach((row) => {
-    totalCost += parseInt(row.total); // Accumulate the total cost
+    totalCost += (parseInt(row.total) + parseInt(row.margin)); // Accumulate the total cost
     const startDay = moment(row.start_day);
     const endDay = moment(row.end_day);
 
@@ -411,11 +411,12 @@ console.log(adminProjectView)
                   {/* <TableCell sx={tableHeadings}>Description</TableCell> */}
                   <TableCell sx={tableHeadings}>Unit</TableCell>
                   <TableCell sx={tableHeadings}>Unit Cost</TableCell>
+                  <TableCell sx={tableHeadings}>Cost</TableCell>
                   <TableCell sx={tableHeadings}>Quantity</TableCell>
                   <TableCell sx={tableHeadings}>Start</TableCell>
                   <TableCell sx={tableHeadings}>End</TableCell>
-                  <TableCell sx={tableHeadings}>Total Cost</TableCell>
                   <TableCell sx={tableHeadings}>Margin</TableCell>
+                  <TableCell sx={tableHeadings}>Total Cost</TableCell>
                   <TableCell sx={tableHeadings}>Notes</TableCell>
                   {adminProjectView && <>
                   <TableCell sx={tableHeadings}>Status</TableCell>
@@ -471,6 +472,7 @@ console.log(adminProjectView)
                       {/* <TableCell>{row.description}</TableCell> */}
                       <TableCell>{row.unit}</TableCell>
                       <TableCell>${row.unit_price}</TableCell>
+                      <TableCell>${row.total}</TableCell>
                       <TableCell>{row.quantity}</TableCell>
                       <TableCell>
                         {row?.WorkOrderReqs
@@ -487,8 +489,9 @@ console.log(adminProjectView)
                           : "-"}
                       </TableCell>
 
-                      <TableCell>${row.total}</TableCell>
+                     
                       <TableCell>${row?.margin}</TableCell>
+                      <TableCell>${Number(row.total) + Number(row.margin)}</TableCell>
 
                       <TableCell>{row.notes}</TableCell>
                      {adminProjectView && <>

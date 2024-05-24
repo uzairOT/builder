@@ -101,6 +101,7 @@ function AddLineElement({
   const [end, setEnd] = useState(LineItem ? dayjs(LineItem.end_day) : null);
   const [margin, setMargin] = useState( LineItem ? LineItem.margin :'');
   const [percentage, setPercentage] = useState(  LineItem ? LineItem.percentage : '');
+  const [totalCost, setTotalCost] = useState(0);
   const creatableRef = useRef();
 
   const handleStartDateChange = (newValue) => {
@@ -184,6 +185,7 @@ function AddLineElement({
       const roundedResult = Math.round(result*10)/10
       setPercentage(()=> {
         setMargin(roundedResult);
+       
         return percent;
       })
     } else{
@@ -199,7 +201,9 @@ function AddLineElement({
       const roundedResult = Math.round(result*10)/10
       setMargin(()=> {
         setPercentage(roundedResult);
+       
         return inputMargin;
+        
       })
     } else{
       //toastId added to prevent duplication
@@ -302,6 +306,9 @@ function AddLineElement({
       // handleAddClose();
     }
   };
+  const handleTotalCostChange = () =>{
+    setTotalCost(total+margin);
+  }
 
   // const Units = [
   //   { value: "sqft", label: "Square Feet"},
@@ -404,6 +411,9 @@ const setUnitOnLineItemEdit = () => {
       setUnitOnLineItemEdit();
     }
   },[LineItem, data])
+  useEffect(()=>{
+    handleTotalCostChange();
+  },[margin])
 
   return (
     <div className="App">
@@ -423,7 +433,7 @@ const setUnitOnLineItemEdit = () => {
             <Close />
           </IconButton>
           </Stack>
-          <DialogContent sx={{ padding: "0rem 3rem 3rem 3rem" }}>
+          <DialogContent sx={{ padding: "0rem 3rem 0rem 3rem" }}>
             <Typography sx={typoText}>Line Item</Typography>
             <>
               <Autocomplete
@@ -589,7 +599,7 @@ const setUnitOnLineItemEdit = () => {
               />
                
 
-              <Typography sx={typoText}>Total</Typography>
+              <Typography sx={typoText}>Cost</Typography>
               <TextField
                 sx={inputStyle}
                 placeholder="200"
@@ -696,6 +706,21 @@ const setUnitOnLineItemEdit = () => {
                   </Box>
                 </Box>
               </Box> */}
+              <Typography sx={typoText}>Total Cost</Typography>
+              <TextField
+                sx={inputStyle}
+                placeholder="200"
+                required
+                margin="dense"
+                id="total"
+                name="total"
+                type="number"
+                variant="standard"
+                value={totalCost}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                }}
+              />
               <Typography sx={typoText}>Notes</Typography>
               <TextField
                 sx={{ ...inputStyle, height: "5rem" }}

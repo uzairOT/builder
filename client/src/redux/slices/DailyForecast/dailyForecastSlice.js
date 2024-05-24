@@ -4,6 +4,7 @@ const initialState = {
     isLoading: true,
     error: null,
     dailyForecast: [],
+    temperatureUnit: 'metric'
 } 
 
 const eventsSlice = createSlice({
@@ -18,11 +19,14 @@ const eventsSlice = createSlice({
         },
         setDailyForecast: (state,action) => {
             state.dailyForecast = action.payload;
+        },
+        setTemperatureUnit: (state, action) => {
+            state.temperatureUnit = action.payload;
         }
     }
 })
 
-export const {setForecastLoading, setForecastError, setDailyForecast } = eventsSlice.actions;
+export const {setForecastLoading, setForecastError, setDailyForecast, setTemperatureUnit } = eventsSlice.actions;
 
 export const getForecast = state => state.dailyForecast;
 
