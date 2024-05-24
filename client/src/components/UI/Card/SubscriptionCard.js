@@ -33,14 +33,17 @@ const SubscriptionCard = ({
   })();
   const handleClick = () => {
     console.log("Cost:", plan.cost);
-    setCurrentPlan(plan.cost);
+    setCurrentPlan(plan?.cost);
     setCurrentPakage(plan.name);
+  };
+  const handlePrevious = () => {
+    console.log("first");
   };
   // console.log("plan",plan)
   return (
     <Paper
       style={{ width: "100%", borderRadius: "14px", cursor: "pointer" }}
-      onClick={handleClick}
+      onClick={current ? handlePrevious : handleClick}
     >
       <Stack
         backgroundColor={plan.color}

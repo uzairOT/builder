@@ -46,7 +46,7 @@ function RecentImagesAndComments() {
                     sx={themeStyle.smallimgBox} // Adjust size as needed
                 />
             </Box>
-            <Typography sx={{ ...themeStyle.typoText, color: "#4C8AB1" }}>
+            {/* <Typography sx={{ ...themeStyle.typoText, color: "#4C8AB1" }}>
                 Recent Comments
             </Typography>
 
@@ -80,7 +80,7 @@ function RecentImagesAndComments() {
                 <Typography sx={{ ...themeStyle.commentText, ...themeStyle.conversationText }}>
                     Open Conversation
                 </Typography>
-            </Box>
+            </Box> */}
 
 
         </div>

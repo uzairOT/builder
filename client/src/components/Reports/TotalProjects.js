@@ -40,7 +40,7 @@ console.log(data);
         fontFamily={"Inter, sans serif"}
         p={1}
       >
-        Total Projects-=-=-=
+        Total Projects-
       </Typography>
       <Stack direction={"row"}>
         <Stack flex={1}>
