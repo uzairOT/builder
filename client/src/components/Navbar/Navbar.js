@@ -212,13 +212,14 @@ const Navbar = () => {
     },
     toolbar: {
       justifyContent: "space-between",
+      height:'inherit'
     },
   };
 
   return (
     <>
       <AppBar position="static" sx={themeStyle.navbar}>
-        <Toolbar sx={themeStyle.toolbar}>
+        <Toolbar sx={themeStyle.toolbar} style={{maxHeight:'64px !important'}}>
           {showHamburger && <NavbarDrawer />}
           <Link to="/">
             <BuilderProNavbarLogo

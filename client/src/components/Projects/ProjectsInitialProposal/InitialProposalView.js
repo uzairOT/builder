@@ -15,7 +15,7 @@ const InitialProposalView = () => {
   return (
     <>
     <Paper  style={{ ...themeStyle.borders, ...themeStyle.scrollable,  width: "100%", marginBottom:'4px', marginTop:'8px'}}>
-   <Stack p={1} borderRadius={'14px'} >
+   <Stack p={1} borderRadius={'14px'}  width={'99%'} >
       <AddPhaseView projectId={projectId} InitialProposalView={true} adminProjectView={true} view={'Initial Proposal'} authUserRole={authUserRole.userRole}/>
     </Stack>
     </Paper>

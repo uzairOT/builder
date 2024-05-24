@@ -10,8 +10,8 @@ const StyledModal = styled(Modal)(({ theme }) => ({
 const StyledPaper = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   boxShadow: theme.shadows[5],
-  padding: '16px',
-  borderRadius: 5,
+  padding: '18px',
+  borderRadius: '14px',
 }));
 
 const StyledTable = styled(Table)(({ theme }) => ({
@@ -81,7 +81,7 @@ const LineItemTeamStatus = ({ modalOpen, setModalOpen, UserLineItemStatuses }) =
                     {user.User.firstName} {user.User.lastName}
                   </StyledTableCell>
                   <StyledTableCell>{user.User.email}</StyledTableCell>
-                  <StyledTableCell>{user.User.role}</StyledTableCell>
+                  <StyledTableCell>{user.User.ProjectMembers[0]?.role}</StyledTableCell>
                   <StyledTableCell ><Button sx={{borderRadius:'28px' , backgroundColor: user.status === 'pending' ? '#FFDADA' : '#16C09821',  color: user.status === 'pending' ? '#DF0404' : '#008767',}}>{user.status}</Button></StyledTableCell>
                 </TableRow>
               ))}

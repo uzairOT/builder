@@ -34,7 +34,9 @@ const InnerLayout2 = () => {
         <Stack flex={{xl:8,lg:7}}><Paper style={themeStyle.border}><ProjectInfoAndTeam /></Paper></Stack>
         </Stack>
         <Stack direction={{xl:'row',}} pt={1} spacing={1} sx={{height:'calc(92vh - 295px)'}}>
+          <Stack flex={2} height={'inherit'}>
         <Outlet />
+          </Stack>
         {/* Change Order Tab navigation */}
         <Stack flex={1} >
           <Paper style={{...themeStyle.border, height:'100%', width: '99%'}}>

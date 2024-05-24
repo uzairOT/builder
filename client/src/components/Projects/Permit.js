@@ -241,7 +241,7 @@ const scrollable = {
 const themeStyle = {
   titleBox: {
     display: "flex",
-    width: { xl: "52vw" },
+    // width: { xl: "52vw" },
     justifyContent: "space-between",
     alignItems: "center",
     background: "#4C8AB1",

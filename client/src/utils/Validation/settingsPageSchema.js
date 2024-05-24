@@ -28,7 +28,7 @@ export const inviteSchemea = yup.object().shape({
 export const signupSchemea = yup.object().shape({
     firstName: yup.string().required(),
     lastName: yup.string().required(),
-    email: yup.string().required(),
+    email: yup.string().email().required(),
     company: yup.string().required(),
     password: yup.string().required(),
     confirmPassword: yup.string().required().test('passwords-match', 'Passwords must match', function(value) {
@@ -38,4 +38,8 @@ export const signupSchemea = yup.object().shape({
 export const unitSchema = yup.object().shape({
     label: yup.string().required(),
 
+})
+export const loginSchemea = yup.object().shape({
+    email: yup.string().email().required(),
+    password: yup.string().required()
 })

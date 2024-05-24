@@ -10,6 +10,7 @@ import {
   Button,
   MenuItem,
   Select,
+  CircularProgress,
 } from "@mui/material";
 import builder1 from "./Assets/pngs/builderProYellowLogo.png";
 import downloadForMob from "./Assets/pngs/downloadForMob.png";
@@ -69,10 +70,13 @@ const SignupComp = () => {
     borderRadius: "12px",
     border: "1px solid #D8D8D8",
     background: "#FFF",
-    width: "100%",
+    width: "101.5%",
     // height: heightValue,
     alignSelf: "stretch",
     paddingLeft: "8px",
+    height: '2.8rem',
+    display: 'flex',
+    alignItems:'center'
     // paddingTop: "0.5rem",
     // padding: "0.5rem",
   };
@@ -140,7 +144,7 @@ const SignupComp = () => {
           navigate("/signup");
         }
       } catch (err) {
-        if (err.data.message === "notFound!") {
+        if (err?.data?.message === "notFound!") {
           toast.warning("Please enter following information");
           navigate("/userinfo");
         } else {
@@ -170,6 +174,10 @@ const SignupComp = () => {
         console.log("hi");
       } catch (err) {
         console.log(err);
+        if(err.status === 'FETCH_ERROR'){
+          toast.error('Network Issues');
+          return;
+        }
         toast.error(err?.data?.error || err.error);
       }
     } else {
@@ -203,14 +211,14 @@ const SignupComp = () => {
     <Grid container sx={{ ...firstGrid }}>
       <ToastContainer />
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
-        <Typography sx={firstHeading}>Construction Management</Typography>
+        <Typography sx={firstHeading}>Builder Builder Pro</Typography>
 
         {/* Button */}
 
         <Typography component="p" sx={secondHeading}>
           On schedule. On budget. On the path to building better.
         </Typography>
-        <Typography sx={thirdHeading}>Create an account</Typography>
+        
         <Box sx={downloadForMobBox}>
           <img src={downloadForMob} width={DoMobWidth} alt="" />
         </Box>
@@ -225,14 +233,14 @@ const SignupComp = () => {
         sm={12}
         md={6}
         lg={6}
-        sx={formGridContainer}
+        sx={formGridContainer}  
       >
         <Grid item sx={formGrid}>
+          <form style={{ marginTop: "0.1rem", width:'70%' }} onSubmit={handleSubmit}>
           <Box sx={logoBox}>
             <Typography sx={formHeadingStyle}>Signup</Typography>
             <img src={builder1} width={"20%"} alt="" />
           </Box>
-          <form style={{ marginTop: "0.1rem" }} onSubmit={handleSubmit}>
             <Box sx={namesFieldBox}>
               <Box sx={{ ...topSpace, width: "100%" }}>
                 <label
@@ -245,6 +253,7 @@ const SignupComp = () => {
                 <input
                   type="text"
                   name="firstName"
+                  placeholder="John"
                   style={{
                     ...inputStyle,
                     border:
@@ -271,6 +280,7 @@ const SignupComp = () => {
                 <input
                   type="text"
                   name="lastName"
+                  placeholder="Doe"
                   style={{
                     ...inputStyle,
                     border:
@@ -312,7 +322,7 @@ const SignupComp = () => {
                         : "1px solid #E0E4EC",
                   
                 }}
-                placeholder="workemail@gmail.com"
+                placeholder="JohnDoe@gmail.com"
                 value={values.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -326,6 +336,7 @@ const SignupComp = () => {
                 style={{
                   ...labelStyle,
                   fontSize: isMobile ? "0.8rem" : "1rem",
+                  paddingTop:'5px'
                 }}
                 htmlFor="phone"
               >
@@ -333,13 +344,15 @@ const SignupComp = () => {
               </label>
 
               <PhoneInput
+              disableDialCodePrefill
                 style={{ ...customPhoneStyles }}
-                defaultCountry="us"
-                value={formData.phone}
+                defaultCountry=""
+                value={phone}
                 onChange={(phone) => setPhone(phone)}
                 inputStyle={{ ...customeInputStyles }}
                 inputProps={{
                   border: "none",
+                  placeholder:'+1 (123) 456-7890'
                 }}
                 required
                 name="phone"
@@ -359,6 +372,7 @@ const SignupComp = () => {
               <input
                 type="text"
                 name="company"
+                placeholder="Builder Builder Pro"
                 style={{
                   ...inputStyle,
                   border:
@@ -378,6 +392,7 @@ const SignupComp = () => {
                 style={{
                   ...labelStyle,
                   fontSize: isMobile ? "0.8rem" : "1rem",
+                  paddingTop:'5px'
                 }}
                 htmlFor="password"
               >
@@ -393,6 +408,7 @@ const SignupComp = () => {
 
               <Box style={{ position: "relative" }}>
                 <input
+                placeholder="Enter your password"
                   style={{
                     ...inputStyle,
                     border:
@@ -429,6 +445,7 @@ const SignupComp = () => {
                 style={{
                   ...labelStyle,
                   fontSize: isMobile ? "0.8rem" : "1rem",
+                  paddingTop:'5px'
                 }}
                 htmlFor="confirmPassword"
               >
@@ -436,6 +453,7 @@ const SignupComp = () => {
               </label>
               <Box style={{ position: "relative" }}>
                 <input
+                placeholder="Confirm your password"
                   style={{
                     ...inputStyle,
                     border:
@@ -502,7 +520,7 @@ const SignupComp = () => {
               type="submit"
               onClick={handleSubmit}
             >
-              Sign up
+              {isLoading ? <CircularProgress size='18px' /> : 'Sign up'}
             </Button>
             <Typography sx={alreadyHaveAccountTypo}>
               Already have an account?{"\u00a0"}{" "}
@@ -656,21 +674,23 @@ const formGrid = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  padding: "25px 0 0 0",
-  marginTop: { sm: "0", md: "0", lg: "0rem", xl: "1rem" },
-  paddingLeft: { lg: "2rem", md: "2rem", sm: "1rem", xs: "1rem" },
-  paddingRight: { lg: "2rem", md: "2rem", sm: "2rem", xs: "2rem" },
-  marginLeft: { lg: "6rem", md: "2rem", sm: "0rem", xs: "0rem" },
+  // padding: "25px 0 0 0",
+  // marginTop: { sm: "0", md: "0", lg: "0rem", xl: "1rem" },
+  // paddingLeft: { lg: "1rem", md: "2rem", sm: "1rem", xs: "1rem" },
+  // paddingRight: { lg: "1rem", md: "2rem", sm: "2rem", xs: "2rem" },
+  // marginLeft: { lg: "1rem", md: "2rem", sm: "0rem", xs: "0rem" },
   borderRadius: { lg: "1.5rem", md: "1.5rem", sm: "1.5rem", xs: "0rem" },
   width: { lg: "80%", md: "90%", sm: "85%", xs: "100%" },
 };
 
 const logoBox = {
-  gap: "7rem",
-  marginBottom: "0.3rem",
-  justifyContent: "space-evenly",
+
+  marginBottom: "1rem",
+  justifyContent: "space-between",
+  alignItems:'center',
   marginTop: "1rem",
-  display: { lg: "none", md: "none", sm: "none", xs: "flex" },
+  display: 'flex',
+
 };
 const namesFieldBox = {
   display: "flex",
@@ -845,6 +865,7 @@ const formHeadingStyle = {
   fontSize: "2.1875rem",
   fontWeight: 700,
   lineHeight: "normal",
+  alignSelf: 'center'
 };
 
 const customeInputStyles = {

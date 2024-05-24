@@ -7,7 +7,7 @@ const ClientLayout = () => {
   const [projectName] = useOutletContext();
 
   return (
-    <div>
+    <>
       <Grid sx={themeStyle.dashboard} container pt={1}>
         <Grid
           item
@@ -20,7 +20,7 @@ const ClientLayout = () => {
           <Grid
             container
             sx={themeStyle.scrollable}
-            height={"100%"}
+            height={'calc(93vh - 75px)'}
             margin={"auto"}
           >
             <Grid
@@ -29,7 +29,7 @@ const ClientLayout = () => {
               sm={12}
               md={12}
               lg={12}
-              style={{ height: { lg: "100%", xs: "100%" } }}
+              style={{ height: 'inherit' }}
             >
               <Box sx={themeStyle.alternativeBox}>
                 <Outlet context={[projectName]} />
@@ -43,17 +43,20 @@ const ClientLayout = () => {
           sm={12}
           md={3}
           lg={3}
-          height={"100%"}
+          
           marginTop={{ lg: "0rem", sm: "0rem", xs: "1rem" }}
         >
           <RecentImagesAndComments />
         </Grid>
       </Grid>
-    </div>
+    </>
   );
 };
 
 const themeStyle = {
+  alternativeBox : {
+    height:'99%'
+  },
   boxStyle: {
     display: "flex",
     flexDirection: { lg: "row", md: "column", sm: "column", xs: "column" },
@@ -83,5 +86,8 @@ const themeStyle = {
     borderRadius: "1rem",
     overflowY: "auto",
   },
+  dashboard:{
+    // height:'calc(93vh - 140px)',
+  }
 };
 export default ClientLayout;

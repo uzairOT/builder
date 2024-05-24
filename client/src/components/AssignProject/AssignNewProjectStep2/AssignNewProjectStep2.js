@@ -13,7 +13,8 @@ import {
   updateUserEmail,
   updateUserRole,
   selectUsers,
-  resetUserAndRoleEmail
+  resetUserAndRoleEmail,
+  removeUser,
 } from "../../../redux/slices/projectFormSlice";
 
 import { Button, Box, useMediaQuery, CircularProgress } from "@mui/material";
@@ -27,8 +28,6 @@ import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
 import { toast } from "react-toastify";
 //import "react-toastify/dist/ReactToastify.css";
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
-
-
 
 function AssignNewProjectStep2({
   onNextStep,
@@ -74,12 +73,16 @@ function AssignNewProjectStep2({
   const handleAddUser = () => {
     dispatch(addUser());
   };
+  const Data = useSelector(selectProjectForm);
   const handleNextStep = () => {
+    if (Data.users[0].email === "") {
+      toast.warning("Please add your team's email");
+      return;
+    }
     handleCreateNewProject();
   };
 
-  const Data = useSelector(selectProjectForm);
-  //console.log(Data);
+  console.log(Data);
 
   const handleCreateNewProject = async () => {
     localStorage.removeItem("projectId");
@@ -99,7 +102,6 @@ function AssignNewProjectStep2({
       // Call the assignProject function and wait for the result
       const res = await assignProject(FormData).unwrap();
 
-
       // If successful, store the project ID in local storage
       localStorage.setItem("projectId", res.project.id);
       setProjectId(res.project.id);
@@ -110,27 +112,36 @@ function AssignNewProjectStep2({
       onNextStep();
       dispatch(resetUserAndRoleEmail());
     } catch (error) {
-      
-      toast.error(error?.data?.message || error.error||error?.data?.error );
+      toast.error(error?.data?.message || error.error || error?.data?.error);
       return;
     }
   };
-
+  const removeIndex = (index) => {
+    // Input validation (optional but recommended)
+    if (index < 0 || index >= users.length) {
+      console.error(
+        "Invalid index. Please provide a valid index within the array bounds."
+      );
+      return; // Return the original array if index is out of range
+    }
+    // console.log(users);
+    // // Efficient removal using splice
+    // console.log(users.slice(0, index).concat(users.slice(index + 1)));
+    dispatch(removeUser(index))
+  };
 
   return (
     <>
-      <StepTitles  
+      <StepTitles
         stepHeading={"Step 2 of 3"}
         Heading={"invite your Team to the"}
         projectName={projectName}
-        stepDiscription={
-          "Lorem ipsum dolor sit amet consectetur. Pretium aliquam egestas interdum varius sed at libero. Sed vestibulum vel platea accumsan in elit morbi eu erat. Purus non urna et purus. Libero nec nec quam pulvinar massa nulla et tincidunt."
-        }
+        stepDiscription={`Join us on ${projectName}! Accepting the invitation grants access to the secure project workspace in Builder Pro with role-based views.`}
       />
-      
-      
+
       {users.map((user, index) => (
         <StepFormField
+          removeIndex={removeIndex}
           key={index}
           index={index}
           email={user.email}
@@ -150,9 +161,8 @@ function AssignNewProjectStep2({
           sx={buttonLnks}
           startIcon={<AddCircleOutlineIcon />}
           onClick={handleAddUser}
-          
         >
-           Add Another Email
+          Add Another Email
         </Button>
         {/* <Button
           sx={buttonLnks}
@@ -164,8 +174,12 @@ function AssignNewProjectStep2({
         </Button> */}
       </Box>
       <Box sx={{ ...buttonBox, ...buttoncontainer }}>
-        <Button disabled={isLoading} sx={{ ...YellowBtn, ...buttonStyle }} onClick={handleNextStep}>
-         {isLoading ?  <CircularProgress size={'1.25rem'} /> : 'Next'}
+        <Button
+          disabled={isLoading}
+          sx={{ ...YellowBtn, ...buttonStyle }}
+          onClick={handleNextStep}
+        >
+          {isLoading ? <CircularProgress size={"1.25rem"} /> : "Next"}
         </Button>
         <Button sx={{ ...YellowBtn, ...buttonStyle }} onClick={handleSkip}>
           Skip
@@ -179,7 +193,9 @@ function AssignNewProjectStep2({
         <SkipInvite
           handleOpen={handleOpen}
           handleClose={handleClose}
-          handleNextStep={handleNextStep}
+          handleNextStep={() => {
+            handleCreateNewProject();
+          }}
           isTab={isTab}
           isMobile={isMobile}
           isLoading={isLoading}

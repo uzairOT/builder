@@ -82,6 +82,8 @@ import { useGetProjectUserRoleMutation } from "./redux/apis/Project/userProjectA
 import { getUserRoleFromRedux } from "./redux/slices/auth/userRoleSlice.js";
 import Completion from "./components/dialogues/PaymentModal/Completion.js";
 import ChatViewMain from "./components/Projects/ProjectsChat/ChatViewMain.js";
+import PermitClient from "./components/ClientDashboard/Permit/Permit";
+import NotFound from "./pages/NotFound/NotFound.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -100,6 +102,7 @@ const ReportView = lazy(() =>
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.userInfo);
   const userId = isAuthenticated ? isAuthenticated.user.id : null;
+  console.log(isAuthenticated)
   const [getUserRole] = useGetProjectUserRoleMutation();
   const userRole = useSelector(getUserRoleFromRedux);
   // const [loading, setLoading] = useState(true);
@@ -177,7 +180,7 @@ function App() {
                 <>
                   <Route path="" element={<ClientLayout />}>
                     <Route path="" element={<ClientDashboardCards />} />
-                    <Route path="permit" element={<Permit />} />
+                    <Route path="permit" element={<PermitClient />} />
                     <Route path="drawing-files" element={<Drawing />} />
                     <Route path="images" element={<Images />} />
                     <Route path="change-order" element={<ChangeOrders />} />
@@ -250,6 +253,7 @@ function App() {
           <Route path="dailylog" element={<DailyLog />} />
           <Route path="chats" element={<Chats />} />
         </Route>
+        <Route path="/*" element={<NotFound />} /> 
       </>
     )
   );
