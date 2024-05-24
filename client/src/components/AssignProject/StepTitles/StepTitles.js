@@ -50,7 +50,10 @@ const headingStyle = {
   fontWeight: { lg: 400, md: 400, sm: 400, xs: 700 },
   // fontFamily: "Inter",
   width: { lg: "50%", md: "60%", sm: "70%", xs: "95%" },
-  maxWidth: "46rem"
+  maxWidth: "46rem",
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 }
 
 

@@ -12,15 +12,19 @@ import {
 } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import YellowBtn from "../../UI/button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   useResendOTPMutation,
   useVerifyOTPMutation,
 } from "../../../redux/apis/usersApiSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { setCredentials } from "../../../redux/slices/authSlice";
 
 const VerifyCode = () => {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { data } = location?.state || {};
   const navigate = useNavigate();
   const [verifycode] = useVerifyOTPMutation();
   const [resendOTP] = useResendOTPMutation();
@@ -45,9 +49,15 @@ const VerifyCode = () => {
         email: forgetPasswordEmail,
       }).unwrap();
       toast.success("OTP matched successfully");
-      navigate("/setnewpassword");
+      if (data === "signup") {
+        console.log("wwwwwwwwwwwwwhhhhhhhhhhattttttttt::::", res);
+        dispatch(setCredentials({ ...res }));
+        navigate("/assignproject");
+      } else {
+        navigate("/setnewpassword");
+      }
     } catch (err) {
-      toast.error(err?.data?.error || err.data.message|| err.error);
+      toast.error(err?.data?.error || err.data.message || err.error);
     }
   };
   const handleInputChange = (index, value) => {

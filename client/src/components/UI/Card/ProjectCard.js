@@ -81,7 +81,11 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
               ? "#FD3845"
               : `${handleCardBorderColor()}`,
             ...themeStyle.cardBody,
+            maxWidth:'30ch',
             marginBottom: "8px",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         >
           {projectProfileCard.projectName}

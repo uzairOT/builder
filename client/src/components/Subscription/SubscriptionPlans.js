@@ -34,10 +34,11 @@ const SubscriptionPlans = ({
       }
     };
     fetchCurrentPayment();
+    console.log("currentPaymentcurrentPaymentcurrentPayment", currentPayment);
   }, []);
   return (
     <Stack p={1} pl={4}>
-      {currentPayment && (
+      {currentPayment.length > 0 ? (
         <>
           <Typography sx={themeStyle.title} pl={1}>
             Your Current Plan
@@ -47,6 +48,8 @@ const SubscriptionPlans = ({
             <Divider />
           </Stack>
         </>
+      ) : (
+        <></>
       )}
 
       <Typography sx={themeStyle.title} pb={2}>

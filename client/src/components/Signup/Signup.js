@@ -30,7 +30,10 @@ import {
   useGoogleLoginMutation,
   useRegisterMutation,
 } from "../../redux/apis/usersApiSlice";
-import { setCredentials } from "../../redux/slices/authSlice";
+import {
+  setCredentials,
+  setForgetPasswordEmail,
+} from "../../redux/slices/authSlice";
 import { toast, ToastContainer } from "react-toastify";
 import { useFormik } from "formik";
 import { signupSchemea } from "../../utils/Validation/settingsPageSchema";
@@ -161,7 +164,11 @@ const SignupComp = () => {
       console.log("Google login failed");
     }
   };
-
+  const handleEmailChange = (e) => {
+    const email = e.target.value;
+    handleChange(e); // Call the original handleChange function from useFormik
+    dispatch(setForgetPasswordEmail(email)); // Dispatch the action with the email value
+  };
   const onSubmit = async (e) => {
     // e.preventDefault();
     if (checked) {
@@ -169,8 +176,19 @@ const SignupComp = () => {
       try {
         const res = await register(data).unwrap();
         console.log("Sign up: ", res);
-        dispatch(setCredentials({ ...res }));
-        navigate("/assignproject");
+        // dispatch(setCredentials({ ...res }));
+        // navigate("/assignproject");
+        if (res.redirectTo === "verifyOtp") {
+          toast.success(res.message);
+          navigate("/verifycode", { state: { data: "signup" } });
+          return;
+        } else if (res.success) {
+          toast.success(res.message);
+          navigate("/verifycode", { state: { data: "signup" } });
+        } else {
+          toast.error(res.message);
+          return;
+        }
         console.log("hi");
       } catch (err) {
         console.log(err);
@@ -185,18 +203,19 @@ const SignupComp = () => {
     }
   };
 
-  const { values, handleBlur, handleChange, handleSubmit, errors, touched, } = useFormik({
-    initialValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      company: "",
-      password: "",
-      confirmPassword: '',
-    },
-    validationSchema: signupSchemea,
-    onSubmit,
-  });
+  const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
+    useFormik({
+      initialValues: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        company: "",
+        password: "",
+        confirmPassword: "",
+      },
+      validationSchema: signupSchemea,
+      onSubmit,
+    });
 
   const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "1rem" };
   const linkResponsiveColor = { color: isMobile ? "#FFAC00" : "#4C8AB1" };
@@ -265,7 +284,11 @@ const SignupComp = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.firstName && touched.firstName ? errors.firstName : ""}</Typography>
+                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                  {errors.firstName && touched.firstName
+                    ? errors.firstName
+                    : ""}
+                </Typography>
               </Box>
               <Box sx={{ ...topSpace, width: "100%" }}>
                 <label
@@ -292,8 +315,9 @@ const SignupComp = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.lastName && touched.lastName ? errors.lastName : ""}</Typography>
-
+                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                  {errors.lastName && touched.lastName ? errors.lastName : ""}
+                </Typography>
               </Box>
             </Box>
 
@@ -317,18 +341,19 @@ const SignupComp = () => {
                   paddingLeft: "-1.5rem",
                   fontSize: isMobile ? "0.8rem" : "1rem",
                   border:
-                      errors.lastName && touched.lastName
-                        ? "1px solid #d32f2f"
-                        : "1px solid #E0E4EC",
-                  
+                    errors.lastName && touched.lastName
+                      ? "1px solid #d32f2f"
+                      : "1px solid #E0E4EC",
                 }}
                 placeholder="JohnDoe@gmail.com"
                 value={values.email}
-                onChange={handleChange}
+                // onChange={handleChange}
+                onChange={handleEmailChange}
                 onBlur={handleBlur}
               />
-            <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.email && touched.email ? errors.email : ""}</Typography>
-
+              <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                {errors.email && touched.email ? errors.email : ""}
+              </Typography>
             </Box>
 
             <Box sx={{ marginTop: "0.5rem" }}>
@@ -384,7 +409,9 @@ const SignupComp = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.company && touched.company ? errors.company : ""}</Typography>
+              <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                {errors.company && touched.company ? errors.company : ""}
+              </Typography>
             </Box>
 
             <Box sx={{ marginTop: "0.5rem" }}>
@@ -422,7 +449,9 @@ const SignupComp = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.password && touched.password ? errors.password : ""}</Typography>
+                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                  {errors.password && touched.password ? errors.password : ""}
+                </Typography>
                 <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
                   {passwordVisible ? <VisibilityOff /> : <Visibility />}
                   {!isMobile && (
@@ -467,7 +496,11 @@ const SignupComp = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-              <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.confirmPassword && touched.confirmPassword ? errors.confirmPassword : ""}</Typography>
+                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                  {errors.confirmPassword && touched.confirmPassword
+                    ? errors.confirmPassword
+                    : ""}
+                </Typography>
                 <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
                   {passwordVisible ? <VisibilityOff /> : <Visibility />}
                   {!isMobile && (

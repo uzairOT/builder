@@ -45,7 +45,7 @@ function ChatView({ isAdminPage }) {
   const [fileName, setFileName] = useState("");
   const [fileType, setFileType] = useState("");
   const [loading, setLoading] = useState(false);
-  const [msgLoading, setMsgLoading] = useState(true);
+  const [msgLoading, setMsgLoading] = useState(false);
   const [image, setImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState("");
   const [s3Url, setS3Url] = useState("");
@@ -91,6 +91,32 @@ function ChatView({ isAdminPage }) {
       boxRef.current.scrollTop = boxRef.current.scrollHeight;
     }
   };
+
+//Api call for markMessagesAsRead
+  const userId = currentUser?.id;
+  async function markMessagesAsRead(id, userId) {
+    try {
+      const response = await axios.post(
+        "http://3.135.107.71/projectChat/markMessagesAsRead",
+        {
+          projectId: id,
+          userId: userId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Messages marked as read successfully", response.data);
+    } catch (error) {
+      console.error("Failed to mark messages as read", error);
+    }
+  }
+  useEffect(() => {
+    markMessagesAsRead(id, userId);
+  }, []);
+
   //
   const projectRole = userRoleProject.userRole;
   const fetchProjectChat = async (newOffset, direction) => {
@@ -442,6 +468,7 @@ function ChatView({ isAdminPage }) {
                                 <br />
                               </>
                             ) : msg?.fileUrl?.endsWith(".pdf") ||
+                              msg?.fileUrl?.endsWith(".txt") ||
                               msg?.fileUrl?.endsWith(".docx") ||
                               msg?.fileUrl?.endsWith(".doc") ||
                               msg?.fileUrl?.endsWith(".zip") ? (
@@ -583,17 +610,17 @@ function ChatView({ isAdminPage }) {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
+            // bgcolor: "background.paper",
             boxShadow: 24,
-            p: 4,
-            maxWidth: "90vw",
-            maxHeight: "90vh",
+            // p: 4,
+            // maxWidth: "90vw",
+            // maxHeight: "90vh",
           }}
         >
           <img
             src={selectedImage}
             alt="Preview"
-            style={{ width: 300, height: 300 }}
+            style={{ maxWidth: "90vw", maxHeight: "90vh" }}
           />
         </Box>
       </Modal>

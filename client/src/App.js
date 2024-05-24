@@ -101,8 +101,7 @@ const ReportView = lazy(() =>
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.userInfo);
-  const userId = isAuthenticated ? isAuthenticated.user.id : null;
-  console.log(isAuthenticated)
+  const userId = isAuthenticated ? isAuthenticated?.user?.id : null;
   const [getUserRole] = useGetProjectUserRoleMutation();
   const userRole = useSelector(getUserRoleFromRedux);
   // const [loading, setLoading] = useState(true);
