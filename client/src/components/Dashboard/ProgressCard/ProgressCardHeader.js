@@ -8,7 +8,7 @@ const ProgressCardHeader = ({ project }) => {
   let data = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(data);
   const currentUser = userInfo?.user;
-  const [unreadMsg, setUnreadMsg] = useState(0);
+  const [unreadMsg, setUnreadMsg] = useState(-1);
   const navigate = useNavigate();
   // Assuming you have a socket connection already established
   useEffect(() => {
@@ -46,7 +46,10 @@ const ProgressCardHeader = ({ project }) => {
   }
   useEffect(() => {
     console.log("`````", project);
-    markMessagesAsRead(id, userId);
+    if(unreadMsg === -1){
+
+      markMessagesAsRead(id, userId);
+    }
   }, []);
 
   // Listen for unread message count updates
@@ -60,7 +63,7 @@ const ProgressCardHeader = ({ project }) => {
     );
   };
 
-  socket.on("unreadMessageCount", unreadMessageCountListener);
+  // socket.on("unreadMessageCount", unreadMessageCountListener);
 
   return (
     <Box textAlign={"left"} p={2}>

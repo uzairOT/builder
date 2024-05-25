@@ -51,9 +51,9 @@ const headingStyle = {
   // fontFamily: "Inter",
   width: { lg: "50%", md: "60%", sm: "70%", xs: "95%" },
   maxWidth: "46rem",
-  whiteSpace: "nowrap",
-  overflow: "hidden",
-  textOverflow: "ellipsis",
+  // whiteSpace: "nowrap",
+  // overflow: "hidden",
+  // textOverflow: "ellipsis",
 }
 
 
