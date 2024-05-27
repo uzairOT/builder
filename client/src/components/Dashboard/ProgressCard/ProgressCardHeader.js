@@ -8,7 +8,7 @@ const ProgressCardHeader = ({ project }) => {
   let data = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(data);
   const currentUser = userInfo?.user;
-  const [unreadMsg, setUnreadMsg] = useState(-1);
+  const [unreadMsg, setUnreadMsg] = useState(0);
   const navigate = useNavigate();
   // Assuming you have a socket connection already established
   // useEffect(() => {
