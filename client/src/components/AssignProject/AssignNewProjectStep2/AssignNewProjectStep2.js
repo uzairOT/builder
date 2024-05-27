@@ -112,7 +112,7 @@ function AssignNewProjectStep2({
       onNextStep();
       dispatch(resetUserAndRoleEmail());
     } catch (error) {
-      toast.error(error?.data?.message || error.error || error?.data?.error);
+      toast.error(error?.data?.message || error.error || error?.data?.error || 'Something went wrong!');
       return;
     }
   };

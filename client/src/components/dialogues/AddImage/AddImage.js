@@ -12,6 +12,7 @@ import {
   CircularProgress,
   Stack,
   IconButton,
+  TextareaAutosize,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
 import upload from "./assets/upload.png";
@@ -224,8 +225,11 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
             </label>
           </div>
           <Box sx={{ textAlign: "center" }}>
-            <TextField
-              sx={themeStyle.inputStyle}
+            <TextareaAutosize
+              multiline
+              minRows={5}
+              maxLength={1000}
+              style={themeStyle.inputStyle}
               required
               placeholder="Type Note Here ....."
               margin="dense"
@@ -234,6 +238,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
               type="notes"
               variant="standard"
               onChange={(e) => setNotes(e.target.value)}
+             
             />
           </Box>
         </DialogContent>
@@ -264,7 +269,6 @@ const themeStyle = {
   },
   inputStyle: {
     width: "90%",
-    height: "3rem",
     marginBottom: "2rem",
     padding: "0.5rem",
     fontSize: "14px",

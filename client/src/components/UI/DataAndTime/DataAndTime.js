@@ -33,7 +33,7 @@ const DateAndTime = () => {
 export default DateAndTime;
 
 const themeStyle = {
-  contianer: { textAlign: "center", paddingBottom: 4,paddingLeft:2 },
+  contianer: { textAlign: "center", paddingBottom: 4,paddingLeft:0},
   time: {
     fontSize: { xs: "50px", md: "50px", xl: "71px" },
     color: "#FFAC00",

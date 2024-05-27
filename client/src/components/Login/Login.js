@@ -144,7 +144,7 @@ const Login = () => {
         toast.error('Network Issues');
         return;
       }
-      toast.error(err?.data?.error || err.error || err?.data?.message);
+      toast.error(err?.data?.error || err.error || err?.data?.message || 'Something went wrong!');
     }
   };
   const { values, handleBlur, handleChange, errors, touched } = useFormik({

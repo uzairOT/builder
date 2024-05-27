@@ -49,7 +49,7 @@ function AssignProject() {
       if (res.data?.success) {
         setProjectType(value);
       } else {
-        toast.error(res.error.data.message);
+        toast.error(res.error.data.message || 'Something went wrong!');
         return;
       }
     } else if (projectName === "") {

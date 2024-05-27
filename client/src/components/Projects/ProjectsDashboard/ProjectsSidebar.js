@@ -145,7 +145,7 @@ const ProjectsSidebar = () => {
         <Box
           sx={{
             ...themeStyle.scrollable,
-            height: 'calc(92vh - 220px)'
+            height: 'calc(92vh - 214px)'
           }}
         >
           <Stack spacing={1} pl={2} pr={2} pt={1}>
@@ -160,7 +160,7 @@ const ProjectsSidebar = () => {
                         e.preventDefault();
                         handleClick(projectProfileCard.id,path, e);
                       }}
-                      style={{ textDecoration: "none" }}
+                      style={{ textDecoration: "none",   }}
                     >
                       <ProjectCard
                         projectProfileCard={projectProfileCard}

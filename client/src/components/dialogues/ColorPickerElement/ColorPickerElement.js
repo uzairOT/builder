@@ -127,7 +127,7 @@ function ColorPickerElement({
         initial: InitialProposalView ? true : adminProjectView ? false : true,
       };
       //console.log(data)
-      const res = await addProjectPhase(data).unwrap().then().catch(e=>{ toast.error(e.message || e.data.message || e.error)});
+      const res = await addProjectPhase(data).unwrap().then().catch(e=>{ toast.error(e.message || e.data.message || e.error || 'Something went wrong!s')});
       //console.log('Response:', res.phase);
       setPhaseData((phaseData) => ({ ...phaseData, ...data }));
       //console.log(data);

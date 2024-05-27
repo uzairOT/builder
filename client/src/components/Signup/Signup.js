@@ -179,14 +179,14 @@ const SignupComp = () => {
         // dispatch(setCredentials({ ...res }));
         // navigate("/assignproject");
         if (res.redirectTo === "verifyOtp") {
-          toast.success(res.message);
+          toast.success(res.message || 'Success!');
           navigate("/verifycode", { state: { data: "signup" } });
           return;
-        } else if (res.success) {
+        } else if (res.success || 'Success!') {
           toast.success(res.message);
           navigate("/verifycode", { state: { data: "signup" } });
         } else {
-          toast.error(res.message);
+          toast.error(res.message || 'Something went wrong!');
           return;
         }
         console.log("hi");
@@ -196,7 +196,7 @@ const SignupComp = () => {
           toast.error('Network Issues');
           return;
         }
-        toast.error(err?.data?.error || err.error);
+        toast.error(err?.data?.error || err.error ||  'Something went wrong!');
       }
     } else {
       toast("Please agree to our Terms of use");

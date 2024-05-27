@@ -83,7 +83,7 @@ const projectApiSlice = apiSlice.injectEndpoints({
 
     getProjectChangeOrder: builder.query({
       query: (data) => ({
-        url: `${PROJECTS_URL}/getWorkOrder/${data.projectId}/${data.userId}`,
+        url: `${PROJECTS_URL}/getWorkOrder/${data.projectId}/${data.userId}/${data.changeOrder}`,
         method: "GET",
       }),
     }),

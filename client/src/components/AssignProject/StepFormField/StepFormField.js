@@ -58,7 +58,7 @@ function ProjectFormFields({ index, email, role, onUpdateEmail, onUpdateRole, re
               },
               }}
 
-
+              inputProps={{ maxLength: 50 }}
                 id="standard-select-currency"
                 select
                 variant="standard"

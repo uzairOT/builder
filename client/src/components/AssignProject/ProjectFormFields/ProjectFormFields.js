@@ -88,7 +88,7 @@ function ProjectFormFields() {
               className="placeholder"
               type="text"
               id="projectName"
-              
+              maxLength={50}
               style={{
                 ...inputStyle,
                 ...borderRadiusResponsive,
@@ -109,6 +109,7 @@ function ProjectFormFields() {
             </label>
             <TextField
               className="placeholder"
+              inputProps={{ maxLength: 50 }}
               sx={{
                 ...inputStyle,
                 ...borderRadiusResponsive,
@@ -123,6 +124,7 @@ function ProjectFormFields() {
               type="text"
               variant="standard"
               value={location}
+              
               onChange={handleLocationChange}
               placeholder="Enter your location..."
             >

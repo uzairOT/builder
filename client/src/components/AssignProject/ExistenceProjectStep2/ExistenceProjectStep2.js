@@ -64,7 +64,7 @@ function ExistenceProjectStep2({ onNextStep }) {
        if(res.data?.success){
          onNextStep();
        }else{
-        toast.error(res.error.data.message)
+        toast.error(res.error.data.message || 'Something went wrong!')
        }
        
     } catch (error) {
