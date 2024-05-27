@@ -185,19 +185,24 @@ function Permit({ view, type }) {
           >
             {/* <CloseIcon /> */}
           </IconButton>
+          <Stack justifyContent={'center'} alignItems={'center'}>
+
           <img
             src={modalUrl.fileUrl}
             alt={`file`}
             style={
               {
-                width: '100%', // Adjust width as needed
+                // Adjust width as needed
                 // maxWidth: '700px', // Set a maximum width for responsiveness
                 // maxHeight: '500px', // Set a maximum height for responsiveness
-
+                maxWidth: "90vw",
+                maxHeight: "90vh" 
+                
               }
             }
-          />
-        <Typography fontFamily={'inherit'} fontSize={'12px'}  textOverflow={'ellipsis'}>{modalUrl?.notes}</Typography>
+            />
+        <Typography fontFamily={'inherit'} fontSize={'12px'} p={1} textOverflow={'ellipsis'}>IMGAE{modalUrl?.notes}</Typography>
+            </Stack>
         </Box>
       </Modal>}
       {open && (
@@ -217,8 +222,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
+  backgroundColor: 'white',
   borderRadius:'14px',
   boxShadow: 24,
   p: 4,
@@ -241,7 +245,7 @@ const scrollable = {
 const themeStyle = {
   titleBox: {
     display: "flex",
-    width: { xl: "52vw" },
+    // width: { xl: "52vw" },
     justifyContent: "space-between",
     alignItems: "center",
     background: "#4C8AB1",

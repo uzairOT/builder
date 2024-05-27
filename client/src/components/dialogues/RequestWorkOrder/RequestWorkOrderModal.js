@@ -350,7 +350,7 @@ const RequestWorkOrderModal = ({
               response?.data?.message ||
                 response.error ||
                 response?.data?.error ||
-                response.message
+                response.message || 'Something went wrong!'
             );
           }
         });
@@ -372,7 +372,7 @@ const RequestWorkOrderModal = ({
                 response?.data?.message ||
                   response.error ||
                   response?.data?.error ||
-                  response.message
+                  response.message || 'Something went wrong!'
               );
               return response;
             }

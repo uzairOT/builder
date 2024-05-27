@@ -33,12 +33,12 @@ const ForgotPassword = () => {
         const res = await forgetPassword({
           email: forgetPasswordEmail,
         }).unwrap();
-        toast.success(res.message || res.data.message);
+        toast.success(res.message || res.data.message || 'Success');
           navigate("/verifycode");
         
         } catch (err) {
           console.log(err);
-          toast.error(err?.data?.error || err.error || err.data.message);
+          toast.error(err?.data?.error || err.error || err.data.message || 'Something went wrong!');
         }
     } else {
       toast.error("Please Enter Email");

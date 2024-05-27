@@ -168,10 +168,10 @@ function UpdateMasterLine({
         const res = await updateMasterLine(data1);
         refetch(userId);
         toast.success(
-            res?.data?.message
+            res?.data?.message || 'Success'
         );
       } catch (error) {
-        toast.error(error?.data?.message || error.error || error?.data?.error);
+        toast.error(error?.data?.message || error.error || error?.data?.error || 'Something went wrong!');
         return;
       }
     // } else {

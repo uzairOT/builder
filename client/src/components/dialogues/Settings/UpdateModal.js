@@ -63,11 +63,11 @@ function UpdateModal({
 
         const res = await assignRolePut(put);
         refetch();
-        toast.info(res?.data?.message);
+        toast.info(res?.data?.message || "Success");
         action.resetForm();
         setImage(null);
       } catch(error){
-        toast.error(error.data.error);
+        toast.error(error.data.error || 'Something went wrong!');
       }
   };
 

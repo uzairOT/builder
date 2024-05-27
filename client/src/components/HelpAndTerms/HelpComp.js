@@ -4,9 +4,17 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography, Button } from "@mui/material";
+import YellowBtn from "../UI/button";
+import { useNavigate } from "react-router-dom";
+
 
 const HelpComp = () => {
+  const navigate = useNavigate();
+
+  const handleAccept = () => {
+    navigate(-1);
+  };
   return (
     <div style={{ width: "100%" }}>
       <Header />
@@ -41,9 +49,13 @@ const HelpComp = () => {
               I’m having problems with signing in
             </AccordionSummary>
             <AccordionDetails>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
+              <ul>
+                <li>
+                  Wrong credentials? Check caps lock & try again. Forgot
+                  password? Click "Forgot Password".
+                </li>
+                <li>Browser/device issue? Try a different one.</li>
+              </ul>
             </AccordionDetails>
           </Accordion>
           <Accordion>
@@ -55,40 +67,31 @@ const HelpComp = () => {
               I’m having problem with my builder pro account.
             </AccordionSummary>
             <AccordionDetails>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
+              Troubleshooting:
+              <ul>
+                <li>Subscription active? Check expiration.</li>
+                <li>Clear cache & cookies for smoother experience.</li>
+                <li>
+                  Billing information up-to-date? Avoid service interruptions.
+                </li>
+              </ul>
+              Need further help? Contact support: help@builderbuilderpro.net
             </AccordionDetails>
           </Accordion>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandButton />}
-              aria-controls="panel2-content"
-              id="panel2-header"
-            >
-              I’m having problem with my content
-            </AccordionSummary>
-            <AccordionDetails>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
-            </AccordionDetails>
-          </Accordion>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandButton />}
-              aria-controls="panel2-content"
-              id="panel2-header"
-            >
-              I’m having problem with my content
-            </AccordionSummary>
-            <AccordionDetails>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
-            </AccordionDetails>
-          </Accordion>
+   
         </Box>
+        <Button
+          sx={{
+            ...YellowBtn,
+            width: "fit-content",
+            marginTop: "2.5rem",
+            borderRadius: "4px",
+          }}
+          onClick={handleAccept}
+          type="submit"
+        >
+          {"Back"}
+        </Button>
       </Box>
     </div>
   );

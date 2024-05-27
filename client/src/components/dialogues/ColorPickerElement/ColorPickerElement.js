@@ -73,8 +73,8 @@ function ColorPickerElement({
   const [phaseName, setPhaseName] = useState(
     phaseData?.phase_name ? phaseData.phase_name : ""
   );
-  const [updateProjectPhase] = useUpdateProjectPhaseMutation();
-  const [addProjectPhase, {isError, isLoading, }] = useAddProjectPhaseMutation();
+  const [updateProjectPhase, { isLoading: updateLoading, }] = useUpdateProjectPhaseMutation();
+  const [addProjectPhase, {isLoading }] = useAddProjectPhaseMutation();
   const toggleColorMode = () => {
     setColorMode((prevMode) => (prevMode === "rgba" ? "hex" : "rgba"));
   };
@@ -127,7 +127,7 @@ function ColorPickerElement({
         initial: InitialProposalView ? true : adminProjectView ? false : true,
       };
       //console.log(data)
-      const res = await addProjectPhase(data).unwrap().then().catch(e=>{ toast.error(e.message || e.data.message || e.error)});
+      const res = await addProjectPhase(data).unwrap().then().catch(e=>{ toast.error(e.message || e.data.message || e.error || 'Something went wrong!s')});
       //console.log('Response:', res.phase);
       setPhaseData((phaseData) => ({ ...phaseData, ...data }));
       //console.log(data);
@@ -174,7 +174,7 @@ function ColorPickerElement({
               margin="dense"
               id="phaseName"
               name="phaseName"
-              // placeholder={phaseData.phaseName}
+              placeholder={'Site Preparation'}
               // label="Email Address"
               type="text"
               variant="standard"
@@ -237,6 +237,7 @@ function ColorPickerElement({
               sx={{ ...actionButton, ...addPhaseButton }}
               type="submit"
               onClick={handleSubmit}
+              disabled={PhaseHeading === "Update Phase" ? updateLoading : isLoading}
             >
               {PhaseHeading}
             </Button>
@@ -270,7 +271,7 @@ const inputStyle = {
 const generalBox = {
   display: "flex",
   justifyContent: "center",
-  marginTop: "1rem",
+  marginTop: "2rem",
 };
 
 const paperPropsStyle = {

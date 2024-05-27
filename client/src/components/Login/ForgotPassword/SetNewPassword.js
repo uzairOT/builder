@@ -44,7 +44,7 @@ const SetNewPassword = () => {
       toast.success("Password changed successfully");
       navigate("/login");
     } catch(err) {
-      toast.error(err?.data?.error || err.error || err?.data?.message);
+      toast.error(err?.data?.error || err.error || err?.data?.message || 'Something went wrong!');
     }
 
     // navigate("/verifycode");

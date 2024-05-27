@@ -57,7 +57,7 @@ const VerifyCode = () => {
         navigate("/setnewpassword");
       }
     } catch (err) {
-      toast.error(err?.data?.error || err.data.message || err.error);
+      toast.error(err?.data?.error || err.data.message || err.error || 'Something went wrong!');
     }
   };
   const handleInputChange = (index, value) => {
@@ -86,7 +86,7 @@ const VerifyCode = () => {
       const res = await resendOTP({ email: forgetPasswordEmail }).unwrap();
       toast.success("OTP resend successfully");
     } catch (err) {
-      toast.error(err?.data?.error || err.error);
+      toast.error(err?.data?.error || err.error || 'Something went wrong!');
     }
   };
   return (

@@ -112,7 +112,7 @@ function ProfileView() {
         toast.success("Profile updated successfully");
       }
     } catch (error) {
-      toast.error(error?.data?.message || error.error||error?.data?.error );
+      toast.error(error?.data?.message || error.error||error?.data?.error || 'Something went wrong!' );
     }
   };
   const handleReset = () => {

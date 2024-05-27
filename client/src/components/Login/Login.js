@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useFetcher, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useGoogleLoginMutation,
@@ -29,6 +29,8 @@ import { ReactComponent as GoogleLogo } from "../Signup/Assets/svgs/GoogleIcon.s
 
 import YellowBtn from "../UI/button";
 import "../../App.css";
+import { useFormik } from "formik";
+import { loginSchemea } from "../../utils/Validation/settingsPageSchema";
 //import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
@@ -79,7 +81,7 @@ const Login = () => {
     // const auth2 = gapi.auth2.getAuthInstance();
     if (response?.profileObj) {
       const { givenName, googleId, email, familyName } = response.profileObj;
-      
+
       // Use Google profile info to authenticate the user
       const userData = {
         firstName: givenName,
@@ -128,28 +130,46 @@ const Login = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await login({ email, password }).unwrap();
+      const res = await login({
+        email: values.email,
+        password: values.password,
+      }).unwrap();
       // console.log("login :", res);
       // localStorage.setItem('userInfo', JSON.stringify({...res}));
       dispatch(setCredentials({ ...res }));
       navigate("/");
     } catch (err) {
-      // console.log(err);
-      toast.error(err?.data?.error || err.error || err?.data?.message);
+      console.log(err);
+      if(err.status === 'FETCH_ERROR'){
+        toast.error('Network Issues');
+        return;
+      }
+      toast.error(err?.data?.error || err.error || err?.data?.message || 'Something went wrong!');
     }
   };
+  const { values, handleBlur, handleChange, errors, touched } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: loginSchemea,
+    onSubmit: submitHandler,
+  });
+  useEffect(() => {
+    console.log(values);
+  }, [values]);
 
   return (
     <Grid container sx={firstGrid}>
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
-        <Typography sx={firstHeading}>Construction Management</Typography>
+        <Typography sx={firstHeading}>Builder Builder Pro</Typography>
 
         {/* Button */}
 
         <Typography component="p" sx={secondHeading}>
           On schedule. On budget. On the path to building better.
         </Typography>
-        <Typography sx={thirdHeading}>Log in to your account</Typography>
+        {/* <Typography sx={thirdHeading}>Log in to your account</Typography> */}
         <Box sx={downloadForMobBox}>
           <img src={downloadForMob} width={DoMobWidth} alt="" />
         </Box>
@@ -190,7 +210,7 @@ const Login = () => {
             <Typography sx={formHeadingStyle}>Login</Typography>
             <img src={builder1} width={"20%"} alt="" />
           </Box>
-          <form style={{ marginTop: "1rem" }}>
+          <form style={{ marginTop: "1rem" }} onSubmit={submitHandler}>
             <Box sx={{ marginTop: "0.5rem" }}>
               <label
                 style={{
@@ -205,40 +225,55 @@ const Login = () => {
                 required
                 type="email"
                 id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
                 style={{
                   ...inputStyle,
                   ...borderRadiusResponsive,
                   ...placeholderStyle,
                   ...lableResponsiveFont,
+                  border:
+                    errors.email && errors.email
+                      ? "1px solid #d32f2f"
+                      : "1px solid #E0E4EC",
                 }}
-                placeholder="workemail@gmail.com"
+                placeholder="JohnDoe@gmail.com"
               />
+               <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.email && touched.email ? errors.email : ""}</Typography>
             </Box>
             <Box sx={{ marginTop: "0.5rem" }}>
               <label
                 style={{
                   ...labelStyle,
                   ...lableResponsiveFont,
+                  paddingTop:'10px'
                 }}
-                htmlFor="email"
+                htmlFor="password"
               >
                 Password
               </label>
               <Box sx={{ position: "relative" }}>
                 <input
                   required
+                  name="password"
+                  id="password"
                   type={passwordVisible ? "text" : "password"}
                   style={{
                     ...inputStyle,
                     ...borderRadiusResponsive,
                     ...placeholderStyle,
                     ...lableResponsiveFont,
+                    border:
+                    errors.password && errors.password
+                      ? "1px solid #d32f2f"
+                      : "1px solid #E0E4EC",
                   }}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder=""
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="Enter your password"
                 />
                 <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
                   {passwordVisible ? <VisibilityOff /> : <Visibility />}
@@ -248,6 +283,7 @@ const Login = () => {
                     </span>
                   )}
                 </Box>
+                     <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.password && touched.password ? errors.password : ""}</Typography>
               </Box>
             </Box>
 
@@ -472,11 +508,12 @@ const formGrid = {
 };
 
 const logoBox = {
-  gap: "7rem",
-  marginBottom: "8rem",
-  justifyContent: "space-evenly",
+  gap: "1rem",
+  marginBottom: "1rem",
+  justifyContent: "space-between",
+  alignItems:'center',
   marginTop: "2rem",
-  display: { lg: "none", md: "none", sm: "none", xs: "flex" },
+  display: "flex",
 };
 
 const passwordEyeBox = {

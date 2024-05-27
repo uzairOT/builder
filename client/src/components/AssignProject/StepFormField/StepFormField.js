@@ -4,12 +4,13 @@ import React, { useState } from 'react'
 import {
   useMediaQuery,
   Button, Box, Typography, TextField, MenuItem, FormControl, formControlStyle, Select,
+  IconButton,
 } from "@mui/material";
-
+import CloseIcon from '@mui/icons-material/Close';
 import "../../../App.css"
 import "./StepFormField.css"
 
-function ProjectFormFields({ index, email, role, onUpdateEmail, onUpdateRole,}) {
+function ProjectFormFields({ index, email, role, onUpdateEmail, onUpdateRole, removeIndex}) {
   const MAX_EMAIL_LENGTH = 50;
 
 
@@ -18,7 +19,7 @@ function ProjectFormFields({ index, email, role, onUpdateEmail, onUpdateRole,}) 
   const formWidth = { width: isMobile ? "75%" : isTab ? "65%" : "48%" }
   const borderRadiusResponsive = { borderRadius: isMobile ? "0.5rem" : "0.75rem" }
   const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" }
-  const placeholderText = !isTab && !isMobile ? 'e.g. abc@workmail.com' : '@mail';
+  const placeholderText = !isTab && !isMobile ? 'e.g. johndoe@workmail.com' : '@mail';
 
   const handleEmailChange = (event) => {
     const { value } = event.target;
@@ -57,7 +58,7 @@ function ProjectFormFields({ index, email, role, onUpdateEmail, onUpdateRole,}) 
               },
               }}
 
-
+              inputProps={{ maxLength: 50 }}
                 id="standard-select-currency"
                 select
                 variant="standard"
@@ -74,6 +75,7 @@ function ProjectFormFields({ index, email, role, onUpdateEmail, onUpdateRole,}) 
                 <MenuItem sx={menuItem} value={'employee'}>Employee</MenuItem>
               </TextField>
             </Box>
+             <Box display={'flex'} alignItems={'center'} pb={'8px'}>{!(index === 0) ? <IconButton onClick={() => {removeIndex(index)}}><CloseIcon /></IconButton> : <Box width={'40px'}></Box>}</Box>
           </Box>
         </form>
       </Box>

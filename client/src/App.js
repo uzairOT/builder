@@ -82,6 +82,8 @@ import { useGetProjectUserRoleMutation } from "./redux/apis/Project/userProjectA
 import { getUserRoleFromRedux } from "./redux/slices/auth/userRoleSlice.js";
 import Completion from "./components/dialogues/PaymentModal/Completion.js";
 import ChatViewMain from "./components/Projects/ProjectsChat/ChatViewMain.js";
+import PermitClient from "./components/ClientDashboard/Permit/Permit";
+import NotFound from "./pages/NotFound/NotFound.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -109,36 +111,38 @@ function App() {
   const [events, setEvents] = useState();
   const [getEvents] = useGetUserEventsMutation();
   const allEvent = useSelector(allEvents);
+  const temperatureUnit = useSelector(state => state.dailyForecast.temperatureUnit);
   const forecast = useSelector(getForecast);
   const dailyForecast = forecast.dailyForecast || [];
   const dispatch = useDispatch();
-  console.log("IN APP JS: ", userRole);
-
+  
+  const fetchWeather = async () => {
+    // setLoading(true);
+    dispatch(setIsLoading(true));
+    dispatch(setForecastLoading(true));
+    
+    try {
+      console.log("IN APP JS: ", temperatureUnit);
+      const data = await getFormattedFiveDayWeather({
+        lat: "36.7783",
+        lon: "119.4179",
+        units: temperatureUnit,
+      });
+      dispatch(setDailyForecast(data));
+      dispatch(setForecastLoading(false));
+    } catch (error) {
+      dispatch(setError(error));
+      dispatch(setForecastError(error));
+    } finally {
+      dispatch(setForecastLoading(false));
+    }
+  };
   useEffect(() => {
-    const fetchWeather = async () => {
-      // setLoading(true);
-      dispatch(setIsLoading(true));
-      dispatch(setForecastLoading(true));
-      try {
-        const data = await getFormattedFiveDayWeather({
-          lat: "33.6844",
-          lon: "73.0479",
-          units: "Metric",
-        });
-        dispatch(setDailyForecast(data));
-        dispatch(setForecastLoading(false));
-      } catch (error) {
-        dispatch(setError(error));
-        dispatch(setForecastError(error));
-      } finally {
-        dispatch(setForecastLoading(false));
-      }
-    };
 
     if (dailyForecast.length < 1) {
       fetchWeather();
     }
-  }, [dailyForecast]); // Run this effect whenever dailyForecast changes or on initial mount
+  }, [dailyForecast, temperatureUnit]); // Run this effect whenever dailyForecast changes or on initial mount
 
   useEffect(() => {
     // getFormattedEvents();
@@ -177,7 +181,7 @@ function App() {
                 <>
                   <Route path="" element={<ClientLayout />}>
                     <Route path="" element={<ClientDashboardCards />} />
-                    <Route path="permit" element={<Permit />} />
+                    <Route path="permit" element={<PermitClient />} />
                     <Route path="drawing-files" element={<Drawing />} />
                     <Route path="images" element={<Images />} />
                     <Route path="change-order" element={<ChangeOrders />} />
@@ -250,6 +254,7 @@ function App() {
           <Route path="dailylog" element={<DailyLog />} />
           <Route path="chats" element={<Chats />} />
         </Route>
+        <Route path="/*" element={<NotFound />} /> 
       </>
     )
   );

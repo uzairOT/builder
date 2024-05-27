@@ -98,7 +98,7 @@ function AddModal({ title, open, onClose }) {
       setImage(null);
     } catch (err) {
       //console.log(err);
-      toast.error(error?.data?.message || error.error||error?.data?.error );
+      toast.error(error?.data?.message || error.error||error?.data?.error || 'Something went wrong!');
     }
   };
 

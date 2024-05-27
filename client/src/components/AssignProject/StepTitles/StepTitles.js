@@ -46,11 +46,14 @@ const stepGeneralText = {
   textAlign: 'center'
 }
 const headingStyle = {
-  fontSize: { xl: "2.7rem",lg: "2.4rem", md: "2.2rem", sm: "1.9rem", xs: "1.5rem" },
+  fontSize: { xl: "2.5rem",lg: "2.2rem", md: "2rem", sm: "1.9rem", xs: "1.5rem" },
   fontWeight: { lg: 400, md: 400, sm: 400, xs: 700 },
   // fontFamily: "Inter",
   width: { lg: "50%", md: "60%", sm: "70%", xs: "95%" },
-  maxWidth: "46rem"
+  maxWidth: "46rem",
+  // whiteSpace: "nowrap",
+  // overflow: "hidden",
+  // textOverflow: "ellipsis",
 }
 
 

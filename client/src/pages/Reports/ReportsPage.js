@@ -8,7 +8,7 @@ import ReportsSideBar from '../../components/Reports/ReportsSideBar'
 const ReportsPage = () => {
   return (
    <>
-   <Grid container height={{xl:"100vh",lg:"100vh",md:"100vh",sm:'', xs:''}} backgroundColor={"#eff5ff"} spacing={2} overflow={'hidden'} sx={themeStyle.scrollable}>
+   <Grid container mt={'0.0000001px'} height={{xl:"100vh",lg:"100vh",md:"100vh",sm:'', xs:''}} backgroundColor={"#eff5ff"} spacing={2} overflow={'hidden'} sx={themeStyle.scrollable}>
    <Grid item xl={2} lg={3} md={12} sm={12} xs={12} height={"99vh"}>
           <Paper sx={{ height: "100%", borderRadius: "14px" }}>
             <ProfileReport name={"Admin"} description={"SuperAdmin@gmail.com"} />

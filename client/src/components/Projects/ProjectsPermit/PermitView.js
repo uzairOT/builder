@@ -1,6 +1,7 @@
 import { Box, Paper } from '@mui/material'
 import React from 'react'
 import Permit from '../Permit'
+import { Height } from '@mui/icons-material'
 
 
 const PermitView = () => {
@@ -14,6 +15,7 @@ const PermitView = () => {
 export default PermitView
 const themeStyle = {
   borders: {
-    borderRadius: '14px'
+    borderRadius: '14px',
+    height: '100%'
   }
 }

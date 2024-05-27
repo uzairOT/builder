@@ -169,7 +169,7 @@ const NotificationDetailModal = ({
               sm: "column",
               xs: "column",
             }}
-            height={"100%"}
+            
           >
             <Stack p={3} spacing={1} width={"100%"}>
               <Typography fontFamily={"inherit"}>
@@ -504,7 +504,7 @@ const style = {
   boxShadow: 24,
   p: 0,
   borderRadius: "14px",
-  width: "700px",
+  height:'80%'
 };
 const themeStyle = {
   scrollable: {

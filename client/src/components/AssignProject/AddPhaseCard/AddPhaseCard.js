@@ -106,7 +106,7 @@ const AddPhaseCard = ({
   const userRoleAuth = useSelector(getUserRoleFromRedux);
   console.log(userRoleAuth);
   const [deletePhaseLine] = useDeletePhaseLineMutation();
-
+console.log(adminProjectView)
   const dispatch = useDispatch();
   const { rowCheckbox } = useSelector(selectAddPhase);
   let totalCost = 0;
@@ -116,7 +116,7 @@ const AddPhaseCard = ({
   // console.log(maxEndDay);
 
   phaseData.LineItems.forEach((row) => {
-    totalCost += parseInt(row.total); // Accumulate the total cost
+    totalCost += (parseInt(row.total) + parseInt(row.margin)); // Accumulate the total cost
     const startDay = moment(row.start_day);
     const endDay = moment(row.end_day);
 
@@ -411,12 +411,14 @@ const AddPhaseCard = ({
                   {/* <TableCell sx={tableHeadings}>Description</TableCell> */}
                   <TableCell sx={tableHeadings}>Unit</TableCell>
                   <TableCell sx={tableHeadings}>Unit Cost</TableCell>
+                  <TableCell sx={tableHeadings}>Cost</TableCell>
                   <TableCell sx={tableHeadings}>Quantity</TableCell>
                   <TableCell sx={tableHeadings}>Start</TableCell>
                   <TableCell sx={tableHeadings}>End</TableCell>
-                  <TableCell sx={tableHeadings}>Total Cost</TableCell>
                   <TableCell sx={tableHeadings}>Margin</TableCell>
+                  <TableCell sx={tableHeadings}>Total Cost</TableCell>
                   <TableCell sx={tableHeadings}>Notes</TableCell>
+                  {adminProjectView && <>
                   <TableCell sx={tableHeadings}>Status</TableCell>
 
                   {(userRoleAuth.userRole === "employee" ||
@@ -429,6 +431,7 @@ const AddPhaseCard = ({
                     userRoleAuth.userRole === "projectManager") && (
                     <TableCell sx={tableHeadings}>Team Status</TableCell>
                   )}
+                  </>}
                   <TableCell></TableCell>
                 </TableRow>
 
@@ -440,7 +443,7 @@ const AddPhaseCard = ({
                   if(userRoleAuth.userRole === "employee" ||
                   userRoleAuth.userRole === "subcontractor" ||
                   userRoleAuth.userRole === "supplier"){
-                    const userLineItem = row.UserLineItemStatuses?.find(user => user.userId === userId);
+                    const userLineItem = row?.UserLineItemStatuses?.find(user => user.userId === userId);
                     if(Boolean(userLineItem)){
                       
                     }else{
@@ -469,6 +472,7 @@ const AddPhaseCard = ({
                       {/* <TableCell>{row.description}</TableCell> */}
                       <TableCell>{row.unit}</TableCell>
                       <TableCell>${row.unit_price}</TableCell>
+                      <TableCell>${row.total}</TableCell>
                       <TableCell>{row.quantity}</TableCell>
                       <TableCell>
                         {row?.WorkOrderReqs
@@ -485,10 +489,12 @@ const AddPhaseCard = ({
                           : "-"}
                       </TableCell>
 
-                      <TableCell>${row.total}</TableCell>
+                     
                       <TableCell>${row?.margin}</TableCell>
+                      <TableCell>${Number(row.total) + Number(row.margin)}</TableCell>
 
                       <TableCell>{row.notes}</TableCell>
+                     {adminProjectView && <>
                       <TableCell>{row.status}</TableCell>
                       {(userRoleAuth.userRole === "superadmin" ||
                         userRoleAuth.userRole === "admin" ||
@@ -503,7 +509,7 @@ const AddPhaseCard = ({
                               flexShrink: 0,
                               alignSelf: "stretch",
                               borderRadius: "2.8125rem",
-                              background: row.UserLineItemStatuses.length < 1 ? 'lightgray' : "#4C8AB1",
+                              background: row?.UserLineItemStatuses?.length < 1 ? 'lightgray' : "#4C8AB1",
                               color: "#FFF",
                               textTransform: "none",
                               "&:hover": {
@@ -514,7 +520,7 @@ const AddPhaseCard = ({
                             onClick={() => {
                               handleShowTeamStatus(row);
                             }}
-                            disabled={row.UserLineItemStatuses.length < 1}
+                            disabled={row?.UserLineItemStatuses?.length < 1}
                           >
                             Details
                           </Button>
@@ -533,6 +539,7 @@ const AddPhaseCard = ({
                           </IconButton>}
                         </TableCell>
                       )}
+                      </>}
                       <TableCell>
                         <EditIcon onClick={() => handleUpdateLine(row)} />
                         {(row.status === "Work Order Not requested" ||

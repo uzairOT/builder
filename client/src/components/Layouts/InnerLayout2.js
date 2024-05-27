@@ -34,13 +34,18 @@ const InnerLayout2 = () => {
         <Stack flex={{xl:8,lg:7}}><Paper style={themeStyle.border}><ProjectInfoAndTeam /></Paper></Stack>
         </Stack>
         <Stack direction={{xl:'row',}} pt={1} spacing={1} sx={{height:'calc(92vh - 295px)'}}>
+          <Stack flex={2} height={'inherit'}>
         <Outlet />
+          </Stack>
         {/* Change Order Tab navigation */}
         <Stack flex={1} >
           <Paper style={{...themeStyle.border, height:'100%', width: '99%'}}>
           {/* First Item of Stack */}
           <Stack>
-          <Typography p={3} pb={1} color={'#4C8AB1'}>Change Order</Typography>
+            <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} height={'40px'} mt={1} pr={1}>
+          <Typography pl={3} color={'#4C8AB1'}>Change Order</Typography>
+          <BuilderProButton variant={'contained'} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'} fontSize={'14px'} backgroundColor={'#4C8AB1'} handleOnClick={handleOpen}>Change Order Request</BuilderProButton>
+            </Stack>
           <Tabs defaultValue={0} sx={{backgroundColor: 'transparent'}}>
             <TabList sx={{
               [`& .${tabClasses.root}[aria-selected="true"]`]: {
@@ -71,7 +76,7 @@ const InnerLayout2 = () => {
           </Stack>
             {/* Second Item of Stack */}
             <Stack alignItems={'flex-end'} pr={4} pt={2}>
-            <BuilderProButton variant={'contained'} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'} fontSize={'14px'} backgroundColor={'#4C8AB1'} handleOnClick={handleOpen}>Change Order Request</BuilderProButton>
+           
             {/* This component is depreciated */}
             {
                 open && <ChangeOrderRequest handleClose={handleClose} handleOpen={handleOpen} heading={'Change Order'} admin={true}/>

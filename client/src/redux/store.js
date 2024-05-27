@@ -10,6 +10,7 @@ import eventsReducer from './slices/Events/eventsSlice';
 import dailyForecastSlice from './slices/DailyForecast/dailyForecastSlice';
 import notificationSlice from './slices/Notifications/notificationSlice';
 import userRoleSlice from './slices/auth/userRoleSlice';
+import weatherSlice from './slices/Weather/weatherSlice';
 
 
 export const store = configureStore({
@@ -23,6 +24,7 @@ export const store = configureStore({
     dailyForecast: dailyForecastSlice,
     notifications: notificationSlice,
     userRole: userRoleSlice,
+    weather: weatherSlice,
     [apiSlice.reducerPath]: apiSlice.reducer, // Include the API slice reducer
   },
   middleware: (getDefaultMiddleware) =>

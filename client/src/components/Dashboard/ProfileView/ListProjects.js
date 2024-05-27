@@ -71,7 +71,7 @@ const ListProjects = () => {
         All Listed Projects
       </Typography>
       <Box
-        sx={{ ...themeStyle.scrollable, height: "calc(90vh - 370px)" }}
+        sx={{ ...themeStyle.scrollable, height: "calc(90vh - 355px)", }}
         pb={2}
       >
         {error ? (

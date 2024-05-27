@@ -46,7 +46,7 @@ const projectFormSlice = createSlice({
       state.end_time = action.payload;
     },
     addUser: (state) => {
-      state.users.push({ email: '', role: '' });
+      state.users.push({ email: '', role: 'admin' });
     },
     removeUser: (state, action) => {
       state.users.splice(action.payload, 1);

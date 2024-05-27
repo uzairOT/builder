@@ -66,7 +66,7 @@ export default function MyApp() {
    toast.success("Profile updated successfully");
     } catch (error) {
       console.log(error);
-      toast.error(error?.data?.message || error.error||error?.data?.error );
+      toast.error(error?.data?.message || error.error||error?.data?.error || 'Something went wrong!');
     }
   } }
 

@@ -1,14 +1,24 @@
 import React from 'react'
 import FileBox from '../FileBox/FileBox'
+import { Paper } from '@mui/material'
+import Permit from '../../Projects/Permit'
+import { Height } from '@mui/icons-material'
 
 
-function Permit() {
+function PermitClient() {
 
     return (
-        <div style={{ width: "100%", marginBottom: "1rem" }}>
-            <FileBox titleHeading={"Permit"} buttonName={"Add Permit"} modalHeading={"Permit"} />
-        </div>
+        <Paper style={themeStyle.borders}>
+        <Permit view={'Permit'} type={'permit'} client={true}/>
+      </Paper>
     )
 }
 
-export default Permit
+export default PermitClient 
+
+const themeStyle = {
+    borders: {
+      borderRadius: '14px',
+      height:'100%'
+    }
+  }

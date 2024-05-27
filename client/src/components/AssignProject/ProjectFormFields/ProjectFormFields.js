@@ -22,7 +22,7 @@ import "../../../App.css";
 import ColorPicker from "../../dialogues/ColorPickerProject/ColorPicker";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from 'dayjs'
+import dayjs from "dayjs";
 
 const colors = [
   "#93D0EC",
@@ -48,14 +48,14 @@ function ProjectFormFields() {
   const borderRadiusResponsive = {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
-  const [project, setProject] = useState("");
+  // const [project, setProject] = useState("");
   const { projectName, location, projectColor, start_time, end_time } =
     useSelector(selectProjectForm);
   const dispatch = useDispatch();
 
   // Event handler to update the projectName state
   const handleProjectNameChange = (event) => {
-    setProject(event.target.value);
+    // setProject(event.target.value);
     dispatch(setProjectName(event.target.value));
   };
 
@@ -67,10 +67,10 @@ function ProjectFormFields() {
     dispatch(setProjectColor(color));
   };
   const handleStartDateChange = (newValue) => {
-    dispatch(setStartTime(newValue.format('YYYY/MM/DD')));
+    dispatch(setStartTime(newValue.format("YYYY/MM/DD")));
   };
   const handleEndDateChange = (newValue) => {
-    dispatch(setEndTime(newValue.format('YYYY/MM/DD')));
+    dispatch(setEndTime(newValue.format("YYYY/MM/DD")));
   };
 
   return (
@@ -80,21 +80,22 @@ function ProjectFormFields() {
           <Box sx={{ marginTop: "0.5rem" }}>
             <label
               style={{ ...labelStyle, ...labelDisplay, ...labelResponsiveFont }}
-              htmlFor="email"
+              htmlFor="projectName"
             >
               Project Name
             </label>
             <input
               className="placeholder"
-              type="email"
-              id="email"
+              type="text"
+              id="projectName"
+              maxLength={50}
               style={{
                 ...inputStyle,
                 ...borderRadiusResponsive,
                 ...labelResponsiveFont,
               }}
-              placeholder="e.g. Project name"
-              value={project}
+              placeholder="eg: Skyrise Sanctuary"
+              value={projectName}
               onChange={handleProjectNameChange}
               required
             />
@@ -102,23 +103,28 @@ function ProjectFormFields() {
           <Box sx={{ marginTop: "0.2rem" }}>
             <label
               style={{ ...labelStyle, ...labelDisplay, ...labelResponsiveFont }}
-              htmlFor="email"
+              htmlFor="location"
             >
               Location
             </label>
             <TextField
               className="placeholder"
+              inputProps={{ maxLength: 50 }}
               sx={{
                 ...inputStyle,
                 ...borderRadiusResponsive,
+                paddingLeft:'0px',
+
                 "& input": {
                   borderBottom: "none", // Remove bottom border of the input
+                 
                 },
               }}
-              id="standard-select-currency"
+              id="location"
               type="text"
               variant="standard"
               value={location}
+              
               onChange={handleLocationChange}
               placeholder="Enter your location..."
             >
@@ -155,10 +161,11 @@ function ProjectFormFields() {
               >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <MobileDatePicker
-                  sx={{width:'100%'}}
+                    sx={{ width: "100%" }}
                     value={dayjs(start_time)}
                     onChange={handleStartDateChange}
                     format="YYYY/MM/DD"
+                    disablePast
                   />
                 </LocalizationProvider>
               </Box>
@@ -187,10 +194,11 @@ function ProjectFormFields() {
               >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <MobileDatePicker
-                  sx={{width:'100%', paddingRight: '0px'}}
+                    sx={{ width: "100%", paddingRight: "0px" }}
                     value={dayjs(end_time)}
                     onChange={handleEndDateChange}
                     format="YYYY/MM/DD"
+                    minDate={start_time ? dayjs(start_time).add(1,'day') : dayjs(Date.now()).add(1, 'day')}
                   />
                 </LocalizationProvider>
               </Box>
@@ -222,7 +230,11 @@ function ProjectFormFields() {
                         width={"40px"}
                         height={"60px"}
                         bgcolor={color}
-                        boxShadow={projectColor === color ? 'rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;' :''}
+                        boxShadow={
+                          projectColor === color
+                            ? "rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;"
+                            : ""
+                        }
                         borderRadius={"7px"}
                         onClick={() => {
                           handleProjectColorChange(color);

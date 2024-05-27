@@ -22,12 +22,13 @@ const ChangeOrder = ({value}) => {
   const { data } = useGetProjectChangeOrderQuery({
     projectId: currentProjectId,
     userId: user.user.id,
+    
   });
   //console.log(data);
 
   return (
     <TableContainer
-      style={{ paddingLeft: "4px", paddingRight: "4px", width: "95%", height:'calc(92vh - 470px)' }}
+      style={{ paddingLeft: "4px", paddingRight: "4px", width: "95%", height:'calc(92vh - 400px)' }}
       
     >
       <Table size="small" aria-label="Change Order Table">

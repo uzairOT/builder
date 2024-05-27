@@ -17,7 +17,7 @@ const ProjectsTable = () => {
       <Grid sx={themeStyle.dashboard} container>
       <Grid item p={2} xl={12} lg={12} md={12} sx={12} xs={12}>
         <Paper  style={{height:'100%', borderRadius:'14px'}}>
-          {error ?  <Stack justifyContent={'center'} alignItems={'center'}>{error.data.message}</Stack> : <ProjectList selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} rows={data?.projects} isLoading={isLoading}/>}
+          {error ?  <Stack justifyContent={'center'} alignItems={'center'}>{error?.data?.message}</Stack> : <ProjectList selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} rows={data?.projects} isLoading={isLoading}/>}
         </Paper>
       </Grid>
       </Grid>

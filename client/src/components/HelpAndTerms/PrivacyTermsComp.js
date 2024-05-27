@@ -42,7 +42,7 @@ const PrivacyTermsComp = () => {
           onClick={handleAccept}
           type="submit"
         >
-          {"Accept"}
+          {"Back"}
         </Button>
       </Box>
     </div>

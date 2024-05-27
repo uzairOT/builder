@@ -93,20 +93,21 @@ import { toast } from 'react-toastify';
               }
               const res = await assignRolePost(userInviteBody).unwrap();
               console.log(res);
-              toast.info(res?.data?.message || res?.message);
+              toast.info(res?.data?.message || res?.message || 'Success');
             } catch (error) {
-              toast.error(error?.data?.message)
+              toast.error(error?.data?.message || 'Something went wrong!')
             }
           }
           console.log(pendingInvitations)
   return (
     <Stack pl={{ xl: 5, lg: 5, md: 1 }}>
-      <Stack direction={"row"} sx={{ justifyContent: "space-between" }}>
+      <Stack direction={"row"} sx={{ justifyContent: "space-between" }} pr={1}>
         <Typography sx={themeStyle.title}>Project Team</Typography>
         <Stack direction={'row'} justifyContent={'center'} alignItems={'center'}>
           {pendingInvitationsLength >= 1 ? <Badge badgeContent={pendingInvitationsLength} color="warning" >
             <BuilderProButton variant={"outlined"} handleOnClick={handleOpenPendingInvitations} fontFamily={'inherit'} fontSize={'15px'}>Pending Invitations</BuilderProButton>
           </Badge> : <></>}
+        
         <BuilderProButton
           backgroundColor={"#FFAC00"}
           variant={"contained"}

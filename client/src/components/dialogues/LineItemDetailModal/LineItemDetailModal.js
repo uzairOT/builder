@@ -29,6 +29,7 @@ const LineItemDetailModal = ({
     } catch (error) {
       console.log(error);
     }
+    handleClose();
   };
   console.log(lineItem)
   const disableButton = () => {
@@ -120,19 +121,19 @@ const LineItemDetailModal = ({
                   </BuilderProButton>
                 </>
               ) : userRole === "supplier" ? (
-                <>supplier</>
+                <> <BuilderProButton
+                backgroundColor={"#4C8AB1"}
+                variant={"contained"}
+                Icon={CheckCircleOutlineIcon}
+                handleOnClick={handleDone}
+                marginLeft={"0px"}
+                disabled={isLoading || disableButton()}
+              >
+                Done
+              </BuilderProButton></>
               ) : (
                 <>
-                  <BuilderProButton
-                    backgroundColor={"#4C8AB1"}
-                    variant={"contained"}
-                    Icon={CheckCircleOutlineIcon}
-                    handleOnClick={handleDone}
-                    marginLeft={"0px"}
-                    disabled={isLoading || disableButton()}
-                  >
-                    Done
-                  </BuilderProButton>
+                 
                 </>
               )}
             </Stack>

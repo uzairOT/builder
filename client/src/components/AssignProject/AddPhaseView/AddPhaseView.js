@@ -341,7 +341,7 @@ function AddPhaseView({
       </Stack>
 
       {InitialProposalView ? (
-        <Box sx={{height: 'calc(93vh - 140px)', ...themeStyle.scrollable}}>
+        <Box sx={{height: 'calc(93vh - 140px)', ...themeStyle.scrollable, width: {xl:'100%', lg:'100%', md:'100%', sm:'100%', xs:'95vw'}}}>
           {initialPhases !== null &&
           initialPhases[0] !== undefined &&
           initialPhases[0].length !== 0 &&
@@ -395,7 +395,7 @@ function AddPhaseView({
           )}
         </Box>
       ) : (
-        <Box sx={{height: adminProjectView ?'calc(92vh - 250px)' : '', ...themeStyle.scrollable, width: {xl:'100%', lg:'100%', md:'100%', sm:'100%', xs:'95vw'}}}>
+        <Box sx={{height: adminProjectView ?'calc(92vh - 300px)' : '', ...themeStyle.scrollable, width: {xl:'100%', lg:'100%', md:'100%', sm:'100%', xs:'95vw'}}}>
         
           {phases !== null &&
           phases[0] !== undefined &&
@@ -501,7 +501,8 @@ const buttonBox = {
   gap: "0.5rem",
   marginTop: "0.5rem",
   padding: {
-    lg: "0rem 0rem",
+    //changes
+    lg: "0rem 2rem",
     md: "0.1rem 0rem",
     sm: "1rem 2rem",
     xs: "0rem 0rem",

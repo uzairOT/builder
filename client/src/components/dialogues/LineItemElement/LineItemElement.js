@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 import {
@@ -45,6 +45,7 @@ import utc from "dayjs/plugin/utc"; // Optional if you need UTC handling
 import Close from "@mui/icons-material/Close";
 import CreateableSelect from 'react-select/creatable';
 import { useAddUnitMutation, useGetUnitsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+import { isPlainObject } from "@reduxjs/toolkit";
 const options = [
   { value: 'chocolate', label: 'Chocolate' },
   { value: 'strawberry', label: 'Strawberry' },
@@ -88,7 +89,7 @@ function AddLineElement({
   const [description, setDescription] = useState(
     LineItem ? LineItem.description : ""
   );
-  const [unitList, setUnitList] = useState()
+  const [autoCompleteUnit, setAutoCompleteUnit] = useState('')
   const [unit, setUnit] = useState(LineItem ? LineItem.unit.value : "");
   const [quantity, setQuantity] = useState(LineItem ? LineItem.quantity : "");
   const [unitPrice, setUnitPrice] = useState(
@@ -100,6 +101,8 @@ function AddLineElement({
   const [end, setEnd] = useState(LineItem ? dayjs(LineItem.end_day) : null);
   const [margin, setMargin] = useState( LineItem ? LineItem.margin :'');
   const [percentage, setPercentage] = useState(  LineItem ? LineItem.percentage : '');
+  const [totalCost, setTotalCost] = useState(0);
+  const creatableRef = useRef();
 
   const handleStartDateChange = (newValue) => {
     setStart(newValue);
@@ -120,7 +123,7 @@ function AddLineElement({
   const phases = useSelector((state) => state.projectInitialProposal.phases);
   const userInfo = useSelector((state) => state.auth.userInfo);
   // console.log(autoComplete)
-  const {data, isLoading, refetch} = useGetUnitsQuery({userId: userInfo.user.id})
+  const {data, isLoading, refetch, isSuccess} = useGetUnitsQuery({userId: userInfo.user.id})
   const [addUnit] = useAddUnitMutation()
   //console.log(userInfo)
 
@@ -151,7 +154,7 @@ function AddLineElement({
         .then((response) => {
           setAutoComplete(response.data.MasterLines);
           //console.log(response.data.MasterLines);
-        });
+        }).catch(error => {console.error(error)});
     }, 300);
   
     return () => clearTimeout(getData);
@@ -182,6 +185,7 @@ function AddLineElement({
       const roundedResult = Math.round(result*10)/10
       setPercentage(()=> {
         setMargin(roundedResult);
+       
         return percent;
       })
     } else{
@@ -197,7 +201,9 @@ function AddLineElement({
       const roundedResult = Math.round(result*10)/10
       setMargin(()=> {
         setPercentage(roundedResult);
+       
         return inputMargin;
+        
       })
     } else{
       //toastId added to prevent duplication
@@ -247,7 +253,7 @@ function AddLineElement({
 
         //   handleUpdateClose();
         toast.success(
-          "Line Item added successfully"
+          "Line Item Edited successfully"
         );
       } catch (error) {
         toast.error(error?.data?.message || error?.error||error?.data?.error || 'Some error' );
@@ -284,6 +290,9 @@ function AddLineElement({
         return;
       }
       const response = await addPhaseLine(newLineItem);
+       toast.success(
+          "Line Item Added successfully"
+        );
       if(InitialProposalView){
         dispatch(addInitialPhase(response?.data?.allPhases));
       }else{
@@ -297,6 +306,9 @@ function AddLineElement({
       // handleAddClose();
     }
   };
+  const handleTotalCostChange = () =>{
+    setTotalCost(total+margin);
+  }
 
   // const Units = [
   //   { value: "sqft", label: "Square Feet"},
@@ -343,15 +355,18 @@ function AddLineElement({
   //     setLongDescription(data.lineItem.notes);
   //   }
   // }, [isSuccess, data]);
-const handleSetUnit = async (selectedOption) => {
-  // console.log(selectedOption);
-  if(selectedOption === null){
+const handleSetUnit = async (selectedOption, actionType) => {
+  console.log(actionType);
+  if(selectedOption === null || selectedOption?.value === LineItem?.unit){
     return;
   }
   const existingUnit = data?.some(unit => unit?.value === selectedOption?.value);
+  console.log(selectedOption)
+  console.log(existingUnit)
   if(existingUnit){
     setUnit(selectedOption.value);
-  }else{
+  }
+  else{
     setUnit(selectedOption.value);
     await addUnit({...selectedOption, userId: userInfo.user.id})
     await refetch({userId: userInfo.user.id});
@@ -359,15 +374,46 @@ const handleSetUnit = async (selectedOption) => {
 }
 const findValueInData = (value) => {
   const dataObject = data?.find(obj => obj.value === value);
-  console.log(dataObject)
-  return dataObject?.label;
+  // console.log(dataObject)
+  return dataObject;
 }
 
+// const handleCreateNewUnit = async (inputValue) => {
+//   setUnit(inputValue);
+//   await addUnit({value: inputValue, label: inputValue, userId: userInfo.user.id})
+//   await refetch({userId: userInfo.user.id});
+// }
+const setUnitOnAutoComplete = (unit) => {
+  const obj = findValueInData(unit);
+  console.log(obj)
+  console.log(creatableRef);
+  creatableRef.current.setValue(obj)
+}
 
-useEffect(()=>{
-  console.log(unit)
-  console.log(findValueInData(unit) )
-},[unit])
+const setUnitOnLineItemEdit = () => {
+  if (LineItem) {
+    const obj = findValueInData(LineItem.unit);
+    const unit = creatableRef.current?.props.value;
+    console.log(unit)
+    console.log(LineItem?.unit)
+    if(unit?.value === LineItem?.unit){
+      return;
+    }else{
+
+      creatableRef.current?.setValue(obj);
+      console.log(creatableRef.current);
+    }
+  }
+}
+
+  useEffect(()=>{
+    if(data){
+      setUnitOnLineItemEdit();
+    }
+  },[LineItem, data])
+  useEffect(()=>{
+    handleTotalCostChange();
+  },[margin])
 
   return (
     <div className="App">
@@ -387,12 +433,13 @@ useEffect(()=>{
             <Close />
           </IconButton>
           </Stack>
-          <DialogContent sx={{ padding: "0rem 3rem 3rem 3rem" }}>
+          <DialogContent sx={{ padding: "0rem 3rem 0rem 3rem" }}>
             <Typography sx={typoText}>Line Item</Typography>
             <>
               <Autocomplete
               disabled={isLoading}
                 freeSolo
+                
                 disableClearable
                 id="phaseName"
                 options={
@@ -405,8 +452,9 @@ useEffect(()=>{
                     (option) => option.title === newValue
                   );
                   if (selectedOption) {
+                    setUnitOnAutoComplete(selectedOption.unit)
                     setDescription(selectedOption.description);
-                    setUnit(selectedOption.unit);
+                    // handleSetUnit({value: selectedOption.unit});
                     setQuantity(selectedOption.quantity);
                     setUnitPrice(selectedOption.unit_price);
                     setTotal(selectedOption.total);
@@ -423,13 +471,17 @@ useEffect(()=>{
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Line Item Name"
+                    // label="Line Item Name"
                     margin="dense"
                     variant="standard"
+                    placeholder="Demolition"
                     value={formData?.phaseName}
                     onChange={(event) => setPhaseName(event.target.value)} // Assuming setPhaseName is your state updater function
                     required
-                    InputLabelProps={{ shrink: true }}
+                    InputLabelProps={{ shrink: true, }}
+                  
+                 
+                   
                   />
                 )}
               />
@@ -448,13 +500,15 @@ useEffect(()=>{
               <Typography sx={typoText}>Description</Typography>
               <TextField
                 sx={{ ...inputStyle }}
-                
                 margin="dense"
                 id="description"
                 name="description"
                 type="text"
                 variant="standard"
                 value={formData.description}
+               placeholder="Enter description"
+                
+                
                 onChange={(e) => setDescription(e.target.value)}
               />
               <Box sx={parallelBox}>
@@ -463,15 +517,20 @@ useEffect(()=>{
                   <Box mt={'8px'} mb={'8px'}>
 
                   <CreateableSelect
-                  // defaultInputValue={LineItem ? UnitsMap.get(LineItem.unit) : unit ? findValueInData(unit) : ''}
-                  inputValue={LineItem ? findValueInData(LineItem.unit) : unit ? findValueInData(unit) : ''}
+                  ref={creatableRef}
+                  // defaultInputValue={LineItem ? (isSuccess && `${(findValueInData(LineItem.unit)?.label).toString()}`) :  unit}
+
+                  // value={findValueInData(unit)}
+                  placeholder={'Select Unit'}
                   styles={selectStyles}
-                  defaultValue={unit}
+                  // defaultValue={unit}
                   onChange={handleSetUnit}
-                  options={data ? data : []}
+                  options={data ? data : []}  
                   isLoading={isLoading}
                   isDisabled={isLoading}
+                  // onCreateOption={handleCreateNewUnit}
                   isClearable
+                  
                   >
 
                   </CreateableSelect>
@@ -500,6 +559,7 @@ useEffect(()=>{
                   <Typography sx={typoText}>Quantity</Typography>
                   <TextField
                     sx={{ ...inputStyle, ...leftSpace }}
+                    placeholder="20"
                     required
                     margin="dense"
                     id="quantity"
@@ -519,6 +579,7 @@ useEffect(()=>{
               <Typography sx={typoText}>Unit Price</Typography>
               <TextField
                 sx={inputStyle}
+                placeholder="10"
                 required
                 margin="dense"
                 id="unitPrice"
@@ -538,9 +599,10 @@ useEffect(()=>{
               />
                
 
-              <Typography sx={typoText}>Total</Typography>
+              <Typography sx={typoText}>Cost</Typography>
               <TextField
                 sx={inputStyle}
+                placeholder="200"
                 required
                 margin="dense"
                 id="total"
@@ -558,6 +620,7 @@ useEffect(()=>{
                  
                     <TextField
                 sx={{...inputStyle, marginLeft:'18px'}}
+                placeholder="4"
                 required
                 margin="dense"
                 id="margin"
@@ -576,6 +639,7 @@ useEffect(()=>{
                   <Typography sx={typoText}>Percentage</Typography>
                   <TextField
                 sx={{...inputStyle, marginLeft:'18px'}}
+                placeholder="2"
                 required
                 margin="dense"
                 id="margin"
@@ -642,10 +706,25 @@ useEffect(()=>{
                   </Box>
                 </Box>
               </Box> */}
+              <Typography sx={typoText}>Total Cost</Typography>
+              <TextField
+                sx={inputStyle}
+                placeholder="200"
+                required
+                margin="dense"
+                id="total"
+                name="total"
+                type="number"
+                variant="standard"
+                value={totalCost}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                }}
+              />
               <Typography sx={typoText}>Notes</Typography>
               <TextField
                 sx={{ ...inputStyle, height: "5rem" }}
-                
+                placeholder="Enter your Notes"
                 margin="dense"
                 id="longDescription"
                 name="longDescription"
@@ -696,7 +775,7 @@ const inputStyle = {
 const generalBox = {
   display: "flex",
   justifyContent: "center",
-  marginTop: "1rem",
+  marginTop: "3rem",
 };
 
 const paperPropsStyle = {

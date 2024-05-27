@@ -8,7 +8,7 @@ import "../../../App.css"
 function RecentImagesAndComments() {
     const theme = useTheme();
     return (
-        <div style={{height:'100%'}}>
+        <>
 
             <Box sx={themeStyle.box}>
                 <Avatar
@@ -83,7 +83,7 @@ function RecentImagesAndComments() {
             </Box> */}
 
 
-        </div>
+        </>
     )
 }
 
