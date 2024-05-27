@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, redirect, useNavigate } from "react-router-dom";
 import {
   Box,
@@ -73,20 +73,34 @@ const Invitation = () => {
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
+//   const checkUserOnInvitation = async () =>{
+//     const res = await checkUser(params);
+//     console.log("gabrodanaa",res)
+//     if(res?.data?.success){
+//       navigate('/login');
+//     } else{
+//       return false
+//     }
+// }
+// useEffect(()=> {
+//   checkUserOnInvitation();
 
-useEffect(()=> {
-  checkUserOnInvitation();
+// },[])
 
-},[])
-const checkUserOnInvitation = async () =>{
-      const res = await checkUser(params);
-      console.log(res)
-      if(res?.data?.success){
-        navigate('/login');
-      } else{
-        return false
-      }
-}
+const timeoutRef = useRef(); // Store timeout ID
+
+useEffect(() => {
+  timeoutRef.current = setTimeout(async () => {
+    const res = await checkUser(params);
+    console.log(res); // Log response
+    if (res?.data?.success) {
+      navigate('/login');
+    }
+  }, 1000); // Timeout after 2 seconds
+
+  return () => clearTimeout(timeoutRef.current); // Cleanup
+}, [checkUser, params, navigate]);
+
   const onSubmit = async (e) => {
   
 

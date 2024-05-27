@@ -32,7 +32,7 @@ const ListProjects = () => {
   });
   //console.log(data);
   //Add this code in useEffect
-  dispatch(addProjects(data?.projects));
+
 
   const handleClick = async (projectId, e) => {
     // const res = await getUserRole({ projectId, userId: currentUserId });

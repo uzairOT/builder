@@ -7,32 +7,50 @@ import ProgressCard from "../../components/Dashboard/ProgressCard/ProgressCard.j
 import TaskCalenderView from "../../components/Dashboard/TaskCalenderView/TaskCalenderView.js";
 import { getFormattedFiveDayWeather } from "../../services/WeatherService.js";
 import { useGetUserEventsMutation } from "../../redux/apis/usersApiSlice.js";
-import moment from 'moment';
-import { useDispatch, useSelector } from 'react-redux';
-import { addEvents, setIsLoading, allEvents } from "../../redux/slices/Events/eventsSlice.js";
+import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addEvents,
+  setIsLoading,
+  allEvents,
+} from "../../redux/slices/Events/eventsSlice.js";
 import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice.js";
-import { allUserProjects } from "../../redux/slices/Project/userProjectsSlice.js";
-
+import {
+  addProjects,
+  allUserProjects,
+} from "../../redux/slices/Project/userProjectsSlice.js";
+import { socket } from "../../socket.js";
+import { useGetUserProjectsQuery } from "../../redux/apis/Project/userProjectApiSlice.js";
 
 const Dashboard = () => {
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
   const userProjects = useSelector(allUserProjects);
-  
-  const local = localStorage.getItem('userInfo');
+  const dispatch = useDispatch();
+  const local = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(local);
-  const { id } = currentUser.user;
-  
+  const UserId = currentUser.user.id;
+
   const loading = allEvent.isLoading;
   const error = allEvent.error;
   const events = allEvent.events;
   const dailyForecast = forecast.dailyForecast;
   const forecastIsLoading = forecast.isLoading;
   const forecastError = forecast.error;
+  const { data, refetch } = useGetUserProjectsQuery({ userId: UserId });
 
+  dispatch(addProjects(data?.projects));
+  useEffect(() => {
+    console.log("undefined", UserId);
+    socket.emit("userJoin", {
+      userId: UserId,
+    });
+    return () => {};
+  }, []);
 
-
-
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
   return (
     <>
       <main>
@@ -81,24 +99,29 @@ const Dashboard = () => {
               pt={1}
               margin={"auto"}
             >
-              {Array.isArray(userProjects[0]) ? userProjects[0]?.map((project) => (<Grid
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                lg={6}
-                mb={1}
-                style={{
-                  paddingTop: "0px",
-                  paddingLeft: "0px ",
-                  overflow: "hidden",
-                }}
-                
-              >
-                <Paper sx={themeStyle.progressCard} margin={1}>
-                  <ProgressCard project={project} />
-                </Paper>
-              </Grid>) ) : <>Loading..</>}
+              {Array.isArray(userProjects[0]) ? (
+                userProjects[0]?.map((project) => (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={6}
+                    mb={1}
+                    style={{
+                      paddingTop: "0px",
+                      paddingLeft: "0px ",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Paper sx={themeStyle.progressCard} margin={1}>
+                      <ProgressCard project={project} />
+                    </Paper>
+                  </Grid>
+                ))
+              ) : (
+                <>Loading..</>
+              )}
               {/* <Grid
                 item
                 xs={12}
@@ -172,13 +195,16 @@ const Dashboard = () => {
                 borderRadius: " 14px 0 0 14px",
                 marginBottom: "8px",
                 height: "100%",
-                marginTop:"10px"
+                marginTop: "10px",
               }}
             >
               {loading ? (
                 <>Loading</>
               ) : (
-                <TaskCalenderView dailyForecast={dailyForecast} eventsArr={events} />
+                <TaskCalenderView
+                  dailyForecast={dailyForecast}
+                  eventsArr={events}
+                />
               )}
             </Paper>
           </Grid>
@@ -193,7 +219,7 @@ export default Dashboard;
 const themeStyle = {
   dashboard: {
     backgroundColor: "#eff5ff",
-    height: {xl:"93vh",lg:"100%",md:"100%"},
+    height: { xl: "93vh", lg: "100%", md: "100%" },
   },
   dashboardViews: {
     height: "100%",
