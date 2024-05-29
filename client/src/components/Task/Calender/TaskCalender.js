@@ -37,7 +37,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
 
     const events = Array.isArray(eventsArr) ? eventsArr?.map((item)=>{
 
-
+//CHANGES MADE TO PREVENT CRASHING OF CODE
      const parsedStart = moment(item.start).toDate();
       const parsedEnd =  moment(item.end).toDate();
       // const utcParsedStart = parsedStart.utc();
