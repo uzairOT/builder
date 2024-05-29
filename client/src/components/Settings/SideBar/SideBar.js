@@ -106,7 +106,7 @@ function SideBar() {
                     selected={selectedItem === 8}
                     sx={listItemStyle}
                 >
-                    Supplier List
+                    Supplier
                 </ListItem>
 
             </List>

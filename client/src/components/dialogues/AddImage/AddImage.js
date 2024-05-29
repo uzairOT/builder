@@ -22,9 +22,9 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { fileTypeIcons } from "./assets/fileTypes";
-import filePlaceHolder from '../../../assets/FileSvg/file.svg'
-import CloseIcon from '@mui/icons-material/Close';
-
+import filePlaceHolder from "../../../assets/FileSvg/file.svg";
+import CloseIcon from "@mui/icons-material/Close";
+import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 
 function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
   const [open, setOpen] = useState(false);
@@ -36,14 +36,23 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
   const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState("");
   const { id } = useParams();
-  const [notes, setNotes] =useState('');
+  const [notes, setNotes] = useState("");
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
-        const res = await axios.post("http://3.135.107.71/project/file", {
-          fileName,
-          fileType,
-        });
+        const res = await axios.post(
+          "http://3.135.107.71/project/file",
+          {
+            fileName,
+            fileType,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+            },
+          }
+        );
         return res.data.data.url;
       } catch (error) {
         console.error("Error uploading file:", error);
@@ -55,7 +64,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
   //   handleOpen();
   //   setOpen(true);
   // };
-  
+
   const handleClickClose = () => {
     handleClose();
     setImage(null);
@@ -65,8 +74,8 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     const fileSizeLimit = 25 * 1024 * 1024;
-    if(file?.size > fileSizeLimit){
-      toast.warning('Please upload file size less than 25mb.');
+    if (file?.size > fileSizeLimit) {
+      toast.warning("Please upload file size less than 25mb.");
       return;
     }
     setFileName(file.name);
@@ -86,9 +95,9 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     const fileSizeLimit = 25 * 1024 * 1024;
-    if(file.size > fileSizeLimit){
-      toast.warning('Please upload file size less than 25mb.');
-      return
+    if (file.size > fileSizeLimit) {
+      toast.warning("Please upload file size less than 25mb.");
+      return;
     }
     setFileName(file.name);
     setFileType(file.type);
@@ -123,10 +132,15 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
       const requestBody = {
         fileUrl: uploadedFileUrl,
         fileType: fileType,
-        notes: notes
+        notes: notes,
       };
       const response = await axios
-        .post(apiUrl, requestBody)
+        .post(apiUrl, requestBody, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+          },
+        })
         .then()
         .finally(() => {
           setLoading(false);
@@ -166,10 +180,14 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
           onSubmit: handleSubmit,
         }}
       >
-        <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} >
-        <DialogTitle sx={themeStyle.typoTitle}>{heading}</DialogTitle>
-        <IconButton onClick={handleClickClose}>
-          <CloseIcon />
+        <Stack
+          direction={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+        >
+          <DialogTitle sx={themeStyle.typoTitle}>{heading}</DialogTitle>
+          <IconButton onClick={handleClickClose}>
+            <CloseIcon />
           </IconButton>
         </Stack>
         <DialogContent>
@@ -184,7 +202,6 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
               onChange={handleImageUpload}
               style={{ display: "none" }}
               id="avatarInput"
-              
             />
             <label htmlFor="avatarInput">
               <div style={{ ...themeStyle.avatarBox, ...dotBorder }}>
@@ -194,28 +211,29 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
                     alt={image ? "Uploaded Avatar" : "Placeholder Avatar"}
                     style={{
                       ...themeStyle.uploadedImg,
-                      
                     }}
                   />
                 ) : selectedFile?.name?.split(".").pop() ? (
                   <img
                     src={filePlaceHolder}
-                    alt={`Uploaded ${selectedFile?.name?.split(".").pop().toUpperCase()} File`}
+                    alt={`Uploaded ${selectedFile?.name
+                      ?.split(".")
+                      .pop()
+                      .toUpperCase()} File`}
                     style={{
                       ...themeStyle.uploadedImg,
-                      
                     }}
                   />
                 ) : (
                   <>
-                  <img
-                  src={upload}
-                  alt={"Placeholder Avatar"}
-                  style={{
-                    ...themeStyle.avatarImg,
-                    ...objectFit,
-                  }}
-                />
+                    <img
+                      src={upload}
+                      alt={"Placeholder Avatar"}
+                      style={{
+                        ...themeStyle.avatarImg,
+                        ...objectFit,
+                      }}
+                    />
                   </>
                 )}
                 <Typography sx={themeStyle.avatarText}>
@@ -238,7 +256,6 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
               type="notes"
               variant="standard"
               onChange={(e) => setNotes(e.target.value)}
-             
             />
           </Box>
         </DialogContent>
@@ -299,7 +316,7 @@ const themeStyle = {
   },
   avatarImg: {
     position: "absolute",
-    top: '-25px',
+    top: "-25px",
     left: 0,
     width: "100%",
     height: "100%",
@@ -307,7 +324,7 @@ const themeStyle = {
   uploadedImg: {
     width: "200px",
     height: "200px",
-    objectFit: 'scale-down'
+    objectFit: "scale-down",
   },
   avatarBox: {
     width: "90%",

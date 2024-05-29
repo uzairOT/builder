@@ -84,6 +84,7 @@ import Completion from "./components/dialogues/PaymentModal/Completion.js";
 import ChatViewMain from "./components/Projects/ProjectsChat/ChatViewMain.js";
 import PermitClient from "./components/ClientDashboard/Permit/Permit";
 import NotFound from "./pages/NotFound/NotFound.js";
+import ProjectsChangeOrderView from "./components/Projects/ProjectsChangeOrder/ProjectsChangeOrderView.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>

@@ -9,8 +9,10 @@ import { uploadToS3 } from "../../../utils/S3";
 import { useUpdateProfileMutation } from "../../../redux/apis/usersApiSlice";
 import { setCredentials } from "../../../redux/slices/authSlice";
 import { Textarea } from "@mui/joy";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { PhoneInput } from "react-international-phone";
+import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 //import "react-toastify/dist/ReactToastify.css";
 
 function ProfileView() {
@@ -19,16 +21,26 @@ function ProfileView() {
   const [fileType, setFileType] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
   const [image, setImage] = useState(user ? user.user.image : null);
+  const [phone, setPhone] = useState(user ? user.user.phoneNumber : "");
   const navigate = useNavigate();
-  const [updateProfile, {isLoading}] = useUpdateProfileMutation();
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const dispatch = useDispatch();
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
-        const res = await axios.post("http://3.135.107.71/project/file", {
-          fileName,
-          fileType,
-        });
+        const res = await axios.post(
+          "http://3.135.107.71/project/file",
+          {
+            fileName,
+            fileType,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+            },
+          }
+        );
         //console.log(res);
         return res.data.data.url;
       } catch (error) {
@@ -41,7 +53,6 @@ function ProfileView() {
     firstName: `${user.user.firstName}`,
     lastName: `${user.user?.lastName}`,
     email: user.user.email,
-    phoneNumber: user.user.phoneNumber,
     address: "your address here",
     userId: user.user.id,
   });
@@ -95,6 +106,7 @@ function ProfileView() {
       if (uploadedFileUrl) {
         const put = {
           ...formData,
+          phoneNumber: phone,
           image: uploadedFileUrl,
         };
         const res = await updateProfile(put);
@@ -104,6 +116,7 @@ function ProfileView() {
       } else {
         const put = {
           ...formData,
+          phoneNumber: phone,
           image: user.user.image,
         };
         const res = await updateProfile(put);
@@ -112,7 +125,12 @@ function ProfileView() {
         toast.success("Profile updated successfully");
       }
     } catch (error) {
-      toast.error(error?.data?.message || error.error||error?.data?.error || 'Something went wrong!' );
+      toast.error(
+        error?.data?.message ||
+          error.error ||
+          error?.data?.error ||
+          "Something went wrong!"
+      );
     }
   };
   const handleReset = () => {
@@ -126,7 +144,7 @@ function ProfileView() {
     });
   };
   useEffect(() => {
-    if(selectedFile !== ""){
+    if (selectedFile !== "") {
       handleSubmit();
     }
   }, [selectedFile]);
@@ -144,6 +162,7 @@ function ProfileView() {
             <Grid item xs={12}>
               <Typography>First Name</Typography>
               <TextField
+                inputProps={{ maxLength: 50 }}
                 name="firstName"
                 placeholder="Please enter your first name"
                 value={formData.firstName}
@@ -155,6 +174,7 @@ function ProfileView() {
             <Grid item xs={12}>
               <Typography>Last name</Typography>
               <TextField
+                inputProps={{ maxLength: 50 }}
                 name="lastName"
                 placeholder="Please enter your last name"
                 value={formData.lastName}
@@ -166,6 +186,7 @@ function ProfileView() {
             <Grid item xs={12}>
               <Typography>Email</Typography>
               <TextField
+                inputProps={{ maxLength: 50 }}
                 name="email"
                 placeholder="Please enter your email"
                 value={formData.email}
@@ -176,13 +197,38 @@ function ProfileView() {
             </Grid>
             <Grid item xs={12}>
               <Typography>Phone Number</Typography>
-              <TextField
+              {/* <TextField
                 name="phoneNumber"
                 placeholder="Please enter your phone number"
                 value={formData.phoneNumber}
                 onChange={handleChange}
                 fullWidth
                 sx={InputStyle}
+              /> */}
+              <PhoneInput
+                disableDialCodePrefill
+                style={{ ...customPhoneStyles }}
+                defaultCountry=""
+                name={"phoneNumber"}
+                value={phone}
+                onChange={(phone) => setPhone(phone)}
+                countrySelectorStyleProps={{
+                  style: {
+                    "--react-international-phone-country-selector-background-color":
+                      "#EDF2F6",
+                    "--react-international-phone-country-selector-background-color-hover":
+                      "#EDF2F6",
+                  },
+                  buttonStyle: {
+                    filter: "none",
+                  },
+                }}
+                inputStyle={{ ...customeInputStyles }}
+                inputProps={{
+                  border: "none",
+                  placeholder: "+1 (123) 456-7890",
+                }}
+                required
               />
             </Grid>
             <Grid item xs={12}>
@@ -282,7 +328,7 @@ function ProfileView() {
                 Phone No:
               </Typography>
               <Typography variant="body1" sx={ValueStyle}>
-                {formData.phoneNumber}
+                {phone}
               </Typography>
             </Box>
             {/* <Box>
@@ -349,7 +395,6 @@ const TextStyle = {
   fontWeight: 400,
   marginBottom: "8px",
   fontSize: "1.2rem",
-
 };
 const ValueStyle = {
   whiteSpace: "nowrap",
@@ -358,8 +403,8 @@ const ValueStyle = {
   fontFamily: "GT Walsheim Trial",
   fontWeight: 400,
   marginBottom: "8px",
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 };
 const Profile = {
   marginTop: "20px",
@@ -373,4 +418,26 @@ const changeProfile = {
   ...Profile,
   color: "#202227",
   fontWeight: "500",
+};
+
+const customPhoneStyles = {
+  borderRadius: "12px",
+  border: "1px solid #D8D8D8",
+  background: "#EDF2F6",
+  width: "101.5%",
+  // height: heightValue,
+  alignSelf: "stretch",
+  paddingLeft: "8px",
+  height: "2.8rem",
+  display: "flex",
+  alignItems: "center",
+  // backgroundColor: "#EDF2F6",
+  // paddingTop: "0.5rem",
+  // padding: "0.5rem",
+};
+const customeInputStyles = {
+  width: "85%",
+  border: "none",
+  padding: "0px 10px 0px 0px",
+  backgroundColor: "#EDF2F6",
 };

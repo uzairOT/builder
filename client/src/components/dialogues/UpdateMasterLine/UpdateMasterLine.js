@@ -22,6 +22,7 @@ import {
   Typography,
   MenuItem,
   Autocomplete,
+  InputAdornment,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -39,7 +40,8 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { DemoItem } from "@mui/x-date-pickers/internals/demo";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc"; // Optional if you need UTC handling
-import { useUpdateMasterLineItemMutation } from "../../../redux/apis/Project/userProjectApiSlice";
+import { useAddUnitMutation, useGetUnitsQuery, useUpdateMasterLineItemMutation } from "../../../redux/apis/Project/userProjectApiSlice";
+import CreateableSelect from "react-select/creatable";
 
 function UpdateMasterLine({
 
@@ -55,6 +57,8 @@ function UpdateMasterLine({
   const [open, setOpen] = useState(false);
   const [addPhaseLine] = useAddPhaseLineMutation();
   const [updateMasterLine] = useUpdateMasterLineItemMutation();
+  const [addUnit] = useAddUnitMutation();
+
   const [phaseName, setPhaseName] = useState(
     MasterLineItem ? MasterLineItem.title : ""
   );
@@ -79,6 +83,11 @@ function UpdateMasterLine({
     MasterLineItem ? dayjs(MasterLineItem.end_day) : null
   );
 
+  const [margin, setMargin] = useState(MasterLineItem ? MasterLineItem.margin : "");
+  const [percentage, setPercentage] = useState(
+    MasterLineItem ? MasterLineItem.percentage : ""
+  );
+  const [totalCost, setTotalCost] = useState(0);
   const handleStartDateChange = (newValue) => {
     setStart(newValue);
   };
@@ -98,6 +107,9 @@ function UpdateMasterLine({
   const phases = useSelector((state) => state.projectInitialProposal.phases);
   const userInfo = useSelector((state) => state.auth.userInfo);
   //console.log(userInfo)
+  const { data, isLoading, refetch: refetchUnits, isSuccess } = useGetUnitsQuery({
+    userId: userInfo.user.id,
+  });
 
   const formData = {
     phaseName,
@@ -106,6 +118,8 @@ function UpdateMasterLine({
     quantity,
     unitPrice,
     total,
+    margin,
+    percentage,
     start: dayjs(start),
     end: dayjs(end),
     longDescription,
@@ -143,6 +157,10 @@ function UpdateMasterLine({
     setOpen(false);
   };
 
+
+  const handleTotalCostChange = () => {
+    setTotalCost(Number(total) + Number(margin));
+  };
   // console.log("Line Item Element", MasterLineItem);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -212,6 +230,64 @@ function UpdateMasterLine({
     //   // handleAddClose();
     // }
   };
+  const selectStyles = {
+    control: (styles) => ({
+      ...styles,
+      ...inputStyle,
+      marginBottom: "0",
+      height: "",
+      padding: "4px",
+    }),
+  };
+  const handleSetUnit = async (selectedOption, actionType) => {
+    console.log(actionType);
+    if (selectedOption === null || selectedOption?.value === MasterLineItem?.unit) {
+      return;
+    }
+    const existingUnit = data?.some(
+      (unit) => unit?.value === selectedOption?.value
+    );
+    console.log(selectedOption);
+    console.log(existingUnit);
+    if (existingUnit) {
+      setUnit(selectedOption.value);
+    } else {
+      setUnit(selectedOption.value);
+      await addUnit({ ...selectedOption, userId: userInfo.user.id });
+      await refetchUnits({ userId: userInfo.user.id });
+    }
+  };
+  const handleMarginChange = (e) => {
+    if (total) {
+      const inputMargin = e.target.value;
+      const result = (inputMargin * 100) / total;
+      const roundedResult = Math.round(result * 10) / 10;
+      setMargin(() => {
+        setPercentage(roundedResult);
+
+        return inputMargin;
+      });
+    } else {
+      //toastId added to prevent duplication
+      toast.warning("Total field is empty!", { toastId: 12 });
+    }
+  };
+  
+  const handlePercentageChange = (e) => {
+    if (total) {
+      const percent = e.target.value;
+      const result = (total * percent) / 100;
+      const roundedResult = Math.round(result * 10) / 10;
+      setPercentage(() => {
+        setMargin(roundedResult);
+
+        return percent;
+      });
+    } else {
+      //toastId added to prevent duplication
+      toast.warning("Total field is empty!", { toastId: 12 });
+    }
+  };
 
   const Units = [
     { value: "sqft", label: "Square Feet", formula: (q, p) => q * p },
@@ -248,6 +324,10 @@ function UpdateMasterLine({
   //     setLongDescription(data.MasterLineItem.notes);
   //   }
   // }, [isSuccess, data]);
+  useEffect(() => {
+    handleTotalCostChange();
+  }, [margin]);
+
   console.log(formData);
   return (
     <div className="App">
@@ -305,6 +385,7 @@ function UpdateMasterLine({
                 )}
               /> */}
               <TextField
+              inputProps={{ maxLength: 50 }}
                 sx={inputStyle}
                 required
                 margin="dense"
@@ -318,6 +399,7 @@ function UpdateMasterLine({
 
               <Typography sx={typoText}>Description</Typography>
               <TextField
+              inputProps={{ maxLength: 50 }}
                 sx={{ ...inputStyle }}
                 required
                 margin="dense"
@@ -331,8 +413,26 @@ function UpdateMasterLine({
               <Box sx={parallelBox}>
                 <Box sx={innerBox}>
                   <Typography sx={typoText}>Unit</Typography>
+                  <Box mt={"8px"} mb={"8px"}>
+                    <CreateableSelect
+                      // ref={creatableRef}
+                      defaultInputValue={MasterLineItem ? MasterLineItem?.unit :  unit}
 
-                  <TextField
+                      // value={findValueInData(unit)}
+                      placeholder={"Select Unit"}
+                      styles={selectStyles}
+                      // defaultValue={unit}
+                      onChange={handleSetUnit}
+                      options={data ? data : []}
+                      isLoading={isLoading}
+                      isDisabled={isLoading}
+                      // onCreateOption={handleCreateNewUnit}
+                      isClearable
+                    ></CreateableSelect>
+                  </Box>
+
+                  {/* <TextField
+                 
                     sx={{ ...inputStyle, ...leftSpace }}
                     required
                     margin="dense"
@@ -349,11 +449,12 @@ function UpdateMasterLine({
                         {option.label}
                       </MenuItem>
                     ))}
-                  </TextField>
+                  </TextField> */}
                 </Box>
                 <Box sx={innerBox}>
                   <Typography sx={typoText}>Quantity</Typography>
                   <TextField
+                  
                     sx={{ ...inputStyle, ...leftSpace }}
                     required
                     margin="dense"
@@ -373,6 +474,7 @@ function UpdateMasterLine({
               </Box>
               <Typography sx={typoText}>Unit Price</Typography>
               <TextField
+             
                 sx={inputStyle}
                 required
                 margin="dense"
@@ -389,7 +491,7 @@ function UpdateMasterLine({
                 }
               />
 
-              <Typography sx={typoText}>Total</Typography>
+              <Typography sx={typoText}>Cost</Typography>
               <TextField
                 sx={inputStyle}
                 required
@@ -400,7 +502,50 @@ function UpdateMasterLine({
                 variant="standard"
                 value={formData.total}
               />
-              <Box sx={parallelBox}>
+               <Box sx={parallelBox}>
+                <Box sx={innerBox}>
+                  <Typography sx={typoText}>Margin</Typography>
+
+                  <TextField
+                    sx={{ ...inputStyle, marginLeft: "18px" }}
+                    placeholder="4"
+                    required
+                    margin="dense"
+                    id="margin"
+                    name="margin"
+                    type="margin"
+                    variant="standard"
+                    value={formData.margin}
+                    onChange={handleMarginChange}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">$</InputAdornment>
+                      ),
+                    }}
+                  />
+                </Box>
+                <Box sx={innerBox}>
+                  <Typography sx={typoText}>Percentage</Typography>
+                  <TextField
+                    sx={{ ...inputStyle, marginLeft: "18px" }}
+                    placeholder="2"
+                    required
+                    margin="dense"
+                    id="margin"
+                    name="margin"
+                    type="margin"
+                    variant="standard"
+                    value={formData.percentage}
+                    onChange={handlePercentageChange}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="start">%</InputAdornment>
+                      ),
+                    }}
+                  />
+                </Box>
+              </Box>
+              {/* <Box sx={parallelBox}>
                 <Box sx={innerBox}>
                   <Typography sx={typoText}>Start</Typography>
                   <Box
@@ -450,9 +595,27 @@ function UpdateMasterLine({
                     </LocalizationProvider>
                   </Box>
                 </Box>
-              </Box>
+              </Box> */}
+              <Typography sx={typoText}>Total Cost</Typography>
+              <TextField
+                sx={inputStyle}
+                placeholder="200"
+                required
+                margin="dense"
+                id="total"
+                name="total"
+                type="number"
+                variant="standard"
+                value={totalCost}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">$</InputAdornment>
+                  ),
+                }}
+              />
               <Typography sx={typoText}>Notes</Typography>
               <TextField
+              inputProps={{ maxLength: 50 }}
                 sx={{ ...inputStyle, height: "5rem" }}
                 required
                 margin="dense"

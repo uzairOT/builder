@@ -127,6 +127,7 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
               Organization Name
             </label>
             <TextField
+            inputProps={{ maxLength: 50 }}
               id="organizationName"
               label=""
               variant="outlined"
@@ -159,6 +160,8 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
               Address Line 1
             </label>
             <OutlinedInput
+            inputProps={{ maxLength: 50 }}
+            // inputProps={{maxLength:1}}
               id="address"
               name="address"
               placeholder={"Street address"}

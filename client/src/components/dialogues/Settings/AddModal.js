@@ -31,6 +31,7 @@ import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProject
 import { createFilterOptions } from "@mui/material/Autocomplete";
 import { uploadToS3 } from "../../../utils/S3";
 import axios from "axios";
+import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 
 function AddModal({ title, open, onClose }) {
   const [image, setImage] = useState(null);
@@ -65,10 +66,19 @@ function AddModal({ title, open, onClose }) {
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
-        const res = await axios.post("http://3.135.107.71/project/file", {
-          fileName,
-          fileType,
-        });
+        const res = await axios.post(
+          "http://3.135.107.71/project/file",
+          {
+            fileName,
+            fileType,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+            },
+          }
+        );
         //console.log(res);
         return res.data.data.url;
       } catch (error) {
@@ -92,13 +102,18 @@ function AddModal({ title, open, onClose }) {
       //console.log(post);
       const res = await assignRolePost(post).unwrap();
       console.log(res);
-      toast.info('Email Invitation sent!');
+      toast.info("Email Invitation sent!");
       refetch();
       action.resetForm();
       setImage(null);
     } catch (err) {
       //console.log(err);
-      toast.error(error?.data?.message || error.error||error?.data?.error || 'Something went wrong!');
+      toast.error(
+        error?.data?.message ||
+          error.error ||
+          error?.data?.error ||
+          "Something went wrong!"
+      );
     }
   };
 
@@ -159,7 +174,6 @@ function AddModal({ title, open, onClose }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      
       <Dialog open={open} onClose={onClose} maxWidth="md" sx={{}}>
         <DialogTitle sx={headingStyle}>Add {title}</DialogTitle>
         <DialogContent
@@ -389,6 +403,7 @@ function AddModal({ title, open, onClose }) {
                         ? "1px solid #d32f2f"
                         : "1px solid #E0E4EC",
                   },
+                  maxLength: 50,
                 }}
                 onBlur={handleBlur}
                 helperText={errors.email && touched.email ? errors.email : ""}
@@ -442,7 +457,13 @@ function AddModal({ title, open, onClose }) {
           </Grid>
         </DialogContent>
         <DialogActions
-         sx={{ display: "flex", justifyContent: "center", mb: 2, flexDirection: {xs:'column', sm:'row'}, gap: {xs: 1, sm:0} }}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mb: 2,
+            flexDirection: { xs: "column", sm: "row" },
+            gap: { xs: 1, sm: 0 },
+          }}
         >
           <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center" }}>
             <Button
@@ -482,7 +503,7 @@ const InputStyle = {
   fontFamily: "Manrope, sans-serif",
   border: "1px solid #E0E4EC",
   padding: "10px",
-  width: {xl:'250px' ,lg:'100%',md: '100%', sm: '100%', xs:'100%'},
+  width: { xl: "250px", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
   "& .MuiOutlinedInputRoot": {
     "& fieldset": {
       border: "none",

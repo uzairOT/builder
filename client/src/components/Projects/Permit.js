@@ -9,14 +9,14 @@ import {
   Stack,
   Modal,
   IconButton,
-
 } from "@mui/material";
 import "../../App.css";
 import AddImage from "../dialogues/AddImage/AddImage";
 import { useParams } from "react-router-dom";
 import { fileTypeIcons } from "../dialogues/AddImage/assets/fileTypes";
 import { handleDownload } from "../../utils/S3";
-import filePlaceHolder from '../../assets/FileSvg/file.svg'
+import filePlaceHolder from "../../assets/FileSvg/file.svg";
+import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 function Permit({ view, type }) {
   const placeholderImg = `https://source.unsplash.com/random/100x100`;
   const [open, setOpen] = useState(false);
@@ -30,20 +30,26 @@ function Permit({ view, type }) {
   const [OlderfileUrls, setOlderFilesUrls] = useState([]);
   const [isDownloading, setIsDownloading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [modalUrl, setModalUrl] = useState('')
+  const [modalUrl, setModalUrl] = useState("");
   const handleModalOpen = (url) => {
     setModalUrl(url);
     setOpenModal(true);
   };
   const handleModalClose = (url) => {
-    setModalUrl('');
+    setModalUrl("");
     setOpenModal(false);
   };
   const { id } = useParams();
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://3.135.107.71/project/files/${type}/${id}`
+        `http://3.135.107.71/project/files/${type}/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+          },
+        }
       );
       //replace 123 with the project id
       // Assuming the response data is an array of file URLs
@@ -54,14 +60,16 @@ function Permit({ view, type }) {
       // Handle errors, such as displaying an error message
     }
   };
- 
+
   useEffect(() => {
     fetchData();
   }, [id]);
   return (
     <div style={{ width: "100%" }}>
       <Box sx={themeStyle.titleBox}>
-        <Typography sx={themeStyle.titleTypo}>{view} ({RecentfileUrls?.length} items) </Typography>
+        <Typography sx={themeStyle.titleTypo}>
+          {view} ({RecentfileUrls?.length} items){" "}
+        </Typography>
         <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>
           Add {view}
         </Button>
@@ -91,7 +99,13 @@ function Permit({ view, type }) {
             </Box>
           </Box> */}
           {/* Render avatars dynamically with image URLs */}
-          <Stack direction={"row"} flexWrap={'wrap'} maxWidth={"900px"} maxHeight={'500px'} sx={scrollable} >
+          <Stack
+            direction={"row"}
+            flexWrap={"wrap"}
+            maxWidth={"900px"}
+            maxHeight={"500px"}
+            sx={scrollable}
+          >
             {RecentfileUrls.map((url, index) => {
               const fileType = url.fileUrl.split(".").pop().toLowerCase();
               const fileName = url.fileUrl.split("/").pop().toLowerCase();
@@ -119,7 +133,17 @@ function Permit({ view, type }) {
                       style={themeStyle.AvatarBox}
                       download="image"
                     />
-                    <Typography ml={'0.5rem'} fontFamily={'inherit'} fontSize={'12px'} width={'100px'} whiteSpace={'nowrap'} textOverflow={'ellipsis'} overflow={'hidden'}>{url?.notes}</Typography>
+                    <Typography
+                      ml={"0.5rem"}
+                      fontFamily={"inherit"}
+                      fontSize={"12px"}
+                      width={"100px"}
+                      whiteSpace={"nowrap"}
+                      textOverflow={"ellipsis"}
+                      overflow={"hidden"}
+                    >
+                      {url?.notes}
+                    </Typography>
                   </Box>
                 </>
               ) : (
@@ -139,10 +163,20 @@ function Permit({ view, type }) {
                         border: "none",
                       }}
                     />
-                    <Typography ml={'0.5rem'}  fontFamily={'inherit'} fontSize={'12px'} width={'100px'} whiteSpace={'nowrap'} textOverflow={'ellipsis'} overflow={'hidden'} >{url?.notes}</Typography>
+                    <Typography
+                      ml={"0.5rem"}
+                      fontFamily={"inherit"}
+                      fontSize={"12px"}
+                      width={"100px"}
+                      whiteSpace={"nowrap"}
+                      textOverflow={"ellipsis"}
+                      overflow={"hidden"}
+                    >
+                      {url?.notes}
+                    </Typography>
                   </Box>
                 </>
-              ) 
+              );
             })}
           </Stack>
         </Box>
@@ -170,41 +204,41 @@ function Permit({ view, type }) {
           ))}
         </Box> */}
       </Box>
-      {openModal && <Modal
-        open={true}
-        onClose={handleModalClose}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-      
-      >
-        <Box style={{...style, outline: 'none'}} >
-          <IconButton
-            onClick={handleClose}
-            aria-label="close"
-            
-          >
-            {/* <CloseIcon /> */}
-          </IconButton>
-          <Stack justifyContent={'center'} alignItems={'center'}>
-
-          <img
-            src={modalUrl.fileUrl}
-            alt={`file`}
-            style={
-              {
-                // Adjust width as needed
-                // maxWidth: '700px', // Set a maximum width for responsiveness
-                // maxHeight: '500px', // Set a maximum height for responsiveness
-                maxWidth: "90vw",
-                maxHeight: "90vh" 
-                
-              }
-            }
-            />
-        <Typography fontFamily={'inherit'} fontSize={'12px'} p={1} textOverflow={'ellipsis'}>IMGAE{modalUrl?.notes}</Typography>
+      {openModal && (
+        <Modal
+          open={true}
+          onClose={handleModalClose}
+          aria-labelledby="modal-title"
+          aria-describedby="modal-description"
+        >
+          <Box style={{ ...style, outline: "none" }}>
+            <IconButton onClick={handleClose} aria-label="close">
+              {/* <CloseIcon /> */}
+            </IconButton>
+            <Stack justifyContent={"center"} alignItems={"center"}>
+              <img
+                src={modalUrl.fileUrl}
+                alt={`file`}
+                style={{
+                  // Adjust width as needed
+                  // maxWidth: '700px', // Set a maximum width for responsiveness
+                  // maxHeight: '500px', // Set a maximum height for responsiveness
+                  maxWidth: "90vw",
+                  maxHeight: "90vh",
+                }}
+              />
+              <Typography
+                fontFamily={"inherit"}
+                fontSize={"12px"}
+                p={1}
+                textOverflow={"ellipsis"}
+              >
+                IMGAE{modalUrl?.notes}
+              </Typography>
             </Stack>
-        </Box>
-      </Modal>}
+          </Box>
+        </Modal>
+      )}
       {open && (
         <AddImage
           handleOpen={handleOpen}
@@ -218,12 +252,12 @@ function Permit({ view, type }) {
 }
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  backgroundColor: 'white',
-  borderRadius:'14px',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  backgroundColor: "white",
+  borderRadius: "14px",
   boxShadow: 24,
   p: 4,
 };
@@ -286,7 +320,6 @@ const themeStyle = {
     width: "93%",
     display: "flex",
     marginTop: "2rem",
-    
   },
   permitType: {
     color: "#4C8AB1",

@@ -26,7 +26,8 @@ function AddPhaseView({
   projectId,
   InitialProposalView,
   authUserRole,
-  refetchChangeOrder
+  refetchChangeOrder,
+  changeOrder,
 }) {
   const [cardPhase, setCardPhase] = useState([]);
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
@@ -246,10 +247,12 @@ function AddPhaseView({
     fetchData();
   };
   return (
-    <Grid container sx={{ ...firstGrid, width: "100%",  }}>
+    <Grid container sx={{ ...firstGrid, width: "100%" }}>
       <Stack
         direction={"row"}
         justifyContent={"space-between"}
+        boxShadow={'0px 6px 0px 0px rgba(0, 0, 0, 0.02)'}
+        mb={'4px'}
         // sx={{ width: "100%" }}
       >
         <Stack sx={{ justifyContent: "center" }}>
@@ -299,7 +302,6 @@ function AddPhaseView({
                   >
                     Add Phase
                   </Button>
-                 
                 </Stack>
               </>
             )}
@@ -341,7 +343,19 @@ function AddPhaseView({
       </Stack>
 
       {InitialProposalView ? (
-        <Box sx={{height: 'calc(93vh - 140px)', ...themeStyle.scrollable, width: {xl:'100%', lg:'100%', md:'100%', sm:'100%', xs:'95vw'}}}>
+        <Box
+          sx={{
+            height: "calc(93vh - 140px)",
+            ...themeStyle.scrollable,
+            width: {
+              xl: "100%",
+              lg: "100%",
+              md: "100%",
+              sm: "100%",
+              xs: "95vw",
+            },
+          }}
+        >
           {initialPhases !== null &&
           initialPhases[0] !== undefined &&
           initialPhases[0].length !== 0 &&
@@ -395,8 +409,19 @@ function AddPhaseView({
           )}
         </Box>
       ) : (
-        <Box sx={{height: adminProjectView ?'calc(92vh - 300px)' : '', ...themeStyle.scrollable, width: {xl:'100%', lg:'100%', md:'100%', sm:'100%', xs:'95vw'}}}>
-        
+        <Box
+          sx={{
+            height: adminProjectView ? "calc(92vh - 300px)" : "",
+            ...themeStyle.scrollable,
+            width: {
+              xl: "100%",
+              lg: "100%",
+              md: "100%",
+              sm: "100%",
+              xs: "95vw",
+            },
+          }}
+        >
           {phases !== null &&
           phases[0] !== undefined &&
           phases[0].length !== 0 &&
@@ -416,10 +441,10 @@ function AddPhaseView({
                         : "none", // Border and glow effect
                     transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
                     marginTop: "1rem",
-                    
                   }}
                 >
                   <PhaseCard
+                    changeOrder={changeOrder}
                     projectId={adminProjectView ? id : projectId}
                     key={phase?.id}
                     phaseData={phase}
@@ -502,7 +527,7 @@ const buttonBox = {
   marginTop: "0.5rem",
   padding: {
     //changes
-    lg: "0rem 2rem",
+    lg: "0.5rem 2rem",
     md: "0.1rem 0rem",
     sm: "1rem 2rem",
     xs: "0rem 0rem",
@@ -523,20 +548,20 @@ const slectedCardStyle = {
 };
 const themeStyle = {
   scrollable: {
-    scrollbarWidth: 'thin',  // For Firefox
-    '-ms-overflow-style': 'none',  // For IE and Edge
-    '&::-webkit-scrollbar': {
-      width: '6px'
+    scrollbarWidth: "thin", // For Firefox
+    "-ms-overflow-style": "none", // For IE and Edge
+    "&::-webkit-scrollbar": {
+      width: "6px",
     },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'transparent',
-      transition: 'background-color 0.3s',
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "transparent",
+      transition: "background-color 0.3s",
     },
-    '&:hover::-webkit-scrollbar-thumb': {
-      backgroundColor: '#ddd',
+    "&:hover::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ddd",
     },
-    overflowY: 'scroll'
-  }
-}
+    overflowY: "scroll",
+  },
+};
 
 export default AddPhaseView;

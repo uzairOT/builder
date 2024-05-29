@@ -159,8 +159,9 @@ const Units = [
             <TableCell sx={tableCellStyle}>Unit Price</TableCell>
             <TableCell sx={tableCellStyle}>Total</TableCell>
             <TableCell sx={tableCellStyle}>Margin</TableCell>
-            <TableCell sx={tableCellStyle}>Start</TableCell>
-            <TableCell sx={tableCellStyle}>End</TableCell>
+            {/* <TableCell sx={tableCellStyle}>Start</TableCell>
+            <TableCell sx={tableCellStyle}>End</TableCell> */}
+            <TableCell sx={tableCellStyle}>Total Cost</TableCell>
             <TableCell sx={tableCellStyle}>Notes</TableCell>
             <TableCell></TableCell>
           </TableRow>
@@ -175,8 +176,9 @@ const Units = [
               <TableCell sx={tableCellValueStyle}>{row.unit_price}</TableCell>
               <TableCell sx={tableCellValueStyle}>${row.total}</TableCell>
               <TableCell sx={tableCellValueStyle}>${row?.margin}</TableCell>
-              <TableCell sx={tableCellValueStyle}>{moment(row.start_day).format('YYYY-MM-DD')}</TableCell>
-              <TableCell sx={tableCellValueStyle}>{moment(row.end_day).format('YYYY-MM-DD')}</TableCell>
+              {/* <TableCell sx={tableCellValueStyle}>{moment(row.start_day).format('YYYY-MM-DD')}</TableCell>
+              <TableCell sx={tableCellValueStyle}>{moment(row.end_day).format('YYYY-MM-DD')}</TableCell> */}
+              <TableCell sx={tableCellValueStyle}>${Number(row?.total) + Number(row?.margin)}</TableCell>
               <TableCell sx={tableCellValueStyle}>{row.notes}</TableCell>
               <TableCell sx={tableCellValueStyle}>
                 <IconButton

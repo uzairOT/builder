@@ -171,6 +171,10 @@ const SignupComp = () => {
   };
   const onSubmit = async (e) => {
     // e.preventDefault();
+    if(phone === ''){
+      toast.warning('Plase enter your Phone number');
+      return
+    }
     if (checked) {
       const data = { ...values, phone };
       try {
@@ -225,6 +229,7 @@ const SignupComp = () => {
 
   useEffect(() => {
     console.log(values);
+
   }, [values]);
   return (
     <Grid container sx={{ ...firstGrid }}>
@@ -373,6 +378,7 @@ const SignupComp = () => {
                 style={{ ...customPhoneStyles }}
                 defaultCountry=""
                 value={phone}
+              
                 onChange={(phone) => setPhone(phone)}
                 inputStyle={{ ...customeInputStyles }}
                 inputProps={{

@@ -52,6 +52,7 @@ const AddUnitModal = ({open, onClose, unit, refetch}) => {
                 <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                   <Typography variant="body1">Unit</Typography>
                   <TextField
+                  
                     error={errors.label ? true : false}
                     placeholder="Unit"
                     name={"label"}
@@ -64,6 +65,7 @@ const AddUnitModal = ({open, onClose, unit, refetch}) => {
                         border:
                           errors.label && touched.label ? "1px solid #d32f2f" : "1px solid #E0E4EC",
                       },
+                      maxLength: 50
                     }}
                     onBlur={handleBlur}
                     helperText={errors.label && touched.label ? errors.label : ""}

@@ -104,7 +104,7 @@ export default Layout3;
 const themeStyle = {
   dashboard: {
     backgroundColor: "#eff5ff",
-    height: "92vh",
+    height: "93vh",
   },
   dashboardViews: {
     height: "100%",

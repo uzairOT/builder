@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { socket } from "../../../socket";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 const ProgressCardHeader = ({ project }) => {
   const id = project?.id;
   let data = localStorage.getItem("userInfo");
@@ -35,6 +36,7 @@ const ProgressCardHeader = ({ project }) => {
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${getTokenFromLocalStorage()}`,
           },
         }
       );

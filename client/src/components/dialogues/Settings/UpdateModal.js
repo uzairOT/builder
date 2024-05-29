@@ -299,7 +299,8 @@ function UpdateModal({
                   style:{
                     ...InputStyle,
                      border: errors.email && touched.email ? '1px solid #d32f2f' : '1px solid #E0E4EC'
-                  }
+                  },
+                  maxLength:50
                 }}
                 onChange={handleChange}
                 onBlur={handleBlur}

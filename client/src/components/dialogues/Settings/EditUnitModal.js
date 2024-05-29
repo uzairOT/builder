@@ -66,6 +66,7 @@ const EditUnitModal = ({open, onClose, unit, refetch, userId}) => {
                         border:
                           errors.label && touched.label ? "1px solid #d32f2f" : "1px solid #E0E4EC",
                       },
+                      maxLength:50
                     }}
                     onBlur={handleBlur}
                     helperText={errors.label && touched.label ? errors.label : ""}

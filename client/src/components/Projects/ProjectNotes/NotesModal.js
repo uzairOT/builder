@@ -20,8 +20,9 @@ import { toast } from "react-toastify";
 import { uploadToS3 } from "../../../utils/S3";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { fileTypeIcons } from "../../dialogues/AddImage/assets/fileTypes";
-import AttachFileIcon from '@mui/icons-material/AttachFile';
-import CloseIcon from '@mui/icons-material/Close';
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import CloseIcon from "@mui/icons-material/Close";
+import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 //import "react-toastify/dist/ReactToastify.css";
 
 const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
@@ -59,10 +60,19 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
-        const res = await axios.post("http://3.135.107.71/project/file", {
-          fileName: selectedFile.name,
-          fileType: selectedFile.type,
-        });
+        const res = await axios.post(
+          "http://3.135.107.71/project/file",
+          {
+            fileName: selectedFile.name,
+            fileType: selectedFile.type,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+            },
+          }
+        );
         return res.data.data.url;
       } catch (error) {
         console.error("Error uploading file:", error);
@@ -176,19 +186,23 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
       )}
       <Modal open={showEditModal ? showEditModal : open} onClose={handleClose}>
         <Stack sx={style}>
-          <Stack pb={1} direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-
-          <Typography
-            fontFamily={"inherit"}
-            fontSize={"24px"}
-            fontWeight={"500"}
+          <Stack
+            pb={1}
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Typography
+              fontFamily={"inherit"}
+              fontSize={"24px"}
+              fontWeight={"500"}
             >
-            {showEditModal ? "Edit" : "Add"} Notes
-          </Typography>
-          <IconButton onClick={handleClose}>
-          <CloseIcon fontSize={'small'}/>
-          </IconButton>
-            </Stack>
+              {showEditModal ? "Edit" : "Add"} Notes
+            </Typography>
+            <IconButton onClick={handleClose}>
+              <CloseIcon fontSize={"small"} />
+            </IconButton>
+          </Stack>
           <Stack spacing={2}>
             <Input
               variant="soft"
@@ -290,7 +304,9 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
               {/* <AddToDriveIcon style={{ color: "#4C8AB1" }} /> */}
               <Stack>
                 <label htmlFor="file-input">
-                  <AttachFileIcon style={{ color: "#4C8AB1", cursor: 'pointer' }} />
+                  <AttachFileIcon
+                    style={{ color: "#4C8AB1", cursor: "pointer" }}
+                  />
                 </label>
                 <input
                   multiple

@@ -170,6 +170,7 @@ function ColorPickerElement({
           <DialogContent sx={{ padding: "0rem 3rem 3rem 3rem" }}>
             <Typography sx={typoText}>Phase</Typography>
             <TextField
+            inputProps={{ maxLength: 50 }}
               sx={inputStyle}         
               margin="dense"
               id="phaseName"

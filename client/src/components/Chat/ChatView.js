@@ -25,6 +25,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { socket } from "../../socket";
 import { getUserRoleFromRedux } from "../../redux/slices/auth/userRoleSlice";
 import { useSelector } from "react-redux";
+import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
 const currentUser = userInfo?.user;
@@ -92,7 +93,7 @@ function ChatView({ isAdminPage }) {
     }
   };
 
-//Api call for markMessagesAsRead
+  //Api call for markMessagesAsRead
   const userId = currentUser?.id;
   async function markMessagesAsRead(id, userId) {
     try {
@@ -105,6 +106,7 @@ function ChatView({ isAdminPage }) {
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${getTokenFromLocalStorage()}`,
           },
         }
       );
@@ -237,10 +239,19 @@ function ChatView({ isAdminPage }) {
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
-        const res = await axios.post("http://3.135.107.71/project/file", {
-          fileName,
-          fileType,
-        });
+        const res = await axios.post(
+          "http://3.135.107.71/project/file",
+          {
+            fileName,
+            fileType,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+            },
+          }
+        );
         return res.data.data.url;
       } catch (error) {
         console.error("Error uploading file:", error);

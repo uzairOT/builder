@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Stack } from "@mui/material";
 import ProfileView from "../../components/Dashboard/ProfileView/ProfileView.js";
 import Navbar from "../../components/Navbar/Navbar.js";
 import WeatherView from "../../components/Dashboard/WeatherView/WeatherView.js";
@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addEvents, setIsLoading, allEvents } from "../../redux/slices/Events/eventsSlice.js";
 import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice.js";
 import { allUserProjects } from "../../redux/slices/Project/userProjectsSlice.js";
+import TaskCalenderLoader from "../../components/Task/Calender/TaskCalenderLoader.js";
+import ProgressCardLoader from "../../components/Dashboard/ProgressCard/ProgressCardLoader.js";
 
 
 const Dashboard = () => {
@@ -98,7 +100,7 @@ const Dashboard = () => {
                 <Paper sx={themeStyle.progressCard} margin={1}>
                   <ProgressCard project={project} />
                 </Paper>
-              </Grid>) ) : <>Loading..</>}
+              </Grid>) ) : <><ProgressCardLoader /></>}
               {/* <Grid
                 item
                 xs={12}
@@ -176,7 +178,9 @@ const Dashboard = () => {
               }}
             >
               {loading ? (
-                <>Loading</>
+                <Stack >
+                <TaskCalenderLoader />
+                </Stack>
               ) : (
                 <TaskCalenderView dailyForecast={dailyForecast} eventsArr={events} />
               )}

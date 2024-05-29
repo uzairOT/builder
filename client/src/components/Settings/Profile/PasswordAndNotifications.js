@@ -1,31 +1,41 @@
 import React, { useState } from "react";
 import Switch from "@mui/joy/Switch";
-import { Typography, Grid, TextField, Divider } from "@mui/material";
+import { Typography, Grid, TextField, Divider, Stack, CircularProgress } from "@mui/material";
 import Button from "../../UI/CustomButton";
 import { useTheme } from "@mui/material/styles";
-import { useResetProfilePasswordMutation } from "../../../redux/apis/usersApiSlice";
+import {
+  useResetProfilePasswordMutation,
+  useUpdateUserNotificationsMutation,
+} from "../../../redux/apis/usersApiSlice";
 import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 
 export default function MyApp() {
   const theme = useTheme();
   const isXs = theme.breakpoints.down("xs");
-  const [resetPassword, {isLoading}] = useResetProfilePasswordMutation();
+  const [updateNotifications, { isLoading: isLoadingNotifications }] =
+    useUpdateUserNotificationsMutation();
+  const [resetPassword, { isLoading }] = useResetProfilePasswordMutation();
   const user = useSelector((state) => state.auth.userInfo);
-  const [checked, setChecked] = useState(true);
-  
-  const [confrimPassword, setConfrimPassword] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const passwordMatch= newPassword === confrimPassword;
+  const [chatNotificationsChecked, setChatNotificationsChecked] =
+    useState(true);
+  const [projectManagerChecked, setProjectManagerChecked] = useState(true);
+  const [teamMemberChecked, setTeamMemberChecked] = useState(true);
+  const [subContractorChecked, setSubContractorChecked] = useState(true);
+  const [clientChecked, setClientChecked] = useState(true);
+
+  const [confrimPassword, setConfrimPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const passwordMatch = newPassword === confrimPassword;
   const validationStyle = {
     "& input": {
       border: passwordMatch ? "1px solid #E0E4EC" : "1px solid #D02E2E",
       borderRadius: "8px",
       padding: "10px",
     },
-  }
+  };
 
   // const handleSubmit = async () => {
   //   if(!passwordMatch){
@@ -37,7 +47,7 @@ export default function MyApp() {
   //     newPassword: newPassword,
   //     confirmPassword: confrimPassword,
   //     userId: user.user.id,
-  //   } 
+  //   }
   //  const res = await resetPassword(resetBody);
   //  console.log(res);
   //  if(res?.error){
@@ -50,25 +60,68 @@ export default function MyApp() {
   //  }
   //   }
   // }
-   
+
   const handleSubmit = async () => {
-    if(!passwordMatch){
+    if (!passwordMatch) {
       toast.error("Passwords don't match!");
-      return false
+      return false;
     } else {
- try {   const resetBody = {
-      oldPassword: currentPassword,
-      newPassword: newPassword,
-      confirmPassword: confrimPassword,
-      userId: user.user.id,
-    } 
-   const res = await resetPassword(resetBody).unwrap();
-   toast.success("Profile updated successfully");
-    } catch (error) {
-      console.log(error);
-      toast.error(error?.data?.message || error.error||error?.data?.error || 'Something went wrong!');
+      try {
+        const resetBody = {
+          oldPassword: currentPassword,
+          newPassword: newPassword,
+          confirmPassword: confrimPassword,
+          userId: user.user.id,
+        };
+        const res = await resetPassword(resetBody).unwrap();
+        toast.success("Profile updated successfully");
+      } catch (error) {
+        console.log(error);
+        toast.error(
+          error?.data?.message ||
+            error.error ||
+            error?.data?.error ||
+            "Something went wrong!"
+        );
+      }
     }
-  } }
+  };
+  const handleUpdateNotifications = async (name, checked) => {
+    try {
+      const res = await updateNotifications({userId:user.user.id, name: name, toggle: checked})
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const handleNotifications = (e) => {
+    const { name, checked } = e.target;
+
+    switch (name) {
+      case "chat":
+        setChatNotificationsChecked(checked);
+        handleUpdateNotifications(name, checked);
+        break;
+      case "projectManager":
+        setProjectManagerChecked(checked);
+        handleUpdateNotifications(name, checked);
+        break;
+      case "teamMember":
+        setTeamMemberChecked(checked);
+        handleUpdateNotifications(name, checked);
+        break;
+      case "subcontractor":
+        setSubContractorChecked(checked);
+        handleUpdateNotifications(name, checked);
+        break;
+      case "client":
+        setClientChecked(checked);
+        handleUpdateNotifications(name, checked);
+        break;
+      default:
+        console.warn(`Unknown notification type: ${name}`);
+    }
+  };
 
   return (
     <div>
@@ -80,39 +133,52 @@ export default function MyApp() {
         <Grid item xs={6}>
           <Typography sx={subHeadings}>Current Password</Typography>
           <TextField
+            inputProps={{ maxLength: 50 }}
             fullWidth
             placeholder="Enter Current Password"
             variant="outlined"
             type="password"
             sx={InputStyle}
             value={currentPassword}
-            onChange={(e)=>{setCurrentPassword(e.target.value)}}
+            onChange={(e) => {
+              setCurrentPassword(e.target.value);
+            }}
           />
         </Grid>
         <Grid item xs={6}>
           <Typography sx={subHeadings}>New Password</Typography>
           <TextField
+            inputProps={{ maxLength: 50 }}
             fullWidth
             placeholder="Enter New Password"
             variant="outlined"
             type="password"
             sx={InputStyle}
             value={newPassword}
-            onChange={(e)=>{setNewPassword(e.target.value)}}
+            onChange={(e) => {
+              setNewPassword(e.target.value);
+            }}
           />
         </Grid>
         <Grid item xs={6}>
           <Typography sx={subHeadings}>Confirm Password</Typography>
           <TextField
+            inputProps={{ maxLength: 50 }}
             fullWidth
             placeholder="Confirm your password here"
             variant="outlined"
             type="password"
-            sx={{...InputStyle, ...validationStyle }}
+            sx={{ ...InputStyle, ...validationStyle }}
             value={confrimPassword}
-            onChange={(e)=>{setConfrimPassword(e.target.value)}}
+            onChange={(e) => {
+              setConfrimPassword(e.target.value);
+            }}
           />
-          {!passwordMatch && <Typography fontSize={'11px'} color={'#D02E2E'}>Passwords dont match</Typography>}
+          {!passwordMatch && (
+            <Typography fontSize={"11px"} color={"#D02E2E"}>
+              Passwords dont match
+            </Typography>
+          )}
         </Grid>
       </Grid>
 
@@ -121,9 +187,12 @@ export default function MyApp() {
 
       <Grid container spacing={2}>
         <Grid item xs={12}>
+          <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
           <Typography sx={headings} variant="h5" gutterBottom>
             Notifications
           </Typography>
+          {isLoadingNotifications && <CircularProgress size={'20px'}/>}
+          </Stack>
         </Grid>
         <Grid item xs={12}>
           <Typography sx={subHeadings} variant="body1" gutterBottom>
@@ -138,8 +207,9 @@ export default function MyApp() {
               </Typography>
             </Grid>
             <Switch
-              checked={checked}
-              onChange={(event) => setChecked(event.target.checked)}
+              slotProps={{ input: { name: "chat" } }}
+              checked={chatNotificationsChecked}
+              onChange={handleNotifications}
             />
           </Grid>
         </Grid>
@@ -156,8 +226,9 @@ export default function MyApp() {
               </Typography>
             </Grid>
             <Switch
-              checked={checked}
-              onChange={(event) => setChecked(event.target.checked)}
+              slotProps={{ input: { name: "projectManager" } }}
+              checked={projectManagerChecked}
+              onChange={handleNotifications}
             />
           </Grid>
         </Grid>
@@ -169,8 +240,9 @@ export default function MyApp() {
               </Typography>
             </Grid>
             <Switch
-              checked={checked}
-              onChange={(event) => setChecked(event.target.checked)}
+              slotProps={{ input: { name: "teamMember" } }}
+              checked={teamMemberChecked}
+              onChange={handleNotifications}
             />
           </Grid>
         </Grid>
@@ -182,8 +254,9 @@ export default function MyApp() {
               </Typography>
             </Grid>
             <Switch
-              checked={checked}
-              onChange={(event) => setChecked(event.target.checked)}
+              slotProps={{ input: { name: "subcontractor" } }}
+              checked={subContractorChecked}
+              onChange={handleNotifications}
             />
           </Grid>
         </Grid>
@@ -195,8 +268,9 @@ export default function MyApp() {
               </Typography>
             </Grid>
             <Switch
-              checked={checked}
-              onChange={(event) => setChecked(event.target.checked)}
+              slotProps={{ input: { name: "client" } }}
+              checked={clientChecked}
+              onChange={handleNotifications}
             />
           </Grid>
         </Grid>
@@ -226,7 +300,6 @@ export default function MyApp() {
             height="38px"
             borderRadius="50px"
             fontSize={"13px"}
-            
           />
         </Grid>
       </Grid>

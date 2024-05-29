@@ -114,6 +114,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       })
     }),
+    updateUserNotifications: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/updateNotifications`,
+        method: 'PUT',
+        body:data
+      })
+    })
   }),
 });
 
@@ -132,5 +139,6 @@ export const {
   useResendOTPMutation,
   useResetPasswordMutation,
   useCheckUserOnInvitationMutation,
-  useResetProfilePasswordMutation
+  useResetProfilePasswordMutation,
+  useUpdateUserNotificationsMutation
 } = userApiSlice;

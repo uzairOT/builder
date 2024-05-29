@@ -25,11 +25,15 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Bounce } from "react-toastify"; // Assuming you're using react-toastify
 import { useDispatch, useSelector } from "react-redux";
-import { useCheckUserOnInvitationMutation, useRegisterMutation } from "../../redux/apis/usersApiSlice";
+import {
+  useCheckUserOnInvitationMutation,
+  useRegisterMutation,
+} from "../../redux/apis/usersApiSlice";
 import { setCredentials } from "../../redux/slices/authSlice";
 import { toast, ToastContainer } from "react-toastify";
 import { useFormik } from "formik";
 import { inviteSchemea } from "../../utils/Validation/settingsPageSchema";
+import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 //import "react-toastify/dist/ReactToastify.css";
 
 const Invitation = () => {
@@ -37,11 +41,11 @@ const Invitation = () => {
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
-  const {invitationId,email,companyName } = useParams();
+  const { invitationId, email, companyName } = useParams();
   // console.log(projectId, email, userRole, companyName);
   // const role = userRole;
   const [checkUser] = useCheckUserOnInvitationMutation();
-  const params = {invitationId};
+  const params = { invitationId };
   console.log(params);
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
@@ -74,33 +78,38 @@ const Invitation = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-useEffect(()=> {
-  checkUserOnInvitation();
-
-},[])
-const checkUserOnInvitation = async () =>{
-      const res = await checkUser(params);
-      console.log(res)
-      if(res?.data?.success){
-        navigate('/login');
-      } else{
-        return false
-      }
-}
+  useEffect(() => {
+    checkUserOnInvitation();
+  }, []);
+  const checkUserOnInvitation = async () => {
+    const res = await checkUser(params);
+    console.log(res);
+    if (res?.data?.success) {
+      navigate("/login");
+    } else {
+      return false;
+    }
+  };
   const onSubmit = async (e) => {
-  
-
-
     // Prepare data to be sent in the request body
+    if(phone ===''){
+      toast.warning('Please enter your phone number.')
+      return;
+    }
     const data = {
       ...values,
       phone,
-      invitationId
+      invitationId,
     };
 
     try {
       // Make POST request using Axios
-      await axios.post("http://3.135.107.71/auth/addme", data);
+      await axios.post("http://3.135.107.71/auth/addme", data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+        },
+      });
 
       // Navigate to the desired location upon successful request
       navigate("/login");
@@ -120,7 +129,16 @@ const checkUserOnInvitation = async () =>{
       });
     }
   };
-  const {values, handleBlur,handleChange,handleSubmit, errors, touched, isSubmitting, handleReset} = useFormik({
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    errors,
+    touched,
+    isSubmitting,
+    handleReset,
+  } = useFormik({
     initialValues: {
       firstName: "",
       lastName: "",
@@ -129,9 +147,8 @@ const checkUserOnInvitation = async () =>{
       confirmPassword: "",
     },
     validationSchema: inviteSchemea,
-    onSubmit
+    onSubmit,
   });
-
 
   const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "1rem" };
   const linkResponsiveColor = { color: isMobile ? "#FFAC00" : "#4C8AB1" };
@@ -139,13 +156,13 @@ const checkUserOnInvitation = async () =>{
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(values);
-  }, [values])
+  }, [values]);
   return (
     <Grid container sx={firstGrid}>
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
-        <Typography sx={firstHeading}>Construction Management</Typography>
+        <Typography sx={firstHeading}>Builder Builder Pro</Typography>
 
         {/* Button */}
 
@@ -174,9 +191,9 @@ const checkUserOnInvitation = async () =>{
             <Typography sx={formHeadingStyle}>Signup</Typography>
             <img src={builder1} width={"20%"} alt="" />
           </Box>
-          <form style={{ marginTop: "0.1rem" }} onSubmit={handleSubmit}>
+          <form style={{ marginTop: "0.1rem", width:'100%' }} onSubmit={handleSubmit}>
             <Box sx={namesFieldBox}>
-              <Box sx={topSpace}>
+              <Box sx={topSpace} width={'100%'}>
                 <label
                   style={{ ...labelStyle, ...lableResponsiveFont }}
                   htmlFor="firstName"
@@ -198,9 +215,13 @@ const checkUserOnInvitation = async () =>{
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-1rem'}>{errors.firstName && touched.firstName ? errors.firstName : ""}</Typography>
+                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-1rem"}>
+                  {errors.firstName && touched.firstName
+                    ? errors.firstName
+                    : ""}
+                </Typography>
               </Box>
-              <Box sx={{ marginTop: "0.2rem" }}>
+              <Box sx={{ marginTop: "0.2rem" }} width={'100%'}>
                 <label
                   style={{
                     ...labelStyle,
@@ -224,7 +245,9 @@ const checkUserOnInvitation = async () =>{
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-1rem'}>{errors.lastName && touched.lastName ? errors.lastName : ""}</Typography>
+                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-1rem"}>
+                  {errors.lastName && touched.lastName ? errors.lastName : ""}
+                </Typography>
               </Box>
             </Box>
 
@@ -253,8 +276,9 @@ const checkUserOnInvitation = async () =>{
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-             <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-1rem'}>{errors.email && touched.email ? errors.email : ""}</Typography>
-
+              <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-1rem"}>
+                {errors.email && touched.email ? errors.email : ""}
+              </Typography>
             </Box>
 
             <Box sx={{ marginTop: "0.5rem" }}>
@@ -262,6 +286,7 @@ const checkUserOnInvitation = async () =>{
                 style={{
                   ...labelStyle,
                   fontSize: isMobile ? "0.8rem" : "1rem",
+                  marginTop:'1.5rem'
                 }}
                 htmlFor="phone"
               >
@@ -269,13 +294,15 @@ const checkUserOnInvitation = async () =>{
               </label>
 
               <PhoneInput
-                style={{ ...customPhoneStyles,  }}
+              disableDialCodePrefill
+                style={{ ...customPhoneStyles }}
                 defaultCountry="us"
                 value={phone}
                 onChange={(phone) => setPhone(phone)}
                 inputStyle={{ ...customeInputStyles }}
                 inputProps={{
                   border: "none",
+                  placeholder:'+1 (123) 456-7890'
                 }}
                 required
                 name="phone"
@@ -315,7 +342,9 @@ const checkUserOnInvitation = async () =>{
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                 <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-1rem'}>{errors.password && touched.password ? errors.password : ""}</Typography>
+                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-1rem"}>
+                  {errors.password && touched.password ? errors.password : ""}
+                </Typography>
                 <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
                   {passwordVisible ? <VisibilityOff /> : <Visibility />}
                   {!isMobile && (
@@ -339,6 +368,7 @@ const checkUserOnInvitation = async () =>{
                 style={{
                   ...labelStyle,
                   fontSize: isMobile ? "0.8rem" : "1rem",
+                  marginTop:'1.5rem'
                 }}
                 htmlFor="password"
               >
@@ -360,7 +390,11 @@ const checkUserOnInvitation = async () =>{
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                 <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-1rem'}>{errors.confirmPassword && touched.confirmPassword ? errors.confirmPassword : ""}</Typography>
+                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-1rem"}>
+                  {errors.confirmPassword && touched.confirmPassword
+                    ? errors.confirmPassword
+                    : ""}
+                </Typography>
                 <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
                   {passwordVisible ? <VisibilityOff /> : <Visibility />}
                   {!isMobile && (
@@ -488,21 +522,21 @@ const formGrid = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  padding: "3rem 2rem 3rem 1rem",
+  padding: "2rem 5rem 2rem 5rem",
   marginTop: "1rem",
-  // paddingLeft: { lg: "0rem", md: "0rem", sm: "1rem", xs: "1rem" },
-  // paddingRight: { lg: "0rem", md: "0rem", sm: "2rem", xs: "2rem" },
+  paddingLeft: { lg: "4.5rem", md: "2.5rem", sm: "1.5rem", xs: "1.5rem" },
+  paddingRight: { lg: "5rem", md: "3rem", sm: "2rem", xs: "2rem" },
   marginLeft: { lg: "6rem", md: "2rem", sm: "0rem", xs: "0rem" },
   borderRadius: { lg: "1.5rem", md: "1.5rem", sm: "1.5rem", xs: "0rem" },
   width: { lg: "70%", md: "90%", sm: "85%", xs: "100%" },
 };
 
 const logoBox = {
-  gap: "7rem",
+  gap: "0rem",
   marginBottom: "0.3rem",
-  justifyContent: "space-evenly",
+  justifyContent: "space-between",
   marginTop: "1rem",
-  display: { lg: "none", md: "none", sm: "none", xs: "flex" },
+  display: 'flex'
 };
 const namesFieldBox = {
   display: "flex",
@@ -669,6 +703,7 @@ const hptLinksStyle = {
 
 const topSpace = {
   marginTop: "0.2rem",
+
 };
 
 export default Invitation;

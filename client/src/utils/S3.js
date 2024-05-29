@@ -5,6 +5,7 @@
  */
 import axios from "axios";
 import fileDownload from "js-file-download";
+import { getTokenFromLocalStorage } from "../redux/apis/apiSlice";
 // import messageService from "services/APIs/services/messageService";
 /**
  * Uploads an image to S3 using a presigned URL.
@@ -35,33 +36,47 @@ import fileDownload from "js-file-download";
  * @param {File} FileObject - The file object to be uploaded.
  * @param {Function} onUploadProgress - Callback function for upload progress.
  * @returns {String} - The media URL of the uploaded file.\
- * 
+ *
  *
  */
 
 export const handleDownload = async (url, filename, setIsDownloading) => {
-    setIsDownloading(true)
-	try {
-		await axios.get(url, { responseType: "blob" })
-			.then((res) => {
-				fileDownload(res.data, filename);
-			}).finally(()=>{
-                setIsDownloading(false)
-            });
-	} catch (error) {
-		console.error(error);
-	}
+  setIsDownloading(true);
+  try {
+    await axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+        },
+        responseType: "blob",
+      })
+      .then((res) => {
+        fileDownload(res.data, filename);
+      })
+      .finally(() => {
+        setIsDownloading(false);
+      });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-
-export const uploadToS3 = async (presignedUrl, FileObject, onUploadProgress = () => { }) => {
-    try {
-        if (!presignedUrl) return;
-        const config = { headers: { "Content-Type": FileObject.type }, onUploadProgress };
-        const body = FileObject;
-        const res = await axios.put(presignedUrl, body, config);
-        if (res.status === 200) return presignedUrl.split("?").shift();
-    } catch (error) {
-        console.error(error);
-    }
+export const uploadToS3 = async (
+  presignedUrl,
+  FileObject,
+  onUploadProgress = () => {}
+) => {
+  try {
+    if (!presignedUrl) return;
+    const config = {
+      headers: { "Content-Type": FileObject.type,  Authorization: `Bearer ${getTokenFromLocalStorage()}`, },
+      onUploadProgress,
+    };
+    const body = FileObject;
+    const res = await axios.put(presignedUrl, body, config);
+    if (res.status === 200) return presignedUrl.split("?").shift();
+  } catch (error) {
+    console.error(error);
+  }
 };

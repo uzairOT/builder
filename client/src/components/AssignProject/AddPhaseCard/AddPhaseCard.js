@@ -93,6 +93,7 @@ const AddPhaseCard = ({
   projectId,
   InitialProposalView,
   authUserRole,
+  changeOrder
 }) => {
   const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
   const [showAddLine, setShowAddLine] = useState(false);
@@ -113,7 +114,7 @@ console.log(adminProjectView)
   let minStartDay = moment(phaseData?.LineItems[0]?.start_day);
   let maxEndDay = moment(phaseData?.LineItems[0]?.end_day);
   let totalHours = 0;
-  // console.log(maxEndDay);
+  console.log("changeOrder " , changeOrder);
 
   phaseData.LineItems.forEach((row) => {
     totalCost += (parseInt(row.total) + parseInt(row.margin)); // Accumulate the total cost
@@ -450,6 +451,9 @@ console.log(adminProjectView)
                       return <></>
                     }
                   }
+                  if(changeOrder && !(row.status === "Work Order approved")){
+                    return<></>
+                  }
                   return (
                     <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
                       {!InitialProposalView && (
@@ -475,15 +479,15 @@ console.log(adminProjectView)
                       <TableCell>${row.total}</TableCell>
                       <TableCell>{row.quantity}</TableCell>
                       <TableCell>
-                        {row?.WorkOrderReqs
-                          ? moment(row?.WorkOrderReqs[0]?.start_day).format(
+                        {row?.start_day
+                          ? moment(row?.start_day).format(
                               "MMM, DD, YYYY HH:mm a"
                             )
                           : "-"}
                       </TableCell>
                       <TableCell>
-                        {row?.WorkOrderReqs
-                          ? moment(row?.WorkOrderReqs[0]?.end_day).format(
+                        {row?.end_day
+                          ? moment(row?.end_day).format(
                               "MMM, DD, YYYY HH:mm a"
                             )
                           : "-"}
@@ -602,7 +606,7 @@ console.log(adminProjectView)
   );
 };
 const scrollable = {
-  scrollbarWidth: "none", // For Firefox
+  scrollbarWidth: "thin", // For Firefox
   "-ms-overflow-style": "none", // For IE and Edge
   "&::-webkit-scrollbar": {
     width: "6px",
@@ -614,7 +618,7 @@ const scrollable = {
   "&:hover::-webkit-scrollbar-thumb": {
     backgroundColor: "#ddd",
   },
-  overflowY: "scroll",
+  overflowY: "auto",
 };
 const firstGrid = {
   display: "flex",
