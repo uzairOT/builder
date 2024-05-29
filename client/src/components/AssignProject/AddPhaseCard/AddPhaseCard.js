@@ -113,7 +113,7 @@ console.log(adminProjectView)
   let minStartDay = moment(phaseData?.LineItems[0]?.start_day);
   let maxEndDay = moment(phaseData?.LineItems[0]?.end_day);
   let totalHours = 0;
-  // console.log(maxEndDay);
+
 
   phaseData.LineItems.forEach((row) => {
     totalCost += (parseInt(row.total) + parseInt(row.margin)); // Accumulate the total cost
@@ -229,7 +229,7 @@ console.log(adminProjectView)
   };
 
   const [checkedRow, setCheckedRow] = useState(null);
-
+  console.log(checkedRow);
   const handleCheckboxChange = (row) => {
     const phaseName = phaseData.phase_name;
     const phaseId = phaseData.id;

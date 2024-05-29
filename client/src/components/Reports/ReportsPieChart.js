@@ -8,7 +8,7 @@ const StyledText = styled("text")(({ theme, color }) => ({
   fill: color,
   textAnchor: "middle",
   dominantBaseline: "central",
-  fontSize: '16px',
+  fontSize: "16px",
   fontFamily: "Inter, sans serif",
   color: theme.palette.text.color,
 }));
@@ -28,17 +28,13 @@ function PieCenterLabel2({ children }) {
   );
 }
 
-const ReportsPieChart = () => {
-   const data= [
-        { id: 0, value: 20, color: "#1F9EF3, #1B59F800" },
-        { id: 1, value: 80, color: "#eff5ff" },
-      ];
+const ReportsPieChart = ({ remainingPercent, donePercent }) => {
+  const data = [
+    { id: 0, value: remainingPercent, color: "#1F9EF3, #1B59F800" },
+    { id: 1, value: donePercent, color: "#eff5ff" },
+  ];
   return (
-    <Stack 
-    width={'130px'}
-    height="100%"
-    justifyContent={'center'}
-    >
+    <Stack width={"130px"} height="100%" justifyContent={"center"}>
       <PieChart
         series={[
           {
@@ -58,9 +54,9 @@ const ReportsPieChart = () => {
         ]}
         height={160}
         width={130}
-        >
-        <PieCenterLabel>20%</PieCenterLabel>
-        <PieCenterLabel2>80%</PieCenterLabel2>
+      >
+        <PieCenterLabel>{donePercent}%</PieCenterLabel>
+        <PieCenterLabel2>{remainingPercent}%</PieCenterLabel2>
       </PieChart>
     </Stack>
   );

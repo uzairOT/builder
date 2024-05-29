@@ -114,7 +114,7 @@ useEffect(() => {
 
     try {
       // Make POST request using Axios
-      await axios.post("http://3.135.107.71/auth/addme", data);
+      await axios.post("http://192.168.0.113:8080/auth/addme", data);
 
       // Navigate to the desired location upon successful request
       navigate("/login");

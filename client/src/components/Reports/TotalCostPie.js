@@ -8,10 +8,10 @@ const StyledText = styled("text")(({ theme, color }) => ({
   fill: color,
   textAnchor: "middle",
   dominantBaseline: "central",
-  fontSize: '24px',
+  fontSize: "24px",
   fontFamily: "Inter, sans serif",
   color: theme.palette.text.color,
-  fontWeight: '600'
+  fontWeight: "600",
 }));
 
 function PieCenterLabel({ children }) {
@@ -29,24 +29,33 @@ function PieCenterLabel2({ children }) {
   );
 }
 
-const TotalCostPie = () => {
-   const data= [
-        { id: 0, value: 25, color: "#1F9EF3, #1B59F800" },
-        { id: 1, value: 75, color: "#eff5ff" },
-      ];
+const TotalCostPie = ({ spent, remaning, total }) => {
+  const remainingAmount = (remaning / total) * 100;
+  const data = [
+    { id: 0, value: 25, color: "#1F9EF3, #1B59F800" },
+    { id: 1, value: 75, color: "#eff5ff" },
+  ];
+  console.log(
+    "first:",
+    "+ remaning",
+    remainingAmount,
+    remaning,
+    spent,
+    total
+  );
   return (
-    <Stack 
-    width={'100%'}
-    height={240}
-    justifyContent={'center'}
-    alignItems={'center'}
+    <Stack
+      width={"100%"}
+      height={240}
+      justifyContent={"center"}
+      alignItems={"center"}
     >
       <PieChart
         series={[
           {
             data: [
-              { id: 0, value: 25, color: "#F9C74F, #1B59F800" },
-              { id: 1, value: 75, color: "#2D9CDB" },
+              { id: 0, value: spent, color: "#F9C74F, #1B59F800" },
+              { id: 1, value: remaning, color: "#2D9CDB" },
             ],
             innerRadius: 55,
             outerRadius: 95,
@@ -60,9 +69,9 @@ const TotalCostPie = () => {
         ]}
         height={240}
         width={290}
-        >
-        <PieCenterLabel>25%</PieCenterLabel>
-        <PieCenterLabel2>75%</PieCenterLabel2>
+      >
+        <PieCenterLabel>{(spent / total) * 100}%</PieCenterLabel>
+        <PieCenterLabel2>{(remaning / total) * 100}%</PieCenterLabel2>
       </PieChart>
     </Stack>
   );

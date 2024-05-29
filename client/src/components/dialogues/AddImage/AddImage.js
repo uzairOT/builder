@@ -40,7 +40,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
-        const res = await axios.post("http://3.135.107.71/project/file", {
+        const res = await axios.post("http://192.168.0.113:8080/project/file", {
           fileName,
           fileType,
         });
@@ -119,7 +119,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
       const fileUrl = await uploadFileToServer(selectedFile);
       const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
       const fileType = getFileType(heading);
-      const apiUrl = `http://3.135.107.71/project/files/${id}`;
+      const apiUrl = `http://192.168.0.113:8080/project/files/${id}`;
       const requestBody = {
         fileUrl: uploadedFileUrl,
         fileType: fileType,

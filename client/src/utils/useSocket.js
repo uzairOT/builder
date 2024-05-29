@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { io } from 'socket.io-client';
 import socketIOClient from 'socket.io-client';
 
-const SOCKET_SERVER_URL = 'http://3.135.107.71/';
+const SOCKET_SERVER_URL = 'http://192.168.0.113:8080/';
 
 // const socket = socketIOClient(SOCKET_SERVER_URL);
 const useSocket = () => {

@@ -25,7 +25,7 @@ function ProfileView() {
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
-        const res = await axios.post("http://3.135.107.71/project/file", {
+        const res = await axios.post("http://192.168.0.113:8080/project/file", {
           fileName,
           fileType,
         });

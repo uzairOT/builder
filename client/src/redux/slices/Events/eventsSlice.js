@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const fetchEvents = createAsyncThunk('fetch/events', async (body, thunkApi) => {
     try{
-        const res= await axios.post(`http://3.135.107.71/user/events/${body.userId}`, body)
+        const res= await axios.post(`http://192.168.0.113:8080/user/events/${body.userId}`, body)
         return res.data.formattedWorkOrders;
     } catch(error){
         return error
