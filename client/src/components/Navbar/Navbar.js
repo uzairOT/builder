@@ -48,7 +48,7 @@ import {
 import { socket } from "../../socket";
 const local = localStorage.getItem("userInfo");
 const currentUser = JSON.parse(local);
-// const socket = io("http://3.135.107.71", {
+// const socket = io("http://192.168.0.113:8080", {
 //   query: { userId: currentUser?.user?.id },
 // });
 

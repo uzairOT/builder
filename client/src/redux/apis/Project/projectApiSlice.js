@@ -1,7 +1,7 @@
 import { apiSlice } from "../apiSlice";
 
-const PROJECTS_URL = "http://3.135.107.71/project";
-const EVENT_URL = "http://3.135.107.71/user/events";
+const PROJECTS_URL = "http://192.168.0.113:8080/project";
+const EVENT_URL = "http://192.168.0.113:8080/user/events";
 const projectId = 47;
 
 const projectApiSlice = apiSlice.injectEndpoints({

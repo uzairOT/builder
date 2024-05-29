@@ -7,6 +7,7 @@ import ProfitDetails from "./ProfitDetails";
 import { Link } from "react-router-dom";
 
 const ProgressCard = ({ project }) => {
+  
   return (
     <Box style={{ textDecoration: "none" }}>
       <ProgressCardHeader project={project} />

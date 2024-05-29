@@ -1,43 +1,112 @@
-import { Divider, Paper, Stack, Typography } from '@mui/material'
-import React from 'react'
-import OverBudgetPie from './OverBudgetPie'
-import CircleIcon from '@mui/icons-material/Circle';
-
+import { Divider, Paper, Stack, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import OverBudgetPie from "./OverBudgetPie";
+import CircleIcon from "@mui/icons-material/Circle";
+import { useGetProjectDeadlineStatsMutation } from "../../redux/apis/Reports/reportsApiSlice";
+import moment from "moment";
 const OverBudgetPieChart = () => {
-  return (
-    <Paper
-     sx={{height:'100%', borderRadius:'14px'}}>
-         <Stack p={2}>
-            <Typography fontFamily={'Inter, sans serif'} fontWeight={'500'} fontSize={'18px'}>
-               Over Budget
-            </Typography>
-            <Typography fontFamily={'Inter, sans serif'} fontWeight={'500'} fontSize={'28px'}>
-               $ +5,834
-            </Typography>
-            <Typography fontFamily={'Inter, sans serif'} fontWeight={'400'} fontSize={'12px'} color={'#4F4F4F'}>
-               US Dollars
-            </Typography>
-        </Stack>
-        <Divider variant='fullWidth' />
-        <OverBudgetPie />
-        <Stack direction={'row'} justifyContent={'space-around'} spacing={1} pt={2} pb={4}>
-            <Stack direction={'row'} spacing={1}>
-            <CircleIcon sx={{color:'#2D9CDB', fontSize: '10px', paddingTop: '4px'}} />
-            <Stack direction={'column'} >
-            <Typography fontFamily={'Inter, sans serif'} fontSize={'12px'}>Total</Typography>
-            <Typography textAlign={'right'} fontFamily={'Inter, sans serif'} fontWeight={'500'}>$ 25,834</Typography>
-            </Stack>
-            </Stack>
-            <Stack direction={'row'} spacing={1}>
-            <CircleIcon sx={{color:'#F65E5E', fontSize: '10px', paddingTop:'4px'}} />
-            <Stack direction={'column'}>
-            <Typography fontFamily={'Inter, sans serif'} fontSize={'12px'}>OverBudget</Typography>
-            <Typography textAlign={'center'} fontFamily={'Inter, sans serif'} fontWeight={'500'}>$ 5834.8</Typography>
-            </Stack>
-            </Stack>
-           </Stack>
-    </Paper>
-  )
-}
+  let dataUser = localStorage.getItem("userInfo");
+  let userInfo = JSON.parse(dataUser);
+  const currentUser = userInfo?.user;
+  const userId = currentUser?.id;
 
-export default OverBudgetPieChart
+  const [getProjectDeadlineStats, { data, error, isLoading }] =
+    useGetProjectDeadlineStatsMutation();
+  const [projects, setProjects] = useState([]);
+  const fetchDeadlineStats = async () => {
+    try {
+      const result = await getProjectDeadlineStats({
+        userId,
+      }).unwrap();
+      setProjects(result);
+      console.log("Success GetProjectDeadlineStats:", result);
+    } catch (err) {
+      console.error("Failed to fetch reports stats:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchDeadlineStats();
+  }, []);
+  return (
+    <Paper sx={{ height: "100%", borderRadius: "14px" }}>
+      <Stack p={2}>
+        <Typography
+          fontFamily={"Inter, sans serif"}
+          fontWeight={"500"}
+          fontSize={"18px"}
+        >
+          Upcoming DeadLines
+        </Typography>
+        {/* <Typography
+          fontFamily={"Inter, sans serif"}
+          fontWeight={"500"}
+          fontSize={"28px"}
+        >
+          25
+        </Typography> */}
+        {/* <Typography fontFamily={'Inter, sans serif'} fontWeight={'400'} fontSize={'12px'} color={'#4F4F4F'}>
+               US Dollars
+            </Typography> */}
+      </Stack>
+      <Divider variant="fullWidth" />
+      {/* <OverBudgetPie /> */}
+      <Stack
+        direction={"row"}
+        justifyContent={"space-around"}
+        spacing={1}
+        pt={2}
+        pb={4}
+      >
+        <Stack direction={"row"} spacing={1}>
+          <CircleIcon
+            sx={{ color: "#2D9CDB", fontSize: "10px", paddingTop: "4px" }}
+          />
+          <Stack direction={"column"}>
+            <Typography
+              fontFamily={"Inter, sans serif"}
+              fontSize={"14px"}
+              fontWeight="bold"
+            >
+              Project Name
+            </Typography>
+            {projects.map((project, index) => (
+              <Typography
+                key={index}
+                fontFamily={"Inter, sans serif"}
+                fontSize={"14px"}
+              >
+                {project.projectName}
+              </Typography>
+            ))}
+          </Stack>
+        </Stack>
+        <Stack direction={"row"} spacing={1}>
+          <CircleIcon
+            sx={{ color: "#F65E5E", fontSize: "10px", paddingTop: "4px" }}
+          />
+          <Stack direction={"column"}>
+            <Typography
+              fontFamily={"Inter, sans-serif"}
+              fontSize={"14px"}
+              fontWeight="bold"
+            >
+              DeadLine
+            </Typography>
+            {projects.map((project, index) => (
+              <Typography
+                key={index}
+                fontFamily={"Inter, sans serif"}
+                fontSize={"13px"}
+              >
+                {moment(project.end_time).format("YYYY-MM-DD")}
+              </Typography>
+            ))}
+          </Stack>
+        </Stack>
+      </Stack>
+    </Paper>
+  );
+};
+
+export default OverBudgetPieChart;

@@ -9,49 +9,46 @@ const ProgressCardHeader = ({ project }) => {
   let data = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(data);
   const currentUser = userInfo?.user;
-  const [unreadMsg, setUnreadMsg] = useState(-1);
+  const [unreadMsg, setUnreadMsg] = useState(0);
   const navigate = useNavigate();
   // Assuming you have a socket connection already established
-  useEffect(() => {
-    socket.on("unreadMessageCount", (data) => {
-      console.log("-............cHECKL CONSOLE.!", data);
-    });
+  // useEffect(() => {
+  //   socket.on("unreadMessageCount", (data) => {
+  //     console.log("-............cHECKL CONSOLE.!", data);
+  //   });
 
-    return () => {};
-  }, []);
+  //   return () => {};
+  // }, []);
 
   const navigateToChat = () => {
     navigate(`projects/${id}/chat`);
   };
   //Api call for markMessagesAsRead
   const userId = currentUser?.id;
-  async function markMessagesAsRead(id, userId) {
-    try {
-      const response = await axios.post(
-        "http://3.135.107.71/projectChat/unreadMessageCount",
-        {
-          projectId: id,
-          userId: userId,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getTokenFromLocalStorage()}`,
-          },
-        }
-      );
-      console.log("Messages marked as read successfully", response.data);
-      setUnreadMsg(response?.data?.unreadCount);
-    } catch (error) {
-      console.error("Failed to mark messages as read", error);
-    }
-  }
+  // async function markMessagesAsRead(id, userId) {
+  //   try {
+  //     const response = await axios.post(
+  //       "http://192.168.0.113:8080/projectChat/unreadMessageCount",
+  //       {
+  //         projectId: id,
+  //         userId: userId,
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     console.log("Messages marked as read successfully", response.data);
+  //     setUnreadMsg(response?.data?.unreadCount);
+  //   } catch (error) {
+  //     console.error("Failed to mark messages as read", error);
+  //   }
+  // }
   useEffect(() => {
     console.log("`````", project);
-    if(unreadMsg === -1){
-
-      markMessagesAsRead(id, userId);
-    }
+    // markMessagesAsRead(id, userId);
+    setUnreadMsg(project?.unreadMessages);
   }, []);
 
   // Listen for unread message count updates
@@ -59,13 +56,11 @@ const ProgressCardHeader = ({ project }) => {
     // Update the dashboard or UI with the unread message count
     // updateUnreadMessageCountUI(data.projectId, data.unreadMessageCount);
     setUnreadMsg(data?.unreadCount);
-    console.log(
-      "data.unreadMessageCount data.unreadMessageCount",
-      data?.unreadCount
-    );
+    console.log("data.unreadMessageCount data.unreadMessageCount", data);
   };
 
-  // socket.on("unreadMessageCount", unreadMessageCountListener);
+  socket.emit(`${userId}-${id}`);
+  socket.on(`unreadMessageCount-${id}-${userId}`, unreadMessageCountListener);
 
   return (
     <Box textAlign={"left"} p={2}>

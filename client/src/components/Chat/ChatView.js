@@ -29,7 +29,7 @@ import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
 const currentUser = userInfo?.user;
-// const socket = io("http://3.135.107.71", {
+// const socket = io("http://192.168.0.113:8080", {
 //   query: { userId: currentUser?.id },
 // });
 function ChatView({ isAdminPage }) {
@@ -98,7 +98,7 @@ function ChatView({ isAdminPage }) {
   async function markMessagesAsRead(id, userId) {
     try {
       const response = await axios.post(
-        "http://3.135.107.71/projectChat/markMessagesAsRead",
+        "http://192.168.0.113:8080/projectChat/markMessagesAsRead",
         {
           projectId: id,
           userId: userId,
@@ -122,7 +122,7 @@ function ChatView({ isAdminPage }) {
   //
   const projectRole = userRoleProject.userRole;
   const fetchProjectChat = async (newOffset, direction) => {
-    setMsgLoading(true);
+    
     try {
       const res = await getChatMessages({
         projectId: id,
@@ -135,6 +135,7 @@ function ChatView({ isAdminPage }) {
         return;
       }
       if (direction === "up") {
+        
         setMessages((prevMessages) => {
           const revArray = [...res.data].reverse();
           const newMessages = [...revArray, ...prevMessages];
@@ -239,19 +240,10 @@ function ChatView({ isAdminPage }) {
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
-        const res = await axios.post(
-          "http://3.135.107.71/project/file",
-          {
-            fileName,
-            fileType,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${getTokenFromLocalStorage()}`,
-            },
-          }
-        );
+        const res = await axios.post("http://192.168.0.113:8080/project/file", {
+          fileName,
+          fileType,
+        });
         return res.data.data.url;
       } catch (error) {
         console.error("Error uploading file:", error);

@@ -230,7 +230,7 @@ console.log(adminProjectView)
   };
 
   const [checkedRow, setCheckedRow] = useState(null);
-
+  console.log(checkedRow);
   const handleCheckboxChange = (row) => {
     const phaseName = phaseData.phase_name;
     const phaseId = phaseData.id;

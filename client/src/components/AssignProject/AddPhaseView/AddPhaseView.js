@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Button, Stack, Typography, Box } from "@mui/material";
+import { Grid, Button, Stack, Typography, Box, Modal } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import PhaseCard from "../AddPhaseCard/AddPhaseCard";
@@ -8,6 +8,9 @@ import { useDeleteProjectPhaseMutation } from "../../../redux/apis/Project/proje
 import { useDispatch, useSelector } from "react-redux";
 import UpdatePhaseDialogue from "../../dialogues/UpdatePhaseDialogue/UpdatePhaseDialogue";
 import AddPhaseDialogue from "../../dialogues/AddPhaseDialogue/AddPhaseDialogue";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import { useRef } from "react";
+import generatePDF from "react-to-pdf";
 import {
   addInitialPhase,
   addPhase,
@@ -18,6 +21,11 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
+import BuilderProButton from "../../UI/Button/BuilderProButton";
+import GenerateInvoiceTable from "../../dialogues/GenerateInvoice/GenerateInvoiceTable";
+import GenerateInvoicePopup from "../../dialogues/GenerateInvoice/GenerateInvoicePopup";
+import ShareModal from "../../dialogues/ShareModal/ShareModal";
+import GenerateInvoiceDone from "../../dialogues/GenerateInvoice/GenerateInvoiceDone";
 //import "react-toastify/dist/ReactToastify.css";
 
 function AddPhaseView({
@@ -30,11 +38,13 @@ function AddPhaseView({
   changeOrder,
 }) {
   const [cardPhase, setCardPhase] = useState([]);
+  const [invoiceData, setInvoiceData] = useState();
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
   const [selectedPhaseData, setSelectedPhaseData] = useState(null);
   const { id } = useParams();
   const [deleteProjectPhase] = useDeleteProjectPhaseMutation();
   const phases = useSelector((state) => state.projectInitialProposal.phases);
+  const targetRef = useRef();
   const initialPhases = useSelector(
     (state) => state.projectInitialProposal.initialPhases
   );
@@ -46,6 +56,21 @@ function AddPhaseView({
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [generateInvoice, setGenerateInvoice] = useState(false);
+  const [shareToClient, setShareToClient] = useState(false);
+  const [done, setDone] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleInvoicePrint = () => {
+    generatePDF(targetRef, { filename: "page.pdf" });
+    console.log("Invoice Generated Successfully");
+  };
   const fetchData = async () => {
     setIsLoading(true);
     setSelectedPhaseId(null);
@@ -55,7 +80,7 @@ function AddPhaseView({
       if (InitialProposalView) {
         try {
           const response = await axios.get(
-            `http://3.135.107.71/project/getInitialPhases/${id}`,
+            `http://192.168.0.113:8080/project/getInitialPhases/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -71,7 +96,7 @@ function AddPhaseView({
         try {
           //console.log("fetching data...");
           const response = await axios.get(
-            `http://3.135.107.71/project/getPhases/${id}`,
+            `http://192.168.0.113:8080/project/getPhases/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -89,7 +114,7 @@ function AddPhaseView({
     } else {
       try {
         const response = await axios.get(
-          `http://3.135.107.71/project/getPhases/${projectId}`,
+          `http://192.168.0.113:8080/project/getPhases/${projectId}`,
           {
             headers: {
               Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -179,6 +204,11 @@ function AddPhaseView({
   const handleAddPhase = () => {
     setShowAddPhaseDialogue(true);
   };
+  const handleGenerateInvoice = () => {
+    console.log("InvoiceGenerated");
+    setGenerateInvoice(true);
+    handleOpen();
+  };
   const handleAddOpen = () => {
     setShowAddPhaseDialogue(true);
   };
@@ -246,6 +276,10 @@ function AddPhaseView({
     setShowUpdatePhaseDialogue(false);
     fetchData();
   };
+  console.log(
+    "This is selected lineitem info invoiceData invoiceData",
+    invoiceData
+  );
   return (
     <Grid container sx={{ ...firstGrid, width: "100%" }}>
       <Stack
@@ -562,6 +596,38 @@ const themeStyle = {
     },
     overflowY: "scroll",
   },
+};
+
+const scrollable = {
+  overflow: "scroll",
+  scrollbarWidth: "none", // For Firefox
+  "-ms-overflow-style": "none", // For IE and Edge
+  "&::-webkit-scrollbar": {
+    width: "6px",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "transparent",
+    transition: "background-color 0.3s",
+  },
+  "&:hover::-webkit-scrollbar-thumb": {
+    backgroundColor: "#ddd",
+  },
+};
+const style = {
+  position: "absolute",
+  top: { xl: "50%", lg: "50%", md: "50%", sm: "50%", xs: "80%" },
+  left: { xl: "50%", lg: "50%", md: "50%", sm: "50%", xs: "55%" },
+  transform: "translate(-50%, -50%)",
+  bgcolor: "background.paper",
+  border: "0px solid #000",
+  boxShadow: 24,
+  p: 4,
+  borderRadius: "14px",
+};
+
+const modalStyle = {
+  color: "gray",
+  fontSize: "15px",
 };
 
 export default AddPhaseView;
