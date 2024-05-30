@@ -27,7 +27,7 @@ const ShareModal = ({
 }) => {
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState("null");
 
   const projectId = pathSegments[2];
   const { data, isLoading, isError, refetch } =

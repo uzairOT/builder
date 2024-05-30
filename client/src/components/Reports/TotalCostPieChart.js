@@ -3,12 +3,15 @@ import React, { useEffect } from "react";
 import TotalCostPie from "./TotalCostPie";
 import CircleIcon from "@mui/icons-material/Circle";
 import { useGetProjectCostStatsMutation } from "../../redux/apis/Reports/reportsApiSlice";
+import { useParams } from "react-router-dom";
 
 const TotalCostPieChart = () => {
   let dataUser = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(dataUser);
   const currentUser = userInfo?.user;
   const userId = currentUser?.id;
+  const { id } = useParams();
+  const projectId = id;
 
   const [getProjectCostStats, { data, error, isLoading }] =
     useGetProjectCostStatsMutation();
@@ -16,6 +19,7 @@ const TotalCostPieChart = () => {
     try {
       const result = await getProjectCostStats({
         userId,
+        projectId,
       }).unwrap();
       console.log("Success getProjectCostStats:", result);
     } catch (err) {
@@ -54,7 +58,11 @@ const TotalCostPieChart = () => {
       </Stack>
       <Divider variant="fullWidth" />
       <Stack justifyContent={"center"} alignItems={"center"} height={"100%"}>
-        <TotalCostPie total={data?.totalCost} remaning={data?.remaning} spent={data?.spent} />
+        <TotalCostPie
+          total={data?.totalCost}
+          remaning={data?.remaning}
+          spent={data?.spent}
+        />
         <Stack direction={"column"} spacing={1} width={"70%"} pb={2}>
           <Stack direction={"row"} justifyContent={"space-between"}>
             <Stack direction={"row"} spacing={1} alignItems={"center"}>

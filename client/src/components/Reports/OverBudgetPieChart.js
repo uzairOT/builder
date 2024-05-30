@@ -4,11 +4,15 @@ import OverBudgetPie from "./OverBudgetPie";
 import CircleIcon from "@mui/icons-material/Circle";
 import { useGetProjectDeadlineStatsMutation } from "../../redux/apis/Reports/reportsApiSlice";
 import moment from "moment";
+import { useParams } from "react-router-dom";
+
 const OverBudgetPieChart = () => {
   let dataUser = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(dataUser);
   const currentUser = userInfo?.user;
   const userId = currentUser?.id;
+  const { id } = useParams();
+  const projectId = id;
 
   const [getProjectDeadlineStats, { data, error, isLoading }] =
     useGetProjectDeadlineStatsMutation();
@@ -17,6 +21,7 @@ const OverBudgetPieChart = () => {
     try {
       const result = await getProjectDeadlineStats({
         userId,
+        projectId,
       }).unwrap();
       setProjects(result);
       console.log("Success GetProjectDeadlineStats:", result);
@@ -28,6 +33,7 @@ const OverBudgetPieChart = () => {
   useEffect(() => {
     fetchDeadlineStats();
   }, []);
+  const height = `calc(93vh - 578px)`;
   return (
     <Paper sx={{ height: "100%", borderRadius: "14px" }}>
       <Stack p={2}>
@@ -57,6 +63,7 @@ const OverBudgetPieChart = () => {
         spacing={1}
         pt={2}
         pb={4}
+        sx={{ height: height, overflow: "auto" }}
       >
         <Stack direction={"row"} spacing={1}>
           <CircleIcon

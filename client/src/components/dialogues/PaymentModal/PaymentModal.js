@@ -56,19 +56,7 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
     });
   }, []);
 
-  useEffect(() => {
-    fetch("http://192.168.0.113:8080/payment/create-payment-intent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ amount: amount }),
-    }).then(async (result) => {
-      // console.log("-=-=-=-result ", result);
-      var { clientSecret } = await result.json();
-      setClientSecret(clientSecret);
-    });
-  }, [amount]);
+
 
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });

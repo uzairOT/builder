@@ -96,11 +96,9 @@ export default function GenerateInvoiceTable({
               <Typography
                 style={{
                   display: "inline-block",
-                  marginRight: "4px",
                   backgroundColor: "peachpuff",
-                  width: "30px",
                   border: "1px solid black",
-                  paddingRight: "2px",
+                  padding: "6px",
                 }}
               >
                 $

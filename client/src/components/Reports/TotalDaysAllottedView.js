@@ -3,12 +3,15 @@ import React, { useEffect, useState } from "react";
 import TotalDaysAllotted from "./TotalDaysAllotted";
 import DaysAllottedCalendar from "./DaysAllottedCalendar";
 import { useGetWorkDayStatsMutation } from "../../redux/apis/Reports/reportsApiSlice";
+import { useParams } from "react-router-dom";
 
 const TotalDaysAllottedView = () => {
   let dataUser = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(dataUser);
   const currentUser = userInfo?.user;
   const userId = currentUser?.id;
+  const { id } = useParams();
+  const projectId = id;
   const [getWorkDayStats, { data, error, isLoading }] =
     useGetWorkDayStatsMutation();
 
@@ -21,6 +24,7 @@ const TotalDaysAllottedView = () => {
         userId,
         startRange,
         endRange,
+        projectId,
       }).unwrap();
       console.log("Success22:", result);
     } catch (err) {
@@ -38,7 +42,7 @@ const TotalDaysAllottedView = () => {
       pb={2}
       pt={2}
     >
-      <TotalDaysAllotted data={data}/>
+      <TotalDaysAllotted data={data} />
       <Stack pr={1}>
         <DaysAllottedCalendar
           setStartRange={setStartRange}
