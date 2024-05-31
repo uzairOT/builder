@@ -31,8 +31,12 @@ function PieCenterLabel2({ children }) {
 
 const TotalCostPie = ({ spent, remaning, total }) => {
   const remainingAmount = (remaning / total) * 100;
-  const spentPercent = (spent / total) * 100;
-  const remaininPercent = (remaning / total) * 100;
+  const spentPercent = Number.isNaN((spent / total) * 100)
+    ? 0
+    : (spent / total) * 100;
+  const remaininPercent = Number.isNaN((remaning / total) * 100)
+    ? 0
+    : (remaning / total) * 100;
   const data = [
     { id: 0, value: 25, color: "#1F9EF3, #1B59F800" },
     { id: 1, value: 75, color: "#eff5ff" },

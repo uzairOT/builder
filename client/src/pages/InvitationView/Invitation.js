@@ -119,7 +119,7 @@ useEffect(() => {
 
     try {
       // Make POST request using Axios
-      await axios.post("http://192.168.0.113:8080/auth/addme", data, {
+      await axios.post("http://3.135.107.71/auth/addme", data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getTokenFromLocalStorage()}`,

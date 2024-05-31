@@ -1,8 +1,8 @@
 import { apiSlice } from "../apiSlice";
 import { useUpdateUserLineItemStatusMutation } from "./projectApiSlice";
 
-const PROJECTS_URL = "http://192.168.0.113:8080/project";
-const USERS_URL = 'http://192.168.0.113:8080/user';
+const PROJECTS_URL = "http://3.135.107.71/project";
+const USERS_URL = 'http://3.135.107.71/user';
 const wordOrderApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         requestWorkOrder: builder.mutation({

@@ -95,7 +95,7 @@ function AddPhaseView({
       if (InitialProposalView) {
         try {
           const response = await axios.get(
-            `http://192.168.0.113:8080/project/getInitialPhases/${id}`,
+            `http://3.135.107.71/project/getInitialPhases/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -111,7 +111,7 @@ function AddPhaseView({
         try {
           //console.log("fetching data...");
           const response = await axios.get(
-            `http://192.168.0.113:8080/project/getPhases/${id}`,
+            `http://3.135.107.71/project/getPhases/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -129,7 +129,7 @@ function AddPhaseView({
     } else {
       try {
         const response = await axios.get(
-          `http://192.168.0.113:8080/project/getPhases/${projectId}`,
+          `http://3.135.107.71/project/getPhases/${projectId}`,
           {
             headers: {
               Authorization: `Bearer ${getTokenFromLocalStorage()}`,

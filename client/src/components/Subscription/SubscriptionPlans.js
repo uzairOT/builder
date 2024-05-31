@@ -15,7 +15,7 @@ const SubscriptionPlans = ({
     const fetchCurrentPayment = async () => {
       try {
         const res = await fetch(
-          "http://192.168.0.113:8080/payment/checkPaymentPlan",
+          "http://3.135.107.71/payment/checkPaymentPlan",
           {
             method: "POST",
             headers: {

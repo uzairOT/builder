@@ -15,7 +15,7 @@ function RecentImagesAndComments() {
     const fetchData = async () => {
         try {
           const response = await axios.get(
-            `http://192.168.0.113:8080/project/files/image/${id}`,
+            `http://3.135.107.71/project/files/image/${id}`,
             {
               headers: {
                 "Content-Type": "application/json",

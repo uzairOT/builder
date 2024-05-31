@@ -62,8 +62,8 @@ export default function CheckoutForm({
 
       // Call the appropriate API when payment succeeds
       const apiUrl = isInvoicePayment
-        ? "http://192.168.0.113:8080/invoice/payInvoice"
-        : "http://192.168.0.113:8080/payment/addPayment";
+        ? "http://3.135.107.71/invoice/payInvoice"
+        : "http://3.135.107.71/payment/addPayment";
 
       const apiPayload = isInvoicePayment
         ? { invoiceId, totalAmount: currentPlan }

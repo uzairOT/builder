@@ -1,7 +1,7 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 
-const RedialBarsChart = () => {
+const RedialBarsChart = ({TotalProfit}) => {
   const options = {
     chart: {
       height: 350,
@@ -39,10 +39,10 @@ const RedialBarsChart = () => {
       
     },
  },
-    labels: ["Apples", "Oranges", "Bananas"],
+    labels: ["Total Profit", "Profit Earned"],
 };
  
-const series=[70, 80, 40];
+const series=[TotalProfit, 80];
 
   return (
     <div>

@@ -13,10 +13,17 @@ const ProgressCard = ({ project }) => {
     ? project?.totalProjectCost
     : 0;
 
-  const progress = Number.isNaN((completedLineItems / totalLineItems) * 100) ? 0 : (completedLineItems / totalLineItems) * 100;
-    // completedLineItems && totalLineItems
-    //   ? (completedLineItems / totalLineItems) * 100
-    //   : 0;
+  const progress = Number.isNaN((completedLineItems / totalLineItems) * 100)
+    ? 0
+    : (completedLineItems / totalLineItems) * 100;
+
+  const TotalProfit =
+    project.totalProfit == null ||
+    isNaN(project.totalProfit) ||
+    project.totalProfit === 0
+      ? 0
+      : project.totalProfit;
+
   return (
     <Box style={{ textDecoration: "none" }}>
       <ProgressCardHeader project={project} />
@@ -32,7 +39,7 @@ const ProgressCard = ({ project }) => {
           <PaymentDetails totalProjectCost={totalProjectCost} />
         </Stack>
         <Divider variant="fullWidth"></Divider>
-        <ProfitDetails />
+        <ProfitDetails TotalProfit={TotalProfit}/>
       </Link>
     </Box>
   );

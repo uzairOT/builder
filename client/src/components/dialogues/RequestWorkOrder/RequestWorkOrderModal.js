@@ -57,7 +57,7 @@ import { socket } from "../../../socket";
 
 const local = localStorage.getItem("userInfo");
 const currentUser = JSON.parse(local);
-// const socket = io("http://192.168.0.113:8080", {
+// const socket = io("http://3.135.107.71", {
 //   query: { userId: currentUser?.user?.id },
 // });
 
@@ -145,7 +145,7 @@ const RequestWorkOrderModal = ({
   }
 
   // });
-  const ENDPOINT = "http://192.168.0.113:8080/";
+  const ENDPOINT = "http://3.135.107.71/";
   //test new workd order
 
   // Object?.values(rowCheckboxes)?.forEach((phaseData) => {
