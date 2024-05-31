@@ -28,7 +28,7 @@ function PieCenterLabel2({ children }) {
   );
 }
 
-const PieChartDisplay = () => {
+const PieChartDisplay = ({totalProjectCost}) => {
   return (
     <Box 
     width={'80%'}
@@ -38,8 +38,8 @@ const PieChartDisplay = () => {
         series={[
           {
             data: [
-              { id: 0, value: 40, color: "#1F9EF3, #1B59F800" },
-              { id: 1, value: 60, color: "#eff5ff" },
+              { id: 0, value: totalProjectCost, color: "#1F9EF3, #1B59F800" },
+              // { id: 1, value: 60, color: "#eff5ff" },
             ],
             innerRadius: 55,
             outerRadius: 65,
@@ -55,7 +55,7 @@ const PieChartDisplay = () => {
         width={130}
         >
         <PieCenterLabel>Total Price</PieCenterLabel>
-        <PieCenterLabel2>$778,396.22</PieCenterLabel2>
+        <PieCenterLabel2>${totalProjectCost}</PieCenterLabel2>
       </PieChart>
     </Box>
   );

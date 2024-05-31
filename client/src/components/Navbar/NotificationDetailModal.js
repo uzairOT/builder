@@ -98,7 +98,7 @@ const NotificationDetailModal = ({
     const authUserRole = async () => {
       setDisable(true);
       try {
-        const response = await axios.post('http://192.168.0.112:8080/project/getUserProjectRole', 
+        const response = await axios.post('http://192.168.0.113:8080/project/getUserProjectRole', 
         {
           projectId: notification.WorkOrderReq.projectId,
           userId: userId

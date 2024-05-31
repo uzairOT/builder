@@ -65,7 +65,9 @@ function AddPhaseView({
 
   const dispatch = useDispatch();
 
-  const toggleWorkOrderDeclineRecall = useSelector(selectWorkOrderDeclineRecall);
+  const toggleWorkOrderDeclineRecall = useSelector(
+    selectWorkOrderDeclineRecall
+  );
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -93,7 +95,7 @@ function AddPhaseView({
       if (InitialProposalView) {
         try {
           const response = await axios.get(
-            `http://192.168.0.112:8080/project/getInitialPhases/${id}`,
+            `http://192.168.0.113:8080/project/getInitialPhases/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -109,7 +111,7 @@ function AddPhaseView({
         try {
           //console.log("fetching data...");
           const response = await axios.get(
-            `http://192.168.0.112:8080/project/getPhases/${id}`,
+            `http://192.168.0.113:8080/project/getPhases/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -127,7 +129,7 @@ function AddPhaseView({
     } else {
       try {
         const response = await axios.get(
-          `http://192.168.0.112:8080/project/getPhases/${projectId}`,
+          `http://192.168.0.113:8080/project/getPhases/${projectId}`,
           {
             headers: {
               Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -294,6 +296,12 @@ function AddPhaseView({
     "This is selected lineitem info invoiceData invoiceData",
     invoiceData
   );
+
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return date.toLocaleDateString(undefined, options);
+  };
   return (
     <>
       <Grid container sx={{ ...firstGrid, width: "100%" }}>
@@ -380,7 +388,7 @@ function AddPhaseView({
                 <RequestWorkOrderModal
                   rowCheckboxes={rowCheckboxes}
                   setRowCheckboxes={setRowCheckboxes}
-                phases={phases}
+                  phases={phases}
                   fetchData={fetchData}
                   refetchChangeOrder={refetchChangeOrder}
                 />
@@ -689,7 +697,11 @@ function AddPhaseView({
                         />
                         <Typography sx={modalStyle}>
                           {" "}
-                          {invoiceData?.invoiceCompleteObj?.InvoiceDate}
+                          {invoiceData?.invoiceCompleteObj?.InvoiceDate
+                            ? formatDate(
+                                invoiceData.invoiceCompleteObj.InvoiceDate
+                              )
+                            : "N/A"}
                         </Typography>
                       </Stack>
                       <Stack direction={"row"} spacing={0.5}>
@@ -699,7 +711,11 @@ function AddPhaseView({
                         />
                         <Typography sx={modalStyle}>
                           {" "}
-                          {invoiceData?.invoiceCompleteObj?.InvoiceDueDate}
+                          {invoiceData?.invoiceCompleteObj?.InvoiceDate
+                            ? formatDate(
+                                invoiceData.invoiceCompleteObj.InvoiceDueDate
+                              )
+                            : "N/A"}
                         </Typography>
                       </Stack>
                     </Stack>

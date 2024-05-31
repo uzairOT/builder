@@ -29,7 +29,7 @@ function ProfileView() {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://192.168.0.112:8080/project/file",
+          "http://192.168.0.113:8080/project/file",
           {
             fileName,
             fileType,
