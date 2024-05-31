@@ -203,7 +203,7 @@ export default function MyApp() {
               </Typography>
             </Grid>
             <Switch
-              slotProps={{ input: { name: "chat" } }}
+              slotProps={{ input: { name: "chatNotification" } }}
               checked={chatNotificationsChecked}
               onChange={handleNotifications}
             />
@@ -222,7 +222,7 @@ export default function MyApp() {
               </Typography>
             </Grid>
             <Switch
-              slotProps={{ input: { name: "employee" } }}
+              slotProps={{ input: { name: "employeeNotification" } }}
               checked={projectManagerChecked}
               onChange={handleNotifications}
             />
@@ -236,7 +236,7 @@ export default function MyApp() {
               </Typography>
             </Grid>
             <Switch
-              slotProps={{ input: { name: "supplier" } }}
+              slotProps={{ input: { name: "supplierNotification" } }}
               checked={teamMemberChecked}
               onChange={handleNotifications}
             />
@@ -250,7 +250,7 @@ export default function MyApp() {
               </Typography>
             </Grid>
             <Switch
-              slotProps={{ input: { name: "subcontractor" } }}
+              slotProps={{ input: { name: "subcontractorNotification" } }}
               checked={subContractorChecked}
               onChange={handleNotifications}
             />
