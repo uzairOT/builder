@@ -48,7 +48,7 @@ export default function CheckoutForm({
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: `${window.location.origin}/completion`,
+        // return_url: `${window.location.origin}/completion`,
       },
       redirect: "if_required",
     });
@@ -97,11 +97,12 @@ export default function CheckoutForm({
   };
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
+    <form id="payment-form">
       <PaymentElement id="payment-element" />
       <button
         disabled={isProcessing || !stripe || !elements}
         id="submit"
+        // type="submit"
         onClick={handleSubmit}
         style={{ borderRadius: "10px" }}
       >
