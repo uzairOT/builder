@@ -54,7 +54,10 @@ const TotalProjects = () => {
   //   useEffect(() => {
   //     fetchData();
   //   }, []);
-  console.log("==-=-=-=-KPIIII", data);
+
+  const completeProjectPercentage = Number.isNaN(data?.completedProjects / 100) ? '-' : data?.completedProjects / 100;
+
+  console.log("==-=-=-=-KPIIII", completeProjectPercentage);
 
   return (
     <>
@@ -132,7 +135,7 @@ const TotalProjects = () => {
                     </Typography>
                   </Stack>
                   <Typography textAlign={"right"}>
-                    {data?.completedProjects / 100}%
+                    {Number.isNaN(data?.completedProjects / 100) ? '-' : data?.completedProjects / 100}%
                   </Typography>
                 </Stack>
                 <Stack direction={"column"}>
@@ -146,7 +149,7 @@ const TotalProjects = () => {
                     </Typography>
                   </Stack>
                   <Typography textAlign={"center"}>
-                    {(data?.remainingProjects / data?.totalProjects) * 100}%
+                    {Number.isNaN((data?.remainingProjects / data?.totalProjects) * 100) ? '-': (data?.remainingProjects / data?.totalProjects) * 100}%
                   </Typography>
                 </Stack>
               </Stack>

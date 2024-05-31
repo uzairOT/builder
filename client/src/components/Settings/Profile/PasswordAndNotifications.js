@@ -102,20 +102,16 @@ export default function MyApp() {
         setChatNotificationsChecked(checked);
         handleUpdateNotifications(name, checked);
         break;
-      case "projectManager":
+      case "employee":
         setProjectManagerChecked(checked);
         handleUpdateNotifications(name, checked);
         break;
-      case "teamMember":
+      case "supplier":
         setTeamMemberChecked(checked);
         handleUpdateNotifications(name, checked);
         break;
       case "subcontractor":
         setSubContractorChecked(checked);
-        handleUpdateNotifications(name, checked);
-        break;
-      case "client":
-        setClientChecked(checked);
         handleUpdateNotifications(name, checked);
         break;
       default:
@@ -222,11 +218,11 @@ export default function MyApp() {
           <Grid item xs={12} md={6} lg={8} xl={5} sx={{ display: "flex" }}>
             <Grid item xs={12} md={6} lg={8} xl={5}>
               <Typography sx={switchLabelstyles} variant="body1">
-                Project Manager
+                Employee
               </Typography>
             </Grid>
             <Switch
-              slotProps={{ input: { name: "projectManager" } }}
+              slotProps={{ input: { name: "employee" } }}
               checked={projectManagerChecked}
               onChange={handleNotifications}
             />
@@ -236,11 +232,11 @@ export default function MyApp() {
           <Grid item xs={12} md={6} lg={8} xl={5} sx={{ display: "flex" }}>
             <Grid item xs={12} md={6} lg={8} xl={5}>
               <Typography sx={switchLabelstyles} variant="body1">
-                Team Member
+                Supplier
               </Typography>
             </Grid>
             <Switch
-              slotProps={{ input: { name: "teamMember" } }}
+              slotProps={{ input: { name: "supplier" } }}
               checked={teamMemberChecked}
               onChange={handleNotifications}
             />
@@ -260,7 +256,7 @@ export default function MyApp() {
             />
           </Grid>
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Grid item xs={12} md={6} lg={8} xl={5} sx={{ display: "flex" }}>
             <Grid item xs={12} md={6} lg={8} xl={5}>
               <Typography sx={switchLabelstyles} variant="body1">
@@ -273,7 +269,7 @@ export default function MyApp() {
               onChange={handleNotifications}
             />
           </Grid>
-        </Grid>
+        </Grid> */}
         <Grid
           item
           xs={12}

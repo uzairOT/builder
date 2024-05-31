@@ -45,7 +45,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://192.168.0.112:8080/project/file",
+          "http://192.168.0.113:8080/project/file",
           {
             fileName,
             fileType,
@@ -132,7 +132,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
       console.log(fileUrl);
       const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
       const fileType = getFileType(heading);
-      const apiUrl = `http://192.168.0.112:8080/project/files/${id}`;
+      const apiUrl = `http://192.168.0.113:8080/project/files/${id}`;
       if(!uploadedFileUrl){
         toast.error('Error uploading Image.')
         return
@@ -141,7 +141,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
         fileUrl: uploadedFileUrl,
         fileType: fileType,
         notes: notes,
-        // primary: primary,
+        primary: primary,
       };
       const response = await axios
         .post(apiUrl, requestBody, {

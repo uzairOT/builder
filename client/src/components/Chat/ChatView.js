@@ -29,7 +29,7 @@ import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
 const currentUser = userInfo?.user;
-// const socket = io("http://192.168.0.112:8080", {
+// const socket = io("http://192.168.0.113:8080", {
 //   query: { userId: currentUser?.id },
 // });
 function ChatView({ isAdminPage }) {
@@ -98,7 +98,7 @@ function ChatView({ isAdminPage }) {
   async function markMessagesAsRead(id, userId) {
     try {
       const response = await axios.post(
-        "http://192.168.0.112:8080/projectChat/markMessagesAsRead",
+        "http://192.168.0.113:8080/projectChat/markMessagesAsRead",
         {
           projectId: id,
           userId: userId,
@@ -240,7 +240,7 @@ function ChatView({ isAdminPage }) {
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
-        const res = await axios.post("http://192.168.0.112:8080/project/file", {
+        const res = await axios.post("http://192.168.0.113:8080/project/file", {
           fileName,
           fileType,
         });
