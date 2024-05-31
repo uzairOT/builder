@@ -8,38 +8,57 @@ const StyledText = styled("text")(({ theme, color }) => ({
   fill: color,
   textAnchor: "middle",
   dominantBaseline: "central",
-  fontSize: '24px',
+  fontSize: "18px",
   fontFamily: "Inter, sans serif",
   color: theme.palette.text.color,
-  fontWeight: '500'
+  fontWeight: "500",
 }));
-
-function PieCenterLabel({ children }) {
+function PieCenterLabel({ children, x, y, color }) {
   return (
-    <StyledText x={90} y={125} color="#F8961E">
+    <StyledText x={x} y={y} color={color}>
       {children}
     </StyledText>
   );
 }
-function PieCenterLabel2({ children }) {
-  return (
-    <StyledText x={180} y={125} color="#F94144">
-      {children}
-    </StyledText>
-  );
-}
+// function PieCenterLabel({ children }) {
+//   return (
+//     <StyledText x={60} y={125} color="#F8961E">
+//       {children}
+//     </StyledText>
+//   );
+// }
+// function PieCenterLabel2({ children }) {
+//   return (
+//     <StyledText x={120} y={125} color="#F94144">
+//       {children}
+//     </StyledText>
+//   );
+// }
+// function PieCenterLabel3({ children }) {
+//   return (
+//     <StyledText x={180} y={125} color="green">
+//       {children}
+//     </StyledText>
+//   );
+// }
 
-const BudgetPieChart = () => {
-   const data= [
-        { id: 0, value: 80, color: "#F8961E" },
-        { id: 1, value: 20, color: "#F94144" },
-      ];
+const BudgetPieChart = ({
+  overduePercentage,
+  paidPercentage,
+  unpaidPercentage,
+}) => {
+  const data = [
+    { id: 0, value: parseFloat(unpaidPercentage), color: "#F8961E" },
+    { id: 1, value: parseFloat(overduePercentage), color: "#F94144" },
+    { id: 2, value: parseFloat(paidPercentage), color: "green" },
+  ];
+
   return (
-    <Stack 
-    width={'100%'}
-    height="100%"
-    justifyContent={'center'}
-    alignItems={'center'}
+    <Stack
+      width={"100%"}
+      height="100%"
+      justifyContent={"center"}
+      alignItems={"center"}
     >
       <PieChart
         series={[
@@ -49,17 +68,25 @@ const BudgetPieChart = () => {
             outerRadius: 120,
             paddingAngle: 0,
             cornerRadius: 2,
-            startAngle: -90,
-            endAngle: 90,
-            cx: 130,
-            cy: 130,
+            startAngle: 90,
+            endAngle: 446,
+            cx: 150,
+            cy: 150,
+            labelRadius: 140,
           },
         ]}
-        height={160}
-        width={272}
-        >
-        <PieCenterLabel>80%</PieCenterLabel>
-        <PieCenterLabel2>20%</PieCenterLabel2>
+        height={300}
+        width={300}
+      >
+        <PieCenterLabel x={150} y={120} color="#F8961E">
+          {`${unpaidPercentage}% `}
+        </PieCenterLabel>
+        <PieCenterLabel x={150} y={150} color="#F94144">
+          {`${overduePercentage}% `}
+        </PieCenterLabel>
+        <PieCenterLabel x={150} y={180} color="green">
+          {`${paidPercentage}% `}
+        </PieCenterLabel>
       </PieChart>
     </Stack>
   );

@@ -25,6 +25,10 @@ const ShareModal = ({
   rowCheckboxes,
   setInvoiceData,
 }) => {
+  let loggedInUser = localStorage.getItem("userInfo");
+  let userInfo = JSON.parse(loggedInUser);
+  const currentUser = userInfo?.user;
+
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
   const [selectedUser, setSelectedUser] = useState("null");
@@ -36,7 +40,12 @@ const ShareModal = ({
   const rowsArray = Object.values(rowCheckboxes).flatMap(({ rows }) => rows);
   const invoiceDataCall = async () => {
     try {
-      const result = await clientInvoice({ rowsArray, selectedUser }).unwrap();
+      const result = await clientInvoice({
+        rowsArray,
+        selectedUser,
+        adminId: currentUser.id,
+        projectId,
+      }).unwrap();
       console.log("Success:", result);
       setInvoiceData(result);
     } catch (err) {
