@@ -85,6 +85,7 @@ import ChatViewMain from "./components/Projects/ProjectsChat/ChatViewMain.js";
 import PermitClient from "./components/ClientDashboard/Permit/Permit";
 import NotFound from "./pages/NotFound/NotFound.js";
 import ProjectsChangeOrderView from "./components/Projects/ProjectsChangeOrder/ProjectsChangeOrderView.js";
+import InvoicePayment from "./components/dialogues/GenerateInvoice/InvoicePayment/InvoicePayment.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -165,6 +166,7 @@ function App() {
         <Route path="/setnewpassword" element={<SetNewPassword />} />
         <Route path="/help" element={<Help />} />
         <Route path="/privacyandterms" element={<PrivacyTerms />} />
+        <Route path="/invoicePayment/:invoiceId/:totalAmount" element={<InvoicePayment />} />
 
         {isAuthenticated ? (
           <Route path="/" element={<Layout1 />}>

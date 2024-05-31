@@ -17,7 +17,7 @@ const Reports = () => {
       <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} p={1} >
         <Typography fontSize={'22px'} fontFamily={'Poppins, sans serif'} fontWeight={'600'} color={'#4C8AB1'}>Reports</Typography>
         <Stack direction={'row'} alignItems={'center'}>
-            <SearchIcon  sx={{color: '#535353C9'}}/>
+            {/* <SearchIcon  sx={{color: '#535353C9'}}/> */}
             <BuilderProButton variant={'contained'} backgroundColor={'#FFAC00'} fontSize={'13px'} fontFamily={'Inter, sans serif'}>Invoice History</BuilderProButton>
         </Stack>
       </Stack>

@@ -8,6 +8,8 @@ export default function CheckoutForm({
   currentPakage,
   orgName,
   userId,
+  isInvoicePayment = false,
+  invoiceId,
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -58,14 +60,23 @@ export default function CheckoutForm({
       console.log(paymentIntent, "----0-009-00-09-=");
       setMessage("Your payment was " + paymentIntent.status);
 
+      // Call the appropriate API when payment succeeds
+      const apiUrl = isInvoicePayment
+        ? "http://192.168.0.113:8080/invoice/payInvoice"
+        : "http://192.168.0.113:8080/payment/addPayment";
+
+      const apiPayload = isInvoicePayment
+        ? { invoiceId, totalAmount: currentPlan }
+        : payload;
+
       // Call the API with the payload when payment succeeds
       try {
-        const response = await fetch("http://192.168.0.112:8080/payment/addPayment", {
+        const response = await fetch(apiUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(apiPayload),
         });
 
         if (response.ok) {

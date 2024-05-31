@@ -32,6 +32,34 @@ const reportsApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getTotalProjectTransaction: builder.mutation({
+      query: (data) => ({
+        url: `${REPORTS_URL}/getTotalProjectTransaction`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getTotalProjectProfitMargin: builder.mutation({
+      query: (data) => ({
+        url: `${REPORTS_URL}/getTotalProjectProfitMargin`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getAllProjectsLineItems: builder.mutation({
+      query: (data) => ({
+        url: `${REPORTS_URL}/overAllUserProjectsLineItems`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getOutstandingInvoices: builder.mutation({
+      query: (data) => ({
+        url: `${REPORTS_URL}/getOutstandingInvoices`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -40,4 +68,8 @@ export const {
   useGetWorkDayStatsMutation,
   useGetProjectDeadlineStatsMutation,
   useGetProjectCostStatsMutation,
+  useGetTotalProjectTransactionMutation,
+  useGetTotalProjectProfitMarginMutation,
+  useGetAllProjectsLineItemsMutation,
+  useGetOutstandingInvoicesMutation,
 } = reportsApiSlice;

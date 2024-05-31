@@ -46,7 +46,7 @@ const ProgressCardHeader = ({ project }) => {
   //   }
   // }
   useEffect(() => {
-    console.log("`````", project);
+    // console.log("`````", project.Invoices.length);
     // markMessagesAsRead(id, userId);
     setUnreadMsg(project?.unreadMessages);
   }, []);
@@ -103,7 +103,7 @@ const ProgressCardHeader = ({ project }) => {
                   textAlign: "center",
                 }}
               >
-                03
+                {project?.pendingInvoices}
               </Typography>
             </Box>
           </Stack>

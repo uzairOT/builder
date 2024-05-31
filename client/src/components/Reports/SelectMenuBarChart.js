@@ -1,25 +1,34 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import { Select as BaseSelect, selectClasses } from '@mui/base/Select';
-import { Option as BaseOption, optionClasses } from '@mui/base/Option';
-import { styled } from '@mui/system';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { CssTransition } from '@mui/base/Transitions';
-import { PopupContext } from '@mui/base/Unstable_Popup';
+import * as React from "react";
+import PropTypes from "prop-types";
+import { Select as BaseSelect, selectClasses } from "@mui/base/Select";
+import { Option as BaseOption, optionClasses } from "@mui/base/Option";
+import { styled } from "@mui/system";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { CssTransition } from "@mui/base/Transitions";
+import { PopupContext } from "@mui/base/Unstable_Popup";
 
-export default function SelectMenuBarChart({listItems, color}) {
+export default function SelectMenuBarChart({ listItems }) {
   return (
-    <Select defaultValue={0} color={color}>
-      {
-        listItems.map((item, index) => (
-          <Option key={index} value={index} color={color}>
-            {item.listItem}
-          </Option>
-        ))
-      }
+    <Select defaultValue={0} MenuProps={MenuProps}>
+      {listItems?.map((title, index) => (
+        <Option key={index} value={index}>
+          {title}
+        </Option>
+      ))}
     </Select>
   );
 }
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 const Select = React.forwardRef(function CustomSelect(props, ref) {
   const slots = {
@@ -46,26 +55,26 @@ Select.propTypes = {
 };
 
 const blue = {
-  100: '#DAECFF',
-  200: '#99CCF3',
-  400: '#3399FF',
-  500: '#007FFF',
-  600: '#0072E5',
-  700: '#0059B2',
-  900: '#003A75',
+  100: "#DAECFF",
+  200: "#99CCF3",
+  400: "#3399FF",
+  500: "#007FFF",
+  600: "#0072E5",
+  700: "#0059B2",
+  900: "#003A75",
 };
 
 const grey = {
-  50: '#F3F6F9',
-  100: '#E5EAF2',
-  200: '#DAE2ED',
-  300: '#C7D0DD',
-  400: '#B0B8C4',
-  500: '#9DA8B7',
-  600: '#6B7A90',
-  700: '#434D5B',
-  800: '#303740',
-  900: '#1C2025',
+  50: "#F3F6F9",
+  100: "#E5EAF2",
+  200: "#DAE2ED",
+  300: "#C7D0DD",
+  400: "#B0B8C4",
+  500: "#9DA8B7",
+  600: "#6B7A90",
+  700: "#434D5B",
+  800: "#303740",
+  900: "#1C2025",
 };
 
 const Button = React.forwardRef(function Button(props, ref) {
@@ -93,12 +102,18 @@ const StyledButton = styled(Button, { shouldForwardProp: () => true })(
   border-radius: 0px;
   text-align: left;
   line-height: 1.5;
-  background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
-  border: 0px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
-  color: ${ownerState.color ? ownerState.color : theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+  background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
+  border: 0px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
+  color: ${
+    ownerState.color
+      ? ownerState.color
+      : theme.palette.mode === "dark"
+      ? grey[300]
+      : grey[900]
+  };
   position: relative;
   box-shadow: 0px 0px 0px ${
-    theme.palette.mode === 'dark' ? 'rgba(0,0,0, 0.5)' : 'rgba(0,0,0, 0.05)'
+    theme.palette.mode === "dark" ? "rgba(0,0,0, 0.5)" : "rgba(0,0,0, 0.05)"
   };
 
   transition-property: all;
@@ -106,14 +121,16 @@ const StyledButton = styled(Button, { shouldForwardProp: () => true })(
   transition-duration: 120ms;
 
   &:hover {
-    background: ${theme.palette.mode === 'dark' ? grey[800] : grey[50]};
-    border-color: ${theme.palette.mode === 'dark' ? grey[600] : grey[300]};
+    background: ${theme.palette.mode === "dark" ? grey[800] : grey[50]};
+    border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
   }
 
   &.${selectClasses.focusVisible} {
     outline: 0;
     border-color: ${blue[400]};
-    box-shadow: 0 0 0 3px ${theme.palette.mode === 'dark' ? blue[700] : blue[200]};
+    box-shadow: 0 0 0 3px ${
+      theme.palette.mode === "dark" ? blue[700] : blue[200]
+    };
   }
 
   & > svg {
@@ -123,10 +140,10 @@ const StyledButton = styled(Button, { shouldForwardProp: () => true })(
     top: 0;
     right: 10px;
   }
-  `,
+  `
 );
 
-const Listbox = styled('ul')(
+const Listbox = styled("ul")(
   ({ theme }) => `
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 0.875rem;
@@ -137,11 +154,11 @@ const Listbox = styled('ul')(
   border-radius: 12px;
   overflow: auto;
   outline: 0px;
-  background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
-  border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
-  color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+  background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
+  border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
+  color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
   box-shadow: 0px 2px 4px ${
-    theme.palette.mode === 'dark' ? 'rgba(0,0,0, 0.5)' : 'rgba(0,0,0, 0.05)'
+    theme.palette.mode === "dark" ? "rgba(0,0,0, 0.5)" : "rgba(0,0,0, 0.05)"
   };
   
   .closed & {
@@ -163,7 +180,7 @@ const Listbox = styled('ul')(
   .placement-bottom & {
     transform-origin: top;
   }
-  `,
+  `
 );
 
 const AnimatedListbox = React.forwardRef(function AnimatedListbox(props, ref) {
@@ -172,11 +189,11 @@ const AnimatedListbox = React.forwardRef(function AnimatedListbox(props, ref) {
 
   if (popupContext == null) {
     throw new Error(
-      'The `AnimatedListbox` component cannot be rendered outside a `Popup` component',
+      "The `AnimatedListbox` component cannot be rendered outside a `Popup` component"
     );
   }
 
-  const verticalPlacement = popupContext.placement.split('-')[0];
+  const verticalPlacement = popupContext.placement.split("-")[0];
 
   return (
     <CssTransition
@@ -205,35 +222,45 @@ const Option = styled(BaseOption)(
   }
 
   &.${optionClasses.selected} {
-    background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
-    color:${color ? color : theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    background-color: ${theme.palette.mode === "dark" ? blue[900] : blue[100]};
+    color:${
+      color ? color : theme.palette.mode === "dark" ? grey[300] : grey[900]
+    };
   }
 
   &.${optionClasses.highlighted} {
-    background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
-    color: ${color ? color : theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[100]};
+    color: ${
+      color ? color : theme.palette.mode === "dark" ? grey[300] : grey[900]
+    };
   }
 
   &:focus-visible {
-    outline: 3px solid ${theme.palette.mode === 'dark' ? blue[600] : blue[200]};
+    outline: 3px solid ${theme.palette.mode === "dark" ? blue[600] : blue[200]};
   }
   
   &.${optionClasses.highlighted}.${optionClasses.selected} {
-    background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
-    color: ${color ? color : theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    background-color: ${theme.palette.mode === "dark" ? blue[900] : blue[100]};
+    color: ${
+      color ? color : theme.palette.mode === "dark" ? grey[300] : grey[900]
+    };
   }
 
   &.${optionClasses.disabled} {
-    color:${color ? color : theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    color:${
+      color ? color : theme.palette.mode === "dark" ? grey[300] : grey[900]
+    };
   }
 
   &:hover:not(.${optionClasses.disabled}) {
-    background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
-    color: ${color ? color : theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[100]};
+    color: ${
+      color ? color : theme.palette.mode === "dark" ? grey[300] : grey[900]
+    };
   }
-  `,
+  `
 );
 
-const Popup = styled('div')`
+const Popup = styled("div")`
   z-index: 1;
 `;

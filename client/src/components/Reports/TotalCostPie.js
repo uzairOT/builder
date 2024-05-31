@@ -31,18 +31,13 @@ function PieCenterLabel2({ children }) {
 
 const TotalCostPie = ({ spent, remaning, total }) => {
   const remainingAmount = (remaning / total) * 100;
+  const spentPercent = (spent / total) * 100;
+  const remaininPercent = (remaning / total) * 100;
   const data = [
     { id: 0, value: 25, color: "#1F9EF3, #1B59F800" },
     { id: 1, value: 75, color: "#eff5ff" },
   ];
-  console.log(
-    "first:",
-    "+ remaning",
-    remainingAmount,
-    remaning,
-    spent,
-    total
-  );
+  console.log("first:", "+ remaning", remainingAmount, remaning, spent, total);
   return (
     <Stack
       width={"100%"}
@@ -70,8 +65,8 @@ const TotalCostPie = ({ spent, remaning, total }) => {
         height={240}
         width={290}
       >
-        <PieCenterLabel>{(spent / total) * 100}%</PieCenterLabel>
-        <PieCenterLabel2>{(remaning / total) * 100}%</PieCenterLabel2>
+        <PieCenterLabel>{spentPercent}%</PieCenterLabel>
+        <PieCenterLabel2>{remaininPercent}%</PieCenterLabel2>
       </PieChart>
     </Stack>
   );

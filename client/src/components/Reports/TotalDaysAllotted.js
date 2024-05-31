@@ -1,9 +1,8 @@
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import CircleIcon from "@mui/icons-material/Circle";
-import { useGetWorkDayStatsMutation } from "../../redux/apis/Reports/reportsApiSlice";
 
-const TotalDaysAllotted = ({data}) => {
+const TotalDaysAllotted = ({ data }) => {
   // let dataUser = localStorage.getItem("userInfo");
   // let userInfo = JSON.parse(dataUser);
   // const currentUser = userInfo?.user;
