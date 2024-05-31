@@ -206,7 +206,7 @@ const Navbar = () => {
     setUserType(event.target.value);
   };
   const handleTeamNotificationsRefetch = async () => {
-      // dispatch(setTeamNotifications([]));
+      dispatch(setTeamNotifications([]));
       await refetchTeamStatusData();
   }
   useEffect(()=>{
