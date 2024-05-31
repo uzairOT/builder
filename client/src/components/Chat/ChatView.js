@@ -145,7 +145,7 @@ function ChatView({ isAdminPage }) {
           return uniqueMessages;
         });
         if (boxRef.current) {
-          boxRef.current.scrollTop += 100; // Add some space for user to scroll up again
+          boxRef.current.scrollTop += 200; // Add some space for user to scroll up again
         }
         // if (boxRef.current) {
         //   boxRef.current.scrollTop +=
