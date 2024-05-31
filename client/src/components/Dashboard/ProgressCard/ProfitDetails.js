@@ -19,14 +19,14 @@ const ProfitDetails = () => {
               $491,739.09
             </Typography>
           </Stack>
-          <Stack direction={"row"} sx={themeStyle.innerStackLayout}>
+          {/* <Stack direction={"row"} sx={themeStyle.innerStackLayout}>
             <Typography textAlign={"left"} sx={themeStyle.innerTitle}>
               Gross Profit
             </Typography>
             <Typography textAlign={"left"} sx={themeStyle.innerSubtitle}>
               $286,657.13
             </Typography>
-          </Stack>
+          </Stack> */}
           <Stack direction={"row"} sx={themeStyle.innerStackLayout}>
             <Typography textAlign={"left"} sx={themeStyle.innerTitle}>
               Profit Earned

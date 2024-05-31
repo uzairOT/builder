@@ -69,18 +69,23 @@ const BudgetPieChartCard = () => {
     }
   };
 
-  const overduePercentage = (
-    (projects?.overdueInvoices / projects?.totalInvoices) *
-    100
-  ).toFixed(0);
-  const paidPercentage = (
-    (projects?.paidInvoices / projects?.totalInvoices) *
-    100
-  ).toFixed(0);
-  const unpaidPercentage = (
-    (projects?.unpaidInvoices / projects?.totalInvoices) *
-    100
-  ).toFixed(0);
+  const overduePercentage = projects?.totalInvoices
+    ? parseFloat(
+        ((projects?.overdueInvoices / projects?.totalInvoices) * 100).toFixed(0)
+      )
+    : 0;
+
+  const paidPercentage = projects?.totalInvoices
+    ? parseFloat(
+        ((projects?.paidInvoices / projects?.totalInvoices) * 100).toFixed(0)
+      )
+    : 0;
+
+  const unpaidPercentage = projects?.totalInvoices
+    ? parseFloat(
+        ((projects?.unpaidInvoices / projects?.totalInvoices) * 100).toFixed(0)
+      )
+    : 0;
 
   useEffect(() => {
     fetchOutstandingInvoices();

@@ -45,7 +45,7 @@ const TotalCostPieChart = () => {
           fontWeight={"500"}
           fontSize={"28px"}
         >
-          ${data?.totalCost}
+          ${isLoading ? <>...</> : data?.totalCost}
         </Typography>
         <Typography
           fontFamily={"Inter, sans serif"}
