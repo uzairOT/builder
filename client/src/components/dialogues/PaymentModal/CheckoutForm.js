@@ -1,6 +1,7 @@
 import { PaymentElement } from "@stripe/react-stripe-js";
 import { useState } from "react";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
+import { toast } from "react-toastify";
 
 export default function CheckoutForm({
   address,
@@ -48,7 +49,7 @@ export default function CheckoutForm({
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: `${window.location.origin}/completion`,
+        // return_url: `${window.location.origin}/completion`,
       },
       redirect: "if_required",
     });
@@ -58,7 +59,6 @@ export default function CheckoutForm({
       setMessage(error.message);
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
       console.log(paymentIntent, "----0-009-00-09-=");
-      setMessage("Your payment was " + paymentIntent.status);
 
       // Call the appropriate API when payment succeeds
       const apiUrl = isInvoicePayment
@@ -80,13 +80,22 @@ export default function CheckoutForm({
         });
 
         if (response.ok) {
+          setMessage("Your payment was " + paymentIntent.status);
           const responseData = await response.json();
           console.log("API Response:", responseData);
+          window.location.href = `${window.location.origin}/completion`;
         } else {
-          console.error("API Response Error:", response.statusText);
+          const responseData = await response.json();
+          setMessage("Payment can't be completed");
+          console.log(
+            "API Response Error:-=-=-=-=-=-==-=",
+            responseData?.message
+          );
+          toast.warning(`${responseData?.message}`);
         }
       } catch (apiError) {
-        console.error("API Call Error:", apiError);
+        console.log("API Call Error:", apiError);
+        alert("API Error2:", apiError);
       }
     } else {
       console.log(paymentIntent, "Nonono Fail");
@@ -97,11 +106,12 @@ export default function CheckoutForm({
   };
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
+    <form id="payment-form">
       <PaymentElement id="payment-element" />
       <button
         disabled={isProcessing || !stripe || !elements}
         id="submit"
+        // type="submit"
         onClick={handleSubmit}
         style={{ borderRadius: "10px" }}
       >
