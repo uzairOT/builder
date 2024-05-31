@@ -12,9 +12,9 @@ const ReportsPage = () => {
    <Grid container mt={'0.0000001px'} height={{xl:"93vh",lg:"93vh",md:"93vh",sm:'', xs:''}} backgroundColor={"#eff5ff"} spacing={2} overflow={'hidden'} >
    <Grid item xl={2} lg={3} md={12} sm={12} xs={12} height={"92vh"}>
           <Paper sx={{ height: "100%", borderRadius: "14px" }}>
-          <Typography variant='h6' sx={themeStyle.title}>Reports</Typography>
-            <Profile />
-            <ProjectsSidebar />
+          <Typography  style={themeStyle.title} fontSize={'22px'} fontWeight={'500'} p={2} pb={1.5}>Reports</Typography>
+            <Profile reports={true} />
+            <ProjectsSidebar reports={true} />
           </Paper>
     </Grid>
     <Grid item container xl={10} lg={9} md={12} sm={12} xs={12} spacing={2}  style={{overflow:'hidden', ...themeStyle.scrollable}}>
@@ -51,12 +51,10 @@ const themeStyle = {
       backgroundColor: '#ddd',
     },
     title: {
-      fontWeight: "400",
-      fontSize: "25px",
-      lineHeight: "normal",
-      padding: '8px',
-      fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
-      textAlign: "left",
-    }
+      fontSize: '22px',
+      fontWeight: '500',
+      fontFamily: 'inherit',
+      color: '#000000'
+  }
   }
 }

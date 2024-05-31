@@ -1,12 +1,42 @@
-import React from 'react'
-import { Typography, useTheme, Box, Avatar } from '@mui/material'
+import React, { useState } from 'react'
+import { Typography, useTheme, Box, Avatar, Grid } from '@mui/material'
 import Houseimg from "../ProfileView/assets/house.jpg";
-
 import "../../../App.css"
+import axios from 'axios';
+import { getTokenFromLocalStorage } from '../../../redux/apis/apiSlice';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 
 function RecentImagesAndComments() {
     const theme = useTheme();
+    const { id } = useParams();
+    const [recentFilesUrls, setRecentFilesUrls] = useState([]);
+    const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `http://192.168.0.112:8080/project/files/image/${id}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+              },
+            }
+          );
+          //replace 123 with the project id
+          // Assuming the response data is an array of file URLs
+          setRecentFilesUrls(response.data.recentFiles);
+        //   setOlderFilesUrls(response.data.olderFiles);
+        } catch (error) {
+          console.error("Error fetching file URLs:", error);
+          // Handle errors, such as displaying an error message
+        }
+      };
+      useEffect(() => {
+        fetchData();
+      }, [id]);
+      console.log(recentFilesUrls);
+      const slicedUrls = recentFilesUrls?.slice(0, 4);
     return (
         <>
 
@@ -22,7 +52,25 @@ function RecentImagesAndComments() {
             <Typography sx={themeStyle.typoText}>
                 Recent Images
             </Typography>
-            <Box sx={themeStyle.evenBox}>
+            <Grid container gap={1} justifyContent={'center'}>
+                {slicedUrls?.map((url, index) => {
+                    return(
+                        <Grid item xl={5.5}>
+                <Avatar
+                    alt="Avatar"
+                    src={url.fileUrl}
+                    sx={themeStyle.smallimgBox} // Adjust size as needed
+                />
+                </Grid>
+                    )
+                })}
+                {/* <Avatar
+                    alt="Avatar"
+                    src={Houseimg}
+                    sx={themeStyle.smallimgBox} // Adjust size as needed
+                /> */}
+            </Grid>
+            {/* <Box sx={themeStyle.evenBox}>
                 <Avatar
                     alt="Avatar"
                     src={Houseimg}
@@ -33,19 +81,7 @@ function RecentImagesAndComments() {
                     src={Houseimg}
                     sx={themeStyle.smallimgBox} // Adjust size as needed
                 />
-            </Box>
-            <Box sx={themeStyle.evenBox}>
-                <Avatar
-                    alt="Avatar"
-                    src={Houseimg}
-                    sx={themeStyle.smallimgBox} // Adjust size as needed
-                />
-                <Avatar
-                    alt="Avatar"
-                    src={Houseimg}
-                    sx={themeStyle.smallimgBox} // Adjust size as needed
-                />
-            </Box>
+            </Box> */}
             {/* <Typography sx={{ ...themeStyle.typoText, color: "#4C8AB1" }}>
                 Recent Comments
             </Typography>
@@ -117,9 +153,9 @@ const themeStyle = {
     },
 
     smallimgBox: {
-        marginTop: "0.5rem",
-        width: '45%',
-        height: '100%',
+        
+        width: '100%',
+        height: '200px',
         borderRadius: '14px',
     },
     evenBox: {

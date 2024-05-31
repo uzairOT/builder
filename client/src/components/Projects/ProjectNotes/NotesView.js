@@ -21,12 +21,12 @@ const NotesView = () => {
   const forecastError = forecast.error;
   //console.log( "IN DASHBOARD EVENTS: ", events)
   return (
-    <Stack direction={{xl: 'row', lg:'column'}} pt={1} spacing={1} height='calc(93vh - 56px)'>
+    <Stack direction={{xl: 'row', lg:'column'}} pt={1} spacing={1} height='calc(92vh - 63px)' overflow={'hidden'}>
         <Stack flex={3}>
           <Notes />
         </Stack>
         <Stack  flex={1}>
-      <Paper sx={{ borderRadius:'14px' ,height:'calc(92vh - 64px)'}}>
+      <Paper sx={{ borderRadius:'14px' ,height:'calc(92vh - 70px)'}}>
       {loading ? (
                 <>Loading</>
               ) : (

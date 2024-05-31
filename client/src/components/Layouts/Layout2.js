@@ -66,7 +66,7 @@ useEffect(()=>{
         </Grid>
         <Grid item  xl={10} lg={9} md={8} sm={12} xs={12}  pr={1}  height={{xl:"93vh" ,lg:'93vh', md:'99vh', sm:'93vh', xs:'93vh' }} sx={themeStyle.scrollable} overflow={'hidden'}>
         <Stack><Paper sx={{ borderRadius: '14px', }}><ProjectsNavbar project={selectedProjectId} /></Paper></Stack>
-        {userRole.isLoading ?<Stack m={'auto'} width={'100%'} height={'100%'} justifyContent={'center'} alignItems={'center'}><CircularProgress /></Stack> : <Outlet context={[projectName]}  />}
+        {userRole.isLoading ?<Stack m={'auto'} width={'100%'}  justifyContent={'center'} alignItems={'center'}><CircularProgress /></Stack> : <Outlet context={[projectName]}  />}
         </Grid>
     </Grid>
 

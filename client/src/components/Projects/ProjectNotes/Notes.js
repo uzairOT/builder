@@ -48,7 +48,7 @@ const Notes = () => {
 
 
         <Stack flex={2}  >
-         <Paper sx={{ borderRadius:'14px', height:'98%'}}>
+         <Paper sx={{ borderRadius:'14px', height:'98.88%'}}>
            <OpenNotes notes={data?.notes[selectedButton]} />
         </Paper>
           </Stack>

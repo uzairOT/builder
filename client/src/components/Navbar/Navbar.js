@@ -18,6 +18,9 @@ import {
   MenuItem,
   Badge,
   Popper,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
 import { ReactComponent as BuilderProNavbarLogo } from "./assets/svgs/builder-pro-logo-navbar.svg";
 // import { ReactComponent as BuilderProNavbarShare } from "./assets/svgs/builder-pro-navbar-share.svg";
@@ -35,20 +38,25 @@ import { useDispatch, useSelector } from "react-redux";
 import Notification from "./Notifications";
 import {
   addNotifications,
+  addTeamNotifications,
   selectNotifications,
   selectNotificationsArr,
+  selectTeamNotifications,
   setNotifications,
   setNotificationsArr,
+  setTeamNotifications,
 } from "../../redux/slices/Notifications/notificationSlice";
 import {
   useGetNotificationsQuery,
   useGetNotificationsUnreadQuery,
+  useGetTeamStatusNotificationsQuery,
   useUpdateWorkOrderReadMutation,
 } from "../../redux/apis/Project/workOrderApiSlice";
 import { socket } from "../../socket";
+import TeamNotifications from "./TeamNotifications";
 const local = localStorage.getItem("userInfo");
 const currentUser = JSON.parse(local);
-// const socket = io("http://192.168.0.113:8080", {
+// const socket = io("http://192.168.0.112:8080", {
 //   query: { userId: currentUser?.user?.id },
 // });
 
@@ -68,15 +76,22 @@ const Navbar = () => {
   const dispatch = useDispatch();
   // const { emit, on } = useSocket();
   const notifications = useSelector(selectNotifications);
+  const teamNotifications = useSelector(selectTeamNotifications);
   const notificationsArr = useSelector(selectNotificationsArr);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { data: data1, refetch: refetchNotifcations } =
     useGetNotificationsUnreadQuery(userId);
   const { data, refetch } = useGetNotificationsQuery(userId);
+  const { data: teamStatusData, refetch: refetchTeamStatusData } =
+    useGetTeamStatusNotificationsQuery(userId);
   const [expanded, setExpanded] = useState(null);
 
   const [updateNotificationRead] = useUpdateWorkOrderReadMutation();
   dispatch(setNotificationsArr(data?.data));
+  // if (teamNotifications ? teamNotifications.length < 1 : true) {
+  //   dispatch(setTeamNotifications(teamStatusData?.data));
+  // }
+
   // console.log("JOHN NOTIFICATION TEST",anchorEl)
   const handleClick = async (event) => {
     if (anchorEl) {
@@ -153,12 +168,20 @@ const Navbar = () => {
     socket.emit("join", userId);
     socket.on("newNotification", async (data) => {
       await refetchCall();
-      dispatch(setNotifications(data));
+      dispatch(addNotifications(data));
+    });
+    socket.on("statusDoneNotificationResponse", async (socketReponse) => {
+      console.log("SOCKET RESPONSE: ", socketReponse);
+      dispatch(addTeamNotifications(socketReponse));
     });
     return () => {
       socket.off("newNotification", async (data) => {
         await refetchCall();
-        dispatch(setNotifications(data));
+        dispatch(addNotifications(data));
+      });
+      socket.off("statusDoneNotificationResponse", async (socketReponse) => {
+        console.log("SOCKET RESPONSE: ", socketReponse);
+        dispatch(addTeamNotifications(socketReponse));
       });
     };
   }, [dispatch]);
@@ -182,6 +205,13 @@ const Navbar = () => {
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
+  const handleTeamNotificationsRefetch = async () => {
+      // dispatch(setTeamNotifications([]));
+      await refetchTeamStatusData();
+  }
+  useEffect(()=>{
+    dispatch(setTeamNotifications(teamStatusData?.data));
+  },[teamStatusData])
 
   // Navbar styles
   const themeStyle = {
@@ -212,14 +242,17 @@ const Navbar = () => {
     },
     toolbar: {
       justifyContent: "space-between",
-      height:'inherit'
+      height: "inherit",
     },
   };
 
   return (
     <>
       <AppBar position="static" sx={themeStyle.navbar}>
-        <Toolbar sx={themeStyle.toolbar} style={{maxHeight:'64px !important'}}>
+        <Toolbar
+          sx={themeStyle.toolbar}
+          style={{ maxHeight: "64px !important" }}
+        >
           {showHamburger && <NavbarDrawer />}
           <Link to="/">
             <BuilderProNavbarLogo
@@ -275,9 +308,9 @@ const Navbar = () => {
             <IconButton aria-label="bell-notifications" onClick={handleClick}>
               <Badge
                 badgeContent={
-                  notifications?.length === 0
-                    ? data1?.count
-                    : notifications?.length
+                  (data1?.count ? data1.count : 0) +
+                  notifications?.length +
+                  (teamNotifications?.length ? teamNotifications?.length : 0)
                 }
                 color="error"
               >
@@ -295,9 +328,37 @@ const Navbar = () => {
               anchorEl={anchorEl}
               placement="bottom-end"
             >
+              {Array.isArray(teamNotifications) ? (
+                teamNotifications.map((teamNotification, index) => {
+                  if (index < 3) {
+                    return (
+                      <TeamNotifications
+                        teamNotification={teamNotification}
+                        index={index}
+                        userId ={userId}
+                        refetch={handleTeamNotificationsRefetch}
+                      />
+                    );
+                  } else {
+                    return index === 3 ? (
+                      <Stack textAlign={"right"}>
+                         <Typography  fontFamily={'inherit'} fontSize={'12px'} sx={{textDecoration:'underline', fontWeight:'600'}}>
+
+                        +{teamNotifications?.length - 3} more team notifications
+                         </Typography>
+                      </Stack>
+                    ) : (
+                      <> </>
+                    );
+                  }
+                })
+              ) : (
+                <></>
+              )}
+              <Divider />
               {Array.isArray(notificationsArr) ? (
                 notificationsArr?.map((notification, index) => {
-                  if (index < 6) {
+                  if (index < 3) {
                     return (
                       <Notification
                         key={notification.workOrder_id}
@@ -310,9 +371,11 @@ const Navbar = () => {
                       ></Notification>
                     );
                   } else {
-                    return index === 6 ? (
+                    return index === 3 ? (
                       <Stack textAlign={"right"}>
-                        +{notificationsArr.length - 6} more
+                        <Typography  fontFamily={'inherit'} fontSize={'12px'} sx={{textDecoration:'underline', fontWeight:'600'}}>
+                        +{notificationsArr.length - 3} more work order notifications
+                        </Typography>
                       </Stack>
                     ) : (
                       <> </>

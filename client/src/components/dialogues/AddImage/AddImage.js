@@ -13,6 +13,8 @@ import {
   Stack,
   IconButton,
   TextareaAutosize,
+  ToggleButton,
+  Switch,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
 import upload from "./assets/upload.png";
@@ -25,10 +27,12 @@ import { fileTypeIcons } from "./assets/fileTypes";
 import filePlaceHolder from "../../../assets/FileSvg/file.svg";
 import CloseIcon from "@mui/icons-material/Close";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
+import CheckIcon from '@mui/icons-material/Check';
 
 function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState(null);
+  const [primary, setPrimary] = useState(null);
   const objectFit = { objectFit: image ? "cover" : "none" };
   const dotBorder = { border: image ? "none" : "2px dashed #D9D9D9" };
   const [fileName, setFileName] = useState("");
@@ -41,7 +45,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://3.135.107.71/project/file",
+          "http://192.168.0.112:8080/project/file",
           {
             fileName,
             fileType,
@@ -49,7 +53,6 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${getTokenFromLocalStorage()}`,
             },
           }
         );
@@ -126,19 +129,24 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
       const formData = new FormData(event.currentTarget);
       const formJson = Object.fromEntries(formData.entries());
       const fileUrl = await uploadFileToServer(selectedFile);
+      console.log(fileUrl);
       const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
       const fileType = getFileType(heading);
-      const apiUrl = `http://192.168.0.113:8080/project/files/${id}`;
+      const apiUrl = `http://192.168.0.112:8080/project/files/${id}`;
+      if(!uploadedFileUrl){
+        toast.error('Error uploading Image.')
+        return
+      }
       const requestBody = {
         fileUrl: uploadedFileUrl,
         fileType: fileType,
         notes: notes,
+        // primary: primary,
       };
       const response = await axios
         .post(apiUrl, requestBody, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${getTokenFromLocalStorage()}`,
           },
         })
         .then()
@@ -258,6 +266,25 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
               onChange={(e) => setNotes(e.target.value)}
             />
           </Box>
+              <Stack direction={'row'} justifyContent={'start'} alignItems={'center'} gap={4}>
+                <Stack direction={'row'} justifyContent={'start'} alignItems={'center'}>
+
+              <Typography textAlign={"left"} fontFamily={"inherit"} fontSize={'12px'} pl={primary ? '':'13px'}>
+                {primary ? 'Unset' : 'Set'} Primary
+              </Typography>
+              
+          <Switch
+            value="primary"
+            selected={primary}
+            onChange={()=>{
+              setPrimary(prev => !prev);
+            }}
+  
+            >
+          </Switch>
+            </Stack>
+            <Stack>{primary ? <CheckIcon sx={{color:'green'}}/> : <CloseIcon sx={{color:'red'}} />}</Stack>
+            </Stack>
         </DialogContent>
         <DialogActions sx={themeStyle.generalBox}>
           <Button
@@ -286,7 +313,7 @@ const themeStyle = {
   },
   inputStyle: {
     width: "90%",
-    marginBottom: "2rem",
+
     padding: "0.5rem",
     fontSize: "14px",
     border: "1px solid #D8D8D8",

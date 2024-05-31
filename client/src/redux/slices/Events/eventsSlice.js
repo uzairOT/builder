@@ -7,7 +7,7 @@ export const fetchEvents = createAsyncThunk(
   async (body, thunkApi) => {
     try {
       const res = await axios.post(
-        `http://3.135.107.71/user/events/${body.userId}`,
+        `http://192.168.0.112:8080/user/events/${body.userId}`,
         body,
         {
           headers: {

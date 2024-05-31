@@ -30,7 +30,7 @@ export default ProjectsTable
 const themeStyle = {
   dashboard: {
     backgroundColor: "#eff5ff",
-    height: "100vh",
+    height: "93vh",
   },
 }
 

@@ -1,7 +1,8 @@
 import { apiSlice } from "../apiSlice";
+import { useUpdateUserLineItemStatusMutation } from "./projectApiSlice";
 
-const PROJECTS_URL = "http://192.168.0.113:8080/project";
-
+const PROJECTS_URL = "http://192.168.0.112:8080/project";
+const USERS_URL = 'http://192.168.0.112:8080/user';
 const wordOrderApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         requestWorkOrder: builder.mutation({
@@ -43,7 +44,19 @@ const wordOrderApiSlice = apiSlice.injectEndpoints({
                 method: 'GET',
             })
         }),
-       
+       getTeamStatusNotifications: builder.query({
+        query: (data) => ({
+            url: `${USERS_URL}/getTeamStatusNotifications/${data}`,
+            method: 'GET'
+        })
+       }),
+       updateTeamStatusNotifications: builder.mutation({
+        query: (data) => ({
+            url: `${USERS_URL}/updateTeamStatusNotifications/${data}`,
+            method: 'PUT',
+            body: data
+        })
+       })
     })
 })
 
@@ -53,5 +66,7 @@ export const {
     useUpdateRequestWorkOrderMutation,
     useUpdateWorkOrderReadMutation,
     useGetNotificationsQuery,
-    useGetNotificationsUnreadQuery
+    useGetNotificationsUnreadQuery,
+    useGetTeamStatusNotificationsQuery,
+    useUpdateTeamStatusNotificationsMutation,
 } = wordOrderApiSlice;

@@ -185,7 +185,7 @@ function App() {
                     <Route path="permit" element={<PermitClient />} />
                     <Route path="drawing-files" element={<Drawing />} />
                     <Route path="images" element={<Images />} />
-                    <Route path="change-order" element={<ChangeOrders />} />
+                    <Route path="change-order" element={<ChangeOrder />} />
                     <Route path="invoices" element={<Invoices />} />
                     <Route path="dailylog" element={<DailyLog />} />
                     <Route path="chat" element={<Chats />} />

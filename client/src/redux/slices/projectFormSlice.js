@@ -66,6 +66,9 @@ const projectFormSlice = createSlice({
       state.projectName ='';
       state.start_time = null;
       state.end_time = null;
+    },
+    setSkipInvite : (state) =>{
+      state.users =  [{ email: '', role: 'admin' }];
     }
   },
 });
@@ -86,7 +89,8 @@ export const {
   updateUserRole,
   resetUserAndRoleEmail,
   setEndTime,
-  setStartTime
+  setStartTime,
+  setSkipInvite
 } = projectFormSlice.actions;
 
 export const selectProjectForm = state => state.projectForm;

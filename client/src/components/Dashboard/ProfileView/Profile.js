@@ -5,7 +5,7 @@ import UserImage from "./assets/images/user-image.jpg";
 import DataAndTime from "../../UI/DataAndTime/DataAndTime";
 import { useSelector } from "react-redux";
 
-const Profile = () => {
+const Profile = ({reports}) => {
   const userInfo = useSelector((state) => state.auth.userInfo);
   const firstName = userInfo?.user?.firstName;
   const lastName = userInfo?.user?.lastName;
@@ -23,7 +23,7 @@ const Profile = () => {
           <Typography sx={themeStyle.containerSubtitle}>{email}</Typography>
         </Box>
       </Box>
-      <DataAndTime />
+      {!reports && <DataAndTime />}
     </>
   );
 };

@@ -15,6 +15,7 @@ import {
   selectUsers,
   resetUserAndRoleEmail,
   removeUser,
+  setSkipInvite,
 } from "../../../redux/slices/projectFormSlice";
 
 import { Button, Box, useMediaQuery, CircularProgress } from "@mui/material";
@@ -56,6 +57,7 @@ function AssignNewProjectStep2({
   };
 
   const handleSkip = () => {
+    dispatch(setSkipInvite());  
     setShowSkipInvite(true);
   };
 
@@ -129,7 +131,7 @@ function AssignNewProjectStep2({
     // console.log(users.slice(0, index).concat(users.slice(index + 1)));
     dispatch(removeUser(index))
   };
-
+  console.log(showSkipInvite);
   return (
     <>
       <StepTitles
@@ -199,6 +201,7 @@ function AssignNewProjectStep2({
           isTab={isTab}
           isMobile={isMobile}
           isLoading={isLoading}
+        
         />
       )}
     </>

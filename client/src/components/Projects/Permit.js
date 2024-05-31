@@ -43,7 +43,7 @@ function Permit({ view, type }) {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://3.135.107.71/project/files/${type}/${id}`,
+        `http://192.168.0.112:8080/project/files/${type}/${id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -65,7 +65,7 @@ function Permit({ view, type }) {
     fetchData();
   }, [id]);
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", borderRadius: '14px' }}>
       <Box sx={themeStyle.titleBox}>
         <Typography sx={themeStyle.titleTypo}>
           {view} ({RecentfileUrls?.length} items){" "}
@@ -283,7 +283,7 @@ const themeStyle = {
     justifyContent: "space-between",
     alignItems: "center",
     background: "#4C8AB1",
-    borderRadius: "6px 6px 0 0",
+    borderRadius: "14px 14px 0 0",
   },
   titleTypo: {
     color: "#FFFFFF",

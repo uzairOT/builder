@@ -20,6 +20,7 @@ import moment from 'moment';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEvents } from "../../redux/slices/Events/eventsSlice";
 import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice";
+import { toggleWorkOrderDeclineRecall } from "../../redux/slices/Notifications/notificationSlice";
 
 function Notification({
   notification,
@@ -70,8 +71,9 @@ function Notification({
         workOrder_id: notification.workOrder_id,
         status: "declined",
       });
-      // await refetch(userId);
-      window.location.reload();
+      await refetch(userId);
+      dispatch(toggleWorkOrderDeclineRecall());
+      // window.location.reload();
     } catch (err) {
       // console.log(err);
     }
@@ -110,6 +112,9 @@ function Notification({
       onChange={handleAccordionChange(index)}
     >
       <AccordionSummary>
+        <Stack>
+        {index === 0 &&  <Typography display={'block'} fontFamily={'inherit'} fontSize={'12px'} sx={{textDecoration:'underline', fontWeight:'600'}}>Work Order Notifications:</Typography>}
+        
         <Stack
           direction={"row"}
           justifyContent={"center"}
@@ -131,6 +136,7 @@ function Notification({
               : "work order request"}{" "}
             of project: {notification.projectName}
           </Typography>
+        </Stack>
         </Stack>
       </AccordionSummary>
       <AccordionDetails>

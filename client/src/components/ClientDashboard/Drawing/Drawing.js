@@ -12,7 +12,7 @@ function Drawing() {
         //     <FileBox titleHeading={"Drawing"} buttonName={"Add Drawing"} modalHeading={"Drawing Files"} />
         // </div>
         <Paper style={themeStyle.borders}>
-        <Permit view={'Permit'} type={'permit'} client={true}/>
+        <Permit view={'Drawing & Files'} type={'drawing'} client={true}/>
       </Paper>
     )
 }

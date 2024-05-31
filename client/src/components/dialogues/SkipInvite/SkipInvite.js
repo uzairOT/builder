@@ -17,10 +17,14 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import YellowBtn from "../../UI/button";
+import { useDispatch } from "react-redux";
+import { resetUserAndRoleEmail } from "../../../redux/slices/projectFormSlice";
 
 function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoading }) {
+  const dispatch = useDispatch()
   const [open, setOpen] = useState(false);
   const handleSkip = () => {
+    
     handleNextStep();
   };
 

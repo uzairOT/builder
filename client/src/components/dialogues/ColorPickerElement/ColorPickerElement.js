@@ -127,17 +127,26 @@ function ColorPickerElement({
         initial: InitialProposalView ? true : adminProjectView ? false : true,
       };
       //console.log(data)
-      const res = await addProjectPhase(data).unwrap().then().catch(e=>{ toast.error(e.message || e.data.message || e.error || 'Something went wrong!s')});
+      const res = await addProjectPhase(data).unwrap().then((res)=>{
+        console.log(res)
+        if(InitialProposalView){
+
+          dispatch(addInitialPhase(res.phase))
+        } else{
+  
+          dispatch(addPhase(res.phase))
+        }
+      }).catch(e=>{ toast.error(e.message || e.data.message || e.error || 'Something went wrong!')});
       //console.log('Response:', res.phase);
       setPhaseData((phaseData) => ({ ...phaseData, ...data }));
       //console.log(data);
-      if(InitialProposalView){
+      // if(InitialProposalView){
 
-        dispatch(addInitialPhase(res.phase))
-      } else{
+      //   dispatch(addInitialPhase(res.phase))
+      // } else{
 
-        dispatch(addPhase(res.phase))
-      }
+      //   dispatch(addPhase(res.phase))
+      // }
       handleAddClose();
     }
   };

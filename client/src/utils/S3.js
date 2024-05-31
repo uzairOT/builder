@@ -70,10 +70,13 @@ export const uploadToS3 = async (
   try {
     if (!presignedUrl) return;
     const config = {
-      headers: { "Content-Type": FileObject.type,  Authorization: `Bearer ${getTokenFromLocalStorage()}`, },
+      headers: { "Content-Type": FileObject.type},
       onUploadProgress,
     };
     const body = FileObject;
+    console.log("presignedUrl :", presignedUrl)
+    console.log("body :", body)
+    console.log("config :", config)
     const res = await axios.put(presignedUrl, body, config);
     if (res.status === 200) return presignedUrl.split("?").shift();
   } catch (error) {

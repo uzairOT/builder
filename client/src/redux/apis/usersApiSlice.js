@@ -1,7 +1,7 @@
 import { apiSlice } from './apiSlice';
-const USERS_URL = 'http://192.168.0.113:8080/user';
-const AUTH_URL = 'http://192.168.0.113:8080/auth';
-const PROJECTS_URL = "http://192.168.0.113:8080/project";
+const USERS_URL = 'http://192.168.0.112:8080/user';
+const AUTH_URL = 'http://192.168.0.112:8080/auth';
+const PROJECTS_URL = "http://192.168.0.112:8080/project";
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -38,7 +38,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     assignProject: builder.mutation({
       query: (data) => ({
-        url: `http://192.168.0.113:8080/user/assignproject`,
+        url: `http://192.168.0.112:8080/user/assignproject`,
         method: "POST",
         body: data,
       }),

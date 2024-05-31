@@ -15,7 +15,7 @@ const ChangeOrder = () => {
     changeOrder: true
   });
   return (
-    <Paper style={{ ...themeStyle.borders, width: "99%", marginBottom:'4px', height: '100%', marginTop:'8px'}}>
+    <Paper style={{ ...themeStyle.borders, width: "99%", marginBottom:'4px',  marginTop:'8px'}}>
       <ProjectsChangeOrder data={data} refetch={refetch} />
     </Paper>
   )

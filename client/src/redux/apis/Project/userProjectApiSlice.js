@@ -1,8 +1,8 @@
 import UpdateMasterLine from "../../../components/dialogues/UpdateMasterLine/UpdateMasterLine";
 import { apiSlice } from "../apiSlice";
 
-const USER_PROJECTS_URL = "http://192.168.0.113:8080/user";
-const PROJECTS_URL = "http://192.168.0.113:8080/project";
+const USER_PROJECTS_URL = "http://192.168.0.112:8080/user";
+const PROJECTS_URL = "http://192.168.0.112:8080/project";
 
 export const userProjectsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -33,27 +33,27 @@ export const userProjectsApiSlice = apiSlice.injectEndpoints({
     }),
     getUnits : builder.query({
       query: (data) => ({
-        url: `http://192.168.0.113:8080/units/${data.userId}`,
+        url: `http://192.168.0.112:8080/units/${data.userId}`,
         method: 'GET'
       })
     }),
     addUnit : builder.mutation({
       query: (data) => ({
-        url: `http://192.168.0.113:8080/units`,
+        url: `http://192.168.0.112:8080/units`,
         method: 'POST',
         body: data
       })
     }),
     editUnit:  builder.mutation({
       query: (data) => ({
-        url: `http://192.168.0.113:8080/units/${data.id}`,
+        url: `http://192.168.0.112:8080/units/${data.id}`,
         method: 'PUT',
         body: data
       })
     }),
     deleteUnit:  builder.mutation({
       query: (data) => ({
-        url: `http://192.168.0.113:8080/units/${data.id}`,
+        url: `http://192.168.0.112:8080/units/${data.id}`,
         method: 'DELETE',
         body: data
       })

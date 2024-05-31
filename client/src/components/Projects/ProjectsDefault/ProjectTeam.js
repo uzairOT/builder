@@ -94,6 +94,7 @@ import { toast } from 'react-toastify';
               const res = await assignRolePost(userInviteBody).unwrap();
               console.log(res);
               toast.info(res?.data?.message || res?.message || 'Success');
+              refetch();
             } catch (error) {
               toast.error(error?.data?.message || 'Something went wrong!')
             }

@@ -4,7 +4,11 @@ import BuilderProButton from "../../UI/Button/BuilderProButton";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useUpdateUserLineItemStatusMutation } from "../../../redux/apis/Project/projectApiSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { socket } from "../../../socket";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
 
 const LineItemDetailModal = ({
   modalOpen,
@@ -13,8 +17,9 @@ const LineItemDetailModal = ({
   userRole,
   userId
 }) => {
-
+  const {id} = useParams();
   const [updateStatus, { isLoading }] = useUpdateUserLineItemStatusMutation();
+  const dispatch = useDispatch();
   const handleClose = () => {
     setModalOpen(false);
   };
@@ -25,7 +30,16 @@ const LineItemDetailModal = ({
         userId: userId,
         status: "done",
       });
-      console.log(res);
+      socket.emit('statusDoneNotification',{
+        projectId: id,
+        userId: userId,
+        LineItem_id: lineItem.id,
+        phaseId: lineItem.phase_id,
+      }, (response) => {
+        console.log(response.data);
+        dispatch(toggleWorkOrderDeclineRecall());
+      });
+      // console.log(res);
     } catch (error) {
       console.log(error);
     }

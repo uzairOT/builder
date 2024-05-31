@@ -50,14 +50,14 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
   const amount = currentPlan;
   useEffect(() => {
     console.log("==============1111111111 ", currentUser);
-    fetch("http://192.168.0.113:8080/payment/config").then(async (r) => {
+    fetch("http://192.168.0.112:8080/payment/config").then(async (r) => {
       const { publishableKey } = await r.json();
       setStripePromise(loadStripe(publishableKey));
     });
   }, []);
 
   useEffect(() => {
-    fetch("http://192.168.0.113:8080/payment/create-payment-intent", {
+    fetch("http://192.168.0.112:8080/payment/create-payment-intent", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -26,6 +26,7 @@ import GenerateInvoiceTable from "../../dialogues/GenerateInvoice/GenerateInvoic
 import GenerateInvoicePopup from "../../dialogues/GenerateInvoice/GenerateInvoicePopup";
 import ShareModal from "../../dialogues/ShareModal/ShareModal";
 import GenerateInvoiceDone from "../../dialogues/GenerateInvoice/GenerateInvoiceDone";
+import { selectWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
 //import "react-toastify/dist/ReactToastify.css";
 
 function AddPhaseView({
@@ -54,6 +55,8 @@ function AddPhaseView({
 
   const dispatch = useDispatch();
 
+  const toggleWorkOrderDeclineRecall = useSelector(selectWorkOrderDeclineRecall);
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false);
@@ -80,7 +83,7 @@ function AddPhaseView({
       if (InitialProposalView) {
         try {
           const response = await axios.get(
-            `http://192.168.0.113:8080/project/getInitialPhases/${id}`,
+            `http://192.168.0.112:8080/project/getInitialPhases/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -96,7 +99,7 @@ function AddPhaseView({
         try {
           //console.log("fetching data...");
           const response = await axios.get(
-            `http://192.168.0.113:8080/project/getPhases/${id}`,
+            `http://192.168.0.112:8080/project/getPhases/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -114,7 +117,7 @@ function AddPhaseView({
     } else {
       try {
         const response = await axios.get(
-          `http://192.168.0.113:8080/project/getPhases/${projectId}`,
+          `http://192.168.0.112:8080/project/getPhases/${projectId}`,
           {
             headers: {
               Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -138,7 +141,7 @@ function AddPhaseView({
     return () => {
       // Any cleanup code if needed
     };
-  }, [projectId]);
+  }, [projectId, toggleWorkOrderDeclineRecall]);
 
   const handleAddRow = () => {
     fetchData();
@@ -365,6 +368,7 @@ function AddPhaseView({
             {adminProjectView ? (
               <RequestWorkOrderModal
                 rowCheckboxes={rowCheckboxes}
+                setRowCheckboxes={setRowCheckboxes}
                 phases={phases}
                 fetchData={fetchData}
                 refetchChangeOrder={refetchChangeOrder}

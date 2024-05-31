@@ -55,7 +55,7 @@ useEffect(()=>{
             </Typography>
             <Typography sx={{...themeStyle.text, fontSize: '13px'}}>Feels like: {' '}
             <span sx={{fontSize: '18px', display: 'inline'}}>
-            {currentWeather?.feels_like}°C
+            {currentWeather?.feels_like}°{temperatureUnit === 'metric' ? 'C' : 'F'}
             </span>
             </Typography>
           </Box>
@@ -83,7 +83,7 @@ useEffect(()=>{
         {/* Wind Speed */}
         <Stack display="flex" flexDirection={'column'} alignItems="center" pl={6} spacing={1}>
           <Box component={'img'} src={WindImg} alt="Wind Speed" />
-          <Typography sx={{...themeStyle.text}} variant="body2">{currentWeather?.speed}km/h</Typography>
+          <Typography sx={{...themeStyle.text}} variant="body2">{currentWeather?.speed} {temperatureUnit === 'metric' ? 'm/s' : 'mph'}</Typography>
           <Typography sx={{...themeStyle.text}} variant="body2">Wind speed</Typography>
         </Stack>
       </Box>

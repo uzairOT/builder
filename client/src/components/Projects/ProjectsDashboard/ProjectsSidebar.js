@@ -10,7 +10,7 @@ import { addProjects } from "../../../redux/slices/Project/userProjectsSlice";
 import { addInitialPhase } from "../../../redux/slices/Project/projectInitialProposal";
 import { authUserRole } from "../../../redux/slices/auth/userRoleSlice";
 
-const ProjectsSidebar = () => {
+const ProjectsSidebar = ({reports}) => {
   const [activeBtn, setActiveBtn] = useState("remodel");
   const dispatch = useDispatch();
   const [getUserRole] = useGetProjectUserRoleMutation();
@@ -56,6 +56,7 @@ const ProjectsSidebar = () => {
   if (isLoading) {
     return <>Loading...</>;
   }
+  console.log(data)
   return (
     <>
       <Stack p={2}>
@@ -145,13 +146,13 @@ const ProjectsSidebar = () => {
         <Box
           sx={{
             ...themeStyle.scrollable,
-            height: 'calc(92vh - 214px)'
+            height: reports ? 'calc(92vh - 278px)' : 'calc(92vh - 214px)'
           }}
         >
           <Stack spacing={1} pl={2} pr={2} pt={1}>
             <>
               {data?.projects?.map((projectProfileCard) => {
-                const selected = projectProfileCard.id == id;
+                const selected = Number(projectProfileCard.id) === Number(id);
                 if (projectProfileCard.buildType === activeBtn) {
                   return (
                     <Link

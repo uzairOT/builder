@@ -57,7 +57,7 @@ import { socket } from "../../../socket";
 
 const local = localStorage.getItem("userInfo");
 const currentUser = JSON.parse(local);
-// const socket = io("http://192.168.0.113:8080", {
+// const socket = io("http://192.168.0.112:8080", {
 //   query: { userId: currentUser?.user?.id },
 // });
 
@@ -70,6 +70,7 @@ const RequestWorkOrderModal = ({
   setPhaseItems,
   fetchData,
   refetchChangeOrder,
+  setRowCheckboxes
 }) => {
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
@@ -144,7 +145,7 @@ const RequestWorkOrderModal = ({
   }
 
   // });
-  const ENDPOINT = "http://192.168.0.113:8080/";
+  const ENDPOINT = "http://192.168.0.112:8080/";
   //test new workd order
 
   // Object?.values(rowCheckboxes)?.forEach((phaseData) => {
@@ -354,6 +355,7 @@ const RequestWorkOrderModal = ({
             );
           }
         });
+        
       } else {
         const socketRes = await socket.emit(
           "notification",
@@ -381,6 +383,7 @@ const RequestWorkOrderModal = ({
 
         // console.log(socketRes)
       }
+      setRowCheckboxes({});
       dispatch(setIsLoading(true));
       const res = await getEvents({ userId, dailyForecast });
       const data = res?.data?.formattedWorkOrders;

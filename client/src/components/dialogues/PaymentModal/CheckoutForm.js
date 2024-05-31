@@ -60,7 +60,7 @@ export default function CheckoutForm({
 
       // Call the API with the payload when payment succeeds
       try {
-        const response = await fetch("http://192.168.0.113:8080/payment/addPayment", {
+        const response = await fetch("http://192.168.0.112:8080/payment/addPayment", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
