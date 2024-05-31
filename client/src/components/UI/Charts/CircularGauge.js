@@ -3,7 +3,6 @@ import React from "react";
 import GaugeComponent from "react-gauge-component";
 
 const CircularGauge = ({ progress }) => {
-  console.log("aiaa kiaa?", progress);
   const gaugeOptions = {
     type: "radial",
     arc: {
