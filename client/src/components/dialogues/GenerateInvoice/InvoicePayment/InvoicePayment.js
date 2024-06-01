@@ -21,7 +21,7 @@ const InvoicePayment = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://3.135.107.71/payment/create-payment-intent", {
+    fetch("http://192.168.0.113:8080/payment/create-payment-intent", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,7 @@ const InvoicePayment = () => {
   }, [totalAmount]);
 
   useEffect(() => {
-    fetch("http://3.135.107.71/payment/config").then(async (r) => {
+    fetch("http://192.168.0.113:8080/payment/config").then(async (r) => {
       const { publishableKey } = await r.json();
       setStripePromise(loadStripe(publishableKey));
       setLoading(false);

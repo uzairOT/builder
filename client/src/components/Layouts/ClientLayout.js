@@ -12,8 +12,8 @@ const ClientLayout = () => {
         <Grid
           item
           xs={12}
-          sm={8}
-          md={6}
+          sm={12}
+          md={9}
           lg={9}
           height={themeStyle.dashboardViews}
         >

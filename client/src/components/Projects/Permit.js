@@ -43,7 +43,7 @@ function Permit({ view, type }) {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://3.135.107.71/project/files/${type}/${id}`,
+        `http://192.168.0.113:8080/project/files/${type}/${id}`,
         {
           headers: {
             "Content-Type": "application/json",

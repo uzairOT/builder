@@ -44,7 +44,7 @@ const SubscriptionSidebar = () => {
   useEffect(() => {
     const fetchPaymentHistory = async () => {
       try {
-        const res = await fetch("http://3.135.107.71/payment/paymentHistory", {
+        const res = await fetch("http://192.168.0.113:8080/payment/paymentHistory", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

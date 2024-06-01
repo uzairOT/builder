@@ -1,6 +1,6 @@
 import { apiSlice } from "../apiSlice";
 
-const REPORTS_URL = "http://3.135.107.71/report";
+const REPORTS_URL = "http://192.168.0.113:8080/report";
 
 const reportsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

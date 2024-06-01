@@ -10,7 +10,7 @@ import { PopupContext } from "@mui/base/Unstable_Popup";
 export default function SelectMenuBarChart({ listItems }) {
   return (
     <Select defaultValue={0} MenuProps={MenuProps}>
-      {listItems?.map((title, index) => (
+      {Array.isArray(listItems) ? <>o</>: listItems?.map((title, index) => (
         <Option key={index} value={index}>
           {title}
         </Option>

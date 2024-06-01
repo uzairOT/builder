@@ -24,6 +24,13 @@ const ProgressCard = ({ project }) => {
       ? 0
       : project.totalProfit;
 
+  const totalProfitFromPaidInvoices =
+      project.totalProfitFromPaidInvoices == null ||
+      isNaN(project.totalProfitFromPaidInvoices) ||
+      project.totalProfitFromPaidInvoices === 0
+        ? 0
+        : project.totalProfitFromPaidInvoices;
+
   return (
     <Box style={{ textDecoration: "none" }}>
       <ProgressCardHeader project={project} />
@@ -39,7 +46,7 @@ const ProgressCard = ({ project }) => {
           <PaymentDetails totalProjectCost={totalProjectCost} />
         </Stack>
         <Divider variant="fullWidth"></Divider>
-        <ProfitDetails TotalProfit={TotalProfit}/>
+        <ProfitDetails TotalProfit={TotalProfit} totalProfitFromPaidInvoices={totalProfitFromPaidInvoices} />
       </Link>
     </Box>
   );

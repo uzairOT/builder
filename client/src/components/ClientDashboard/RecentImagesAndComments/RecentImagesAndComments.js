@@ -15,7 +15,7 @@ function RecentImagesAndComments() {
     const fetchData = async () => {
         try {
           const response = await axios.get(
-            `http://3.135.107.71/project/files/image/${id}`,
+            `http://192.168.0.113:8080/project/files/image/${id}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -25,7 +25,7 @@ function RecentImagesAndComments() {
           );
           //replace 123 with the project id
           // Assuming the response data is an array of file URLs
-          setRecentFilesUrls(response.data.recentFiles);
+          setRecentFilesUrls(response.data);
         //   setOlderFilesUrls(response.data.olderFiles);
         } catch (error) {
           console.error("Error fetching file URLs:", error);
@@ -36,15 +36,16 @@ function RecentImagesAndComments() {
         fetchData();
       }, [id]);
       console.log(recentFilesUrls);
-      const slicedUrls = recentFilesUrls?.slice(0, 4);
+      const slicedUrls = recentFilesUrls?.recentFiles?.slice(0, 4);
     return (
         <>
 
             <Box sx={themeStyle.box}>
                 <Avatar
                     alt="Avatar"
-                    src={Houseimg}
-                    sx={themeStyle.imgBox} // Adjust size as needed
+                    src={recentFilesUrls?.primaryImg?.fileUrl}
+                    style={themeStyle.imgBox} // Adjust size as needed
+              
                 />
 
 
@@ -141,9 +142,10 @@ const themeStyle = {
     imgBox: {
         marginTop: "0.5rem",
         width: '95%',
-        height: '100%',
+        height: '300px',
         borderRadius: '14px',
         alignItems: "center",
+        objectFit: 'contain'
     },
     typoText: {
         fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',

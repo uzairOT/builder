@@ -3,7 +3,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import RadialBarsChart from "../../UI/Charts/RadialBarsChart";
 import React from "react";
 
-const ProfitDetails = ({ TotalProfit }) => {
+const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
   return (
     <Stack pt={2} justifyContent={"center"}>
       <Typography pl={4} textAlign={"left"} sx={themeStyle.title}>
@@ -32,7 +32,7 @@ const ProfitDetails = ({ TotalProfit }) => {
               Profit Earned
             </Typography>
             <Typography textAlign={"left"} sx={themeStyle.innerSubtitle}>
-              ${TotalProfit}
+              ${totalProfitFromPaidInvoices}
             </Typography>
           </Stack>
         </Box>
@@ -57,10 +57,9 @@ const ProfitDetails = ({ TotalProfit }) => {
         alignItems={"flex-end"}
         justifyContent={"flex-start"}
       >
-        <RadialBarsChart TotalProfit={TotalProfit}/>
+        <RadialBarsChart TotalProfit={TotalProfit} totalProfitFromPaidInvoices={totalProfitFromPaidInvoices} />
         <Stack pb={4} width={"100%"}>
           <Stack spacing={1}>
-           
             <Stack
               direction={"row"}
               justifyContent={"flex-start"}
@@ -103,7 +102,7 @@ const ProfitDetails = ({ TotalProfit }) => {
                 pl={0.2}
                 fontFamily={"Inter, sans-serif"}
               >
-                {TotalProfit}
+                {totalProfitFromPaidInvoices}
               </Typography>
               <Typography fontSize={"9px"} fontFamily={"Inter, sans-serif"}>
                 Profit Earned

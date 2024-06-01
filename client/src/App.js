@@ -191,6 +191,8 @@ function App() {
                     <Route path="invoices" element={<Invoices />} />
                     <Route path="dailylog" element={<DailyLog />} />
                     <Route path="chat" element={<Chats />} />
+                    <Route path="project-report" element={<>Project reports are only accessible to team</>} />
+                    <Route path="notes" element={<>Project notes are only accessible to team</>} />
                     <Route
                     path="initial-proposal"
                     element={<InitialProposalView />}

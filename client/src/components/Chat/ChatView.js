@@ -29,7 +29,7 @@ import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
 const currentUser = userInfo?.user;
-// const socket = io("http://3.135.107.71", {
+// const socket = io("http://192.168.0.113:8080", {
 //   query: { userId: currentUser?.id },
 // });
 function ChatView({ isAdminPage }) {
@@ -94,11 +94,12 @@ function ChatView({ isAdminPage }) {
   };
 
   //Api call for markMessagesAsRead
+  console.log("messages: ", messages)
   const userId = currentUser?.id;
   async function markMessagesAsRead(id, userId) {
     try {
       const response = await axios.post(
-        "http://3.135.107.71/projectChat/markMessagesAsRead",
+        "http://192.168.0.113:8080/projectChat/markMessagesAsRead",
         {
           projectId: id,
           userId: userId,
@@ -122,7 +123,6 @@ function ChatView({ isAdminPage }) {
   //
   const projectRole = userRoleProject.userRole;
   const fetchProjectChat = async (newOffset, direction) => {
-    
     try {
       const res = await getChatMessages({
         projectId: id,
@@ -135,7 +135,6 @@ function ChatView({ isAdminPage }) {
         return;
       }
       if (direction === "up") {
-        
         setMessages((prevMessages) => {
           const revArray = [...res.data].reverse();
           const newMessages = [...revArray, ...prevMessages];
@@ -240,7 +239,7 @@ function ChatView({ isAdminPage }) {
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
-        const res = await axios.post("http://3.135.107.71/project/file", {
+        const res = await axios.post("http://192.168.0.113:8080/project/file", {
           fileName,
           fileType,
         });
@@ -396,9 +395,9 @@ function ChatView({ isAdminPage }) {
               ) : (
                 messages?.map((msg, index) => {
                   const isSender = msg?.User?.id === currentUser?.id;
-                  const activeName = msg?.User?.lastName
-                    ? msg?.User?.lastName
-                    : msg?.User?.firstName;
+                  const activeName = msg?.User?.firstName
+                    ? msg?.User?.firstName
+                    : msg?.User?.lastName;
                   const messageBoxStyles = {
                     bgcolor: isSender ? "#F2F2F2" : "#B8E0FA",
                     borderRadius: isSender

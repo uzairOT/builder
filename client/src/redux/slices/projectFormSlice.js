@@ -1,5 +1,6 @@
 // projectFormSlice.js
 import { createSlice } from '@reduxjs/toolkit';
+import dayjs from 'dayjs';
 
 const initialState = {
   projectName: '',
@@ -9,8 +10,8 @@ const initialState = {
   location: '',
   clientName: '',
   projectColor:'',
-  start_time: null,
-  end_time: null,
+  start_time: dayjs(Date.now()),
+  end_time: dayjs(Date.now()).add(1, 'day'),
   users: [{ email: '', role: 'admin' }],
 };
 
