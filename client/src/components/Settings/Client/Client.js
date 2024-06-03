@@ -46,9 +46,9 @@ function Client() {
           justifyContent: {xs:"center",md:"space-between"} ,
         }}
       >
-        <Typography variant="body1" sx={paginationTextStyle}>
+        {/* <Typography variant="body1" sx={paginationTextStyle}>
           Showing data 1 to 4 of 25 entries
-        </Typography>
+        </Typography> */}
         {/* <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/> */}
       </Box>
       <AddModal title={"Client"} open={isAddModalOpen} onClose={handleCloseAddModal} userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton}/>

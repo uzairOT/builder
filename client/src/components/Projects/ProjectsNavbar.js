@@ -61,6 +61,10 @@ const ProjectsNavbar = ({ project }) => {
       title: "Change Order",
       path: "change-order",
     },
+    {
+      title: "Invoices",
+      path: "invoices",
+    },
   ];
   const [selectedNav, setSelectedNav] = useState(navLinks.path);
   const handleNavClick = (path) => {

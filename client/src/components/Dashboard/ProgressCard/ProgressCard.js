@@ -33,9 +33,9 @@ const ProgressCard = ({ project }) => {
 
   return (
     <Box style={{ textDecoration: "none" }}>
+      <Link to={`/projects/${project.id}`} style={{ textDecoration: "none" }}>
       <ProgressCardHeader project={project} />
       <Divider variant="fullWidth"></Divider>
-      <Link to={`/projects/${project.id}`}>
         <Stack direction={"row"} pt={2}>
           <ProjectProgress progress={progress} />
           <Divider

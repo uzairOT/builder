@@ -64,6 +64,7 @@ import {
   setForecastLoading,
   setForecastError,
   getForecast,
+  setLatLon,
 } from "./redux/slices/DailyForecast/dailyForecastSlice.js";
 import GoogleLogin from "./components/Login/GoogleLogin/GoogleLogin.js";
 import ForgotPassword from "./components/Login/ForgotPassword/ForgotPassword.js";
@@ -86,6 +87,9 @@ import PermitClient from "./components/ClientDashboard/Permit/Permit";
 import NotFound from "./pages/NotFound/NotFound.js";
 import ProjectsChangeOrderView from "./components/Projects/ProjectsChangeOrder/ProjectsChangeOrderView.js";
 import InvoicePayment from "./components/dialogues/GenerateInvoice/InvoicePayment/InvoicePayment.js";
+import ProjectsInvoicesView from "./components/Projects/ProjectInvoices/ProjectsInvoices.js";
+import ProjectsInvoices from "./components/Projects/ProjectInvoices/ProjectsInvoices.js";
+import ProjectInvoicesView from "./components/Projects/ProjectInvoices/ProjectInvoicesView.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -113,23 +117,32 @@ function App() {
   const [events, setEvents] = useState();
   const [getEvents] = useGetUserEventsMutation();
   const allEvent = useSelector(allEvents);
-  const temperatureUnit = useSelector(state => state.dailyForecast.temperatureUnit);
+  const query = useSelector(state => state.dailyForecast.query);
   const forecast = useSelector(getForecast);
   const dailyForecast = forecast.dailyForecast || [];
   const dispatch = useDispatch();
-  
+  useEffect(()=>{
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition((position) =>{
+        let lat = position.coords.latitude;
+        let lon = position.coords.longitude;
+
+        dispatch(setLatLon({lat,lon}));
+      })
+    }
+
+  })
+
   const fetchWeather = async () => {
     // setLoading(true);
     dispatch(setIsLoading(true));
     dispatch(setForecastLoading(true));
     
     try {
-      console.log("IN APP JS: ", temperatureUnit);
-      const data = await getFormattedFiveDayWeather({
-        lat: "36.7783",
-        lon: "119.4179",
-        units: temperatureUnit,
-      });
+      if(query.lat === '')
+      return;
+
+      const data = await getFormattedFiveDayWeather({lat: query.lat, lon: query.lon, units: query.temperatureUnit});
       dispatch(setDailyForecast(data));
       dispatch(setForecastLoading(false));
     } catch (error) {
@@ -144,7 +157,7 @@ function App() {
     if (dailyForecast.length < 1) {
       fetchWeather();
     }
-  }, [dailyForecast, temperatureUnit]); // Run this effect whenever dailyForecast changes or on initial mount
+  }, [dailyForecast, query.temperatureUnit, query.lat]); // Run this effect whenever dailyForecast changes or on initial mount
 
   useEffect(() => {
     // getFormattedEvents();
@@ -152,6 +165,8 @@ function App() {
       dispatch(fetchEvents({ userId: userId, dailyForecast: dailyForecast }));
     }
   }, [userId, dailyForecast]); // Run this effect whenever userId or dailyForecast changes
+
+
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -199,6 +214,7 @@ function App() {
                     // loader={projectUserRoleAuth}
                   />
                     <Route path="work-order" element={<WorkOrderView />} />
+                    <Route path="invoices" element={<ChangeOrder />} />
                   </Route>
                 </>
               ) : (
@@ -222,6 +238,7 @@ function App() {
                   <Route path="notes" element={<NotesView />} />
                   <Route path="project-report" element={<ReportView />} />
                   <Route path="change-order" element={<ChangeOrder />}></Route>
+                  <Route path="invoices" element={<ProjectInvoicesView />} />
                 </>
               )}
             </Route>

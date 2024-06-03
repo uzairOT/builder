@@ -12,6 +12,7 @@ import ScheduleIcon from "@mui/icons-material/Schedule";
 import NotificationDetailModal from "../../Navbar/NotificationDetailModal";
 import { useGetWorkOrderDetailsMutation } from "../../../redux/apis/Project/projectApiSlice";
 import { useParams } from "react-router-dom";
+import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 
 const CustomEventDayTasks = ({ event, isProjectPage }) => {
   const { id } = useParams();
@@ -99,6 +100,7 @@ const CustomEventDayTasks = ({ event, isProjectPage }) => {
                 >
                   {event?.data?.task}
                 </Typography>
+
               </Stack>
             </Stack>
             {data === null ? (
@@ -183,6 +185,9 @@ const CustomEventDayTasks = ({ event, isProjectPage }) => {
                 {event?.data?.task}
               </Typography>
             </Stack>
+              <Stack alignItems={'end'} justifyContent={'end'}>
+              { event?.data?.priority === 'urgent' && <FlagOutlinedIcon sx={{ color: "#EB1717", fontSize:'14px' }} />}
+              </Stack>
           </Stack>
           {data === null ? (
             <></>

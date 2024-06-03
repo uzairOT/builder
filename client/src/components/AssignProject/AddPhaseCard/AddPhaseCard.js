@@ -40,6 +40,7 @@ import LineItemDetailModal from "../../dialogues/LineItemDetailModal/LineItemDet
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import LineItemTeamStatus from "../../dialogues/LineItemTeamStatus/LineItemTeamStatus";
+import { useLocation } from "react-router-dom";
 //import "react-toastify/dist/ReactToastify.css";
 
 const initialRows = [
@@ -93,7 +94,8 @@ const AddPhaseCard = ({
   projectId,
   InitialProposalView,
   authUserRole,
-  changeOrder
+  changeOrder,
+  view
 }) => {
   const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
   const [showAddLine, setShowAddLine] = useState(false);
@@ -115,6 +117,9 @@ console.log(adminProjectView)
   let maxEndDay = moment(phaseData?.LineItems[0]?.end_day);
   let totalHours = 0;
   console.log("changeOrder " , changeOrder);
+  const location = useLocation();
+  const path  = location.pathname.split('/')[1];
+console.log(path)
 
   phaseData.LineItems.forEach((row) => {
     totalCost += (parseInt(row.total) + parseInt(row.margin)); // Accumulate the total cost
@@ -414,8 +419,8 @@ console.log(adminProjectView)
                   <TableCell sx={tableHeadings}>Unit Cost</TableCell>
                   <TableCell sx={tableHeadings}>Cost</TableCell>
                   <TableCell sx={tableHeadings}>Quantity</TableCell>
-                  <TableCell sx={tableHeadings}>Start</TableCell>
-                  <TableCell sx={tableHeadings}>End</TableCell>
+                  {!(path === 'assignproject') && <TableCell sx={tableHeadings}>Start</TableCell>}
+                  {!(path === 'assignproject') && <TableCell sx={tableHeadings}>End</TableCell>}
                   <TableCell sx={tableHeadings}>Margin</TableCell>
                   <TableCell sx={tableHeadings}>Total Cost</TableCell>
                   <TableCell sx={tableHeadings}>Notes</TableCell>
@@ -456,18 +461,24 @@ console.log(adminProjectView)
                   }
                   return (
                     <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
-                      {!InitialProposalView && (
+                      {(!InitialProposalView ) && (
                         <TableCell>
-                          {(row.status === "Work Order Not requested" ||
+                          {(!(path === 'assignproject') && !(view==='Generate Invoice')) && ((row.status === "Work Order Not requested" ||
                             row.status === "Work Order declined" ||
-                            row.status === "Change Order declined") && (
+                            row.status === "Change Order declined")&& (
                             <Checkbox
                               // checked={checkedRow === row}
                               sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
                               checked={isRowSelected(row)}
                               onChange={() => handleCheckboxChange(row)}
                             />
-                          )}
+                          ))}
+                          {((view==='Generate Invoice') && !row.invoiceExists) && <Checkbox
+                              // checked={checkedRow === row}
+                              sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
+                              checked={isRowSelected(row)}
+                              onChange={() => handleCheckboxChange(row)}
+                            />}
                         </TableCell>
                       )}
                       <TableCell component="th" scope="row">
@@ -478,20 +489,20 @@ console.log(adminProjectView)
                       <TableCell>${row.unit_price}</TableCell>
                       <TableCell>${row.total}</TableCell>
                       <TableCell>{row.quantity}</TableCell>
-                      <TableCell>
+                     {!(path === 'assignproject') && <TableCell>
                         {row?.start_day
                           ? moment(row?.start_day).format(
                               "MMM, DD, YYYY HH:mm a"
                             )
                           : "-"}
-                      </TableCell>
-                      <TableCell>
+                      </TableCell>}
+                      {!(path === 'assignproject') && <TableCell>
                         {row?.end_day
                           ? moment(row?.end_day).format(
                               "MMM, DD, YYYY HH:mm a"
                             )
                           : "-"}
-                      </TableCell>
+                      </TableCell>}
 
                      
                       <TableCell>${row?.margin}</TableCell>

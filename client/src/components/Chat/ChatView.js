@@ -541,7 +541,7 @@ function ChatView({ isAdminPage }) {
           {/* <Button onClick={handleLoadOld}>Load Below</Button> */}
         </Box>
         <Box
-          sx={{ display: "flex", alignItems: "center", mb: 2, ml: 2, mr: 2 }}
+          sx={{ display: "flex", alignItems: "center", mb: 2, ml: 2, mr: 2, gap: '4px' }}
         >
           <label htmlFor="file-input">
             <AttachFileIcon
@@ -563,7 +563,7 @@ function ChatView({ isAdminPage }) {
             sx={InputStyle}
           />
           {projectRole !== "client" && (
-            <Box sx={{ display: "flex", columnGap: 1, margin: "0 8px 0 10px" }}>
+            <Box sx={{ display: "flex", columnGap: 1, margin: "0 4px 0 4px", justifyContent:'center', alignItems:'center' }}>
               <button
                 onClick={handleTeamClick}
                 style={{
@@ -571,6 +571,7 @@ function ChatView({ isAdminPage }) {
                   backgroundColor:
                     recipientType === "team" ? "#4C8AB1" : "#FFFFFF",
                   color: recipientType === "team" ? "#FFF" : "#4C8AB1",
+                  margin:0
                 }}
               >
                 Team
@@ -582,6 +583,7 @@ function ChatView({ isAdminPage }) {
                   backgroundColor:
                     recipientType === "team+client" ? "#4C8AB1" : "#FFFFFF",
                   color: recipientType === "team+client" ? "#FFF" : "#4C8AB1",
+                  margin:0
                 }}
               >
                 Team + Client
@@ -593,6 +595,9 @@ function ChatView({ isAdminPage }) {
             aria-label="send"
             onClick={handleSend}
             disabled={loading}
+            sx={{
+              paddingBottom:'16px'
+            }}
           >
             <SendIcon sx={{ transform: "rotate(-35deg)" }} />
           </IconButton>

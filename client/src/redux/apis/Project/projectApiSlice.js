@@ -1,6 +1,7 @@
 import { apiSlice } from "../apiSlice";
 
 const PROJECTS_URL = "http://192.168.0.113:8080/project";
+const INVOICE_URL = "http://192.168.0.113:8080/invoice";
 const EVENT_URL = "http://192.168.0.113:8080/user/events";
 const projectId = 47;
 
@@ -84,6 +85,13 @@ const projectApiSlice = apiSlice.injectEndpoints({
     getProjectChangeOrder: builder.query({
       query: (data) => ({
         url: `${PROJECTS_URL}/getWorkOrder/${data.projectId}/${data.userId}/${data.changeOrder}`,
+        method: "GET",
+      }),
+    }),
+
+    getProjectInvoices: builder.query({
+      query: (data) => ({
+        url: `${INVOICE_URL}/getallInvoices/${data.projectId}/${data.userId}`,
         method: "GET",
       }),
     }),
@@ -221,6 +229,7 @@ export const {
   useUpdatePhaseLineMutation,
   useDeletePhaseLineMutation,
   useGetProjectChangeOrderQuery,
+  useGetProjectInvoicesQuery,
   useGetProjectTeamQuery,
   useGetProjectFinancesQuery,
   useGetProjectInitialProposalQuery,

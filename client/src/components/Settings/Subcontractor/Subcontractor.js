@@ -49,10 +49,10 @@ function Subcontractor() {
           justifyContent: {xs:"center",md:"space-between"} ,
         }}
       >
-        <Typography variant="body1" sx={paginationTextStyle}>
+        {/* <Typography variant="body1" sx={paginationTextStyle}>
           Showing data 1 to 4 of 25 entries
-        </Typography>
-        <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/>
+        </Typography> */}
+        {/* <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/> */}
       </Box>
       <AddModal title={"Subcontractor"} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} />
       <UpdateModal title={"Subcontractor"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo} />

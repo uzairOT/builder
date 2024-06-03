@@ -226,6 +226,7 @@ useEffect(() => {
                         ? "1px solid #d32f2f"
                         : "1px solid #E0E4EC",
                   }}
+                  placeholder="John"
                   value={values.firstName}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -249,6 +250,7 @@ useEffect(() => {
                 <input
                   type="text"
                   name="lastName"
+                  placeholder="Doe"
                   style={{
                     ...inputStyle,
                     border:
@@ -351,6 +353,7 @@ useEffect(() => {
                         ? "1px solid #d32f2f"
                         : "1px solid #E0E4EC",
                   }}
+                  
                   type={passwordVisible ? "text" : "password"}
                   name="password"
                   value={values.password}

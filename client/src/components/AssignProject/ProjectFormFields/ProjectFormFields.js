@@ -179,7 +179,7 @@ function ProjectFormFields() {
                 }}
                 htmlFor="end_time"
               >
-                End time
+                End Time
               </label>
               <Box
                 sx={{

@@ -43,7 +43,7 @@ function SideBar() {
                     selected={selectedItem === 1}
                     sx={listItemStyle}
                 >
-                    Master Line List
+                    Master Line Items
                 </ListItem>
                 <ListItem
                 component={Link}

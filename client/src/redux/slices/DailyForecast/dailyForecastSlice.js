@@ -1,10 +1,16 @@
 import {createSlice} from '@reduxjs/toolkit';
 
+
 const initialState = {
     isLoading: true,
     error: null,
     dailyForecast: [],
-    temperatureUnit: 'metric'
+    temperatureUnit: 'metric',
+    query: {
+        lat: '',
+        lon: '',
+        temperatureUnit: 'metric'
+    }
 } 
 
 const eventsSlice = createSlice({
@@ -21,12 +27,19 @@ const eventsSlice = createSlice({
             state.dailyForecast = action.payload;
         },
         setTemperatureUnit: (state, action) => {
-            state.temperatureUnit = action.payload;
+            state.query.temperatureUnit = action.payload;
+        },
+        setLatLon:(state, action) => {
+            state.query = {
+                ...state.query,
+                lat: action.payload.lat,
+                lon: action.payload.lon,
+            }
         }
     }
 })
 
-export const {setForecastLoading, setForecastError, setDailyForecast, setTemperatureUnit } = eventsSlice.actions;
+export const {setForecastLoading, setForecastError, setDailyForecast, setTemperatureUnit,setLatLon } = eventsSlice.actions;
 
 export const getForecast = state => state.dailyForecast;
 

@@ -78,7 +78,7 @@ const RequestWorkOrderModal = ({
   const [done, setDone] = useState(false);
   const [showLineItems, setShowLineItems] = useState(false);
   const { addPhase } = useSelector(selectAddPhase);
-  const [priority, setPriority] = useState("urgent");
+  const [priority, setPriority] = useState("normal");
   const [status, setStatus] = useState("pending");
   const [subject, setSubject] = useState(
     changeOrder ? checkedRow?.subject : ""
@@ -112,7 +112,7 @@ const RequestWorkOrderModal = ({
   let lineItemCounter = 0;
   let totalWorkOrder = 0;
 
-  // console.log("START DATE", startDate);
+  console.log("priority", priority);
   // console.log("START DATE", endDate);
   // const fetchPhasesAndLineItems = async (data) => {
   //   try{
@@ -914,9 +914,9 @@ const RequestWorkOrderModal = ({
                   renderValue={(value) => {
                     return (
                       <Stack direction={"row"} gap={1}>
-                        <FlagOutlinedIcon sx={{ color: "#EB1717" }} />
+                        <FlagOutlinedIcon sx={{ color: priority === 'urgent' ?  "#EB1717" : '#4C8AB1' }} />
                         <Typography
-                          color={"#EB1717"}
+                          color={priority === 'urgent' ?  "#EB1717" : '#4C8AB1'}
                           textTransform={"capitalize"}
                           fontFamily={"Inter"}
                           fontWeight={"500"}
@@ -939,7 +939,7 @@ const RequestWorkOrderModal = ({
                     ...themeStyle.linkButton,
                     ...themeStyle.priorityButton,
                   }}
-                  startIcon={<FlagOutlinedIcon sx={{ color: "#EB1717" }} />}
+                  startIcon={<FlagOutlinedIcon sx={{ color: priority === 'urgent' ?  "#EB1717" : '#4C8AB1' }} />}
                 >
                   <MenuItem value={"urgent"}>Urgent</MenuItem>
                   <MenuItem value={"normal"}>Normal</MenuItem>

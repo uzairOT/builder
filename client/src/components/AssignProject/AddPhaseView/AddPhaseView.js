@@ -26,7 +26,7 @@ import {
 import RequestWorkOrderModal from "../../dialogues/RequestWorkOrder/RequestWorkOrderModal";
 import { selectAddPhase } from "../../../redux/slices/addPhaseSlice";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
@@ -361,7 +361,13 @@ function AddPhaseView({
                 </>
               )}
             </>
-          ) : (
+          ) : view ==='Generate Invoice' ? <>
+          <Stack direction={"row"} sx={buttonBox}>
+          <Button sx={{ ...actionButton }} onClick={handleGenerateInvoice}>
+                Generate Invoice
+              </Button>
+          </Stack>
+          </> : (
             <Stack direction={"row"} sx={buttonBox}>
               <Button
                 sx={{ ...actionButton }}
@@ -395,9 +401,7 @@ function AddPhaseView({
               ) : (
                 <></>
               )}
-              <Button sx={{ ...actionButton }} onClick={handleGenerateInvoice}>
-                Generate Invoice
-              </Button>
+             
             </Stack>
           )}
         </Stack>
@@ -511,6 +515,7 @@ function AddPhaseView({
                       onGridToggle={() =>
                         handleGridToggle(index, phase?.previousIndex)
                       }
+                      view={view}
                       handleSelectCard={handleSelectCard}
                       adminProjectView={adminProjectView}
                       setRowCheckboxes={setRowCheckboxes}

@@ -10,8 +10,8 @@ const initialState = {
   location: '',
   clientName: '',
   projectColor:'',
-  start_time: dayjs(Date.now()),
-  end_time: dayjs(Date.now()).add(1, 'day'),
+  start_time: dayjs(Date.now()).toString(),
+  end_time: dayjs(Date.now()).add(1, 'day').toString(),
   users: [{ email: '', role: 'admin' }],
 };
 
@@ -65,8 +65,8 @@ const projectFormSlice = createSlice({
       state.projectColor = '';
       state.location = '';
       state.projectName ='';
-      state.start_time = null;
-      state.end_time = null;
+      state.start_time = dayjs(Date.now()).toString();
+      state.end_time = dayjs(Date.now()).add(1, 'day').toString();
     },
     setSkipInvite : (state) =>{
       state.users =  [{ email: '', role: 'admin' }];
