@@ -86,6 +86,8 @@ import PermitClient from "./components/ClientDashboard/Permit/Permit";
 import NotFound from "./pages/NotFound/NotFound.js";
 import ProjectsChangeOrderView from "./components/Projects/ProjectsChangeOrder/ProjectsChangeOrderView.js";
 import InvoicePayment from "./components/dialogues/GenerateInvoice/InvoicePayment/InvoicePayment.js";
+import Cupon from "./components/Settings/Cupon/Coupon.js";
+import Coupon from "./components/Settings/Cupon/Coupon.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -113,16 +115,18 @@ function App() {
   const [events, setEvents] = useState();
   const [getEvents] = useGetUserEventsMutation();
   const allEvent = useSelector(allEvents);
-  const temperatureUnit = useSelector(state => state.dailyForecast.temperatureUnit);
+  const temperatureUnit = useSelector(
+    (state) => state.dailyForecast.temperatureUnit
+  );
   const forecast = useSelector(getForecast);
   const dailyForecast = forecast.dailyForecast || [];
   const dispatch = useDispatch();
-  
+
   const fetchWeather = async () => {
     // setLoading(true);
     dispatch(setIsLoading(true));
     dispatch(setForecastLoading(true));
-    
+
     try {
       console.log("IN APP JS: ", temperatureUnit);
       const data = await getFormattedFiveDayWeather({
@@ -140,7 +144,6 @@ function App() {
     }
   };
   useEffect(() => {
-
     if (dailyForecast.length < 1) {
       fetchWeather();
     }
@@ -166,7 +169,10 @@ function App() {
         <Route path="/setnewpassword" element={<SetNewPassword />} />
         <Route path="/help" element={<Help />} />
         <Route path="/privacyandterms" element={<PrivacyTerms />} />
-        <Route path="/invoicePayment/:invoiceId/:totalAmount" element={<InvoicePayment />} />
+        <Route
+          path="/invoicePayment/:invoiceId/:totalAmount"
+          element={<InvoicePayment />}
+        />
 
         {isAuthenticated ? (
           <Route path="/" element={<Layout1 />}>
@@ -191,13 +197,19 @@ function App() {
                     <Route path="invoices" element={<Invoices />} />
                     <Route path="dailylog" element={<DailyLog />} />
                     <Route path="chat" element={<Chats />} />
-                    <Route path="project-report" element={<>Project reports are only accessible to team</>} />
-                    <Route path="notes" element={<>Project notes are only accessible to team</>} />
                     <Route
-                    path="initial-proposal"
-                    element={<InitialProposalView />}
-                    // loader={projectUserRoleAuth}
-                  />
+                      path="project-report"
+                      element={<>Project reports are only accessible to team</>}
+                    />
+                    <Route
+                      path="notes"
+                      element={<>Project notes are only accessible to team</>}
+                    />
+                    <Route
+                      path="initial-proposal"
+                      element={<InitialProposalView />}
+                      // loader={projectUserRoleAuth}
+                    />
                     <Route path="work-order" element={<WorkOrderView />} />
                   </Route>
                 </>
@@ -237,6 +249,10 @@ function App() {
               <Route path="employee" element={<Employee />} />
               <Route path="subcontractor" element={<Subcontractor />} />
               <Route path="supplier" element={<SupplierList />} />
+              {/* Added by Zeeshan */}
+              <Route path="supplier" element={<SupplierList />} />
+              <Route path="coupon" element={<Coupon />} />
+              {/* -- */}
               <Route path="materline" element={<MasterLineItem />} />
               <Route path="units" element={<Units />} />
             </Route>
@@ -259,7 +275,7 @@ function App() {
           <Route path="dailylog" element={<DailyLog />} />
           <Route path="chats" element={<Chats />} />
         </Route>
-        <Route path="/*" element={<NotFound />} /> 
+        <Route path="/*" element={<NotFound />} />
       </>
     )
   );

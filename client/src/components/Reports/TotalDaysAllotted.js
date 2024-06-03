@@ -33,7 +33,7 @@ const TotalDaysAllotted = ({ data }) => {
         p={1}
         pl={2}
       >
-        Total Projects
+        Total Projects--
       </Typography>
       <Typography
         fontSize={"27px"}

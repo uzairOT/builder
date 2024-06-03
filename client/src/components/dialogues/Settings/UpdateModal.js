@@ -26,7 +26,7 @@ function UpdateModal({
   title,
   open,
   onClose,
-  userId
+  userId,
 }) {
   const [image, setImage] = useState(null);
   const local = localStorage.getItem('userInfo');

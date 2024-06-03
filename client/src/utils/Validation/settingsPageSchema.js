@@ -9,6 +9,11 @@ export const settingsSchema = yup.object().shape({
     email: yup.string().email().required(),
     // image: yup.mixed().nullable().required().test("FILE_FORMAT", "Uploaded file has unsupported format.", (value)=> !value || (value && SUPPORTD_FORMATS.includes(value?.type))),
 })
+export const couponSchema = yup.object().shape({
+  couponCode: yup.string().required("Coupon Code is required"),
+  couponValue: yup.number("adada").integer("Please enter a valid number for the coupon value.").lessThan(100,'Please enter number below 100').moreThan(0, 'Please enter a number above 0').required("Percentage Off is required"),
+    // image: yup.mixed().nullable().required().test("FILE_FORMAT", "Uploaded file has unsupported format.", (value)=> !value || (value && SUPPORTD_FORMATS.includes(value?.type))),
+})
 export const projectSchema = yup.object().shape({
     name: yup.string().required(),
     project: yup.string(),
