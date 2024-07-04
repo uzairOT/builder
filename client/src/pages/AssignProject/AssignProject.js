@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useMediaQuery,
   Button,
@@ -20,24 +20,29 @@ import ExistingProject from "../../components/AssignProject/ExistingProject/Exis
 import ProjectFormFields from "../../components/AssignProject/ProjectFormFields/ProjectFormFields";
 import { useExistingProjectMutation } from "../../redux/apis/usersApiSlice";
 import { selectProjectForm } from "../../redux/slices/projectFormSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import dayjs from 'dayjs'
-
+import dayjs from "dayjs";
+import { authUserRole } from "../../redux/slices/auth/userRoleSlice";
+import AssignNewProjectStep3 from "../../components/AssignProject/AssignNewProjectStep3/AssignNewProjectStep3";
+import { useCheckProjectDuplicationMutation } from "../../redux/apis/Project/projectApiSlice";
 
 function AssignProject() {
   const local = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(local);
+  console.log(currentUser);
   const currentUserId = currentUser?.user.id;
   const [projectType, setProjectType] = useState(null);
   const { projectName, location, projectColor, start_time, end_time } =
     useSelector(selectProjectForm);
   const [postExistingProject] = useExistingProjectMutation();
   const isMobile = useMediaQuery("(max-width:600px)");
-  const navigate = useNavigate();
   const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
-  const notify = () => toast.success("Wow so easy!");
-
+  // const notify = () => toast.success("Wow so easy!");
+  const dispatch = useDispatch();
+  const [checkProjectDuplication, { isLoading }] =
+    useCheckProjectDuplicationMutation();
+  dispatch(authUserRole(""));
   const handleProjectChange = async (value) => {
     if (value === "Existing") {
       const data = {
@@ -49,41 +54,53 @@ function AssignProject() {
       if (res.data?.success) {
         setProjectType(value);
       } else {
-        toast.error(res.error.data.message || 'Something went wrong!');
+        toast.error(res.error.data.message || "Something went wrong!");
         return;
       }
     } else if (projectName === "") {
-
       toast.warning("Please enter project name");
       // console.log("Please enter project name");
       return;
-    } else if (location === "") {
-      toast.warning("Please enter project location");
-      // console.log("Please enter project location");
-      return;
-    } else if (projectColor === "") {
-      toast.warning("Please select project color");
-      return;
-    } 
+    }
+    // else if (location === "") {
+    //   toast.warning("Please enter project location");
+    //   // console.log("Please enter project location");
+    //   return;
+    // }
+    // else if (projectColor === "") {
+    //   toast.warning("Please select project color");
+    //   return;
+    // }
     else if (dayjs(start_time)?.isAfter(end_time)) {
       toast.warning("Start date must be before end date");
       return;
-    }
-    else if (dayjs(end_time)?.isBefore(start_time)) {
+    } else if (dayjs(end_time)?.isBefore(start_time)) {
       toast.warning("End date must be after start date");
       return;
     }
-    else if (start_time ===  null) {
-      toast.warning("Please enter a start data");
-      return;
-    }
-    else if (end_time ===  null) {
-      toast.warning("Please enter an end date");
-      return;
-    }
+    // else if (start_time === null) {
+    //   toast.warning("Please enter a start data");
+    //   return;
+    // } else if (end_time === null) {
+    //   toast.warning("Please enter an end date");
+    //   return;
+    // }
     else if (projectName !== "") {
-      setProjectType(value);
-      return;
+      const data = {
+        userId: currentUserId,
+        projectName: projectName,
+      };
+      try {
+        const res = await checkProjectDuplication(data);
+        console.log(res);
+        if (res?.data?.success) {
+          setProjectType(value);
+        } else {
+          toast.error(res.error.data.message || "Project name error");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -96,6 +113,12 @@ function AssignProject() {
     }
   };
 
+  useEffect(() => {
+    if (currentUser?.incompleteProject?.incomplete) {
+      setProjectType("incomplete");
+    }
+  }, [currentUser]);
+
   return (
     <>
       {projectType === null ? (
@@ -106,9 +129,7 @@ function AssignProject() {
             <StepTitles
               stepHeading={"Step 1 of 3"}
               Heading={"What projects is your team currently engaged in?  "}
-              stepDiscription={
-                "Select your project type"
-              }
+              stepDiscription={"Select your project type"}
             />
             <StepBoxes />
 
@@ -122,7 +143,6 @@ function AssignProject() {
                     ...NewProjectButton,
                   }}
                   onClick={() => {
-                    
                     handleProjectChange("New");
                   }}
                 >
@@ -165,7 +185,7 @@ function AssignProject() {
           </div>
         </>
       ) : (
-        <>{projectType === "New" ? <NewProject /> : <ExistingProject />}</>
+        <>{projectType === "New" ? <NewProject /> : <NewProject step3={1} />}</>
       )}
     </>
   );
@@ -194,7 +214,7 @@ const buttonStyle = {
   padding: "1rem 0.5rem",
 };
 const orTypo = {
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "0.8rem",
 };
 

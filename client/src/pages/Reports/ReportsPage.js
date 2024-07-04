@@ -9,8 +9,8 @@ import ReportsSideBar from '../../components/Reports/ReportsSideBar'
 const ReportsPage = () => {
   return (
    <>
-   <Grid container mt={'0.0000001px'} height={{xl:"93vh",lg:"93vh",md:"93vh",sm:'', xs:''}} backgroundColor={"#eff5ff"} spacing={2} overflow={'scroll'} >
-   <Grid item xl={2} lg={3} md={12} sm={12} xs={12} height={"92vh"}>
+   <Grid container mt={'0.0000001px'} height={{xl:"94vh",lg:"100%",md:"100%",sm:'100%', xs:'100%'}} backgroundColor={"#eff5ff"} spacing={2}  >
+   <Grid item xl={2} lg={3} md={12} sm={12} xs={12} height={"93vh"}>
           <Paper sx={{ height: "100%", borderRadius: "14px" }}>
           <Typography  style={themeStyle.title} fontSize={'22px'} fontWeight={'500'} p={2} pb={1.5}>Reports</Typography>
             <Profile reports={true} />
@@ -18,12 +18,12 @@ const ReportsPage = () => {
           </Paper>
     </Grid>
     <Grid item container xl={10} lg={9} md={12} sm={12} xs={12} spacing={2}  style={{overflow:'hidden', ...themeStyle.scrollable}}>
-    <Grid item xl={8} lg={12} md={12} sm={12} xs={12} height={"92vh"} overflow={'hidden'}>
+    <Grid item xl={8} lg={12} md={12} sm={12} xs={12} height={"93vh"} overflow={'hidden'}>
         <Paper sx={{height:'100%', borderRadius: '14px', ...themeStyle.scrollable}}>
             <Reports />
         </Paper>
     </Grid>
-    <Grid item xl={4} lg={12}  md={12} sm={12} xs={12}  height={"92vh"} style={{overflow:'hidden'}}>
+    <Grid item xl={4} lg={12}  md={12} sm={12} xs={12}  height={"93vh"} style={{overflow:'hidden'}}>
         <Box sx={{height:'100%', borderRadius: '14px', ...themeStyle.scrollable}}>
           <ReportsSideBar />
         </Box>

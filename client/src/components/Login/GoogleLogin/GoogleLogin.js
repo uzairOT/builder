@@ -381,12 +381,12 @@ const linkBox = {
 };
 const checkBox = {
   whiteSpace: "nowrap",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   marginTop: "1rem",
 };
 const forgetPassTypo = {
   whiteSpace: "nowrap",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 600,
   paddingTop: "1rem",
 };
@@ -399,7 +399,7 @@ const accountLinkText = {
     sm: "1rem",
     xs: "2rem",
   },
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: {
     lg: "1rem",
     md: "1rem",
@@ -418,7 +418,7 @@ const accountLinkText = {
   marginTop: "1.5rem",
 };
 const signupLink = {
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 600,
 };
 
@@ -472,7 +472,7 @@ const selectStyle = {
   ".MuiOutlinedInput-notchedOutline": { border: 0 },
   color: "white",
   border: "none",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1rem",
   fontStyle: "normal",
   fontWeight: "400",
@@ -489,7 +489,7 @@ const hptLinksBox = {
 };
 const firstHeading = {
   color: "#FFF",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   marginTop: { lg: "6rem", md: "5rem", sm: "1rem" },
   fontSize: { lg: "2.7rem", md: "2rem", sm: "1.5rem" },
   fontWeight: 400,
@@ -500,7 +500,7 @@ const secondHeading = {
   color: "rgba(255, 255, 255, 0.80)",
   width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
   fontWeight: 400,
 };
@@ -508,7 +508,7 @@ const secondHeading = {
 const thirdHeading = {
   color: "#FFF",
   marginTop: "2rem",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontWeight: 400,
@@ -517,7 +517,7 @@ const thirdHeading = {
 const formHeadingStyle = {
   color: "#4C8AB1",
   textAlign: "center",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "2.1875rem",
   fontWeight: 700,
 };
@@ -535,7 +535,7 @@ const inputStyle = {
 const placeholderStyle = {
   color: "#B8B8B8",
   padding: "8px",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1rem",
   fontWeight: 400,
 };
@@ -544,7 +544,7 @@ const labelStyle = {
   display: "block",
   marginBottom: "1rem",
   color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.75rem" },
   fontWeight: 400,
 };
@@ -552,7 +552,7 @@ const labelStyle = {
 const hptLinksStyle = {
   color: "#FFF",
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem" },
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 400,
   lineHeight: "normal",
   cursor: "pointer", // Ensure cursor changes on hover
@@ -579,7 +579,7 @@ const googleBtnStyle = {
   border: "1px solid rgba(6, 32, 72, 0.11)",
   background: "#FFF",
   color: "#333",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: { lg: "1.25rem", md: "1.25rem", sm: "1.1rem", xs: "1rem" },
   fontWeight: 400,
   cursor: "pointer",
@@ -599,7 +599,7 @@ const googleBtnStyle = {
 
 const ContinuewithTextStyle = {
   color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
   fontWeight: 400,
   display: "flex",

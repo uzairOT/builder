@@ -3,6 +3,7 @@ import { PieChart } from "@mui/x-charts/PieChart";
 import { styled } from "@mui/material/styles";
 
 import React from "react";
+import {valueFormatterPercentage as valueFormatter} from "../../utils/Formatters/valueFormatter";
 
 const StyledText = styled("text")(({ theme, color }) => ({
   fill: color,
@@ -73,6 +74,7 @@ const BudgetPieChart = ({
             cx: 150,
             cy: 150,
             labelRadius: 140,
+            valueFormatter
           },
         ]}
         height={300}

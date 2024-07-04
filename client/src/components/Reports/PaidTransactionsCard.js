@@ -76,6 +76,7 @@ const PaidTransactionsCard = () => {
                 </Typography>
               </Stack>
             ))}
+            
         </Stack>
       </Stack>
       <Stack>

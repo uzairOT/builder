@@ -15,6 +15,7 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
+  Avatar,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import data1 from "./assests/data/data.json";
@@ -23,101 +24,125 @@ import CloseIcon from "@mui/icons-material/Close";
 import { ReactComponent as BuilderProNavbarShare } from "./assests/svgs/builder-pro-navbar-share.svg";
 import users from "./assests/data/users.json";
 import LinkIcon from "@mui/icons-material/Link";
-import { useGetProjectTeamQuery } from '../../../redux/apis/Project/projectApiSlice';
-import {useLocation} from 'react-router-dom'
-import { useCheckUserOnInvitationMutation } from '../../../redux/apis/usersApiSlice';
-import { useAddAssignRoleMutation } from '../../../redux/apis/Admin/assignRoleApiSlice';
-import { toast } from 'react-toastify';
+import { useGetProjectTeamQuery } from "../../../redux/apis/Project/projectApiSlice";
+import { useLocation } from "react-router-dom";
+import { useCheckUserOnInvitationMutation } from "../../../redux/apis/usersApiSlice";
+import { useAddAssignRoleMutation } from "../../../redux/apis/Admin/assignRoleApiSlice";
+import { toast } from "react-toastify";
 //import "react-toastify/dist/ReactToastify.css";
 
+const ProjectTeam = () => {
+  const [open, setOpen] = useState(null);
+  const [openPending, setOpenPending] = useState(null);
+  const [userType, setUserType] = useState("");
+  const openShare = Boolean(open);
+  const openPendingInvitations = Boolean(openPending);
+  const [email, setEmail] = useState("");
+  const location = useLocation();
+  const pathSegments = location.pathname.split("/");
+  const local = localStorage.getItem("userInfo");
+  const projectId = pathSegments[2];
+  const currentUser = JSON.parse(local);
+  const currentUserId = currentUser.user.id;
+  const [assignRolePost] = useAddAssignRoleMutation();
+  //console.log(pathSegments)
+  const { data, isLoading, isError, refetch } =
+    useGetProjectTeamQuery(projectId);
+  const pendingInvitations = data?.invitation;
+  const pendingInvitationsLength = data?.invitation?.length;
+  const team = data?.team;
+  const id = openShare ? "simple-popover" : undefined;
+  const groupedData = isLoading ? (
+    <>Loading...</>
+  ) : (
+    team?.reduce((acc, person) => {
+      acc[person.role] = acc[person.role] || [];
+      acc[person.role].push(person);
+      return acc;
+    }, {})
+  );
 
-
-    const ProjectTeam = () => {
-        const [open, setOpen] = useState(null);
-        const [openPending, setOpenPending] = useState(null);
-        const [userType, setUserType] = useState("");
-        const openShare = Boolean(open);
-        const openPendingInvitations = Boolean(openPending);
-        const [email, setEmail] = useState('');
-        const location = useLocation();
-        const pathSegments = location.pathname.split('/')
-        const local = localStorage.getItem("userInfo");
-        const projectId = pathSegments[2];
-        const currentUser = JSON.parse(local);
-        const currentUserId = currentUser.user.id;
-        const [assignRolePost] = useAddAssignRoleMutation();
-        //console.log(pathSegments)
-        const {data, isLoading, isError, refetch} = useGetProjectTeamQuery(projectId)
-        const pendingInvitations = data?.invitation;
-        const pendingInvitationsLength = data?.invitation?.length;
-        const team = data?.team
-        const id = openShare ? "simple-popover" : undefined;
-        const groupedData = isLoading ?  <>Loading...</> :  team?.reduce((acc, person) => {
-          acc[person.role] = acc[person.role] || [];
-          acc[person.role].push(person);
-          return acc;
-        }, {});
-        
-        //console.log("team: ", team, "groupedData :", groupedData)
-        const handleShare = (e) => {
-            setOpen(e.currentTarget);
-          };
-        const handleOpenPendingInvitations = (e) => {
-            setOpenPending(e.currentTarget);
-          };
-        const handleClosePendingInvitations = (e) => {
-            setOpenPending(null);
-          };
-          const handleClose = () => {
-            setOpen(null);
-          };
-          const handleUserTypeChange = (event) => {
-            setUserType(event.target.value);
-          };
-         const  handleEmailChange = (e) =>{
-            setEmail(e.target.value)
-          }
-          const handleInviteUser = async () => {
-            const userRole = userType;
-            const userId = currentUserId;
-            const companyName = currentUser.user.companyName;
-            const userInviteBody = { project: projectId, userRole, email, userId, companyName }
-            try {
-              if(userRole === ""){
-                toast.warning('Please Select Role.')
-                return false;
-              }
-              if(email === ""){
-                toast.warning('Please Enter An Email.')
-                return false;
-              }
-              const res = await assignRolePost(userInviteBody).unwrap();
-              console.log(res);
-              toast.info(res?.data?.message || res?.message || 'Success');
-              refetch();
-            } catch (error) {
-              toast.error(error?.data?.message || 'Something went wrong!')
-            }
-          }
-          console.log(pendingInvitations)
+  //console.log("team: ", team, "groupedData :", groupedData)
+  const handleShare = (e) => {
+    setOpen(e.currentTarget);
+  };
+  const handleOpenPendingInvitations = (e) => {
+    setOpenPending(e.currentTarget);
+  };
+  const handleClosePendingInvitations = (e) => {
+    setOpenPending(null);
+  };
+  const handleClose = () => {
+    setOpen(null);
+  };
+  const handleUserTypeChange = (event) => {
+    setUserType(event.target.value);
+  };
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+  const handleInviteUser = async () => {
+    const userRole = userType;
+    const userId = currentUserId;
+    const companyName = currentUser.user.companyName;
+    const userInviteBody = {
+      project: projectId,
+      userRole,
+      email,
+      userId,
+      companyName,
+    };
+    try {
+      if (userRole === "") {
+        toast.warning("Please Select Role.");
+        return false;
+      }
+      if (email === "") {
+        toast.warning("Please Enter An Email.");
+        return false;
+      }
+      const res = await assignRolePost(userInviteBody).unwrap();
+      console.log(res);
+      toast.info(res?.data?.message || res?.message || "Success");
+      refetch();
+    } catch (error) {
+      toast.error(error?.data?.message || "Something went wrong!");
+    }
+  };
+  console.log(pendingInvitations);
   return (
     <Stack pl={{ xl: 5, lg: 5, md: 1 }}>
       <Stack direction={"row"} sx={{ justifyContent: "space-between" }} pr={1}>
         <Typography sx={themeStyle.title}>Project Team</Typography>
-        <Stack direction={'row'} justifyContent={'center'} alignItems={'center'}>
-          {pendingInvitationsLength >= 1 ? <Badge badgeContent={pendingInvitationsLength} color="warning" >
-            <BuilderProButton variant={"outlined"} handleOnClick={handleOpenPendingInvitations} fontFamily={'inherit'} fontSize={'15px'}>Pending Invitations</BuilderProButton>
-          </Badge> : <></>}
-        
-        <BuilderProButton
-          backgroundColor={"#FFAC00"}
-          variant={"contained"}
-          Icon={BuilderProNavbarShare}
-          handleOnClick={handleShare}
+        <Stack
+          direction={"row"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          {pendingInvitationsLength >= 1 ? (
+            <Badge badgeContent={pendingInvitationsLength} color="warning">
+              <BuilderProButton
+                variant={"outlined"}
+                handleOnClick={handleOpenPendingInvitations}
+                fontFamily={"inherit"}
+                fontSize={"15px"}
+              >
+                Pending Invitations
+              </BuilderProButton>
+            </Badge>
+          ) : (
+            <></>
+          )}
+
+          <BuilderProButton
+            backgroundColor={"#FFAC00"}
+            variant={"contained"}
+            Icon={BuilderProNavbarShare}
+            handleOnClick={handleShare}
           >
-          {true ? "Add" : ""}
-        </BuilderProButton>
-          </Stack>
+            {true ? "Add" : ""}
+          </BuilderProButton>
+        </Stack>
       </Stack>
       <Stack
         direction={"row"}
@@ -129,7 +154,9 @@ import { toast } from 'react-toastify';
         mt={"14px"}
       >
         <Stack width={"100%"}>
-          {isError ? <>Something went wrong..</> : isLoading ? (
+          {isError ? (
+            <>Something went wrong..</>
+          ) : isLoading ? (
             <>Loading...</>
           ) : (
             Object?.keys(groupedData)?.map((role) => {
@@ -150,32 +177,47 @@ import { toast } from 'react-toastify';
                     width={{
                       xl: "100%",
                       lg: "100%",
-                      md: "50%",
-                      sm: "50%",
-                      xs: "70%",
+                      md: "100%",
+                      sm: "100%",
+                      xs: "300px",
                     }}
                     justifyContent={"space-between"}
                   >
+                    <Stack direction={"row"} flex={{xl:5, lg:5, md:5, sm:3, xs:3}} gap={1} justifyContent={"space-between"}>
                     <Typography sx={themeStyle.subTitle}>{role}</Typography>
-                    <Stack direction={"row"}>
+                    <Stack direction={"row"} width={'270px'} >
                       {groupedData[role].map((person, index) => {
+                          let firstName = person.firstName;
+                          let lastName = person.lastName;
+                          let fullName = `${firstName} ${lastName}`;
+                        
+                          // Truncate the name if it exceeds the max length
+                          if (fullName.length > 20) {
+                            fullName = fullName.substring(0, 20 - 3) + '...';
+                          }
+                        
+                        
                         if (index > 1) {
                           acc++;
-                          return (
-                            <Typography
-                              sx={{ ...themeStyle.subTitle }}
-                              style={{ color: "#636363" }}
-                              position={"relative"}
-                              top={"-2px"}
-                              pl={0.5}
-                            >
-                              +{acc}
-                            </Typography>
-                          );
+                          if (index === groupedData[role]?.length - 1) {
+                            return (
+                              <Typography
+                                sx={{ ...themeStyle.subTitle }}
+                                style={{ color: "#636363" }}
+                                position={"relative"}
+                                top={"-2px"}
+                                pl={0.5}
+                              >
+                                +{acc}
+                              </Typography>
+                            );
+                          } else{
+                            return<></>
+                          }
                         } else {
                           return (
                             <Typography sx={themeStyle.subTitle}>
-                              {person.firstName} {person.lastName}
+                              {fullName}
                               {groupedData[role].length > 1 && index === 0
                                 ? ","
                                 : ""}
@@ -184,21 +226,26 @@ import { toast } from 'react-toastify';
                         }
                       })}
                     </Stack>
-                    <Stack direction={"row"} width={"100px"}>
+                    </Stack>
+                    <Stack direction={"row"} flex={1}>
                       {groupedData[role].map((person, index) => {
+                        if(index> 3){
+                          return <></>
+                        }
                         return (
                           <>
-                            <img
+                            <Avatar
                               key={index}
                               src={person.image}
                               alt="profile"
-                              width={"35px"}
-                              height={"35px"}
+                           
                               style={{
                                 borderRadius: "50px",
                                 marginLeft: "-10px",
+                                width:'30px',
+                                height:'30px'
                               }}
-                            ></img>
+                            ></Avatar>
                           </>
                         );
                       })}
@@ -262,14 +309,18 @@ import { toast } from 'react-toastify';
               sx={{
                 "&::after": {
                   borderBottom: "none",
+                  outline: "none",
                 },
                 "&:before": {
                   borderBottom: "none",
+                  outline: "none",
                 },
                 "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before": {
                   borderBottom: "none",
+                  outline: "none",
                 },
               }}
+              disableUnderline={true}
             />
             <FormControl
               style={{ marginLeft: "5px", width: "120px" }}
@@ -280,7 +331,7 @@ import { toast } from 'react-toastify';
                 style={{
                   fontSize: "12px",
                   top: "3px",
-                  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+                  fontFamily: "Arial Rounded MT, sans-serif",
                   color: "#202227",
                 }}
                 sx={{
@@ -299,21 +350,25 @@ import { toast } from 'react-toastify';
                 onChange={handleUserTypeChange}
                 placeholder="Select Role"
                 sx={{
-                  "& .notchedOutline": {
-                    border: "none",
-                  },
+                  ".MuiOutlinedInput-notchedOutline": { borderWidth: '0px !important', borderColor:''  },
+                  ".Mui-focused": { borderWidth: '0px !important', borderColor:'' },
                 }}
               >
                 <MenuItem value={"admin"}>Admin</MenuItem>
-                <MenuItem value={"client"}>Client</MenuItem>
                 <MenuItem value={"projectManager"}>Project Manager</MenuItem>
+                <MenuItem value={"client"}>Client</MenuItem>
                 <MenuItem value={"subcontractor"}>Subcontractor</MenuItem>
-                <MenuItem value={"employee"}>Employee</MenuItem>
                 <MenuItem value={"supplier"}>Supplier</MenuItem>
+                <MenuItem value={"employee"}>Employee</MenuItem>
+                <MenuItem value={"others"}>Others</MenuItem>
               </Select>
             </FormControl>
           </Stack>
-          <BuilderProButton backgroundColor={"#FFAC00"} variant={"contained"} handleOnClick={handleInviteUser}>
+          <BuilderProButton
+            backgroundColor={"#FFAC00"}
+            variant={"contained"}
+            handleOnClick={handleInviteUser}
+          >
             <Typography>Invite</Typography>
           </BuilderProButton>
         </Stack>
@@ -344,13 +399,13 @@ import { toast } from 'react-toastify';
                   color={"#202227"}
                   fontSize={"14px"}
                   pl={2}
-                  fontFamily={"GT-Walsheim-Regular-Trial, sans-serif"}
+                  fontFamily={"Arial Rounded MT, sans-serif"}
                 >
                   {user.firstName}
                 </Typography>
               </Stack>
               <Typography
-                fontFamily={"GT-Walsheim-Regular-Trial, sans-serif"}
+                fontFamily={"Arial Rounded MT, sans-serif"}
                 fontSize={"14px"}
               >
                 {user.role}
@@ -392,44 +447,44 @@ import { toast } from 'react-toastify';
           },
         }}
       >
-     {pendingInvitations?.length > 0 && (
-        <>
-          <Typography variant="h6" sx={{ padding: '7px' }}>
-            Pending Invitations
+        {pendingInvitations?.length > 0 && (
+          <>
+            <Typography variant="h6" sx={{ padding: "7px" }}>
+              Pending Invitations
+            </Typography>
+            <Divider />
+            <List>
+              {pendingInvitations.map((pending) => (
+                <ListItem key={pending.id}>
+                  <ListItemText
+                    primary={pending.userEmail}
+                    secondary={
+                      <>
+                        <Typography variant="body2" component="span">
+                          Project Manager ({pending.userRole})
+                        </Typography>
+                        <Typography variant="body2" component="span">
+                          {pending.userCompany}
+                        </Typography>
+                      </>
+                    }
+                  />
+                  {/* Add "Accept" and "Reject" buttons if needed */}
+                  <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="delete">
+                      {/* Replace with your "Accept" or "Reject" icon */}
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
+            </List>
+          </>
+        )}
+        {pendingInvitations?.length === 0 && (
+          <Typography variant="body2" sx={{ padding: "10px" }}>
+            No pending invitations.
           </Typography>
-          <Divider />
-          <List>
-            {pendingInvitations.map((pending) => (
-              <ListItem key={pending.id}>
-                <ListItemText
-                  primary={pending.userEmail}
-                  secondary={
-                    <>
-                      <Typography variant="body2" component="span">
-                        Project Manager ({pending.userRole})
-                      </Typography>
-                      <Typography variant="body2" component="span">
-                        {pending.userCompany}
-                      </Typography>
-                    </>
-                  }
-                />
-                {/* Add "Accept" and "Reject" buttons if needed */}
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    {/* Replace with your "Accept" or "Reject" icon */}
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))}
-          </List>
-        </>
-      )}
-      {pendingInvitations?.length === 0 && (
-        <Typography variant="body2" sx={{ padding: '10px' }}>
-          No pending invitations.
-        </Typography>
-      )}
+        )}
       </Popover>
     </Stack>
   );
@@ -441,12 +496,12 @@ const themeStyle = {
   title: {
     fontSize: "16px",
     color: "#4C8AB1",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
   },
   subTitle: {
     fontSize: "13px",
     color: "#202227",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     textAlign: "left",
   },
 };

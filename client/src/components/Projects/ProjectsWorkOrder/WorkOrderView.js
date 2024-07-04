@@ -10,9 +10,11 @@ import { getForecast } from "../../../redux/slices/DailyForecast/dailyForecastSl
 import { useGetProjectChangeOrderQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { ref } from "yup";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
+import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
 
 const WorkOrderView = () => {
   const [changeView, setChangeView] = useState(false);
+  const authUserRole= useSelector(getUserRoleFromRedux);
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
   const events = allEvent.events;
@@ -72,7 +74,7 @@ const WorkOrderView = () => {
           ) : (
             <>
               <Box
-                height= '500px'
+                height= '600px'
                 bgcolor={"white"}
               >
                 <TaskCalender
@@ -88,6 +90,7 @@ const WorkOrderView = () => {
                   projectId={id}
                   adminProjectView={true}
                   view={"Work Order"}
+                  authUserRole={authUserRole.userRole}
                 />
               </Stack>
             </>

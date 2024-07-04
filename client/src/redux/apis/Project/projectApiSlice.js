@@ -1,8 +1,8 @@
 import { apiSlice } from "../apiSlice";
 
-const PROJECTS_URL = "http://192.168.0.113:8080/project";
-const INVOICE_URL = "http://192.168.0.113:8080/invoice";
-const EVENT_URL = "http://192.168.0.113:8080/user/events";
+const PROJECTS_URL = "http://3.135.107.71/project";
+const INVOICE_URL = "http://3.135.107.71/invoice";
+const EVENT_URL = "http://3.135.107.71/user/events";
 const projectId = 47;
 
 const projectApiSlice = apiSlice.injectEndpoints({
@@ -91,7 +91,7 @@ const projectApiSlice = apiSlice.injectEndpoints({
 
     getProjectInvoices: builder.query({
       query: (data) => ({
-        url: `${INVOICE_URL}/getallInvoices/${data.projectId}/${data.userId}`,
+        url: `${INVOICE_URL}/getallInvoices/${data.projectId}/${data.userId}/${data.client}`,
         method: "GET",
       }),
     }),
@@ -145,7 +145,7 @@ const projectApiSlice = apiSlice.injectEndpoints({
     }),
     getProjectNotes: builder.query({
       query: (data) => ({
-        url: `${PROJECTS_URL}/notes/${data.projectId}`,
+        url: `${PROJECTS_URL}/notes/${data.projectId}?query=${data.q !== undefined? data.q : ''}`,
         method: "GET",
       }),
       fetchPolicy: "network-only",
@@ -214,6 +214,20 @@ const projectApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: data
       })
+    }),
+    checkProjectDuplication: builder.mutation({
+      query: (data) => ({
+        url:`${PROJECTS_URL}/checkProjectDuplication`,
+        method: 'POST',
+        body: data
+      })
+    }),
+    deleteProjectFile: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/files/${data.fileId}/${data.projectId}`,
+        method: 'DELETE',
+        body: data
+      })
     })
   }),
 });
@@ -247,5 +261,7 @@ export const {
   useGetWorkOrderDetailsMutation,
   useGetLineItemQuery,
   useGetPhasesAndLineItemsByIdMutation,
-  useUpdateUserLineItemStatusMutation
+  useUpdateUserLineItemStatusMutation,
+  useCheckProjectDuplicationMutation,
+  useDeleteProjectFileMutation
 } = projectApiSlice;

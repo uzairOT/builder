@@ -7,7 +7,7 @@ const getWeatherData = (infoType, searchParams) => {
     const url = new URL(BASE_URL + "/" + infoType);
     url.search = new URLSearchParams({...searchParams, appId: API_KEY});
 
-    return fetch(url).then(response => response.json());
+    return fetch(url).then(response => response.json()).catch(error => console.log(error));
 }
 
 
@@ -27,7 +27,7 @@ const formatCurrentWeather = (data) =>{
 
 export const getFormattedWeatherData = async (searchParams) =>{
     const formattedCurrentWeather = await getWeatherData('weather', searchParams)
-    .then(formatCurrentWeather);
+    .then(formatCurrentWeather).catch(error => console.log(error));
     return formattedCurrentWeather
 }
 

@@ -1,10 +1,11 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
+import { formatMoney } from "../../../utils/Formatters/moneyFormat";
 
 const RedialBarsChart = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
   const options = {
     chart: {
-      height: 350,
+      height: 250,
       type: "radialBar",
     },
     colors: ["#22C55E", "#1F9EF3", "#FF974F"],
@@ -31,7 +32,8 @@ const RedialBarsChart = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
             color: undefined,
             offsetY: 16,
             formatter: function (val) {
-              return val + "%";
+              const formattedVal = formatMoney(val);
+              return `$${formattedVal}` ;
             },
           },
         },
@@ -48,7 +50,8 @@ const RedialBarsChart = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
         options={options}
         series={series}
         type="radialBar"
-        width="300"
+        width="250"
+        height={'200'}
       />
     </div>
   );

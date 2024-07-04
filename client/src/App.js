@@ -90,6 +90,11 @@ import InvoicePayment from "./components/dialogues/GenerateInvoice/InvoicePaymen
 import ProjectsInvoicesView from "./components/Projects/ProjectInvoices/ProjectsInvoices.js";
 import ProjectsInvoices from "./components/Projects/ProjectInvoices/ProjectsInvoices.js";
 import ProjectInvoicesView from "./components/Projects/ProjectInvoices/ProjectInvoicesView.js";
+import Cupon from "./components/Settings/Cupon/Coupon.js";
+import Coupon from "./components/Settings/Cupon/Coupon.js";
+import Accounts from "./components/Settings/Accounts/Accounts.js";
+import Others from "./components/Settings/Others/Others.js";
+import Chat from "./components/Projects/ProjectsChat/Chat.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -137,12 +142,10 @@ function App() {
     // setLoading(true);
     dispatch(setIsLoading(true));
     dispatch(setForecastLoading(true));
-    
-    try {
-      if(query.lat === '')
-      return;
 
-      const data = await getFormattedFiveDayWeather({lat: query.lat, lon: query.lon, units: query.temperatureUnit});
+    try {
+ 
+      const data = await getFormattedFiveDayWeather({lat: '34.0549', lon: '118.2426', units: query.temperatureUnit});
       dispatch(setDailyForecast(data));
       dispatch(setForecastLoading(false));
     } catch (error) {
@@ -153,7 +156,6 @@ function App() {
     }
   };
   useEffect(() => {
-
     if (dailyForecast.length < 1) {
       fetchWeather();
     }
@@ -181,7 +183,10 @@ function App() {
         <Route path="/setnewpassword" element={<SetNewPassword />} />
         <Route path="/help" element={<Help />} />
         <Route path="/privacyandterms" element={<PrivacyTerms />} />
-        <Route path="/invoicePayment/:invoiceId/:totalAmount" element={<InvoicePayment />} />
+        <Route
+          path="/invoicePayment/:invoiceId/:adminId/:totalAmount"
+          element={<InvoicePayment />}
+        />
 
         {isAuthenticated ? (
           <Route path="/" element={<Layout1 />}>
@@ -203,18 +208,24 @@ function App() {
                     <Route path="drawing-files" element={<Drawing />} />
                     <Route path="images" element={<Images />} />
                     <Route path="change-order" element={<ChangeOrder />} />
-                    <Route path="invoices" element={<Invoices />} />
+                    {/* <Route path="invoices" element={<Invoices />} /> */}
                     <Route path="dailylog" element={<DailyLog />} />
-                    <Route path="chat" element={<Chats />} />
-                    <Route path="project-report" element={<>Project reports are only accessible to team</>} />
-                    <Route path="notes" element={<>Project notes are only accessible to team</>} />
+                    <Route path="chat" element={<Chat />} />
                     <Route
-                    path="initial-proposal"
-                    element={<InitialProposalView />}
-                    // loader={projectUserRoleAuth}
-                  />
+                      path="project-report"
+                      element={<>Project reports are only accessible to team</>}
+                    />
+                    <Route
+                      path="notes"
+                      element={<>Project notes are only accessible to team</>}
+                    />
+                    <Route
+                      path="initial-proposal"
+                      element={<InitialProposalView />}
+                      // loader={projectUserRoleAuth}
+                    />
                     <Route path="work-order" element={<WorkOrderView />} />
-                    <Route path="invoices" element={<ChangeOrder />} />
+                    <Route path="invoices" element={<ProjectInvoicesView />} />
                   </Route>
                 </>
               ) : (
@@ -254,6 +265,12 @@ function App() {
               <Route path="employee" element={<Employee />} />
               <Route path="subcontractor" element={<Subcontractor />} />
               <Route path="supplier" element={<SupplierList />} />
+              <Route path="others" element={<Others />} />
+              {/* Added by Zeeshan */}
+              <Route path="accounts" element={<Accounts />} />
+
+              <Route path="coupon" element={<Coupon />} />
+              {/* -- */}
               <Route path="materline" element={<MasterLineItem />} />
               <Route path="units" element={<Units />} />
             </Route>
@@ -276,7 +293,7 @@ function App() {
           <Route path="dailylog" element={<DailyLog />} />
           <Route path="chats" element={<Chats />} />
         </Route>
-        <Route path="/*" element={<NotFound />} /> 
+        <Route path="/*" element={<NotFound />} />
       </>
     )
   );

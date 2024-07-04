@@ -19,7 +19,7 @@ const YellowBtn = {
   '&:hover': {
     backgroundColor: '#FFAC00',
   },
-  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+  fontFamily: 'Arial Rounded MT, sans-serif',
   lineHeight: 'normal',
 };
 export default YellowBtn;

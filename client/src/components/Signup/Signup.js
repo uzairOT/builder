@@ -11,6 +11,7 @@ import {
   MenuItem,
   Select,
   CircularProgress,
+  Stack,
 } from "@mui/material";
 import builder1 from "./Assets/pngs/builderProYellowLogo.png";
 import downloadForMob from "./Assets/pngs/downloadForMob.png";
@@ -66,7 +67,7 @@ const SignupComp = () => {
     fontSize: "14px",
     border: "1px solid #ccc",
     borderRadius: "12px",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     paddingLeft: "-1.5rem",
   };
   const customPhoneStyles = {
@@ -138,7 +139,9 @@ const SignupComp = () => {
         const res = await googleLogin({ email }).unwrap();
         if (res.message === "Login Successful!") {
           dispatch(setCredentials({ ...res }));
-          navigate("/");
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 1000); 
         } else if (res.message === "notFound!") {
           toast.warning("User not found");
           navigate("/signup");
@@ -235,7 +238,7 @@ const SignupComp = () => {
     <Grid container sx={{ ...firstGrid }}>
       <ToastContainer />
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
-        <Typography sx={firstHeading}>Builder Builder Pro</Typography>
+        <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography>
 
         {/* Button */}
 
@@ -262,8 +265,8 @@ const SignupComp = () => {
         <Grid item sx={formGrid}>
           <form style={{ marginTop: "0.1rem", width:'70%' }} onSubmit={handleSubmit}>
           <Box sx={logoBox}>
-            <Typography sx={formHeadingStyle}>Signup</Typography>
-            <img src={builder1} width={"20%"} alt="" />
+            <Typography sx={formHeadingStyle}>Sign up</Typography>
+            <img src={builder1} width={"25%"} alt="" />
           </Box>
             <Box sx={namesFieldBox}>
               <Box sx={{ ...topSpace, width: "100%" }}>
@@ -553,9 +556,13 @@ const SignupComp = () => {
                 </label>
               </label>
             </Box>
+            <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            >
 
             <Button
-              sx={{ ...YellowBtn, marginBottom: "1rem" }}
+              sx={{ ...YellowBtn, marginBottom: "1rem", width: { lg: "19rem", md: "19rem", sm: "19rem", xs: "100%" }, }}
               type="submit"
               onClick={handleSubmit}
             >
@@ -574,12 +581,17 @@ const SignupComp = () => {
                 Log in
               </Link>
             </Typography>
+            </Stack>
             {/* <Box sx={continueWithBox}>
               <hr style={hrLine} />
               <Typography sx={ContinuewithTextStyle}>
                 {isMobile ? "Or" : "or continue with"}
               </Typography>
             </Box> */}
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            >
 
             <GoogleLogin
               clientId="960267013158-g1avbe0m8oe44tcflp4urhe4gkh5olb1.apps.googleusercontent.com"
@@ -598,6 +610,7 @@ const SignupComp = () => {
                 </Button>
               )}
             />
+            </Stack>
           </form>
         </Grid>
         <Grid sx={bottomGrid}>
@@ -649,7 +662,7 @@ export default SignupComp;
 
 const firstGrid = {
   padding: {
-    lg: "1.19rem 3rem 0rem 3rem",
+    lg: "1rem 3rem 0rem 3rem",
     md: "0.5rem 2rem",
     sm: "1rem 2rem",
     xs: "0rem 0rem 0rem 0rem",
@@ -657,12 +670,12 @@ const firstGrid = {
   justifyContent: "center",
   alignItems: "center",
   backgroundColor: "#4C8AB1",
-  marginTop: { lg: "0rem", sm: "0rem", xs: "0rem" },
+  // marginTop: { lg: "0rem", sm: "0rem", xs: "0rem" },
 };
 
 const SecondGrid = {
   gap: { lg: "1.1rem", sm: "1rem", xs: "1rem" },
-  alignItems: { lg: "start", md: "start", sm: "center", xs: "center" },
+  alignItems: { lg: "center", md: "center", sm: "center", xs: "center" },
   justifyContent: {
     lg: "start",
     md: "start",
@@ -675,7 +688,7 @@ const SecondGrid = {
 };
 
 const downloadForMobBox = {
-  marginTop: "8rem",
+  marginTop: "3rem",
   marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   justifyContent: "center",
@@ -740,7 +753,7 @@ const namesFieldBox = {
 
 const subtitleStyle = {
   color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "0.75rem",
   fontWeight: 400,
   marginBottom: "0.2rem",
@@ -786,7 +799,7 @@ const checkBoxText = {
 };
 const alreadyHaveAccountTypo = {
   color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.8rem" },
   fontWeight: 400,
   lineHeight: "normal",
@@ -797,7 +810,7 @@ const alreadyHaveAccountTypo = {
 
 const loginLink = {
   fontWeight: 600,
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
 };
 
 const continueWithBox = {
@@ -853,7 +866,7 @@ const selectStyle = {
   ".MuiOutlinedInput-notchedOutline": { border: 0 },
   color: "white",
   border: "none",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1rem",
   fontWeight: "400",
   lineHeight: "normal",
@@ -870,7 +883,7 @@ const hptLinksBox = {
 
 const firstHeading = {
   color: "#FFF",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
   // marginTop: "1rem",
   fontSize: { xl: "2rem", lg: "2rem", md: "1.9rem", sm: "1rem" },
@@ -881,16 +894,15 @@ const firstHeading = {
 const secondHeading = {
   color: "rgba(255, 255, 255, 0.80)",
   width: { lg: "31.125rem", md: "28rem", sm: "auto" },
-  marginTop: "0.5rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: { xl: "2rem", lg: "1.5rem", md: "1rem", sm: "1rem" },
   fontWeight: 400,
 };
 
 const thirdHeading = {
   color: "#FFF",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   marginTop: "1rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontSize: { xl: "2rem", lg: "1.5rem", md: "1rem", sm: "1rem" },
@@ -900,7 +912,7 @@ const thirdHeading = {
 const formHeadingStyle = {
   color: "#4C8AB1",
   textAlign: "center",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "2.1875rem",
   fontWeight: 700,
   lineHeight: "normal",
@@ -915,7 +927,7 @@ const customeInputStyles = {
 
 const placeholderStyle = {
   color: "#B8B8B8",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1rem",
   paddingLeft: "0.5rem",
   fontWeight: 400,
@@ -925,7 +937,7 @@ const labelStyle = {
   display: "block",
   marginBottom: "5px",
   color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1rem",
   fontWeight: 400,
   lineHeight: "normal",
@@ -934,7 +946,7 @@ const labelStyle = {
 const hptLinksStyle = {
   color: "#FFF",
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem" },
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 400,
   lineHeight: "normal",
   cursor: "pointer", // Ensure cursor changes on hover
@@ -956,16 +968,16 @@ const googleBtnStyle = {
   flexDirection: "row",
   marginBottom: { lg: "3.4rem", sm: "3rem", xs: "1rem" },
   marginTop: "2rem",
-  borderRadius: "2.5rem",
+  borderRadius: { lg: '2.5rem', md: '2.5rem', sm: '2.5rem', xs: '0.5rem' },
   border: "1px solid rgba(6, 32, 72, 0.11)",
   background: "#FFF",
   color: "#333",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
-  fontSize: { lg: "1.25rem", md: "1.25rem", sm: "1.1rem", xs: "1rem" },
+  fontFamily: "Arial Rounded MT, sans-serif",
+  width: { lg: "19rem", md: "19rem", sm: "19rem", xs: "100%" },
+  fontSize: { lg: "1.1rem", md: "1.1rem", sm: "1rem", xs: "0.9rem" },
   fontWeight: 400,
   lineHeight: "normal",
   cursor: "pointer",
-  width: { lg: "auto", md: "auto", sm: "auto", xs: "100%" },
   padding: {
     lg: "0.96875rem 2rem",
     md: "0.96875rem 1rem",
@@ -979,7 +991,7 @@ const googleBtnStyle = {
 
 const ContinuewithTextStyle = {
   color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
   fontWeight: 400,
   display: "flex",

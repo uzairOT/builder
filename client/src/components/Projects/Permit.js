@@ -16,7 +16,11 @@ import { useParams } from "react-router-dom";
 import { fileTypeIcons } from "../dialogues/AddImage/assets/fileTypes";
 import { handleDownload } from "../../utils/S3";
 import filePlaceHolder from "../../assets/FileSvg/file.svg";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
+import NoImg from "../ClientDashboard/RecentImagesAndComments/assets/no-image.png";
+import { useDeleteProjectFileMutation } from "../../redux/apis/Project/projectApiSlice";
+import { toast } from "react-toastify";
 function Permit({ view, type }) {
   const placeholderImg = `https://source.unsplash.com/random/100x100`;
   const [open, setOpen] = useState(false);
@@ -31,6 +35,8 @@ function Permit({ view, type }) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [modalUrl, setModalUrl] = useState("");
+  const [showDelete, setShowDelete] = useState(false);
+  const [deleteProjectFile] = useDeleteProjectFileMutation();
   const handleModalOpen = (url) => {
     setModalUrl(url);
     setOpenModal(true);
@@ -43,7 +49,7 @@ function Permit({ view, type }) {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.0.113:8080/project/files/${type}/${id}`,
+        `http://3.135.107.71/project/files/${type}/${id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -60,19 +66,53 @@ function Permit({ view, type }) {
       // Handle errors, such as displaying an error message
     }
   };
-
+  const handleSetShowDelete = () => {
+    setShowDelete(!showDelete);
+  };
+  const deleteProjectFileFunc = async (file) => {
+    try {
+      const res = await deleteProjectFile({
+        fileId: file.id,
+        projectId: file.projectId,
+      });
+      toast.success("File Successfully deleted");
+      await fetchData();
+    } catch (error) {
+      console.log("Something went wrong!");
+      toast.error("Something went wrong!");
+    }
+  };
   useEffect(() => {
     fetchData();
   }, [id]);
   return (
-    <div style={{ width: "100%", borderRadius: '14px' }}>
+    <div style={{ width: "100%", borderRadius: "14px", marginBottom:'14px' }}>
       <Box sx={themeStyle.titleBox}>
         <Typography sx={themeStyle.titleTypo}>
           {view} ({RecentfileUrls?.length} items){" "}
         </Typography>
-        <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>
-          Add {view}
-        </Button>
+        <Stack
+          direction={"row"}
+          gap={2}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <button style={themeStyle.button} onClick={handleSetShowDelete}>
+            <Typography
+              fontSize={"12px"}
+              style={{
+                color: "tomato",
+                textDecoration: "underline",
+                opacity: showDelete ? "" : "0.7",
+              }}
+            >
+              Delete Files
+            </Typography>
+          </button>
+          <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>
+            Add {view}
+          </Button>
+        </Stack>
       </Box>
       <Box
         sx={{
@@ -106,78 +146,141 @@ function Permit({ view, type }) {
             maxHeight={"500px"}
             sx={scrollable}
           >
-            {RecentfileUrls.map((url, index) => {
-              const fileType = url.fileUrl.split(".").pop().toLowerCase();
-              const fileName = url.fileUrl.split("/").pop().toLowerCase();
-              const isImage = [
-                "jpg",
-                "jpeg",
-                "png",
-                "gif",
-                "bmp",
-                "svg",
-                "webp",
-              ].includes(fileType);
-              return isImage ? ( // Check if url.fileUrl exists before splitting
-                <>
-                  <Box
-                    onClick={() => {
-                      handleModalOpen(url);
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <img
-                      key={index}
-                      alt={`Avatar ${index + 1}`}
-                      src={url.fileUrl || placeholderImg}
-                      style={themeStyle.AvatarBox}
-                      download="image"
-                    />
-                    <Typography
-                      ml={"0.5rem"}
-                      fontFamily={"inherit"}
-                      fontSize={"12px"}
-                      width={"100px"}
-                      whiteSpace={"nowrap"}
-                      textOverflow={"ellipsis"}
-                      overflow={"hidden"}
-                    >
-                      {url?.notes}
-                    </Typography>
-                  </Box>
-                </>
-              ) : (
-                <>
-                  <Box
-                    onClick={() => {
-                      handleDownload(url.fileUrl, fileName, setIsDownloading);
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <img
-                      src={filePlaceHolder}
-                      alt={`${fileType.toUpperCase()} File`}
-                      download="document"
-                      style={{
-                        ...themeStyle.AvatarBox,
-                        border: "none",
+            {RecentfileUrls?.length < 1 ? (
+              <>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  // height="100%" 
+                  textAlign="center"
+                  padding="2rem"
+                >
+                  <Typography variant="body1" color="textSecondary">
+                    No images or files found.
+                  </Typography>
+                </Box>
+              </>
+            ) : (
+              RecentfileUrls.map((url, index) => {
+                if (!url.fileUrl) {
+                  return <></>;
+                }
+                const fileType = url.fileUrl.split(".").pop().toLowerCase();
+                const fileName = url.fileUrl.split("/").pop().toLowerCase();
+                const isImage = [
+                  "jpg",
+                  "jpeg",
+                  "png",
+                  "gif",
+                  "bmp",
+                  "svg",
+                  "webp",
+                  "jfif",
+                ].includes(fileType);
+                return isImage ? ( // Check if url.fileUrl exists before splitting
+                  <>
+                    <Box
+                      onClick={() => {
+                        if (showDelete) return false;
+                        handleModalOpen(url);
                       }}
-                    />
-                    <Typography
-                      ml={"0.5rem"}
-                      fontFamily={"inherit"}
-                      fontSize={"12px"}
-                      width={"100px"}
-                      whiteSpace={"nowrap"}
-                      textOverflow={"ellipsis"}
-                      overflow={"hidden"}
+                      style={{ cursor: "pointer" }}
                     >
-                      {url?.notes}
-                    </Typography>
-                  </Box>
-                </>
-              );
-            })}
+                      <Box
+                        sx={{
+                          display: showDelete ? "block" : "none",
+                          position: "relative",
+                          left: "76px",
+                          top: "0px",
+                          width: "40px",
+                          backgroundColor: "white",
+                          borderRadius: "999px",
+                          zIndex: "999",
+                        }}
+                      >
+                        <IconButton onClick={() => deleteProjectFileFunc(url)}>
+                          <DeleteIcon sx={{ color: "#EC3710" }} />
+                        </IconButton>
+                      </Box>
+                      <img
+                        key={index}
+                        alt={`Avatar ${index + 1}`}
+                        src={url.fileUrl || placeholderImg}
+                        style={{
+                          ...themeStyle.AvatarBox,
+                          objectFit: "scale-down",
+                          margin: showDelete
+                            ? "-2.5rem 0.5rem 0rem 0.5rem"
+                            : "0rem 0.5rem 0rem 0.5rem",
+                        }}
+                        download="image"
+                      />
+                      <Typography
+                        ml={"0.5rem"}
+                        fontFamily={"inherit"}
+                        fontSize={"12px"}
+                        width={"100px"}
+                        whiteSpace={"nowrap"}
+                        textOverflow={"ellipsis"}
+                        overflow={"hidden"}
+                      >
+                        {url?.notes}
+                      </Typography>
+                    </Box>
+                  </>
+                ) : (
+                  <>
+                    <Box
+                      onClick={() => {
+                        if (showDelete) return false;
+                        handleDownload(url.fileUrl, fileName, setIsDownloading);
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <Box
+                        sx={{
+                          display: showDelete ? "block" : "none",
+                          position: "relative",
+                          left: "76px",
+                          top: "0px",
+                          width: "40px",
+                          backgroundColor: "white",
+                          borderRadius: "999px",
+                        }}
+                      >
+                        <IconButton onClick={() => deleteProjectFileFunc(url)}>
+                          <DeleteIcon sx={{ color: "#EC3710" }} />
+                        </IconButton>
+                      </Box>
+                      <img
+                        src={filePlaceHolder}
+                        alt={`${fileType.toUpperCase()} File`}
+                        download="document"
+                        style={{
+                          ...themeStyle.AvatarBox,
+                          border: "none",
+                          margin: showDelete
+                            ? "-2.5rem 0.5rem 0rem 0.5rem"
+                            : "0rem 0.5rem 0rem 0.5rem",
+                        }}
+                      />
+                      <Typography
+                        ml={"0.5rem"}
+                        fontFamily={"inherit"}
+                        fontSize={"12px"}
+                        width={"100px"}
+                        whiteSpace={"nowrap"}
+                        textOverflow={"ellipsis"}
+                        overflow={"hidden"}
+                      >
+                        {url?.notes}
+                      </Typography>
+                    </Box>
+                  </>
+                );
+              })
+            )}
           </Stack>
         </Box>
         {/* <Box sx={themeStyle.permitBox}>
@@ -233,7 +336,7 @@ function Permit({ view, type }) {
                 p={1}
                 textOverflow={"ellipsis"}
               >
-                IMGAE{modalUrl?.notes}
+                {modalUrl?.notes}
               </Typography>
             </Stack>
           </Box>
@@ -274,9 +377,20 @@ const scrollable = {
   "&:hover::-webkit-scrollbar-thumb": {
     backgroundColor: "#ddd",
   },
-  overflowY: "scroll",
+  overflowY: "auto",
 };
 const themeStyle = {
+  button: {
+    fontFamily: "inherit",
+    fontSize: "12px",
+    fontStyle: "normal",
+    fontWeight: 500,
+    border: "none",
+    backgroundColor: "#4C8AB1",
+    cursor: "pointer",
+    padding: "4px",
+    marginTop: "0px",
+  },
   titleBox: {
     display: "flex",
     // width: { xl: "52vw" },
@@ -287,7 +401,7 @@ const themeStyle = {
   },
   titleTypo: {
     color: "#FFFFFF",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     fontSize: "1.3rem",
     margin: "1rem 2rem",
   },
@@ -311,7 +425,7 @@ const themeStyle = {
     "&:hover": {
       backgroundColor: "lightgray",
     },
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     lineHeight: "normal",
   },
   permitBox: {
@@ -337,8 +451,15 @@ const themeStyle = {
     background: "none",
     width: "100px",
     height: "100px",
-    margin: "2rem 0.5rem 0rem 0.5rem",
-    ObjectFit: "contain",
+    ObjectFit: "scale-down",
+  },
+  NoImgbox: {
+    // border: "1px solid #9B9696",
+    borderRadius: "0.4rem",
+    background: "none",
+    width: "100px",
+    height: "100px",
+    ObjectFit: "scale-down",
   },
 };
 export default Permit;

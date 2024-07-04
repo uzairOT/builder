@@ -1,4 +1,10 @@
-import { ButtonGroup, Paper, Stack, Typography } from "@mui/material";
+import {
+  ButtonGroup,
+  IconButton,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import WorkOrder from "../ProjectsWorkOrder/WorkOrder";
 import Tabs from "@mui/joy/Tabs";
@@ -20,25 +26,26 @@ import { useGetRequestWorkOrderQuery } from "../../../redux/apis/Project/workOrd
 import { useParams } from "react-router-dom";
 import InvoicePayment from "../../dialogues/GenerateInvoice/InvoicePayment/InvoicePayment";
 import InvoicesTable from "./InvoicesTable";
+import CloseIcon from "@mui/icons-material/Close";
 
-const ProjectsInvoices = () => {
-    const params = useParams();
-    const { id: currentProjectId } = params;
-    const currentUser = localStorage.getItem("userInfo");
-    const user = JSON.parse(currentUser);
-    const { data, refetch } = useGetProjectInvoicesQuery({
-      projectId: currentProjectId,
-      userId: user.user.id,
-    });
-    console.log(data)
+const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
+  const params = useParams();
+  const { id: currentProjectId } = params;
+  const currentUser = localStorage.getItem("userInfo");
+  const user = JSON.parse(currentUser);
+  const { data, refetch } = useGetProjectInvoicesQuery({
+    projectId: currentProjectId,
+    userId: user.user.id,
+    client: userRole?.userRole,
+  });
+  console.log(data);
   const [checkedRow, setCheckedRow] = useState(null);
   // const [getWorkOrder, {isLoading}] = useGetWorkOrderDetailsMutation()
-  const [phaseItems, setPhaseItems ] = useState();
+  const [phaseItems, setPhaseItems] = useState();
 
-
-//   const handleChangeView = () => {
-//     setChangeView(true);
-//   }
+  //   const handleChangeView = () => {
+  //     setChangeView(true);
+  //   }
   const rowCheckboxes = {
     phase: {
       id: 2,
@@ -67,17 +74,33 @@ const ProjectsInvoices = () => {
   return (
     <>
       <Stack>
-        <Typography
-          p={3}
-          pb={2}
-          color={"#4C8AB1"}
-          fontFamily={"Poppins, san serif"}
-          fontSize={"22px"}
-          fontWeight={"600"}
+        <Stack
+          direction={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
         >
-          Invoices
-        </Typography>
-        <Tabs defaultValue={0} sx={{ backgroundColor: "transparent",overflowX:"auto" }}>
+          <Typography
+            p={3}
+            pb={2}
+            color={"#4C8AB1"}
+            fontFamily={"Poppins, san serif"}
+            fontSize={"22px"}
+            fontWeight={"600"}
+          >
+            Invoices
+          </Typography>
+          {isModal && (
+            <Stack alignItems={"flex-end"}>
+              <IconButton onClick={handleClose}>
+                <CloseIcon></CloseIcon>
+              </IconButton>
+            </Stack>
+          )}
+        </Stack>
+        <Tabs
+          defaultValue={0}
+          sx={{ backgroundColor: "transparent", overflowX: "auto" }}
+        >
           <Stack direction={"row"} justifyContent={"space-between"}>
             <TabList
               sx={{
@@ -109,7 +132,7 @@ const ProjectsInvoices = () => {
               >
                 Unpaid
               </Tab>
-              
+
               <Tab
                 sx={{
                   fontFamily: "Poppins, sans serif",
@@ -154,11 +177,11 @@ const ProjectsInvoices = () => {
             style={{ padding: "16px 8px 0 8px" }}
           >
             <InvoicesTable
-              status='approved'
+              paidInvoices={true}
               setCheckedRow={setCheckedRow}
               checkedRow={checkedRow}
               data={data?.paidInvoices}
-            //   workOrder={workOrder}
+              //   workOrder={workOrder}
               setPhaseItems={setPhaseItems}
             />
           </TabPanel>
@@ -168,11 +191,11 @@ const ProjectsInvoices = () => {
             style={{ padding: "16px 8px 0 8px" }}
           >
             <InvoicesTable
-            status='pending'
               setCheckedRow={setCheckedRow}
               checkedRow={checkedRow}
               data={data?.unpaidInvoices}
-            //   workOrder={workOrder}
+              //   workOrder={workOrder}
+              refetch={refetch}
               setPhaseItems={setPhaseItems}
             />
           </TabPanel>
@@ -182,11 +205,11 @@ const ProjectsInvoices = () => {
             style={{ padding: "16px 8px 0 8px" }}
           >
             <InvoicesTable
-            status='declined'
+              status="declined"
               setCheckedRow={setCheckedRow}
               checkedRow={checkedRow}
               data={data?.overdueInvoices}
-            //   workOrder={workOrder}
+              refetch={refetch}
               setPhaseItems={setPhaseItems}
             />
           </TabPanel>
@@ -211,13 +234,11 @@ const ProjectsInvoices = () => {
 export default ProjectsInvoices;
 
 const themeStyle = {
-    borders: {
-      borderRadius: "14px",
-      padding: "8px",
-    },
-    border: {
-      borderRadius: '14px'
-    }
-  };
-  
-  
+  borders: {
+    borderRadius: "14px",
+    padding: "8px",
+  },
+  border: {
+    borderRadius: "14px",
+  },
+};

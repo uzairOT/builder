@@ -36,6 +36,7 @@ import { toast } from "react-toastify";
 import Close from "@mui/icons-material/Close";
 //import "react-toastify/dist/ReactToastify.css";
 const colors = [
+  "#FFF",
   "#93D0EC",
   "#9BDFEB",
   "#9FF2CA",
@@ -63,12 +64,14 @@ function ColorPickerElement({
   InitialProposalView
 }) {
   const dispatch = useDispatch();
+  const localUser = localStorage.getItem("userInfo");
+  const currentUser = JSON.parse(localUser);
   const local = localStorage.getItem('projectId');
-  const projectId = parseInt(local);
+  const projectId = currentUser?.incompleteProject?.incomplete ? currentUser?.incompleteProject?.projectId : parseInt(local);
   
   const {id} = useParams();
   const [open, setOpen] = useState(false);
-  const [color, setColor] = useState(phaseData ? phaseData.color : "#93D0EC");
+  const [color, setColor] = useState(phaseData ? phaseData.color : "#FFF");
   const [colorMode, setColorMode] = useState("");
   const [phaseName, setPhaseName] = useState(
     phaseData?.phase_name ? phaseData.phase_name : ""
@@ -176,7 +179,7 @@ function ColorPickerElement({
             <Close />
           </IconButton>
           </Stack>
-          <DialogContent sx={{ padding: "0rem 3rem 3rem 3rem" }}>
+          <DialogContent sx={{ padding: "0rem 1.5rem 3rem 1.5rem" }}>
             <Typography sx={typoText}>Phase</Typography>
             <TextField
             inputProps={{ maxLength: 50 }}
@@ -194,7 +197,7 @@ function ColorPickerElement({
             />
             <Typography sx={typoText}>Select Color</Typography>
               {/* Req change to display an array of 12 colors */}
-            <Stack direction={"row"} alignItems={"center"} flexWrap={'wrap'} justifyContent={'center'} gap={2} p={1}>
+            {/* <Stack direction={"row"} alignItems={"center"} flexWrap={'wrap'} justifyContent={'center'} gap={2} p={1}>
                 {colors.map((color1) => {
                   return (
                     <>
@@ -205,14 +208,14 @@ function ColorPickerElement({
                          boxShadow={color === color1 ? 'rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;' :''}
                          borderRadius={"7px"}
                         onClick={()=>{ setColor(color1)}}
-                        border={color === color1 ? '2px solid #ADADAD' : ''}
+                        border={color === color1 ? '3px solid #ADADAD' : '1px solid #ADADAD'}
                       ></Box>
                     </>
                   );
                 })}
                
-              </Stack>
-            {/* <div className="custom-pointers example">
+              </Stack> */}
+            <div className="custom-pointers example">
               {colorMode === "rgba" ? ( // Render RGBA color picker if colorMode is 'rgba'
                 <Box sx={generalBox}>
                   <RgbaStringColorPicker
@@ -240,7 +243,7 @@ function ColorPickerElement({
                   {colorMode === "rgba" ? "RGBA" : "HEX"}
                 </Typography>
               </Box>
-            </div> */}
+            </div>
           </DialogContent>
           <DialogActions sx={generalBox}>
             <Button
@@ -259,7 +262,7 @@ function ColorPickerElement({
 }
 
 const typoTitle = {
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1.5rem",
   color: "#4C8AB1",
 };
@@ -273,7 +276,7 @@ const inputStyle = {
   border: "1px solid #ccc",
   borderRadius: "12px",
   color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   paddingLeft: "-1.5rem",
   backgroundColor: "#EDF2F6",
 };
@@ -291,7 +294,7 @@ const paperPropsStyle = {
 };
 
 const typoText = {
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1rem",
   color: "#202227",
 };

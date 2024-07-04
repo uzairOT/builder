@@ -1,0 +1,323 @@
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Grid,
+  Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  Stack,
+  IconButton,
+} from "@mui/material";
+import { useFormik } from "formik";
+import React, { useEffect } from "react";
+import {
+  couponSchema,
+  settingsSchema,
+} from "../../../utils/Validation/settingsPageSchema";
+import Button from "../../UI/CustomButton";
+import {
+  useGetCreateUserCouponsMutation,
+  useUpdateUserCouponsMutation,
+} from "../../../redux/apis/Coupon/CouponApiSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Close } from "@mui/icons-material";
+
+const AccountModal = ({
+  open,
+  title,
+  onClose,
+  updateOpen,
+  updateClose,
+  userId,
+  couponId,
+  addUserAccount,
+  updateCoupon,
+  account,
+  updateUserAccount,
+}) => {
+  const handleClose = () => {
+    if (updateOpen) {
+      updateClose();
+    } else {
+      onClose();
+    }
+  };
+
+  const onSubmit = async (values, action) => {
+    if (open) {
+      try {
+        const res = await addUserAccount({
+          accountNumber: values.accountNumber,
+          accountLink: values.accountLink,
+          accountType: values.accountType,
+          accountName: values.accountName,
+          userId: userId,
+        });
+        console.log(res)
+        if(res?.error?.status === 'FETCH_ERROR'){
+          throw new Error('Network response was not OK');
+        }
+        toast.success("Account added successfully");
+      } catch (e) {
+        console.log(e);
+        toast.error("Something went wrong");
+      }
+    } else {
+      try {
+        await updateUserAccount({
+          ...account,
+          accountNumber: values.accountNumber,
+          accountLink: values.accountLink,
+          accountType: values.accountType,
+          accountName: values.accountName,
+          userId: userId,
+        });
+        toast.success("Account updated successfully");
+      } catch (err) {
+        console.log(err);
+        toast.error("Something went wrong");
+      }
+    }
+  };
+
+  const {
+    handleBlur,
+    handleChange,
+    values,
+    errors,
+    touched,
+    handleSubmit,
+    isSubmitting,
+    handleReset,
+    setValues,
+  } = useFormik({
+    initialValues: {
+      accountNumber: "",
+      accountLink: "",
+      accountType: "",
+      accountName: "",
+    },
+    onSubmit,
+  });
+  useEffect(() => {
+    if (account && updateOpen) {
+      setValues({
+        accountNumber: account.accountNumber,
+        accountLink: account.accountLink,
+        accountType: account.accountType,
+        accountName: account.accountName,
+      });
+    } else {
+      handleReset();
+    }
+  }, [account, open]);
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <Dialog
+          open={open || updateOpen}
+          onClose={handleClose}
+          maxWidth="md"
+          sx={{}}
+        >
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            mr={5}
+          >
+            <DialogTitle sx={headingStyle}>
+              {open ? "Add" : updateOpen ? "Update" : ""} {title}
+            </DialogTitle>
+            <IconButton
+              style={{ width: "30px", height: "30px" }}
+              onClick={handleClose}
+            >
+              <Close />
+            </IconButton>
+          </Stack>
+          <DialogContent
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "30px",
+              flexDirection: "column",
+              gap: "16px",
+              marginTop: "15px",
+            }}
+          >
+            <Grid container spacing={4}>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body1">Account Name</Typography>
+                <TextField
+                  error={errors.accountName ? true : false}
+                  value={values.accountName}
+                  placeholder="John Doe"
+                  fullWidth
+                  name={"accountName"}
+                  inputProps={{
+                    style: {
+                      ...InputStyle,
+                      border:
+                        errors.accountName && touched.accountName
+                          ? "1px solid #d32f2f"
+                          : "1px solid #E0E4EC",
+                    },
+                    maxLength: 50,
+                  }}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={
+                    errors.accountName && touched.accountName
+                      ? errors.accountName
+                      : ""
+                  }
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body1">Account Link</Typography>
+                <TextField
+                  type="text"
+                  error={errors.accountLink ? true : false}
+                  value={values.accountLink}
+                  placeholder="Account Link"
+                  fullWidth
+                  name={"accountLink"}
+                  inputProps={{
+                    style: {
+                      ...InputStyle,
+                      border:
+                        errors.accountLink && touched.accountLink
+                          ? "1px solid #d32f2f"
+                          : "1px solid #E0E4EC",
+                    },
+                    maxLength: 50,
+                    //   type: 'number'
+                  }}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={
+                    errors.accountLink && touched.accountLink
+                      ? errors.accountLink
+                      : ""
+                  }
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={4}>
+              <Grid item xs={12} sm={12}>
+                <Typography variant="body1">Account Details</Typography>
+                <TextField
+                padding={1}
+                  multiline
+                  minRows={4}
+                  error={errors.accountType ? true : false}
+                  value={values.accountType}
+                  placeholder="Account Details"
+                  fullWidth
+                  name={"accountType"}
+                  inputProps={{
+                    style: {
+                      ...InputStyle,
+                      border:
+                        errors.accountType && touched.accountType
+                          ? "1px solid #d32f2f"
+                          : "1px solid #E0E4EC",
+                       
+                    },
+                    maxLength: 100,
+                  }}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={
+                    errors.accountType && touched.accountType
+                      ? errors.accountType
+                      : ""
+                  }
+                />
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              mb: 2,
+              flexDirection: { xs: "column", sm: "row" },
+              gap: { xs: 1, sm: 0 },
+            }}
+          >
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={6}
+              lg={6}
+              sx={{ textAlign: "center" }}
+            >
+              <Button
+                buttonText={isSubmitting ? "Submitting" : updateOpen ? "Update Account" : 'Add Account'}
+                color="#ffffff"
+                backgroundColor={isSubmitting ? "gray" : "#4C8AB1"}
+                width="150px"
+                height="44px"
+                borderRadius="50px"
+                type={"submit"}
+                onClick={handleSubmit}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={6}
+              lg={6}
+              sx={{ textAlign: "center" }}
+            >
+              <Button
+                buttonText="Reset"
+                color="#4C8AB1"
+                border={"1px solid #4C8AB1"}
+                width="150px"
+                height="44px"
+                borderRadius="50px"
+                fontSize={"13px"}
+                onClick={handleReset}
+              />
+            </Grid>
+          </DialogActions>
+        </Dialog>
+      </form>
+    </>
+  );
+};
+const InputStyle = {
+  backgroundColor: "#EDF2F6",
+  borderRadius: "8px",
+  fontFamily: "Manrope, sans-serif",
+  border: "1px solid #E0E4EC",
+  padding: "10px",
+  width: { xl: "250px", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
+  "& .MuiOutlinedInputRoot": {
+    "& fieldset": {
+      border: "none",
+    },
+  },
+};
+
+const headingStyle = {
+  marginTop: "20px",
+  // marginBottom: "10px",
+  marginLeft: "25px",
+  fontFamily: "Poppins",
+  fontWeight: "500",
+  fontSize: "22px",
+  color: "#4C8AB1",
+};
+
+export default AccountModal;

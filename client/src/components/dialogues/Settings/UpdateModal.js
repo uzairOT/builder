@@ -9,7 +9,9 @@ import {
   Typography,
   Select,
   MenuItem,
-  FormControl
+  FormControl,
+  Stack,
+  IconButton
 } from "@mui/material";
 import UploadIcon from "../../../assets/settings/uploadimg.png";
 import Button from "../../UI/CustomButton";
@@ -21,12 +23,15 @@ import { useGetAssignedRolesQuery, useUpdateAssignRoleMutation } from "../../../
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+import { Close } from "@mui/icons-material";
 
 function UpdateModal({
   title,
   open,
   onClose,
-  userId
+  userId,
+  setRefreshData,
+  refreshData
 }) {
   const [image, setImage] = useState(null);
   const local = localStorage.getItem('userInfo');
@@ -56,13 +61,14 @@ function UpdateModal({
       const put = {
           ...values,
           userRole: userRole,
-          userId: userId,
+          userId: userId.id,
           superAdminId: currentUserId,
+          projectId: userId.projectId
       }
       try{
 
         const res = await assignRolePut(put);
-        refetch();
+        setRefreshData(!refreshData);
         toast.info(res?.data?.message || "Success");
         action.resetForm();
         setImage(null);
@@ -71,7 +77,7 @@ function UpdateModal({
       }
   };
 
-  const { handleBlur, handleChange, values, errors, touched, handleSubmit, isSubmitting, handleReset } = useFormik({
+  const { handleBlur, handleChange, values, errors, touched, handleSubmit, isSubmitting, handleReset, setValues } = useFormik({
     initialValues: {
       userId: '',
       userRole: "",
@@ -109,14 +115,33 @@ function UpdateModal({
 
 
   useEffect(() => {
-    //console.log("values", values);
-  }, [values]);
+    if(data){
+
+      setValues({
+        project: userId?.projectId,
+      email: userId?.email,
+    })
+  }
+  }, [userId, data]);
   return (
     <form onSubmit={handleSubmit}>
       <Dialog open={open} onClose={onClose} maxWidth="md" sx={{}}>
-        <DialogTitle sx={headingStyle}>Update {title}</DialogTitle>
+        <Stack
+          direction={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          mr={5}
+        >
+          <DialogTitle sx={headingStyle}>Update {title}</DialogTitle>
+          <IconButton
+            style={{ width: "30px", height: "30px" }}
+            onClick={onClose}
+          >
+            <Close />
+          </IconButton>
+        </Stack>
         <DialogContent
-          sx={{ display: "flex", justifyContent: "center", margin: "30px" }}
+          sx={{ display: "flex", justifyContent: "center", margin: "30px", marginTop:'15px' }}
         >
           <Grid container spacing={4}>
             {/* <Grid
@@ -222,13 +247,13 @@ function UpdateModal({
                   error={errors.project ? true : false}
                   displayEmpty
                   labelId="demo-simple-select-label"
-                  value={values.project}
+                  value={values.project || ''}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   name="project"
                   fullWidth
                   renderValue={(selected) => {
-                    if (selected.length === 0) {
+                    if (selected?.length === 0) {
                       return (
                         <Typography
                           style={{ fontSize: "1rem", color: "#969a9c" }}
@@ -355,7 +380,7 @@ function UpdateModal({
         >
           <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center" }}>
             <Button
-              buttonText={isSubmitting ? "Submitting" : "Update Profile"}
+              buttonText={isSubmitting ? "Submitting" : "Update"}
               color="#ffffff"
               backgroundColor={isSubmitting ? "gray" :"#4C8AB1"}
               width="150px"

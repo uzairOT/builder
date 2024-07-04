@@ -1,35 +1,53 @@
-import React from 'react'
+import React from "react";
 import {
   useMediaQuery,
-  Button, Box, Typography, TextField, MenuItem
+  Button,
+  Box,
+  Typography,
+  TextField,
+  MenuItem,
 } from "@mui/material";
-import "../StepFormField/StepFormField.css"
-import FooterCircles from '../FooterCircles/FooterCircles'
-import StepBoxes from '../StepBoxes/StepBoxes'
+import "../StepFormField/StepFormField.css";
+import FooterCircles from "../FooterCircles/FooterCircles";
+import StepBoxes from "../StepBoxes/StepBoxes";
 import YellowBtn from "../../UI/button";
 import shallowButton from "../../UI/shallowButton";
-import "../../../App.css"
-import StepTitles from '../StepTitles/StepTitles';
-import ProjectFormFields from '../ProjectFormFields/ProjectFormFields';
-import { useSelector } from 'react-redux';
-import { selectProjectForm } from '../../../redux/slices/projectFormSlice';
+import "../../../App.css";
+import StepTitles from "../StepTitles/StepTitles";
+import ProjectFormFields from "../ProjectFormFields/ProjectFormFields";
+import { useSelector } from "react-redux";
+import { selectProjectForm } from "../../../redux/slices/projectFormSlice";
 import { toast } from "react-toastify";
+import { useCheckProjectDuplicationMutation } from "../../../redux/apis/Project/projectApiSlice";
 //import "react-toastify/dist/ReactToastify.css";
-function SaveAsProject({ onSaveStep, onNextStep , setIsSaveAs}) {
-  const { projectName, location, projectColor } = useSelector(selectProjectForm);
+function SaveAsProject({ onSaveStep, onNextStep, setIsSaveAs, currentUserId }) {
+  const { projectName, location, projectColor } =
+    useSelector(selectProjectForm);
+  const [checkProjectDuplication, { isLoading }] =
+    useCheckProjectDuplicationMutation();
 
-
-  const handleDone = () => {
-     if (projectName === "") {
+  const handleDone = async () => {
+    if (projectName === "") {
       toast.warning("Please enter project name");
-    } else if(projectColor === ''){
+    } else if (projectColor === "") {
       toast.warning("Please select project color");
-    } else if (location === "") {
-      toast.warning("Please enter project location");
-    } else{
-
-      onSaveStep();
-      setIsSaveAs(true)
+    } else {
+      const data = {
+        userId: currentUserId,
+        projectName: projectName,
+      };
+      try {
+        const res = await checkProjectDuplication(data);
+        console.log(res);
+        if (res?.data?.success) {
+          onSaveStep();
+          setIsSaveAs(true);
+        } else {
+          toast.error(res.error.data.message || "Project name error");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
     // onNextStep();
   };
@@ -38,9 +56,7 @@ function SaveAsProject({ onSaveStep, onNextStep , setIsSaveAs}) {
     <div>
       <StepTitles Heading={"Save as Project with New Name"} />
       <Box sx={typoBox}>
-        <Typography sx={typoText}>
-          Lorem ipsum dolor sit amet consectetur. Pretium aliquam egestas interdum varius sed at libero. Sed vestibulum vel platea accumsan in elit morbi eu erat. Purus non urna et purus. Libero nec nec quam pulvinar massa nulla et tincidunt.
-        </Typography>
+        <Typography sx={typoText}>Select your type.</Typography>
       </Box>
       <StepBoxes />
 
@@ -49,7 +65,13 @@ function SaveAsProject({ onSaveStep, onNextStep , setIsSaveAs}) {
       <Box sx={buttonBox}>
         <Button
           variant="outlined"
-          sx={{ ...YellowBtn, ...shallowButton, ...responsiveDone, width:'fit-content', margin: 'auto', }}
+          sx={{
+            ...YellowBtn,
+            ...shallowButton,
+            ...responsiveDone,
+            width: "fit-content",
+            margin: "auto",
+          }}
           onClick={handleDone}
         >
           Done
@@ -59,7 +81,7 @@ function SaveAsProject({ onSaveStep, onNextStep , setIsSaveAs}) {
         <FooterCircles width1={"4rem"} background1={"#4C8AB1"} />
       </div>
     </div>
-  )
+  );
 }
 
 const buttonBox = {
@@ -67,8 +89,8 @@ const buttonBox = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "1.5rem"
-}
+  marginTop: "1.5rem",
+};
 
 const typoBox = {
   display: "flex",
@@ -76,22 +98,21 @@ const typoBox = {
   justifyContent: "center",
   alignItems: "center",
   marginTop: "2rem",
-  gap: "1.5rem"
-}
+  gap: "1.5rem",
+};
 
 const typoText = {
-  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
-  letterSpacing: '0.01em',
+  fontFamily: "Arial Rounded MT, sans-serif",
+  letterSpacing: "0.01em",
   color: "#202227",
-  textAlign: 'center',
+  textAlign: "center",
   width: { lg: "40%", md: "60%", sm: "70%", xs: "90%" },
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem", xs: "0.75rem" },
-}
+};
 
 const responsiveDone = {
   width: { lg: "auto", md: "auto", sm: "auto", xs: "10%" },
   background: { lg: "auto", md: "auto", sm: "#FFF", xs: "#FFAC00" },
   color: { lg: "auto", md: "auto", sm: "#FFAC00", xs: "#FFF" },
-
-}
-export default SaveAsProject
+};
+export default SaveAsProject;

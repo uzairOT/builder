@@ -1,4 +1,5 @@
 import {
+  Box,
   Dialog,
   DialogActions,
   DialogContent,
@@ -6,14 +7,16 @@ import {
   FormControl,
   FormHelperText,
   Grid,
+  IconButton,
   MenuItem,
   Select,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import Button from "../../UI/CustomButton";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 import {
@@ -30,8 +33,23 @@ import { uploadToS3 } from "../../../utils/S3";
 import { useProjectUpdateMutation } from "../../../redux/apis/Project/projectApiSlice";
 import { PhoneInput } from "react-international-phone";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
+import UploadIcon from "../../../assets/settings/uploadimg.png";
+import { useDispatch } from "react-redux";
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import {
+  addProjects,
+  setError,
+  setIsLoading,
+  setLimit,
+  setTotalCount,
+  setTotalPages,
+} from "../../../redux/slices/Project/userProjectsSlice";
+import CloseIcon from '@mui/icons-material/Close';
+import ColorPicker from "../ColorPickerProject/ColorPicker";
 
-function EditProjectModal({ title, open, onClose, project }) {
+function EditProjectModal({ title, open, onClose, project, page }) {
   const [image, setImage] = useState(null);
   const [phone, setPhone] = useState("");
   const local = localStorage.getItem("userInfo");
@@ -42,17 +60,42 @@ function EditProjectModal({ title, open, onClose, project }) {
   const userRole = pathSegments[pathSegments.length - 1];
   const [fileName, setFileName] = useState("");
   const [fileType, setFileType] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState("");
   const [projectUpdate] = useProjectUpdateMutation();
-  const { refetch } = useGetUserProjectsQuery({ userId: currentUserId });
+  const { refetch, data, isLoading, error } = useGetUserProjectsQuery({
+    userId: currentUserId,
+    q: "",
+    filter: "",
+    page: page,
+  });
 
-  // console.log(project)
+  const colors = [
+    "#FFF",
+    "#93D0EC",
+    "#9BDFEB",
+    "#9FF2CA",
+    "#E5F29F",
+    "#F3DE9E",
+    "#F5C79F",
+    "#F9B4A1",
+    "#FBA8A4",
+    "#F9A0CB",
+    "#FCA8F1",
+    "#DA9CF0",
+    "#ADA1F5",
+  ];
+  const handleNavigation = () => {
+    navigate(`${project.id}/initial-proposal`)
+  }
+  console.log(project)
 
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://192.168.0.113:8080/project/file",
+          "http://3.135.107.71/project/file",
           {
             fileName,
             fileType,
@@ -75,18 +118,26 @@ function EditProjectModal({ title, open, onClose, project }) {
 
   const onSubmit = async (values, action) => {
     try {
+      dispatch(setIsLoading(isLoading));
       const fileUrl = await uploadFileToServer(selectedFile);
       const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
       const put = {
-        clientName: values.name,
-        projectName: values.project,
+        ...values,
         image: uploadedFileUrl,
-        phoneNumber: phone,
       };
       const res = await projectUpdate({ body: put, projectId: project.id });
-      await refetch();
+      await refetch({ userId: currentUserId, q: "", filter: "", page: 1 });
+      if (data) {
+        dispatch(addProjects(data?.projects));
+        dispatch(setTotalCount(data?.totalCount));
+        dispatch(setTotalPages(data?.totalPages));
+        dispatch(setLimit(data?.limit));
+      } else {
+        dispatch(setError(error));
+      }
       setImage(null);
       action.resetForm();
+      onClose();
     } catch (err) {
       //console.log(err);
     }
@@ -105,10 +156,11 @@ function EditProjectModal({ title, open, onClose, project }) {
     setValues,
   } = useFormik({
     initialValues: {
-      name: project ? project.clientName : "",
+      location: project ? project.clientName : "",
       project: project ? project.projectName : "",
-      phoneNumber: "",
-      status: "",
+      start_time: "",
+      end_time: "",
+      projectColor: "#FFF",
     },
     validationSchema: projectSchema,
     onSubmit,
@@ -145,16 +197,36 @@ function EditProjectModal({ title, open, onClose, project }) {
       reader.readAsDataURL(file);
     }
   };
+
+  const handleStartDateChange = (newValue) => {
+    setValues({
+      ...values,
+      start_time: newValue,
+    });
+  };
+  const handleEndDateChange = (newValue) => {
+    setValues({
+      ...values,
+      end_time: newValue,
+    });
+  };
+  const handleProjectColorChange = (color) => {
+    setValues({
+      ...values,
+      projectColor: color,
+    });
+  };
   useEffect(() => {
     // This will run whenever the project prop changes
     // console.log('Project has changed:', project);
 
     // Update form values if needed
     setValues({
-      name: project ? project.clientName : "",
+      location: project ? project.location : "",
       project: project ? project.projectName : "",
-      phoneNumber: "",
-      status: "",
+      start_time: project ? project.start_time : "",
+      end_time: project ? project.end_time : "",
+      projectColor: project ? project.projectColor : "",
     });
     setImage((prev) => {
       if (project) {
@@ -162,12 +234,17 @@ function EditProjectModal({ title, open, onClose, project }) {
       }
     });
   }, [project]); // Dependency array
-
+  console.log(errors);
   return (
     <form onSubmit={handleSubmit}>
       <ToastContainer />
       <Dialog open={open} onClose={onClose} maxWidth="md" sx={{}}>
-        <DialogTitle sx={headingStyle}>Edit Project</DialogTitle>
+        <DialogTitle sx={headingStyle}>
+          <Typography sx={headingStyleText}>Edit Project</Typography>
+          <IconButton onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
         <DialogContent
           sx={{ display: "flex", justifyContent: "center", margin: "30px" }}
         >
@@ -203,7 +280,7 @@ function EditProjectModal({ title, open, onClose, project }) {
                 />
                 <label htmlFor="avatarInput">
                   <img
-                    src={image ? image : "UploadIcon"}
+                    src={image ? image : UploadIcon}
                     alt=""
                     width={"120px"}
                     height={"120px"}
@@ -216,94 +293,12 @@ function EditProjectModal({ title, open, onClose, project }) {
                 </label>
               </div>
             </Grid>
-
-            <Grid item xs={12} sm={6}>
-              {/* Name input */}
-              <Typography variant="body1">Client Name</Typography>
-              <TextField
-                error={errors.name ? true : false}
-                placeholder="Name"
-                name={"name"}
-                value={values.name}
-                fullWidth
-                inputProps={{
-                  style: {
-                    ...InputStyle,
-                    border:
-                      errors.name && touched.name
-                        ? "1px solid #d32f2f"
-                        : "1px solid #E0E4EC",
-                  },
-                  maxLength: 50,
-                }}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                helperText={errors.name && touched.name ? errors.name : ""}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              {/* Phone Number input */}
-              <Typography variant="body1">Phone Number</Typography>
-
-              <PhoneInput
-                disableDialCodePrefill
-                style={{ ...customPhoneStyles }}
-                defaultCountry=""
-                name={"phoneNumber"}
-                value={phone}
-                onChange={(phone) => setPhone(phone)}
-                countrySelectorStyleProps={{
-                  style: {
-                    "--react-international-phone-country-selector-background-color":
-                      "#EDF2F6",
-                    "--react-international-phone-country-selector-background-color-hover":
-                      "#EDF2F6",
-                  },
-                  buttonStyle: {
-                    filter: "none",
-                  },
-                }}
-                inputStyle={{ ...customeInputStyles }}
-                inputProps={{
-                  border: "none",
-                  placeholder: "+1 (123) 456-7890",
-                }}
-                required
-              />
-              {/* <TextField
-                
-                  error={errors.phoneNumber ? true : false}
-                  placeholder="Enter your phone number"
-                  fullWidth
-                  value={values.phoneNumber}
-                  onChange={handleChange}
-                  inputProps={{
-                    style: {
-                      ...InputStyle,
-                      border:
-                        errors.phoneNumber && touched.phoneNumber
-                          ? "1px solid #d32f2f"
-                          : "1px solid #E0E4EC",
-                    },
-                    max: 50,
-                    type:'number',
-                 
-                  }}
-                  name={"phoneNumber"}
-                  onBlur={handleBlur}
-                  helperText={
-                    errors.phoneNumber && touched.phoneNumber
-                      ? errors.phoneNumber
-                      : ""
-                  }
-                /> */}
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6} xl={6} lg={6}>
               {/* Projects input */}
               <Typography variant="body1">Project Name</Typography>
               <TextField
                 error={Boolean(errors.project)} // Simplified error handling
-                placeholder="Project"
+                placeholder="Skyscraper"
                 name="project"
                 value={values.project}
                 onChange={handleChange}
@@ -324,54 +319,102 @@ function EditProjectModal({ title, open, onClose, project }) {
                   errors.project && touched.project ? errors.project : ""
                 }
               ></TextField>
-              {/* <FormControl fullWidth>
-                  <Select
-                    error={errors.project ? true : false}
-                    displayEmpty
-                    labelId="demo-simple-select-label"
-                    value={values.project}
-                    onChange={handleChange}
-                    onBlur={handleBlur} 
-                  name="project"
-                    fullWidth
-                    renderValue={(selected) => {
-                      if (selected.length === 0) {
-                        return (
-                          <Typography
-                            style={{ fontSize: "1rem", color: "#969a9c" }}
-                          >
-                            Project
-                          </Typography>
-                        );
-                      }
-                      const selectedProject = projectNames.find(project => project.id === selected);
-                      return selectedProject.projectName;
-                    }}
-                    sx={{
-                      ...InputStyle,
-                      height: "45px",
-                      border:
-                        errors.project && touched.project
-                          ? "1px solid #d32f2f"
-                          : "1px solid #E0E4EC",
-                      placeholder: "Project",
-                    }}
-                  >
-                    {projectNames?.map((projectName) => (
-                    <MenuItem key={projectName.id} value={projectName.id}>
-                      {projectName.projectName}
-                    </MenuItem>
-                  ))}
-                  </Select>
-                  {errors.project && touched.project ? (
-                    <FormHelperText error>{errors.project}</FormHelperText>
-                  ) : (
-                    <></>
-                  )}
-                </FormControl> */}
             </Grid>
+
             <Grid item xs={12} sm={6}>
-              {/* Country input */}
+              {/* Name input */}
+              <Typography variant="body1">Location</Typography>
+              <TextField
+                error={errors.location ? true : false}
+                placeholder="San Francisco"
+                name={"location"}
+                value={values.location}
+                fullWidth
+                inputProps={{
+                  style: {
+                    ...InputStyle,
+                    border:
+                      errors.location && touched.location
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
+                  },
+                  maxLength: 50,
+                }}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={
+                  errors.location && touched.location ? errors.location : ""
+                }
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6} xl={6} lg={6}>
+              <Typography variant="body1">Start Time</Typography>
+              <Box
+                sx={{
+                  width: "100%", // Set width to 100% for responsiveness
+                  alignSelf: "center",
+                  fontSize: "14px",
+                  // border: "1px solid #ccc",
+                  // borderRadius: "12px",
+                  color: "#202227",
+                  fontFamily: "Arial Rounded MT, sans-serif",
+                }}
+              >
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <MobileDatePicker
+                    sx={{
+                      width: "100%",
+                      ".MuiOutlinedInput-notchedOutline ": {
+                        border: "1px solid #ccc !important",
+                        borderRadius: "12px",
+                        // paddingRight: "0px"
+                      },
+                    }}
+                    value={dayjs(values.start_time)}
+                    onChange={handleStartDateChange}
+                    format="YYYY/MM/DD"
+                  />
+                </LocalizationProvider>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} xl={6} lg={6}>
+              <Typography variant="body1">End Time</Typography>
+              <Box
+                sx={{
+                  width: "100%", // Set width to 100% for responsiveness
+                  alignSelf: "center",
+                  fontSize: "14px",
+                  // border: "1px solid #ccc",
+                  // borderRadius: "12px",
+                  color: "#202227",
+                  fontFamily: "Arial Rounded MT, sans-serif",
+                }}
+              >
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <MobileDatePicker
+                    sx={{
+                      width: "100%",
+                      ".MuiOutlinedInput-notchedOutline ": {
+                        border: "1px solid #ccc !important",
+                        borderRadius: "12px",
+                        paddingRight: "0px",
+                      },
+                    }}
+                    value={dayjs(values.end_time)}
+                    onChange={handleEndDateChange}
+                    format="YYYY/MM/DD"
+                    minDate={
+                      values.start_time
+                        ? dayjs(values.start_time).add(1, "day")
+                        : dayjs(Date.now()).add(1, "day")
+                    }
+                  />
+                </LocalizationProvider>
+              </Box>
+            </Grid>
+            {/* <Grid item xs={12} sm={6}>
+              
               <Typography variant="body1">Status</Typography>
               <FormControl fullWidth>
                 <Select
@@ -414,84 +457,129 @@ function EditProjectModal({ title, open, onClose, project }) {
                   <></>
                 )}
               </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              {/* Email input */}
-              {/* <Typography variant="body1">Email</Typography>
-                <TextField
-                  error={errors.email ? true : false}
-                  placeholder="Email"
-                  name={"email"}
-                  value={values.email}
-                  onChange={handleChange}
-                  fullWidth
-                  inputProps={{
-                    style: {
-                      ...InputStyle,
-                      border:
-                        errors.email && touched.email
-                          ? "1px solid #d32f2f"
-                          : "1px solid #E0E4EC",
-                    },
-                  }}
-                  onBlur={handleBlur}
-                  helperText={errors.email && touched.email ? errors.email : ""}
-                /> */}
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              {/* Status input */}
-              {/* <Typography variant="body1">Status</Typography>
-                <FormControl fullWidth>
-                  <Select
-                    error={errors.status ? true : false}
-                    displayEmpty
-                    labelId="demo-simple-select-label"
-                    value={values.status}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    name={"status"}
-                    fullWidth
-                    renderValue={(selected) => {
-                      if (selected.length === 0) {
-                        return (
-                          <Typography
-                            style={{ fontSize: "1rem", color: "#969a9c" }}
-                          >
-                            Unselected
-                          </Typography>
-                        );
-                      }
-                      return selected;
-                    }}
-                    sx={{
-                      ...InputStyle,
-                      height: "45px",
-                      border:
-                        errors.status && touched.status
-                          ? "1px solid #d32f2f"
-                          : "1px solid #E0E4EC",
-                      placeholder: "Unselected",
-                    }}
-                  >
-                    <MenuItem value={"done"}>Done</MenuItem>
-                    <MenuItem value={"pending"}>Pending</MenuItem>
-                  </Select>
-                  {errors.status && touched.status ? (
-                    <FormHelperText error>{errors.status}</FormHelperText>
-                  ) : (
-                    <></>
-                  )}
-                </FormControl> */}
+            </Grid> */}
+            <Grid item xs={12} sm={12}>
+              {/* <Stack
+                direction={"row"}
+                alignItems={"center"}
+                justifyContent={"space-between"}
+                gap={1}
+                p={0}
+              >
+                {colors.map((color) => {
+                  return (
+                    <>
+                      <Box
+                        width={"40px"}
+                        height={"60px"}
+                        bgcolor={color}
+                        sx={{cursor:'pointer'}}
+                        boxShadow={
+                          (values.projectColor ? values.projectColor === color : '#FFF' === color)
+                            ? "rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;"
+                            : ""
+                        }
+                        borderRadius={"7px"}
+                        onClick={() => {
+                          handleProjectColorChange(color);
+                        }}
+                        border={
+                          (values.projectColor ? values.projectColor === color : '#FFF' === color)
+                          ? "3px solid #ADADAD" : "1px solid #ADADAD"
+                        }
+                      ></Box>
+                    </>
+                  );
+                })}
+                Req change to display an array of 12 colors
+                <ColorPicker />
+              </Stack> */}
+              <Stack
+                direction={"row"}
+                alignItems={"center"}
+                justifyContent={"space-between"}
+                p={1}
+              >
+                <Stack
+                  direction={"row"}
+                  alignItems={"center"}
+                  justifyContent={"flex-start"}
+                  gap={2}
+                >
+                  {/* {colors.map((color) => {
+                  return (
+                    <>
+                      <Box
+                        width={"40px"}
+                        height={"60px"}
+                        bgcolor={color}
+                        sx={{cursor:'pointer'}}
+                        boxShadow={
+                          (projectColor ? projectColor === color : '#FFF' === color)
+                            ? "rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;"
+                            : ""
+                        }
+                        borderRadius={"7px"}
+                        onClick={() => {
+                          handleProjectColorChange(color);
+                        }}
+                        border={
+                          (projectColor ? projectColor === color : '#FFF' === color)
+                          ? "3px solid #ADADAD" : "1px solid #ADADAD"
+                        }
+                      ></Box>
+                    </>
+                  );
+                })} */}
+                  <Box
+                    width={"40px"}
+                    height={"40px"}
+                    bgcolor={values.projectColor}
+                    sx={{ cursor: "pointer" }}
+                    // boxShadow={
+                    //   (projectColor ? projectColor === color : '#FFF' === color)
+                    //     ? "rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;"
+                    //     : ""
+                    // }
+                    borderRadius={"99999px"}
+                    border={'1px dashed gray'}
+                    // onClick={() => {
+                    //   handleProjectColorChange(color);
+                    // }}
+                    // border={
+                    //   (projectColor ? projectColor === color : '#FFF' === color)
+                    //   ? "3px solid #ADADAD" : "1px solid #ADADAD"
+                    // }
+                  ></Box>
+                  {/* Req change to display an array of 12 colors */}
+                  <ColorPicker
+                    editModal={true}
+                    handleProjectColorChange={handleProjectColorChange}
+                  />
+                </Stack>
+                <Stack>
+                  <Typography onClick={handleNavigation} color={"#4C8AB1"} sx={styles.link}>
+                    Edit phases
+                  </Typography>
+                </Stack>
+              </Stack>
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions
           sx={{ display: "flex", justifyContent: "center", mb: 2 }}
         >
-          <Grid item xs={8} sm={4} md={3} lg={2} sx={{ textAlign: "center" }}>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            sx={{ textAlign: "center" }}
+          >
             <Button
               type={"submit"}
-              buttonText="Update"
+              buttonText="Update Project"
               color="#ffffff"
               backgroundColor={isSubmitting ? "gray" : "#4C8AB1"}
               width="150px"
@@ -500,18 +588,6 @@ function EditProjectModal({ title, open, onClose, project }) {
               onClick={handleSubmit}
               disabled={isSubmitting}
             />
-          </Grid>
-          <Grid item xs={8} sm={4} md={3} lg={2} sx={{ textAlign: "center" }}>
-            {/* <Button
-                buttonText="Reset"
-                color="#4C8AB1"
-                border={"1px solid #4C8AB1"}
-                width="150px"
-                height="44px"
-                borderRadius="50px"
-                fontSize={"13px"}
-                onClick={handleReset}
-              /> */}
           </Grid>
         </DialogActions>
       </Dialog>
@@ -533,11 +609,30 @@ const InputStyle = {
     },
   },
 };
+const styles = {
+  link: {
+    cursor: "pointer",
+    textDecoration: "underline",
+    "&:hover": {
+      color: "#326273", // Change color on hover
+    },
+    "&:focus": {
+      outline: "none", // Remove outline on focus
+      color: "#326273", // Change color on focus
+    },
+    fontSize:'14px'
+  },
+};
 
 const headingStyle = {
   marginTop: "20px",
   // marginBottom: "10px",
   marginLeft: "25px",
+  display:'flex',
+  flexDirection:'row',
+  justifyContent:'space-between'
+};
+const headingStyleText = {
   fontFamily: "Poppins",
   fontWeight: "500",
   fontSize: "22px",

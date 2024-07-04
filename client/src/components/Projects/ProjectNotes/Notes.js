@@ -10,23 +10,31 @@ import OpenNotes from './OpenNotes';
 import NotesModal from './NotesModal';
 import { useParams } from "react-router-dom";
 import { useGetProjectNotesQuery } from '../../../redux/apis/Project/projectApiSlice';
+import  Search  from '../../UI/CustomSearchInput';
+import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
+import { useEffect } from 'react';
 
 const Notes = () => {
     const [selectedButton, setSelectedButton] = useState(0);
     const { id } = useParams();
-    const { data } = useGetProjectNotesQuery({ projectId: id });
-  //console.log(data)
-    const list =[
-        {"listItem": "All Notes"},
-        {"listItem": "All Notes"},
-        {"listItem": "All Notes"}
-    ]
-   
+    const [searchInput, setSearchInput] = useState('');
+    const debouncedValue = QueryDebouncer(searchInput, 500)
+    const { data, refetch } = useGetProjectNotesQuery({ projectId: id, q:debouncedValue ? debouncedValue : '' });
+
+  
       const handleSelectedButton = (index) =>{
         setSelectedButton(index);
         //console.log("Slected Btn notes: ", index);
       }
-      
+      const handleSearchInputChange = (e) =>{
+        setSearchInput(e.target.value);
+      }
+      const refetchNotes = async() => {
+        await refetch({ projectId: id, q:debouncedValue ? debouncedValue : '' });
+      }
+      useEffect(()=>{
+        refetchNotes()
+      },[debouncedValue])
   return (
     <Stack direction={{xl:'row', lg:'row', md:'column-reverse'}} spacing={1} height={'100%'}>
     <Stack flex={1}>
@@ -34,10 +42,15 @@ const Notes = () => {
       <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} p={2} >
         <Typography fontSize={'20px'} fontFamily={'Poppins, sans serif'} fontWeight={'600'} color={'#4C8AB1'}>Notes</Typography>
         <Stack direction={'row'} alignItems={'center'}>
-            <NotesModal />
+            <NotesModal q={debouncedValue}/>
         </Stack>
       </Stack>
-      <SearchBar />
+      <Search
+          value={searchInput}
+          onChange={handleSearchInputChange}
+          placeholder={`Search Notes`}
+          backgroundColor="#E7E7E7"
+        />
       <Stack direction={'row'} justifyContent={'flex-start'} alignItems={'center'} p={2}>
         <EventNoteIcon style={{color:'#4C8AB1'}} />
         {/* <SelectMenuBarChart listItems={list} color={'#4C8AB1'}/> */}
@@ -49,7 +62,7 @@ const Notes = () => {
 
         <Stack flex={2}  >
          <Paper sx={{ borderRadius:'14px', height:'98.88%'}}>
-           <OpenNotes notes={data?.notes[selectedButton]} />
+           <OpenNotes notes={data?.notes[selectedButton]} refetchNotes={refetchNotes}/>
         </Paper>
           </Stack>
 

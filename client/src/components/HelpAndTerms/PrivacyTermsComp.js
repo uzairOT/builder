@@ -56,20 +56,21 @@ const styles = {
     margin: "6rem",
     marginTop: "3.5rem",
     lineHeight: "24px",
+    fontFamily: "inherit"
   },
   heading: {
     fontSize: {xs:"18px",sm:"27px",md:"32px"},
     fontWeight: 600,
-    fontFamily: "GT Walsheim Trial",
+    fontFamily: "inherit",
     marginBottom: "2.5rem",
     color: "#202227",
   },
   text: {
     lineHeight: { xl: "12px", lg: "16px", md: "20px" },
-    fontFamily: "GT Walsheim Trial",
+    fontFamily: "inherit",
     color: "#202227",
     marginBottom: "1.5rem",
-    fontSize: "16px",
+    fontSize: "15px",
     fontWeight: 300,
   },
 };

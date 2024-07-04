@@ -215,7 +215,7 @@ function ChangeOrderRequest({ handleOpen, handleClose, heading }) {
 }
 const themeStyle = {
     typoTitle: {
-        fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+        fontFamily: 'Arial Rounded MT, sans-serif',
         fontSize: { lg: "1.5rem", sm: "1.5rem", xs: "1.2rem" },
         fontWeight: 500,
         color: "#4C8AB1",
@@ -246,7 +246,7 @@ const themeStyle = {
     },
 
     typoText: {
-        fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+        fontFamily: 'Arial Rounded MT, sans-serif',
         fontSize: "1rem",
         color: "#202227"
     },
@@ -254,7 +254,7 @@ const themeStyle = {
         width: { lg: "35%", md: "35%", sm: "40%", xs: "50%" },
         justifyContent: "center",
         alignItems: "center",
-        fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+        fontFamily: 'Arial Rounded MT, sans-serif',
     },
     declineButton: {
         marginLeft: "0.5rem",
@@ -279,7 +279,7 @@ const themeStyle = {
     radioText: {
         '& .MuiTypography-root': {
             color: '#3D3D3D', // Change color of the radio button text
-            fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+            fontFamily: 'Arial Rounded MT, sans-serif',
             fontSize: { lg: "1rem", xs: "0.8rem" },
         },
 

@@ -57,7 +57,7 @@ import { socket } from "../../../socket";
 
 const local = localStorage.getItem("userInfo");
 const currentUser = JSON.parse(local);
-// const socket = io("http://192.168.0.113:8080", {
+// const socket = io("http://3.135.107.71", {
 //   query: { userId: currentUser?.user?.id },
 // });
 
@@ -70,7 +70,7 @@ const RequestWorkOrderModal = ({
   setPhaseItems,
   fetchData,
   refetchChangeOrder,
-  setRowCheckboxes
+  setRowCheckboxes,
 }) => {
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
@@ -89,8 +89,9 @@ const RequestWorkOrderModal = ({
   const [description, setDescription] = useState(
     changeOrder ? checkedRow?.description : ""
   );
-  const { data } = useGetTeamMembersQuery(projectId);
+  const { data, refetch: refetchProjectTeam } = useGetTeamMembersQuery(projectId);
   const [assignedCheckboxes, setAssignedCheckboxes] = useState([]);
+  const [superAdminId, setSuperAdminId] = useState();
   const userInfo = localStorage.getItem("userInfo");
   const user = JSON.parse(userInfo);
   const userId = user?.user.id;
@@ -112,7 +113,7 @@ const RequestWorkOrderModal = ({
   let lineItemCounter = 0;
   let totalWorkOrder = 0;
 
-  console.log("priority", priority);
+  console.log("sokect: ", socket);
   // console.log("START DATE", endDate);
   // const fetchPhasesAndLineItems = async (data) => {
   //   try{
@@ -145,7 +146,7 @@ const RequestWorkOrderModal = ({
   }
 
   // });
-  const ENDPOINT = "http://192.168.0.113:8080/";
+  const ENDPOINT = "http://3.135.107.71/";
   //test new workd order
 
   // Object?.values(rowCheckboxes)?.forEach((phaseData) => {
@@ -309,10 +310,10 @@ const RequestWorkOrderModal = ({
       toast.warning("Please complete the Request work order form");
       return;
     }
-
+    setLoading(true);
     const formattedStartDate = startDate.utc().format("MMM D, YYYY, h:mm a");
     const formattedEndDate = endDate.utc().format("MMM D, YYYY, h:mm a");
-
+    //added superadmin id to the workorder
     const requestForm = {
       workOrder_id: changeOrder ? checkedRow.id : "",
       subject: subject,
@@ -327,7 +328,7 @@ const RequestWorkOrderModal = ({
         : lineItemIds[0].lineItemId[0],
       phaseItems: changeOrder ? selectedItems : lineItemIds,
       createdby: userId,
-      teamIds: [...assignedCheckboxes, userId],
+      teamIds: [...assignedCheckboxes, userId, superAdminId],
       notes: notes,
       projectId: projectId,
       total: changeOrder ? checkedRow?.total : totalWorkOrder,
@@ -351,11 +352,11 @@ const RequestWorkOrderModal = ({
               response?.data?.message ||
                 response.error ||
                 response?.data?.error ||
-                response.message || 'Something went wrong!'
+                response.message ||
+                "Something went wrong!"
             );
           }
         });
-        
       } else {
         const socketRes = await socket.emit(
           "notification",
@@ -374,7 +375,8 @@ const RequestWorkOrderModal = ({
                 response?.data?.message ||
                   response.error ||
                   response?.data?.error ||
-                  response.message || 'Something went wrong!'
+                  response.message ||
+                  "Something went wrong!"
               );
               return response;
             }
@@ -383,6 +385,7 @@ const RequestWorkOrderModal = ({
 
         // console.log(socketRes)
       }
+      setLoading(false);
       setRowCheckboxes({});
       dispatch(setIsLoading(true));
       const res = await getEvents({ userId, dailyForecast });
@@ -396,7 +399,15 @@ const RequestWorkOrderModal = ({
     }
     handleClose();
   };
+  const refetchTeam = async ()=>{
+    const res = await refetchProjectTeam();
+  }
 
+  useEffect(()=>{
+    if(open){
+      refetchTeam()
+    }
+  },[open])
   console.log(rowCheckboxes);
 
   return (
@@ -718,8 +729,7 @@ const RequestWorkOrderModal = ({
                           }}
                           sx={{
                             input: {
-                              fontFamily:
-                                "GT-Walsheim-Regular-Trial, sans serif",
+                              fontFamily: "inherit",
                             },
                           }}
                         />
@@ -761,8 +771,7 @@ const RequestWorkOrderModal = ({
                           }}
                           sx={{
                             input: {
-                              fontFamily:
-                                "GT-Walsheim-Regular-Trial, sans serif",
+                              fontFamily: "inherit",
                             },
                           }}
                         />
@@ -870,6 +879,7 @@ const RequestWorkOrderModal = ({
                         })}
                   </Stack>
                   <AssignTeamMembers
+                    setSuperAdminId={setSuperAdminId}
                     assignedCheckboxes={assignedCheckboxes}
                     setAssignedCheckboxes={setAssignedCheckboxes}
                     data={data}
@@ -914,9 +924,14 @@ const RequestWorkOrderModal = ({
                   renderValue={(value) => {
                     return (
                       <Stack direction={"row"} gap={1}>
-                        <FlagOutlinedIcon sx={{ color: priority === 'urgent' ?  "#EB1717" : '#4C8AB1' }} />
+                        <FlagOutlinedIcon
+                          sx={{
+                            color:
+                              priority === "urgent" ? "#EB1717" : "#4C8AB1",
+                          }}
+                        />
                         <Typography
-                          color={priority === 'urgent' ?  "#EB1717" : '#4C8AB1'}
+                          color={priority === "urgent" ? "#EB1717" : "#4C8AB1"}
                           textTransform={"capitalize"}
                           fontFamily={"Inter"}
                           fontWeight={"500"}
@@ -939,7 +954,13 @@ const RequestWorkOrderModal = ({
                     ...themeStyle.linkButton,
                     ...themeStyle.priorityButton,
                   }}
-                  startIcon={<FlagOutlinedIcon sx={{ color: priority === 'urgent' ?  "#EB1717" : '#4C8AB1' }} />}
+                  startIcon={
+                    <FlagOutlinedIcon
+                      sx={{
+                        color: priority === "urgent" ? "#EB1717" : "#4C8AB1",
+                      }}
+                    />
+                  }
                 >
                   <MenuItem value={"urgent"}>Urgent</MenuItem>
                   <MenuItem value={"normal"}>Normal</MenuItem>
@@ -950,7 +971,7 @@ const RequestWorkOrderModal = ({
                 <Typography
                   fontSize={"13px"}
                   style={{
-                    fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
+                    fontFamily: "inherit",
                   }}
                 >
                   Created
@@ -960,7 +981,7 @@ const RequestWorkOrderModal = ({
                   color={"black"}
                   fontWeight={"600"}
                   style={{
-                    fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
+                    fontFamily: "inherit",
                   }}
                 >
                   {changeOrder
@@ -972,7 +993,7 @@ const RequestWorkOrderModal = ({
                 <Typography
                   fontSize={"13px"}
                   style={{
-                    fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
+                    fontFamily: "inherit",
                   }}
                 >
                   Updated
@@ -982,7 +1003,7 @@ const RequestWorkOrderModal = ({
                   color={"black"}
                   fontWeight={"600"}
                   style={{
-                    fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
+                    fontFamily: "inherit",
                   }}
                 >
                   {changeOrder
@@ -1047,7 +1068,7 @@ const themeStyle = {
     padding: 4,
   },
   typoTitle: {
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     fontSize: "1.5rem",
     fontWeight: 500,
     color: "#4C8AB1",
@@ -1087,13 +1108,13 @@ const themeStyle = {
   },
 
   typoText: {
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     fontSize: "1rem",
     color: "#202227",
   },
   sendButton: {
     width: { lg: "35%", md: "35%", sm: "40%", xs: "60%" },
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
   },
   declineButton: {
     background: "#FFF",
@@ -1118,7 +1139,7 @@ const themeStyle = {
   },
   radioText: {
     color: "#3D3D3D",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
   },
   radioChecked: {
     "&, &.Mui-checked": {

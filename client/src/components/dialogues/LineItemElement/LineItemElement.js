@@ -25,6 +25,7 @@ import {
   Stack,
   IconButton,
   InputAdornment,
+  CircularProgress,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -49,19 +50,9 @@ import {
   useGetUnitsQuery,
 } from "../../../redux/apis/Project/userProjectApiSlice";
 import { isPlainObject } from "@reduxjs/toolkit";
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
-const UnitsMap = new Map([
-  ["sqft", "Square Feet"],
-  ["sqm", "Square Meters"],
-  ["acres", "Acres"],
-  ["hectares", "Hectares"],
-  ["sqyds", "Square Yards"],
-  ["sqmi", "Square Miles"],
-]);
+import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
+import { authUserRole } from "../../../redux/slices/auth/userRoleSlice";
+import { toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
 
 function AddLineElement({
   phaseData,
@@ -80,20 +71,22 @@ function AddLineElement({
   setPhaseItems,
   InitialProposalView,
   reqWorkOrderModal,
+  setRowCheckboxes,
 }) {
   // const { data, isLoading, isSuccess } = useGetLineItemQuery({
   //   lineItemId: LineItem,
   // });
   const [open, setOpen] = useState(false);
-  const [addPhaseLine] = useAddPhaseLineMutation();
-  const [updatePhaseLine] = useUpdatePhaseLineMutation();
+  const [addPhaseLine, { isLoading: addIsLoading }] = useAddPhaseLineMutation();
+  const [updatePhaseLine, { isLoading: updateIsLoading }] =
+    useUpdatePhaseLineMutation();
   const [phaseName, setPhaseName] = useState(LineItem ? LineItem.title : "");
 
   const [description, setDescription] = useState(
     LineItem ? LineItem.description : ""
   );
   const [autoCompleteUnit, setAutoCompleteUnit] = useState("");
-  const [unit, setUnit] = useState(LineItem ? LineItem.unit.value : "");
+  const [unit, setUnit] = useState(LineItem ? LineItem.unit : "");
   const [quantity, setQuantity] = useState(LineItem ? LineItem.quantity : "");
   const [unitPrice, setUnitPrice] = useState(
     LineItem ? LineItem.unit_price : ""
@@ -108,7 +101,11 @@ function AddLineElement({
   const [percentage, setPercentage] = useState(
     LineItem ? LineItem.percentage : ""
   );
+  const [currentPayment, setCurrentPayment] = useState(
+    LineItem ? LineItem?.currentPayment : 0
+  );
   const [totalCost, setTotalCost] = useState(0);
+  const [autoCompleteEvent, setAutoCompleteEvent] = useState(null)
   const creatableRef = useRef();
 
   const handleStartDateChange = (newValue) => {
@@ -132,6 +129,7 @@ function AddLineElement({
   // console.log(autoComplete)
   const { data, isLoading, refetch, isSuccess } = useGetUnitsQuery({
     userId: userInfo.user.id,
+    q: "",
   });
   const [addUnit] = useAddUnitMutation();
   //console.log(userInfo)
@@ -152,10 +150,10 @@ function AddLineElement({
     const getData = setTimeout(() => {
       axios
         .get(
-          `http://192.168.0.113:8080/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`,
+          `http://3.135.107.71/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`,
           {
             headers: {
-              Authorization: `Bearer ${userInfo.token}`, // Add authorization header
+              Authorization: `Bearer ${getTokenFromLocalStorage()}`,
             },
           }
         )
@@ -189,40 +187,18 @@ function AddLineElement({
     setOpen(false);
   };
 
-  const handlePercentageChange = (e) => {
-    if (total) {
-      const percent = e.target.value;
-      const result = (total * percent) / 100;
-      const roundedResult = Math.round(result * 10) / 10;
-      setPercentage(() => {
-        setMargin(roundedResult);
-
-        return percent;
-      });
-    } else {
-      //toastId added to prevent duplication
-      toast.warning("Total field is empty!", { toastId: 12 });
-    }
-  };
-
-  const handleMarginChange = (e) => {
-    if (total) {
-      const inputMargin = e.target.value;
-      const result = (inputMargin * 100) / total;
-      const roundedResult = Math.round(result * 10) / 10;
-      setMargin(() => {
-        setPercentage(roundedResult);
-
-        return inputMargin;
-      });
-    } else {
-      //toastId added to prevent duplication
-      toast.warning("Total field is empty!", { toastId: 12 });
-    }
-  };
-  // console.log("Line Item Element", LineItem);
+  useEffect(() => {
+      if (totalCost !== 0 && margin !== 0 && percentage !== 0 && !autoCompleteEvent) {
+        setTotalCost(0);
+        setMargin(0);
+        setPercentage(0);
+      }else if(autoCompleteEvent){
+        setAutoCompleteEvent(null)
+        }
+  }, [quantity, unitPrice]);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setRowCheckboxes({});
     // if (start === null) {
     //   toast.warning("Please enter a date");
     //   return;
@@ -239,11 +215,17 @@ function AddLineElement({
     //   toast.warning("End date cannot be after start date");
     //   return;
     // }
+    if (quantity <= 0 || unitPrice <= 0) {
+      toast.warning("Enter value greater than 0");
+      return;
+    }
+   
     if (LineHeading === "Update Line Item") {
       //console.log("updading..")
       const lineItemId = LineItem.id;
       const data1 = {
         ...formData,
+        currentPayment: currentPayment,
         id: lineItemId,
         projectId: reqWorkOrderModal ? id : projectId,
       };
@@ -251,17 +233,19 @@ function AddLineElement({
 
       try {
         const res = await updatePhaseLine(data1);
+        setRowCheckboxes({});
         if (reqWorkOrderModal) {
           setPhaseItems(null);
         }
         if (InitialProposalView) {
           dispatch(addInitialPhase(res.data.data));
         } else {
-          dispatch(addPhase(res.data.data));
+          dispatch(toggleWorkOrderDeclineRecall());
         }
 
         //   handleUpdateClose();
         toast.success("Line Item Edited successfully");
+        handleUpdateClose();
       } catch (error) {
         toast.error(
           error?.data?.message ||
@@ -301,12 +285,18 @@ function AddLineElement({
         toast.warning("Please enter unit");
         return;
       }
-      const response = await addPhaseLine(newLineItem);
-      toast.success("Line Item Added successfully");
-      if (InitialProposalView) {
-        dispatch(addInitialPhase(response?.data?.allPhases));
-      } else {
-        dispatch(addPhase(response?.data?.allPhases));
+      try {
+        const response = await addPhaseLine(newLineItem);
+        toast.success("Line Item Added successfully");
+        if (InitialProposalView) {
+          dispatch(addInitialPhase(response?.data?.allPhases));
+        } else {
+          dispatch(addPhase(response?.data?.allPhases));
+        }
+        toast.success("Line Item added successfully");
+        handleAddClose();
+      } catch (error) {
+        console.log("Something went wrong!");
       }
       //console.log(newLineItem);
       //console.log(response);
@@ -315,13 +305,47 @@ function AddLineElement({
       // handleAddClose();
     }
   };
-  const handleTotalCostChange = () => {
+  const handleTotalCostChange1 = (e) => {
+    const value = e.target.value;
+    setTotalCost(() => {
+      if (total) {
+        handleMarginAndPercentageChange(value);
+      }
+      return value;
+    });
+  };
+
+  const handleTotalCostChange = (margin, total) => {
     setTotalCost((prev) => {
-      const numberMargin = Number(margin) 
-      const numberTotal = Number(total)
+      const numberMargin = Number(margin);
+      const numberTotal = Number(total);
       return numberMargin + numberTotal;
     });
   };
+
+  const handleMarginAndPercentageChange = (value) => {
+    console.log("run");
+    const margin = parseFloat(value - total);
+    const percentage = parseFloat((margin / total) * 100);
+    console.log(total);
+    setMargin(margin);
+    setPercentage(percentage);
+  };
+
+  // useEffect(() => {
+  //   if (total) {
+  //     handleMarginAndPercentageChange();
+  //   }
+  // }, [totalCost]);
+
+  useEffect(() => {
+    // console.log('run')
+    if (LineItem) {
+      const margin = LineItem.margin;
+      const total = LineItem.total;
+      handleTotalCostChange(margin, total);
+    }
+  }, [LineItem]);
 
   // const Units = [
   //   { value: "sqft", label: "Square Feet"},
@@ -369,24 +393,28 @@ function AddLineElement({
   // }, [isSuccess, data]);
   const handleSetUnit = async (selectedOption, actionType) => {
     console.log(actionType);
+    console.log(selectedOption);
     if (selectedOption === null || selectedOption?.value === LineItem?.unit) {
       return;
     }
-    const existingUnit = data?.some(
-      (unit) => unit?.value === selectedOption?.value
-    );
-    console.log(selectedOption);
+    const existingUnit = Array.isArray(data?.allUnits)
+      ? data?.allUnits?.some((unit) => unit?.value === selectedOption?.value)
+      : null;
     console.log(existingUnit);
+    console.log(selectedOption);
+    console.log(data);
     if (existingUnit) {
       setUnit(selectedOption.value);
-    } else {
+    } else if (selectedOption.value) {
       setUnit(selectedOption.value);
       await addUnit({ ...selectedOption, userId: userInfo.user.id });
       await refetch({ userId: userInfo.user.id });
+    } else {
+      setUnit(selectedOption);
     }
   };
   const findValueInData = (value) => {
-    const dataObject = data?.find((obj) => obj.value === value);
+    const dataObject = data?.allUnits.find((obj) => obj.value === value);
     // console.log(dataObject)
     return dataObject;
   };
@@ -407,29 +435,71 @@ function AddLineElement({
     if (LineItem) {
       const obj = findValueInData(LineItem.unit);
       const unit = creatableRef.current?.props.value;
+      console.log(obj);
       console.log(unit);
       console.log(LineItem?.unit);
       if (unit?.value === LineItem?.unit) {
         return;
-      } else {
+      } else if (obj) {
         creatableRef.current?.setValue(obj);
         console.log(creatableRef.current);
+      } else {
+        creatableRef.current?.setValue(LineItem.unit);
       }
+    }
+  };
+
+  const handleMarginChange = (e) => {
+    if (total) {
+      const value = parseFloat(e.target.value);
+
+      setMargin(() => {
+        return value ? value : 0;
+      });
+      setTotalCost(value + parseFloat(total));
+      setPercentage(() => {
+        const percentage = parseFloat((value / total) * 100);
+        return percentage ? percentage : 0;
+      });
+    } else {
+      toast.error(`Add Client Cost`);
+      setMargin(0);
+    }
+  };
+
+  const handlePercentageChange = (e) => {
+    if (total) {
+      const value = parseFloat(e.target.value);
+      const actualCost = parseFloat(total);
+      const margin = parseFloat(actualCost * (value / 100));
+      setPercentage(() => {
+        return value ? value : 0;
+      });
+      setMargin(() => {
+        return margin ? margin : 0;
+      });
+      setTotalCost(actualCost + margin);
+    } else {
+      toast.error(`Add Actual Cost`, {
+        toastId: "percentageValidation",
+      });
+      setPercentage(0);
     }
   };
 
   useEffect(() => {
     if (data) {
-      setUnitOnLineItemEdit();
+      // setUnitOnLineItemEdit();
     }
   }, [LineItem, data]);
-  useEffect(() => {
-    handleTotalCostChange();
-  }, [margin]);
+  // useEffect(() => {
+
+  //   handleTotalCostChange();
+  // }, [margin]);
 
   useEffect(() => {
-    console.log(phaseName);
-  }, [phaseName]);
+    console.log(margin);
+  }, [margin]);
   return (
     <div className="App">
       <>
@@ -474,6 +544,7 @@ function AddLineElement({
                     (option) => option.title === newValue
                   );
                   if (selectedOption) {
+                    setAutoCompleteEvent(event)
                     setUnitOnAutoComplete(selectedOption.unit);
                     setDescription(selectedOption.description);
                     // handleSetUnit({value: selectedOption.unit});
@@ -483,8 +554,16 @@ function AddLineElement({
                     setStart(dayjs(selectedOption.start_day));
                     setEnd(dayjs(selectedOption.end_day));
                     setLongDescription(selectedOption.notes);
+
+                    setTotalCost(() => {
+                      const total = parseFloat(selectedOption.total);
+                      const margin = parseFloat(selectedOption.margin);
+                      const totalCost = total + margin;
+                      return totalCost;
+                    });
                     setMargin(selectedOption.margin);
                     setPercentage(selectedOption.percentage);
+                    // handleTotalCostChange(selectedOption.margin, selectedOption.percentage)
                   } else {
                     // Handle case where newValue is not found in autoComplete
                   }
@@ -547,11 +626,11 @@ function AddLineElement({
                       styles={selectStyles}
                       // defaultValue={unit}
                       onChange={handleSetUnit}
-                      options={data ? data : []}
+                      options={data?.allUnits ? data?.allUnits : []}
                       isLoading={isLoading}
                       isDisabled={isLoading}
                       // onCreateOption={handleCreateNewUnit}
-                      isClearable
+                      // isClearable
                     ></CreateableSelect>
                   </Box>
 
@@ -577,7 +656,7 @@ function AddLineElement({
                 <Box sx={innerBox}>
                   <Typography sx={typoText}>Quantity</Typography>
                   <TextField
-                    inputProps={{ maxLength: 50 }}
+                    inputProps={{ maxLength: 50, min: 0 }}
                     sx={{ ...inputStyle, ...leftSpace }}
                     placeholder="20"
                     required
@@ -605,7 +684,7 @@ function AddLineElement({
                 margin="dense"
                 id="unitPrice"
                 name="unitPrice"
-                type="price"
+                type="number"
                 variant="standard"
                 value={formData.unitPrice}
                 InputProps={{
@@ -621,7 +700,7 @@ function AddLineElement({
                 }
               />
 
-              <Typography sx={typoText}>Cost</Typography>
+              <Typography sx={typoText}>Actual Cost</Typography>
               <TextField
                 sx={inputStyle}
                 placeholder="200"
@@ -638,9 +717,27 @@ function AddLineElement({
                   ),
                 }}
               />
+              <Typography sx={typoText}>Client Cost</Typography>
+              <TextField
+                sx={inputStyle}
+                placeholder="200"
+                required
+                margin="dense"
+                id="total"
+                name="total"
+                type="number"
+                variant="standard"
+                value={totalCost}
+                onChange={handleTotalCostChange1}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">$</InputAdornment>
+                  ),
+                }}
+              />
               <Box sx={parallelBox}>
                 <Box sx={innerBox}>
-                  <Typography sx={typoText}>Margin</Typography>
+                  <Typography sx={typoText}>Profit</Typography>
 
                   <TextField
                     sx={{ ...inputStyle, marginLeft: "18px" }}
@@ -651,7 +748,7 @@ function AddLineElement({
                     name="margin"
                     type="margin"
                     variant="standard"
-                    value={formData.margin}
+                    value={Math.round(formData.margin * 100) / 100}
                     onChange={handleMarginChange}
                     InputProps={{
                       startAdornment: (
@@ -671,7 +768,7 @@ function AddLineElement({
                     name="margin"
                     type="margin"
                     variant="standard"
-                    value={formData.percentage}
+                    value={Math.round(formData.percentage * 100) / 100}
                     onChange={handlePercentageChange}
                     InputProps={{
                       endAdornment: (
@@ -681,6 +778,24 @@ function AddLineElement({
                   />
                 </Box>
               </Box>
+              {/* {LineHeading === "Update Line Item" && <><Typography sx={typoText}>Payment to Recieve</Typography>
+              <TextField
+                sx={inputStyle}
+                placeholder="200"
+                required
+                margin="dense"
+                id="total"
+                name="total"
+                type="number"
+                variant="standard"
+                value={currentPayment}
+                onChange={(e)=> setCurrentPayment(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">$</InputAdornment>
+                  ),
+                }}
+              /></>} */}
               {/* <Box sx={parallelBox}>
                 <Box sx={innerBox}>
                   <Typography sx={typoText}>Start</Typography>
@@ -692,7 +807,7 @@ function AddLineElement({
                       border: "1px solid #ccc",
                       borderRadius: "12px",
                       color: "#202227",
-                      fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+                      fontFamily: "Arial Rounded MT, sans-serif",
                       backgroundColor: "#EDF2F6",
                       ...leftSpace,
                     }}
@@ -716,7 +831,7 @@ function AddLineElement({
                       border: "1px solid #ccc",
                       borderRadius: "12px",
                       color: "#202227",
-                      fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+                      fontFamily: "Arial Rounded MT, sans-serif",
                       backgroundColor: "#EDF2F6",
                       ...leftSpace,
                     }}
@@ -732,23 +847,7 @@ function AddLineElement({
                   </Box>
                 </Box>
               </Box> */}
-              <Typography sx={typoText}>Total Cost</Typography>
-              <TextField
-                sx={inputStyle}
-                placeholder="200"
-                required
-                margin="dense"
-                id="total"
-                name="total"
-                type="number"
-                variant="standard"
-                value={totalCost}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">$</InputAdornment>
-                  ),
-                }}
-              />
+
               <Typography sx={typoText}>Notes</Typography>
               <TextField
                 inputProps={{ maxLength: 1000 }}
@@ -767,8 +866,19 @@ function AddLineElement({
             </>
           </DialogContent>
           <DialogActions sx={generalBox}>
-            <Button sx={{ ...actionButton, ...doneButton }} type="submit">
-              Done
+            <Button
+              sx={{ ...actionButton, ...doneButton }}
+              type="submit"
+              disabled={addIsLoading || updateIsLoading}
+            >
+              {addIsLoading || updateIsLoading ? (
+                <CircularProgress
+                  size={"18px"}
+                  sx={{ fontSize: "14px", color: "white" }}
+                />
+              ) : (
+                "Done"
+              )}
             </Button>
           </DialogActions>
         </Dialog>
@@ -778,7 +888,7 @@ function AddLineElement({
 }
 
 const typoTitle = {
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1.5rem",
   color: "#4C8AB1",
 };
@@ -792,7 +902,7 @@ const inputStyle = {
   border: "1px solid #ccc",
   borderRadius: "12px",
   color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   paddingLeft: "-1.5rem",
   backgroundColor: "#EDF2F6",
   outline: "none !important",
@@ -814,7 +924,7 @@ const paperPropsStyle = {
 };
 
 const typoText = {
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "0.8rem",
   color: "#202227",
 };

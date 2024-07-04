@@ -28,15 +28,24 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import EditProjectModal from "../../dialogues/EditProject/EditProjectModal";
+import moment from "moment-timezone";
+import { useDeleteUserProjectMutation, useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
+import { useDispatch } from "react-redux";
+import { addProjects, setIsLoading, setLimit, setTotalCount, setTotalPages } from "../../../redux/slices/Project/userProjectsSlice";
+import { setError } from "../../../redux/slices/Notifications/notificationSlice";
 
-const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) => {
+const ProjectList = ({ rows, isLoading, totalPages, limit, totalCount, currentUserId }) => {
   console.log(rows);
   const navigate = useNavigate();
+  const [deleteProject, { isLoading: deletingProjectLoading }] =
+    useDeleteUserProjectMutation();
+    const dispatch = useDispatch();
   const tableHeader = [
     { id: "clientName", title: "Client" },
     { id: "projectName", title: "Project" },
-    {id:'start_time', title:'Start Date'},
-    {id:'end_time', title:'End Date'},
+    { id: "start_time", title: "Start Date" },
+    { id: "end_time", title: "End Date" },
     // { id: "phoneNumber", title: "" },
     // { id: "approvedPrice", title: "" },
     // { id: "collected", title: "" },
@@ -46,24 +55,24 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
     // { id: "projectMargin", title: "" },
     // { id: "projectStatus", title: "" },
   ];
-  //console.log(rows);
-  //Phone Number
-  //Approved Price
-  //Collected
-  //Remaining Balance
-  //Cost To Complete
-  //Projected Profit
-  //Projected Margin
-  //Project Status
+  const [selectedFilters, setSelectedFilters] = useState([]);
   const [project, setProject] = useState(null);
-
-  const [page, setPage] = useState(0);
   const [openEditModel, setOpenEditModel] = useState(false);
-
+  const [page, setPage] = useState(1);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedProjectId, setSelectProjectId] = useState('')
   const rowsPerPage = 7;
   const [anchorEl, setAnchorEl] = React.useState(null);
- 
-
+  const { refetch, data, isLoading: fetchingProjects, error, isSuccess } = useGetUserProjectsQuery({
+    userId: currentUserId,
+    q: "",
+    filter: "",
+    page: 1,
+  });
+useEffect(()=>{
+  console.log('Fetching projects: ', isSuccess)
+  console.log('Fetching data: ', data)
+},[data])
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -80,13 +89,44 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
     setSelectedFilters(selectedFilters.filter((item) => item !== filter));
   };
   const handleOpenEditModel = (row) => {
-    setProject(prev => row);
+    setProject((prev) => row);
     setOpenEditModel(true);
   };
   const handleCloseEditModel = () => {
     setOpenEditModel(false);
   };
 
+  const handleDeleteFlow = (projectId) => {
+    setSelectProjectId(projectId)
+    setOpenModal(true);
+  };
+  const handleOpenModalClose = () => {
+    setOpenModal(false)
+  }
+  const handleConfirmDelete  =()=>{
+    handleDeleteProject(selectedProjectId);
+  }
+  const handleDeleteProject = async (id) => {
+    try {
+      const res = await deleteProject({
+        id: id,
+      });
+      dispatch(setIsLoading(isLoading));
+      const refetchRes =await refetch({ userId: currentUserId, q: "", filter: "", page: 1 });
+      console.log('REFETCHED DATA: ',refetchRes);
+      if (data) {
+        dispatch(addProjects(data?.projects));
+        dispatch(setTotalCount(data?.totalCount));
+        dispatch(setTotalPages(data?.totalPages));
+        dispatch(setLimit(data?.limit));
+      } else {
+        dispatch(setError(error));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    handleOpenModalClose();
+  };
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
@@ -94,8 +134,23 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
     setPage(newPage);
   };
 
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows?.length - page * rowsPerPage);
+  let startIndex = 1;
+  let endIndex = limit;
+  if (page === 1) {
+    startIndex = 1;
+    if (totalCount < limit) {
+      endIndex = totalCount;
+    }
+  } else {
+    startIndex = 1 + limit * (page - 1);
+    endIndex = limit * page;
+    if (endIndex > totalCount) {
+      endIndex = endIndex - totalCount;
+      endIndex = startIndex + endIndex - 1;
+    }
+  }
+  // const emptyRows =
+  //   rowsPerPage - Math.min(rowsPerPage, rows?.length - page * rowsPerPage);
 
   // useEffect(() => {
   //   fetch("https://my.api.mockaroo.com/bui.json?key=64d2dd90")
@@ -115,7 +170,7 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
   // }, []); // Empty dependency array to execute the effect only once on component mount
   // console.log(rows);
   return (
-    <Stack width={"100%"}>
+    <Stack width={"100%"} height={"inherit"}>
       {/* Project List Header */}
       <Stack p={3}>
         {/* Project List Title */}
@@ -277,7 +332,12 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
           spacing={1}
         >
           <Stack alignSelf={"flex-end"}>
-            <SearchBar />
+            <SearchBar
+              selectedTab={1}
+              selectedFilters={selectedFilters}
+              page={page}
+              setPage={setPage}
+            />
           </Stack>
           <Stack
             width={{ xl: "150px", lg: "150px", md: "150px", sm: "150px" }}
@@ -300,7 +360,7 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
         </Stack>
       </Stack>
       {/* Table */}
-      <Stack px={3}>
+      <Stack px={3} height={"calc(92vh - 240px)"}>
         <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
           {isLoading ? (
             <Stack spacing={1} p={2}>
@@ -356,39 +416,60 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={themeStyle.tableCell} style={{borderBottom: '1px solid #A1A1A1'}}></TableCell>
+                  <TableCell
+                    sx={themeStyle.tableCell}
+                    style={{ borderBottom: "1px solid #A1A1A1" }}
+                  >Profile Picture</TableCell>
                   {tableHeader.map((header) => (
-                    <TableCell sx={themeStyle.tableCell} style={{borderBottom: '1px solid #A1A1A1'}} key={header.id}>
+                    <TableCell
+                      sx={themeStyle.tableCell}
+                      style={{ borderBottom: "1px solid #A1A1A1" }}
+                      key={header.id}
+                    >
                       {header.title}
                     </TableCell>
                   ))}
-                  <TableCell sx={themeStyle.tableCell} style={{borderBottom: '1px solid #A1A1A1'}}></TableCell>
-                  <TableCell sx={themeStyle.tableCell} style={{borderBottom: '1px solid #A1A1A1'}}></TableCell>
+                  <TableCell
+                    sx={themeStyle.tableCell}
+                    style={{ borderBottom: "1px solid #A1A1A1" }}
+                  >Action</TableCell>
+                  <TableCell
+                    sx={themeStyle.tableCell}
+                    style={{ borderBottom: "1px solid #A1A1A1" }}
+                  ></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {rows &&
-                  rows
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => {
-                      return (
-                        <TableRow >
-                          <TableCell sx={themeStyle.tableCell}>
-                            <img
-                              src={row.image ? row.image : logo}
-                              alt="profile"
-                              style={{
-                                borderRadius: "50%",
-                                width: "50px", // Adjust the width and height as needed
-                                height: "50px",
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell sx={themeStyle.tableCell}>{row.clientName}</TableCell>
-                          <TableCell sx={themeStyle.tableCell}>{row.projectName}</TableCell>
-                          <TableCell sx={themeStyle.tableCell}>{row.start_time}</TableCell>
-                          <TableCell sx={themeStyle.tableCell}>{row.end_time}</TableCell>
-                          {/* {tableHeader &&
+                  rows.map((row, index) => {
+                    // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    return (
+                      <TableRow>
+                        <TableCell sx={themeStyle.tableCell}>
+                          <img
+                            src={row.image ? row.image : logo}
+                            alt="profile"
+                            style={{
+                              borderRadius: "50%",
+                              width: "50px", // Adjust the width and height as needed
+                              height: "50px",
+                              objectFit: "scale-down",
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell sx={themeStyle.tableCell}>
+                          {row.clientName}
+                        </TableCell>
+                        <TableCell sx={themeStyle.tableCell}>
+                          {row.projectName}
+                        </TableCell>
+                        <TableCell sx={themeStyle.tableCell}>
+                          {moment(row.start_time).format("MM/DD/YYYY")}
+                        </TableCell>
+                        <TableCell sx={themeStyle.tableCell}>
+                          {moment(row.end_time).format("MM/DD/YYYY")}
+                        </TableCell>
+                        {/* {tableHeader &&
                             tableHeader.map((column, index) => {
                               const value = row[column.id];
                               const status = column.id === "projectStatus";
@@ -412,72 +493,67 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
                                 </TableCell>
                               );
                             })} */}
-                          <Box
-                            display="flex"
-                            pt={2.5}
-                            gap={1}
-                            alignItems={"center"}
-                            justifyContent={"center"}
-                          >
-                            <Paper>
-                              <IconButton
-                                variant={"contained"}
-                                onClick={() => handleOpenEditModel(row)}
-                              >
-                                <EditOutlinedIcon
-                                  style={{ color: "#4C8AB1" }}
-                                />
-                              </IconButton>
-                            </Paper>
-                            {/* <Paper style={{ backgroundColor: "#FFDADA" }}>
-                              <IconButton>
-                                <DeleteOutlineOutlinedIcon
-                                  style={{ color: "#DF0404" }}
-                                />
-                              </IconButton>
-                            </Paper>
-                            <Paper style={{ backgroundColor: "#E7E7E7" }}>
+                        <Box
+                          display="flex"
+                          pt={2.5}
+                          gap={1}
+                          alignItems={"center"}
+                          justifyContent={"flex-start"}
+                        >
+                          {row.userId === currentUserId && <Paper>
+                            <IconButton
+                              variant={"contained"}
+                              onClick={() => handleOpenEditModel(row)}
+                            >
+                              <EditOutlinedIcon style={{ color: "#4C8AB1" }} />
+                            </IconButton>
+                          </Paper>}
+                          {row.userId === currentUserId && <Paper style={{ backgroundColor: "#FFDADA" }}>
+                            <IconButton
+                              onClick={() => handleDeleteFlow(row.id)}
+                            >
+                              <DeleteOutlineOutlinedIcon
+                                style={{ color: "#DF0404" }}
+                              />
+                            </IconButton>
+                          </Paper>}
+                          {/* <Paper style={{ backgroundColor: "#E7E7E7" }}>
                               <IconButton>
                                 <SaveAsOutlinedIcon
                                   style={{ color: "#545454" }}
                                 />
                               </IconButton>
                             </Paper> */}
-                          </Box>
-                          <TableCell sx={themeStyle.tableCell}>
-                            <Link to={`/projects/${row.id}`} style={{textDecoration: 'none'}}>
+                        </Box>
+                        <TableCell sx={themeStyle.tableCell}>
+                          <Link
+                            to={`/projects/${row.id}`}
+                            style={{ textDecoration: "none" }}
+                          >
                             <Typography
                               color={"#4C8AB1"}
                               fontSize={"14px"}
                               pl={1}
                               width={"80px"}
-                              
-                              >
+                            >
                               View Details
                             </Typography>
-                            </Link>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                {emptyRows > 0 && (
+                          </Link>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {/* {emptyRows > 0 && (
                   <TableRow sx={themeStyle.tableCell} style={{ height: 60 * emptyRows }}>
                     <TableCell rowSpan={6} />
                   </TableRow>
-                )}
+                )} */}
               </TableBody>
             </Table>
           )}
         </TableContainer>
-        <Stack justifyContent={"flex-end"} alignItems={"flex-end"}>
-          {/* <Pagination
-            count={10}
-            variant="outlined"
-            shape="rounded"
-            sx={paginationStyle}
-          /> */}
-        </Stack>
-        <TablePagination
+
+        {/* <TablePagination
           page={page}
           rowsPerPage={rowsPerPage}
           component={"div"}
@@ -485,12 +561,35 @@ const ProjectList = ({ rows, isLoading, setSelectedFilters, selectedFilters }) =
           count={isLoading ?  0 : rows.length}
           labelRowsPerPage={true}
           rowsPerPageOptions={[1]}
-        ></TablePagination>
+        ></TablePagination> */}
+      </Stack>
+      <Stack pl={1}>
+        <Typography variant="body1" sx={paginationTextStyle}>
+          Showing data {startIndex} to {endIndex} of {totalCount} entries
+        </Typography>
+      </Stack>
+      <Stack justifyContent={"flex-end"} alignItems={"flex-end"} p={1}>
+        <Pagination
+          count={totalPages}
+          variant="outlined"
+          shape="rounded"
+          sx={paginationStyle}
+          page={page}
+          onChange={handlePageChange}
+        />
       </Stack>
       <EditProjectModal
         project={project}
         open={openEditModel}
         onClose={handleCloseEditModel}
+        page={page}
+      />
+      <AreYouSureModal
+        open={openModal}
+        handleClose={handleOpenModalClose}
+        handleConfirmDelete={handleConfirmDelete}
+        isLoading={deletingProjectLoading}
+        text={'project'}
       />
     </Stack>
   );
@@ -504,8 +603,8 @@ const themeStyle = {
     fontSize: "14px",
     fontFamily: "Montserrat, sans serif",
     color: "#8C8C8C",
-    padding: '4px',
-    border: 'none'
+    padding: "4px",
+    border: "none",
   },
   statusPending: {
     padding: "4px 8px 4px 8px",
@@ -513,7 +612,7 @@ const themeStyle = {
     backgroundColor: "#FFC8C8",
     color: "#F03434",
     fontSize: "12px",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     width: "80px",
     textAlign: "center",
   },
@@ -523,7 +622,7 @@ const themeStyle = {
     backgroundColor: "#16C09821",
     color: "#008767",
     fontSize: "12px",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     width: "80px",
     textAlign: "center",
   },
@@ -541,4 +640,15 @@ const paginationStyle = {
     backgroundColor: "#FFAC00 !important", // Set background color for the selected page
     color: "#FFFFFF", // Text color for the selected page
   },
+};
+
+const paginationTextStyle = {
+  display: {
+    xs: "none",
+    md: "block",
+  },
+  fontWeight: 400,
+  fontSize: "14px",
+  fontFamily: "Poppins",
+  color: "#8C8C8C",
 };

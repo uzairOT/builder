@@ -41,6 +41,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import LineItemTeamStatus from "../../dialogues/LineItemTeamStatus/LineItemTeamStatus";
 import { useLocation } from "react-router-dom";
+import { formatMoney } from "../../../utils/Formatters/moneyFormat";
 //import "react-toastify/dist/ReactToastify.css";
 
 const initialRows = [
@@ -93,9 +94,10 @@ const AddPhaseCard = ({
   setRowCheckboxes,
   projectId,
   InitialProposalView,
+  rowCheckboxes,
   authUserRole,
   changeOrder,
-  view
+  view,
 }) => {
   const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
   const [showAddLine, setShowAddLine] = useState(false);
@@ -109,20 +111,20 @@ const AddPhaseCard = ({
   const userRoleAuth = useSelector(getUserRoleFromRedux);
   console.log(userRoleAuth);
   const [deletePhaseLine] = useDeletePhaseLineMutation();
-console.log(adminProjectView)
+  console.log(adminProjectView);
   const dispatch = useDispatch();
   const { rowCheckbox } = useSelector(selectAddPhase);
   let totalCost = 0;
   let minStartDay = moment(phaseData?.LineItems[0]?.start_day);
   let maxEndDay = moment(phaseData?.LineItems[0]?.end_day);
   let totalHours = 0;
-  console.log("changeOrder " , changeOrder);
+  console.log("changeOrder ", changeOrder);
   const location = useLocation();
-  const path  = location.pathname.split('/')[1];
-console.log(path)
+  const path = location.pathname.split("/")[1];
+  console.log(path);
 
   phaseData.LineItems.forEach((row) => {
-    totalCost += (parseInt(row.total) + parseInt(row.margin)); // Accumulate the total cost
+    totalCost += parseFloat(row.total) + parseFloat(row.margin); // Accumulate the total cost
     const startDay = moment(row.start_day);
     const endDay = moment(row.end_day);
 
@@ -170,12 +172,17 @@ console.log(path)
       lineItemId: lineItemId,
       projectId: projectId,
     };
-
-    const res = await deletePhaseLine(data);
-    if (InitialProposalView) {
-      dispatch(addInitialPhase(res.data.allPhases));
-    } else {
-      dispatch(addPhase(res.data.allPhases));
+    try {
+      const res = await deletePhaseLine(data);
+      setRowCheckboxes({});
+      if (InitialProposalView) {
+        dispatch(addInitialPhase(res.data.allPhases));
+      } else {
+        dispatch(addPhase(res.data.allPhases));
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong...");
     }
   };
 
@@ -266,9 +273,12 @@ console.log(path)
   };
 
   // Function to check if a row is selected
-  const isRowSelected = (row) => {
-    const phaseId = phaseData.id;
-    return selectedRows[phaseId]?.rows.includes(row);
+  const isRowSelected = (row, phaseId) => {
+    console.log("Check run phaseId ", rowCheckboxes);
+    const isSelected =
+      rowCheckboxes[phaseId]?.rows.some((r) => r.id === row.id) || false;
+    console.log("Check boolean phaseId ", isSelected);
+    return isSelected;
   };
   // console.log('PHASE :', phaseData)
 
@@ -284,19 +294,37 @@ console.log(path)
         }}
       >
         <Box sx={headingsBox} onClick={() => handleSelectCard(phaseData.id)}>
-          <Box sx={headingInnerBox}>
-            <Box>
+          <Box
+            sx={headingInnerBox}
+            mb={
+              !(
+                userRoleAuth.userRole === "superadmin" ||
+                userRoleAuth.userRole === "admin" ||
+                userRoleAuth.userRole === "projectManager" ||
+                userRoleAuth.userRole === ""
+              )
+                ? "0px"
+                : ""
+            }
+          >
+            <Box
+              backgroundColor="#FBFBFB"
+              sx={{ borderTopLeftRadius: "7px", borderTopRightRadius: "7px" }}
+            >
               <Typography
-                sx={{ ...blackHeading, cursor: "pointer", paddingLeft: "1rem" }}
+                sx={{
+                  ...blackHeading,
+                  cursor: "pointer",
+                  paddingLeft: "1rem",
+                  paddingRight: "1rem",
+                  fontWeight: "600",
+                  fontSize: "26px",
+                }}
               >
                 {phaseData.phase_name}
               </Typography>
             </Box>
-            <Box>
-              {(userRoleAuth.userRole === "superadmin" ||
-                    userRoleAuth.userRole === "admin" ||
-                    userRoleAuth.userRole === "projectManager") && <Typography sx={blackHeading}>Price: ${totalCost}</Typography>}
-            </Box>
+
             {/* <Box>
               <Typography sx={blackHeading}>
                 Duration: {totalHours} hours  Days: {totalDays}
@@ -344,6 +372,7 @@ console.log(path)
                 </>
               )}
             </>
+
             {/* <EditIcon
               // onClick={handleUpdateLine}
               onClick={handleUpdateLine}
@@ -351,43 +380,74 @@ console.log(path)
             <DeleteIcon
               onClick={handleDeleteSelectedRows}
               disabled={selectedRows.length === 0} /> */}
-            {InitialProposalView ? (
-              (authUserRole === "superadmin" ||
-                authUserRole === "projectManager") && (
-                <Button
-                  sx={{
-                    ...actionButton,
-                    background: "#4C8AB1",
-                    marginTop: "0.7rem",
-                  }}
-                  onClick={handleAddLine}
-                >
-                  Add Line Item
-                </Button>
-              )
-            ) : (
-              <Button
-                sx={{
-                  ...actionButton,
-                  background: "#4C8AB1",
-                  marginTop: "0.7rem",
-                }}
-                onClick={handleAddLine}
-              >
-                Add Line Item
-              </Button>
-            )}
+            {/* ADDED CHECK TO SEE IF USER ROLE BEFORE SHOWING ADD LINE ITEM BUTTON */}
+            {InitialProposalView
+              ? (userRoleAuth.userRole === "superadmin" ||
+                  userRoleAuth.userRole === "admin" ||
+                  userRoleAuth.userRole === "projectManager" ||
+                  userRoleAuth.userRole === "") && (
+                  <Button
+                    sx={{
+                      ...actionButton,
+                      background: "#4C8AB1",
+                      marginTop: "0.7rem",
+                      marginBottom: "1rem",
+                      marginRight: {
+                        lg: "1rem",
+                        md: "1rem",
+                        sm: "1rem",
+                        xs: "1rem",
+                      },
+                    }}
+                    onClick={handleAddLine}
+                  >
+                    Add Line Item
+                  </Button>
+                )
+              : (userRoleAuth.userRole === "admin" ||
+                  userRoleAuth.userRole === "superadmin" ||
+                  userRoleAuth.userRole === "projectManager" ||
+                  userRoleAuth.userRole === "") && (
+                  <Button
+                    sx={{
+                      ...actionButton,
+                      background: "#4C8AB1",
+                      marginTop: "0.7rem",
+                      marginBottom: "1rem",
+                      marginRight: {
+                        lg: "1rem",
+                        md: "1rem",
+                        sm: "1rem",
+                        xs: "1rem",
+                      },
+                    }}
+                    onClick={handleAddLine}
+                  >
+                    Add Line Item
+                  </Button>
+                )}
           </Box>
         </Box>
 
         <Grid item sx={tableGrid}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography sx={listOfLineText}>List of Line Items</Typography>
-            {/* <Button
-              sx={{ ...actionButton, ...approvalButton, ...displayButton }}
-            >
-              Send Approval
-            </Button> */}
+            <Box>
+              {(userRoleAuth.userRole === "superadmin" ||
+                userRoleAuth.userRole === "admin" ||
+                userRoleAuth.userRole === "projectManager") && (
+                <Typography
+                  sx={{
+                    ...blackHeading,
+                    paddingRight: "1rem",
+                    fontSize: "20px",
+                    marginTop: "0",
+                  }}
+                >
+                  Price: ${formatMoney(totalCost)}
+                </Typography>
+              )}
+            </Box>
           </Box>
 
           <hr style={hrLine} />
@@ -404,41 +464,69 @@ console.log(path)
                 <TableRow>
                   {!InitialProposalView && (
                     <TableCell>
-                      {/* {!adminProjectView && (
-                      <Checkbox
-                        checked={selectAll}
-                        onChange={handleSelectAllChange}
-                      />
-                    )} */}
+                     
                     </TableCell>
                   )}
                   <TableCell sx={{ ...tableHeadings }}>Line Item</TableCell>
 
                   {/* <TableCell sx={tableHeadings}>Description</TableCell> */}
                   <TableCell sx={tableHeadings}>Unit</TableCell>
-                  <TableCell sx={tableHeadings}>Unit Cost</TableCell>
-                  <TableCell sx={tableHeadings}>Cost</TableCell>
-                  <TableCell sx={tableHeadings}>Quantity</TableCell>
-                  {!(path === 'assignproject') && <TableCell sx={tableHeadings}>Start</TableCell>}
-                  {!(path === 'assignproject') && <TableCell sx={tableHeadings}>End</TableCell>}
-                  <TableCell sx={tableHeadings}>Margin</TableCell>
-                  <TableCell sx={tableHeadings}>Total Cost</TableCell>
-                  <TableCell sx={tableHeadings}>Notes</TableCell>
-                  {adminProjectView && <>
-                  <TableCell sx={tableHeadings}>Status</TableCell>
-
-                  {(userRoleAuth.userRole === "employee" ||
+                  {!(
+                    userRoleAuth.userRole === "client" ||
+                    userRoleAuth.userRole === "employee" ||
                     userRoleAuth.userRole === "subcontractor" ||
-                    userRoleAuth.userRole === "supplier") && (
-                    <TableCell sx={tableHeadings}>Update Status</TableCell>
+                    userRoleAuth.userRole === "supplier"
+                  ) && <TableCell sx={tableHeadings}>Unit Cost</TableCell>}
+                  {!(
+                    userRoleAuth.userRole === "client" ||
+                    userRoleAuth.userRole === "employee" ||
+                    userRoleAuth.userRole === "subcontractor" ||
+                    userRoleAuth.userRole === "supplier"
+                  ) && <TableCell sx={tableHeadings}>Cost</TableCell>}
+                  <TableCell sx={tableHeadings}>Quantity</TableCell>
+                  {!(path === "assignproject") && (
+                    <TableCell sx={tableHeadings}>Start</TableCell>
                   )}
+                  {!(path === "assignproject") && (
+                    <TableCell sx={tableHeadings}>End</TableCell>
+                  )}
+                  {!(
+                    userRoleAuth.userRole === "client" ||
+                    userRoleAuth.userRole === "employee" ||
+                    userRoleAuth.userRole === "subcontractor" ||
+                    userRoleAuth.userRole === "supplier"
+                  ) && <TableCell sx={tableHeadings}>Profit</TableCell>}
+                  <TableCell sx={tableHeadings}>Total Cost</TableCell>
                   {(userRoleAuth.userRole === "superadmin" ||
                     userRoleAuth.userRole === "admin" ||
                     userRoleAuth.userRole === "projectManager") && (
-                    <TableCell sx={tableHeadings}>Team Status</TableCell>
+                    <TableCell sx={tableHeadings}>Arrears</TableCell>
                   )}
-                  </>}
-                  <TableCell></TableCell>
+                  <TableCell sx={tableHeadings}>Notes</TableCell>
+                  {adminProjectView && (
+                    <>
+                      <TableCell sx={tableHeadings}>
+                        {view === "Generate Invoice" ? "Invoice" : "Status"}
+                      </TableCell>
+
+                      {(userRoleAuth.userRole === "employee" ||
+                        userRoleAuth.userRole === "subcontractor" ||
+                        userRoleAuth.userRole === "supplier") && (
+                        <TableCell sx={tableHeadings}>Update Status</TableCell>
+                      )}
+                      {(userRoleAuth.userRole === "superadmin" ||
+                        userRoleAuth.userRole === "admin" ||
+                        userRoleAuth.userRole === "projectManager") && (
+                        <TableCell sx={tableHeadings}>Team Status</TableCell>
+                      )}
+                    </>
+                  )}
+                  {(userRoleAuth.userRole === "superadmin" ||
+                    userRoleAuth.userRole === "admin" ||
+                    userRoleAuth.userRole === "projectManager" ||
+                    userRoleAuth.userRole === "") && (
+                    <TableCell sx={tableHeadings}>Action</TableCell>
+                  )}
                 </TableRow>
 
                 <TableRow style={hrLine}></TableRow>
@@ -446,39 +534,55 @@ console.log(path)
 
               <TableBody>
                 {phaseData.LineItems.map((row, index) => {
-                  if(userRoleAuth.userRole === "employee" ||
-                  userRoleAuth.userRole === "subcontractor" ||
-                  userRoleAuth.userRole === "supplier"){
-                    const userLineItem = row?.UserLineItemStatuses?.find(user => user.userId === userId);
-                    if(Boolean(userLineItem)){
-                      
-                    }else{
-                      return <></>
+                  if (
+                    userRoleAuth.userRole === "employee" ||
+                    userRoleAuth.userRole === "subcontractor" ||
+                    userRoleAuth.userRole === "supplier"
+                  ) {
+                    const userLineItem = row?.UserLineItemStatuses?.find(
+                      (user) => user.userId === userId
+                    );
+                    if (Boolean(userLineItem)) {
+                    } else {
+                      return <></>;
                     }
                   }
-                  if(changeOrder && !(row.status === "Work Order approved")){
-                    return<></>
+                  if (changeOrder && !(row.status === "Work Order approved")) {
+                    return <></>;
                   }
                   return (
                     <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
-                      {(!InitialProposalView ) && (
+                      {!InitialProposalView && (
                         <TableCell>
-                          {(!(path === 'assignproject') && !(view==='Generate Invoice')) && ((row.status === "Work Order Not requested" ||
-                            row.status === "Work Order declined" ||
-                            row.status === "Change Order declined")&& (
-                            <Checkbox
-                              // checked={checkedRow === row}
-                              sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
-                              checked={isRowSelected(row)}
-                              onChange={() => handleCheckboxChange(row)}
-                            />
-                          ))}
-                          {((view==='Generate Invoice') && !row.invoiceExists) && <Checkbox
-                              // checked={checkedRow === row}
-                              sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
-                              checked={isRowSelected(row)}
-                              onChange={() => handleCheckboxChange(row)}
-                            />}
+                          {!(path === "assignproject") &&
+                            !(view === "Generate Invoice") &&
+                            (row.status === "Work Order Not requested" ||
+                              row.status === "Work Order declined" ||
+                              row.status === "Change Order declined") && (
+                              <Checkbox
+                                // checked={checkedRow === row}
+                                sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
+                                checked={
+                                  isRowSelected(row, row.phase_id)
+                                    ? isRowSelected(row, row.phase_id)
+                                    : false
+                                }
+                                onChange={() => handleCheckboxChange(row)}
+                              />
+                            )}
+                          {view === "Generate Invoice" &&
+                            !(row.paymentPending === "0") && (
+                              <Checkbox
+                                // checked={checkedRow === row}
+                                sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
+                                checked={
+                                  isRowSelected(row, row.phase_id)
+                                    ? isRowSelected(row, row.phase_id)
+                                    : false
+                                }
+                                onChange={() => handleCheckboxChange(row)}
+                              />
+                            )}
                         </TableCell>
                       )}
                       <TableCell component="th" scope="row">
@@ -486,86 +590,135 @@ console.log(path)
                       </TableCell>
                       {/* <TableCell>{row.description}</TableCell> */}
                       <TableCell>{row.unit}</TableCell>
-                      <TableCell>${row.unit_price}</TableCell>
-                      <TableCell>${row.total}</TableCell>
+                      {!(
+                        userRoleAuth.userRole === "client" ||
+                        userRoleAuth.userRole === "employee" ||
+                        userRoleAuth.userRole === "subcontractor" ||
+                        userRoleAuth.userRole === "supplier"
+                      ) && (
+                        <TableCell>${formatMoney(row.unit_price)}</TableCell>
+                      )}
+                      {!(
+                        userRoleAuth.userRole === "client" ||
+                        userRoleAuth.userRole === "employee" ||
+                        userRoleAuth.userRole === "subcontractor" ||
+                        userRoleAuth.userRole === "supplier"
+                      ) && <TableCell>${formatMoney(row.total)}</TableCell>}
+
                       <TableCell>{row.quantity}</TableCell>
-                     {!(path === 'assignproject') && <TableCell>
-                        {row?.start_day
-                          ? moment(row?.start_day).format(
-                              "MMM, DD, YYYY HH:mm a"
-                            )
-                          : "-"}
-                      </TableCell>}
-                      {!(path === 'assignproject') && <TableCell>
-                        {row?.end_day
-                          ? moment(row?.end_day).format(
-                              "MMM, DD, YYYY HH:mm a"
-                            )
-                          : "-"}
-                      </TableCell>}
+                      {!(path === "assignproject") && (
+                        <TableCell>
+                          {row?.start_day
+                            ? moment(row?.start_day).format(
+                                "MMM, DD, YYYY HH:mm a"
+                              )
+                            : "-"}
+                        </TableCell>
+                      )}
+                      {!(path === "assignproject") && (
+                        <TableCell>
+                          {row?.end_day
+                            ? moment(row?.end_day).format(
+                                "MMM, DD, YYYY HH:mm a"
+                              )
+                            : "-"}
+                        </TableCell>
+                      )}
 
-                     
-                      <TableCell>${row?.margin}</TableCell>
-                      <TableCell>${Number(row.total) + Number(row.margin)}</TableCell>
-
-                      <TableCell>{row.notes}</TableCell>
-                     {adminProjectView && <>
-                      <TableCell>{row.status}</TableCell>
+                      {!(
+                        userRoleAuth.userRole === "client" ||
+                        userRoleAuth.userRole === "employee" ||
+                        userRoleAuth.userRole === "subcontractor" ||
+                        userRoleAuth.userRole === "supplier"
+                      ) && <TableCell>${formatMoney(row?.margin)}</TableCell>}
+                      <TableCell>
+                        ${formatMoney(Number(row.total) + Number(row.margin))}
+                      </TableCell>
                       {(userRoleAuth.userRole === "superadmin" ||
                         userRoleAuth.userRole === "admin" ||
                         userRoleAuth.userRole === "projectManager") && (
-                        <TableCell >
-                          <Button
-                            sx={{
-                              height: "2rem",
-                              padding: { lg: "0.75rem 1.5rem" },
-                              justifyContent: "center",
-                              alignItems: "center",
-                              flexShrink: 0,
-                              alignSelf: "stretch",
-                              borderRadius: "2.8125rem",
-                              background: row?.UserLineItemStatuses?.length < 1 ? 'lightgray' : "#4C8AB1",
-                              color: "#FFF",
-                              textTransform: "none",
-                              "&:hover": {
-                                background: "#357899",
-                              },
-                              marginTop: "0.3rem",
-                            }}
-                            onClick={() => {
-                              handleShowTeamStatus(row);
-                            }}
-                            disabled={row?.UserLineItemStatuses?.length < 1}
-                          >
-                            Details
-                          </Button>
+                        <TableCell>
+                          ${formatMoney(row.paymentPending)}
                         </TableCell>
                       )}
-                      {(userRoleAuth.userRole === "employee" ||
-                        userRoleAuth.userRole === "subcontractor" ||
-                        userRoleAuth.userRole === "supplier") &&  (
-                        <TableCell sx={{}}>
-                          {(row.status === 'Work Order approved')&& <IconButton
-                            onClick={() => {
-                              handleUpdateUserStatus(row);
-                            }}
-                          >
-                            <AssignmentTurnedInRoundedIcon fontSize="large" />
-                          </IconButton>}
+                      <TableCell>{row.notes}</TableCell>
+                      {adminProjectView && (
+                        <>
+                          {view === "Generate Invoice" ? (
+                            <TableCell>
+                              {row.invoiceExists
+                                ? "generated"
+                                : "not generated"}
+                            </TableCell>
+                          ) : (
+                            <TableCell>{row.status}</TableCell>
+                          )}
+                          {(userRoleAuth.userRole === "superadmin" ||
+                            userRoleAuth.userRole === "admin" ||
+                            userRoleAuth.userRole === "projectManager") && (
+                            <TableCell>
+                              <Button
+                                sx={{
+                                  height: "2rem",
+                                  padding: { lg: "0.75rem 1.5rem" },
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  flexShrink: 0,
+                                  alignSelf: "stretch",
+                                  borderRadius: "2.8125rem",
+                                  background:
+                                    row?.UserLineItemStatuses?.length < 1
+                                      ? "lightgray"
+                                      : "#4C8AB1",
+                                  color: "#FFF",
+                                  textTransform: "none",
+                                  "&:hover": {
+                                    background: "#357899",
+                                  },
+                                  marginTop: "0.3rem",
+                                }}
+                                onClick={() => {
+                                  handleShowTeamStatus(row);
+                                }}
+                                disabled={row?.UserLineItemStatuses?.length < 1}
+                              >
+                                Details
+                              </Button>
+                            </TableCell>
+                          )}
+                          {(userRoleAuth.userRole === "employee" ||
+                            userRoleAuth.userRole === "subcontractor" ||
+                            userRoleAuth.userRole === "supplier") && (
+                            <TableCell sx={{}}>
+                              {row.status === "Work Order approved" && (
+                                <IconButton
+                                  onClick={() => {
+                                    handleUpdateUserStatus(row);
+                                  }}
+                                >
+                                  <AssignmentTurnedInRoundedIcon fontSize="large" />
+                                </IconButton>
+                              )}
+                            </TableCell>
+                          )}
+                        </>
+                      )}
+                      {(userRoleAuth.userRole === "superadmin" ||
+                        userRoleAuth.userRole === "admin" ||
+                        userRoleAuth.userRole === "projectManager" ||
+                        userRoleAuth.userRole === "") && (
+                        <TableCell>
+                          <EditIcon onClick={() => handleUpdateLine(row)} />
+                          {(row.status === "Work Order Not requested" ||
+                            row.status === "Work Order declined" ||
+                            row.status === "Change Order declined") && (
+                            <DeleteIcon
+                              onClick={() => handleDeleteSelectedRows(row.id)}
+                              disabled={selectedRows.length === 0}
+                            />
+                          )}
                         </TableCell>
                       )}
-                      </>}
-                      <TableCell>
-                        <EditIcon onClick={() => handleUpdateLine(row)} />
-                        {(row.status === "Work Order Not requested" ||
-                          row.status === "Work Order declined" ||
-                          row.status === "Change Order declined") && (
-                          <DeleteIcon
-                            onClick={() => handleDeleteSelectedRows(row.id)}
-                            disabled={selectedRows.length === 0}
-                          />
-                        )}
-                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -584,7 +737,7 @@ console.log(path)
 
         {showUpdateUserStatus && (
           <LineItemDetailModal
-          userId={userId}
+            userId={userId}
             lineItem={checkedRow}
             modalOpen={showUpdateUserStatus}
             setModalOpen={setShowUpdateUserStatus}
@@ -600,6 +753,7 @@ console.log(path)
             handleAddRow={handleAddRow}
             projectId={projectId}
             InitialProposalView={InitialProposalView}
+            setRowCheckboxes={setRowCheckboxes}
           />
         )}
         {showUpdateLine && (
@@ -610,6 +764,7 @@ console.log(path)
             LineItem={checkedRow}
             projectId={projectId}
             InitialProposalView={InitialProposalView}
+            setRowCheckboxes={setRowCheckboxes}
           />
         )}
       </Grid>
@@ -641,7 +796,7 @@ const firstGrid = {
 };
 const headingsBox = {
   display: "flex",
-  flexDirection: { lg: "row", md: "row", sm: "column", xs: "column" },
+  flexDirection: { lg: "row", md: "row", sm: "row", xs: "row" },
   justifyContent: "space-between",
   width: "100%",
 };
@@ -659,17 +814,17 @@ const phaseBox = {
   alignItems: "center",
   gap: "1rem",
   marginTop: "0rem",
-  marginBottom: "1rem",
-  marginRight: { lg: "1rem", md: "1rem", sm: "1rem", xs: "1rem" },
 };
 const tableGrid = {
   background: "#FBFBFB",
-  borderRadius: "1rem",
-  padding: "1rem 2rem",
+  borderTopRightRadius: "7px",
+  borderBottomRightRadius: "7px",
+  borderBottomLeftRadius: "7px",
+  padding: "1rem 0rem",
   width: "100%",
 };
 const blackHeading = {
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   color: "#4B4B4B",
   fontSize: "20px",
   fontWeight: 400,
@@ -679,7 +834,7 @@ const blackHeading = {
   marginTop: "1rem",
 };
 const listOfLineText = {
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 400,
   fontSize: "1.25rem",
   paddingLeft: "2rem",

@@ -16,19 +16,19 @@ const themeStyle = {
     title: {
       fontSize: '22px',
       fontWeight: '500',
-      fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+      fontFamily: 'Arial Rounded MT, sans-serif',
       color: '#000000'
   },
     subtitle: {
       fontSize: '28px',
       fontWeight: '400',
-      fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+      fontFamily: 'Arial Rounded MT, sans-serif',
       color: '#4C8AB1'
   },
     footer: {
       fontSize: '16px',
       fontWeight: '400',
-      fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+      fontFamily: 'Arial Rounded MT, sans-serif',
       color: '#000000'
   },
   }

@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import Switch from "@mui/joy/Switch";
-import { Typography, Grid, TextField, Divider, Stack, CircularProgress } from "@mui/material";
+import {
+  Typography,
+  Grid,
+  TextField,
+  Divider,
+  Stack,
+  CircularProgress,
+} from "@mui/material";
 import Button from "../../UI/CustomButton";
 import { useTheme } from "@mui/material/styles";
 import {
@@ -10,33 +17,56 @@ import {
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import { useGetUserNotificationQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+import { useEffect } from "react";
+import { duration } from "moment-timezone";
 
 export default function MyApp() {
   const theme = useTheme();
   const isXs = theme.breakpoints.down("xs");
+  const user = useSelector((state) => state.auth.userInfo);
+  const { data, refetch } = useGetUserNotificationQuery({
+    userId: user.user.id,
+  });
   const [updateNotifications, { isLoading: isLoadingNotifications }] =
     useUpdateUserNotificationsMutation();
   const [resetPassword, { isLoading }] = useResetProfilePasswordMutation();
-  const user = useSelector((state) => state.auth.userInfo);
   const [chatNotificationsChecked, setChatNotificationsChecked] =
     useState(true);
-  const [projectManagerChecked, setProjectManagerChecked] = useState(true);
-  const [teamMemberChecked, setTeamMemberChecked] = useState(true);
+  const [employeeChecked, setEmployeeChecked] = useState(true);
+  const [supplierNotification, setSupplierNotification] = useState(true);
   const [subContractorChecked, setSubContractorChecked] = useState(true);
   const [clientChecked, setClientChecked] = useState(true);
 
   const [confrimPassword, setConfrimPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const passwordMatch = newPassword === confrimPassword;
+  const [errorConfirmPassword, setErrorConfirmPassword] = useState(false)
+  const [errorNewPassword, setErrorNewPassword] = useState(false)
+  
+  const handleConfirmPasswordBlur = () => {
+    const passwordMatch = newPassword === confrimPassword;
+    setErrorConfirmPassword(!passwordMatch)
+    
+    }
+    const handleNewPasswordBlur = () => {
+    const isPasswordValidLength = newPassword.length >= 8
+    setErrorNewPassword(!isPasswordValidLength)
+  }
   const validationStyle = {
     "& input": {
-      border: passwordMatch ? "1px solid #E0E4EC" : "1px solid #D02E2E",
+      border: !errorConfirmPassword ? "1px solid #E0E4EC" : "1px solid #D02E2E",
       borderRadius: "8px",
       padding: "10px",
     },
   };
-
+  const validationStyleNewPassword = {
+    "& input": {
+      border: !errorNewPassword ? "1px solid #E0E4EC" : "1px solid #D02E2E",
+      borderRadius: "8px",
+      padding: "10px",
+    },
+  };
   // const handleSubmit = async () => {
   //   if(!passwordMatch){
   //     toast.error("Passwords don't match!");
@@ -62,8 +92,8 @@ export default function MyApp() {
   // }
 
   const handleSubmit = async () => {
-    if (!passwordMatch) {
-      toast.error("Passwords don't match!");
+    if (errorConfirmPassword || errorNewPassword) {
+      toast.error(`${errorConfirmPassword ? "Passwords don't match!" : "Password must be at least 8 characters long"}`);
       return false;
     } else {
       try {
@@ -88,9 +118,14 @@ export default function MyApp() {
   };
   const handleUpdateNotifications = async (name, checked) => {
     try {
-      const res = await updateNotifications({userId:user.user.id, name: name, toggle: checked})
+      const res = await updateNotifications({
+        userId: user.user.id,
+        name: name,
+        toggle: checked,
+      });
+      await refetch();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -98,19 +133,19 @@ export default function MyApp() {
     const { name, checked } = e.target;
 
     switch (name) {
-      case "chat":
+      case "chatNotification":
         setChatNotificationsChecked(checked);
         handleUpdateNotifications(name, checked);
         break;
-      case "employee":
-        setProjectManagerChecked(checked);
+      case "employeeNotification":
+        setEmployeeChecked(checked);
         handleUpdateNotifications(name, checked);
         break;
-      case "supplier":
-        setTeamMemberChecked(checked);
+      case "supplierNotification":
+        setSupplierNotification(checked);
         handleUpdateNotifications(name, checked);
         break;
-      case "subcontractor":
+      case "subcontractorNotification":
         setSubContractorChecked(checked);
         handleUpdateNotifications(name, checked);
         break;
@@ -118,6 +153,13 @@ export default function MyApp() {
         console.warn(`Unknown notification type: ${name}`);
     }
   };
+  useEffect(() => {
+    if (data?.data?.id) {
+      setEmployeeChecked(Boolean(data?.data?.employeeNotification));
+      setSupplierNotification(Boolean(data?.data?.supplierNotification));
+      setSubContractorChecked(Boolean(data?.data?.subcontractorNotification));
+    }
+  }, [data]);
 
   return (
     <div>
@@ -142,6 +184,11 @@ export default function MyApp() {
           />
         </Grid>
         <Grid item xs={6}>
+         
+        </Grid>
+
+ 
+        <Grid item xs={6}>
           <Typography sx={subHeadings}>New Password</Typography>
           <TextField
             inputProps={{ maxLength: 50 }}
@@ -149,13 +196,23 @@ export default function MyApp() {
             placeholder="Enter New Password"
             variant="outlined"
             type="password"
-            sx={InputStyle}
+            sx={{ ...InputStyle, ...validationStyleNewPassword }}
             value={newPassword}
             onChange={(e) => {
               setNewPassword(e.target.value);
             }}
+            onBlur={handleNewPasswordBlur}
           />
+          {errorNewPassword && 
+          (
+            <Typography fontSize={"11px"} color={"#D02E2E"}>
+              Password must be at least 8 characters long
+            </Typography>
+          )}
         </Grid>
+        <Grid item xs={6}>
+         
+         </Grid>
         <Grid item xs={6}>
           <Typography sx={subHeadings}>Confirm Password</Typography>
           <TextField
@@ -169,13 +226,16 @@ export default function MyApp() {
             onChange={(e) => {
               setConfrimPassword(e.target.value);
             }}
+            onBlur={handleConfirmPasswordBlur}
           />
-          {!passwordMatch && (
+          {errorConfirmPassword && (
             <Typography fontSize={"11px"} color={"#D02E2E"}>
               Passwords dont match
             </Typography>
           )}
+          
         </Grid>
+      
       </Grid>
 
       {/* Divider */}
@@ -183,14 +243,18 @@ export default function MyApp() {
 
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-          <Typography sx={headings} variant="h5" gutterBottom>
-            Notifications
-          </Typography>
-          {isLoadingNotifications && <CircularProgress size={'20px'}/>}
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Typography sx={headings} variant="h5" gutterBottom>
+              Notifications
+            </Typography>
+            {isLoadingNotifications && <CircularProgress size={"20px"} />}
           </Stack>
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Typography sx={subHeadings} variant="body1" gutterBottom>
             Chat Notifications
           </Typography>
@@ -208,10 +272,10 @@ export default function MyApp() {
               onChange={handleNotifications}
             />
           </Grid>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} md={5}>
           <Typography sx={subHeadings} variant="body1" gutterBottom>
-            List Notification
+            Team Notification
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -222,8 +286,9 @@ export default function MyApp() {
               </Typography>
             </Grid>
             <Switch
+              sx={switchTransition}
               slotProps={{ input: { name: "employeeNotification" } }}
-              checked={projectManagerChecked}
+              checked={employeeChecked}
               onChange={handleNotifications}
             />
           </Grid>
@@ -236,8 +301,9 @@ export default function MyApp() {
               </Typography>
             </Grid>
             <Switch
+              sx={switchTransition}
               slotProps={{ input: { name: "supplierNotification" } }}
-              checked={teamMemberChecked}
+              checked={supplierNotification}
               onChange={handleNotifications}
             />
           </Grid>
@@ -250,6 +316,7 @@ export default function MyApp() {
               </Typography>
             </Grid>
             <Switch
+              sx={switchTransition}
               slotProps={{ input: { name: "subcontractorNotification" } }}
               checked={subContractorChecked}
               onChange={handleNotifications}
@@ -275,7 +342,7 @@ export default function MyApp() {
           xs={12}
           md={4}
           lg={3}
-          sx={{ display: "flex", justifyContent: "center", gap: 1, my: 6 }}
+          sx={{ display: "flex", justifyContent: "flex-start", gap: 1, my: 6 }}
         >
           <Button
             buttonText="Update Profile"
@@ -288,7 +355,7 @@ export default function MyApp() {
             isLoading={isLoading}
           />
 
-          <Button
+          {/* <Button
             buttonText="Reset"
             color="#4C8AB1"
             border={"1px solid #4C8AB1"}
@@ -296,7 +363,7 @@ export default function MyApp() {
             height="38px"
             borderRadius="50px"
             fontSize={"13px"}
-          />
+          /> */}
         </Grid>
       </Grid>
     </div>
@@ -343,5 +410,12 @@ const InputStyle = {
     "& fieldset": {
       border: "none",
     },
+  },
+};
+const switchTransition = {
+  "& .MuiSwitch-thumb": {
+    boxShadow: "0 2px 4px 0 rgb(0 35 11 / 20%)",
+    borderRadius: 6,
+    transition: "all 0.3s ease",
   },
 };

@@ -4,6 +4,7 @@ import TotalCostPie from "./TotalCostPie";
 import CircleIcon from "@mui/icons-material/Circle";
 import { useGetProjectCostStatsMutation } from "../../redux/apis/Reports/reportsApiSlice";
 import { useParams } from "react-router-dom";
+import { formatMoney } from "../../utils/Formatters/moneyFormat";
 
 const TotalCostPieChart = () => {
   let dataUser = localStorage.getItem("userInfo");
@@ -45,7 +46,7 @@ const TotalCostPieChart = () => {
           fontWeight={"500"}
           fontSize={"28px"}
         >
-          ${isLoading ? <>...</> : data?.totalCost}
+          ${isLoading ? <>...</> :formatMoney(data?.totalCost)}
         </Typography>
         <Typography
           fontFamily={"Inter, sans serif"}
@@ -60,7 +61,7 @@ const TotalCostPieChart = () => {
       <Stack justifyContent={"center"} alignItems={"center"} height={"100%"}>
         <TotalCostPie
           total={data?.totalCost}
-          remaning={data?.remaning}
+          remaning={data?.remaining}
           spent={data?.spent}
         />
         <Stack direction={"column"} spacing={1} width={"70%"} pb={2}>
@@ -71,7 +72,7 @@ const TotalCostPieChart = () => {
                 Spent Amount
               </Typography>
             </Stack>
-            <Typography textAlign={"right"}>$ {data?.spent}</Typography>
+            <Typography textAlign={"right"}>$ {formatMoney(data?.spent)}</Typography>
           </Stack>
           <Stack direction={"row"} justifyContent={"space-between"}>
             <Stack direction={"row"} spacing={1} alignItems={"center"}>
@@ -80,7 +81,7 @@ const TotalCostPieChart = () => {
                 Remaining Amount
               </Typography>
             </Stack>
-            <Typography textAlign={"center"}>$ {data?.remaning}</Typography>
+            <Typography textAlign={"center"}>$ {formatMoney(data?.remaining)}</Typography>
           </Stack>
         </Stack>
       </Stack>

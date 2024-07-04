@@ -62,7 +62,7 @@ function ProfileView({ heading }) {
 const themeStyle = {
     heading: {
         color: "#000000",
-        fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+        fontFamily: 'Arial Rounded MT, sans-serif',
         fontSize: { lg: "1.5rem", md: "1.5rem", xs: "1.2rem" },
         padding: "1rem 1rem 0rem 1rem",
     },
@@ -70,19 +70,19 @@ const themeStyle = {
     timeHeading: {
         fontSize: "4.4rem",
         color: "#FFAC00",
-        fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+        fontFamily: 'Arial Rounded MT, sans-serif',
 
     },
     dateText: {
         fontSize: "1.1rem",
         color: "#4C8AB1",
-        fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+        fontFamily: 'Arial Rounded MT, sans-serif',
         marginTop: "-1rem",
 
     },
     descriptionText: {
         color: "#202227",
-        fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+        fontFamily: 'Arial Rounded MT, sans-serif',
         padding: "0rem 1rem",
     },
     avatarStyle: {
@@ -90,19 +90,19 @@ const themeStyle = {
     },
     avatarCaption: {
         color: "#202227",
-        fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+        fontFamily: 'Arial Rounded MT, sans-serif',
         marginTop: "0.5rem",
         fontWeight: 400
     },
     projectName: {
         color: "#202227",
-        fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+        fontFamily: 'Arial Rounded MT, sans-serif',
         fontWeight: "bold",
         marginTop: "1rem",
     },
     projectDetails: {
         color: "#202227",
-        fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+        fontFamily: 'Arial Rounded MT, sans-serif',
         fontWeight: 100
     },
     jobPrice: {
@@ -135,7 +135,7 @@ const themeStyle = {
         fontSize: { lg: '0.9rem', sm: "0.75rem", xs: "0.9rem" },
         textAlign: "center",
         display: "flex",
-        fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+        fontFamily: 'Arial Rounded MT, sans-serif',
         paddingLeft: "1rem",
         fontWeight: 400
 
@@ -143,7 +143,7 @@ const themeStyle = {
     costText: {
         color: "#4C8AB1",
         display: "flex",
-        fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+        fontFamily: 'Arial Rounded MT, sans-serif',
         textAlign: "center",
         fontSize: { lg: '0.9rem', sm: "0.75rem", xs: "0.9rem" },
         marginRight: "1rem",

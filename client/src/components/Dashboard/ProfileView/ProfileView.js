@@ -5,7 +5,7 @@ import ListProjects from './ListProjects';
 
 const ProfileView = () => {
   return (
-    <Box fontStyle={'GT-Walsheim-Regular-Trial, sans-serif'} height={'100%'}>
+    <Box fontStyle={'Arial Rounded MT, sans-serif'} height={'100%'}>
       <Typography variant='h6' sx={themeStyle.title}>Dashboard</Typography>
       <Profile />
       <ListProjects />
@@ -18,10 +18,10 @@ export default ProfileView
 const themeStyle = {
   title: {
     fontWeight: "400",
-    fontSize: "25px",
+    fontSize: {xs:'20px', sm:'21px',md:"21px", lg:'21px', xl:'25px'},
     lineHeight: "normal",
     padding: 2,
-    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+    fontFamily: 'Arial Rounded MT, sans-serif',
     textAlign: "left",
   }
 }

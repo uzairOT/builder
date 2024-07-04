@@ -37,13 +37,13 @@ const themeStyle = {
     alignItems: "center",
   },
   containerTitle: {
-    fontSize: { xs: "10px", md: "10px", xl: "13px" },
+    fontSize: { xs: "14px", md: "13px", lg:'12px',  xl: "13px" },
     fontWeight: "400",
     fontFamily: "inherit",
     textTransform: "uppercase",
   },
   containerSubtitle: {
-    fontSize: { xs: "13px", md: "10px", xl: "11px" },
+    fontSize: { xs: "12px", sm:'11px', md: "11px", lg:'11px', xl: "11px" },
     fontWeight: "400",
     fontFamily: "inherit",
     fontStyle: "normal",

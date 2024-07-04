@@ -48,8 +48,8 @@ const CustomToolbar = ({toolbar, setEventView, dailyForecast, toolbarKey}) => {
 //   });
 // }
 const handleActiveHeader = (view) => {
+  setActiveHeader(view);
   setEventView(() => {
-    setActiveHeader(view);
     return view
   });
 }

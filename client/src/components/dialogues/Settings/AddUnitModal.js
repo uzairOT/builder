@@ -1,5 +1,5 @@
 import React, { useId } from 'react';
-import { Dialog, Grid, Typography, FormControl, Select, MenuItem, FormHelperText, TextField } from '@mui/material';
+import { Dialog, Grid, Typography, FormControl, Select, MenuItem, FormHelperText, TextField, Stack, IconButton } from '@mui/material';
 import Button from "../../UI/CustomButton";
 import { useState, useEffect } from 'react'; // This might be needed depending on the implementation of handleSubmit, handleReset, handleChange, handleBlur, etc.
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material';
@@ -7,6 +7,7 @@ import { useFormik } from 'formik';
 import { settingsSchema, unitSchema } from '../../../utils/Validation/settingsPageSchema';
 import { useAddUnitMutation, useEditUnitMutation } from '../../../redux/apis/Project/userProjectApiSlice';
 import { useSelector } from 'react-redux';
+import { Close } from '@mui/icons-material';
 
 
 const AddUnitModal = ({open, onClose, unit, refetch}) => {
@@ -46,7 +47,20 @@ const AddUnitModal = ({open, onClose, unit, refetch}) => {
     return (
         <form onSubmit={handleSubmit}>
           <Dialog open={open} onClose={onClose} maxWidth="md" sx={{}}>
-            <DialogTitle sx={headingStyle}>Add Unit</DialogTitle>
+          <Stack
+          direction={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          mr={1}
+        >
+          <DialogTitle sx={headingStyle}>Add Unit</DialogTitle>
+          <IconButton
+            style={{ width: "30px", height: "30px" }}
+            onClick={onClose}
+          >
+            <Close />
+          </IconButton>
+        </Stack>
             <DialogContent sx={{ display: "flex", justifyContent: "center", margin: "30px" }}>
               <Grid container>
                 <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>

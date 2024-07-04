@@ -2,22 +2,25 @@ import { Grid, Paper, Stack } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import ProjectList from '../../components/Projects/ProjectTable/ProjectList'
 import { useGetFilteredUserProjectsQuery, useGetUserProjectsQuery } from '../../redux/apis/Project/userProjectApiSlice'
+import { useSelector } from 'react-redux'
+import { projectsPackage } from '../../redux/slices/Project/userProjectsSlice'
 
 const ProjectsTable = () => {
-  const [selectedFilters, setSelectedFilters] = useState([]);
+  // const [selectedFilters, setSelectedFilters] = useState([]);
   const local = localStorage.getItem('userInfo');
+  
   const currentUser = JSON.parse(local);
   const currentUserId = currentUser.user.id
- const filter = selectedFilters.join(',')
-  const {data, isLoading, error} = useGetFilteredUserProjectsQuery({userId: currentUserId, filter: filter});
-  //console.log(data);
+//  const filter = selectedFilters.join(',')
+  // const {data, isLoading, error} = useGetFilteredUserProjectsQuery({userId: currentUserId, filter: '', page:page});
+  const projects = useSelector(projectsPackage)
 
   return (
     <main>
       <Grid sx={themeStyle.dashboard} container>
       <Grid item p={2} xl={12} lg={12} md={12} sx={12} xs={12}>
         <Paper  style={{height:'100%', borderRadius:'14px'}}>
-          {error ?  <Stack justifyContent={'center'} alignItems={'center'}>{error?.data?.message}</Stack> : <ProjectList selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} rows={data?.projects} isLoading={isLoading}/>}
+          {projects?.error ?  <Stack justifyContent={'center'} alignItems={'center'}>{projects?.error?.data?.message}</Stack> : <ProjectList currentUserId={currentUserId} totalPages={projects?.totalPages} limit={projects?.limit} totalCount={projects?.totalCount} rows={projects.projects[0]} isLoading={projects?.isLoading}/>}
         </Paper>
       </Grid>
       </Grid>

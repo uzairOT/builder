@@ -47,7 +47,7 @@ export const handleDownload = async (url, filename, setIsDownloading) => {
       .get(url, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+        
         },
         responseType: "blob",
       })

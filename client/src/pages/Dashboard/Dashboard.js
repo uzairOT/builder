@@ -25,7 +25,7 @@ const Dashboard = () => {
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
   const userProjects = useSelector(allUserProjects);
-  const dispatch = useDispatch();
+
   const local = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(local);
   const UserId = currentUser.user.id;
@@ -36,9 +36,7 @@ const Dashboard = () => {
   const dailyForecast = forecast.dailyForecast;
   const forecastIsLoading = forecast.isLoading;
   const forecastError = forecast.error;
-  const { data, refetch } = useGetUserProjectsQuery({ userId: UserId });
 
-  dispatch(addProjects(data?.projects));
   useEffect(() => {
     console.log("undefined", UserId);
     socket.emit("userJoin", {
@@ -47,9 +45,6 @@ const Dashboard = () => {
     return () => {};
   }, []);
 
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
   return (
     <>
       <main>
@@ -93,7 +88,7 @@ const Dashboard = () => {
               container
               sx={{ ...themeStyle.scrollable }}
               overflow={"hidden"}
-              height={"calc(92vh - 240px)"}
+              height={{xl:"calc(92vh - 240px)",  md:'calc(92vh - 100px)', xs:'calc(100vh + 100px)'}}
               width={"98%"}
               pt={1}
               margin={"auto"}
@@ -102,7 +97,7 @@ const Dashboard = () => {
                 item
                 xs={12}
                 sm={12}
-                md={12}
+                md={6}
                 lg={6}
                 mb={1}
                 style={{

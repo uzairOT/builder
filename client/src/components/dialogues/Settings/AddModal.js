@@ -13,6 +13,8 @@ import {
   InputLabel,
   FormHelperText,
   Autocomplete,
+  Stack,
+  IconButton,
 } from "@mui/material";
 import UploadIcon from "../../../assets/settings/uploadimg.png";
 import Button from "../../UI/CustomButton";
@@ -27,13 +29,17 @@ import { toast } from "react-toastify";
 //import "react-toastify/dist/ReactToastify.css";
 import { allUserProjects } from "../../../redux/slices/Project/userProjectsSlice";
 import { useSelector } from "react-redux";
-import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+import {
+  useGetFilteredUserProjectsQuery,
+  useGetUserProjectsQuery,
+} from "../../../redux/apis/Project/userProjectApiSlice";
 import { createFilterOptions } from "@mui/material/Autocomplete";
 import { uploadToS3 } from "../../../utils/S3";
 import axios from "axios";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
+import { Close } from "@mui/icons-material";
 
-function AddModal({ title, open, onClose }) {
+function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
   const [image, setImage] = useState(null);
   const local = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(local);
@@ -46,11 +52,11 @@ function AddModal({ title, open, onClose }) {
   const [selectedFile, setSelectedFile] = useState("");
   // const { values, handleChange, handleBlur, errors, setFieldValue } = useFormikContext();
   const filter = createFilterOptions();
-  const { data, isLoading, error } = useGetUserProjectsQuery({
+  const { data, isLoading, error } = useGetFilteredUserProjectsQuery({
     userId: currentUserId,
   });
 
-  //console.log(data);
+  console.log(data);
   const projectNames = data
     ? data?.projects.map((project) => ({
         id: project.id,
@@ -67,7 +73,7 @@ function AddModal({ title, open, onClose }) {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://192.168.0.113:8080/project/file",
+          "http://3.135.107.71/project/file",
           {
             fileName,
             fileType,
@@ -103,15 +109,16 @@ function AddModal({ title, open, onClose }) {
       const res = await assignRolePost(post).unwrap();
       console.log(res);
       toast.info("Email Invitation sent!");
-      refetch();
+      setRefreshData(!refreshData);
       action.resetForm();
       setImage(null);
     } catch (err) {
       //console.log(err);
       toast.error(
         error?.data?.message ||
-          error.error ||
-          error?.data?.error ||
+        error.error ||
+        error?.data?.error ||
+        err?.message ||
           "Something went wrong!"
       );
     }
@@ -175,7 +182,20 @@ function AddModal({ title, open, onClose }) {
   return (
     <form onSubmit={handleSubmit}>
       <Dialog open={open} onClose={onClose} maxWidth="md" sx={{}}>
-        <DialogTitle sx={headingStyle}>Add {title}</DialogTitle>
+        <Stack
+          direction={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          mr={5}
+        >
+          <DialogTitle sx={headingStyle}>Add {title}</DialogTitle>
+          <IconButton
+            style={{ width: "30px", height: "30px" }}
+            onClick={onClose}
+          >
+            <Close />
+          </IconButton>
+        </Stack>
         <DialogContent
           sx={{ display: "flex", justifyContent: "center", margin: "30px" }}
         >

@@ -23,7 +23,7 @@ const ProjectsChangeOrderView = () => {
   const { data, refetch } = useGetProjectChangeOrderQuery({
     projectId: currentProjectId,
     userId: user.user.id,
-    changeOrder: true
+    changeOrder: false
   });
   const dailyForecast = forecast.dailyForecast;
   const { id } = useParams();

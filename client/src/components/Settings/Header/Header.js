@@ -6,11 +6,11 @@ import Search from "../../UI/CustomSearchInput";
 import AddIcon from '@mui/icons-material/Add';
 import  axios  from "axios";
 
-function Header({ title, OpenAddModal }) {
+function Header({ title, OpenAddModal, searchInput, setSearchInput }) {
  
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [searchInput, setSearchInput] = useState("");
+
 
   const handleSearchInputChange = (event) => {
     setSearchInput(event.target.value);
@@ -48,7 +48,7 @@ function Header({ title, OpenAddModal }) {
         </Typography>
       </div>
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-      <Hidden smUp>
+      {/* <Hidden smUp>
         <IconButton aria-label="menu" onClick={handleMenuClick}>
           <MenuIcon />
         </IconButton>
@@ -61,7 +61,7 @@ function Header({ title, OpenAddModal }) {
             <AddIcon /> Add
           </MenuItem>
         </Menu>
-      </Hidden>
+      </Hidden> */}
 
       {/* Existing content */}
       <Hidden smDown>
@@ -69,7 +69,7 @@ function Header({ title, OpenAddModal }) {
           value={searchInput}
           onChange={handleSearchInputChange}
           onKeyPress={handleKeyPress}
-          placeholder="Search Name"
+          placeholder={`Search ${title}`}
           backgroundColor="#E7E7E7"
         />
 

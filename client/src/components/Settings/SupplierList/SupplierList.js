@@ -7,11 +7,19 @@ import Pagination from "@mui/material/Pagination";
 import AddModal from '../../dialogues/Settings/AddModal';
 import UpdateModal from '../../dialogues/Settings/UpdateModal';
 import { useOutletContext } from 'react-router-dom';
+import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
+import { useEffect } from 'react';
 function SupplierList() {
 
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
   const [userInfo, setUserInfo, handleAssignRoleButton, userId, setUserId, handleUpdateAssignRole] = useOutletContext();
+  const [page, setPage]= useState(1);
+  const [totalEntries, setTotalEntries] = useState(0)
+  const [totalPages, setTotalPages] = useState(0)
+  const [searchInput, setSearchInput] = useState("");
+  const debouncedValue =  QueryDebouncer(searchInput,500);
+  const [refreshData, setRefreshData] = useState(true);
   const SUPPLIER_LIST_VIEW = 'supplierList';
 
   // Function to open the Add Modal
@@ -27,11 +35,38 @@ function SupplierList() {
   };
 
 
+  const handlePageChange = (event, newValue) => {
+    setPage(newValue)
+  }
+  console.log(totalEntries)
+ 
+  let startIndex = 1;
+  let endIndex = 6;
 
+  if(page===1){
+    startIndex = 1;
+    if(totalEntries < 6){
+      endIndex = totalEntries;
+    }
+  }else{
+    startIndex = 1 + (6*(page-1));
+    endIndex = 6*page;
+    if(endIndex > totalEntries){
+      endIndex = totalEntries;
+    }
+  }
+  if(totalEntries === undefined){
+    startIndex = 0;
+    endIndex = 0;
+  }
+
+  useEffect(()=>{
+    setPage(1)
+  },[debouncedValue])
   return (
     <div style={{padding:"20px"}}>
-      <Header title="Supplier"   OpenAddModal={OpenAddModal}/>
-      <CustomTable setUpdateModalOpen={setUpdateModalOpen}  setUserId={setUserId} />
+      <Header title="Supplier"   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
+      <CustomTable refreshData={refreshData} setUpdateModalOpen={setUpdateModalOpen}  setUserId={setUserId} searchInput={debouncedValue} setTotalEntries={setTotalEntries} setTotalPages={setTotalPages} page={page}/>
 
       <Box mt={2} mb={2}>
         <Divider />
@@ -43,13 +78,13 @@ function SupplierList() {
           justifyContent: {xs:"center",md:"space-between"} ,
         }}
       >
-        {/* <Typography variant="body1" sx={paginationTextStyle}>
-          Showing data 1 to 4 of 25 entries
-        </Typography> */}
-        {/* <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/> */}
+        <Typography variant="body1" sx={paginationTextStyle}>
+          Showing data {startIndex} to {endIndex} of {totalEntries === undefined ? 0 : totalEntries} entries
+        </Typography>
+        <Pagination count={totalPages} variant="outlined" shape="rounded" page={page}  onChange={handlePageChange}  sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Supplier"} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} />
-      <UpdateModal title={"Supplier"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo} />
+      <AddModal title={"Supplier"} refreshData={refreshData} setRefreshData={setRefreshData} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} />
+      <UpdateModal title={"Supplier"} refreshData={refreshData} setRefreshData={setRefreshData} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo} />
     </div>
   );
 }

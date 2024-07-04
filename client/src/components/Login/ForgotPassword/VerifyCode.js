@@ -52,7 +52,10 @@ const VerifyCode = () => {
       if (data === "signup") {
         console.log("wwwwwwwwwwwwwhhhhhhhhhhattttttttt::::", res);
         dispatch(setCredentials({ ...res }));
-        navigate("/assignproject");
+        // navigate("/assignproject");
+        setTimeout(() => {
+          window.location.href = '/assignproject';
+        }, 1000); 
       } else {
         navigate("/setnewpassword");
       }
@@ -160,7 +163,7 @@ const VerifyCode = () => {
                   Verify code
                 </Typography>
                 <Typography sx={{ mb: 1.5, mt: 1.5 }} color="text.secondary">
-                  We sent a reset link to contact@dscode...com enter 5 digit
+                  We sent a verification code to your email. Enter the 5 digit
                   code that
                   <br /> mentioned in the email.
                 </Typography>
@@ -180,6 +183,11 @@ const VerifyCode = () => {
                 <Box sx={{ display: "flex", gap: "10px", marginTop: "10px" }}>
                   {code.map((value, index) => (
                     <TextField
+                    sx={{
+                      ".MuiOutlinedInput-notchedOutline ":{
+                        borderColor:'white'
+                      }
+                    }}
                       key={index}
                       inputRef={(el) => (inputRefs.current[index] = el)}
                       type="text"

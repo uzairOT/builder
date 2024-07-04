@@ -1,6 +1,7 @@
 import { Divider, Grid, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import SubscriptionCard from "../UI/Card/SubscriptionCard";
+import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 
 const SubscriptionPlans = ({
   setCurrentPlan,
@@ -15,13 +16,14 @@ const SubscriptionPlans = ({
     const fetchCurrentPayment = async () => {
       try {
         const res = await fetch(
-          "http://192.168.0.113:8080/payment/checkPaymentPlan",
+          "http://3.135.107.71/payment/checkPaymentPlan",
           {
             method: "POST",
-            headers: {
+            headers: new Headers({
               "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ orgName: currentUser.companyName }),
+              Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+            }),
+            body: JSON.stringify({ orgName: currentUser?.companyName }),
           }
         );
         const data = await res.json();
@@ -91,7 +93,7 @@ const themeStyle = {
   title: {
     fontSize: "28px",
     fontWeight: "500",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     color: "#000000",
   },
 };

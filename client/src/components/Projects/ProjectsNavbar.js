@@ -73,9 +73,9 @@ const ProjectsNavbar = ({ project }) => {
     }
     // setSelectedNav(path);
   };
-  const navigateToDefault = () => {
-    navigate("");
-    handleNavClick("");
+  const navigateOneStepBack = () => {
+    navigate(-1);
+    // handleNavClick("");
   };
   useEffect(()=>{
    setSelectedNav(page)
@@ -92,7 +92,7 @@ const ProjectsNavbar = ({ project }) => {
         <IconButton>
           <ChevronLeftIcon
             style={{ color: "black" }}
-            onClick={navigateToDefault}
+            onClick={navigateOneStepBack}
           />
         </IconButton>
         {/* <img src={project?.image} alt='Project' width={'60px'} height={'35px'} style={{borderRadius: '12px'}}></img> */}
@@ -106,7 +106,7 @@ const ProjectsNavbar = ({ project }) => {
               color: "#494A4A",
               fontSize: "20px",
               fontWeight: 600,
-              fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+              fontFamily: "Arial Rounded MT, sans-serif",
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -130,6 +130,7 @@ const ProjectsNavbar = ({ project }) => {
         alignItems={"center"}
         spacing={1}
         pr={2}
+        pl={1}
         display={{ xl: "flex", lg: "flex", md: "none", sm: "none", xs: "none" }}
       >
         {navLinks.map((navlink, index) => {
@@ -146,9 +147,9 @@ const ProjectsNavbar = ({ project }) => {
               >
                 <Typography
                   color={selectedNav === navlink.path ? "#ffac00" : "#494A4A"}
-                  fontSize={"15px"}
+                  fontSize={{xl:"15px", lg:'11px'}}
                   fontWeight={"400"}
-                  fontFamily={"GT-Walsheim-Regular-Trial, sans-serif"}
+                  fontFamily={"Arial Rounded MT, sans-serif"}
                   pr={1}
                 >
                   {navlink.title}

@@ -5,6 +5,7 @@ import CircleIcon from "@mui/icons-material/Circle";
 import SelectMenuBarChart from "./SelectMenuBarChart";
 import { useGetTotalProjectProfitMarginMutation } from "../../redux/apis/Reports/reportsApiSlice";
 import { useParams } from "react-router-dom";
+import { formatMoney } from "../../utils/Formatters/moneyFormat";
 
 const ProfitMarginBarChartCard = () => {
   let dataUser = localStorage.getItem("userInfo");
@@ -74,26 +75,23 @@ const ProfitMarginBarChartCard = () => {
       </Stack>
       <Divider variant="fullWidth" />
       {/* <SelectMenuBarChart listItems={listItems} /> */}
-
-      <ProfitMarginStackedBarChart
-        totalMargin={totalMargin}
-        totalCost={totalCost}
-      />
-      <Stack direction={"row"} justifyContent={"space-around"} spacing={1}>
+      <Stack justifyContent={'space-evenly'} height={'100%'} alignItems={'center'}>
+      <Stack direction={"row"} justifyContent={"space-around"} spacing={1} pt={1}>
         <Stack direction={"row"} spacing={1}>
           <CircleIcon
             sx={{ color: "#2D9CDB", fontSize: "10px", paddingTop: "4px" }}
           />
           <Stack direction={"column"}>
-            <Typography fontFamily={"Inter, sans serif"} fontSize={"12px"}>
+            <Typography fontFamily={"Inter, sans serif"} fontSize={"16px"}>
               Total
             </Typography>
             <Typography
               textAlign={"right"}
               fontFamily={"Inter, sans serif"}
               fontWeight={"500"}
+              fontSize={"18px"}
             >
-              $ {totalCost}
+              $ {formatMoney(totalCost)}
             </Typography>
           </Stack>
         </Stack>
@@ -102,20 +100,21 @@ const ProfitMarginBarChartCard = () => {
             sx={{ color: "#90BE6D", fontSize: "10px", paddingTop: "4px" }}
           />
           <Stack direction={"column"}>
-            <Typography fontFamily={"Inter, sans serif"} fontSize={"12px"}>
+            <Typography fontFamily={"Inter, sans serif"} fontSize={"16px"}>
               Profit Margin
             </Typography>
             <Typography
               textAlign={"center"}
               fontFamily={"Inter, sans serif"}
               fontWeight={"500"}
+              fontSize={"18px"}
             >
-              $ {totalMargin}
+              $ {formatMoney(totalMargin)}
             </Typography>
             <Typography
               textAlign={"center"}
               color={"#90BE6D"}
-              fontSize={"22px"}
+              fontSize={"26px"}
               fontWeight={"600"}
               fontFamily={"Inter, sans serif"}
             >
@@ -128,6 +127,11 @@ const ProfitMarginBarChartCard = () => {
             </Typography>
           </Stack>
         </Stack>
+      </Stack>
+      <ProfitMarginStackedBarChart
+        totalMargin={totalMargin}
+        totalCost={totalCost}
+      />
       </Stack>
     </>
   );

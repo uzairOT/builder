@@ -68,12 +68,14 @@ const CustomEventDayTasks = ({ event, isProjectPage }) => {
                       style={themeStyle.eventIcon}
                       fontSize={"10px"}
                     ></img>
+                    
                     <Typography sx={themeStyle.eventText} fontSize={"10px"}>
                       {event?.data?.weather?.temp}
                     </Typography>
                     <Typography sx={themeStyle.eventText} fontSize={"10px"}>
                       {event?.data?.weather?.description}
                     </Typography>
+                  
                   </>
                 )}
               </Stack>
@@ -100,7 +102,13 @@ const CustomEventDayTasks = ({ event, isProjectPage }) => {
                 >
                   {event?.data?.task}
                 </Typography>
-
+              </Stack>
+              <Stack alignItems={"end"} justifyContent={"end"}>
+                {event?.data?.priority === "urgent" && (
+                  <FlagOutlinedIcon
+                    sx={{ color: "#EB1717", fontSize: "14px" }}
+                  />
+                )}
               </Stack>
             </Stack>
             {data === null ? (
@@ -185,9 +193,11 @@ const CustomEventDayTasks = ({ event, isProjectPage }) => {
                 {event?.data?.task}
               </Typography>
             </Stack>
-              <Stack alignItems={'end'} justifyContent={'end'}>
-              { event?.data?.priority === 'urgent' && <FlagOutlinedIcon sx={{ color: "#EB1717", fontSize:'14px' }} />}
-              </Stack>
+            <Stack alignItems={"end"} justifyContent={"end"}>
+              {event?.data?.priority === "urgent" && (
+                <FlagOutlinedIcon sx={{ color: "#EB1717", fontSize: "14px" }} />
+              )}
+            </Stack>
           </Stack>
           {data === null ? (
             <></>
@@ -286,6 +296,13 @@ const CustomEventDayNotes = ({ event, isProjectPage }) => {
                   {event.data.note ? event?.data?.note : "No notes added..."}
                 </Typography>
               </Stack>
+              <Stack alignItems={"end"} justifyContent={"end"}>
+                {event?.data?.priority === "urgent" && (
+                  <FlagOutlinedIcon
+                    sx={{ color: "#EB1717", fontSize: "14px" }}
+                  />
+                )}
+              </Stack>
             </Stack>
             {data === null ? (
               <></>
@@ -363,6 +380,11 @@ const CustomEventDayNotes = ({ event, isProjectPage }) => {
               >
                 {event.data.note ? event?.data?.note : "No notes added..."}
               </Typography>
+            </Stack>
+            <Stack alignItems={"end"} justifyContent={"end"}>
+              {event?.data?.priority === "urgent" && (
+                <FlagOutlinedIcon sx={{ color: "#EB1717", fontSize: "14px" }} />
+              )}
             </Stack>
           </Stack>
           {data === null ? (
@@ -507,6 +529,11 @@ const CustomEventWeek = ({ event, isProjectPage }) => {
                 {!event.data.note ? "No notes added..." : event?.data?.note}
               </Typography>
             </Box>
+            <Stack alignItems={"end"} justifyContent={"end"}>
+              {event?.data?.priority === "urgent" && (
+                <FlagOutlinedIcon sx={{ color: "#EB1717", fontSize: "14px" }} />
+              )}
+            </Stack>
           </Stack>
           {data === null ? (
             <></>
@@ -585,11 +612,18 @@ const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
                 >
                   <ScheduleIcon
                     fontSize="6px"
-                    color="#1C1C1C"
+                    sx={{
+                      color:
+                        event?.data?.priority === "urgent"
+                          ? "#EB1717"
+                          : "#1C1C1C",
+                    }}
                     fontWeight={"200"}
                   ></ScheduleIcon>
                   <Typography
-                    color={"#1C1C1C"}
+                    color={
+                      event?.data?.priority === "urgent" ? "#EB1717" : "#1C1C1C"
+                    }
                     textOverflow={"ellipsis"}
                     height={"100%"}
                     fontSize={"9px"}
@@ -688,11 +722,18 @@ const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
               >
                 <ScheduleIcon
                   fontSize="6px"
-                  color="#1C1C1C"
+                  sx={{
+                    color:
+                      event?.data?.priority === "urgent"
+                        ? "#EB1717"
+                        : "#1C1C1C",
+                  }}
                   fontWeight={"200"}
                 ></ScheduleIcon>
                 <Typography
-                  color={"#1C1C1C"}
+                  color={
+                    event?.data?.priority === "urgent" ? "#EB1717" : "#1C1C1C"
+                  }
                   textOverflow={"ellipsis"}
                   height={"100%"}
                   fontSize={"9px"}
@@ -788,9 +829,18 @@ const CustomEventMonthTasks = ({ event, isProjectPage, projectId }) => {
                   ></Skeleton>
                 </>
               ) : (
-                <Typography fontSize={"10px"} color={"#454545"}>
-                  {event?.data?.task}
-                </Typography>
+                <Stack direction={"row"} justifyContent={"space-between"}>
+                  <Typography fontSize={"10px"} color={"#454545"}>
+                    {event?.data?.task}
+                  </Typography>
+                  <Stack alignItems={"end"} justifyContent={"end"}>
+                    {event?.data?.priority === "urgent" && (
+                      <FlagOutlinedIcon
+                        sx={{ color: "#EB1717", fontSize: "14px" }}
+                      />
+                    )}
+                  </Stack>
+                </Stack>
               )}
             </Box>
             {data === null ? (
@@ -825,7 +875,7 @@ const CustomEventMonthTasks = ({ event, isProjectPage, projectId }) => {
                 ></Skeleton>
               </>
             ) : (
-              <Typography fontSize={"10px"} color={"#454545"}>
+              <Typography fontSize={"10px"} color={"#454545"} overflow={'hidden'} textOverflow={'ellipsis'} backgroundColor={'#F7F9FC'} width={'70px'} ml={'8px'}>
                 {event?.data?.task}
               </Typography>
             )}
@@ -875,6 +925,7 @@ const CustomEventMonthWeatherNotes = ({ event, isDrawerOpen }) => {
           overflow={"hidden"}
           height={"47px"}
           width={isDrawerOpen ? "100%" : "42px"}
+          color={event?.data?.priority === "urgent" ? "#EB1717" : "#1C1C1C"}
         >
           Note: {event?.data?.note}
         </Typography>
@@ -909,6 +960,12 @@ const themeStyle = {
     textOverflow: "ellipsis",
     color: "#454545",
     fontFamily: "Inter, sans-serif",
+  },
+  eventText:{
+    color:'black',
+    backgroundColor:'white',
+    borderRadius:'4px',
+    width:'45px'
   },
   eventNote: {
     fontSize: "10px",

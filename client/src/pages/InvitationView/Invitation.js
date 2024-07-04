@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, redirect, useNavigate } from "react-router-dom";
 import {
   Box,
@@ -33,7 +33,7 @@ import { setCredentials } from "../../redux/slices/authSlice";
 import { toast, ToastContainer } from "react-toastify";
 import { useFormik } from "formik";
 import { inviteSchemea } from "../../utils/Validation/settingsPageSchema";
-import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
+// import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 //import "react-toastify/dist/ReactToastify.css";
 
 const Invitation = () => {
@@ -61,7 +61,7 @@ const Invitation = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [register, { isLoading }] = useRegisterMutation();
+  // const [register, { isLoading }] = useRegisterMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
   // const handleChange = (e) => {
@@ -92,19 +92,21 @@ const Invitation = () => {
 // },[])
 
 const timeoutRef = useRef(); // Store timeout ID
+const memoizedCheckUser = useCallback(async () => {
+  const res = await checkUser(params);
+  console.log(res); // Log response
+  if (res?.data?.success) {
+    window.location.href='/login';
+  } else {
+    timeoutRef.current = null;
+  }
+}, []);
 
 useEffect(() => {
-  timeoutRef.current = setTimeout(async () => {
-    const res = await checkUser(params);
-    console.log(res); // Log response
-    if (res?.data?.success) {
-      navigate('/login');
-    }
-  }, 1000); // Timeout after 2 seconds
+  timeoutRef.current = setTimeout(memoizedCheckUser, 1000); // Timeout after 1 second
 
   return () => clearTimeout(timeoutRef.current); // Cleanup
-}, [checkUser, params, navigate]);
-
+}, [memoizedCheckUser]);
   const onSubmit = async (e) => {
     // Prepare data to be sent in the request body
     if(phone ===''){
@@ -119,10 +121,10 @@ useEffect(() => {
 
     try {
       // Make POST request using Axios
-      await axios.post("http://192.168.0.113:8080/auth/addme", data, {
+      await axios.post("http://3.135.107.71/auth/addme", data, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+          // Authorization: `Bearer ${getTokenFromLocalStorage()}`,
         },
       });
 
@@ -177,14 +179,14 @@ useEffect(() => {
   return (
     <Grid container sx={firstGrid}>
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
-        <Typography sx={firstHeading}>Builder Builder Pro</Typography>
+        <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography>
 
         {/* Button */}
 
         <Typography component="p" sx={secondHeading}>
           On schedule. On budget. On the path to building better.
         </Typography>
-        <Typography sx={thirdHeading}>Create an account</Typography>
+      
         <Box sx={downloadForMobBox}>
           <img src={downloadForMob} width={DoMobWidth} alt="" />
         </Box>
@@ -204,7 +206,7 @@ useEffect(() => {
         <Grid item sx={formGrid}>
           <Box sx={logoBox}>
             <Typography sx={formHeadingStyle}>Signup</Typography>
-            <img src={builder1} width={"20%"} alt="" />
+            <img src={builder1} width={"25%"} alt="" />
           </Box>
           <form style={{ marginTop: "0.1rem", width:'100%' }} onSubmit={handleSubmit}>
             <Box sx={namesFieldBox}>
@@ -353,7 +355,7 @@ useEffect(() => {
                         ? "1px solid #d32f2f"
                         : "1px solid #E0E4EC",
                   }}
-                  
+                  placeholder="Enter your password"
                   type={passwordVisible ? "text" : "password"}
                   name="password"
                   value={values.password}
@@ -402,6 +404,7 @@ useEffect(() => {
                         ? "1px solid #d32f2f"
                         : "1px solid #E0E4EC",
                   }}
+                   placeholder="Confirm your password"
                   type={passwordVisible ? "text" : "password"}
                   name="confirmPassword"
                   value={values.confirmPassword}
@@ -497,7 +500,7 @@ const firstGrid = {
 
 const SecondGrid = {
   gap: { lg: "1.1rem", sm: "1rem", xs: "1rem" },
-  alignItems: { lg: "start", md: "start", sm: "center", xs: "center" },
+  alignItems: { lg: "center", md: "center", sm: "center", xs: "center" },
   justifyContent: {
     lg: "start",
     md: "start",
@@ -565,7 +568,7 @@ const namesFieldBox = {
 
 const subtitleStyle = {
   color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "0.75rem",
   fontWeight: 400,
   marginBottom: "0.2rem",
@@ -619,7 +622,7 @@ const selectStyle = {
   ".MuiOutlinedInput-notchedOutline": { border: 0 },
   color: "white",
   border: "none",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1rem",
   fontWeight: "400",
   lineHeight: "normal",
@@ -636,10 +639,10 @@ const hptLinksBox = {
 
 const firstHeading = {
   color: "#FFF",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
   marginTop: "1rem",
-  fontSize: { lg: "2.9375rem", md: "1.5rem", sm: "1rem" },
+  fontSize: { xl: "2rem", lg: "2rem", md: "1.9rem", sm: "1rem" },
   fontWeight: 400,
   lineHeight: "4.25rem",
 };
@@ -649,14 +652,14 @@ const secondHeading = {
   width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   marginTop: "0.5rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: { lg: "2rem", md: "1rem", sm: "0.8rem" },
   fontWeight: 400,
 };
 
 const thirdHeading = {
   color: "#FFF",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   marginTop: "1rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
@@ -666,7 +669,7 @@ const thirdHeading = {
 const formHeadingStyle = {
   color: "#4C8AB1",
   textAlign: "center",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "2.1875rem",
   fontWeight: 700,
   lineHeight: "normal",
@@ -697,7 +700,7 @@ const inputStyle = {
   fontSize: "14px",
   border: "1px solid #ccc",
   borderRadius: "12px",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   paddingLeft: "-1.5rem",
 };
 
@@ -705,7 +708,7 @@ const labelStyle = {
   display: "block",
   marginBottom: "0.5rem",
   color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1rem",
   fontWeight: 400,
   lineHeight: "normal",
@@ -714,7 +717,7 @@ const labelStyle = {
 const hptLinksStyle = {
   color: "#FFF",
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem" },
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 400,
   lineHeight: "normal",
 };

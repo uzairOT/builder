@@ -11,10 +11,13 @@ import ChangeOrder from '../Projects/ProjectsDefault/ChangeOrder'
 import BuilderProButton from '../UI/Button/BuilderProButton'
 import ChangeOrderRequest from '../dialogues/ChangeOrderRequest/ChangeOrderRequest'
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from 'react-redux'
 
 const InnerLayout2 = () => {
   const navigate = useNavigate();
   const {id} = useParams();
+  const userInfo = useSelector(state => state.auth.userInfo);
+  const userId = userInfo.user.id
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -30,21 +33,21 @@ const InnerLayout2 = () => {
    <>
    <Stack direction={{xl:'row', lg:'row', md:'column'}} pt={1} spacing={1}>
         {/* Monitoring And Accounting */}
-        <Stack flex={{xl:2}}display={{xl:"flex",lg:'none'}}><Paper style={themeStyle.border}><MonitoringFinances /></Paper></Stack>
-        <Stack flex={{xl:8,lg:7}}><Paper style={themeStyle.border}><ProjectInfoAndTeam /></Paper></Stack>
+        <Stack flex={{xl:2}}display={{xl:"flex",lg:'none'}}><Paper style={themeStyle.border}><MonitoringFinances projectId={id} userId={userId}/></Paper></Stack>
+        <Stack flex={{xl:8,lg:7}}><Paper style={themeStyle.border}><ProjectInfoAndTeam  projectId={id} userId={userId}/></Paper></Stack>
         </Stack>
-        <Stack direction={{xl:'row',}} pt={1} spacing={1} sx={{height:'calc(92vh - 295px)'}}>
+        <Stack direction={{xl:'row', lg:'column'}} pt={1} spacing={1} sx={{height:'calc(92vh - 295px)'}}>
           <Stack flex={2} height={'inherit'}>
         <Outlet />
           </Stack>
         {/* Change Order Tab navigation */}
-        <Stack flex={1} >
+        <Stack flex={1} pt={{xs:1, lg:0}}>
           <Paper style={{...themeStyle.border, height:'100%', width: '99%'}}>
           {/* First Item of Stack */}
           <Stack>
             <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} height={'40px'} mt={1} pr={1}>
           <Typography pl={3} color={'#4C8AB1'}>Change Order</Typography>
-          <BuilderProButton variant={'contained'} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'} fontSize={'14px'} backgroundColor={'#4C8AB1'} handleOnClick={handleOpen}>Change Order Request</BuilderProButton>
+          <BuilderProButton variant={'contained'} fontFamily={'Arial Rounded MT, sans-serif'} fontSize={{xl:'14px', lg:'14px', md:'14px', sm:'12px', xs:'10px'}} backgroundColor={'#4C8AB1'} handleOnClick={handleOpen}>Change Order Request</BuilderProButton>
             </Stack>
           <Tabs defaultValue={0} sx={{backgroundColor: 'transparent'}}>
             <TabList sx={{

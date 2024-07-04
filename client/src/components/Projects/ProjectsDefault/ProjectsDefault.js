@@ -17,7 +17,28 @@ import { getForecast } from '../../../redux/slices/DailyForecast/dailyForecastSl
 const themeStyle = {
   border: {
     borderRadius: '14px'
-  }
+  },
+  scrollable: {
+    overflowY: 'scroll',
+    overflowX: 'hidden',
+    height: "100%",
+
+    scrollbarWidth: 'none',  // For Firefox
+    '-ms-overflow-style': 'none',  // For IE and Edge
+    '&::-webkit-scrollbar': {
+        width: '6px'
+    },
+    '&::-webkit-scrollbar-thumb': {
+        background: '#FFF',
+        height: "100%",
+        transition: 'background-color 0.3s',
+    },
+    '&:hover::-webkit-scrollbar-thumb': {
+        background: "#FFF",
+        height: "100%",
+    },
+}
+
 };
 
 const ProjectsDefault = () => {
@@ -47,7 +68,7 @@ const ProjectsDefault = () => {
         </Stack>
       ) : (
         <Stack flex={2} height={'100%'}>
-          <Paper style={{ ...themeStyle.border, height:'inherit'}}>
+          <Paper style={{ ...themeStyle.border, height:'inherit', overflow:'hidden', ...themeStyle.scrollable}}>
             <TaskCalender dailyForecast={dailyForecast} eventsArr={events} isProjectPage={true} isDrawerOpen={true} />
           </Paper>
         </Stack>
@@ -57,3 +78,4 @@ const ProjectsDefault = () => {
 };
 
 export default ProjectsDefault;
+

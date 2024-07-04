@@ -1,12 +1,12 @@
 import { apiSlice } from "../apiSlice";
 
-const ASSIGN_ROLE_URL = 'http://192.168.0.113:8080/v1/userRole';
+const ASSIGN_ROLE_URL = 'http://3.135.107.71/v1/userRole';
 
  export const assignRoleApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getAssignedRoles: builder.query({
             query: (data)=> ({
-                url: `${ASSIGN_ROLE_URL}/${data.userRole}/${data.userId}`,
+                url: `${ASSIGN_ROLE_URL}/${data.userRole}/${data.userId}?query=${data.q !== undefined ? data.q : ''}&page=${data.page !== undefined ? data.page : 1}`,
                 method: 'GET',
             })
         }),

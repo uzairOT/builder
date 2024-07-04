@@ -108,7 +108,7 @@ function WorkOrder({
       <Table>
         <TableHead>
           <TableRow>
-            {workOrder ? <></> : <TableCell>{/* <Checkbox  /> */}</TableCell>}
+            {workOrder ? <></> : <TableCell sx={tableCellStyle}>Select</TableCell>}
             <TableCell sx={tableCellStyle}>Subject</TableCell>
             <TableCell sx={tableCellStyle}>Description</TableCell>
             {/* <TableCell sx={tableCellStyle}>Unit</TableCell> */}

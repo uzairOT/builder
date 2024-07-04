@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { json, useLocation, useParams } from "react-router-dom";
 import moment from "moment";
-import { useGetTeamMembersQuery, useGetWorkOrderDetailsMutation } from "../../redux/apis/Project/projectApiSlice";
+import {
+  useGetTeamMembersQuery,
+  useGetWorkOrderDetailsMutation,
+} from "../../redux/apis/Project/projectApiSlice";
 import {
   Avatar,
   Box,
@@ -40,7 +43,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice";
 import { fetchEvents } from "../../redux/slices/Events/eventsSlice";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 
 const NotificationDetailModal = ({
   rowCheckboxes,
@@ -55,7 +58,7 @@ const NotificationDetailModal = ({
   const { data } = useGetTeamMembersQuery(notification.WorkOrderReq.projectId);
 
   const [done, setDone] = useState(false);
-  const [disable, setDisable] = useState(true)
+  const [disable, setDisable] = useState(true);
   const [updateWorkOrder] = useUpdateRequestWorkOrderMutation();
   const [authUserRole, setAuthUserRole] = useState();
   const forecast = useSelector(getForecast);
@@ -63,10 +66,10 @@ const NotificationDetailModal = ({
   const dispatch = useDispatch();
   const [selectedLineItem, setSelectedLineItem] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const user = localStorage.getItem('userInfo')
+  const user = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(user);
-    const userId = currentUser.user.id;
-    console.log(notification)
+  const userId = currentUser.user.id;
+  console.log(notification);
   const [assignedCheckboxes, setAssignedCheckboxes] = useState([]);
 
   const handleClose = () => {
@@ -82,43 +85,49 @@ const NotificationDetailModal = ({
   };
   const handleCompleteWorkOrder = async () => {
     try {
-     const res = await updateWorkOrder({
+      const res = await updateWorkOrder({
         workOrder_id: notification.WorkOrderReq.id,
         status: "complete",
       }).unwrap();
-      toast.success('Work Order Completed!') 
-      handleClose(); 
-      dispatch(fetchEvents({userId:userId, dailyForecast:dailyForecast}));
+      toast.success("Work Order Completed!");
+      handleClose();
+      dispatch(fetchEvents({ userId: userId, dailyForecast: dailyForecast }));
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     const authUserRole = async () => {
       setDisable(true);
       try {
-        const response = await axios.post('http://192.168.0.113:8080/project/getUserProjectRole', 
-        {
-          projectId: notification.WorkOrderReq.projectId,
-          userId: userId
-        }
-        ,{
-          headers: {
-            Authorization: `Bearer ${getTokenFromLocalStorage()}`
+        const response = await axios.post(
+          "http://3.135.107.71/project/getUserProjectRole",
+          {
+            projectId: notification.WorkOrderReq.projectId,
+            userId: userId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+            },
           }
-        })
-        if(response.data.role === 'superadmin' || response.data.role ==='client' || response.data.role ==='projectManager' ){
-          setDisable(false)
+        );
+        if (
+          response.data.role === "superadmin" ||
+          response.data.role === "client" ||
+          response.data.role === "projectManager"
+        ) {
+          setDisable(false);
         }
-        console.log(response)
-      } catch (error){
-        console.log(error)
+        console.log(response);
+      } catch (error) {
+        console.log(error);
       }
-    }
+    };
 
-    if(isEvent) authUserRole();
-  },[])
+    if (isEvent) authUserRole();
+  }, []);
   return (
     <>
       <Stack alignItems={"flex-end"} justifyContent={"flex-end"} pr={2}>
@@ -137,29 +146,32 @@ const NotificationDetailModal = ({
           <></>
         )} */}
       </Stack>
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open} onClose={handleClose} style={{overflow: 'auto'}}>
         <Stack
           sx={{
             ...style,
             ...themeStyle.scrollable,
           }}
-          overflow={"scroll"}
+          
         >
-          <Stack p={2} direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-
-          <Typography
-            
-            color={"#4C8AB1"}
-            fontFamily={"inherit"}
-            fontSize={"22px"}
-            fontWeight={"600"}
+          <Stack
+            p={2}
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Typography
+              color={"#4C8AB1"}
+              fontFamily={"inherit"}
+              fontSize={"22px"}
+              fontWeight={"600"}
             >
-            Work Order Details
-          </Typography>
-          <IconButton onClick={handleClose}>
-          <CloseIcon />
-          </IconButton>
-            </Stack>
+              Work Order Details
+            </Typography>
+            <IconButton onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Stack>
           <Divider />
           <Stack
             direction={{
@@ -169,7 +181,6 @@ const NotificationDetailModal = ({
               sm: "column",
               xs: "column",
             }}
-            
           >
             <Stack p={3} spacing={1} width={"100%"}>
               <Typography fontFamily={"inherit"}>
@@ -259,6 +270,7 @@ const NotificationDetailModal = ({
                                 transition: "background-color 0.3s ease", // Add transition effect
                                 borderRadius: "8px",
                                 marginBottom: "4px",
+                                width:'90%',
                                 "&:hover": {
                                   backgroundColor: "#e0e0e0", // Change background color on hover
                                 },
@@ -310,7 +322,7 @@ const NotificationDetailModal = ({
                           sx={{
                             input: {
                               fontFamily:
-                                "GT-Walsheim-Regular-Trial, sans serif",
+                                "Arial Rounded MT, sans serif",
                             },
                           }}
                         />
@@ -354,7 +366,7 @@ const NotificationDetailModal = ({
                           sx={{
                             input: {
                               fontFamily:
-                                "GT-Walsheim-Regular-Trial, sans serif",
+                                "Arial Rounded MT, sans serif",
                             },
                           }}
                         />
@@ -413,22 +425,40 @@ const NotificationDetailModal = ({
                 <Box sx={themeStyle.avatarBox}>
                   <Stack direction={"row"} pr={1}>
                     {data?.team?.map((user, idx) => {
-                      if (user.userId !== notification.WorkOrderReq.createdBy) {
+                      console.log(notification.WorkOrderReq.team);
+                      console.log(String(user.userId));
+                      console.log(
+                        notification.WorkOrderReq.team.includes(
+                          `${user.userId}`
+                        )
+                      );
+
+                      if (user.userId === notification.WorkOrderReq.createdby) {
+                        return <></>;
+                      } else if (
+                        notification.WorkOrderReq.team.includes(
+                          `${user.userId}`
+                        )
+                      ) {
                         return (
-                          <Avatar
-                            key={idx}
-                            sx={themeStyle.AvatarStyle}
-                            src={user.image}
-                          />
+                          <>
+                            <Avatar
+                              key={idx}
+                              sx={themeStyle.AvatarStyle}
+                              src={user.image}
+                            />
+                          </>
                         );
+                      } else {
+                        return <></>;
                       }
-                      return null; // or <></>
                     })}
                   </Stack>
-                  <AssignTeamMembers 
+                  <AssignTeamMembers
                     hideCheck={true}
                     assignedCheckboxes={assignedCheckboxes}
                     setAssignedCheckboxes={setAssignedCheckboxes}
+                    workOrderTeam={notification.WorkOrderReq?.team}
                     data={data}
                   />
                 </Box>
@@ -459,9 +489,32 @@ const NotificationDetailModal = ({
                 <Typography fontFamily={"inherit"} pb={4} pl={2}>
                   {notification.WorkOrderReq.status}
                 </Typography>
+                <hr style={themeStyle.hrLine} />
+                <Typography
+                  sx={{
+                    ...themeStyle.headingText,
+                    ...themeStyle.rightheadings,
+                  }}
+                >
+                  Priority
+                </Typography>
+                <Typography
+                  fontFamily={"inherit"}
+                  pb={4}
+                  pl={2}
+                  color={
+                    notification.WorkOrderReq.priority === "urgent"
+                      ? "#EB1717"
+                      : "#4C8AB1"
+                  }
+                >
+                  {notification.WorkOrderReq.priority}
+                </Typography>
 
                 <hr style={themeStyle.hrLine} />
+
                 {isEvent && (
+                  <Stack pr={1}>
                   <BuilderProButton
                     backgroundColor={"#4C8AB1"}
                     variant={"contained"}
@@ -471,9 +524,10 @@ const NotificationDetailModal = ({
                     padding={"6px 32px 6px 32px"}
                     disabled={disable}
                     handleOnClick={handleCompleteWorkOrder}
-                  >
+                    >
                     Complete Work Order
                   </BuilderProButton>
+                </Stack>
                 )}
               </Box>
             </Stack>
@@ -504,7 +558,7 @@ const style = {
   boxShadow: 24,
   p: 0,
   borderRadius: "14px",
-  height:'80%'
+  // height: '600px '
 };
 const themeStyle = {
   scrollable: {
@@ -520,7 +574,7 @@ const themeStyle = {
     "&:hover::-webkit-scrollbar-thumb": {
       backgroundColor: "#ddd",
     },
-    overflowY: "scroll",
+    // overflowY: "scroll",
   },
   inputFields: {
     border: "0px solid #FFF",
@@ -529,7 +583,7 @@ const themeStyle = {
     padding: 4,
   },
   typoTitle: {
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     fontSize: "1.5rem",
     fontWeight: 500,
     color: "#4C8AB1",
@@ -569,13 +623,13 @@ const themeStyle = {
   },
 
   typoText: {
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     fontSize: "1rem",
     color: "#202227",
   },
   sendButton: {
     width: { lg: "35%", md: "35%", sm: "40%", xs: "60%" },
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
   },
   declineButton: {
     background: "#FFF",
@@ -600,7 +654,7 @@ const themeStyle = {
   },
   radioText: {
     color: "#3D3D3D",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
   },
   radioChecked: {
     "&, &.Mui-checked": {

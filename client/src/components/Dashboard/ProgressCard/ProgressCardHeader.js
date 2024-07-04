@@ -28,7 +28,7 @@ const ProgressCardHeader = ({ project }) => {
   // async function markMessagesAsRead(id, userId) {
   //   try {
   //     const response = await axios.post(
-  //       "http://192.168.0.113:8080/projectChat/unreadMessageCount",
+  //       "http://3.135.107.71/projectChat/unreadMessageCount",
   //       {
   //         projectId: id,
   //         userId: userId,
@@ -111,7 +111,7 @@ const ProgressCardHeader = ({ project }) => {
             direction={"row"}
             justifyContent={"right"}
             onClick={navigateToChat}
-            sx={{ cursor: "pointer" }}
+            sx={{position:'relative',  cursor: "pointer" }}
           >
             <Typography
               p={1}

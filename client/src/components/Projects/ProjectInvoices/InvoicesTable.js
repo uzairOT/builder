@@ -19,7 +19,12 @@ import ChangeOrder from "../ProjectsDefault/ChangeOrder";
 import NotificationDetailModal from "../../Navbar/NotificationDetailModal";
 import { useGetWorkOrderDetailsMutation } from "../../../redux/apis/Project/projectApiSlice";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
-import moment from 'moment';
+import moment from "moment";
+import { usePaidInvoiceMutation } from "../../../redux/apis/Invoices/ClientInvoiceApiSlice";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
+import GenerateInvoice from "../../dialogues/GenerateInvoice/GenerateInvoice";
 const dummyData = [
   {
     id: 1,
@@ -72,20 +77,35 @@ function InvoicesTable({
   data,
   setCheckedRow,
   checkedRow,
-//   workOrder,
-  status,
-  setPhaseItems
+  //   workOrder,
+  refetch,
+  setPhaseItems,
+  paidInvoices
 }) {
   // console.log('INSIDE WORKORDER: ',data)
   const [open, setOpen] = useState(false);
-  const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation();
-  const [data1, setData1] = useState(null);
-  const handleOnClick = async (workOrderId) => {
- 
-    const res = await getWorkOrder({workOrderId: workOrderId});
-    setData1(res.data);
-    setOpen(true);
+  const [invoicePaid, { isLoading }] = usePaidInvoiceMutation();
+  const [invoiceData, setInvoiceData] = useState(null);
+  const userRole = useSelector(getUserRoleFromRedux);
+  const handleClose = () => {
+    setOpen(false);
   };
+
+  const handleOnClick = async (id) => {
+    try {
+      const res = await invoicePaid({ invoiceId: id });
+      await refetch();
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong");
+    }
+  };
+  const handleOnClickDetails = (item) =>{
+    setInvoiceData({
+      invoiceCompleteObj:item
+    });
+    setOpen(true)
+  }
   const handleUnitChange = (event, id) => {
     const selectedUnit = event.target.value;
     // Assuming you have a function to update the unit value in your data structure
@@ -101,51 +121,87 @@ function InvoicesTable({
     setCheckedRow((prevCheckedRow) => (prevCheckedRow === row ? null : row));
   };
   return (
+    <>
     <TableContainer
       component={Paper}
-      sx={{ height: "80vh", scrollbarWidth: "thin",  boxShadow: "none"  }}
+      sx={{ height: "80vh", scrollbarWidth: "thin", boxShadow: "none" }}
     >
       <Table>
         <TableHead>
           <TableRow>
-           
-            <TableCell></TableCell>
+            <TableCell sx={tableCellStyle}>Select</TableCell>
             <TableCell sx={tableCellStyle}>Invoice Number</TableCell>
             <TableCell sx={tableCellStyle}>Invoice Date</TableCell>
             <TableCell sx={tableCellStyle}>Invoice Due Date</TableCell>
             <TableCell sx={tableCellStyle}>Invoice Status</TableCell>
+            <TableCell sx={tableCellStyle}>Invoice Bill</TableCell>
+            {!paidInvoices && !(userRole.userRole ==='client') &&<TableCell sx={tableCellStyle}>Invoice Paid</TableCell>}
+            <TableCell sx={tableCellStyle}>Invoice Details</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data?.map((item) => {
-           
-              return (
-                <TableRow key={item.id}>
-                
-                    <TableCell sx={tableCellValueStyle}>
-                      <Checkbox
-                        checked={checkedRow === item}
-                        onChange={() => handleCheckboxChange(item, data)}
-                      />
-                    </TableCell>
-                  
-                  <TableCell sx={tableCellValueStyle}>{item.InvoiceNumber}</TableCell>
-                  <TableCell sx={tableCellValueStyle}>
-                    {moment(item.InvoiceDate).format('MMM D, YYYY, h:mm a')}
-                  </TableCell>
-                  {/* <TableCell sx={tableCellValueStyle}>{item.LineItem.unit}</TableCell>
+            return (
+              <TableRow key={item.id}>
+                <TableCell sx={tableCellValueStyle}>
+                  <Checkbox
+                    checked={checkedRow === item}
+                    onChange={() => handleCheckboxChange(item, data)}
+                  />
+                </TableCell>
+
+                <TableCell sx={tableCellValueStyle}>
+                  {item.InvoiceNumber}
+                </TableCell>
+                <TableCell sx={tableCellValueStyle}>
+                  {moment(item.InvoiceDate).format("MMM D, YYYY, h:mm a")}
+                </TableCell>
+                {/* <TableCell sx={tableCellValueStyle}>{item.LineItem.unit}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.LineItem.margin}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.LineItem.projectProfile}</TableCell> */}
-                  <TableCell sx={tableCellValueStyle}>
-                    {moment(item.InvoiceDueDate).format('MMM D, YYYY, h:mm a')}
-                  </TableCell>
-                  <TableCell sx={tableCellValueStyle}>{item.InvoiceStatus}</TableCell>
-                </TableRow>
-              );
+                <TableCell sx={tableCellValueStyle}>
+                  {moment(item.InvoiceDueDate).format("MMM D, YYYY, h:mm a")}
+                </TableCell>
+                <TableCell sx={tableCellValueStyle}>
+                  {item.InvoiceStatus}
+                </TableCell>
+                <TableCell sx={tableCellValueStyle}>
+                  {item.InvoiceBill}
+                </TableCell>
+               {!paidInvoices && !(userRole.userRole ==='client') && <TableCell sx={tableCellValueStyle}>
+                  <BuilderProButton
+                    variant={"contained"}
+                    backgroundColor={"#4C8AB1"}
+                    fontSize={"11px"}
+                    fontFamily={"Inter, sans serif"}
+                    marginLeft={"5px"}
+                    handleOnClick={() => handleOnClick(item.id)}
+                    disabled={isLoading}
+                  >
+                    Paid
+                  </BuilderProButton>
+                </TableCell>}
+                <TableCell sx={tableCellValueStyle}>
+                  <BuilderProButton
+                    variant={"contained"}
+                    backgroundColor={"#4C8AB1"}
+                    fontSize={"11px"}
+                    fontFamily={"Inter, sans serif"}
+                    marginLeft={"5px"}
+                    handleOnClick={() => handleOnClickDetails(item)}
+                    disabled={isLoading}
+                  >
+                    Details
+                  </BuilderProButton>
+                </TableCell>
+              </TableRow>
+            );
           })}
         </TableBody>
       </Table>
     </TableContainer>
+    <GenerateInvoice open={open} handleClose={handleClose} invoiceData={invoiceData} />
+    </>
   );
 }
 export default InvoicesTable;
@@ -154,11 +210,11 @@ const tableCellStyle = {
   fontSize: "14px",
   fontFamily: "Poppins",
   color: "#8C8C8C",
+  textAlign:'center'
 };
 const tableCellValueStyle = {
   fontWeight: 400,
   borderBottom: "none",
   fontFamily: "Montserrat",
   color: "#000000",
-
 };

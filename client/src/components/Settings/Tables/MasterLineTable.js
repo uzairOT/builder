@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -12,6 +12,7 @@ import {
   Select,
   MenuItem,
   Input,
+  Stack,
 } from "@mui/material";
 import EditIcon from "../../../assets/settings/edit.png";
 import DeleteIcon from "../../../assets/settings/delete.png";
@@ -81,33 +82,13 @@ const dummyData = [
   // Add more dummy data objects as needed
 ];
 
-function MasterLineTable({ setUpdateModalOpen }) {
+function MasterLineTable({ setUpdateModalOpen, searchInput, page, setTotalEntries, setTotalPages }) {
   const userInfo = useSelector((state) => state.auth.userInfo);
-  const { data, isLoading, refetch } = useGetMasterLineItemsQuery(userInfo.user.id);
+  const { data, isLoading, refetch, error } = useGetMasterLineItemsQuery({userId: userInfo.user.id, q:searchInput, page:page});
   const [showUpdateLine, setShowUpdateLine] = useState(false);
   const [masterLine, setMasterLine] = useState();
 console.log(data);
 
-const Units = [
-  { value: "sqft", label: "Square Feet", formula: (q, p) => q * p },
-  {
-    value: "sqm",
-    label: "Square Meters",
-    formula: (q, p) => q * p * 0.092903,
-  },
-  { value: "acres", label: "Acres", formula: (q, p) => q * p * 4048.54 },
-  { value: "hectares", label: "Hectares", formula: (q, p) => q * p * 10000 },
-  {
-    value: "sqyds",
-    label: "Square Yards",
-    formula: (q, p) => q * p * 0.836127,
-  },
-  {
-    value: "sqmi",
-    label: "Square Miles",
-    formula: (q, p) => q * p * 2.58999e6,
-  },
-];
   const handleUpdateOpen = (row) => {
     setMasterLine(row);
      setShowUpdateLine(true);
@@ -118,17 +99,24 @@ const Units = [
    };
 
 
-  const handleUnitChange = (event, id) => {
-    const selectedUnit = event.target.value;
-    // Assuming you have a function to update the unit value in your data structure
-    // Update the unit value for the corresponding row with the given ID
-    // For example, if you're using state:
-  };
+  // const handleUnitChange = (event, id) => {
+  //   const selectedUnit = event.target.value;
+  //   // Assuming you have a function to update the unit value in your data structure
+  //   // Update the unit value for the corresponding row with the given ID
+  //   // For example, if you're using state:
+  // };
 
-  const OpenUpdateModal = () => {
-    //console.log("UpdateModal");
-    setUpdateModalOpen(true);
-  };
+  // const OpenUpdateModal = () => {
+  //   //console.log("UpdateModal");
+  //   setUpdateModalOpen(true);
+  // };
+
+   useEffect(()=>{
+    if(data){
+      setTotalEntries(data?.totalCount)
+      setTotalPages(data?.totalPages)
+    }
+   }, [data])
 
   return (
     <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
@@ -158,16 +146,16 @@ const Units = [
             <TableCell sx={tableCellStyle}>Quantity</TableCell>
             <TableCell sx={tableCellStyle}>Unit Price</TableCell>
             <TableCell sx={tableCellStyle}>Total</TableCell>
-            <TableCell sx={tableCellStyle}>Margin</TableCell>
+            <TableCell sx={tableCellStyle}>Profit</TableCell>
             {/* <TableCell sx={tableCellStyle}>Start</TableCell>
             <TableCell sx={tableCellStyle}>End</TableCell> */}
             <TableCell sx={tableCellStyle}>Total Cost</TableCell>
             <TableCell sx={tableCellStyle}>Notes</TableCell>
-            <TableCell></TableCell>
+            <TableCell sx={tableCellStyle}>Action</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {isLoading ? <>Loading...</> : data.MasterLines.map((row) => (
+        {error ? <Stack p={2}>{'Something went wrong!'}</Stack>: <TableBody>
+          {isLoading ? <>Loading...</> : data?.MasterLines?.map((row) => (
             <TableRow key={row.id}>
               <TableCell sx={tableCellValueStyle}>{row.title}</TableCell>
               <TableCell sx={tableCellValueStyle}>{row.description}</TableCell>
@@ -194,7 +182,7 @@ const Units = [
               </TableCell>
             </TableRow>
           ))}
-        </TableBody>
+        </TableBody>}
       </Table>
       {showUpdateLine && (
           <UpdateMasterLine

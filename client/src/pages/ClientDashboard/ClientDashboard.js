@@ -20,7 +20,7 @@ const ClientDashboard = () => {
 
         const fetchWeather = async () => {
             try {
-                const data = await getFormattedFiveDayWeather({ lat: "33.6844", lon: "73.0479", units: 'Metric' });
+                const data = await getFormattedFiveDayWeather({lat: '34.0549', lon: '118.2426', units: 'Metric' });
                 setDailyForecast(data);
             } catch (error) {
                 setError(error);

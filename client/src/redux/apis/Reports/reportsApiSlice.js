@@ -1,6 +1,6 @@
 import { apiSlice } from "../apiSlice";
 
-const REPORTS_URL = "http://192.168.0.113:8080/report";
+const REPORTS_URL = "http://3.135.107.71/report";
 
 const reportsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -60,6 +60,13 @@ const reportsApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getWorkOrdersLineItemsProgress: builder.mutation({
+      query: (data) => ({
+        url: `${REPORTS_URL}/workordersLineItemsProgress`,
+        method: 'POST',
+        body: data
+      })
+    })
   }),
 });
 
@@ -72,4 +79,5 @@ export const {
   useGetTotalProjectProfitMarginMutation,
   useGetAllProjectsLineItemsMutation,
   useGetOutstandingInvoicesMutation,
+  useGetWorkOrdersLineItemsProgressMutation
 } = reportsApiSlice;

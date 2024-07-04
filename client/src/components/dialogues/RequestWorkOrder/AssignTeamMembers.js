@@ -37,7 +37,14 @@ const themeStyle = {
   },
 };
 
-const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes, data, hideCheck }) => {
+const AssignTeamMembers = ({
+  setAssignedCheckboxes,
+  assignedCheckboxes,
+  data,
+  hideCheck,
+  workOrderTeam,
+  setSuperAdminId
+}) => {
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
   //console.log("location: ", location, " projectId: ", projectId);
@@ -45,8 +52,12 @@ const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes, data, hi
   const [checked, setChecked] = React.useState([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  console.log(workOrderTeam);
+  console.log(data);
+
   const team = data?.team;
-  //console.log(data?.team[0]);
+  console.log(team);
 
   const handleEmailCheckBoxes = (event, row) => {
     const { checked } = event.target;
@@ -65,7 +76,11 @@ const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes, data, hi
 
   return (
     <Stack>
-      <IconButton onClick={handleOpen} aria-label="Assign Team Members" style={{marginLeft: '-14px'}}>
+      <IconButton
+        onClick={handleOpen}
+        aria-label="Assign Team Members"
+        style={{ marginLeft: "-14px" }}
+      >
         <AddCircleOutlineIcon
           sx={{ ...themeStyle.AvatarStyle, color: "#A8A8A8" }}
         />
@@ -78,14 +93,14 @@ const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes, data, hi
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-           {hideCheck ? "Assigned Users" : "Assign Users"}
+            {hideCheck ? "Assigned Users" : "Assign Users"}
           </Typography>
           <Divider />
           <Box>
             <Table>
               <TableHead>
                 <TableRow>
-                  {!hideCheck &&<TableCell></TableCell>}
+                  {!hideCheck && <TableCell></TableCell>}
                   <TableCell>Name</TableCell>
                   <TableCell>Role</TableCell>
                   <TableCell>Email</TableCell>
@@ -98,23 +113,65 @@ const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes, data, hi
                     <TableCell>No Team Members</TableCell>
                   </TableRow>
                 ) : (
-                  team?.map((row, index) => (
-                    <TableRow key={index}>
-                      {!hideCheck && <TableCell>
-                        <Checkbox
-                          checked={assignedCheckboxes.includes(row.userId)}
-                          onChange={(event) =>
-                            handleEmailCheckBoxes(event, row)
-                          }
-                        />
-                      </TableCell>}
-                      <TableCell>
-                        {row.firstName} {row.lastName}
-                      </TableCell>
-                      <TableCell>{row.role}</TableCell>
-                      <TableCell>{row.email}</TableCell>
-                    </TableRow>
-                  ))
+                  team?.map((row, index) => {
+                    if (hideCheck) {
+                      if (workOrderTeam.includes(`${row.userId}`)) {
+                        if(row.role === 'Superadmin'){
+                          // setSuperAdminId(row.userId)
+                          return <></>
+                        }
+                        return (
+                          <TableRow key={index}>
+                            {!hideCheck && (
+                              <TableCell>
+                                <Checkbox
+                                  checked={assignedCheckboxes.includes(
+                                    row.userId
+                                  )}
+                                  onChange={(event) =>
+                                    handleEmailCheckBoxes(event, row)
+                                  }
+                                />
+                              </TableCell>
+                            )}
+                            <TableCell>
+                              {row.firstName} {row.lastName}
+                            </TableCell>
+                            <TableCell>{row.role}</TableCell>
+                            <TableCell>{row.email}</TableCell>
+                          </TableRow>
+                        );
+                      } else {
+                        return <></>;
+                      }
+                    } else {
+                      if(row.role === 'Superadmin'){
+                        setSuperAdminId(row.userId)
+                        return <></>
+                      }
+                      return (
+                        <TableRow key={index}>
+                          {!hideCheck && (
+                            <TableCell>
+                              <Checkbox
+                                checked={assignedCheckboxes.includes(
+                                  row.userId
+                                )}
+                                onChange={(event) =>
+                                  handleEmailCheckBoxes(event, row)
+                                }
+                              />
+                            </TableCell>
+                          )}
+                          <TableCell>
+                            {row.firstName} {row.lastName}
+                          </TableCell>
+                          <TableCell>{row.role}</TableCell>
+                          <TableCell>{row.email}</TableCell>
+                        </TableRow>
+                      );
+                    }
+                  })
                 )}
               </TableBody>
             </Table>

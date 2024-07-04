@@ -10,7 +10,7 @@ const ChatViewMain = () => {
       <Stack flex={{xl:3, lg:2}} width={{xl:"50%",lg:"50%"}} >
       <Chat  />
       </Stack>
-      <Stack flex={{xl:1, lg:2}} width={{xl:"50%",lg:"50%"}}>
+      <Stack flex={{xl:1, lg:1}} width={{xl:"50%",lg:"50%"}}>
       <TaskCalender />
       </Stack>
     </Stack>

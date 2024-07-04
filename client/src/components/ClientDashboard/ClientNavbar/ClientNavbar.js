@@ -115,14 +115,14 @@ const ClientNavbar = () => {
             display: { xl: 'flex', lg: 'flex', md: 'none', sm: 'none', xs: 'none' },
             color: "#484848",
             '& .MuiTypography-root': {
-                fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+                fontFamily: 'Arial Rounded MT, sans-serif',
                 fontSize: "1rem"
             },
 
         },
         tabText: {
             color: "#484848",
-            fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+            fontFamily: 'Arial Rounded MT, sans-serif',
             '&:hover': {
                 color: "#FFAC00"
             },
@@ -143,7 +143,7 @@ const ClientNavbar = () => {
             <AppBar position='static' sx={themeStyle.navbar}>
                 <Toolbar sx={themeStyle.toolbar}>
                     {showHamburger && <ClientNavbarDrawer />}
-                    <BuilderProNavbarLogo aria-label="Builder Pro Logo" style={themeStyle.logo} />
+                    <BuilderProNavbarLogo aria-label="BuilderBuilder Pro Logo" style={themeStyle.logo} />
                     <Box sx={themeStyle.tabs}>
                         <List sx={themeStyle.tabs}>
                             <ListItemButton
@@ -157,7 +157,7 @@ const ClientNavbar = () => {
                                     sx={{
                                         ...themeStyle.tabText,
                                         ...(selectedTab === 'Dashboard' && { color: '#FFAC00' }),
-                                        fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+                                        fontFamily: 'Arial Rounded MT, sans-serif',
                                     }}
                                 >
                                     Dashboard

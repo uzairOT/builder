@@ -14,14 +14,18 @@ import EditUnitModal from '../../dialogues/Settings/EditUnitModal';
 import AddUnitModal from '../../dialogues/Settings/AddUnitModal';
 import { useGetUnitsQuery } from '../../../redux/apis/Project/userProjectApiSlice';
 import { useSelector } from 'react-redux';
+import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
+import { useEffect } from 'react';
 
 function Units() {
 
-
+  const [searchInput, setSearchInput] = useState("");
+  const debouncedValue =  QueryDebouncer(searchInput,500);
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
+  const [page, setPage]= useState(1);
   const userInfo = useSelector((state) => state.auth.userInfo);
-  const {data, isLoading, refetch} = useGetUnitsQuery({userId: userInfo.user.id});
+  const {data, isLoading, refetch, error} = useGetUnitsQuery({userId: userInfo.user.id, q:debouncedValue, page:page});
   const [unit, setUnit] = useState('');
 
   // Function to open the Add Modal
@@ -35,11 +39,33 @@ function Units() {
   const handleCloseUpdateModal = () => {
     setUpdateModalOpen(false);
   };
+  const handlePageChange = (event, newPage) => {
+    setPage(newPage);
+  };
 
+  let startIndex = 1;
+  let endIndex = data?.limit;
+  if (page === 1) {
+    startIndex = 1;
+    if (data?.totalCount < data?.limit) {
+      endIndex = data?.totalCount;    }
+  } else {
+    startIndex = 1 +( data?.limit * (page - 1));
+    endIndex = data?.limit * page;
+    if (endIndex > data?.totalCount) {
+      endIndex = data?.totalCount;
+      
+    }
+  }
+
+  useEffect(()=>{
+    setPage(1);
+    refetch({userId: userInfo.user.id, q:debouncedValue, page:1})
+  },[debouncedValue])
   return (
     <div style={{padding:"20px"}}>
-      <Header title="Units"   OpenAddModal={OpenAddModal}/>
-      <UnitsTable setUpdateModalOpen={setUpdateModalOpen} setAddModalOpen={setAddModalOpen} setUnit={setUnit} data={data} isLoading={isLoading} refetch={refetch} />
+      <Header title="Units"   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
+      <UnitsTable error={error} setUpdateModalOpen={setUpdateModalOpen} setAddModalOpen={setAddModalOpen} setUnit={setUnit} data={data} isLoading={isLoading} debouncedValue={debouncedValue} refetch={refetch} page={page}  />
 
       <Box mt={2} mb={2}>
         <Divider />
@@ -51,10 +77,10 @@ function Units() {
           justifyContent: {xs:"center",md:"space-between"} ,
         }}
       >
-        {/* <Typography variant="body1" sx={paginationTextStyle}>
-          Showing data 1 to 4 of 25 entries
-        </Typography> */}
-        {/* <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/> */}
+        <Typography variant="body1" sx={paginationTextStyle}>
+          Showing data {startIndex} to {endIndex} of {data?.totalCount} entries
+        </Typography>
+        <Pagination count={data?.totalPages} variant="outlined" shape="rounded" page={page} onChange={handlePageChange}  sx={paginationStyle}/>
       </Box>
       {/* <AddModal title={"Master Line Item"} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} /> */}
     <AddUnitModal  open={isAddModalOpen} onClose={handleCloseAddModal} refetch={refetch}/>

@@ -2,6 +2,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import RadialBarsChart from "../../UI/Charts/RadialBarsChart";
 import React from "react";
+import { formatMoney } from "../../../utils/Formatters/moneyFormat";
 
 const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
   return (
@@ -16,7 +17,7 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
               Total Profit
             </Typography>
             <Typography textAlign={"left"} sx={themeStyle.innerSubtitle}>
-              ${TotalProfit}
+              ${formatMoney(TotalProfit)}
             </Typography>
           </Stack>
           {/* <Stack direction={"row"} sx={themeStyle.innerStackLayout}>
@@ -32,7 +33,7 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
               Profit Earned
             </Typography>
             <Typography textAlign={"left"} sx={themeStyle.innerSubtitle}>
-              ${totalProfitFromPaidInvoices}
+              ${formatMoney(totalProfitFromPaidInvoices)}
             </Typography>
           </Stack>
         </Box>
@@ -55,7 +56,7 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
         ml={"-16px"}
         direction={"row"}
         alignItems={"flex-end"}
-        justifyContent={"flex-start"}
+        justifyContent={"space-between"}
       >
         <RadialBarsChart TotalProfit={TotalProfit} totalProfitFromPaidInvoices={totalProfitFromPaidInvoices} />
         <Stack pb={4} width={"100%"}>
@@ -72,17 +73,20 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
                 height={"8px"}
                 borderRadius={0.7}
               ></Box>
+              <Stack direction={{xl:'row', lg:'row', md:'column', sm:'row', xs:'row'}} spacing={{xl:0.5, lg:0.5, md:0, sm:0.5, xs:0.5}}>
+
               <Typography
                 fontSize={"9px"}
                 fontWeight={"700"}
                 pl={0.2}
                 fontFamily={"Inter, sans-serif"}
-              >
-                {TotalProfit}
+                >
+                ${formatMoney(TotalProfit)}
               </Typography>
               <Typography fontSize={"9px"} fontFamily={"Inter, sans-serif"}>
                 Total Profit
               </Typography>
+                </Stack>
             </Stack>
             <Stack
               direction={"row"}
@@ -96,17 +100,19 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
                 height={"8px"}
                 borderRadius={0.7}
               ></Box>
+                   <Stack direction={{xl:'row', lg:'row', md:'column', sm:'row', xs:'row'}} spacing={{xl:0.5, lg:0.5, md:0, sm:0.5, xs:0.5}}>
               <Typography
                 fontSize={"9px"}
                 fontWeight={"700"}
                 pl={0.2}
                 fontFamily={"Inter, sans-serif"}
               >
-                {totalProfitFromPaidInvoices}
+                ${formatMoney(totalProfitFromPaidInvoices)}
               </Typography>
               <Typography fontSize={"9px"} fontFamily={"Inter, sans-serif"}>
                 Profit Earned
               </Typography>
+              </Stack>
             </Stack>
           </Stack>
         </Stack>

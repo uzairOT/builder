@@ -7,6 +7,7 @@ import {
   Box,
   Modal,
   Container,
+  CircularProgress,
 } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
@@ -37,6 +38,7 @@ import GenerateInvoiceDone from "../../dialogues/GenerateInvoice/GenerateInvoice
 import { selectWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
 // import { BuilderProNavbarLogo } from "./assets/svgs/builder-pro-logo-navbar.svg";
 import BuilderProNavbarLogo from "../../Navbar/assets/svgs/builder-pro-logo-navbar.svg";
+import GenerateInvoice from "../../dialogues/GenerateInvoice/GenerateInvoice";
 //import "react-toastify/dist/ReactToastify.css";
 
 function AddPhaseView({
@@ -95,7 +97,7 @@ function AddPhaseView({
       if (InitialProposalView) {
         try {
           const response = await axios.get(
-            `http://192.168.0.113:8080/project/getInitialPhases/${id}`,
+            `http://3.135.107.71/project/getInitialPhases/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -111,7 +113,7 @@ function AddPhaseView({
         try {
           //console.log("fetching data...");
           const response = await axios.get(
-            `http://192.168.0.113:8080/project/getPhases/${id}`,
+            `http://3.135.107.71/project/getPhases/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -129,7 +131,7 @@ function AddPhaseView({
     } else {
       try {
         const response = await axios.get(
-          `http://192.168.0.113:8080/project/getPhases/${projectId}`,
+          `http://3.135.107.71/project/getPhases/${projectId}`,
           {
             headers: {
               Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -158,6 +160,8 @@ function AddPhaseView({
   const handleAddRow = () => {
     fetchData();
   };
+
+  console.log(projectId)
 
   const handleGridToggle = (currentIndex, previousIndex) => {
     // Ensure indices are within the valid range
@@ -293,10 +297,10 @@ function AddPhaseView({
     fetchData();
   };
   console.log(
-    "This is selected lineitem info invoiceData invoiceData",
-    invoiceData
+    "This is rowCheckboxes lenght",
+    Object.keys(rowCheckboxes).length < 1
   );
-
+console.log(rowCheckboxes)
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -307,7 +311,7 @@ function AddPhaseView({
       <Grid container sx={{ ...firstGrid, width: "100%" }}>
         <Stack
           direction={"row"}
-          justifyContent={"space-between"}
+          justifyContent={view ? "space-between" :"center"}
           // sx={{ width: "100%" }}
         >
           <Stack sx={{ justifyContent: "center" }}>
@@ -334,7 +338,8 @@ function AddPhaseView({
             <>
               {(authUserRole === "superadmin" ||
                 authUserRole === "projectManager" ||
-                authUserRole === "client") && (
+                authUserRole === "" ||
+                authUserRole === "admin") && (
                 <>
                   <Stack direction={"row"} sx={buttonBox}>
                     <Button
@@ -363,12 +368,16 @@ function AddPhaseView({
             </>
           ) : view ==='Generate Invoice' ? <>
           <Stack direction={"row"} sx={buttonBox}>
-          <Button sx={{ ...actionButton }} onClick={handleGenerateInvoice}>
+          <Button sx={{ ...actionButton,  }} style={{color: Object.keys(rowCheckboxes).length < 1 ? 'white' : 'white'}} onClick={handleGenerateInvoice} disabled={Object.keys(rowCheckboxes).length < 1}>
                 Generate Invoice
               </Button>
           </Stack>
           </> : (
-            <Stack direction={"row"} sx={buttonBox}>
+            <>
+            {(authUserRole === "superadmin" ||
+            authUserRole === "" ||
+                authUserRole === "projectManager" ||
+                authUserRole === "admin") && <Stack direction={"row"} sx={buttonBox}>
               <Button
                 sx={{ ...actionButton }}
                 startIcon={<ModeEditOutlinedIcon />}
@@ -402,10 +411,15 @@ function AddPhaseView({
                 <></>
               )}
              
-            </Stack>
+            </Stack>}
+            </>
           )}
         </Stack>
-
+         {isLoading?
+         <Stack height={'60vh'} justifyContent={'center'} alignItems={'center'}>
+         <CircularProgress /> 
+          </Stack>
+         :  <>
         {InitialProposalView ? (
           <Box
             sx={{
@@ -455,6 +469,7 @@ function AddPhaseView({
                       handleAddRow={handleAddRow}
                       InitialProposalView={InitialProposalView}
                       authUserRole={authUserRole}
+                      rowCheckboxes={rowCheckboxes}
                     />
                   </Stack>
                 );
@@ -475,7 +490,7 @@ function AddPhaseView({
         ) : (
           <Box
             sx={{
-              height: adminProjectView ? "calc(92vh - 300px)" : "",
+              height: adminProjectView ? view ==='Generate Invoice' ? "calc(93vh - 140px)" : "calc(92vh - 300px)" : "",
               ...themeStyle.scrollable,
               width: {
                 xl: "100%",
@@ -520,6 +535,7 @@ function AddPhaseView({
                       adminProjectView={adminProjectView}
                       setRowCheckboxes={setRowCheckboxes}
                       handleAddRow={handleAddRow}
+                      rowCheckboxes={rowCheckboxes}
                     />
                   </Stack>
                 );
@@ -538,6 +554,7 @@ function AddPhaseView({
             )}
           </Box>
         )}
+        </>}
         {showUpdatePhaseDialogue && (
           <UpdatePhaseDialogue
             handleUpdateOpen={handleUpdateOpen}
@@ -564,237 +581,7 @@ function AddPhaseView({
       </Grid>
       {/* {open && ( */}
       {done && (
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          sx={{ ...scrollable, height: "100%", width: { xs: "100%" } }}
-        >
-          <Box sx={style}>
-            <Stack
-              direction={{
-                xl: "row",
-                lg: "row",
-                md: "row",
-                sm: "row",
-                xs: "column",
-              }}
-              justifyContent={"space-between"}
-              alignItems={"center"}
-              p={2}
-            >
-              <Typography
-                fontSize={"24px"}
-                fontFamily={"inherit"}
-                fontWeight={"600"}
-                color={"#4C8AB1"}
-              >
-                Generate Invoice
-              </Typography>
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                onClick={() => {
-                  // console.log("Click Chala");
-                  handleInvoicePrint();
-                }}
-              >
-                <BuilderProButton
-                  variant={"contained"}
-                  backgroundColor={"#4C8AB1"}
-                  fontSize={"16px"}
-                  fontFamily={"Inter, sans serif"}
-                >
-                  Download Invoice
-                </BuilderProButton>
-              </Stack>
-            </Stack>
-            <Container
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                "@media print": {
-                  height: "auto",
-                },
-                marginTop: "2rem",
-              }}
-              ref={targetRef}
-            >
-              <Box sx={{ width: "100%", maxWidth: "800px" }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <img src={BuilderProNavbarLogo} alt={"ddd"} />
-                </Box>
-                {/* <Stack direction={"flex"} justifyContent={"center"}>
-                  <Typography
-                    sx={{
-                      color: "#ffb41a",
-                      fontSize: "20px",
-                      marginLeft: "5px",
-                    }}
-                  >
-                    Builder
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "#448cb8",
-                      fontSize: "20px",
-                      fontWeight: 1000,
-                    }}
-                  >
-                    BUILDER
-                  </Typography>
-                </Stack> */}
-                <Stack
-                  direction={{
-                    xl: "row",
-                    lg: "row",
-                    md: "row",
-                    sm: "row",
-                    xs: "column",
-                  }}
-                  justifyContent={"space-between"}
-                  alignItems={"center"}
-                  p={1}
-                  pl={2}
-                  pr={2}
-                  mt={3}
-                >
-                  <Stack spacing={1}>
-                    <Typography sx={modalStyle}>
-                      Company:{" "}
-                      {invoiceData?.invoiceCompleteObj?.Admin?.companyName}
-                    </Typography>
-                    <Typography sx={modalStyle}>
-                      Name: {invoiceData?.invoiceCompleteObj?.Client?.firstName}
-                    </Typography>
-                    {/* <Typography sx={modalStyle}>Company Address</Typography>
-                <Typography sx={modalStyle}>City,State Zip</Typography>
-                <Typography sx={modalStyle}>USA</Typography> */}
-                  </Stack>
-                  <Stack direction={"row"} spacing={4}>
-                    <Stack spacing={1}>
-                      <Typography sx={modalStyle} fontWeight={"bold"}>
-                        Invoice#
-                      </Typography>
-                      <Typography sx={modalStyle} fontWeight={"bold"}>
-                        Invoice Date
-                      </Typography>
-                      <Typography sx={modalStyle} fontWeight={"bold"}>
-                        Due Date
-                      </Typography>
-                    </Stack>
-                    <Stack spacing={1}>
-                      <Typography sx={modalStyle}>
-                        {invoiceData?.invoiceCompleteObj?.InvoiceNumber}
-                      </Typography>
-                      <Stack direction={"row"} spacing={0.5}>
-                        <CalendarTodayIcon
-                          fontSize="small"
-                          style={{ color: "lightgray" }}
-                        />
-                        <Typography sx={modalStyle}>
-                          {" "}
-                          {invoiceData?.invoiceCompleteObj?.InvoiceDate
-                            ? formatDate(
-                                invoiceData.invoiceCompleteObj.InvoiceDate
-                              )
-                            : "N/A"}
-                        </Typography>
-                      </Stack>
-                      <Stack direction={"row"} spacing={0.5}>
-                        <CalendarTodayIcon
-                          fontSize="small"
-                          style={{ color: "lightgray" }}
-                        />
-                        <Typography sx={modalStyle}>
-                          {" "}
-                          {invoiceData?.invoiceCompleteObj?.InvoiceDate
-                            ? formatDate(
-                                invoiceData.invoiceCompleteObj.InvoiceDueDate
-                              )
-                            : "N/A"}
-                        </Typography>
-                      </Stack>
-                    </Stack>
-                  </Stack>
-                </Stack>
-                <Stack
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  width={{
-                    xl: "100%",
-                    lg: "100%",
-                    md: "100%",
-                    sm: "100%",
-                    xs: "80%",
-                  }}
-                >
-                  <GenerateInvoiceTable
-                    rowCheckboxes={rowCheckboxes}
-                    invoiceData={invoiceData}
-                  />
-                </Stack>
-                <Stack
-                  direction={{ xl: "row", lg: "row", md: "column" }}
-                  justifyContent={"space-between"}
-                  p={4}
-                  spacing={1}
-                >
-                  <Stack>
-                    <Typography sx={modalStyle} fontWeight={"bold"}>
-                      Notes
-                    </Typography>
-                    <Typography sx={modalStyle}>
-                      It was great doing business with you
-                    </Typography>
-                  </Stack>
-                  <Stack>
-                    <Typography sx={modalStyle} fontWeight={"bold"}>
-                      Terms and Condition
-                    </Typography>
-                    <Typography sx={modalStyle}>
-                      Please make payments before the due date
-                    </Typography>
-                  </Stack>
-                </Stack>
-              </Box>
-            </Container>
-
-            {/* <Stack
-              direction={"row"}
-              alignItems={"center"}
-              justifyContent={"center"}
-              p={2}
-            >
-              <Button
-                variant={"contained"}
-                sx={{
-                  backgroundColor: "#4C8AB1",
-                  borderRadius: "28px",
-                  fontFamily: "Inter, sans serif",
-                  textTransform: "capitalize",
-                  fontSize: "16px",
-                }}
-                fontSize={"16px"}
-                fontFamily={"Inter, sans serif"}
-                onClick={() => {
-                  handleClose();
-                  handleGenerateInvoice();
-                }}
-              >
-                Send Invoice
-              </Button>
-            </Stack> */}
-          </Box>
-        </Modal>
+        <GenerateInvoice open={open} handleClose={handleClose} invoiceData={invoiceData} rowCheckboxes={rowCheckboxes}/>
       )}
       {generateInvoice && (
         <GenerateInvoicePopup
@@ -809,6 +596,8 @@ function AddPhaseView({
           setShareToClient={setShareToClient}
           setDone={setDone}
           setInvoiceData={setInvoiceData}
+          setRowCheckboxes={setRowCheckboxes}
+          authUserRole={authUserRole}
         />
       )}
     </>

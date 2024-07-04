@@ -25,6 +25,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 
 const colors = [
+  "#FFF",
   "#93D0EC",
   "#9BDFEB",
   "#9FF2CA",
@@ -108,12 +109,12 @@ function ProjectFormFields() {
               Location
             </label>
             <TextField
-              className="placeholder"
-              inputProps={{ maxLength: 50 }}
+             
+              inputProps={{ maxLength: 50, className:"placeholder" }}
               sx={{
                 ...inputStyle,
                 ...borderRadiusResponsive,
-                paddingLeft:'0px',
+                // paddingLeft:'2rem',
 
                 "& input": {
                   borderBottom: "none", // Remove bottom border of the input
@@ -124,7 +125,10 @@ function ProjectFormFields() {
               type="text"
               variant="standard"
               value={location}
-              
+              InputProps={{
+                disableUnderline: true,
+                className: 'placeholder'
+              }}
               onChange={handleLocationChange}
               placeholder="Enter your location..."
             >
@@ -153,15 +157,20 @@ function ProjectFormFields() {
                   width: "100%", // Set width to 100% for responsiveness
                   alignSelf: "center",
                   fontSize: "14px",
-                  border: "1px solid #ccc",
-                  borderRadius: "12px",
+                  // border: "1px solid #ccc",
+                  // borderRadius: "12px",
                   color: "#202227",
-                  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+                  fontFamily: "Arial Rounded MT, sans-serif",
                 }}
               >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <MobileDatePicker
-                    sx={{ width: "100%" }}
+                    sx={{ width: "100%", 
+                      ".MuiOutlinedInput-notchedOutline ":{
+                        border: "1px solid #ccc !important",
+                        borderRadius: "12px",
+                      }
+                     }}
                     value={dayjs(start_time)}
                     onChange={handleStartDateChange}
                     format="YYYY/MM/DD"
@@ -186,15 +195,21 @@ function ProjectFormFields() {
                   width: "100%", // Set width to 100% for responsiveness
                   alignSelf: "center",
                   fontSize: "14px",
-                  border: "1px solid #ccc",
-                  borderRadius: "12px",
+                  // border: "1px solid #ccc",
+                  // borderRadius: "12px",
                   color: "#202227",
-                  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+                  fontFamily: "Arial Rounded MT, sans-serif",
                 }}
               >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <MobileDatePicker
-                    sx={{ width: "100%", paddingRight: "0px" }}
+                    sx={{ width: "100%", 
+                      ".MuiOutlinedInput-notchedOutline ":{
+                        border: "1px solid #ccc !important",
+                        borderRadius: "12px",
+                        paddingRight: "0px"
+                      }
+                     }}
                     value={dayjs(end_time)}
                     onChange={handleEndDateChange}
                     format="YYYY/MM/DD"
@@ -219,19 +234,20 @@ function ProjectFormFields() {
               <Stack
                 direction={"row"}
                 alignItems={"center"}
-                justifyContent={"space-between"}
+                justifyContent={"flex-start"}
                 gap={2}
                 p={1}
               >
-                {colors.map((color) => {
+                {/* {colors.map((color) => {
                   return (
                     <>
                       <Box
                         width={"40px"}
                         height={"60px"}
                         bgcolor={color}
+                        sx={{cursor:'pointer'}}
                         boxShadow={
-                          projectColor === color
+                          (projectColor ? projectColor === color : '#FFF' === color)
                             ? "rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;"
                             : ""
                         }
@@ -240,14 +256,35 @@ function ProjectFormFields() {
                           handleProjectColorChange(color);
                         }}
                         border={
-                          projectColor === color ? "2px solid #ADADAD" : ""
+                          (projectColor ? projectColor === color : '#FFF' === color)
+                          ? "3px solid #ADADAD" : "1px solid #ADADAD"
                         }
                       ></Box>
                     </>
                   );
-                })}
+                })} */}
+                <Box
+                        width={"40px"}
+                        height={"40px"}
+                        bgcolor={projectColor}
+                        sx={{cursor:'pointer'}}
+                        // boxShadow={
+                        //   (projectColor ? projectColor === color : '#FFF' === color)
+                        //     ? "rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;"
+                        //     : ""
+                        // }
+                        borderRadius={"99999px"}
+                        border={'1px dashed gray'}
+                        // onClick={() => {
+                        //   handleProjectColorChange(color);
+                        // }}
+                        // border={
+                        //   (projectColor ? projectColor === color : '#FFF' === color)
+                        //   ? "3px solid #ADADAD" : "1px solid #ADADAD"
+                        // }
+                      ></Box>
                 {/* Req change to display an array of 12 colors */}
-                {/* <ColorPicker /> */}
+                <ColorPicker />
               </Stack>
             </Box>
           </Stack>
@@ -275,8 +312,8 @@ const inputStyle = {
   border: "1px solid #ccc",
   borderRadius: "12px",
   color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
-  paddingLeft: "-1.5rem",
+  fontFamily: "Arial Rounded MT, sans-serif",
+  // paddingLeft: "-.5rem",
 };
 const formBox = {
   width: "100%",

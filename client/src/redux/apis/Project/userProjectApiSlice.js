@@ -1,26 +1,26 @@
 import UpdateMasterLine from "../../../components/dialogues/UpdateMasterLine/UpdateMasterLine";
 import { apiSlice } from "../apiSlice";
 
-const USER_PROJECTS_URL = "http://192.168.0.113:8080/user";
-const PROJECTS_URL = "http://192.168.0.113:8080/project";
+const USER_PROJECTS_URL = "http://3.135.107.71/user";
+const PROJECTS_URL = "http://3.135.107.71/project";
 
 export const userProjectsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUserProjects: builder.query({
       query: (data) => ({
-        url: `${USER_PROJECTS_URL}/projects/${data.userId}`,
+        url: `${USER_PROJECTS_URL}/projects/${data.userId}?page=${data.page !== undefined ? data.page : ''}&filter=${data.filter !== undefined ? data.filter : ''}&query=${data.q !== undefined ? data.q : ''}`,
         method: "GET",
       }),
     }),
     getFilteredUserProjects: builder.query({
       query: (data) => ({
-        url: `${USER_PROJECTS_URL}/projects/${data.userId}?filter=${data.filter}`,
+        url: `${USER_PROJECTS_URL}/projects/${data.userId}`,
         method: "GET",
       }),
     }),
     getMasterLineItems: builder.query({
       query: (data) => ({
-        url: `${USER_PROJECTS_URL}/masterLine/${data}`,
+        url: `${USER_PROJECTS_URL}/masterLine/${data.userId}?query=${data.q}&page=${data.page}`,
         method: "GET",
       }),
     }),
@@ -33,27 +33,27 @@ export const userProjectsApiSlice = apiSlice.injectEndpoints({
     }),
     getUnits : builder.query({
       query: (data) => ({
-        url: `http://192.168.0.113:8080/units/${data.userId}`,
+        url: `http://3.135.107.71/units/${data.userId}?query=${data.q !== undefined ? data.q : ''}&page=${data.page !== undefined ? data.page : ''}`,
         method: 'GET'
       })
     }),
     addUnit : builder.mutation({
       query: (data) => ({
-        url: `http://192.168.0.113:8080/units`,
+        url: `http://3.135.107.71/units`,
         method: 'POST',
         body: data
       })
     }),
     editUnit:  builder.mutation({
       query: (data) => ({
-        url: `http://192.168.0.113:8080/units/${data.id}`,
+        url: `http://3.135.107.71/units/${data.id}`,
         method: 'PUT',
         body: data
       })
     }),
     deleteUnit:  builder.mutation({
       query: (data) => ({
-        url: `http://192.168.0.113:8080/units/${data.id}`,
+        url: `http://3.135.107.71/units/${data.id}`,
         method: 'DELETE',
         body: data
       })
@@ -63,6 +63,25 @@ export const userProjectsApiSlice = apiSlice.injectEndpoints({
         url: `${PROJECTS_URL}/getUserProjectRole`,
         method: 'POST',
         body: data
+      })
+    }),
+    getUserNotification : builder.query({
+      query: (data) => ({
+        url: `${USER_PROJECTS_URL}/getNotificationsSetting/${data.userId}`,
+        method: 'GET'
+      })
+    }),
+    setProjectToIncomplete: builder.mutation({
+      query: (data) => ({
+        url: `${USER_PROJECTS_URL}/setProjectToIncomplete`,
+        method: 'POST',
+        body: data
+      })
+    }),
+    deleteUserProject: builder.mutation({
+      query: (data) => ({
+        url: `${USER_PROJECTS_URL}/projects/${data.id}`,
+        method: 'DELETE'
       })
     })
   }),
@@ -78,4 +97,7 @@ export const {
   useEditUnitMutation,
   useDeleteUnitMutation,
   useGetProjectUserRoleMutation,
+  useGetUserNotificationQuery,
+  useSetProjectToIncompleteMutation,
+  useDeleteUserProjectMutation
 } = userProjectsApiSlice;

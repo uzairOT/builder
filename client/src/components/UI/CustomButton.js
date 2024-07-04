@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, CircularProgress } from "@mui/material";
-import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf"
+// import GTWalsheimTrial from "../../assets/fonts/Arial Rounded MT-BF651b7fc71a47d.otf"
 
 function CustomButton({onClick, buttonText,color,backgroundColor,width,height,borderRadius ,fontSize,border, disabled, isLoading }) {
 
@@ -10,7 +10,7 @@ function CustomButton({onClick, buttonText,color,backgroundColor,width,height,bo
         borderRadius: borderRadius,
         width:width,
         height:height,
-        fontFamily:GTWalsheimTrial,
+        fontFamily:'Arial Rounded MT, sans serif',
         fontSize:fontSize,
         textTransform: "none",
         border: border

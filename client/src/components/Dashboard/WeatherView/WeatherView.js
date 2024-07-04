@@ -19,16 +19,16 @@ const WeatherView = ({
     <Stack
       direction={{
         xs: "column-reverse",
-        xm: "column-reverse",
-        md: "column-reverse",
-        lg: "column-reverse",
+        sm: "row",
+        md: "row",
+        lg: "row",
         xl: "row",
       }}
       spacing={2}
       padding={2}
     >
-      <Box flex={2}>
-        <Typography style={themeStyle.title}>
+      <Box flex={{md:2, xs:0}}>
+        <Typography display={{md:'block', xs:'none'}} sx={themeStyle.title}>
           Good Morning, {firstName ? `${firstName}` : userGreetings}
         </Typography>
         <Stack
@@ -40,16 +40,17 @@ const WeatherView = ({
           pl={3}
           pr={2.5}
           flexWrap={"wrap"}
+          display={{md:'flex', xs:'none'}}
         >
           {!loading ? (
             dailyForecast?.map((forecast, index) => (
-              <>
+              <React.Fragment key={index}>
                 <WeatherAppDailyForecast
-                  key={forecast.day}
+                  key={index}
                   forecast={forecast}
                 />
                 {error}
-              </>
+              </React.Fragment>
             ))
           ) : (
             <Stack
@@ -62,7 +63,10 @@ const WeatherView = ({
           )}
         </Stack>
       </Box>
-      <Box flex={1} display={"flex"} width={"100%"}>
+      <Box flex={1} display={"flex"} flexDirection={'column'} width={"100%"}>
+      <Typography display={{md:'none', xs:'block'}} sx={themeStyle.title}>
+          Good Morning, {firstName ? `${firstName}` : userGreetings}
+        </Typography>
         <WeatherAppCurrentForecast />
       </Box>
     </Stack>
@@ -75,7 +79,7 @@ const themeStyle = {
   title: {
     color: "var(--Link-Text, #4C8AB1)",
     fontFamily: "inherit",
-    fontSize: "22px",
+    fontSize: {xs:'18px',sm:'18px', md:'18px',lg:'22px',xl:"22px"},
     fontStyle: "normal",
     fontWeight: "400",
     lineHeight: "20px" /* 90.909% */,

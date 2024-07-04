@@ -2,6 +2,11 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import { useGetUserProjectsQuery } from '../../../redux/apis/Project/userProjectApiSlice';
+import { useDispatch } from 'react-redux';
+import { addProjects, setError, setIsLoading, setLimit, setTotalCount, setTotalPages } from '../../../redux/slices/Project/userProjectsSlice';
+import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
+import { useLocation } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -57,18 +62,70 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const SearchBar = () => {
+const SearchBar = ({selectedFilters, page=1, setPage, selectedTab}) => {
+   const filter = selectedFilters ?  selectedFilters.join(',') : ""
+    const [searchQuery, setSearchQuery] = React.useState('');
+    const debouncedValue = QueryDebouncer(searchQuery, 500)
+    const local = localStorage.getItem("userInfo");
+    const currentUser = JSON.parse(local);
+    const UserId = currentUser.user.id;
+    const location = useLocation();
+    const path = location.pathname.split('/')[1]
+    console.log(path);
+    // console.log(selectedTab);
+    const dispatch = useDispatch();
+    const { data, refetch, isLoading, error, isSuccess } = useGetUserProjectsQuery({ userId: UserId , q:debouncedValue, filter: filter, page:page});
+
+    React.useEffect(() => {
+      if(selectedTab === 0 || selectedTab === 1){
+        console.log('run')
+        console.log(data)
+        dispatch(setIsLoading(isLoading));
+        if(data){
+          dispatch(addProjects(data?.projects));
+          dispatch(setTotalCount(data?.totalCount))
+          dispatch(setTotalPages(data?.totalPages))
+          dispatch(setLimit(data?.limit))
+        } else{
+          dispatch(setError(error))
+        }
+      }
+    },[data, dispatch, error, isLoading, selectedTab])
+    
+  const refetchProjects = async () => {
+    const res = await refetch({ userId: UserId , q:debouncedValue, filter: filter, page:page});
+  }
+  React.useEffect(()=>{
+    if(setPage){
+      setPage(1)
+    }
+  }, [debouncedValue])
+  React.useEffect(() => {
+    if(selectedTab === 0 || selectedTab === 1)
+    refetchProjects();
+
+  }, [selectedTab]);
+
+  React.useEffect(()=>{
+    if(path==='settings'){
+      refetchProjects();
+    }
+  },[path])
+  // console.log(searchQuery)
     return (
         <>
-        {/* <Search>
+        <Search>
             <SearchIconWrapper>
                 <SearchIcon style={{ color: '#535353C9' }} />
             </SearchIconWrapper>
             <StyledInputBase
-                placeholder="Search"
-                inputProps={{ 'aria-label': 'search', }}
+                placeholder="Search Project"
+                inputProps={{ 'aria-label': 'search',}}
+                sx={{width:{xl:'300px', lg:'200px'}}}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 />
-        </Search> */}
+        </Search>
                 </>
     )
 }

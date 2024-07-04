@@ -116,7 +116,7 @@ const inputStyle = {
   border: '1px solid #ccc',
   borderRadius: '12px',
   color: "#202227",
-  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+  fontFamily: 'Arial Rounded MT, sans-serif',
   paddingLeft: "-1.5rem",
 };
 const formBox = {

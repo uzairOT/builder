@@ -54,9 +54,11 @@ import {
 } from "../../redux/apis/Project/workOrderApiSlice";
 import { socket } from "../../socket";
 import TeamNotifications from "./TeamNotifications";
+import InvoiceNotification from "./InvoiceNotification";
 const local = localStorage.getItem("userInfo");
 const currentUser = JSON.parse(local);
-// const socket = io("http://192.168.0.113:8080", {
+
+// const socket = io("http://3.135.107.71", {
 //   query: { userId: currentUser?.user?.id },
 // });
 
@@ -85,17 +87,18 @@ const Navbar = () => {
   const { data: teamStatusData, refetch: refetchTeamStatusData } =
     useGetTeamStatusNotificationsQuery(userId);
   const [expanded, setExpanded] = useState(null);
-
+  const [invoiceNotification, setInvoiceNotification] = useState(null);
   const [updateNotificationRead] = useUpdateWorkOrderReadMutation();
   dispatch(setNotificationsArr(data?.data));
   // if (teamNotifications ? teamNotifications.length < 1 : true) {
   //   dispatch(setTeamNotifications(teamStatusData?.data));
   // }
 
-  // console.log("JOHN NOTIFICATION TEST",anchorEl)
+  console.log("JOHN NOTIFICATION TEST", invoiceNotification);
   const handleClick = async (event) => {
     if (anchorEl) {
       setAnchorEl(null);
+      // setInvoiceNotification(null);
     } else {
       setAnchorEl(event.currentTarget);
       await updateNotificationRead({ userId });
@@ -174,6 +177,11 @@ const Navbar = () => {
       console.log("SOCKET RESPONSE: ", socketReponse);
       dispatch(addTeamNotifications(socketReponse));
     });
+    socket.on(`invoiceCreated${userId}`, async (socketReponse) => {
+      console.log("SOCKET RESPONSE INVOICE: ", socketReponse);
+      setInvoiceNotification(socketReponse);
+      // dispatch(addTeamNotifications(socketReponse));
+    });
     return () => {
       socket.off("newNotification", async (data) => {
         await refetchCall();
@@ -182,6 +190,11 @@ const Navbar = () => {
       socket.off("statusDoneNotificationResponse", async (socketReponse) => {
         console.log("SOCKET RESPONSE: ", socketReponse);
         dispatch(addTeamNotifications(socketReponse));
+      });
+      socket.off(`sendInvoice${userId}`, async (socketReponse) => {
+        console.log("SOCKET RESPONSE: ", socketReponse);
+        setInvoiceNotification(socketReponse);
+        // dispatch(addTeamNotifications(socketReponse));
       });
     };
   }, [dispatch]);
@@ -206,12 +219,12 @@ const Navbar = () => {
     setUserType(event.target.value);
   };
   const handleTeamNotificationsRefetch = async () => {
-      dispatch(setTeamNotifications([]));
-      await refetchTeamStatusData();
-  }
-  useEffect(()=>{
+    dispatch(setTeamNotifications([]));
+    await refetchTeamStatusData();
+  };
+  useEffect(() => {
     dispatch(setTeamNotifications(teamStatusData?.data));
-  },[teamStatusData])
+  }, [teamStatusData]);
 
   // Navbar styles
   const themeStyle = {
@@ -222,13 +235,13 @@ const Navbar = () => {
       height: "65px",
     },
     logo: {
-      width: "100px",
-      height: "40px",
-      marginLeft: "28px",
-      marginBottom: "2px",
+      width: "120px",
+      height: "45px",
+      marginLeft: "8px",
+      marginBottom: "0px",
     },
     tabs: {
-      margin: "auto",
+      // margin: "auto",
       display: { xl: "flex", lg: "flex", md: "none", sm: "none", xs: "none" },
     },
     getTabColor: (tabIndex) => ({
@@ -238,7 +251,7 @@ const Navbar = () => {
       fontSize: "15px",
     }),
     search: {
-      display: { xl: "flex", lg: "none", md: "flex" },
+      display: { xl: "flex", lg: "flex", md: "flex" },
     },
     toolbar: {
       justifyContent: "space-between",
@@ -267,7 +280,7 @@ const Navbar = () => {
             sx={themeStyle.tabs}
             value={selectedTab}
             // onClick={handleTabChange}
-            indicatorColor=""
+            indicatorColor="#FFF"
             centered
           >
             <Tab
@@ -286,7 +299,7 @@ const Navbar = () => {
               onClick={(e) => handleTabChange(e, 2)}
             />
             <Box sx={themeStyle.search}>
-              <SearchBar />
+              <SearchBar selectedTab={selectedTab} />
             </Box>
             <Tab
               label="Subscription"
@@ -310,7 +323,8 @@ const Navbar = () => {
                 badgeContent={
                   (data1?.count ? data1.count : 0) +
                   notifications?.length +
-                  (teamNotifications?.length ? teamNotifications?.length : 0)
+                  (teamNotifications?.length ? teamNotifications?.length : 0) +
+                  (invoiceNotification ? 1 : 0)
                 }
                 color="error"
               >
@@ -328,24 +342,36 @@ const Navbar = () => {
               anchorEl={anchorEl}
               placement="bottom-end"
             >
+              {invoiceNotification && (
+                <InvoiceNotification data={invoiceNotification} setInvoiceNotification={setInvoiceNotification}/>
+              )}
               {Array.isArray(teamNotifications) ? (
                 teamNotifications.map((teamNotification, index) => {
                   if (index < 3) {
                     return (
-                      <TeamNotifications
-                        teamNotification={teamNotification}
-                        index={index}
-                        userId ={userId}
-                        refetch={handleTeamNotificationsRefetch}
-                      />
+                      <div key={index}>
+                        <TeamNotifications
+                          teamNotification={teamNotification}
+                          index={index}
+                          userId={userId}
+                          refetch={handleTeamNotificationsRefetch}
+                        />
+                      </div>
                     );
                   } else {
                     return index === 3 ? (
                       <Stack textAlign={"right"}>
-                         <Typography  fontFamily={'inherit'} fontSize={'12px'} sx={{textDecoration:'underline', fontWeight:'600'}}>
-
-                        +{teamNotifications?.length - 3} more team notifications
-                         </Typography>
+                        <Typography
+                          fontFamily={"inherit"}
+                          fontSize={"12px"}
+                          sx={{
+                            textDecoration: "underline",
+                            fontWeight: "600",
+                          }}
+                        >
+                          +{teamNotifications?.length - 3} more team
+                          notifications
+                        </Typography>
                       </Stack>
                     ) : (
                       <> </>
@@ -373,8 +399,16 @@ const Navbar = () => {
                   } else {
                     return index === 3 ? (
                       <Stack textAlign={"right"}>
-                        <Typography  fontFamily={'inherit'} fontSize={'12px'} sx={{textDecoration:'underline', fontWeight:'600'}}>
-                        +{notificationsArr.length - 3} more work order notifications
+                        <Typography
+                          fontFamily={"inherit"}
+                          fontSize={"12px"}
+                          sx={{
+                            textDecoration: "underline",
+                            fontWeight: "600",
+                          }}
+                        >
+                          +{notificationsArr.length - 3} more work order
+                          notifications
                         </Typography>
                       </Stack>
                     ) : (
@@ -440,7 +474,7 @@ const Navbar = () => {
             <CloseIcon sx={{ p: 2, color: "#535353", fontSize: "19px" }} />
           </IconButton>
         </Stack>
-        <Divider variant="fullWidth" />
+        <Divider  />
         <Stack direction={"row"} pl={4} pr={4} pt={2} pb={2} spacing={3}>
           <Stack
             direction={"row"}
@@ -472,7 +506,7 @@ const Navbar = () => {
                 style={{
                   fontSize: "12px",
                   top: "3px",
-                  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+                  fontFamily: "Arial Rounded MT, sans-serif",
                   color: "#202227",
                 }}
                 sx={{
@@ -533,13 +567,13 @@ const Navbar = () => {
                   color={"#202227"}
                   fontSize={"14px"}
                   pl={2}
-                  fontFamily={"GT-Walsheim-Regular-Trial, sans-serif"}
+                  fontFamily={"Arial Rounded MT, sans-serif"}
                 >
                   {user.name}
                 </Typography>
               </Stack>
               <Typography
-                fontFamily={"GT-Walsheim-Regular-Trial, sans-serif"}
+                fontFamily={"Arial Rounded MT, sans-serif"}
                 fontSize={"14px"}
               >
                 {user.userType}

@@ -4,7 +4,7 @@ import { Outlet, useOutletContext } from "react-router-dom";
 import RecentImagesAndComments from "../ClientDashboard/RecentImagesAndComments/RecentImagesAndComments";
 
 const ClientLayout = () => {
-  const [projectName] = useOutletContext();
+  const [projectName, projectLocation] = useOutletContext();
 
   return (
     <>
@@ -13,14 +13,14 @@ const ClientLayout = () => {
           item
           xs={12}
           sm={12}
-          md={9}
+          md={12}
           lg={9}
           height={themeStyle.dashboardViews}
         >
           <Grid
             container
             sx={themeStyle.scrollable}
-            height={'calc(93vh - 75px)'}
+            height={{xl:'calc(94vh - 65px)', xs:'100%'}}
             margin={"auto"}
           >
             <Grid
@@ -32,7 +32,7 @@ const ClientLayout = () => {
               style={{ height: 'inherit' }}
             >
               <Box sx={themeStyle.alternativeBox}>
-                <Outlet context={[projectName]} />
+                <Outlet context={[projectName, projectLocation]} />
               </Box>
             </Grid>
           </Grid>
@@ -41,7 +41,7 @@ const ClientLayout = () => {
           item
           xs={12}
           sm={12}
-          md={3}
+          md={12}
           lg={3}
           
           marginTop={{ lg: "0rem", sm: "0rem", xs: "1rem" }}

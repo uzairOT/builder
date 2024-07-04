@@ -2,6 +2,7 @@ import { Box, Paper, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Profile from "../Dashboard/ProfileView/Profile";
 import PaymentHistoryCard from "../UI/Card/PaymentHistoryCard";
+import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 
 let userData = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(userData);
@@ -44,11 +45,12 @@ const SubscriptionSidebar = () => {
   useEffect(() => {
     const fetchPaymentHistory = async () => {
       try {
-        const res = await fetch("http://192.168.0.113:8080/payment/paymentHistory", {
+        const res = await fetch("http://3.135.107.71/payment/paymentHistory", {
           method: "POST",
-          headers: {
+          headers: new Headers({
             "Content-Type": "application/json",
-          },
+            Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+          }),
           body: JSON.stringify({ userId: currentUser.id }),
         });
         const data = await res.json();
@@ -73,7 +75,7 @@ const SubscriptionSidebar = () => {
         <Typography sx={themeStyle.subtitle} p={2} pb={1.5}>
           Payment History
         </Typography>
-        <Box sx={themeStyle.scrollable} overflow={"hidden"}>
+        <Box sx={themeStyle.scrollable} overflow={"hidden"} pb={0.5}>
         <Stack px={2} spacing={1}>
           {paymentHistory.length > 0 ? (
             paymentHistory.map((item) => (
@@ -102,13 +104,13 @@ const themeStyle = {
   title: {
     fontSize: "22px",
     fontWeight: "500",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     color: "#000000",
   },
   subtitle: {
     fontSize: "28px",
     fontWeight: "500",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     color: "#000000",
   },
   scrollable: {
@@ -125,6 +127,6 @@ const themeStyle = {
       backgroundColor: "#ddd",
     },
     overflowY: "scroll",
-    height: "50vh",
+    height: "calc(93vh - 350px)",
   },
 };

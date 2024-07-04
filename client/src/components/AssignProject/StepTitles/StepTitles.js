@@ -39,7 +39,7 @@ const discriptionTypo = {
   fontSize: { lg: "0.8rem", md: "0.7rem", sm: "0.6rem", xs: "0.6rem" },
 }
 const stepGeneralText = {
-  fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+  fontFamily: 'Arial Rounded MT, sans-serif',
   fontSize: '1rem',
   letterSpacing: '0.01em',
   color: "#4C8AB1",

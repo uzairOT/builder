@@ -7,7 +7,7 @@ import moment from "moment-timezone";
 
 const VerticalTabs = ({ notes, handleSelectedButton , selectedButton}) => {
   return (
-    <Stack direction={"column"}  p={1} sx={scrollable} height='calc(92vh - 210px)'>
+    <Stack direction={"column"}  p={1} sx={scrollable} height='calc(92vh - 265px)'>
       <ButtonGroup orientation="vertical" variant="plan" >
         {notes?.map((note, index) => {
           return (

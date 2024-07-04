@@ -38,9 +38,11 @@ const invoiceTaxes = TAX_RATE * invoiceSubtotal;
 const invoiceTotal = invoiceTaxes + invoiceSubtotal;
 
 export default function GenerateInvoiceTable({
-  rowCheckboxes = [],
   invoiceData,
 }) {
+  let totalCost = 0;
+  console.log(invoiceData);
+
   return (
     <TableContainer component={Paper} width={"100%"}>
       <Table aria-label="spanning table" sx={{ padding: "10px" }}>
@@ -53,46 +55,58 @@ export default function GenerateInvoiceTable({
             <TableCell sx={{ color: "white" }} align="right">
               Rate
             </TableCell>
-            <TableCell sx={{ color: "white" }} align="right">
-              Margin
-            </TableCell>
+            {/* <TableCell sx={{ color: "white" }} align="right">
+              PR
+            </TableCell> */}
             <TableCell sx={{ color: "white" }} align="right">
               Amount
             </TableCell>
           </TableRow>
         </TableHead>
-        <TableBody style={{ color: "gray" }}>
-          {Object.values(rowCheckboxes).map((phase) =>
-            phase.rows.map((row) => (
-              <>
-                <TableRow key={row.id}>
-                  <TableCell>{row.title}</TableCell>
-                  <TableCell align="right">{row.quantity}</TableCell>
-                  <TableCell align="right">{row.unit_price}</TableCell>
-                  <TableCell align="right">{row.margin}</TableCell>
-                  <TableCell align="right">{row.total}</TableCell>
-                </TableRow>
-                <TableRow>
+        <TableBody style={{ color: "gray", height:'150px' }}>
+          {invoiceData?.invoiceCompleteObj?.InvoiceLineItems.map((lineItem, index) =>{
+            // phase.rows.map((row) => {
+              totalCost =
+                totalCost + parseFloat(lineItem.totalAmount)
+                // parseFloat(invoiceData?.invoiceCompleteObj?.InvoiceLineItems[index]
+                //   ?.totalAmount);
+              return (
+                <>
+                  <TableRow key={lineItem.LineItem.id}>
+                    <TableCell>{lineItem.LineItem.title}</TableCell>
+                    <TableCell align="right">{lineItem.LineItem.quantity}</TableCell>
+                    <TableCell align="right">{lineItem.LineItem.unit_price}</TableCell>
+                    {/* <TableCell align="right">{row.margin}</TableCell> */}
+                    <TableCell align="right">
+                      {
+                        // invoiceData?.invoiceCompleteObj?.InvoiceLineItems[index]
+                        //   ?.totalAmount
+                        parseFloat(lineItem.totalAmount)?.toFixed(2)
+                      }
+                    </TableCell>
+                  </TableRow>
+                  {/* <TableRow>
                   <TableCell rowSpan={3} colSpan={2} />
                   <TableCell colSpan={2}>Subtotal</TableCell>
                   <TableCell align="right">{row.total}</TableCell>
-                </TableRow>
-              </>
-            ))
-          )}
-
-          {/* <TableRow> */}
-          {/* <TableCell colSpan={1}>
-              TAX ({`${(TAX_RATE * 100).toFixed(0)} %`})
-            </TableCell> */}
-          <TableCell align="right"></TableCell>
-          {/* <TableCell align="right">
-              Add TAX amount calculation here 
-            </TableCell> */}
-          {/* </TableRow> */}
+                </TableRow> */}
+                </>
+              );
+            // })
+          })}
+          {/*       
+          <TableRow>
+          <TableCell colSpan={1}>
+              Subtotal
+            </TableCell>
+          
+          <TableCell  colSpan={4} align="right">
+              {totalCost}
+            </TableCell>
+          </TableRow> */}
           <TableRow style={{ backgroundColor: "ButtonHighlight" }}>
             <TableCell colSpan={2}>Total</TableCell>
-            <TableCell align="right">
+            <TableCell align="right" colSpan={3}>
               <Typography
                 style={{
                   display: "inline-block",
@@ -101,11 +115,7 @@ export default function GenerateInvoiceTable({
                   padding: "6px",
                 }}
               >
-                $
-                {
-                  invoiceData?.invoiceCompleteObj.InvoiceLineItems[0]
-                    ?.totalAmount
-                }
+                ${parseFloat(totalCost)?.toFixed(2)}
               </Typography>
               <Typography style={{ display: "inline-block" }}>
                 {/* Add Total calculation here */}

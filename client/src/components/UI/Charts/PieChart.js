@@ -3,6 +3,8 @@ import { PieChart } from "@mui/x-charts/PieChart";
 import { styled } from "@mui/material/styles";
 
 import React from "react";
+import { formatMoney } from "../../../utils/Formatters/moneyFormat";
+import {valueFormatter} from "../../../utils/Formatters/valueFormatter";
 
 const StyledText = styled("text")(({ theme }) => ({
   fill: theme.palette.text.primary,
@@ -11,6 +13,7 @@ const StyledText = styled("text")(({ theme }) => ({
   fontSize: 12,
   fontFamily: "inherit",
   color: "#000000B2",
+  fontWeight:'600'
 }));
 
 function PieCenterLabel({ children }) {
@@ -49,13 +52,14 @@ const PieChartDisplay = ({totalProjectCost}) => {
             endAngle: 360,
             cx: 60,
             cy: 80,
+            valueFormatter
           },
         ]}
         height={200}
         width={130}
         >
         <PieCenterLabel>Total Price</PieCenterLabel>
-        <PieCenterLabel2>${totalProjectCost}</PieCenterLabel2>
+        <PieCenterLabel2>${formatMoney(totalProjectCost)}</PieCenterLabel2>
       </PieChart>
     </Box>
   );

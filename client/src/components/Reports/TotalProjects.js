@@ -31,7 +31,7 @@ const TotalProjects = () => {
   }, []);
   const remainingPercent =
     (data?.remainingProjects / data?.totalProjects) * 100;
-  const donePercent = data?.completedProjects / 100;
+  const donePercent = ((data?.completedProjects / data?.totalProjects)  * 100);
   //   const [data, setData] = React.useState([]);
   //   const fetchData = async () => {
 
@@ -116,8 +116,8 @@ const TotalProjects = () => {
             </Stack>
             <Stack flex={2} justifyContent={"center"} alignItems={"center"}>
               <ReportsPieChart
-                remainingPercent={remainingPercent}
-                donePercent={donePercent}
+                remainingPercent={remainingPercent?.toFixed(2)}
+                donePercent={donePercent?.toFixed(2)}
               />
               <Stack
                 direction={"row"}
@@ -135,7 +135,7 @@ const TotalProjects = () => {
                     </Typography>
                   </Stack>
                   <Typography textAlign={"right"}>
-                    {Number.isNaN(data?.completedProjects / 100) ? '-' : data?.completedProjects / 100}%
+                    {Number.isNaN((data?.completedProjects / data?.totalProjects) * 100) ? '-' : ((data?.completedProjects / data?.totalProjects)  * 100).toFixed(2)}%
                   </Typography>
                 </Stack>
                 <Stack direction={"column"}>
@@ -149,7 +149,7 @@ const TotalProjects = () => {
                     </Typography>
                   </Stack>
                   <Typography textAlign={"center"}>
-                    {Number.isNaN((data?.remainingProjects / data?.totalProjects) * 100) ? '-': (data?.remainingProjects / data?.totalProjects) * 100}%
+                    {Number.isNaN((data?.remainingProjects / data?.totalProjects) * 100) ? '-': ((data?.remainingProjects / data?.totalProjects) * 100).toFixed(2)}%
                   </Typography>
                 </Stack>
               </Stack>

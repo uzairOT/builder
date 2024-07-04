@@ -8,7 +8,7 @@ const StyledText = styled("text")(({ theme, color }) => ({
   fill: color,
   textAnchor: "middle",
   dominantBaseline: "central",
-  fontSize: "24px",
+  fontSize: "20px",
   fontFamily: "Inter, sans serif",
   color: theme.palette.text.color,
   fontWeight: "600",
@@ -16,14 +16,14 @@ const StyledText = styled("text")(({ theme, color }) => ({
 
 function PieCenterLabel({ children }) {
   return (
-    <StyledText x={160} y={95} color="#F9C74F">
+    <StyledText x={156} y={95} color="#F9C74F">
       {children}
     </StyledText>
   );
 }
 function PieCenterLabel2({ children }) {
   return (
-    <StyledText x={160} y={135} color="#2D9CDB">
+    <StyledText x={156} y={135} color="#2D9CDB">
       {children}
     </StyledText>
   );
@@ -53,8 +53,8 @@ const TotalCostPie = ({ spent, remaning, total }) => {
         series={[
           {
             data: [
-              { id: 0, value: spent, color: "#F9C74F, #1B59F800" },
-              { id: 1, value: remaning, color: "#2D9CDB" },
+              { id: 0, value: spent ? spent : 0, color: "#F9C74F, #1B59F800" },
+              { id: 1, value: remaning ? remaning : 0, color: "#2D9CDB" },
             ],
             innerRadius: 55,
             outerRadius: 95,
@@ -69,8 +69,8 @@ const TotalCostPie = ({ spent, remaning, total }) => {
         height={240}
         width={290}
       >
-        <PieCenterLabel>{spentPercent}%</PieCenterLabel>
-        <PieCenterLabel2>{remaininPercent}%</PieCenterLabel2>
+        <PieCenterLabel>{spentPercent.toFixed(2)}%</PieCenterLabel>
+        <PieCenterLabel2>{remaininPercent.toFixed(2)}%</PieCenterLabel2>
       </PieChart>
     </Stack>
   );

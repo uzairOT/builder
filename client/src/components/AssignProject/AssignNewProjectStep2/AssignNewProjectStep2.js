@@ -114,7 +114,7 @@ function AssignNewProjectStep2({
       onNextStep();
       dispatch(resetUserAndRoleEmail());
     } catch (error) {
-      toast.error(error?.data?.message || error.error || error?.data?.error || 'Something went wrong!');
+      toast.error(error?.data?.message || error?.data?.error || 'Something went wrong!');
       return;
     }
   };
@@ -136,9 +136,9 @@ function AssignNewProjectStep2({
     <>
       <StepTitles
         stepHeading={"Step 2 of 3"}
-        Heading={"invite your Team to the"}
+        Heading={"Invite your Team to"}
         projectName={projectName}
-        stepDiscription={`Join us on ${projectName}! Accepting the invitation grants access to the secure project workspace in Builder Pro with role-based views.`}
+        stepDiscription={`Join us on ${projectName}! Accepting the invitation grants access to the secure project workspace in BuilderBuilder Pro with role-based views.`}
       />
 
       {users.map((user, index) => (
@@ -150,6 +150,7 @@ function AssignNewProjectStep2({
           role={user.role}
           onUpdateEmail={(email) => dispatch(updateUserEmail({ index, email }))}
           onUpdateRole={(role) => dispatch(updateUserRole({ index, role }))}
+          userInfo={userInfo}
         />
       ))}
       <Box
@@ -251,7 +252,7 @@ const inputStyle = {
   border: "1px solid #ccc",
   borderRadius: "12px",
   color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   paddingLeft: "-1.5rem",
 };
 

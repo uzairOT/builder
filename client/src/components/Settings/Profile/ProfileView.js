@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Grid, Typography, TextField } from "@mui/material";
+import { Box, Grid, Typography, TextField, Stack } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import AvatarImg from "../../../assets/settings/UploadProfileIcon.png";
 import Button from "../../UI/CustomButton";
@@ -13,7 +13,17 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { PhoneInput } from "react-international-phone";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
-//import "react-toastify/dist/ReactToastify.css";
+import { PhoneNumberUtil } from 'google-libphonenumber';
+import "react-toastify/dist/ReactToastify.css";
+const phoneUtil = PhoneNumberUtil.getInstance();
+
+const isPhoneValid = (phone) => {
+  try {
+    return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone));
+  } catch (error) {
+    return false;
+  }
+};
 
 function ProfileView() {
   const user = useSelector((state) => state.auth.userInfo);
@@ -22,6 +32,7 @@ function ProfileView() {
   const [selectedFile, setSelectedFile] = useState("");
   const [image, setImage] = useState(user ? user.user.image : null);
   const [phone, setPhone] = useState(user ? user.user.phoneNumber : "");
+  const [phoneIsValid, setPhoneIsValid] = useState(true)
   const navigate = useNavigate();
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const dispatch = useDispatch();
@@ -29,7 +40,7 @@ function ProfileView() {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://192.168.0.113:8080/project/file",
+          "http://3.135.107.71/project/file",
           {
             fileName,
             fileType,
@@ -53,9 +64,36 @@ function ProfileView() {
     firstName: `${user.user.firstName}`,
     lastName: `${user.user?.lastName}`,
     email: user.user.email,
-    address: "your address here",
+    // address: "your address here",
     userId: user.user.id,
   });
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
+
+  const validate = () => {
+    const newErrors = {};
+
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = "First name is required";
+    } else if (formData.firstName.length < 2) {
+      newErrors.firstName = "First name must be at least 2 characters long";
+    }
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = "Last name is required";
+    } else if (formData.lastName.length < 2) {
+      newErrors.lastName = "Last name must be at least 2 characters long";
+    }
+    const isValid = isPhoneValid(phone);
+    // Add more validation rules as needed
+    setPhoneIsValid(isValid)
+    setErrors(newErrors);
+
+    // Return true if no errors
+    return Object.keys(newErrors).length === 0 && isValid;
+  };
 
   console.log(formData);
   const handleChange = (e) => {
@@ -100,6 +138,10 @@ function ProfileView() {
     }
   };
   const handleSubmit = async () => {
+    if (!validate()) {
+      toast.error('Your phone number is not valid')
+      return;
+    }
     try {
       const fileUrl = await uploadFileToServer(selectedFile);
       const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
@@ -110,6 +152,7 @@ function ProfileView() {
           image: uploadedFileUrl,
         };
         const res = await updateProfile(put);
+        console.log(res);
         localStorage.setItem("userInfo", JSON.stringify(res.data));
         dispatch(setCredentials(res.data));
         toast.success("Profile updated successfully");
@@ -139,7 +182,7 @@ function ProfileView() {
       lastName: `${user.user?.lastName}`,
       email: user.user.email,
       phoneNumber: user.user.phoneNumber,
-      address: "your address here",
+      // address: "your address here",
       userId: user.user.id,
     });
   };
@@ -153,10 +196,18 @@ function ProfileView() {
       <Grid container spacing={2}>
         <Grid item md={8} xs={12}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant="h5" sx={Profile}>
-                Profile
+            <Grid item xs={12} sx={Profile}>
+              <Stack direction={'row'}  alignItems={'center'} gap={1}>
+
+              <Typography variant="h5" >
+               My Profile
               </Typography>
+              <Avatar
+                  src={image ? image : AvatarImg}
+                  alt={image ? "Uploaded Avatar" : "Placeholder Avatar"}
+                  sx={{ width: 40, height: 40}}
+                  />
+                  </Stack>
             </Grid>
 
             <Grid item xs={12}>
@@ -164,11 +215,14 @@ function ProfileView() {
               <TextField
                 inputProps={{ maxLength: 50 }}
                 name="firstName"
+                type="text"
                 placeholder="Please enter your first name"
                 value={formData.firstName}
                 onChange={handleChange}
                 fullWidth
                 sx={InputStyle}
+                error={!!errors.firstName}
+                helperText={errors.firstName}
               />
             </Grid>
             <Grid item xs={12}>
@@ -181,6 +235,8 @@ function ProfileView() {
                 onChange={handleChange}
                 fullWidth
                 sx={InputStyle}
+                error={!!errors.lastName}
+                helperText={errors.lastName}
               />
             </Grid>
             <Grid item xs={12}>
@@ -190,7 +246,7 @@ function ProfileView() {
                 name="email"
                 placeholder="Please enter your email"
                 value={formData.email}
-                onChange={handleChange}
+                // onChange={handleChange}
                 fullWidth
                 sx={InputStyle}
               />
@@ -230,8 +286,24 @@ function ProfileView() {
                 }}
                 required
               />
+              { !(phoneIsValid) &&
+                <Box>
+                  <Typography
+                    sx={{
+                      color: "#d32f2f",
+                      fontSize: "12px",
+                      marginLeft: "14px",
+                      marginRight: "14px",
+                      marginTop: "3px",
+                      fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+                    }}
+                  >
+                    Phone is not valid
+                  </Typography>
+                </Box>
+              }
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Typography>Address</Typography>
               <Textarea
                 name="address"
@@ -243,7 +315,7 @@ function ProfileView() {
                 fullWidth
                 sx={textAreaStyle}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sx={{ display: "flex", gap: 1, my: 6.1 }}>
               <Button
                 buttonText="Update Profile"
@@ -268,37 +340,38 @@ function ProfileView() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item md={4} xs={12}>
-          <Box textAlign="center">
-            <Typography variant="subtitle1" sx={changeProfile}>
+        <Grid item md={4} xs={12} alignItems={'center'} justifyContent={'center'} mt={'64px'}>
+          <Stack textAlign="center" alignItems={'center'} justifyContent={'center'} display={'flex'} >
+            {/* <Typography variant="subtitle1" sx={changeProfile}>
               Your Profile Picture
-            </Typography>
+            </Typography> */}
             <div
               onDragOver={(e) => e.preventDefault()}
               onDragEnter={(e) => e.preventDefault()}
               onDrop={handleDrop}
+             
             >
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
-                style={{ display: "none" }}
+                style={{ display: "none", cursor:'pointer'}}
                 id="avatarInput"
                 multiple
               />
-              <label htmlFor="avatarInput">
+              <label htmlFor="avatarInput" style={{border:'1px dashed gray', borderRadius:'999px', padding:'1px'}}>
                 <Avatar
                   src={image ? image : AvatarImg}
                   alt={image ? "Uploaded Avatar" : "Placeholder Avatar"}
-                  sx={{ width: 180, height: 182, mx: "auto" }}
+                  sx={{ width: 180, height: 182, mx: "auto", cursor:'pointer' }}
                 />
               </label>
             </div>
             <Typography variant="subtitle1" sx={changeProfile}>
-              Change Profile
+              Drop Picture to Upload
             </Typography>
-          </Box>
-          <Box sx={{ display: "grid", justifyContent: "center" }}>
+          </Stack>
+          <Box sx={{ display: "none", justifyContent: "center" }}>
             <Box>
               <Typography variant="body1" sx={TextStyle}>
                 First Name:
@@ -424,7 +497,7 @@ const customPhoneStyles = {
   borderRadius: "12px",
   border: "1px solid #D8D8D8",
   background: "#EDF2F6",
-  width: "101.5%",
+  width: "99%",
   // height: heightValue,
   alignSelf: "stretch",
   paddingLeft: "8px",

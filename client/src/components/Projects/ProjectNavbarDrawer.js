@@ -15,11 +15,25 @@ const ProjectNavbarDrawer = ({ navLinks }) => {
 
   return (
     <>
-      <Drawer  open={openMenu} onClose={() => setOpenMenu(false)}>
-        <List sx={{ width: '40vw'}}>
+      <Drawer
+       anchor="right"
+        PaperProps={{
+          style: {
+            top: "100px",
+            height: "calc(100% - 100px)",
+            borderTopLeftRadius: "16px",
+          },
+        }}
+        open={openMenu}
+        onClose={() => setOpenMenu(false)}
+      >
+        <List sx={{ width: "40vw" }}>
           {navLinks.map((navlink) => {
             return (
-              <Link to={`${navlink.path}`} style={{ textDecoration: "none", color: '#4C8AB1' }}>
+              <Link
+                to={`${navlink.path}`}
+                style={{ textDecoration: "none", color: "#4C8AB1" }}
+              >
                 <ListItemButton onClick={() => setOpenMenu(false)}>
                   <ListItemText>{navlink.title}</ListItemText>
                 </ListItemButton>

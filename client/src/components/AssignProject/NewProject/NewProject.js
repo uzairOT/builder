@@ -9,15 +9,16 @@ import { UNSAFE_NavigationContext, useNavigate } from "react-router-dom";
 import SaveAsProject from "../SaveAsProject/SaveAsProject";
 import Footer from "../Footer/Footer";
 
-function NewProject() {
+function NewProject({step3}) {
     const navigate = useNavigate()
-    const [step, setStep] = useState(0);
+    const [step, setStep] = useState(step3 ? step3 : 0);
     const [isSaveAs,setIsSaveAs] = useState(false)
     const [projectId, setProjectId] = useState(null);
     const [locationKeys, setLocationKeys] = useState([]);
+    const local = localStorage.getItem("userInfo");
+    const currentUser = JSON.parse(local);
 
-
-
+console.log(currentUser)
 
     
  
@@ -43,7 +44,7 @@ function NewProject() {
             case -1:
                 return (
                     <div>
-                        <AssignProject />
+                        <AssignProject  />
                     </div>
                 )
             case 0:
@@ -57,15 +58,15 @@ function NewProject() {
                 return (
                     <div>
                         <Header step={step} handlePreviousStep={handlePreviousStep} />
-                        <AssignNewProjectStep3 projectId={projectId} onNextStep={onNextStep} />
-                        <Footer onNextStep={onNextStep} />
+                        <AssignNewProjectStep3 projectId={currentUser?.incompleteProject?.incomplete ?  currentUser?.incompleteProject?.projectId : projectId} onNextStep={onNextStep} />
+                        <Footer onNextStep={onNextStep} projectId={currentUser?.incompleteProject?.incomplete ?  currentUser?.incompleteProject?.projectId : projectId}  />
                     </div>
                 );
             case 2:
                 return (
                     <div>
                         <Header step={step} handlePreviousStep={handlePreviousStep} />
-                        <SaveAsProject setIsSaveAs={setIsSaveAs} onSaveStep={onSaveStep} />
+                        <SaveAsProject currentUserId={currentUser?.user?.id} setIsSaveAs={setIsSaveAs} onSaveStep={onSaveStep} />
                     </div>
                 );
             default:

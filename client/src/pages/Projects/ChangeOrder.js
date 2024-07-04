@@ -12,7 +12,7 @@ const ChangeOrder = () => {
   const { data, refetch } = useGetProjectChangeOrderQuery({
     projectId: currentProjectId,
     userId: user.user.id,
-    changeOrder: true
+    changeOrder: false
   });
   return (
     <Paper style={{ ...themeStyle.borders, width: "99%", marginBottom:'4px',  marginTop:'8px'}}>

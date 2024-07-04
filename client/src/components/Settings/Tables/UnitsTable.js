@@ -8,6 +8,7 @@ import {
   TableRow,
   Paper,
   IconButton,
+  Stack,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import EditIcon from "../../../assets/settings/edit.png";
@@ -32,7 +33,7 @@ const tableCellValueStyle = {
   padding:'4px'
 };
 
-function UnitsTable({setUpdateModalOpen, setUnit,setAddModalOpen, data, isLoading, refetch}) {
+function UnitsTable({setUpdateModalOpen, setUnit,setAddModalOpen, data, isLoading, refetch, debouncedValue, page, error}) {
     const userInfo = useSelector((state) => state.auth.userInfo);
    
     const [deleteUnit] = useDeleteUnitMutation();
@@ -51,7 +52,7 @@ function UnitsTable({setUpdateModalOpen, setUnit,setAddModalOpen, data, isLoadin
           try{
 
             const res = await deleteUnit({id: row.id});
-            await refetch({userId: userInfo.user.id})
+            await refetch({userId: userInfo.user.id, q:debouncedValue, page:page})
           } catch(error) {
             console.log(error)
           }
@@ -59,6 +60,7 @@ function UnitsTable({setUpdateModalOpen, setUnit,setAddModalOpen, data, isLoadin
           toast.info("Default Unit can't be deleted");
         }
        }
+       console.log(error)
   return (
     <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
       <Table>
@@ -67,13 +69,13 @@ function UnitsTable({setUpdateModalOpen, setUnit,setAddModalOpen, data, isLoadin
             
             
             <TableCell sx={tableCellStyle}>Unit</TableCell>
-            <TableCell sx={tableCellStyle}></TableCell>
+            <TableCell sx={tableCellStyle}>Action</TableCell>
            
            
           </TableRow>
         </TableHead>
-        <TableBody>
-          {isLoading ? <>Loading..</> : data?.map((row, index) => (
+        {error ? <Stack p={2}>{'Something went wrong!'}</Stack> : <TableBody>
+          {isLoading ? <>Loading..</> : data?.allUnits.map((row, index) => (
             <TableRow key={index}>
               
               <TableCell sx={tableCellValueStyle}>{row.label}</TableCell>
@@ -91,7 +93,7 @@ function UnitsTable({setUpdateModalOpen, setUnit,setAddModalOpen, data, isLoadin
               </TableCell>
             </TableRow>
           ))}
-        </TableBody>
+        </TableBody>}
       </Table>
     </TableContainer>
   );

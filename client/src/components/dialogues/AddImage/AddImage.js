@@ -27,7 +27,7 @@ import { fileTypeIcons } from "./assets/fileTypes";
 import filePlaceHolder from "../../../assets/FileSvg/file.svg";
 import CloseIcon from "@mui/icons-material/Close";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
-import CheckIcon from '@mui/icons-material/Check';
+import CheckIcon from "@mui/icons-material/Check";
 
 function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
   const [open, setOpen] = useState(false);
@@ -45,7 +45,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://192.168.0.113:8080/project/file",
+          "http://3.135.107.71/project/file",
           {
             fileName,
             fileType,
@@ -53,6 +53,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
           {
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${getTokenFromLocalStorage()}`,
             },
           }
         );
@@ -77,10 +78,27 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     const fileSizeLimit = 25 * 1024 * 1024;
+    if(!file)return
     if (file?.size > fileSizeLimit) {
       toast.warning("Please upload file size less than 25mb.");
       return;
     }
+    const fileType = file?.type?.split("/").pop().toLowerCase();
+    const isImage = [
+      "jpg",
+      "jpeg",
+      "png",
+      "gif",
+      "bmp",
+      "svg",
+      "webp",
+    ].includes(fileType);
+    if (heading === "image" && !isImage) {
+      toast.warning("Please upload an image.");
+      return;
+    }
+    console.log(fileType);
+    console.log(heading);
     setFileName(file.name);
     setFileType(file.type);
     setSelectedFile(file);
@@ -97,11 +115,28 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
+    if(!file)return
     const fileSizeLimit = 25 * 1024 * 1024;
     if (file.size > fileSizeLimit) {
       toast.warning("Please upload file size less than 25mb.");
       return;
     }
+    const fileType = file?.type?.split("/").pop().toLowerCase();
+    const isImage = [
+      "jpg",
+      "jpeg",
+      "png",
+      "gif",
+      "bmp",
+      "svg",
+      "webp",
+    ].includes(fileType);
+    if (heading === "image" && !isImage) {
+      toast.warning("Please upload an image.");
+      return;
+    }
+    console.log(fileType);
+    console.log(heading);
     setFileName(file.name);
     setFileType(file.type);
     setSelectedFile(file);
@@ -132,10 +167,10 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
       console.log(fileUrl);
       const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
       const fileType = getFileType(heading);
-      const apiUrl = `http://192.168.0.113:8080/project/files/${id}`;
-      if(!uploadedFileUrl){
-        toast.error('Error uploading Image.')
-        return
+      const apiUrl = `http://3.135.107.71/project/files/${id}`;
+      if (!uploadedFileUrl) {
+        toast.error("Error uploading Image.");
+        return;
       }
       const requestBody = {
         fileUrl: uploadedFileUrl,
@@ -147,6 +182,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
         .post(apiUrl, requestBody, {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${getTokenFromLocalStorage()}`,
           },
         })
         .then()
@@ -266,25 +302,46 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
               onChange={(e) => setNotes(e.target.value)}
             />
           </Box>
-              <Stack direction={'row'} justifyContent={'start'} alignItems={'center'} gap={4}>
-                <Stack direction={'row'} justifyContent={'start'} alignItems={'center'}>
-
-              <Typography textAlign={"left"} fontFamily={"inherit"} fontSize={'12px'} pl={primary ? '':'13px'}>
-                {primary ? 'Unset' : 'Set'} Primary
-              </Typography>
-              
-          <Switch
-            value="primary"
-            selected={primary}
-            onChange={()=>{
-              setPrimary(prev => !prev);
-            }}
-  
+          {heading === "image" && (
+            <>
+            <Stack
+              direction={"row"}
+              justifyContent={"start"}
+              alignItems={"center"}
+              gap={4}
             >
-          </Switch>
+              <Stack
+                direction={"row"}
+                justifyContent={"start"}
+                alignItems={"center"}
+              >
+                <Typography
+                  textAlign={"left"}
+                  fontFamily={"inherit"}
+                  fontSize={"12px"}
+                  pl={primary ? "" : "13px"}
+                >
+                  {primary ? "Unset" : "Set"} Primary
+                </Typography>
+
+                <Switch
+                  value="primary"
+                  selected={primary}
+                  onChange={() => {
+                    setPrimary((prev) => !prev);
+                  }}
+                ></Switch>
+              </Stack>
+              <Stack>
+                {primary ? (
+                  <CheckIcon sx={{ color: "green" }} />
+                ) : (
+                  <CloseIcon sx={{ color: "red" }} />
+                )}
+              </Stack>
             </Stack>
-            <Stack>{primary ? <CheckIcon sx={{color:'green'}}/> : <CloseIcon sx={{color:'red'}} />}</Stack>
-            </Stack>
+            </>
+          )}
         </DialogContent>
         <DialogActions sx={themeStyle.generalBox}>
           <Button
@@ -306,7 +363,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
 
 const themeStyle = {
   typoTitle: {
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     fontSize: "1.5rem",
     color: "#4C8AB1",
     marginLeft: "-1rem",
@@ -319,7 +376,7 @@ const themeStyle = {
     border: "1px solid #D8D8D8",
     borderRadius: "0.5rem",
     color: "#202227",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     backgroundColor: "#FAFAFA",
   },
   generalBox: {
@@ -333,7 +390,7 @@ const themeStyle = {
     padding: "1rem 2rem",
   },
   typoText: {
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     fontSize: "1rem",
     color: "#202227",
   },

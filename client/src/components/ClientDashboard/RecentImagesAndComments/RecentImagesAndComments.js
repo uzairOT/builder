@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Typography, useTheme, Box, Avatar, Grid } from '@mui/material'
-import Houseimg from "../ProfileView/assets/house.jpg";
+import NoImg from "./assets/no-image.png";
 import "../../../App.css"
 import axios from 'axios';
 import { getTokenFromLocalStorage } from '../../../redux/apis/apiSlice';
@@ -15,7 +15,7 @@ function RecentImagesAndComments() {
     const fetchData = async () => {
         try {
           const response = await axios.get(
-            `http://192.168.0.113:8080/project/files/image/${id}`,
+            `http://3.135.107.71/project/files/image/${id}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -38,12 +38,12 @@ function RecentImagesAndComments() {
       console.log(recentFilesUrls);
       const slicedUrls = recentFilesUrls?.recentFiles?.slice(0, 4);
     return (
-        <>
+        <Box display={{lg:'initial', xs:'none'}}>
 
             <Box sx={themeStyle.box}>
                 <Avatar
                     alt="Avatar"
-                    src={recentFilesUrls?.primaryImg?.fileUrl}
+                    src={recentFilesUrls?.primaryImg?.fileUrl ? recentFilesUrls?.primaryImg?.fileUrl : NoImg}
                     style={themeStyle.imgBox} // Adjust size as needed
               
                 />
@@ -120,7 +120,7 @@ function RecentImagesAndComments() {
             </Box> */}
 
 
-        </>
+        </Box>
     )
 }
 
@@ -148,7 +148,7 @@ const themeStyle = {
         objectFit: 'contain'
     },
     typoText: {
-        fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+        fontFamily: 'Arial Rounded MT, sans-serif',
         fontSize: '1.3rem',
         color: '#484848',
         margin: "1rem 0rem 0rem 1.5rem"
@@ -182,7 +182,7 @@ const themeStyle = {
 
     },
     commentText: {
-        fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+        fontFamily: 'Arial Rounded MT, sans-serif',
         fontSize: "1rem",
         color: "#484848",
         margin: "0.5rem"

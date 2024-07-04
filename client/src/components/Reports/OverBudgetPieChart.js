@@ -33,7 +33,7 @@ const OverBudgetPieChart = () => {
   useEffect(() => {
     fetchDeadlineStats();
   }, []);
-  const height = `calc(93vh - 578px)`;
+  const height = `calc(93vh - 557px)`;
   return (
     <Paper sx={{ height: "100%", borderRadius: "14px" }}>
       <Stack p={2}>
@@ -62,8 +62,8 @@ const OverBudgetPieChart = () => {
         justifyContent={"space-around"}
         spacing={1}
         pt={2}
-        pb={4}
-        sx={{ height: height, overflow: "auto" }}
+        pb={2}
+        sx={{ height: {xl:height, lg:`calc(93vh - 357px)`, md:`lg:calc(93vh - 357px)`, sm:`calc(93vh - 357px)`, xs:`calc(93vh - 357px)`}, overflow: "auto" }}
       >
         <Stack direction={"row"} spacing={1}>
           <CircleIcon

@@ -1,10 +1,10 @@
-@font-face {
-    font-family: 'GT-Walsheim-Regular-Trial';
-    src: url(./assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf) format('opentype');
-}
+/* @font-face {
+    font-family: 'Arial Rounded MT';
+    src: url(./assets/fonts/Arial Rounded MT-BF651b7fc71a47d.otf) format('opentype');
+} */
 
 body {
-    font-family: 'GT-Walsheim-Regular-Trial', sans-serif;
+    font-family: 'Arial Rounded MT', sans-serif;
     background-color: "#eff5ff"; 
 }
 .css-1wf8b0h-MuiTabs-flexContainer{
@@ -46,3 +46,15 @@ body {
   }
 }
 
+.MuiInputBase-root {
+  border: none !important;
+}
+/* Remove border-bottom for the before pseudo-element */
+.MuiInput-root::before {
+  border-bottom: none !important;
+}
+
+/* Remove border-bottom for the after pseudo-element */
+.MuiInput-root::after {
+  border-bottom: none !important;
+}

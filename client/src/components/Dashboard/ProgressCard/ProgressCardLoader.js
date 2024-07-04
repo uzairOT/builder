@@ -51,7 +51,7 @@ const ProgressCardLoader = () => {
                 borderBottomRightRadius: "14px",
                 
               }}
-              variant="rounded"
+              variant="rectangle"
               width={"100%"}
               height={"300px"}
             />
@@ -105,7 +105,7 @@ const ProgressCardLoader = () => {
                 borderBottomRightRadius: "14px",
                 
               }}
-              variant="rounded"
+              variant="rectangle"
               width={"100%"}
               height={"300px"}
             />

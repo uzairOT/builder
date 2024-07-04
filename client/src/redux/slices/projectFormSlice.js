@@ -9,10 +9,10 @@ const initialState = {
   estimatedPrice: '',
   location: '',
   clientName: '',
-  projectColor:'',
-  start_time: dayjs(Date.now()).toString(),
-  end_time: dayjs(Date.now()).add(1, 'day').toString(),
-  users: [{ email: '', role: 'admin' }],
+  projectColor:'#FFF',
+  start_time: '',
+  end_time: '',
+  users: [{ email: '', role: 'none' }],
 };
 
 const projectFormSlice = createSlice({
@@ -47,7 +47,7 @@ const projectFormSlice = createSlice({
       state.end_time = action.payload;
     },
     addUser: (state) => {
-      state.users.push({ email: '', role: 'admin' });
+      state.users.push({ email: '', role: 'none' });
     },
     removeUser: (state, action) => {
       state.users.splice(action.payload, 1);
@@ -61,15 +61,15 @@ const projectFormSlice = createSlice({
       state.users[index].role = role;
     },
     resetUserAndRoleEmail : (state) =>{
-      state.users =  [{ email: '', role: 'admin' }];
-      state.projectColor = '';
+      state.users =  [{ email: '', role: 'none' }];
+      state.projectColor = '#FFF';
       state.location = '';
       state.projectName ='';
-      state.start_time = dayjs(Date.now()).toString();
-      state.end_time = dayjs(Date.now()).add(1, 'day').toString();
+      state.start_time = '';
+      state.end_time = '';
     },
     setSkipInvite : (state) =>{
-      state.users =  [{ email: '', role: 'admin' }];
+      state.users =  [{ email: '', role: 'none' }];
     }
   },
 });

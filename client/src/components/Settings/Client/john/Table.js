@@ -89,7 +89,7 @@ function MasterLineTable({ setUpdateModalOpen }) {
       <TableCell sx={tableCellStyle}>Line Item</TableCell>
       <TableCell sx={tableCellStyle}>Description</TableCell>
       <TableCell sx={tableCellStyle}>Unit</TableCell>
-      <TableCell sx={tableCellStyle}>Margin</TableCell>
+      <TableCell sx={tableCellStyle}>Profit</TableCell>
       <TableCell sx={tableCellStyle}>Project Profile</TableCell>
       <TableCell sx={tableCellStyle}>Quantity</TableCell>
       <TableCell sx={tableCellStyle}>Unit Price</TableCell>

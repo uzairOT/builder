@@ -19,6 +19,7 @@ import {
   MenuItem,
   Select,
   CircularProgress,
+  Stack,
 } from "@mui/material";
 import builder1 from "../Signup/Assets/pngs/builderProYellowLogo.png";
 import downloadForMob from "../Signup/Assets/pngs/downloadForMob.png";
@@ -100,7 +101,15 @@ const Login = () => {
 
         if (res.message === "Login Successful!") {
           dispatch(setCredentials({ ...res }));
-          navigate("/");
+          if(res?.incompleteProject?.incomplete){
+
+            navigate("/assignproject");
+          } else{
+
+            setTimeout(() => {
+              window.location.href = '/';
+            }, 1000); 
+            }
         } else if (res.message === "notFound!") {
           toast.warning("User not found");
           navigate("/signup");
@@ -126,6 +135,7 @@ const Login = () => {
       // console.log("Google login failed");
     }
   };
+  
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -137,7 +147,15 @@ const Login = () => {
       // console.log("login :", res);
       // localStorage.setItem('userInfo', JSON.stringify({...res}));
       dispatch(setCredentials({ ...res }));
-      navigate("/");
+      // navigate("/");
+      if(res?.incompleteProject?.incomplete){
+
+        navigate("/assignproject");
+      } else{
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1000); 
+      }
     } catch (err) {
       console.log(err);
       if(err.status === 'FETCH_ERROR'){
@@ -162,7 +180,7 @@ const Login = () => {
   return (
     <Grid container sx={firstGrid}>
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
-        <Typography sx={firstHeading}>Builder Builder Pro</Typography>
+        <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography>
 
         {/* Button */}
 
@@ -208,7 +226,7 @@ const Login = () => {
         <Grid item sx={formGrid}>
           <Box sx={logoBox}>
             <Typography sx={formHeadingStyle}>Login</Typography>
-            <img src={builder1} width={"20%"} alt="" />
+            <img src={builder1} width={"25%"} alt="" />
           </Box>
           <form style={{ marginTop: "1rem" }} onSubmit={submitHandler}>
             <Box sx={{ marginTop: "0.5rem" }}>
@@ -324,15 +342,21 @@ const Login = () => {
                     ...linkResponsiveColor,
                   }}
                 >
-                  Forget Password ?
+                  Forgot Password ?
                 </Link>
               </Box>
             </Box>
+            <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            >
 
+            
             <Button
               sx={{
                 ...YellowBtn,
                 ...loginButton,
+                
               }}
               onClick={submitHandler}
               type="submit"
@@ -345,6 +369,7 @@ const Login = () => {
                 "Log in with Email"
               )}
             </Button>
+            
             <Typography sx={accountLinkText}>
               Don’t have an account?{"\u00a0"}{" "}
               <Link
@@ -358,12 +383,19 @@ const Login = () => {
                 Sign up
               </Link>
             </Typography>
+            </Stack>
             <Box sx={continueWithBox}>
               <hr style={hrLine} />
               <Typography sx={ContinuewithTextStyle}>
-                {isMobile ? "Or" : "or continue with"}
+                {/* {isMobile ? "Or" : "or continue with"} */}
+                or
               </Typography>
+              <hr style={hrLine} />
             </Box>
+            <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            >
 
             <GoogleLogin
               clientId="960267013158-g1avbe0m8oe44tcflp4urhe4gkh5olb1.apps.googleusercontent.com"
@@ -382,7 +414,9 @@ const Login = () => {
                 </Button>
               )}
             />
+            </Stack>
           </form>
+          
         </Grid>
         {/* </div> */}
         <Grid sx={bottomGrid}>
@@ -446,7 +480,7 @@ const firstGrid = {
 
 const SecondGrid = {
   gap: { lg: "1.1rem", sm: "1rem", xs: "1rem" },
-  alignItems: { lg: "start", md: "start", sm: "center", xs: "center" },
+  alignItems: { lg: "center", md: "center", sm: "center", xs: "center" },
   justifyContent: {
     lg: "start",
     md: "start",
@@ -540,12 +574,12 @@ const linkBox = {
 };
 const checkBox = {
   whiteSpace: "nowrap",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   marginTop: "1rem",
 };
 const forgetPassTypo = {
   whiteSpace: "nowrap",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 600,
   paddingTop: "1rem",
 };
@@ -558,7 +592,7 @@ const accountLinkText = {
     sm: "1rem",
     xs: "2rem",
   },
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: {
     lg: "1rem",
     md: "1rem",
@@ -577,17 +611,19 @@ const accountLinkText = {
   marginTop: "1.5rem",
 };
 const signupLink = {
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 600,
 };
 
 const continueWithBox = {
-  position: "relative",
+  // position: "relative",
+  display:'flex',
+  flexDirection:'row',
   marginTop: {
-    lg: "2.5rem",
-    md: "2.5rem",
-    sm: "2.5rem",
-    xs: "3rem",
+    lg: "1.5rem",
+    md: "1.5rem",
+    sm: "1.5rem",
+    xs: "2rem",
   },
 };
 const hrLine = {
@@ -631,7 +667,7 @@ const selectStyle = {
   ".MuiOutlinedInput-notchedOutline": { border: 0 },
   color: "white",
   border: "none",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1rem",
   fontStyle: "normal",
   fontWeight: "400",
@@ -648,7 +684,7 @@ const hptLinksBox = {
 };
 const firstHeading = {
   color: "#FFF",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
   fontSize: { xl: "2rem", lg: "2rem", md: "1.9rem", sm: "1rem" },
   fontWeight: 400,
@@ -659,7 +695,7 @@ const secondHeading = {
   color: "rgba(255, 255, 255, 0.80)",
   width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: { xl: "2rem", lg: "1.5rem", md: "1rem", sm: "1rem" },
   fontWeight: 400,
 };
@@ -667,7 +703,7 @@ const secondHeading = {
 const thirdHeading = {
   color: "#FFF",
   marginTop: "2rem",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: { xl: "2rem", lg: "1.5rem", md: "1rem", sm: "1rem" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontWeight: 400,
@@ -676,7 +712,7 @@ const thirdHeading = {
 const formHeadingStyle = {
   color: "#4C8AB1",
   textAlign: "center",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "2.1875rem",
   fontWeight: 700,
 };
@@ -692,9 +728,9 @@ const inputStyle = {
 };
 
 const placeholderStyle = {
-  color: "#B8B8B8",
+  color: "black",
   padding: "8px",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1rem",
   fontWeight: 400,
 };
@@ -702,8 +738,8 @@ const placeholderStyle = {
 const labelStyle = {
   display: "block",
   marginBottom: "1rem",
-  color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  color: "#16181B",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.75rem" },
   fontWeight: 400,
 };
@@ -711,7 +747,7 @@ const labelStyle = {
 const hptLinksStyle = {
   color: "#FFF",
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem" },
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 400,
   lineHeight: "normal",
   cursor: "pointer", // Ensure cursor changes on hover
@@ -729,20 +765,20 @@ const hptLinksStyle = {
 };
 
 const googleBtnStyle = {
-  marginBottom: { lg: "6rem", md: "5rem", sm: "4rem", xs: "2rem" },
+  marginBottom: { lg: "3rem", md: "3rem", sm: "3rem", xs: "2rem" },
   display: "flex",
   flexDirection: "row",
   gap: "0.3rem",
   marginTop: { lg: "2.5rem", md: "2rem", sm: "2rem", xs: "3rem" },
-  borderRadius: "2.5rem",
+  borderRadius: { lg: '2.5rem', md: '2.5rem', sm: '2.5rem', xs: '0.5rem' },
   border: "1px solid rgba(6, 32, 72, 0.11)",
   background: "#FFF",
   color: "#333",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
-  fontSize: { lg: "1.25rem", md: "1.25rem", sm: "1.1rem", xs: "1rem" },
+  fontFamily: "Arial Rounded MT, sans-serif",
+  fontSize: { lg: "1rem", md: "1rem", sm: "0.85rem", xs: "0.85rem" }, 
   fontWeight: 400,
   cursor: "pointer",
-  width: { lg: "auto", md: "auto", sm: "auto", xs: "100%" },
+  width: { lg: "19rem", md: "19rem", sm: "19rem", xs: "100%" },
   minWidht: "15rem",
   padding: {
     lg: "0.96875rem 2rem",
@@ -758,21 +794,25 @@ const googleBtnStyle = {
 
 const ContinuewithTextStyle = {
   color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
   fontWeight: 400,
   display: "flex",
-  justifyContent: "start",
-  marginTop: "-1.2rem",
-  position: "absolute",
-  left: { lg: "17%", md: "20%", sm: "30%", xs: "50%" },
-  transform: "translateX(-50%)",
+  justifyContent: "center",
+  alignItems:'center',
+  whiteSpace:'nowrap',
+  // marginTop: "-1.2rem",
+  // position: "absolute",
+  // left: { lg: "17%", md: "20%", sm: "30%", xs: "50%" },
+  // transform: "translateX(-50%)",
   backgroundColor: "#FFFFFF",
   padding: "0 10px",
+  // textAlign:'center'
 };
 
 const loginButton = {
-  width: { lg: "19rem", md: "auto", sm: "auto", xs: "100%" },
+  width: { lg: "19rem", md: "19rem", sm: "19rem", xs: "100%" },
+  fontSize: { lg: "1rem", md: "1rem", sm: "0.85rem", xs: "0.85rem" }, 
 };
 
 export default Login;

@@ -11,20 +11,24 @@ import { useGetProjectChangeOrderQuery } from "../../../redux/apis/Project/proje
 import { ref } from "yup";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import ProjectsInvoices from "./ProjectsInvoices";
+import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
 
 const ProjectInvoicesView = () => {
   const [changeView, setChangeView] = useState(false);
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
+  const userRole = useSelector(getUserRoleFromRedux);
   const events = allEvent.events;
   const params = useParams();
+  const userRoleAuth = useSelector(getUserRoleFromRedux);
+  console.log(userRoleAuth);
   const { id: currentProjectId } = params;
   const currentUser = localStorage.getItem("userInfo");
   const user = JSON.parse(currentUser);
   const { data, refetch } = useGetProjectChangeOrderQuery({
     projectId: currentProjectId,
     userId: user.user.id,
-    changeOrder: false
+    changeOrder: false,
   });
   const dailyForecast = forecast.dailyForecast;
   const { id } = useParams();
@@ -32,6 +36,7 @@ const ProjectInvoicesView = () => {
   const handleChangeView = () => {
     setChangeView(!changeView);
   };
+  console.log(userRole)
 
   return (
     <Paper
@@ -39,51 +44,76 @@ const ProjectInvoicesView = () => {
         ...themeStyle.borders,
         width: "99%",
         marginBottom: "4px",
-        marginTop: '8px',
+        marginTop: "8px",
         height: "100%",
         ...themeStyle.scrollable,
       }}
     >
-      <Box pt={0.5} pb={0}>
-        <BuilderProButton
-          backgroundColor={"#4C8AB1"}
-          variant={"contained"}
-          fontFamily={"Inter, sans serif"}
-          fontSize={"16px"}
-          fontWeight={"600"}
-          padding={{ md: "6px 32px 6px 32px" }}
-          marginLeft={"4px"}
-          handleOnClick={handleChangeView}
-        >
-          {changeView ? "Generate Invoice" : "View Invoice History" }
-        </BuilderProButton>
-      </Box>
-      <Stack pt={1} width={'inherit'}>
-        <Stack justifyContent={"flex-start"} height={"95%"}>
-          {changeView ? (
-            <Stack>
-              <ProjectsInvoices
-                workOrder={true}
-                view={"Work Order Logs"}
-                setChangeView={setChangeView}
-                data={data}
-                refetch={refetch}
-              />
+      {userRole.userRole === "client" ? (
+        <>
+          <Stack>
+            <ProjectsInvoices
+              // workOrder={true}
+              // view={"Work Order Logs"}
+              // setChangeView={setChangeView}
+              // data={data}
+              // refetch={refetch}
+              // userRole={userRole}
+              userRole={userRole}
+                    workOrder={true}
+                    view={"Work Order Logs"}
+                    setChangeView={setChangeView}
+                    data={data}
+                    refetch={refetch}
+            />
+          </Stack>
+        </>
+      ) : (
+        <>
+          {" "}
+          <Box pt={0.5} pb={0}>
+            <BuilderProButton
+              backgroundColor={"#4C8AB1"}
+              variant={"contained"}
+              fontFamily={"Inter, sans serif"}
+              fontSize={"16px"}
+              fontWeight={"600"}
+              padding={{ md: "6px 32px 6px 32px" }}
+              marginLeft={"4px"}
+              handleOnClick={handleChangeView}
+            >
+              {changeView ? "Generate Invoice" : "View Invoice History"}
+            </BuilderProButton>
+          </Box>
+          <Stack pt={1} width={"inherit"}>
+            <Stack justifyContent={"flex-start"} height={"95%"}>
+              {changeView ? (
+                <Stack>
+                  <ProjectsInvoices
+                  userRole={userRole}
+                    workOrder={true}
+                    view={"Work Order Logs"}
+                    setChangeView={setChangeView}
+                    data={data}
+                    refetch={refetch}
+                  />
+                </Stack>
+              ) : (
+                <>
+                  <Stack p={1} borderRadius={"14px"} width={"99%"}>
+                    <AddPhaseView
+                      refetchChangeOrder={refetch}
+                      projectId={id}
+                      adminProjectView={true}
+                      view={"Generate Invoice"}
+                    />
+                  </Stack>
+                </>
+              )}
             </Stack>
-          ) : (
-            <>
-              <Stack p={1} borderRadius={"14px"} width={'99%'}>
-                <AddPhaseView
-                  refetchChangeOrder={refetch}
-                  projectId={id}
-                  adminProjectView={true}
-                  view={"Generate Invoice"}
-                />
-              </Stack>
-            </>
-          )}
-        </Stack>
-      </Stack>
+          </Stack>{" "}
+        </>
+      )}
     </Paper>
   );
 };
@@ -95,19 +125,19 @@ const themeStyle = {
     borderRadius: "14px",
   },
   scrollable: {
-    scrollbarWidth: 'none',  // For Firefox
-    '-ms-overflow-style': 'none',  // For IE and Edge
-    '&::-webkit-scrollbar': {
-      width: '6px'
+    scrollbarWidth: "none", // For Firefox
+    "-ms-overflow-style": "none", // For IE and Edge
+    "&::-webkit-scrollbar": {
+      width: "6px",
     },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'transparent',
-      transition: 'background-color 0.3s',
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "transparent",
+      transition: "background-color 0.3s",
     },
-    '&:hover::-webkit-scrollbar-thumb': {
-      backgroundColor: '#ddd',
+    "&:hover::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ddd",
     },
-    overflowY: 'scroll'
+    overflowY: "scroll",
   },
   border: {
     borderRadius: "14px",

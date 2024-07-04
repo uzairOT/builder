@@ -233,7 +233,7 @@ function UpdateProfileDetails() {
 }
 
 const typoTitle = {
-    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+    fontFamily: 'Arial Rounded MT, sans-serif',
     fontSize: "1.5rem",
     color: "#4C8AB1"
 }
@@ -247,7 +247,7 @@ const inputStyle = {
     border: '1px solid #ccc',
     borderRadius: '12px',
     color: "#202227",
-    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+    fontFamily: 'Arial Rounded MT, sans-serif',
     paddingLeft: "-1.5rem",
     backgroundColor: "#EDF2F6"
 
@@ -291,7 +291,7 @@ const paperPropsStyle = {
 }
 
 const typoText = {
-    fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+    fontFamily: 'Arial Rounded MT, sans-serif',
     fontSize: "0.8rem",
     color: "#202227"
 }

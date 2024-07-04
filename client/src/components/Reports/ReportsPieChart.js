@@ -3,6 +3,7 @@ import { PieChart } from "@mui/x-charts/PieChart";
 import { styled } from "@mui/material/styles";
 
 import React from "react";
+import { valueFormatterPercentage as valueFormatter } from "../../utils/Formatters/valueFormatter";
 
 const StyledText = styled("text")(({ theme, color }) => ({
   fill: color,
@@ -39,8 +40,8 @@ const ReportsPieChart = ({ remainingPercent, donePercent }) => {
         series={[
           {
             data: [
-              { id: 0, value: 20, color: "#1F9EF3, #1B59F800" },
-              { id: 1, value: 80, color: "#eff5ff" },
+              { id: 0, value: remainingPercent, color: "#1F9EF3, #1B59F800" },
+              { id: 1, value: donePercent, color: "#eff5ff" },
             ],
             innerRadius: 50,
             outerRadius: 65,
@@ -50,6 +51,7 @@ const ReportsPieChart = ({ remainingPercent, donePercent }) => {
             endAngle: 360,
             cx: 60,
             cy: 80,
+            valueFormatter
           },
         ]}
         height={160}

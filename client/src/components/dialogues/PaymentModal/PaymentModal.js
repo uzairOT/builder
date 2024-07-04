@@ -1,6 +1,7 @@
 import {
   Autocomplete,
   Button,
+  CircularProgress,
   OutlinedInput,
   Paper,
   Stack,
@@ -20,6 +21,8 @@ import BuilderProButton from "../../UI/Button/BuilderProButton";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
+import { useVerifyCouponMutation } from "../../../redux/apis/Coupon/CouponApiSlice";
+import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -45,28 +48,58 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
-  const [userAddress, setUserAddress] = useState("");
+  const [promoCode, setPromoCode] = useState('');
+  const [discounted, setDiscounted] = useState('');
+  const [newAmount, setNewAmount] = useState(0);
+  const [percentageOff, setPercentageOff] = useState(0)
+  const [verifyCoupon, {isLoading}] = useVerifyCouponMutation();
 
+  const handlePromoCodeChange = (e) =>{
+    setPromoCode(e.target.value);
+  }
+  const handlePromoCode = async () => {
+      try{
+        const res = await verifyCoupon({couponCode: promoCode, amount:currentPlan}).unwrap().then(res=>{
+          console.log(res)
+          setNewAmount(res.newAmount);
+          setDiscounted(res.discount);
+          setPercentageOff(res.discountPercentage);
+        })
+
+      }catch(error){
+        console.error(error)
+      }
+  }
   const amount = currentPlan;
   useEffect(() => {
     console.log("==============1111111111 ", currentUser);
-    fetch("http://192.168.0.113:8080/payment/config").then(async (r) => {
+    fetch("http://3.135.107.71/payment/config", {
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+      }),
+    }).then(async (r) => {
       const { publishableKey } = await r.json();
       setStripePromise(loadStripe(publishableKey));
+    }).catch(error => {
+      console.log(error)
     });
   }, []);
 
   useEffect(() => {
-    fetch("http://192.168.0.113:8080/payment/create-payment-intent", {
+    fetch("http://3.135.107.71/payment/create-payment-intent", {
       method: "POST",
-      headers: {
+      headers: new Headers({
         "Content-Type": "application/json",
-      },
+        Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+      }),
       body: JSON.stringify({ amount: amount }),
     }).then(async (result) => {
       // console.log("-=-=-=-result ", result);
       var { clientSecret } = await result.json();
       setClientSecret(clientSecret);
+    }).catch(error => {
+      console.log(error)
     });
   }, [amount]);
 
@@ -94,6 +127,18 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
     fetchData();
   }, []);
 
+  useEffect(()=>{
+    console.log(promoCode)
+  }, [promoCode])
+  useEffect(()=>{
+    if(discounted === ''){
+
+    }else{
+
+      setDiscounted('')
+      }
+  },[currentPakage])
+
   const themeStyle = {
     promoCode: {
       padding: "8px",
@@ -109,7 +154,6 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
       backgroundColor: "transparent",
     }),
   };
-
   return (
     <Paper style={{ borderRadius: "14px", overflowX: "hidden", width: "100%" }}>
       {/* Stack of the Form*/}
@@ -133,7 +177,7 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
               variant="outlined"
               size="small"
               name="organizationName"
-              value={currentUser.companyName} // Set the value to currentUser.companyName
+              value={currentUser?.companyName} // Set the value to currentUser.companyName
               onChange={handleInputChange}
               disabled // Make the TextField disabled
             />
@@ -185,9 +229,11 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
                 placeholder="Enter promo code"
                 size="small"
                 style={{ width: "67%", backgroundColor: "#F5F5F5" }}
+                value={promoCode}
+                onChange={(e) => handlePromoCodeChange(e)}
               ></OutlinedInput>
-              <PromoCodeButton width={"30%"} variant="contained">
-                Apply Code
+              <PromoCodeButton width={"30%"} variant="contained" disabled={isLoading} onClick={handlePromoCode}>
+                {isLoading ? <CircularProgress sx={{fontSize:'14px'}} /> : 'Apply Code'}
               </PromoCodeButton>
             </Stack>
           </Stack>
@@ -221,12 +267,20 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
               {currentPakage}
             </Typography>
             <Typography>{amount}$</Typography>
+            {/* <Typography fontSize={'14px'} color={'tomato'}>{discounted ? ` -${((discounted/amount) *100)}% off` : ''}</Typography> */}
           </Stack>
+          {discounted && <Stack direction={'row'} justifyContent={'space-between'} >
+            <Stack direction={'row'} gap={1}>
+            <Typography><b>Discounted price: </b></Typography>
+            <Typography>{discounted ? `${newAmount}$    ` : ''}</Typography>
+            </Stack>
+            <Typography fontSize={'14px'} color={'tomato'}>{discounted ? ` -${percentageOff}%` : ''}</Typography>
+          </Stack>}
           {clientSecret && stripePromise && (
             <Elements stripe={stripePromise} options={{ clientSecret }}>
               <CheckoutForm
                 address={values.address}
-                currentPlan={amount}
+                currentPlan={discounted ? newAmount : amount}
                 currentPakage={currentPakage}
                 orgName={currentUser.companyName}
                 userId={currentUser.id}

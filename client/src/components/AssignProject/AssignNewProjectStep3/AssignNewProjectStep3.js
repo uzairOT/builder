@@ -6,7 +6,7 @@ import StepTitles from "../StepTitles/StepTitles";
 
 function AssignNewProjectStep3({projectId, onNextStep }) {
   const navigate = useNavigate();
-
+  console.log(projectId)
 
 
   return (
@@ -17,7 +17,7 @@ function AssignNewProjectStep3({projectId, onNextStep }) {
         // projectName={projectName}
         stepDiscription={`Divide your project in Phases and add line items against phases.`}
       />
-      <AddPhaseView projectId={projectId} onNextStep={onNextStep} />
+      <AddPhaseView projectId={projectId} authUserRole={""} onNextStep={onNextStep} />
     </div>      
   );
 }

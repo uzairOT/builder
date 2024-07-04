@@ -56,7 +56,7 @@ const ChangeOrder = ({value}) => {
               {/* <TableCell sx={themeStyle.tableBody}>{index+1}.</TableCell> */}
               <TableCell sx={themeStyle.tableBody}>{row.subject}</TableCell>
               <TableCell sx={{ ...themeStyle.tableBody }}>
-                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} fontSize={'12px'} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'} >
+                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} fontSize={'12px'} fontFamily={'Arial Rounded MT, sans-serif'} >
                 {row.description}
                 </Typography>
               </TableCell>
@@ -69,7 +69,7 @@ const ChangeOrder = ({value}) => {
               {/* <TableCell sx={themeStyle.tableBody}>{index+1}.</TableCell> */}
               <TableCell sx={themeStyle.tableBody}>{row.subject}</TableCell>
               <TableCell sx={{ ...themeStyle.tableBody }}>
-                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} fontSize={'12px'} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'} >
+                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} fontSize={'12px'} fontFamily={'Arial Rounded MT, sans-serif'} >
                 {row.description}
                 </Typography>
               </TableCell>
@@ -82,7 +82,7 @@ const ChangeOrder = ({value}) => {
               {/* <TableCell sx={themeStyle.tableBody}>{index+1}.</TableCell> */}
               <TableCell sx={themeStyle.tableBody}>{row.subject}</TableCell>
               <TableCell sx={{ ...themeStyle.tableBody }}>
-                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} fontSize={'12px'} fontFamily={'GT-Walsheim-Regular-Trial, sans-serif'} >
+                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} fontSize={'12px'} fontFamily={'Arial Rounded MT, sans-serif'} >
                 {row.description}
                 </Typography>
               </TableCell>
@@ -111,7 +111,7 @@ const themeStyle = {
   tableBody: {
     fontSize: "12px",
     fontWeight: "500",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     color: "#000000",
     padding: "8px 4px 4px 4px",
   },

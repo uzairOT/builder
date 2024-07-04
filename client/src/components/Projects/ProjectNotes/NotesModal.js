@@ -25,7 +25,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 //import "react-toastify/dist/ReactToastify.css";
 
-const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
+const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
   const [open, setOpen] = useState(false);
   const { id } = useParams();
   //console.log(notes);
@@ -40,7 +40,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
   const [addProjectNote] = useAddProjectNotesMutation();
   const [editProjectNotes] = useEditProjectNotesMutation();
 
-  const { refetch } = useGetProjectNotesQuery({ projectId: id });
+  const { refetch } = useGetProjectNotesQuery({ projectId: id, q: q ? q: '' });
   const handleOpen = () => {
     setOpen(true);
   };
@@ -54,14 +54,23 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
     setNoteSubject(e.target.value);
   };
   const handleNoteBody = (e) => {
-    setNoteBody(e.target.value);
+    const contentBody  = e.target.value;
+
+    if(contentBody.length > 1500){
+      setNoteBody(contentBody.substring(0, 1500));
+      return;
+    }
+    if(noteBody.length >1500){
+      return;
+    }
+    setNoteBody(contentBody);
   };
 
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://192.168.0.113:8080/project/file",
+          "http://3.135.107.71/project/file",
           {
             fileName: selectedFile.name,
             fileType: selectedFile.type,
@@ -219,6 +228,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
               placeholder="Type your text here..."
             />
           </Stack>
+            <Typography component='p' fontSize={'10px'} p={0} m={0} mt={0} textAlign={'right'}>{noteBody?.length}/1500</Typography>
           <Stack
             direction={"row"}
             width={"300px"}
@@ -328,7 +338,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes }) => {
               fontFamily={"Inter, sans serif"}
               handleOnClick={handleSubmit}
             >
-              {isLoading ? <CircularProgress size={"18px"} /> : "Add Notes"}
+              {isLoading ? <CircularProgress size={"18px"} /> : showEditModal ? "Edit Notes" : "Add Notes"}
             </BuilderProButton>
           </Stack>
         </Stack>

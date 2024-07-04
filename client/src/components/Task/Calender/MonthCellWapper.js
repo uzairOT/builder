@@ -27,9 +27,9 @@ const MonthCellWapper = ({props, isDrawerOpen, monthView, isProjectPage}) => {
   }
 
   if(monthView !== 'tasks'){return (
-    <Stack border={'1px solid'} borderRadius={'4px 4px 4px 4px'} borderColor={'#31313159'} m={0.2} pt={isDrawerOpen ? 1 : 3} flexWrap={'wrap'} sx={{backgroundColor: backgroundColor}}>
+    <Stack   border={'1px solid'} borderRadius={'4px 4px 4px 4px'} borderColor={'#31313159'} m={0.2} pt={isDrawerOpen ? 1 : 3} flexWrap={'wrap'} sx={{backgroundColor: backgroundColor}}>
         <Stack direction={'row'} justifyContent={isDrawerOpen ? 'space-between':'space-evenly'}>
-        <img src={PartlySunny} alt='logo' width={isDrawerOpen ?  '30%' : '60%'} height={'100%'} style={{marginTop: '4px'}}></img>
+        <img src={PartlySunny} alt='logo' width={isDrawerOpen ?  isProjectPage ? '20%' : '30%' : '60%'} style={{marginTop: '4px'}}></img>
         <Stack alignSelf={'flex-end'} ml='-15px' spacing={isDrawerOpen ? 1 : 0} pr={isDrawerOpen ? 1 : 0}>
         <Typography fontSize={isDrawerOpen ? '12px' : '10px'} fontWeight={'700'} color={isCurrentDay ? 'white': '#FFCB45'}>Sunny</Typography>
         <Typography fontSize={isDrawerOpen ? '14px' : '12px'} fontWeight={'700'} color={isCurrentDay ? 'white': '#FFCB45'} textAlign={'right'}>23°</Typography>
@@ -38,7 +38,7 @@ const MonthCellWapper = ({props, isDrawerOpen, monthView, isProjectPage}) => {
     </Stack>
   )} else {
     return(
-      <Stack border={'1px solid'} width={'100%'} borderRadius={'4px 4px 4px 4px'} borderColor={'#31313159'} m={0.2} pt={isDrawerOpen ? 1 : 3} flexWrap={'wrap'} sx={{backgroundColor: backgroundColor}}>
+      <Stack  border={'1px solid'} width={'100%'} borderRadius={'4px 4px 4px 4px'} borderColor={'#31313159'} m={0.2} pt={isDrawerOpen ? 1 : 3} flexWrap={'wrap'} sx={{backgroundColor: backgroundColor}}>
      
       </Stack>
     )

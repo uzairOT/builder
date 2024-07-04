@@ -69,7 +69,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
       padding: "5px",
     },
     toolbarLabel: {
-      fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+      fontFamily: "Arial Rounded MT, sans-serif",
       color: "#484848",
       fontWeight: "500",
     },

@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 
 
 const WeatherAppDailyForecast = ({ forecast }) => {
-  const temperatureUnit = useSelector(state => state.dailyForecast.temperatureUnit);
+  const query = useSelector(state => state.dailyForecast.query);
   let weatherIcon;
     switch (forecast.weatherDetails){
       case 'Clouds':
@@ -44,7 +44,7 @@ const WeatherAppDailyForecast = ({ forecast }) => {
                     alt="/"
                     sx={themeStyle.dailyForecastBubbleImg}
                 ></Box>
-                <Typography sx={{...themeStyle.dailyForecastBubbleText, fontSize: '14px'} }>{forecast.temp}°{temperatureUnit === 'metric' ? 'C' :'F'}</Typography>
+                <Typography sx={{...themeStyle.dailyForecastBubbleText, fontSize: '14px'} }>{Math.round(forecast.temp)}°{query.temperatureUnit === 'metric' ? 'C' :'F'}</Typography>
             </Paper>
         </Stack>
     );

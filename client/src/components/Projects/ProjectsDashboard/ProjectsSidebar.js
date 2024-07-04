@@ -6,7 +6,7 @@ import ProjectCard from "../../UI/Card/ProjectCard";
 import projects from "./assets/data/projects.json";
 import { useGetProjectUserRoleMutation, useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { addProjects } from "../../../redux/slices/Project/userProjectsSlice";
+import { addProjects, projectsPackage } from "../../../redux/slices/Project/userProjectsSlice";
 import { addInitialPhase } from "../../../redux/slices/Project/projectInitialProposal";
 import { authUserRole } from "../../../redux/slices/auth/userRoleSlice";
 
@@ -44,19 +44,22 @@ const ProjectsSidebar = ({reports}) => {
   };
   const { id } = useParams();
   //console.log(id);
-  const { data, isLoading, error } = useGetUserProjectsQuery({
-    userId: currentUserId,
-  });
+  // const { data, isLoading, error } = useGetUserProjectsQuery({
+  //   userId: currentUserId,
+  // });
+  const {projects, isLoading , error} = useSelector(projectsPackage);
+
   useEffect(() => {
-    //console.log(data)
-    if (data) {
-      dispatch(addProjects(data));
+    const selectedProject = projects[0]?.find(projectProfileCard => Number(projectProfileCard.id) === Number(id));
+    if(selectedProject){
+      setActiveBtn(selectedProject?.buildType);
     }
-  }, [data, dispatch]);
-  if (isLoading) {
+  },[id])
+
+  if (isLoading && projects[0]?.length < 1) {
     return <>Loading...</>;
   }
-  console.log(data)
+
   return (
     <>
       <Stack p={2}>
@@ -80,6 +83,7 @@ const ProjectsSidebar = ({reports}) => {
           ml={"-16px"}
           mr={"-16px"}
           justifyContent={"center"}
+          mb={'4px'}
         >
           <BuilderProButton
             variant={"contained"}
@@ -151,10 +155,11 @@ const ProjectsSidebar = ({reports}) => {
         >
           <Stack spacing={1} pl={2} pr={2} pt={1}>
             <>
-              {data?.projects?.map((projectProfileCard) => {
+              {projects[0]?.map((projectProfileCard) => {
                 const selected = Number(projectProfileCard.id) === Number(id);
                 if (projectProfileCard.buildType === activeBtn) {
                   return (
+                    <React.Fragment  key={projectProfileCard.id}>
                     <Link
                       key={projectProfileCard.id}
                       onClick={(e)=>{
@@ -168,6 +173,7 @@ const ProjectsSidebar = ({reports}) => {
                         selected={selected}
                       />
                     </Link>
+                    </React.Fragment>
                   );
                 } else {
                   return <></>;
@@ -187,19 +193,19 @@ const themeStyle = {
   title: {
     fontSize: "22px",
     fontWeight: "500",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     color: "#000000",
   },
   subtile: {
     fontSize: "16px",
     fontWeight: "500",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     color: "#4C8AB1",
   },
   listTitle: {
     fontSize: "12px",
     fontWeight: "500",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     color: "#535353C9",
   },
   scrollable: {

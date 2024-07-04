@@ -181,7 +181,7 @@ const themeStyle = {
   },
   titleTypo: {
     color: "#484848",
-    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    fontFamily: "Arial Rounded MT, sans-serif",
     fontSize: "1.3rem",
     margin: "1rem 2rem",
   },

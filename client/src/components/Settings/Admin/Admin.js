@@ -8,6 +8,7 @@ import AddModal from '../../dialogues/Settings/AddModal';
 import UpdateModal from '../../dialogues/Settings/UpdateModal';
 
 import { useOutletContext } from 'react-router-dom';
+import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
 
 
 
@@ -18,7 +19,13 @@ function Admin() {
   const [userId, setUserId] = useState();
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
+  const [page, setPage]= useState(1);
+  const [totalEntries, setTotalEntries] = useState(0)
+  const [totalPages, setTotalPages] = useState(0)
+  const [searchInput, setSearchInput] = useState("");
+  const debouncedValue =  QueryDebouncer(searchInput,500);
   const ADMIN_VIEW = 'admin';
+  const [refreshData, setRefreshData] = useState(true);
  
   useEffect(()=> {
     //console.log("Admin useEffect userId: ", userId)
@@ -37,11 +44,38 @@ function Admin() {
     setUpdateModalOpen(false);
   };
 
+  const handlePageChange = (event, newValue) => {
+    setPage(newValue)
+  }
+
+  
+  let startIndex = 1;
+  let endIndex = 6;
+  if(page===1){
+    startIndex = 1;
+    if(totalEntries < 6){
+      endIndex = totalEntries;
+    }
+  }else{
+    startIndex = 1 + (6*(page-1));
+    endIndex = 6*page;
+    if(endIndex > totalEntries){
+      endIndex = endIndex -totalEntries;
+      endIndex = (startIndex + endIndex) -1;
+    }
+  }
+  if(totalEntries === undefined){
+    startIndex = 0;
+    endIndex = 0;
+  }
+  useEffect(()=>{
+    setPage(1)
+  },[debouncedValue])
 //console.log(userId)
   return (
-    <div style={{padding:"20px"}}>
-      <Header title="Admin"   OpenAddModal={OpenAddModal}/>
-      <CustomTable setUpdateModalOpen={setUpdateModalOpen} userId={userId} setUserId={setUserId}/>
+    <div style={{padding:"20px"}}> 
+      <Header title="Admin"   OpenAddModal={OpenAddModal} setSearchInput={setSearchInput} searchInput={searchInput}/>
+      <CustomTable setUpdateModalOpen={setUpdateModalOpen} refreshData={refreshData} page={page} userId={userId} setTotalEntries={setTotalEntries} setTotalPages={setTotalPages}  setUserId={setUserId} searchInput={debouncedValue}/>
 
       <Box mt={2} mb={2}>
         <Divider />
@@ -53,13 +87,13 @@ function Admin() {
           justifyContent: {xs:"center",md:"space-between"} ,
         }}
       >
-        {/* <Typography variant="body1" sx={paginationTextStyle}>
-          Showing data 1 to 4 of 25 entries
-        </Typography> */}
-        {/* <Pagination count={10} variant="outlined" shape="rounded"   sx={paginationStyle}/> */}
+        <Typography variant="body1" sx={paginationTextStyle}>
+          Showing data {startIndex} to {endIndex} of {totalEntries === undefined ? 0 : totalEntries} entries
+        </Typography>
+        <Pagination count={totalPages} variant="outlined" shape="rounded" onChange={handlePageChange} page={page}  sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Admin"} open={isAddModalOpen} onClose={handleCloseAddModal} />
-      <UpdateModal title={"Admin"} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} />
+      <AddModal title={"Admin"} open={isAddModalOpen} refreshData={refreshData} setRefreshData={setRefreshData} onClose={handleCloseAddModal} />
+      <UpdateModal title={"Admin"} open={isUpdateModalOpen} refreshData={refreshData} setRefreshData={setRefreshData} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} />
     </div>
   );
 }

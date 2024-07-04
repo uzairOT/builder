@@ -23,6 +23,8 @@ import {
   MenuItem,
   Autocomplete,
   InputAdornment,
+  IconButton,
+  Stack,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -40,16 +42,20 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { DemoItem } from "@mui/x-date-pickers/internals/demo";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc"; // Optional if you need UTC handling
-import { useAddUnitMutation, useGetUnitsQuery, useUpdateMasterLineItemMutation } from "../../../redux/apis/Project/userProjectApiSlice";
+import {
+  useAddUnitMutation,
+  useGetUnitsQuery,
+  useUpdateMasterLineItemMutation,
+} from "../../../redux/apis/Project/userProjectApiSlice";
 import CreateableSelect from "react-select/creatable";
+import { Close } from "@mui/icons-material";
 
 function UpdateMasterLine({
-
   handleUpdateOpen,
   handleUpdateClose,
   refetch,
   MasterLineItem,
-  userId
+  userId,
 }) {
   // const { data, isLoading, isSuccess } = useGetMasterLineItemQuery({
   //   MasterLineItemId: MasterLineItem,
@@ -83,7 +89,9 @@ function UpdateMasterLine({
     MasterLineItem ? dayjs(MasterLineItem.end_day) : null
   );
 
-  const [margin, setMargin] = useState(MasterLineItem ? MasterLineItem.margin : "");
+  const [margin, setMargin] = useState(
+    MasterLineItem ? MasterLineItem.margin : ""
+  );
   const [percentage, setPercentage] = useState(
     MasterLineItem ? MasterLineItem.percentage : ""
   );
@@ -102,12 +110,17 @@ function UpdateMasterLine({
   const dispatch = useDispatch();
   const { id } = useParams();
   const local = localStorage.getItem("projectId");
-
+  const creatableRef = useRef();
   const currentProject = JSON.parse(local);
   const phases = useSelector((state) => state.projectInitialProposal.phases);
   const userInfo = useSelector((state) => state.auth.userInfo);
   //console.log(userInfo)
-  const { data, isLoading, refetch: refetchUnits, isSuccess } = useGetUnitsQuery({
+  const {
+    data,
+    isLoading,
+    refetch: refetchUnits,
+    isSuccess,
+  } = useGetUnitsQuery({
     userId: userInfo.user.id,
   });
 
@@ -125,25 +138,25 @@ function UpdateMasterLine({
     longDescription,
   };
 
-//   useEffect(() => {
-//     const getData = setTimeout(() => {
-//       axios
-//         .get(
-//           `http://192.168.0.113:8080/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`,
-//           {
-//             headers: {
-//               Authorization: `Bearer ${userInfo.token}`, // Add authorization header
-//             },
-//           }
-//         )
-//         .then((response) => {
-//           setAutoComplete(response.data.MasterLines);
-//           //console.log(response.data.MasterLines);
-//         });
-//     }, 500);
+  //   useEffect(() => {
+  //     const getData = setTimeout(() => {
+  //       axios
+  //         .get(
+  //           `http://3.135.107.71/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`,
+  //           {
+  //             headers: {
+  //               Authorization: `Bearer ${userInfo.token}`, // Add authorization header
+  //             },
+  //           }
+  //         )
+  //         .then((response) => {
+  //           setAutoComplete(response.data.MasterLines);
+  //           //console.log(response.data.MasterLines);
+  //         });
+  //     }, 500);
 
-//     return () => clearTimeout(getData);
-//   }, [formData.phaseName]);
+  //     return () => clearTimeout(getData);
+  //   }, [formData.phaseName]);
 
   const handleClickOpen = () => {
     handleUpdateOpen();
@@ -157,10 +170,9 @@ function UpdateMasterLine({
     setOpen(false);
   };
 
-
-  const handleTotalCostChange = () => {
-    setTotalCost(Number(total) + Number(margin));
-  };
+  // const handleTotalCostChange = () => {
+  //   setTotalCost(Number(total) + Number(margin));
+  // };
   // console.log("Line Item Element", MasterLineItem);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -173,25 +185,28 @@ function UpdateMasterLine({
       return;
     }
     // if (LineHeading === "Update Line Item") {
-      //console.log("updading..")
-      const MasterLineItemId = MasterLineItem.id;
-      const data1 = {
-        ...formData,
-        id: MasterLineItemId,
-        projectId: id,
-      };
-      // console.log("Update Alin Item",data1)
+    //console.log("updading..")
+    const MasterLineItemId = MasterLineItem.id;
+    const data1 = {
+      ...formData,
+      id: MasterLineItemId,
+      projectId: id,
+    };
+    // console.log("Update Alin Item",data1)
 
-      try {
-        const res = await updateMasterLine(data1);
-        refetch(userId);
-        toast.success(
-            res?.data?.message || 'Success'
-        );
-      } catch (error) {
-        toast.error(error?.data?.message || error.error || error?.data?.error || 'Something went wrong!');
-        return;
-      }
+    try {
+      const res = await updateMasterLine(data1);
+      refetch(userId);
+      toast.success(res?.data?.message || "Success");
+    } catch (error) {
+      toast.error(
+        error?.data?.message ||
+          error.error ||
+          error?.data?.error ||
+          "Something went wrong!"
+      );
+      return;
+    }
     // } else {
     //   const {
     //     phaseName,
@@ -239,14 +254,35 @@ function UpdateMasterLine({
       padding: "4px",
     }),
   };
+  // const handleSetUnit = async (selectedOption, actionType) => {
+  //   console.log(actionType);
+  //   if (selectedOption === null || selectedOption?.value === MasterLineItem?.unit) {
+  //     return;
+  //   }
+  //   const existingUnit = data?.some(
+  //     (unit) => unit?.value === selectedOption?.value
+  //   );
+  //   console.log(selectedOption);
+  //   console.log(existingUnit);
+  //   if (existingUnit) {
+  //     setUnit(selectedOption.value);
+  //   } else {
+  //     setUnit(selectedOption.value);
+  //     await addUnit({ ...selectedOption, userId: userInfo.user.id });
+  //     await refetchUnits({ userId: userInfo.user.id });
+  //   }
+  // };
   const handleSetUnit = async (selectedOption, actionType) => {
     console.log(actionType);
-    if (selectedOption === null || selectedOption?.value === MasterLineItem?.unit) {
+    if (
+      selectedOption === null ||
+      selectedOption?.value === MasterLineItem?.unit
+    ) {
       return;
     }
-    const existingUnit = data?.some(
-      (unit) => unit?.value === selectedOption?.value
-    );
+    const existingUnit = Array.isArray(data)
+      ? data?.allUnits?.some((unit) => unit?.value === selectedOption?.value)
+      : [];
     console.log(selectedOption);
     console.log(existingUnit);
     if (existingUnit) {
@@ -254,38 +290,53 @@ function UpdateMasterLine({
     } else {
       setUnit(selectedOption.value);
       await addUnit({ ...selectedOption, userId: userInfo.user.id });
-      await refetchUnits({ userId: userInfo.user.id });
+      await refetch({ userId: userInfo.user.id });
     }
+  };
+  const handleTotalCostChange1 = (e) => {
+    const value = e.target.value;
+    setTotalCost(() => {
+      if (total) {
+        handleMarginAndPercentageChange(value);
+      }
+      return value;
+    });
   };
   const handleMarginChange = (e) => {
     if (total) {
-      const inputMargin = e.target.value;
-      const result = (inputMargin * 100) / total;
-      const roundedResult = Math.round(result * 10) / 10;
-      setMargin(() => {
-        setPercentage(roundedResult);
+      const value = parseFloat(e.target.value);
 
-        return inputMargin;
+      setMargin(() => {
+        return value ? value : 0;
+      });
+      setTotalCost(value + parseFloat(total));
+      setPercentage(() => {
+        const percentage = parseFloat((value / total) * 100);
+        return percentage ? percentage : 0;
       });
     } else {
-      //toastId added to prevent duplication
-      toast.warning("Total field is empty!", { toastId: 12 });
+      toast.error(`Add Client Cost`);
+      setMargin(0);
     }
   };
-  
+
   const handlePercentageChange = (e) => {
     if (total) {
-      const percent = e.target.value;
-      const result = (total * percent) / 100;
-      const roundedResult = Math.round(result * 10) / 10;
+      const value = parseFloat(e.target.value);
+      const actualCost = parseFloat(total);
+      const margin = parseFloat(actualCost * (value / 100));
       setPercentage(() => {
-        setMargin(roundedResult);
-
-        return percent;
+        return value ? value : 0;
       });
+      setMargin(() => {
+        return margin ? margin : 0;
+      });
+      setTotalCost(actualCost + margin);
     } else {
-      //toastId added to prevent duplication
-      toast.warning("Total field is empty!", { toastId: 12 });
+      toast.error(`Add Actual Cost`, {
+        toastId: "percentageValidation",
+      });
+      setPercentage(0);
     }
   };
 
@@ -324,9 +375,45 @@ function UpdateMasterLine({
   //     setLongDescription(data.MasterLineItem.notes);
   //   }
   // }, [isSuccess, data]);
-  useEffect(() => {
-    handleTotalCostChange();
-  }, [margin]);
+  
+  // useEffect(() => {
+  //   handleTotalCostChange();
+  // }, [margin]);
+  // useEffect(() => {
+  //   if (margin === "") {
+  //   } else {
+  //     handleTotalCostChange();
+  //   }
+  // }, [quantity, unitPrice]);
+  const handleTotalCostChange = (margin, total) => {
+    setTotalCost((prev) => {
+      const numberMargin = Number(margin) 
+      const numberTotal = Number(total)
+      return numberMargin + numberTotal;
+    });
+  };
+
+  const handleMarginAndPercentageChange = () =>{
+      const margin = parseFloat(totalCost - total);
+      const percentage = parseFloat((margin/total) * 100)
+      console.log(total)
+      setMargin(margin);  
+      setPercentage(percentage);
+  }
+  // useEffect(()=>{
+  //   if(total){    
+  //     handleMarginAndPercentageChange();
+  //     }
+  // }, [totalCost])
+
+  useEffect(()=>{
+  
+    if(MasterLineItem){    
+      const margin = MasterLineItem.margin;
+      const total = MasterLineItem.total;
+      handleTotalCostChange(margin, total);
+      }
+  }, [MasterLineItem])
 
   console.log(formData);
   return (
@@ -341,8 +428,20 @@ function UpdateMasterLine({
             onSubmit: handleSubmit,
           }}
         >
-          <DialogTitle sx={typoTitle}>Update Master Line Item</DialogTitle>
-          <DialogContent sx={{ padding: "3rem" }}>
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <DialogTitle sx={typoTitle}>Update Master Line Item</DialogTitle>
+            <IconButton
+              style={{ width: "30px", height: "30px" }}
+              onClick={handleClickClose}
+            >
+              <Close />
+            </IconButton>
+          </Stack>
+          <DialogContent sx={{ padding: "3rem", paddingTop: '1rem' }}>
             <Typography sx={typoText}>Master Line Item</Typography>
             <>
               {/* <Autocomplete
@@ -385,7 +484,7 @@ function UpdateMasterLine({
                 )}
               /> */}
               <TextField
-              inputProps={{ maxLength: 50 }}
+                inputProps={{ maxLength: 50 }}
                 sx={inputStyle}
                 required
                 margin="dense"
@@ -399,7 +498,7 @@ function UpdateMasterLine({
 
               <Typography sx={typoText}>Description</Typography>
               <TextField
-              inputProps={{ maxLength: 50 }}
+                inputProps={{ maxLength: 50 }}
                 sx={{ ...inputStyle }}
                 required
                 margin="dense"
@@ -415,15 +514,16 @@ function UpdateMasterLine({
                   <Typography sx={typoText}>Unit</Typography>
                   <Box mt={"8px"} mb={"8px"}>
                     <CreateableSelect
-                      // ref={creatableRef}
-                      defaultInputValue={MasterLineItem ? MasterLineItem?.unit :  unit}
-
+                      ref={creatableRef}
+                      defaultInputValue={
+                        MasterLineItem ? MasterLineItem?.unit : unit
+                      }
                       // value={findValueInData(unit)}
                       placeholder={"Select Unit"}
                       styles={selectStyles}
                       // defaultValue={unit}
                       onChange={handleSetUnit}
-                      options={data ? data : []}
+                      options={data?.allUnits ? data?.allUnits : []}
                       isLoading={isLoading}
                       isDisabled={isLoading}
                       // onCreateOption={handleCreateNewUnit}
@@ -454,7 +554,6 @@ function UpdateMasterLine({
                 <Box sx={innerBox}>
                   <Typography sx={typoText}>Quantity</Typography>
                   <TextField
-                  
                     sx={{ ...inputStyle, ...leftSpace }}
                     required
                     margin="dense"
@@ -474,7 +573,6 @@ function UpdateMasterLine({
               </Box>
               <Typography sx={typoText}>Unit Price</Typography>
               <TextField
-             
                 sx={inputStyle}
                 required
                 margin="dense"
@@ -491,7 +589,7 @@ function UpdateMasterLine({
                 }
               />
 
-              <Typography sx={typoText}>Cost</Typography>
+              <Typography sx={typoText}>Actual Cost</Typography>
               <TextField
                 sx={inputStyle}
                 required
@@ -502,9 +600,27 @@ function UpdateMasterLine({
                 variant="standard"
                 value={formData.total}
               />
-               <Box sx={parallelBox}>
+               <Typography sx={typoText}>Client Cost</Typography>
+              <TextField
+                sx={inputStyle}
+                placeholder="200"
+                required
+                margin="dense"
+                id="total"
+                name="total"
+                type="number"
+                variant="standard"
+                value={totalCost}
+                onChange={handleTotalCostChange1}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">$</InputAdornment>
+                  ),
+                }}
+              />
+              <Box sx={parallelBox}>
                 <Box sx={innerBox}>
-                  <Typography sx={typoText}>Margin</Typography>
+                  <Typography sx={typoText}>Profit</Typography>
 
                   <TextField
                     sx={{ ...inputStyle, marginLeft: "18px" }}
@@ -515,7 +631,7 @@ function UpdateMasterLine({
                     name="margin"
                     type="margin"
                     variant="standard"
-                    value={formData.margin}
+                    value={Math.round(formData.margin * 100) / 100}
                     onChange={handleMarginChange}
                     InputProps={{
                       startAdornment: (
@@ -535,7 +651,7 @@ function UpdateMasterLine({
                     name="margin"
                     type="margin"
                     variant="standard"
-                    value={formData.percentage}
+                    value={Math.round(formData.percentage * 100) / 100}
                     onChange={handlePercentageChange}
                     InputProps={{
                       endAdornment: (
@@ -556,7 +672,7 @@ function UpdateMasterLine({
                       border: "1px solid #ccc",
                       borderRadius: "12px",
                       color: "#202227",
-                      fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+                      fontFamily: "Arial Rounded MT, sans-serif",
                       backgroundColor: "#EDF2F6",
                       ...leftSpace,
                     }}
@@ -580,7 +696,7 @@ function UpdateMasterLine({
                       border: "1px solid #ccc",
                       borderRadius: "12px",
                       color: "#202227",
-                      fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+                      fontFamily: "Arial Rounded MT, sans-serif",
                       backgroundColor: "#EDF2F6",
                       ...leftSpace,
                     }}
@@ -596,26 +712,10 @@ function UpdateMasterLine({
                   </Box>
                 </Box>
               </Box> */}
-              <Typography sx={typoText}>Total Cost</Typography>
-              <TextField
-                sx={inputStyle}
-                placeholder="200"
-                required
-                margin="dense"
-                id="total"
-                name="total"
-                type="number"
-                variant="standard"
-                value={totalCost}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">$</InputAdornment>
-                  ),
-                }}
-              />
+             
               <Typography sx={typoText}>Notes</Typography>
               <TextField
-              inputProps={{ maxLength: 50 }}
+                inputProps={{ maxLength: 50 }}
                 sx={{ ...inputStyle, height: "5rem" }}
                 required
                 margin="dense"
@@ -642,7 +742,7 @@ function UpdateMasterLine({
 }
 
 const typoTitle = {
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1.5rem",
   color: "#4C8AB1",
 };
@@ -656,7 +756,7 @@ const inputStyle = {
   border: "1px solid #ccc",
   borderRadius: "12px",
   color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   paddingLeft: "-1.5rem",
   backgroundColor: "#EDF2F6",
   outline: "none !important",
@@ -678,7 +778,7 @@ const paperPropsStyle = {
 };
 
 const typoText = {
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "0.8rem",
   color: "#202227",
 };

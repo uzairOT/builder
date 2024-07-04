@@ -284,14 +284,14 @@ const labelStyle = {
   display: "block",
   marginBottom: "1rem",
   color: "#202227",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.75rem" },
   fontWeight: 400,
 };
 const placeholderStyle = {
   color: "#B8B8B8",
   padding: "8px",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1rem",
   fontWeight: 400,
 };

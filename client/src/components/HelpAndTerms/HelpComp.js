@@ -32,7 +32,7 @@ const HelpComp = () => {
           sx={{
             fontSize: "32px",
             fontWeight: 600,
-            fontFamily: "GT Walsheim Trial",
+            fontFamily: "inherit",
             marginBottom: "2rem",
             color: "#202227",
           }}

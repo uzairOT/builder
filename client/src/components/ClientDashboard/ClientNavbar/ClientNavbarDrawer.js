@@ -86,14 +86,14 @@ const NavbarDrawer = () => {
                     <ListItemButton onClick={handleDashboard}>
                         <ListItemText sx={themeStyle.tabText} >Dashboard</ListItemText>
                     </ListItemButton>
-                    <Divider variant='fullWidth'></Divider>
+                    <Divider></Divider>
                     {tabsWithDropdown.map((tab, index) => (
                         <React.Fragment key={index}>
                             <ListItemButton sx={themeStyle.tabText} onClick={(event) => handleTabClick(event, tab.name)}>
                                 <ListItemText sx={themeStyle.tabText}>{tab.name}</ListItemText>
                                 <ArrowDropDownIcon />
                             </ListItemButton>
-                            <Divider variant='fullWidth' />
+                            <Divider />
                         </React.Fragment>
                     ))}
                 </List>
@@ -128,7 +128,7 @@ const themeStyle = {
     tabText: {
         color: "#484848",
         '& .MuiTypography-root': {
-            fontFamily: 'GT-Walsheim-Regular-Trial, sans-serif',
+            fontFamily: 'Arial Rounded MT, sans-serif',
             fontSize: "1rem"
         },
         '&:hover': {

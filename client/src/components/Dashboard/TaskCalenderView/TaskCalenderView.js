@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import TaskCalender from '../../Task/Calender/TaskCalender'
-import { Box, Drawer, IconButton } from '@mui/material'
+import React, { useState } from "react";
+import TaskCalender from "../../Task/Calender/TaskCalender";
+import { Box, Drawer, IconButton } from "@mui/material";
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
-import './styles/drawer.css'
-import moment from 'moment';
+import "./styles/drawer.css";
+import moment from "moment";
 
 const TaskCalenderView = ({ dailyForecast, eventsArr }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -20,29 +20,73 @@ const TaskCalenderView = ({ dailyForecast, eventsArr }) => {
     setIsDrawerOpen(!isDrawerOpen);
   };
   return (
-    <Box height={"100%"} width={"100%"} overflow='auto' display={'flex'} flexDirection={'column'} style={{ scrollbarWidth: 'none' }}>
-      <Box display={''} sx={{ alignSelf: 'flex-start', marginBottom: '-64px', marginTop: '18px', marginLeft: '5px' }}>
-        <IconButton onClick={toggleDrawer} >
+    <Box
+      height={"100%"}
+      width={"100%"}
+      overflow="auto"
+      display={"flex"}
+      flexDirection={"column"}
+      style={{ scrollbarWidth: "none" }}
+    >
+      <Box
+        display={""}
+        sx={{
+          alignSelf: "flex-start",
+          marginBottom: "-64px",
+          marginTop: "18px",
+          marginLeft: "5px",
+        }}
+      >
+        <IconButton onClick={toggleDrawer}>
           <ExpandCircleDownOutlinedIcon
             style={{ transform: "rotate(90deg)", color: "#4C8AB1" }}
             fontSize="small"
           />
         </IconButton>
       </Box>
-      <TaskCalender eventsArr={eventsArr} dailyForecast={dailyForecast} sx={{ flexGrow: 1 }} isDrawerOpen={isDrawerOpen} />
-      <Drawer open={isDrawerOpen} onClose={toggleDrawer} anchor="right">
-        <Box display={''} sx={{ alignSelf: 'flex-start', marginBottom: '-64px', marginTop: '18px', marginLeft: '5px' }}>
-          <IconButton onClick={toggleDrawer} >
+      <TaskCalender
+        eventsArr={eventsArr}
+        dailyForecast={dailyForecast}
+        sx={{ flexGrow: 1 }}
+        isDrawerOpen={isDrawerOpen}
+      />
+      <Drawer
+        PaperProps={{
+          style: {
+            top: "100px",
+            height: "calc(100% - 100px)",
+            borderTopLeftRadius: "16px",
+            width: "85%",
+          },
+        }}
+        open={isDrawerOpen}
+        onClose={toggleDrawer}
+        anchor="right"
+      >
+        <Box
+          display={""}
+          sx={{
+            alignSelf: "flex-start",
+            marginBottom: "-64px",
+            marginTop: "18px",
+            marginLeft: "5px",
+          }}
+        >
+          <IconButton onClick={toggleDrawer}>
             <ExpandCircleDownOutlinedIcon
               style={{ transform: "rotate(-90deg)", color: "#4C8AB1" }}
               fontSize="small"
             />
           </IconButton>
         </Box>
-        <TaskCalender eventsArr={eventsArr} dailyForecast={dailyForecast} isDrawerOpen={isDrawerOpen} />
+        <TaskCalender
+          eventsArr={eventsArr}
+          dailyForecast={dailyForecast}
+          isDrawerOpen={isDrawerOpen}
+        />
       </Drawer>
     </Box>
-  )
-}
+  );
+};
 
-export default TaskCalenderView
+export default TaskCalenderView;

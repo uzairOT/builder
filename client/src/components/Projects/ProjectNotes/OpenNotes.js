@@ -1,4 +1,12 @@
-import { Box, Button, ButtonGroup, CircularProgress, Grid, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  CircularProgress,
+  Grid,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import ShareIcon from "@mui/icons-material/Share";
@@ -25,8 +33,8 @@ import { fileTypeIcons } from "../../dialogues/AddImage/assets/fileTypes";
 import { handleDownload } from "../../../utils/S3";
 //import "react-toastify/dist/ReactToastify.css";
 
-const OpenNotes = ({ notes }) => {
-  console.log(notes);
+const OpenNotes = ({ notes, refetchNotes }) => {
+  const isNoteSelected = Boolean(notes);
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height: 10,
     borderRadius: 5,
@@ -54,10 +62,10 @@ const OpenNotes = ({ notes }) => {
       return;
     }
     await deleteProjectNote(noteId);
-    await refetch();
+    refetchNotes();
   };
   return (
-    <Stack >
+    <Stack>
       <Stack direction={"row"} justifyContent={"space-between"} p={2}>
         <Stack
           direction={"row"}
@@ -65,7 +73,7 @@ const OpenNotes = ({ notes }) => {
           alignItems={"center"}
           spacing={6}
         >
-          <ShareIcon style={{ color: "#3F3F3F" }} />
+          {/* <ShareIcon style={{ color: "#3F3F3F" }} /> */}
           <ButtonGroup
             disableElevation
             variant="contained"
@@ -78,6 +86,7 @@ const OpenNotes = ({ notes }) => {
                 color: "#484848",
               }}
               onClick={handleDelete}
+              disabled={!isNoteSelected}
             >
               <DeleteIcon />
             </Button>
@@ -88,6 +97,7 @@ const OpenNotes = ({ notes }) => {
                 color: "#484848",
               }}
               onClick={handleEdit}
+              disabled={!isNoteSelected}
             >
               <BorderColorIcon />
             </Button>
@@ -100,7 +110,7 @@ const OpenNotes = ({ notes }) => {
             />
           )}
         </Stack>
-        <BuilderProButton backgroundColor={"#4C8AB1"} variant={"contained"}>
+        {/* <BuilderProButton backgroundColor={"#4C8AB1"} variant={"contained"}>
           <Typography
             fontFamily={"Manrope, sanserif"}
             fontWeight={"700"}
@@ -110,124 +120,152 @@ const OpenNotes = ({ notes }) => {
           >
             Save
           </Typography>
-        </BuilderProButton>
+        </BuilderProButton> */}
       </Stack>
-      <Stack p={4} pt={2} justifyContent={"space-between"} height='calc(92vh - 165px)'>
-        <Stack>
-          <Typography
-            textAlign={"right"}
-            fontSize={"15px"}
-            fontWeight={"500"}
-            color={"#535353"}
-            pt={0}
-          >
-            {notes?.files?.length ? `attachments ${notes?.files?.length}` : ''}
-          </Typography>
-          <Typography
-            textAlign={"left"}
-            fontSize={"24px"}
-            fontWeight={"700"}
-            color={"#202227"}
-          >
-            {notes?.subject}
-          </Typography>
-          <Typography
-            textAlign={"left"}
-            fontSize={"15px"}
-            fontWeight={"500"}
-            color={"#535353"}
-            pt={2}
-          >
-            {notes?.content}
-          </Typography>
-        </Stack>
-        <Box>
-        <Box>
-          <Typography>
-          {notes?.files?.length ? 'attachments:' : ''}
-          </Typography>
-          </Box>
-        <Grid container height='100px' spacing={0.5} p={'6px'} overflow={'hidden'} sx={scrollable}>
-          {notes?.files?.map((file, index) => {
-            const fileType = file?.split(".").pop().toLowerCase();
-            const fileName = file?.split("/").pop().toLowerCase();
-            const isImage = [
-              "jpg",
-              "jpeg",
-              "png",
-              "gif",
-              "bmp",
-              "svg",
-              "webp"
-            ].includes(fileType);
-            return (
-              <Grid item xl={4}    >
-              <Stack
-                direction={"row"}
-                p={1}
-                backgroundColor={"#F1F1F1"}
-                
-                height={'40px'}
-                borderRadius={"10px"}
-                justifyContent={"space-between"}
-                style={{cursor:'pointer'}}
-                onClick={() => { handleDownload(file, fileName, setIsDownloading)}}
+      <Stack
+        p={4}
+        pt={2}
+        justifyContent={"space-between"}
+        height={{xl:"calc(92vh - 165px)", lg:"calc(92vh - 207px)", md:'calc(92vh - 203px)', sm:'calc(92vh - 203px)', xs:'calc(92vh - 203px)' }}
+      >
+        {isNoteSelected ? (
+          <>
+            <Stack>
+              <Typography
+                textAlign={"right"}
+                fontSize={"15px"}
+                fontWeight={"500"}
+                color={"#535353"}
+                pt={0}
               >
-                <Stack direction={"row"} spacing={1} alignItems={"center"}>
-                  {isImage ? (
-                    <img
-                      src={file}
-                      alt="notes file"
-                      style={{ width: "28px", height: "28px", objectFit:'scale-down' }}
-                    ></img>
-                  ) : fileTypeIcons.has(fileType) ? (
-                    <>
-                      <img
-                      src={fileTypeIcons.get(fileType)}
-                      alt="notes file"
-                      style={{ width: "28px", height: "28px" }}
-                    ></img>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                  <Stack>
-                    <Typography
-                      textAlign={"left"}
-                      fontSize={"0.7rem"}
-                      fontWeight={"500"}
-                      color={"#324054"}
-                      fontFamily={"Inter, sans serif"}
-                      overflow={'hidden'}
-                    >
-                      
-                      {fileName}
-                    </Typography>
-                    <Typography
-                      textAlign={"left"}
-                      fontSize={"12px"}
-                      fontWeight={"500"}
-                      color={"#71839B"}
-                      fontFamily={"Inter, sans serif"}
-                    >
-                      
-                    </Typography>
-                  </Stack>
-                </Stack>
-                <Stack direction={"row"} alignItems={"center"} spacing={1}>
-                   <img
-                    src={download}
-                    alt="PDF icon"
-                    style={{ width: "25px", height: "25px", color: "#71839B" }}
-                  ></img>
-                </Stack>
-                
-              </Stack>
-              </Grid>
-              
-            );
-          })}
-          {/* <Stack direction={'row'}  p={1} backgroundColor={'#F1F1F1'} width={'300px'} borderRadius={'10px'}>
+                {notes?.files?.length
+                  ? `attachments ${notes?.files?.length}`
+                  : ""}
+              </Typography>
+              <Typography
+                textAlign={"left"}
+                fontSize={"24px"}
+                fontWeight={"700"}
+                color={"#202227"}
+              >
+                {notes?.subject}
+              </Typography>
+              <Typography
+                textAlign={"left"}
+                fontSize={"15px"}
+                fontWeight={"500"}
+                color={"#535353"}
+                pt={2}
+              >
+                {notes?.content}
+              </Typography>
+            </Stack>
+            <Box>
+              <Box>
+                <Typography>
+                  {notes?.files?.length ? "attachments:" : ""}
+                </Typography>
+              </Box>
+              <Grid
+                container
+                height="100px"
+                spacing={0.5}
+                p={"6px"}
+                overflow={"hidden"}
+                sx={scrollable}
+              >
+                {notes?.files?.map((file, index) => {
+                  const fileType = file?.split(".").pop().toLowerCase();
+                  const fileName = file?.split("/").pop().toLowerCase();
+                  const isImage = [
+                    "jpg",
+                    "jpeg",
+                    "png",
+                    "gif",
+                    "bmp",
+                    "svg",
+                    "webp",
+                  ].includes(fileType);
+                  return (
+                    <Grid item xl={4}>
+                      <Stack
+                        direction={"row"}
+                        p={1}
+                        backgroundColor={"#F1F1F1"}
+                        height={"40px"}
+                        borderRadius={"10px"}
+                        justifyContent={"space-between"}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          handleDownload(file, fileName, setIsDownloading);
+                        }}
+                      >
+                        <Stack
+                          direction={"row"}
+                          spacing={1}
+                          alignItems={"center"}
+                        >
+                          {isImage ? (
+                            <img
+                              src={file}
+                              alt="notes file"
+                              style={{
+                                width: "28px",
+                                height: "28px",
+                                objectFit: "scale-down",
+                              }}
+                            ></img>
+                          ) : fileTypeIcons.has(fileType) ? (
+                            <>
+                              <img
+                                src={fileTypeIcons.get(fileType)}
+                                alt="notes file"
+                                style={{ width: "28px", height: "28px" }}
+                              ></img>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                          <Stack>
+                            <Typography
+                              textAlign={"left"}
+                              fontSize={"0.7rem"}
+                              fontWeight={"500"}
+                              color={"#324054"}
+                              fontFamily={"Inter, sans serif"}
+                              overflow={"hidden"}
+                            >
+                              {fileName}
+                            </Typography>
+                            <Typography
+                              textAlign={"left"}
+                              fontSize={"12px"}
+                              fontWeight={"500"}
+                              color={"#71839B"}
+                              fontFamily={"Inter, sans serif"}
+                            ></Typography>
+                          </Stack>
+                        </Stack>
+                        <Stack
+                          direction={"row"}
+                          alignItems={"center"}
+                          spacing={1}
+                        >
+                          <img
+                            src={download}
+                            alt="PDF icon"
+                            style={{
+                              width: "25px",
+                              height: "25px",
+                              color: "#71839B",
+                            }}
+                          ></img>
+                        </Stack>
+                      </Stack>
+                    </Grid>
+                  );
+                })}
+                {/* <Stack direction={'row'}  p={1} backgroundColor={'#F1F1F1'} width={'300px'} borderRadius={'10px'}>
                 <Stack direction={'row'} justifyContent={'space-between'} width={'100%'}    >
                 <Stack direction={'row'} spacing={1} alignItems={'center'} width={'100%'} pr={2}>
                     <img src={p} alt="PNG icon" style={{width:'28px', height:'28px'}}></img>
@@ -255,10 +293,37 @@ const OpenNotes = ({ notes }) => {
                 </Stack>
                 </Stack>
               </Stack> */}
-        </Grid>
-        </Box>
+              </Grid>
+            </Box>
+          </>
+        ) : (
+          <>
+            <Stack
+              alignItems={"center"}
+              justifyContent={"center"}
+              height={"100%"}
+              color={"#535353"}
+              textAlign={"center"}
+            >
+              <Typography fontSize={"24px"} fontWeight={"700"}>
+                No Notes Added
+              </Typography>
+              <Typography fontSize={"15px"} fontWeight={"500"} pt={2}>
+                Please add a note to view its details.
+              </Typography>
+            </Stack>
+          </>
+        )}
       </Stack>
-              <Stack alignItems={'flex-end'} justifyContent={'flex-end'} height={'20px'} p={0.5}>  <>{isDownloading && <CircularProgress size={'20px'} /> }</></Stack>
+      <Stack
+        alignItems={"flex-end"}
+        justifyContent={"flex-end"}
+        height={"20px"}
+        p={0.5}
+      >
+        {" "}
+        <>{isDownloading && <CircularProgress size={"20px"} />}</>
+      </Stack>
     </Stack>
   );
 };
