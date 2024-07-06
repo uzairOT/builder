@@ -123,6 +123,7 @@ function CustomTable({
         userId: user.userId,
         superAdminId: currentUserId,
         projectId: user.projectId,
+        userRole: userRole
       };
       const res = await assignRoleDelete(deleteUser);
       //console.log(res);
