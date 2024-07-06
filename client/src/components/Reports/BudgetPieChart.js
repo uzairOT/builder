@@ -1,62 +1,98 @@
-import { Box, Stack } from "@mui/material";
+import React from "react";
+import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { styled } from "@mui/material/styles";
+import { valueFormatterPercentage as valueFormatter } from "../../utils/Formatters/valueFormatter";
 
-import React from "react";
-import {valueFormatterPercentage as valueFormatter} from "../../utils/Formatters/valueFormatter";
-
-const StyledText = styled("text")(({ theme, color }) => ({
+const StyledText = styled("text")(({ theme, color, fontSize }) => ({
   fill: color,
   textAnchor: "middle",
   dominantBaseline: "central",
-  fontSize: "18px",
-  fontFamily: "Inter, sans serif",
-  color: theme.palette.text.color,
+  fontSize,
+  fontFamily: "Inter, sans-serif",
   fontWeight: "500",
 }));
-function PieCenterLabel({ children, x, y, color }) {
+
+function PieCenterLabel({ children, x, y, color, fontSize }) {
   return (
-    <StyledText x={x} y={y} color={color}>
+    <StyledText x={x} y={y} color={color} fontSize={fontSize}>
       {children}
     </StyledText>
   );
 }
-// function PieCenterLabel({ children }) {
-//   return (
-//     <StyledText x={60} y={125} color="#F8961E">
-//       {children}
-//     </StyledText>
-//   );
-// }
-// function PieCenterLabel2({ children }) {
-//   return (
-//     <StyledText x={120} y={125} color="#F94144">
-//       {children}
-//     </StyledText>
-//   );
-// }
-// function PieCenterLabel3({ children }) {
-//   return (
-//     <StyledText x={180} y={125} color="green">
-//       {children}
-//     </StyledText>
-//   );
-// }
 
-const BudgetPieChart = ({
-  overduePercentage,
-  paidPercentage,
-  unpaidPercentage,
-}) => {
+const BudgetPieChart = ({ overduePercentage, paidPercentage, unpaidPercentage }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+  const isLg = useMediaQuery(theme.breakpoints.up("lg"));
+
   const data = [
     { id: 0, value: parseFloat(unpaidPercentage), color: "#F8961E" },
     { id: 1, value: parseFloat(overduePercentage), color: "#F94144" },
     { id: 2, value: parseFloat(paidPercentage), color: "green" },
   ];
 
+  const getDimensions = () => {
+    if (isMobile) {
+      return {
+        width: 250,
+        height: 250,
+        outerRadius: 60,
+        innerRadius: 50,
+        cx: 125,
+        cy: 125,
+        fontSize: "14px",
+      };
+    } else if (isTablet) {
+      return {
+        width: 300,
+        height: 300,
+        outerRadius: 75,
+        innerRadius: 60,
+        cx: 150,
+        cy: 150,
+        fontSize: "16px",
+      };
+    } else if (isDesktop) {
+      return {
+        width: 200,
+        height: 350,
+        outerRadius: 90,
+        innerRadius: 70,
+        cx: 95,
+        cy: 175,
+        fontSize: "18px",
+      };
+    } else if (isLg) {
+      return {
+        width: 400,
+        height: 400,
+        outerRadius: 110,
+        innerRadius: 80,
+        cx: 200,
+        cy: 200,
+        fontSize: "20px",
+      };
+    } else {
+      return {
+        width: 300,
+        height: 300,
+        outerRadius: 80,
+        innerRadius: 60,
+        cx: 150,
+        cy: 150,
+        fontSize: "16px",
+      };
+    }
+  };
+
+  const { width, height, outerRadius, innerRadius, cx, cy, fontSize } = getDimensions();
+
   return (
     <Stack
-      width={"100%"}
+      width={{ xl: "100%", lg: "100%", md: "100%", xs: "100%" }}
       height="100%"
       justifyContent={"center"}
       alignItems={"center"}
@@ -65,29 +101,29 @@ const BudgetPieChart = ({
         series={[
           {
             data: data,
-            innerRadius: 80,
-            outerRadius: 120,
+            innerRadius: innerRadius,
+            outerRadius: outerRadius,
             paddingAngle: 0,
             cornerRadius: 2,
             startAngle: 90,
-            endAngle: 446,
-            cx: 150,
-            cy: 150,
-            labelRadius: 140,
-            valueFormatter
+            endAngle: 450,
+            cx: cx,
+            cy: cy,
+            labelRadius: outerRadius + 20,
+            valueFormatter,
           },
         ]}
-        height={300}
-        width={300}
+        height={height}
+        width={width}
       >
-        <PieCenterLabel x={150} y={120} color="#F8961E">
-          {`${unpaidPercentage}% `}
+        <PieCenterLabel x={cx} y={cy - 30} color="#F8961E" fontSize={fontSize}>
+          {`${unpaidPercentage}%`}
         </PieCenterLabel>
-        <PieCenterLabel x={150} y={150} color="#F94144">
-          {`${overduePercentage}% `}
+        <PieCenterLabel x={cx} y={cy} color="#F94144" fontSize={fontSize}>
+          {`${overduePercentage}%`}
         </PieCenterLabel>
-        <PieCenterLabel x={150} y={180} color="green">
-          {`${paidPercentage}% `}
+        <PieCenterLabel x={cx} y={cy + 30} color="green" fontSize={fontSize}>
+          {`${paidPercentage}%`}
         </PieCenterLabel>
       </PieChart>
     </Stack>

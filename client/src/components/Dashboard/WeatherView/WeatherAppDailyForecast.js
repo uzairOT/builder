@@ -34,7 +34,7 @@ const WeatherAppDailyForecast = ({ forecast }) => {
 
 
     return (
-        <Stack key={forecast.id} justifyContent='center' alignItems='center' pr={2}>
+        <Stack key={forecast.id} justifyContent='center' alignItems='center' pr={{xl:2, lg:1, md:2, xs:2}}>
             <Paper sx={themeStyle.dailyForecastBubble}>
                 <Typography sx={themeStyle.dailyForecastBubbleText}>{forecast.day}</Typography>
                 <Divider variant="fullWidth" />
@@ -55,7 +55,7 @@ const themeStyle = {
       textAlign: "center",
       fontFamily: "Montserrat, sans-serif",
       fontWeight: "600",
-      fontSize: "12px",
+      fontSize: {xl:"12px", lg:"10px", md:"10px", xs:"10px"},
       textTransform: 'uppercase',
     },
     dailyForecastBubbleImg: {
@@ -64,7 +64,7 @@ const themeStyle = {
     },
     dailyForecastBubble: {
       borderRadius: '13px',
-      width: '72px',
+      width: {xl:'70px', lg:'55px', xs:'65px'},
       textAlign: 'center',
       backgroundColor: '#F7F9FC',
     }

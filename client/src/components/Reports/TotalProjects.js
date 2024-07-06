@@ -70,7 +70,7 @@ const TotalProjects = () => {
       ) : (
         <Stack p={1}>
           <Typography
-            fontSize={"15px"}
+            fontSize={{xl:"15px", lg:"12px",md:"15px",xs:"15px"}}
             fontWeight={"500"}
             fontFamily={"Inter, sans serif"}
             p={1}
@@ -80,36 +80,36 @@ const TotalProjects = () => {
           <Stack direction={"row"}>
             <Stack flex={1}>
               <Typography
-                fontSize={"27px"}
-                fontWeight={"500"}
+            fontSize={{xl:"27px", lg:"24px",md:"27px",xs:"27px"}}
+            fontWeight={"500"}
                 fontFamily={"Inter, sans serif"}
                 p={"0px 8px 8px 8px"}
               >
                 {data?.totalProjects ? data.totalProjects : <Skeleton />}
               </Typography>
               <Stack direction={"row"} spacing={1} alignItems={"center"}>
-                <CircleIcon sx={{ color: "#45A5F6", fontSize: "10px" }} />
-                <Typography fontFamily={"Inter, sans serif"} fontSize={"12px"}>
+                <CircleIcon sx={{ color: "#45A5F6", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
+                <Typography fontFamily={"Inter, sans serif"} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
                   Done
                 </Typography>
               </Stack>
               <Typography
                 pl={2}
                 fontFamily={"Inter, sans serif"}
-                fontSize={"18px"}
+                fontSize={{xl:"18px",lg:"15px",md:"18px",xs:"18px"}}
               >
                 {data?.completedProjects}
               </Typography>
               <Stack direction={"row"} spacing={1} alignItems={"center"}>
-                <CircleIcon sx={{ color: "#DDE6FE", fontSize: "10px" }} />
-                <Typography fontFamily={"Inter, sans serif"} fontSize={"12px"}>
+                <CircleIcon sx={{ color: "#DDE6FE", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
+                <Typography fontFamily={"Inter, sans serif"} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
                   Remaining
                 </Typography>
               </Stack>
               <Typography
                 pl={2}
                 fontFamily={"Inter, sans serif"}
-                fontSize={"18px"}
+                fontSize={{xl:"18px",lg:"15px",md:"18px",xs:"18px"}}
               >
                 {data?.remainingProjects}
               </Typography>
@@ -126,10 +126,10 @@ const TotalProjects = () => {
               >
                 <Stack direction={"column"}>
                   <Stack direction={"row"} spacing={1} alignItems={"center"}>
-                    <CircleIcon sx={{ color: "#45A5F6", fontSize: "10px" }} />
+                    <CircleIcon sx={{ color: "#45A5F6", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
                     <Typography
                       fontFamily={"Inter, sans serif"}
-                      fontSize={"12px"}
+                      fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}
                     >
                       Done
                     </Typography>
@@ -140,10 +140,10 @@ const TotalProjects = () => {
                 </Stack>
                 <Stack direction={"column"}>
                   <Stack direction={"row"} spacing={1} alignItems={"center"}>
-                    <CircleIcon sx={{ color: "#DDE6FE", fontSize: "10px" }} />
+                    <CircleIcon sx={{ color: "#DDE6FE", fontSize:{xl:"10px",lg:"8px",md:"10px",xs:"10px"}}} />
                     <Typography
                       fontFamily={"Inter, sans serif"}
-                      fontSize={"12px"}
+                      fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}
                     >
                       Remaining
                     </Typography>

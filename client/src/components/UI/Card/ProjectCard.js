@@ -48,7 +48,7 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
   const themeStyle = {
     cardBody: {
       marginBottom: "2px",
-      fontSize: "12px",
+      fontSize: { xl: "12px", lg: "11px", md: "12px", xs: "12px" },
       fontFamily: "inherit",
       fontStyle: selected ? "italic" : "normal",
     },
@@ -106,7 +106,7 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
             whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            fontSize:'14px',
+            fontSize: { xl: "14px", lg: "12px", md: "14px", xs: "14px" },
             fontWeight:'600',
           }}
         >

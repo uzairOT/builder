@@ -33,7 +33,7 @@ const WeatherView = ({
         </Typography>
         <Stack
           direction="row"
-          justifyContent={{ xl: "flex-start", lg: "center", md: "center" }}
+          justifyContent={{ xl: "flex-start", lg: "space-evenly", md: "center" }}
           alignItems={"center"}
           height={"50%"}
           spacing={1}

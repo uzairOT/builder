@@ -96,7 +96,7 @@ const themeStyle = {
         background: "#4C8AB1",
         display: "flex",
         justifyContent: { lg: "flex-end", sm: "flex-end", xs: "center" },
-        textAlign: "flex-end"
+        textAlign: "flex-end",
     },
     buttonBox: {
         display: "flex", justifyContent: "flex-end", padding: "0 2rem", marginTop: "13rem"

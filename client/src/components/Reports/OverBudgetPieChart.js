@@ -40,7 +40,7 @@ const OverBudgetPieChart = () => {
         <Typography
           fontFamily={"Inter, sans serif"}
           fontWeight={"500"}
-          fontSize={"18px"}
+          fontSize={{ xl: "18px", lg: "15px", md: "18px", xs: "18px" }}
         >
           Upcoming DeadLines
         </Typography>
@@ -63,16 +63,29 @@ const OverBudgetPieChart = () => {
         spacing={1}
         pt={2}
         pb={2}
-        sx={{ height: {xl:height, lg:`calc(93vh - 357px)`, md:`lg:calc(93vh - 357px)`, sm:`calc(93vh - 357px)`, xs:`calc(93vh - 357px)`}, overflow: "auto" }}
+        sx={{
+          height: {
+            xl: height,
+            lg: `calc(93vh - 357px)`,
+            md: `lg:calc(93vh - 357px)`,
+            sm: `calc(93vh - 357px)`,
+            xs: `calc(93vh - 357px)`,
+          },
+          overflow: "auto",
+        }}
       >
         <Stack direction={"row"} spacing={1}>
           <CircleIcon
-            sx={{ color: "#2D9CDB", fontSize: "10px", paddingTop: "4px" }}
+            sx={{
+              color: "#2D9CDB",
+              fontSize: { xl: "10px", lg: "8px", md: "10px", xs: "10px" },
+              paddingTop: "4px",
+            }}
           />
           <Stack direction={"column"}>
             <Typography
               fontFamily={"Inter, sans serif"}
-              fontSize={"14px"}
+              fontSize={{ xl: "14px", lg: "12px", md: "14px", xs: "14px" }}
               fontWeight="bold"
             >
               Project Name
@@ -90,12 +103,16 @@ const OverBudgetPieChart = () => {
         </Stack>
         <Stack direction={"row"} spacing={1}>
           <CircleIcon
-            sx={{ color: "#F65E5E", fontSize: "10px", paddingTop: "4px" }}
+            sx={{
+              color: "#F65E5E",
+              fontSize: { xl: "10px", lg: "8px", md: "10px", xs: "10px" },
+              paddingTop: "4px",
+            }}
           />
           <Stack direction={"column"}>
             <Typography
               fontFamily={"Inter, sans-serif"}
-              fontSize={"14px"}
+              fontSize={{ xl: "14px", lg: "12px", md: "14px", xs: "14px" }}
               fontWeight="bold"
             >
               DeadLine
@@ -104,7 +121,7 @@ const OverBudgetPieChart = () => {
               <Typography
                 key={index}
                 fontFamily={"Inter, sans serif"}
-                fontSize={"13px"}
+                fontSize={{ xl: "13px", lg: "11px", md: "13px", xs: "13px" }}
               >
                 {moment(project.end_time).format("YYYY-MM-DD")}
               </Typography>

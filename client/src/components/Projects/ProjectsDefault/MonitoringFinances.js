@@ -64,7 +64,7 @@ export default MonitoringFinances
 
 const themeStyle = {
     label: {
-        fontSize: '13px',
+        fontSize: {xl:'13px', lg:10.5, md:"13px", xs:"13px"},
         color: '#2F2F2F',
         fontFamily: 'Montserrat, sans-serif',
         fontWeight: '500',

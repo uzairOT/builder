@@ -97,7 +97,7 @@ const SubscriptionCard = ({
                   </Typography>
                 }
               >
-                <ListItemIcon><CheckSharpIcon sx={{color:'white'}}/></ListItemIcon>
+                <ListItemIcon><CheckSharpIcon sx={{color:'white',fontSize:{xl:24, lg:18}}}/></ListItemIcon>
                 <ListItemText
                   sx={{...themeStyle.bodyText, marginLeft:'-8px'}}
                   primary={`${value}  ${typeof plan.planPackage[index] === 'boolean' ? '' : `- ${plan.planPackage[index]}`}`}
@@ -123,25 +123,25 @@ export default SubscriptionCard;
 
 const themeStyle = {
   title: {
-    fontSize: "28px",
+    fontSize: {xl:"28px",lg:23,md:"28px",xs:"28px",},
     fontWeight: "500",
     fontFamily: "Arial Rounded MT, sans-serif",
     color: "#FFF",
     padding: "8px",
   },
   subtitle: {
-    fontSize: "16px",
+    fontSize: {xl:"16px",lg:14,md:"16px",xs:"16px"},
     fontWeight: "500",
     fontFamily: "Arial Rounded MT, sans-serif",
     color: "#FFF",
   },
   bodyTitle: {
-    fontSize: "24px",
+    fontSize: {xl:"24px",lg:22,md:"24px",xs:"24px"},
     fontWeight: "500",
     fontFamily: "Arial Rounded MT, sans-serif",
   },
   bodyText: {
-    fontSize: "16px",
+    fontSize: {xl:"16px",lg:14,md:"16px",xs:"16px",},
     fontWeight: "400",
     fontFamily: "Arial Rounded MT, sans-serif",
     color: "#FFF",

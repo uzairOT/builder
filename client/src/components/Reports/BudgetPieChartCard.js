@@ -116,7 +116,7 @@ const BudgetPieChartCard = () => {
         pr={2}
       >
         <Typography
-          fontSize={"20px"}
+          fontSize={{xl:'20px', lg:"16px",md:'20px',xs:'20px',}}
           fontFamily={"Inter, sans serif"}
           fontWeight={"500"}
           color={"#4C8AB1"}
@@ -144,14 +144,14 @@ const BudgetPieChartCard = () => {
           pl={3}
           fontFamily={"Inter, sans serif"}
           fontWeight={"500"}
-          fontSize={"24px"}
+          fontSize={{xl:'24px', lg:"21px",md:'24px',xs:'24px',}}
         >
           {projects?.totalInvoices}
         </Typography>
         <Typography
           pl={3}
           fontFamily={"Inter, sans serif"}
-          fontSize={"12px"}
+          fontSize={{xl:'12px', lg:"11px",md:'12px',xs:'12px',}}
           color={"#4F4F4F"}
         >
           Total

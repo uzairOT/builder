@@ -108,7 +108,7 @@ const themeStyle = {
     color: "#000000",
   },
   subtitle: {
-    fontSize: "28px",
+    fontSize: {xl:"28px",lg:20,md:"28px",xs:"28px",},
     fontWeight: "500",
     fontFamily: "Arial Rounded MT, sans-serif",
     color: "#000000",
