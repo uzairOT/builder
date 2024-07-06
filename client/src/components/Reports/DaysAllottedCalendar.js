@@ -141,7 +141,7 @@ const DaysAllottedCalendar = ({
       <LocalizationProvider dateAdapter={AdapterMoment}>
         <DateCalendar
           sx={{
-            width: "250px",
+            width: {xl:"250px", lg:'150px'},
             height: "250px",
             backgroundColor: "#F5F5F5",
             padding: 1,

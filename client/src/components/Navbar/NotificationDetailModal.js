@@ -151,6 +151,8 @@ const NotificationDetailModal = ({
           sx={{
             ...style,
             ...themeStyle.scrollable,
+            width:{ xs:"90%" ,md:"auto"},
+            height:{xs:"80%",}
           }}
           
         >
@@ -163,7 +165,7 @@ const NotificationDetailModal = ({
             <Typography
               color={"#4C8AB1"}
               fontFamily={"inherit"}
-              fontSize={"22px"}
+              sx={{fontSize:{md:22,lg:22,sm:14,xs:14}}}
               fontWeight={"600"}
             >
               Work Order Details
@@ -174,6 +176,7 @@ const NotificationDetailModal = ({
           </Stack>
           <Divider />
           <Stack
+          sx={{overflow:"auto"}}
             direction={{
               xl: "row",
               lg: "row",
@@ -514,12 +517,12 @@ const NotificationDetailModal = ({
                 <hr style={themeStyle.hrLine} />
 
                 {isEvent && (
-                  <Stack pr={1}>
+                  <Stack pr={1} sx={{ paddingBottom:{md:0, lg:0, sm:2, xs:2}}}>
                   <BuilderProButton
+                    sx={{fontSize:{md:16,lg:16,sm:14,xs:14},}}
                     backgroundColor={"#4C8AB1"}
                     variant={"contained"}
                     fontFamily={"Inter, sans serif"}
-                    fontSize={"16px"}
                     fontWeight={"600"}
                     padding={"6px 32px 6px 32px"}
                     disabled={disable}

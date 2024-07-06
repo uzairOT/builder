@@ -31,16 +31,16 @@ const ProjectInfo = ({ data }) => {
     <Stack height={"205px"}>
       <Typography sx={themeStyle.title}>Burrow - Home Build</Typography>
       <Stack direction={"row"} width={"60%"} justifyContent={"space-between"}>
-        <Typography sx={themeStyle.label} fontSize={"13px"}>
+        <Typography sx={themeStyle.label} >
           Start
         </Typography>
-        <Typography sx={themeStyle.label} fontSize={"13px"}>
+        <Typography sx={themeStyle.label} >
           End
         </Typography>
       </Stack>
       <Stack direction={"row"} pt={1}>
         <BorderLinearProgress variant="determinate" value={percentage} />
-        <Typography sx={themeStyle.label} fontSize={"10px"} pl={1}>
+        <Typography sx={themeStyle.label} pl={1}>
           {totalCompletedLineItems}/{totalLineItems}
         </Typography>
       </Stack>
@@ -129,6 +129,7 @@ const themeStyle = {
   label: {
     fontFamily: "Arial Rounded MT, sans-serif",
     color: "#202227",
+    fontSize:{xl:"13px", lg:12, md:12, xs:"12px"}
   },
   AvatarStyle: {
     width: 30,

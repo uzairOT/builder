@@ -471,7 +471,7 @@ console.log('conversationId: ',conversationId, 'value: ', value)
               src={!(value === id) ? chatUser?.image : currentUser?.image}
               sx={{ marginRight: "1rem" }}
             ></Avatar>
-            <Typography sx={{ fontSize: "15px", fontWeight: 600 }}>
+            <Typography sx={{ fontSize: {xl:"15px", lg:"12px",md:"15px",xs:"15px",}, fontWeight: 600 }}>
               {/* This value greater than 0 checks whether it's a group chat or a one-on-one chat */}
               {!(value === id)
                 ? `${chatUser?.firstName} ${chatUser?.lastName}`
@@ -564,7 +564,7 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                     download="document"
                     aria-label="download"
                   >
-                    <Typography variant="body2" component="span">
+                    <Typography  sx={{ fontSize: {xl:"15px", lg:"12px",md:"15px",xs:"15px",}}} variant="body2" component="span">
                       <Box sx={{ color: "primary.main" }}>
                         {loading ? (
                           <CircularProgress />
@@ -679,7 +679,7 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                                   download="document"
                                   aria-label="download"
                                 >
-                                  <Typography variant="body2" component="span">
+                                  <Typography sx={{ fontSize: {xl:"12px", lg:"10px",md:"12px",xs:"12px",}}}  variant="body2" component="span">
                                     <Box sx={{ color: "primary.main" }}>
                                       <InsertDriveFileIcon />
                                     </Box>

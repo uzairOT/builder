@@ -27,7 +27,7 @@ const TotalDaysAllotted = ({ data }) => {
   return (
     <Stack>
       <Typography
-        fontSize={"15px"}
+        fontSize={{ xl: "15px", lg: "12px", md: "15px", xs: "15px" }}
         fontWeight={"500"}
         fontFamily={"Inter, sans serif"}
         p={1}
@@ -36,7 +36,7 @@ const TotalDaysAllotted = ({ data }) => {
         Total Projects
       </Typography>
       <Typography
-        fontSize={"27px"}
+        fontSize={{ xl: "27px", lg: "24px", md: "27px", xs: "27px" }}
         fontWeight={"500"}
         fontFamily={"Inter, sans serif"}
         p={"0px 8px 8px 16px"}
@@ -44,16 +44,22 @@ const TotalDaysAllotted = ({ data }) => {
         {data?.totalProjectsCount}
       </Typography>
       <Divider variant="fullWidth" />
-      <Stack width={250} direction={"row"} p={2} py={3}>
+      <Stack width={{ xl: 250, lg: 150 }} direction={"row"} p={2} py={3}>
         <Box
           backgroundColor={"#2D9CDB"}
-          width={(250 * data?.totalWorkDaysSpent) / 14}
+          width={{
+            xl: (250 * data?.totalWorkDaysRemaining) / 14,
+            lg: (100 * data?.totalWorkDaysRemaining) / 14,
+          }}
           height={"20px"}
           borderRadius={"14px"}
         ></Box>
         <Box
           backgroundColor={"#90BE6D"}
-          width={(250 * data?.totalWorkDaysRemaining) / 14}
+          width={{
+            xl: (250 * data?.totalWorkDaysRemaining) / 14,
+            lg: (100 * data?.totalWorkDaysRemaining) / 14,
+          }}
           height={"20px"}
           borderRadius={"14px"}
         ></Box>
@@ -61,34 +67,34 @@ const TotalDaysAllotted = ({ data }) => {
       <Stack direction={"column"} spacing={1} width={"70%"} pb={2} pl={3}>
         <Stack direction={"row"} justifyContent={"space-between"}>
           <Stack direction={"row"} spacing={1} alignItems={"center"}>
-            <CircleIcon sx={{ color: "#2D9CDB", fontSize: "10px" }} />
-            <Typography fontFamily={"Inter, sans serif"} fontSize={"12px"}>
+            <CircleIcon sx={{ color: "#2D9CDB",  fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
+            <Typography fontFamily={"Inter, sans serif"} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
               Work Days spent
             </Typography>
           </Stack>
-          <Typography textAlign={"right"}>
+          <Typography fontSize={{xl:"16px",lg:"14px",xl:"16px",xl:"16px"}} textAlign={"right"}>
             {data?.totalWorkDaysSpent}
           </Typography>
         </Stack>
         <Stack direction={"row"} justifyContent={"space-between"}>
           <Stack direction={"row"} spacing={1} alignItems={"center"}>
-            <CircleIcon sx={{ color: "#90BE6D", fontSize: "10px" }} />
-            <Typography fontFamily={"Inter, sans serif"} fontSize={"12px"}>
+            <CircleIcon sx={{ color: "#90BE6D", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
+            <Typography fontFamily={"Inter, sans serif"} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
               Work Days Remaining
             </Typography>
           </Stack>
-          <Typography textAlign={"center"}>
+          <Typography fontSize={{xl:"16px",lg:"14px",xl:"16px",xl:"16px"}} textAlign={"center"}>
             {data?.totalWorkDaysRemaining}
           </Typography>
         </Stack>
         <Stack direction={"row"} justifyContent={"space-between"}>
           <Stack direction={"row"} spacing={1} alignItems={"center"}>
-            <CircleIcon sx={{ color: "#F94144", fontSize: "10px" }} />
-            <Typography fontFamily={"Inter, sans serif"} fontSize={"12px"}>
+            <CircleIcon sx={{ color: "#F94144", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
+            <Typography fontFamily={"Inter, sans serif"} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
               Work Days Overdue
             </Typography>
           </Stack>
-          <Typography textAlign={"center"}>
+          <Typography fontSize={{xl:"16px",lg:"14px",xl:"16px",xl:"16px"}} textAlign={"center"}>
             {data?.totalWorkDaysOverdue}
           </Typography>
         </Stack>

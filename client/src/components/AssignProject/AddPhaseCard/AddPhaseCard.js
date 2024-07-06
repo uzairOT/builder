@@ -318,7 +318,7 @@ const AddPhaseCard = ({
                   paddingLeft: "1rem",
                   paddingRight: "1rem",
                   fontWeight: "600",
-                  fontSize: "26px",
+                  fontSize: {xl:"26px", lg:18,md:26,xs:16},
                 }}
               >
                 {phaseData.phase_name}
@@ -822,6 +822,7 @@ const tableGrid = {
   borderBottomLeftRadius: "7px",
   padding: "1rem 0rem",
   width: "100%",
+  fontSize:{lg:"10px"}
 };
 const blackHeading = {
   fontFamily: "Arial Rounded MT, sans-serif",
@@ -834,9 +835,9 @@ const blackHeading = {
   marginTop: "1rem",
 };
 const listOfLineText = {
+  fontSize:{xl:"1.25rem",lg:16,md:"1.25rem",xs:"1.25rem",},
   fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 400,
-  fontSize: "1.25rem",
   paddingLeft: "2rem",
   color: "#4C8AB1",
 };

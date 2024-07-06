@@ -232,8 +232,9 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
                 value={promoCode}
                 onChange={(e) => handlePromoCodeChange(e)}
               ></OutlinedInput>
-              <PromoCodeButton width={"30%"} variant="contained" disabled={isLoading} onClick={handlePromoCode}>
-                {isLoading ? <CircularProgress sx={{fontSize:'14px'}} /> : 'Apply Code'}
+              <PromoCodeButton  width={"30%"} variant="contained" disabled={isLoading} onClick={handlePromoCode}>
+                
+                {isLoading ? <CircularProgress sx={{fontSize:'14px'}} /> :<Typography  fontSize={{xl:14,lg:11}}>Apply Code </Typography> }
               </PromoCodeButton>
             </Stack>
           </Stack>

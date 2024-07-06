@@ -50,7 +50,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
     toolbarTitle: {
       color: bgColorClient ? "black" : "white",
       fontFamily: "inherit",
-      fontSize: "20px",
+      fontSize: { xl: "20px", lg: "16px", md: "20px", xs: "20px" },
       fontStyle: "normal",
       fontWeight: 500,
     },
@@ -109,10 +109,10 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
           width={"100%"}
           pr={1}
           borderRadius={" 10px 10px 0 0"}
-          backgroundColor={ bgColorClient ? "#FFE09F" : "#4C8AB1"}
+          backgroundColor={bgColorClient ? "#FFE09F" : "#4C8AB1"}
         >
           {" "}
-          <Stack direction={"row"}>
+          <Stack direction={"row"} alignItems={"center"}>
             <Typography sx={themeStyle.toolbarTitle} pl={2}>
               Work Order
             </Typography>
@@ -128,15 +128,29 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                 <button
                   style={{
                     ...themeStyle.toolbarButton,
-                    backgroundColor: (activeHeader === "Work Order" ? "white" : ""),
-                    color:  bgColorClient ? activeHeader === "Work Order" ? "#4C8AB1" : "black" : activeHeader === "Work Order" ? "#4C8AB1" : "white",
+                    backgroundColor:
+                      activeHeader === "Work Order" ? "white" : "",
+                    color: bgColorClient
+                      ? activeHeader === "Work Order"
+                        ? "#4C8AB1"
+                        : "black"
+                      : activeHeader === "Work Order"
+                      ? "#4C8AB1"
+                      : "white",
                   }}
                   onClick={() => {
                     handleActiveHeader("Work Order");
                   }}
                 >
                   <Typography
-                    fontSize={"12px"}
+                    sx={{
+                      fontSize: {
+                        xl: "12px !important",
+                        lg: "10px !important",
+                        md: "12px !important",
+                        xs: "12px !important",
+                      },
+                    }}
                     style={{
                       ...themeStyle.monthEventHeader,
                       textDecoration:
@@ -156,10 +170,23 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                   }}
                 >
                   <Typography
-                    fontSize={"12px"}
+                    sx={{
+                      fontSize: {
+                        xl: "12px !important",
+                        lg: "10px !important",
+                        md: "12px !important",
+                        xs: "12px !important",
+                      },
+                    }}
                     style={{
                       ...themeStyle.monthEventHeader,
-                      color:  bgColorClient ? activeHeader === "Notes" ? "#4C8AB1" : "black" : activeHeader === "Notes" ? "#4C8AB1" : "white",
+                      color: bgColorClient
+                        ? activeHeader === "Notes"
+                          ? "#4C8AB1"
+                          : "black"
+                        : activeHeader === "Notes"
+                        ? "#4C8AB1"
+                        : "white",
                       textDecoration:
                         activeHeader === "Notes" ? "underline" : "",
                     }}
@@ -190,10 +217,23 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                   }}
                 >
                   <Typography
-                    fontSize={"12px"}
+                    sx={{
+                      fontSize: {
+                        xl: "12px !important",
+                        lg: "10px !important",
+                        md: "12px !important",
+                        xs: "12px !important",
+                      },
+                    }}
                     style={{
                       ...themeStyle.monthEventHeader,
-                      color:  bgColorClient ? activeHeader === "Work Order" ? "#4C8AB1" : "black" : activeHeader === "Work Order" ? "#4C8AB1" : "",
+                      color: bgColorClient
+                        ? activeHeader === "Work Order"
+                          ? "#4C8AB1"
+                          : "black"
+                        : activeHeader === "Work Order"
+                        ? "#4C8AB1"
+                        : "",
                       textDecoration:
                         activeHeader === "Work Order" ? "underline" : "",
                     }}
@@ -211,10 +251,23 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                   }}
                 >
                   <Typography
-                    fontSize={"12px"}
+                    sx={{
+                      fontSize: {
+                        xl: "12px !important",
+                        lg: "10px !important",
+                        md: "12px !important",
+                        xs: "12px !important",
+                      },
+                    }}
                     style={{
                       ...themeStyle.monthEventHeader,
-                      color:  bgColorClient ? activeHeader === "Notes" ? "#4C8AB1" : "black" : activeHeader === "Notes" ? "#4C8AB1" : "white",
+                      color: bgColorClient
+                        ? activeHeader === "Notes"
+                          ? "#4C8AB1"
+                          : "black"
+                        : activeHeader === "Notes"
+                        ? "#4C8AB1"
+                        : "white",
                       textDecoration:
                         activeHeader === "Notes" ? "underline" : "",
                     }}
@@ -227,6 +280,14 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
           </Stack>
           <Box element="div" style={themeStyle.toolbarButtonGroup}>
             <Button
+              sx={{
+                fontSize: {
+                  xl: "12px !important",
+                  lg: "10px !important",
+                  md: "12px !important",
+                  xs: "12px !important",
+                },
+              }}
               style={{
                 ...themeStyle.toolbarButton,
                 backgroundColor: activeButton === "day" ? "#FFF" : "",
@@ -237,6 +298,14 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
               Day
             </Button>
             <Button
+              sx={{
+                fontSize: {
+                  xl: "12px !important",
+                  lg: "10px !important",
+                  md: "12px !important",
+                  xs: "12px !important",
+                },
+              }}
               style={{
                 ...themeStyle.toolbarButton,
                 backgroundColor: activeButton === "week" ? "#FFF" : "",
@@ -250,6 +319,14 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
               Week
             </Button>
             <Button
+              sx={{
+                fontSize: {
+                  xl: "12px !important",
+                  lg: "10px !important",
+                  md: "12px !important",
+                  xs: "12px !important",
+                },
+              }}
               style={{
                 ...themeStyle.toolbarButton,
                 backgroundColor: activeButton === "month" ? "#FFF" : "",

@@ -14,19 +14,19 @@ const PaymentHistoryCard = ({data}) => {
 export default PaymentHistoryCard
 const themeStyle = {
     title: {
-      fontSize: '22px',
+      fontSize: {xl:'22px',lg:'18px',md:'22px',xs:'22px',},
       fontWeight: '500',
       fontFamily: 'Arial Rounded MT, sans-serif',
       color: '#000000'
   },
     subtitle: {
-      fontSize: '28px',
+      fontSize: {xl:'28px',lg:'24px',md:'28px',xs:'28px',},
       fontWeight: '400',
       fontFamily: 'Arial Rounded MT, sans-serif',
       color: '#4C8AB1'
   },
     footer: {
-      fontSize: '16px',
+      fontSize: {xl:'16px',lg:'15px',md:'16px',xs:'16px',},
       fontWeight: '400',
       fontFamily: 'Arial Rounded MT, sans-serif',
       color: '#000000'

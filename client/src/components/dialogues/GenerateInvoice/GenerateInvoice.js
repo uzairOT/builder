@@ -231,7 +231,7 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
                     lg: "100%",
                     md: "100%",
                     sm: "100%",
-                    xs: "80%",
+                    xs: "100%",
                   }}
                 >
                   <GenerateInvoiceTable      
@@ -314,6 +314,10 @@ const scrollable = {
     },
   };
   const style = {
+    marginTop:{md:2, lg:2, sm:10,xs:10},
+    overflow:"auto",
+    width:{lg:"70",xs:"70%" ,md:"auto",},
+    height:{md:"80%", xs:"100%",},
     position: "absolute",
     top: "50%",
     left: "50%",

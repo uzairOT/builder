@@ -70,7 +70,7 @@ const ListProjects = () => {
         All Listed Projects
       </Typography>
       <Box
-        sx={{ ...themeStyle.scrollable, height:{ xl:"calc(90vh - 390px)", md:'calc(90vh - 220px)', xs:'calc(100vh)'} }}
+        sx={{ ...themeStyle.scrollable, height:{ xl:"calc(90vh - 390px)",lg:'calc(90vh - 390px)',  md:'calc(90vh - 220px)', xs:'calc(100vh)'} }}
         pb={2}
       >
         {error ? (
@@ -78,7 +78,7 @@ const ListProjects = () => {
           {/* removed error message to prompt user to refresh if error occurs */}
           </>
         ) : (
-          <Stack spacing={1} pl={"14px"} pr={"14px"}>
+          <Stack spacing={1} pl={"5px"} pr={"5px"}>
             {isLoading ? (
               <Stack justifyContent={"center"} alignItems={"center"}>
                 <CircularProgress />

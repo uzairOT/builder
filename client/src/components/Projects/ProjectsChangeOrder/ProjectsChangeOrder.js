@@ -60,7 +60,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
           pb={2}
           color={"#4C8AB1"}
           fontFamily={"Poppins, san serif"}
-          fontSize={"22px"}
+          fontSize={{xl:'22px', lg:"18px",md:'22px',xs:'22px',}}
           fontWeight={"600"}
         >
           {workOrder ? view : 'Change Order'}
@@ -84,7 +84,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
               <Tab
                 sx={{
                   fontFamily: "Poppins, sans serif",
-                  fontSize: "15px",
+                  fontSize:{xl:'15px', lg:"12px",md:'15px',xs:'15px',}
                 }}
               >
                 Approved
@@ -92,7 +92,8 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
               <Tab
                 sx={{
                   fontFamily: "Poppins, sans serif",
-                  fontSize: "15px",
+                  fontSize:{xl:'15px', lg:"12px",md:'15px',xs:'15px',}
+
                 }}
               >
                 Pending
@@ -101,7 +102,8 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
               <Tab
                 sx={{
                   fontFamily: "Poppins, sans serif",
-                  fontSize: "15px",
+                  fontSize:{xl:'15px', lg:"12px",md:'15px',xs:'15px',}
+
                 }}
               >
                 Declined

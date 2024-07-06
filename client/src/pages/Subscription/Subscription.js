@@ -18,14 +18,14 @@ const Subscription = () => {
         overflow={"hidden"}
         sx={themeStyle.scrollable}
       >
-        <Grid item xl={2} lg={4} md={4} sm={12} xs={12} height={"93vh"}>
+        <Grid item xl={2} lg={2} md={4} sm={12} xs={12} height={"93vh"}>
           <SubscriptionSidebar />
         </Grid>
         <Grid
           item
           container
           xl={10}
-          lg={8}
+          lg={10}
           md={8}
           sm={12}
           xs={12}
@@ -33,14 +33,14 @@ const Subscription = () => {
           height={"93vh"}
           style={{ overflow: "hidden", ...themeStyle.scrollable }}
         >
-          <Grid item xl={7} lg={12} md={12} sm={12} xs={12}>
+          <Grid item xl={7} lg={7} md={12} sm={12} xs={12}>
             <SubscriptionPlans
               setCurrentPlan={setCurrentPlan}
               currentPlan={currentPlan}
               setCurrentPakage={setCurrentPakage}
             />
           </Grid>
-          <Grid item xl={5} lg={12} md={12} sm={12} xs={12}>
+          <Grid item xl={5} lg={5} md={12} sm={12} xs={12}>
             <SubscriptionForm
               currentPlan={currentPlan}
               currentPakage={currentPakage}

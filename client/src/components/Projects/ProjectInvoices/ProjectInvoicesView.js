@@ -76,7 +76,7 @@ const ProjectInvoicesView = () => {
               backgroundColor={"#4C8AB1"}
               variant={"contained"}
               fontFamily={"Inter, sans serif"}
-              fontSize={"16px"}
+              fontSize={{xl:"16px", lg:"14px",md:"16px",xs:"16px",}}
               fontWeight={"600"}
               padding={{ md: "6px 32px 6px 32px" }}
               marginLeft={"4px"}

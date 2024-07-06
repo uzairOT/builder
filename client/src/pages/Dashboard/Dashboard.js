@@ -50,7 +50,7 @@ const Dashboard = () => {
       <main>
         <Grid sx={themeStyle.dashboard} container pt={1}>
           {/* Profile View */}
-          <Grid item xs={12} sm={4} md={3.5} xl={2}>
+          <Grid item xs={12} sm={4} md={3.5} lg={2} xl={2}>
             <Paper
               sx={{
                 borderRadius: "0 14px 14px 0",
@@ -67,13 +67,14 @@ const Dashboard = () => {
             xs={12}
             sm={8}
             md={8.5}
+            lg={7}
             xl={7}
             height={"100%"}
             overflow={"hidden"}
           >
             <Grid item margin={1} ml={2} mr={2}>
               <Paper
-                sx={{ ...themeStyle.dashboardViews, borderRadius: "14px" }}
+                sx={{ ...themeStyle.dashboardViews, borderRadius: "14px"}}
               >
                 <WeatherView
                   dailyForecast={dailyForecast}
@@ -88,7 +89,7 @@ const Dashboard = () => {
               container
               sx={{ ...themeStyle.scrollable }}
               overflow={"hidden"}
-              height={{xl:"calc(92vh - 240px)",  md:'calc(92vh - 100px)', xs:'calc(100vh + 100px)'}}
+              height={{xl:"calc(92vh - 240px)", lg:'calc(92vh -  240px)',  md:'calc(92vh - 100px)', xs:'calc(100vh + 100px)'}}
               width={"98%"}
               pt={1}
               margin={"auto"}
@@ -178,7 +179,7 @@ const Dashboard = () => {
             </Grid>
           </Grid>
           {/* Calender Tracker View */}
-          <Grid item xs={12} sm={12} md={12} xl={3} pb={1} height={"91vh"}>
+          <Grid item xs={12} sm={12} md={12} lg={3} xl={3} pb={1} height={"91vh"}>
             <Paper
               sx={{
                 borderRadius: " 14px 0 0 14px",

@@ -104,7 +104,7 @@ const ProjectsNavbar = ({ project }) => {
           <Typography
             sx={{
               color: "#494A4A",
-              fontSize: "20px",
+              fontSize: {xl:"20px",lg:"17px",md:"20px",xs:"20px"},
               fontWeight: 600,
               fontFamily: "Arial Rounded MT, sans-serif",
               whiteSpace: "nowrap",

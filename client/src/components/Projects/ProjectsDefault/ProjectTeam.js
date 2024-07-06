@@ -139,6 +139,7 @@ const ProjectTeam = () => {
             variant={"contained"}
             Icon={BuilderProNavbarShare}
             handleOnClick={handleShare}
+            sx={{fontSize:{xl:12, lg:10,m:12, xs:12, }}}
           >
             {true ? "Add" : ""}
           </BuilderProButton>

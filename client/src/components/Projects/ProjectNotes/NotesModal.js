@@ -186,7 +186,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
         <BuilderProButton
           variant={"contained"}
           backgroundColor={"#4C8AB1"}
-          fontSize={"11px"}
+          fontSize={{xl:"11px",lg:"10px", md:"11px", xs:"11px"}}
           fontFamily={"Inter, sans serif"}
           handleOnClick={handleOpen}
         >

@@ -206,11 +206,12 @@ function WorkOrder({
 export default WorkOrder;
 const tableCellStyle = {
   fontWeight: 500,
-  fontSize: "14px",
+  fontSize:{xl:'14px', lg:"12px",md:'14px',xs:'14px',},
   fontFamily: "Poppins",
   color: "#8C8C8C",
 };
 const tableCellValueStyle = {
+  fontSize:{xl:'12px', lg:"11px",md:'12px',xs:'12px',},
   fontWeight: 400,
   borderBottom: "none",
   fontFamily: "Montserrat",

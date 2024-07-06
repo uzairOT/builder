@@ -41,7 +41,7 @@ const PaidTransactionsCard = () => {
       <Stack>
         <Stack direction={"row"} alignItems={"center"} p={1} pl={2} pr={2}>
           <Typography
-            fontSize={"20px"}
+            fontSize={{ xl: "20px", lg: "16px", md: "20px", xs: "20px" }}
             fontFamily={"Inter, sans serif"}
             fontWeight={"500"}
             color={"#4C8AB1"}
@@ -61,7 +61,7 @@ const PaidTransactionsCard = () => {
                 <Typography
                   fontFamily={"Inter, sans-serif"}
                   fontWeight={"500"}
-                  fontSize={"16px"}
+                  fontSize={{ xl: "16px", lg: "13px", md: "16px", xs: "16px" }}
                   color={"#5B5B5B"}
                 >
                   {transaction?.Client?.firstName}
@@ -69,14 +69,13 @@ const PaidTransactionsCard = () => {
                 <Typography
                   fontFamily={"Inter, sans-serif"}
                   fontWeight={"500"}
-                  fontSize={"16px"}
+                  fontSize={{ xl: "16px", lg: "13px", md: "16px", xs: "16px" }}
                   color={"#000000"}
                 >
                   $ {transaction?.PaymentAmount}
                 </Typography>
               </Stack>
             ))}
-            
         </Stack>
       </Stack>
       <Stack>
@@ -85,7 +84,7 @@ const PaidTransactionsCard = () => {
           <Typography
             fontFamily={"Inter, sans-serif"}
             fontWeight={"500"}
-            fontSize={"16px"}
+            fontSize={{ xl: "16px", lg: "13px", md: "16px", xs: "16px" }}
             color={"#5B5B5B"}
           >
             Total Payment Done
@@ -93,7 +92,7 @@ const PaidTransactionsCard = () => {
           <Typography
             fontFamily={"Inter, sans-serif"}
             fontWeight={"500"}
-            fontSize={"16px"}
+            fontSize={{ xl: "16px", lg: "13px", md: "16px", xs: "16px" }}
             color={"#000000"}
           >
             $ {totalPayment}

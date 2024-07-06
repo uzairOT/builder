@@ -58,7 +58,7 @@ const SubscriptionPlans = ({
         {currentPayment ? "Update Plan" : "Choose plan"}
       </Typography>
       <Grid container spacing={4} p={1}>
-        <Grid item xl={6}>
+        <Grid item xl={6} lg={6}>
           <SubscriptionCard
             currentPlan={currentPlan}
             setCurrentPlan={setCurrentPlan}
@@ -66,7 +66,7 @@ const SubscriptionPlans = ({
             planType={"Pro"}
           />
         </Grid>
-        <Grid item xl={6}>
+        <Grid item xl={6} lg={6}>
           <SubscriptionCard
             currentPlan={currentPlan}
             setCurrentPlan={setCurrentPlan}
@@ -74,7 +74,7 @@ const SubscriptionPlans = ({
             planType={"Business +"}
           />
         </Grid>
-        <Grid item xl={6}>
+        <Grid item xl={6} lg={6}>
           <SubscriptionCard
             currentPlan={currentPlan}
             setCurrentPlan={setCurrentPlan}
@@ -91,7 +91,7 @@ export default SubscriptionPlans;
 
 const themeStyle = {
   title: {
-    fontSize: "28px",
+    fontSize: {xl:"28px",lg:"25px",md:"28px",xs:"28px",},
     fontWeight: "500",
     fontFamily: "Arial Rounded MT, sans-serif",
     color: "#000000",
