@@ -10,6 +10,7 @@ import {
   IconButton,
   Avatar,
   Stack,
+  Grid,
 } from "@mui/material";
 import EditIcon from "../../../assets/settings/edit.png";
 import DeleteIcon from "../../../assets/settings/delete.png";
@@ -70,12 +71,13 @@ function CustomTable({
   refreshData,
 }) {
   const showEmailAndRecords = title === "subcontractor";
-  const [assignRoleDelete, {isLoading: deleteUserLoading}] = useDeleteAssignRoleMutation();
+  const [assignRoleDelete, { isLoading: deleteUserLoading }] =
+    useDeleteAssignRoleMutation();
   const local = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(local);
   const currentUserId = currentUser.user.id;
   const [open, setOpen] = useState(false);
-  const [deleteUserId, setDeleteUserId] = useState('');
+  const [deleteUserId, setDeleteUserId] = useState("");
   // const [confirmDelete, setConfirmDelete] = useState(false);
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
@@ -102,7 +104,7 @@ function CustomTable({
     setOpen(false);
   };
   const handleDeleteFlow = (user) => {
-    setDeleteUserId(user)
+    setDeleteUserId(user);
     setOpen(true);
   };
 
@@ -110,9 +112,9 @@ function CustomTable({
     if (confirm) {
       await handleDelete(deleteUserId);
       handleClose();
-      setDeleteUserId('')
+      setDeleteUserId("");
     } else {
-      setDeleteUserId('')
+      setDeleteUserId("");
       handleClose();
     }
   };
@@ -126,12 +128,15 @@ function CustomTable({
         userRole: userRole
       };
       const res = await assignRoleDelete(deleteUser);
-      //console.log(res);
-      if (res.data.success) {
+      if(res?.error?.data?.success === false){
+        toast.error(res?.error?.data?.error || "something went wrong");
+      }
+      if (res?.data?.success) {
         refetch();
       }
     } catch (e) {
-      toast.error("error");
+      console.log(e)
+      toast.error(e?.error?.data?.error || "something went wrong");
     }
   };
   const handleRefetch = async () => {
@@ -152,51 +157,120 @@ function CustomTable({
   console.log(error);
   return (
     <>
-      <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell sx={tableCellStyle}>Profile Pic</TableCell>
-              <TableCell sx={tableCellStyle}>Name</TableCell>
-              <TableCell sx={tableCellStyle}>Job/Project</TableCell>
-              <TableCell sx={tableCellStyle}>Phone Number</TableCell>
-              <TableCell sx={tableCellStyle}>Email</TableCell>
-              {/* <TableCell sx={tableCellStyle}>Country</TableCell> */}
-              {/* <TableCell sx={tableCellStyle}>Project Status</TableCell> */}
-              {/* {showEmailAndRecords && (
+      <Grid
+        container
+        xl={12}
+        lg={12}
+        md={12}
+        sm={12}
+        width={{ xl: "100%", lg: "100%", md: "100%", xs: "100%" }}
+      >
+        <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={tableCellStyle}>Profile Pic</TableCell>
+                <TableCell sx={tableCellStyle}>Name</TableCell>
+                <TableCell sx={tableCellStyle}>Job/Project</TableCell>
+                <TableCell sx={tableCellStyle}>Phone Number</TableCell>
+                <TableCell sx={tableCellStyle}>Email</TableCell>
+                {/* <TableCell sx={tableCellStyle}>Country</TableCell> */}
+                {/* <TableCell sx={tableCellStyle}>Project Status</TableCell> */}
+                {/* {showEmailAndRecords && (
                 <TableCell sx={tableCellStyle}>
                   Email <br /> Records
                 </TableCell>
               )} */}
-              <TableCell sx={tableCellStyle}>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          {error ? (
-            <Stack p={2}>{"Something went wrong!"}</Stack>
-          ) : (
-            <TableBody>
-              {isLoading ? (
-                <Stack p={2}>Loading...</Stack>
-              ) : data?.message === "no records" ? (
-                <>No Records</>
-              ) : (
-                data?.users?.map((row, index) => (
-                  <TableRow key={index}>
+                <TableCell sx={tableCellStyle}>Action</TableCell>
+              </TableRow>
+            </TableHead>
+            {error ? (
+              <Stack p={2}>{"Something went wrong!"}</Stack>
+            ) : (
+              <TableBody>
+                {isLoading ? (
+                  <TableRow>
                     <TableCell sx={tableCellValueStyle}>
-                      <Avatar alt="Avatar" src={row.image} />
+                      {/* <Avatar alt="Avatar" src={row.image} /> */}
                     </TableCell>
-                    <TableCell sx={tableCellValueStyle}>
-                      {row.firstName}
-                    </TableCell>
-                    <TableCell sx={tableCellValueStyle}>
-                      {row.projectName}
-                    </TableCell>
-                    <TableCell sx={tableCellValueStyle}>
-                      {row.phoneNumber}
-                    </TableCell>
-                    <TableCell sx={tableCellValueStyle}>{row.email}</TableCell>
+                    <TableCell sx={tableCellValueStyle}></TableCell>
+                    <TableCell sx={tableCellValueStyle}></TableCell>
+                    <TableCell sx={tableCellValueStyle}></TableCell>
+                    <TableCell sx={tableCellValueStyle}></TableCell>
                     {/* <TableCell sx={tableCellValueStyle}>{row.country}</TableCell> */}
                     {/* <TableCell sx={tableCellValueStyle}>
+              {" "}
+              <Button
+                buttonText={row.status}
+                color={row.status === "done" ? "#008767" : "#DF0404"}
+                backgroundColor={
+                  row.status === "done" ? "#16C09821" : "#FFDADA"
+                }
+                width="101px"
+                height="27px"
+                borderRadius="45px"
+              />
+            </TableCell> */}
+                    {/* {showEmailAndRecords && (
+                  <TableCell sx={tableCellValueStyle}>
+                    <IconButton
+                      aria-label="email"
+                      size="small"
+                      onClick={handleEmailIconClick}
+                    >
+                      <img src={EmailIcon} alt="" />
+                    </IconButton>
+                  </TableCell>
+                )} */}
+                    <TableCell sx={tableCellValueStyle}>
+                      <IconButton
+                        aria-label="edit"
+                        size="small"
+                        // onClick={() => handleUserId(row)}
+                      >
+                        <img src={EditIcon} alt="" style={{ width: "35px" }} />
+                      </IconButton>
+                      <IconButton
+                        aria-label="delete"
+                        size="small"
+                        // onClick={() => handleDelete(row.id)}
+                        // onClick={() =>
+                        //   handleDeleteFlow({
+                        //     userId: row.id,
+                        //     projectId: row.projectId,
+                        //   })
+                        // }
+                      >
+                        <img
+                          src={DeleteIcon}
+                          alt=""
+                          style={{ width: "35px" }}
+                        />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ) : data?.message === "no records" ? (
+                  <>No Records</>
+                ) : (
+                  data?.users?.map((row, index) => (
+                    <TableRow key={index}>
+                      <TableCell sx={tableCellValueStyle}>
+                        <Avatar alt="Avatar" src={row.image} />
+                      </TableCell>
+                      <TableCell sx={tableCellValueStyle}>
+                        {row.firstName}
+                      </TableCell>
+                      <TableCell sx={tableCellValueStyle}>
+                        {row.projectName}
+                      </TableCell>
+                      <TableCell sx={tableCellValueStyle}>
+                        {row.phoneNumber}
+                      </TableCell>
+                      <TableCell sx={tableCellValueStyle}>
+                        {row.email}
+                      </TableCell>
+                      {/* <TableCell sx={tableCellValueStyle}>{row.country}</TableCell> */}
+                      {/* <TableCell sx={tableCellValueStyle}>
                   {" "}
                   <Button
                     buttonText={row.status}
@@ -209,7 +283,7 @@ function CustomTable({
                     borderRadius="45px"
                   />
                 </TableCell> */}
-                    {/* {showEmailAndRecords && (
+                      {/* {showEmailAndRecords && (
                       <TableCell sx={tableCellValueStyle}>
                         <IconButton
                           aria-label="email"
@@ -220,37 +294,51 @@ function CustomTable({
                         </IconButton>
                       </TableCell>
                     )} */}
-                    <TableCell sx={tableCellValueStyle}>
-                      <IconButton
-                        aria-label="edit"
-                        size="small"
-                        onClick={() => handleUserId(row)}
-                      >
-                        <img src={EditIcon} alt=""  style={{width:'35px'}}/>
-                      </IconButton>
-                      <IconButton
-                        aria-label="delete"
-                        size="small"
-                        // onClick={() => handleDelete(row.id)}
-                        onClick={() => handleDeleteFlow({userId: row.id, projectId: row.projectId})}
-                      >
-                        <img src={DeleteIcon} alt="" style={{width:'35px'}} />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          )}
-        </Table>
-      </TableContainer>
-      <AreYouSureModal
-        open={open}
-        handleClose={handleClose}
-        handleConfirmDelete={handleConfirmDelete}
-        isLoading={deleteUserLoading}
-        text={'user'}
-      />
+                      <TableCell sx={tableCellValueStyle}>
+                        <IconButton
+                          aria-label="edit"
+                          size="small"
+                          onClick={() => handleUserId(row)}
+                        >
+                          <img
+                            src={EditIcon}
+                            alt=""
+                            style={{ width: "35px" }}
+                          />
+                        </IconButton>
+                        <IconButton
+                          aria-label="delete"
+                          size="small"
+                          // onClick={() => handleDelete(row.id)}
+                          onClick={() =>
+                            handleDeleteFlow({
+                              userId: row.id,
+                              projectId: row.projectId,
+                            })
+                          }
+                        >
+                          <img
+                            src={DeleteIcon}
+                            alt=""
+                            style={{ width: "35px" }}
+                          />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            )}
+          </Table>
+        </TableContainer>
+        <AreYouSureModal
+          open={open}
+          handleClose={handleClose}
+          handleConfirmDelete={handleConfirmDelete}
+          isLoading={deleteUserLoading}
+          text={"user"}
+        />
+      </Grid>
     </>
   );
 }
@@ -258,6 +346,8 @@ function CustomTable({
 export default CustomTable;
 
 const tableCellStyle = {
+  maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
+  minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
   fontWeight: 500,
   fontSize: "14px",
   fontFamily: "Poppins",
@@ -265,8 +355,11 @@ const tableCellStyle = {
 };
 
 const tableCellValueStyle = {
+  maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
+  minwidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
   fontWeight: 400,
   borderBottom: "none",
   fontFamily: "Montserrat",
   color: "#000000",
+  whiteSpace: "wrap",
 };

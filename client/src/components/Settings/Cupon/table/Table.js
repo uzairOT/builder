@@ -71,7 +71,7 @@ function CustomTable({
   data,
   isLoading,
   isError,
-  deleteCoupon
+  deleteCoupon,
 }) {
   const showEmailAndRecords = title === "subcontractor";
   const [assignRoleDelete] = useDeleteAssignRoleMutation();
@@ -87,7 +87,6 @@ function CustomTable({
     setTemplateView(true); // Call the function to update the template view
   };
 
- 
   const OpenUpdateModal = () => {
     setUpdateModalOpen(true);
   };
@@ -99,8 +98,8 @@ function CustomTable({
   };
   const handleDelete = async (id) => {
     const couponId = {
-      id: id
-    }
+      id: id,
+    };
     try {
       const res = await deleteCoupon(couponId);
     } catch (e) {
@@ -112,7 +111,7 @@ function CustomTable({
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell  sx={tableCellStyle}>Coupon Id</TableCell>
+            <TableCell sx={tableCellStyle}>Coupon Id</TableCell>
             <TableCell sx={tableCellStyle}>Coupon Code</TableCell>
             <TableCell sx={tableCellStyle}>Off Amount</TableCell>
             <TableCell></TableCell>
@@ -120,19 +119,68 @@ function CustomTable({
           </TableRow>
         </TableHead>
         {isError ? (
-          <Stack p={2}>{'Something went wrong!'}</Stack>
+          <Stack p={2}>{"Something went wrong!"}</Stack>
         ) : (
           <TableBody>
             {isLoading ? (
-              <Stack p={2}>Loading...</Stack>
+              <>
+                <TableRow>
+                  <TableCell sx={tableCellValueStyle}></TableCell>
+                  <TableCell sx={tableCellValueStyle}></TableCell>
+                  <TableCell sx={tableCellValueStyle}></TableCell>
+                  <TableCell sx={tableCellValueStyle}></TableCell>
+
+                  {/* <TableCell sx={tableCellValueStyle}>{row.country}</TableCell> */}
+                  {/* <TableCell sx={tableCellValueStyle}>
+                  {" "}
+                  <Button
+                    buttonText={row.status}
+                    color={row.status === "done" ? "#008767" : "#DF0404"}
+                    backgroundColor={
+                      row.status === "done" ? "#16C09821" : "#FFDADA"
+                    }
+                    width="101px"
+                    height="27px"
+                    borderRadius="45px"
+                  />
+                </TableCell> */}
+                  {/* <TableCell sx={tableCellValueStyle}>
+                    <IconButton
+                      aria-label="email"
+                      size="small"
+                      onClick={handleEmailIconClick}
+                    >
+                      <img src={EmailIcon} alt="" />
+                      <EditIcon />
+                    </IconButton>
+                  </TableCell> */}
+
+                  <TableCell sx={tableCellValueStyle}>
+                    <IconButton aria-label="edit" size="small">
+                      <img
+                        src={EditIcon}
+                        alt="edit icon"
+                        style={{ width: "35px" }}
+                      />
+                      {/* <EditIcon /> */}
+                    </IconButton>
+                    <IconButton aria-label="delete" size="small">
+                      <img
+                        src={DeleteIcon}
+                        alt="delete icon"
+                        style={{ width: "35px" }}
+                      />
+                      {/* <DeleteIcon /> */}
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              </>
             ) : data?.message === "no records" ? (
               <>No Records</>
             ) : (
               data?.coupons?.map((row) => (
                 <TableRow key={row.id}>
-                  <TableCell sx={tableCellValueStyle}>
-                    {row.id}
-                  </TableCell>
+                  <TableCell sx={tableCellValueStyle}>{row.id}</TableCell>
                   <TableCell sx={tableCellValueStyle}>
                     {row.couponCode}
                   </TableCell>
@@ -174,7 +222,11 @@ function CustomTable({
                         handleUserId(row.id, row.couponCode, row.couponValue)
                       }
                     >
-                      <img src={EditIcon} alt="edit icon" style={{width:'35px'}}/>
+                      <img
+                        src={EditIcon}
+                        alt="edit icon"
+                        style={{ width: "35px" }}
+                      />
                       {/* <EditIcon /> */}
                     </IconButton>
                     <IconButton
@@ -182,7 +234,11 @@ function CustomTable({
                       size="small"
                       onClick={() => handleDelete(row.id)}
                     >
-                      <img src={DeleteIcon} alt="delete icon" style={{width:'35px'}} />
+                      <img
+                        src={DeleteIcon}
+                        alt="delete icon"
+                        style={{ width: "35px" }}
+                      />
                       {/* <DeleteIcon /> */}
                     </IconButton>
                   </TableCell>
@@ -199,6 +255,8 @@ function CustomTable({
 export default CustomTable;
 
 const tableCellStyle = {
+  maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
+  minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
   fontWeight: 500,
   fontSize: "14px",
   fontFamily: "Poppins",
@@ -206,6 +264,8 @@ const tableCellStyle = {
 };
 
 const tableCellValueStyle = {
+  maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
+  minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
   fontWeight: 400,
   borderBottom: "none",
   fontFamily: "Montserrat",

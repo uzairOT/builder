@@ -38,12 +38,25 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 import { useFormik } from "formik";
 import { signupSchemea } from "../../utils/Validation/settingsPageSchema";
+import builderproicon from "../../assets/FileSvg/builderProWhite.png";
+import { PhoneNumberUtil } from "google-libphonenumber";
+
+const phoneUtil = PhoneNumberUtil.getInstance();
+
+const isPhoneValid = (phone) => {
+  try {
+    return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone));
+  } catch (error) {
+    return false;
+  }
+};
 
 const SignupComp = () => {
   const isLG = useMediaQuery("(min-width: 1280px)");
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
+  const [phoneIsValid, setPhoneIsValid] = useState(true);
 
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
@@ -78,9 +91,9 @@ const SignupComp = () => {
     // height: heightValue,
     alignSelf: "stretch",
     paddingLeft: "8px",
-    height: '2.8rem',
-    display: 'flex',
-    alignItems:'center'
+    height: "2.8rem",
+    display: "flex",
+    alignItems: "center",
     // paddingTop: "0.5rem",
     // padding: "0.5rem",
   };
@@ -140,8 +153,8 @@ const SignupComp = () => {
         if (res.message === "Login Successful!") {
           dispatch(setCredentials({ ...res }));
           setTimeout(() => {
-            window.location.href = '/';
-          }, 1000); 
+            window.location.href = "/";
+          }, 1000);
         } else if (res.message === "notFound!") {
           toast.warning("User not found");
           navigate("/signup");
@@ -174,9 +187,9 @@ const SignupComp = () => {
   };
   const onSubmit = async (e) => {
     // e.preventDefault();
-    if(phone === ''){
-      toast.warning('Plase enter your Phone number');
-      return
+    if (!validate()) {
+      toast.error('Your phone number is not valid')
+      return;
     }
     if (checked) {
       const data = { ...values, phone };
@@ -186,24 +199,24 @@ const SignupComp = () => {
         // dispatch(setCredentials({ ...res }));
         // navigate("/assignproject");
         if (res.redirectTo === "verifyOtp") {
-          toast.success(res.message || 'Success!');
+          toast.success(res.message || "Success!");
           navigate("/verifycode", { state: { data: "signup" } });
           return;
-        } else if (res.success || 'Success!') {
+        } else if (res.success || "Success!") {
           toast.success(res.message);
           navigate("/verifycode", { state: { data: "signup" } });
         } else {
-          toast.error(res.message || 'Something went wrong!');
+          toast.error(res.message || "Something went wrong!");
           return;
         }
         console.log("hi");
       } catch (err) {
         console.log(err);
-        if(err.status === 'FETCH_ERROR'){
-          toast.error('Network Issues');
+        if (err.status === "FETCH_ERROR") {
+          toast.error("Network Issues");
           return;
         }
-        toast.error(err?.data?.error || err.error ||  'Something went wrong!');
+        toast.error(err?.data?.error || err.error || "Something went wrong!");
       }
     } else {
       toast("Please agree to our Terms of use");
@@ -224,6 +237,17 @@ const SignupComp = () => {
       onSubmit,
     });
 
+  const validate = () => {
+    const newErrors = {};
+
+    const isValid = isPhoneValid(phone);
+    // Add more validation rules as needed
+    setPhoneIsValid(isValid);
+
+    // Return true if no errors
+    return Object.keys(newErrors).length === 0 && isValid;
+  };
+
   const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "1rem" };
   const linkResponsiveColor = { color: isMobile ? "#FFAC00" : "#4C8AB1" };
   const borderRadiusResponsive = {
@@ -232,20 +256,37 @@ const SignupComp = () => {
 
   useEffect(() => {
     console.log(values);
-
   }, [values]);
   return (
     <Grid container sx={{ ...firstGrid }}>
       <ToastContainer />
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
-        <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
+          }}
+        >
+          <img height="55px" src={builderproicon} alt="Builder Pro" />
+          <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography>
+        </Box>
 
         {/* Button */}
 
         <Typography component="p" sx={secondHeading}>
-          On schedule. On budget. On the path to building better.
+          On schedule.
         </Typography>
-        
+        <Typography component="p" sx={secondHeading}>
+          {" "}
+          On budget.{" "}
+        </Typography>
+
+        <Typography component="p" sx={secondHeading}>
+          {" "}
+          On the path to building better.
+        </Typography>
+
         <Box sx={downloadForMobBox}>
           <img src={downloadForMob} width={DoMobWidth} alt="" />
         </Box>
@@ -260,14 +301,17 @@ const SignupComp = () => {
         sm={12}
         md={6}
         lg={6}
-        sx={formGridContainer}  
+        sx={formGridContainer}
       >
         <Grid item sx={formGrid}>
-          <form style={{ marginTop: "0.1rem", width:'70%' }} onSubmit={handleSubmit}>
-          <Box sx={logoBox}>
-            <Typography sx={formHeadingStyle}>Sign up</Typography>
-            <img src={builder1} width={"25%"} alt="" />
-          </Box>
+          <form
+            style={{ marginTop: "0.1rem", width: "70%" }}
+            onSubmit={handleSubmit}
+          >
+            <Box sx={logoBox}>
+              <Typography sx={formHeadingStyle}>Sign up</Typography>
+              <img src={builder1} width={"25%"} alt="" />
+            </Box>
             <Box sx={namesFieldBox}>
               <Box sx={{ ...topSpace, width: "100%" }}>
                 <label
@@ -369,7 +413,7 @@ const SignupComp = () => {
                 style={{
                   ...labelStyle,
                   fontSize: isMobile ? "0.8rem" : "1rem",
-                  paddingTop:'5px'
+                  paddingTop: "5px",
                 }}
                 htmlFor="phone"
               >
@@ -377,20 +421,46 @@ const SignupComp = () => {
               </label>
 
               <PhoneInput
-              disableDialCodePrefill
+                disableDialCodePrefill
                 style={{ ...customPhoneStyles }}
                 defaultCountry=""
+                name={"phoneNumber"}
                 value={phone}
-              
                 onChange={(phone) => setPhone(phone)}
+                countrySelectorStyleProps={{
+                  style: {
+                    "--react-international-phone-country-selector-background-color":
+                      "#EDF2F6",
+                    "--react-international-phone-country-selector-background-color-hover":
+                      "#EDF2F6",
+                  },
+                  buttonStyle: {
+                    filter: "none",
+                  },
+                }}
                 inputStyle={{ ...customeInputStyles }}
                 inputProps={{
                   border: "none",
-                  placeholder:'+1 (123) 456-7890'
+                  placeholder: "+1 (123) 456-7890",
                 }}
                 required
-                name="phone"
               />
+              {!phoneIsValid && (
+                <Box>
+                  <Typography
+                    sx={{
+                      color: "#d32f2f",
+                      fontSize: "12px",
+                      marginLeft: "14px",
+                      marginRight: "14px",
+                      marginTop: "3px",
+                      fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+                    }}
+                  >
+                    Phone is not valid
+                  </Typography>
+                </Box>
+              )}
             </Box>
 
             <Box sx={{ marginTop: "0.5rem" }}>
@@ -428,7 +498,7 @@ const SignupComp = () => {
                 style={{
                   ...labelStyle,
                   fontSize: isMobile ? "0.8rem" : "1rem",
-                  paddingTop:'5px'
+                  paddingTop: "5px",
                 }}
                 htmlFor="password"
               >
@@ -444,7 +514,7 @@ const SignupComp = () => {
 
               <Box style={{ position: "relative" }}>
                 <input
-                placeholder="Enter your password"
+                  placeholder="Enter your password"
                   style={{
                     ...inputStyle,
                     border:
@@ -483,7 +553,7 @@ const SignupComp = () => {
                 style={{
                   ...labelStyle,
                   fontSize: isMobile ? "0.8rem" : "1rem",
-                  paddingTop:'5px'
+                  paddingTop: "5px",
                 }}
                 htmlFor="confirmPassword"
               >
@@ -491,7 +561,7 @@ const SignupComp = () => {
               </label>
               <Box style={{ position: "relative" }}>
                 <input
-                placeholder="Confirm your password"
+                  placeholder="Confirm your password"
                   style={{
                     ...inputStyle,
                     border:
@@ -556,31 +626,31 @@ const SignupComp = () => {
                 </label>
               </label>
             </Box>
-            <Stack
-            alignItems={'center'}
-            justifyContent={'center'}
-            >
-
-            <Button
-              sx={{ ...YellowBtn, marginBottom: "1rem", width: { lg: "19rem", md: "19rem", sm: "19rem", xs: "100%" }, }}
-              type="submit"
-              onClick={handleSubmit}
-            >
-              {isLoading ? <CircularProgress size='18px' /> : 'Sign up'}
-            </Button>
-            <Typography sx={alreadyHaveAccountTypo}>
-              Already have an account?{"\u00a0"}{" "}
-              <Link
-                to="/login"
-                style={{
-                  ...loginLink,
-                  ...linkResponsiveColor,
-                  ...lableResponsiveFont,
+            <Stack alignItems={"center"} justifyContent={"center"}>
+              <Button
+                sx={{
+                  ...YellowBtn,
+                  marginBottom: "1rem",
+                  width: { lg: "19rem", md: "19rem", sm: "19rem", xs: "100%" },
                 }}
+                type="submit"
+                onClick={handleSubmit}
               >
-                Log in
-              </Link>
-            </Typography>
+                {isLoading ? <CircularProgress size="18px" /> : "Sign up"}
+              </Button>
+              <Typography sx={alreadyHaveAccountTypo}>
+                Already have an account?{"\u00a0"}{" "}
+                <Link
+                  to="/login"
+                  style={{
+                    ...loginLink,
+                    ...linkResponsiveColor,
+                    ...lableResponsiveFont,
+                  }}
+                >
+                  Log in
+                </Link>
+              </Typography>
             </Stack>
             {/* <Box sx={continueWithBox}>
               <hr style={hrLine} />
@@ -588,28 +658,24 @@ const SignupComp = () => {
                 {isMobile ? "Or" : "or continue with"}
               </Typography>
             </Box> */}
-          <Stack
-            alignItems={'center'}
-            justifyContent={'center'}
-            >
-
-            <GoogleLogin
-              clientId="960267013158-g1avbe0m8oe44tcflp4urhe4gkh5olb1.apps.googleusercontent.com"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy={"single_host_origin"}
-              render={(renderProps) => (
-                <Button
-                  sx={googleBtnStyle}
-                  type="button"
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                >
-                  <GoogleLogo style={{ marginRight: "1rem" }} />{" "}
-                  {isMobile ? "Google" : "Continue with Google"}
-                </Button>
-              )}
-            />
+            <Stack alignItems={"center"} justifyContent={"center"}>
+              <GoogleLogin
+                clientId="960267013158-g1avbe0m8oe44tcflp4urhe4gkh5olb1.apps.googleusercontent.com"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={"single_host_origin"}
+                render={(renderProps) => (
+                  <Button
+                    sx={googleBtnStyle}
+                    type="button"
+                    onClick={renderProps.onClick}
+                    disabled={renderProps.disabled}
+                  >
+                    <GoogleLogo style={{ marginRight: "1rem" }} />{" "}
+                    {isMobile ? "Google" : "Continue with Google"}
+                  </Button>
+                )}
+              />
             </Stack>
           </form>
         </Grid>
@@ -736,13 +802,11 @@ const formGrid = {
 };
 
 const logoBox = {
-
   marginBottom: "1rem",
   justifyContent: "space-between",
-  alignItems:'center',
+  alignItems: "center",
   marginTop: "1rem",
-  display: 'flex',
-
+  display: "flex",
 };
 const namesFieldBox = {
   display: "flex",
@@ -916,7 +980,7 @@ const formHeadingStyle = {
   fontSize: "2.1875rem",
   fontWeight: 700,
   lineHeight: "normal",
-  alignSelf: 'center'
+  alignSelf: "center",
 };
 
 const customeInputStyles = {
@@ -968,7 +1032,7 @@ const googleBtnStyle = {
   flexDirection: "row",
   marginBottom: { lg: "3.4rem", sm: "3rem", xs: "1rem" },
   marginTop: "2rem",
-  borderRadius: { lg: '2.5rem', md: '2.5rem', sm: '2.5rem', xs: '0.5rem' },
+  borderRadius: { lg: "2.5rem", md: "2.5rem", sm: "2.5rem", xs: "0.5rem" },
   border: "1px solid rgba(6, 32, 72, 0.11)",
   background: "#FFF",
   color: "#333",
