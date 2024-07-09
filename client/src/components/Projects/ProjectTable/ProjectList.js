@@ -342,7 +342,7 @@ useEffect(()=>{
           <Stack
             width={{ xl: "150px", lg: "150px", md: "150px", sm: "150px" }}
             justifyContent={"flex-end"}
-            alignSelf={"flex-end"}
+            alignSelf={"center"}
           >
             <BuilderProButton
               variant={"contained"}

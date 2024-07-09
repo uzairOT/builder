@@ -4,13 +4,19 @@ import BuilderProButton from "../../UI/Button/BuilderProButton";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import ProjectCard from "../../UI/Card/ProjectCard";
 import projects from "./assets/data/projects.json";
-import { useGetProjectUserRoleMutation, useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+import {
+  useGetProjectUserRoleMutation,
+  useGetUserProjectsQuery,
+} from "../../../redux/apis/Project/userProjectApiSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { addProjects, projectsPackage } from "../../../redux/slices/Project/userProjectsSlice";
+import {
+  addProjects,
+  projectsPackage,
+} from "../../../redux/slices/Project/userProjectsSlice";
 import { addInitialPhase } from "../../../redux/slices/Project/projectInitialProposal";
 import { authUserRole } from "../../../redux/slices/auth/userRoleSlice";
 
-const ProjectsSidebar = ({reports}) => {
+const ProjectsSidebar = ({ reports }) => {
   const [activeBtn, setActiveBtn] = useState("remodel");
   const dispatch = useDispatch();
   const [getUserRole] = useGetProjectUserRoleMutation();
@@ -19,42 +25,43 @@ const ProjectsSidebar = ({reports}) => {
   const currentUser = JSON.parse(local);
   const currentUserId = currentUser.user.id;
   const location = useLocation();
-  const path = !location.pathname.split("/")[3] || location.pathname.split("/")[3] ==='client'
-    ? ""
-    :  location.pathname.split("/")[3];
+  const path =
+    !location.pathname.split("/")[3] ||
+    location.pathname.split("/")[3] === "client"
+      ? ""
+      : location.pathname.split("/")[3];
   const handleListedProjectsButton = (btn) => {
     setActiveBtn(btn);
   };
   const navigate = useNavigate();
 
-
   const handleClick = async (projectId, path, e) => {
-    console.log(path)
+    console.log(path);
     dispatch(addInitialPhase([]));
     // const res = await getUserRole({projectId, userId: currentUserId});
     // // console.log(res)
     // dispatch(authUserRole(res.data.role));
-    if(userRole.userRole === 'client'){
+    if (userRole.userRole === "client") {
       navigate(`/projects/${projectId}/client`);
-    } else{
-      
+    } else {
       navigate(`/projects/${projectId}/${path}`);
     }
-    
   };
   const { id } = useParams();
   //console.log(id);
   // const { data, isLoading, error } = useGetUserProjectsQuery({
   //   userId: currentUserId,
   // });
-  const {projects, isLoading , error} = useSelector(projectsPackage);
+  const { projects, isLoading, error } = useSelector(projectsPackage);
 
   useEffect(() => {
-    const selectedProject = projects[0]?.find(projectProfileCard => Number(projectProfileCard.id) === Number(id));
-    if(selectedProject){
+    const selectedProject = projects[0]?.find(
+      (projectProfileCard) => Number(projectProfileCard.id) === Number(id)
+    );
+    if (selectedProject) {
       setActiveBtn(selectedProject?.buildType);
     }
-  },[id])
+  }, [id]);
 
   if (isLoading && projects[0]?.length < 1) {
     return <>Loading...</>;
@@ -83,7 +90,7 @@ const ProjectsSidebar = ({reports}) => {
           ml={"-16px"}
           mr={"-16px"}
           justifyContent={"center"}
-          mb={'4px'}
+          mb={"4px"}
         >
           <BuilderProButton
             variant={"contained"}
@@ -95,7 +102,7 @@ const ProjectsSidebar = ({reports}) => {
             }}
           >
             <Typography
-              fontSize={"11px"}
+              fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
               fontWeight={"500"}
               color={"black"}
               fontFamily={"Inter, sans-serif"}
@@ -114,7 +121,7 @@ const ProjectsSidebar = ({reports}) => {
             }}
           >
             <Typography
-              fontSize={"11px"}
+              fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
               fontWeight={"500"}
               color={"black"}
               fontFamily={"Inter, sans-serif"}
@@ -133,7 +140,7 @@ const ProjectsSidebar = ({reports}) => {
             }}
           >
             <Typography
-              fontSize={"11px"}
+              fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
               fontWeight={"500"}
               color={"black"}
               fontFamily={"Inter, sans-serif"}
@@ -150,7 +157,7 @@ const ProjectsSidebar = ({reports}) => {
         <Box
           sx={{
             ...themeStyle.scrollable,
-            height: reports ? 'calc(92vh - 278px)' : 'calc(92vh - 214px)'
+            height: reports ? "calc(92vh - 278px)" : "calc(92vh - 219px)",
           }}
         >
           <Stack spacing={1} pl={2} pr={2} pt={1}>
@@ -159,20 +166,20 @@ const ProjectsSidebar = ({reports}) => {
                 const selected = Number(projectProfileCard.id) === Number(id);
                 if (projectProfileCard.buildType === activeBtn) {
                   return (
-                    <React.Fragment  key={projectProfileCard.id}>
-                    <Link
-                      key={projectProfileCard.id}
-                      onClick={(e)=>{
-                        e.preventDefault();
-                        handleClick(projectProfileCard.id,path, e);
-                      }}
-                      style={{ textDecoration: "none",   }}
-                    >
-                      <ProjectCard
-                        projectProfileCard={projectProfileCard}
-                        selected={selected}
-                      />
-                    </Link>
+                    <React.Fragment key={projectProfileCard.id}>
+                      <Link
+                        key={projectProfileCard.id}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleClick(projectProfileCard.id, path, e);
+                        }}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <ProjectCard
+                          projectProfileCard={projectProfileCard}
+                          selected={selected}
+                        />
+                      </Link>
                     </React.Fragment>
                   );
                 } else {

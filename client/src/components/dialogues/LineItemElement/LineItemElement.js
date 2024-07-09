@@ -287,6 +287,12 @@ function AddLineElement({
       }
       try {
         const response = await addPhaseLine(newLineItem);
+        console.log(response)
+        if(response?.error?.data?.message === 'LineItem already exists against this phase!'){
+          toast.error(response?.error?.data?.message)
+          handleAddClose();
+          return;
+        }
         toast.success("Line Item Added successfully");
         if (InitialProposalView) {
           dispatch(addInitialPhase(response?.data?.allPhases));
@@ -296,7 +302,10 @@ function AddLineElement({
         toast.success("Line Item added successfully");
         handleAddClose();
       } catch (error) {
-        console.log("Something went wrong!");
+        // if(error?.data?.message === 'LineItem already exists against this phase!'){
+        //   error?.data?
+        // }
+        console.log("Something went wrong!", error, error?.data?.message);
       }
       //console.log(newLineItem);
       //console.log(response);
