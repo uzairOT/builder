@@ -493,6 +493,8 @@ useEffect(()=>{
                                 </TableCell>
                               );
                             })} */}
+                            <TableCell sx={themeStyle.tableCell}>
+
                         <Box
                           display="flex"
                           pt={2.5}
@@ -525,6 +527,7 @@ useEffect(()=>{
                               </IconButton>
                             </Paper> */}
                         </Box>
+                            </TableCell>
                         <TableCell sx={themeStyle.tableCell}>
                           <Link
                             to={`/projects/${row.id}`}
@@ -599,6 +602,10 @@ export default ProjectList;
 
 const themeStyle = {
   tableCell: {
+    maxWidth: { xl: "40px", lg: "30px", md: "70px", xs: "100%" },
+    minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
+    textOverflow:'ellipsis',
+    overflow:'hidden',
     fontWeight: 500,
     fontSize: "14px",
     fontFamily: "Montserrat, sans serif",

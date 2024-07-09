@@ -24,6 +24,8 @@ import { toast } from "react-toastify";
 const tableCellStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
+  textOverflow:'ellipsis',
+  overflow:'hidden',
   fontWeight: 500,
   fontSize: "14px",
   fontFamily: "Poppins",
@@ -34,6 +36,8 @@ const tableCellStyle = {
 const tableCellValueStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
+  textOverflow:'ellipsis',
+  overflow:'hidden',
   fontWeight: 400,
   borderBottom: "none",
   fontFamily: "Montserrat",

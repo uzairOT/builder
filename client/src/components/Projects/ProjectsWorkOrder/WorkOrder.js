@@ -205,12 +205,20 @@ function WorkOrder({
 }
 export default WorkOrder;
 const tableCellStyle = {
+  maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
+  minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
+  textOverflow:'ellipsis',
+  overflow:'hidden',
   fontWeight: 500,
   fontSize:{xl:'14px', lg:"12px",md:'14px',xs:'14px',},
   fontFamily: "Poppins",
   color: "#8C8C8C",
 };
 const tableCellValueStyle = {
+  maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
+  minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
+  textOverflow:'ellipsis',
+  overflow:'hidden',
   fontSize:{xl:'12px', lg:"11px",md:'12px',xs:'12px',},
   fontWeight: 400,
   borderBottom: "none",

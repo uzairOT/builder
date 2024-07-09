@@ -210,6 +210,10 @@ const themeStyle = {
     marginTop: "0.5rem",
   },
   tableHeadings: {
+    maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
+    minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
+    textOverflow:'ellipsis',
+    overflow:'hidden',
     fontFamily: "Poppins, sans-serif",
     whiteSpace: "nowrap",
     fontWeight: 500,
@@ -218,6 +222,10 @@ const themeStyle = {
     paddingLeft: "0rem",
   },
   buttonStatus: {
+    maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
+    minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
+    textOverflow:'ellipsis',
+    overflow:'hidden',
     borderRadius: "10px",
     padding: "0.2rem 1.5rem",
     background: "#FFC8C8",
@@ -225,6 +233,10 @@ const themeStyle = {
     textTransform: "none",
   },
   tableRowText: {
+    maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
+    minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
+    textOverflow:'ellipsis',
+    overflow:'hidden',
     fontSize: "0.9rem",
     borderBottom: "none",
     color: "#000000",
