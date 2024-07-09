@@ -8,6 +8,7 @@ import { settingsSchema, unitSchema } from '../../../utils/Validation/settingsPa
 import { useAddUnitMutation, useEditUnitMutation } from '../../../redux/apis/Project/userProjectApiSlice';
 import { useSelector } from 'react-redux';
 import { Close } from '@mui/icons-material';
+import { toast } from 'react-toastify';
 
 
 const AddUnitModal = ({open, onClose, unit, refetch}) => {
@@ -22,6 +23,14 @@ const AddUnitModal = ({open, onClose, unit, refetch}) => {
             userId: userInfo.user.id
         }
         const res = await addUnit(post);
+        if(res?.error?.data?.message === 'Unit is a default unit'){
+          toast.error(res.error.data.message)
+          return;
+        }
+        if(res?.error?.data?.message === 'Unit already exists'){
+          toast.error(res.error.data.message)
+          return;
+        }
         await refetch({userId: userInfo.user.id})
         console.log(res)
       };

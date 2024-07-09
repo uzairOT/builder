@@ -359,14 +359,14 @@ console.log(rowCheckboxes)
                       Add Phase
                     </Button>
                     <Button
-                      sx={{ ...actionButton, display: initialPhases[0]?.length < 1 ? 'none' :'flex' }}
+                      sx={{ ...actionButton, display: (initialPhases[0]?.length < 1 || isLoading) ? 'none' :'flex' }}
                       startIcon={<ModeEditOutlinedIcon />}
                       onClick={handleEditPhase}
                     >
                       Edit
                     </Button>
                     <Button
-                      sx={{ ...actionButton, display: initialPhases[0]?.length < 1 ? 'none' :'flex' }}
+                      sx={{ ...actionButton, display: (initialPhases[0]?.length < 1 || isLoading) ? 'none' :'flex' }}
                       startIcon={<DeleteOutlinedIcon />}
                       onClick={handleOpenModal}
                     >
@@ -395,14 +395,14 @@ console.log(rowCheckboxes)
                 Add Phase
               </Button>
               <Button
-                sx={{ ...actionButton, display: phases[0]?.length < 1 ? 'none' :'flex' }}
+                sx={{ ...actionButton, display: (phases[0]?.length < 1 || isLoading) ? 'none' :'flex' }}
                 startIcon={<ModeEditOutlinedIcon />}
                 onClick={handleEditPhase}
               >
                 Edit
               </Button>
               <Button
-                sx={{ ...actionButton, display: phases[0]?.length < 1 ? 'none' :'flex' }}
+                sx={{ ...actionButton, display: (phases[0]?.length < 1 || isLoading) ? 'none' :'flex' }}
                 startIcon={<DeleteOutlinedIcon />}
                 onClick={handleDeletePhase}
               >
