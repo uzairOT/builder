@@ -93,8 +93,14 @@ function ProfileView() {
   const handleOpenModalClose = () => {
     setOpenModal(false);
   };
+  const handleDelete = (isDelete) => {
+    if(isDelete){
+      handleConfirmDelete();
+    }else{
+      handleOpenModalClose();
+    }
+  }
   const handleConfirmDelete = async () => {
-    handleOpenModalClose();
     try {
       await deleteUserProfile(user.user.id);
       setSnackbarMessage("Profile deleted successfully");
@@ -499,7 +505,7 @@ function ProfileView() {
         <AreYouSureModal
           open={openModal}
           handleClose={handleOpenModalClose}
-          handleConfirmDelete={handleConfirmDelete}
+          handleConfirmDelete={handleDelete}
           // isLoading={deleteLoading}
           text={"Profile"}
         />
