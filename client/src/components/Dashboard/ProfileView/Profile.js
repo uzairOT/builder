@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
 import ProfileImage from "../../UI/ProfilePic/ProfilePic";
 import UserImage from "./assets/images/user-image.jpg";
@@ -12,6 +12,8 @@ const Profile = ({reports}) => {
   const email = userInfo?.user?.email;
   return (
     <>
+    <Grid sx={{  paddingLeft:4, display:"flex", flexDirection:"column"}}>
+
       <Box sx={themeStyle.container}>
         <Box padding={0.4} >
           <ProfileImage UserImage={userInfo.user.image} border={true} />
@@ -24,6 +26,8 @@ const Profile = ({reports}) => {
         </Box>
       </Box>
       {!reports && <DataAndTime />}
+
+    </Grid>
     </>
   );
 };
@@ -33,7 +37,6 @@ export default Profile;
 const themeStyle = {
   container: {
     display: "flex",
-    justifyContent: "center",
     alignItems: "center",
   },
   containerTitle: {

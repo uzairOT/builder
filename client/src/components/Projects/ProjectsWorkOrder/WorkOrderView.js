@@ -45,7 +45,7 @@ const WorkOrderView = () => {
         ...themeStyle.scrollable,
       }}
     >
-      <Box pt={0.5} pb={0}>
+      <Box pt={1} pl={1} pb={0}>
         <BuilderProButton
           backgroundColor={"#4C8AB1"}
           variant={"contained"}
@@ -54,6 +54,7 @@ const WorkOrderView = () => {
           fontWeight={"600"}
           padding={{ md: "6px 32px 6px 32px" }}
           marginLeft={"4px"}
+          
           handleOnClick={handleChangeView}
         >
           {changeView ? "Request New Work Order" : "View Work Order Logs"}
