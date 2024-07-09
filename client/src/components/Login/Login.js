@@ -27,11 +27,12 @@ import googlePlay from "../Signup/Assets/pngs/googlePlay.png";
 import appStore from "../Signup/Assets/pngs/appStore.png";
 import { Circle, Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "../Signup/Assets/svgs/GoogleIcon.svg";
-
+import builderProLargeIcon, { BuilderProIcon } from "../../assets/FileSvg/builderPro"
 import YellowBtn from "../UI/button";
 import "../../App.css";
 import { useFormik } from "formik";
 import { loginSchemea } from "../../utils/Validation/settingsPageSchema";
+import builderproicon from "../../assets/FileSvg/builderProWhite.png"
 //import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
@@ -101,15 +102,13 @@ const Login = () => {
 
         if (res.message === "Login Successful!") {
           dispatch(setCredentials({ ...res }));
-          if(res?.incompleteProject?.incomplete){
-
+          if (res?.incompleteProject?.incomplete) {
             navigate("/assignproject");
-          } else{
-
+          } else {
             setTimeout(() => {
-              window.location.href = '/';
-            }, 1000); 
-            }
+              window.location.href = "/";
+            }, 1000);
+          }
         } else if (res.message === "notFound!") {
           toast.warning("User not found");
           navigate("/signup");
@@ -135,7 +134,6 @@ const Login = () => {
       // console.log("Google login failed");
     }
   };
-  
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -148,21 +146,25 @@ const Login = () => {
       // localStorage.setItem('userInfo', JSON.stringify({...res}));
       dispatch(setCredentials({ ...res }));
       // navigate("/");
-      if(res?.incompleteProject?.incomplete){
-
+      if (res?.incompleteProject?.incomplete) {
         navigate("/assignproject");
-      } else{
+      } else {
         setTimeout(() => {
-          window.location.href = '/';
-        }, 1000); 
+          window.location.href = "/";
+        }, 1000);
       }
     } catch (err) {
       console.log(err);
-      if(err.status === 'FETCH_ERROR'){
-        toast.error('Network Issues');
+      if (err.status === "FETCH_ERROR") {
+        toast.error("Network Issues");
         return;
       }
-      toast.error(err?.data?.error || err.error || err?.data?.message || 'Something went wrong!');
+      toast.error(
+        err?.data?.error ||
+          err.error ||
+          err?.data?.message ||
+          "Something went wrong!"
+      );
     }
   };
   const { values, handleBlur, handleChange, errors, touched } = useFormik({
@@ -180,13 +182,26 @@ const Login = () => {
   return (
     <Grid container sx={firstGrid}>
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
+        <Box sx={{display:"flex", alignItems:"center",   marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
+}}>
+          <img height="55px" src={builderproicon} alt="Builder Pro" />
         <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography>
+        </Box>
 
         {/* Button */}
+<Typography component="p" sx={secondHeading}>
+          On schedule.
+        </Typography>
+        <Typography component="p" sx={secondHeading}>
+          {" "}
+          On budget.{" "}
+        </Typography>
 
         <Typography component="p" sx={secondHeading}>
-          On schedule. On budget. On the path to building better.
+          {" "}
+          On the path to building better.
         </Typography>
+       
         {/* <Typography sx={thirdHeading}>Log in to your account</Typography> */}
         <Box sx={downloadForMobBox}>
           <img src={downloadForMob} width={DoMobWidth} alt="" />
@@ -243,7 +258,6 @@ const Login = () => {
                 required
                 type="email"
                 id="email"
-                
                 value={values.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -259,14 +273,16 @@ const Login = () => {
                 }}
                 placeholder="JohnDoe@gmail.com"
               />
-               <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.email && touched.email ? errors.email : ""}</Typography>
+              <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                {errors.email && touched.email ? errors.email : ""}
+              </Typography>
             </Box>
             <Box sx={{ marginTop: "0.5rem" }}>
               <label
                 style={{
                   ...labelStyle,
                   ...lableResponsiveFont,
-                  paddingTop:'10px'
+                  paddingTop: "10px",
                 }}
                 htmlFor="password"
               >
@@ -284,9 +300,9 @@ const Login = () => {
                     ...placeholderStyle,
                     ...lableResponsiveFont,
                     border:
-                    errors.password && errors.password
-                      ? "1px solid #d32f2f"
-                      : "1px solid #E0E4EC",
+                      errors.password && errors.password
+                        ? "1px solid #d32f2f"
+                        : "1px solid #E0E4EC",
                   }}
                   value={values.password}
                   onChange={handleChange}
@@ -301,7 +317,9 @@ const Login = () => {
                     </span>
                   )}
                 </Box>
-                     <Typography fontSize={'10px'} color={'#d32f2f'} mt={'-0.5rem'} >{errors.password && touched.password ? errors.password : ""}</Typography>
+                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                  {errors.password && touched.password ? errors.password : ""}
+                </Typography>
               </Box>
             </Box>
 
@@ -346,43 +364,37 @@ const Login = () => {
                 </Link>
               </Box>
             </Box>
-            <Stack
-            alignItems={'center'}
-            justifyContent={'center'}
-            >
-
-            
-            <Button
-              sx={{
-                ...YellowBtn,
-                ...loginButton,
-                
-              }}
-              onClick={submitHandler}
-              type="submit"
-            >
-              {isLoading ? (
-                <CircularProgress size={"1.25rem"} />
-              ) : isMobile ? (
-                "Login"
-              ) : (
-                "Log in with Email"
-              )}
-            </Button>
-            
-            <Typography sx={accountLinkText}>
-              Don’t have an account?{"\u00a0"}{" "}
-              <Link
-                to="/signup"
-                style={{
-                  ...signupLink,
-                  ...lableResponsiveFont,
-                  ...linkResponsiveColor,
+            <Stack alignItems={"center"} justifyContent={"center"}>
+              <Button
+                sx={{
+                  ...YellowBtn,
+                  ...loginButton,
                 }}
+                onClick={submitHandler}
+                type="submit"
               >
-                Sign up
-              </Link>
-            </Typography>
+                {isLoading ? (
+                  <CircularProgress size={"1.25rem"} />
+                ) : isMobile ? (
+                  "Login"
+                ) : (
+                  "Log in with Email"
+                )}
+              </Button>
+
+              <Typography sx={accountLinkText}>
+                Don’t have an account?{"\u00a0"}{" "}
+                <Link
+                  to="/signup"
+                  style={{
+                    ...signupLink,
+                    ...lableResponsiveFont,
+                    ...linkResponsiveColor,
+                  }}
+                >
+                  Sign up
+                </Link>
+              </Typography>
             </Stack>
             <Box sx={continueWithBox}>
               <hr style={hrLine} />
@@ -392,31 +404,26 @@ const Login = () => {
               </Typography>
               <hr style={hrLine} />
             </Box>
-            <Stack
-            alignItems={'center'}
-            justifyContent={'center'}
-            >
-
-            <GoogleLogin
-              clientId="960267013158-g1avbe0m8oe44tcflp4urhe4gkh5olb1.apps.googleusercontent.com"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy={"single_host_origin"}
-              render={(renderProps) => (
-                <Button
-                  sx={googleBtnStyle}
-                  type="button"
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                >
-                  <GoogleLogo style={{ marginRight: "1rem" }} />{" "}
-                  {isMobile ? "Google" : "Continue with Google"}
-                </Button>
-              )}
-            />
+            <Stack alignItems={"center"} justifyContent={"center"}>
+              <GoogleLogin
+                clientId="960267013158-g1avbe0m8oe44tcflp4urhe4gkh5olb1.apps.googleusercontent.com"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={"single_host_origin"}
+                render={(renderProps) => (
+                  <Button
+                    sx={googleBtnStyle}
+                    type="button"
+                    onClick={renderProps.onClick}
+                    disabled={renderProps.disabled}
+                  >
+                    <GoogleLogo style={{ marginRight: "1rem" }} />{" "}
+                    {isMobile ? "Google" : "Continue with Google"}
+                  </Button>
+                )}
+              />
             </Stack>
           </form>
-          
         </Grid>
         {/* </div> */}
         <Grid sx={bottomGrid}>
@@ -545,7 +552,7 @@ const logoBox = {
   gap: "1rem",
   marginBottom: "1rem",
   justifyContent: "space-between",
-  alignItems:'center',
+  alignItems: "center",
   marginTop: "2rem",
   display: "flex",
 };
@@ -617,8 +624,8 @@ const signupLink = {
 
 const continueWithBox = {
   // position: "relative",
-  display:'flex',
-  flexDirection:'row',
+  display: "flex",
+  flexDirection: "row",
   marginTop: {
     lg: "1.5rem",
     md: "1.5rem",
@@ -685,7 +692,9 @@ const hptLinksBox = {
 const firstHeading = {
   color: "#FFF",
   fontFamily: "Arial Rounded MT, sans-serif",
-  marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
+  mt:2,
+  ml:2,
+  // marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
   fontSize: { xl: "2rem", lg: "2rem", md: "1.9rem", sm: "1rem" },
   fontWeight: 400,
   lineHeight: "4.25rem",
@@ -770,12 +779,12 @@ const googleBtnStyle = {
   flexDirection: "row",
   gap: "0.3rem",
   marginTop: { lg: "2.5rem", md: "2rem", sm: "2rem", xs: "3rem" },
-  borderRadius: { lg: '2.5rem', md: '2.5rem', sm: '2.5rem', xs: '0.5rem' },
+  borderRadius: { lg: "2.5rem", md: "2.5rem", sm: "2.5rem", xs: "0.5rem" },
   border: "1px solid rgba(6, 32, 72, 0.11)",
   background: "#FFF",
   color: "#333",
   fontFamily: "Arial Rounded MT, sans-serif",
-  fontSize: { lg: "1rem", md: "1rem", sm: "0.85rem", xs: "0.85rem" }, 
+  fontSize: { lg: "1rem", md: "1rem", sm: "0.85rem", xs: "0.85rem" },
   fontWeight: 400,
   cursor: "pointer",
   width: { lg: "19rem", md: "19rem", sm: "19rem", xs: "100%" },
@@ -799,8 +808,8 @@ const ContinuewithTextStyle = {
   fontWeight: 400,
   display: "flex",
   justifyContent: "center",
-  alignItems:'center',
-  whiteSpace:'nowrap',
+  alignItems: "center",
+  whiteSpace: "nowrap",
   // marginTop: "-1.2rem",
   // position: "absolute",
   // left: { lg: "17%", md: "20%", sm: "30%", xs: "50%" },
@@ -812,7 +821,7 @@ const ContinuewithTextStyle = {
 
 const loginButton = {
   width: { lg: "19rem", md: "19rem", sm: "19rem", xs: "100%" },
-  fontSize: { lg: "1rem", md: "1rem", sm: "0.85rem", xs: "0.85rem" }, 
+  fontSize: { lg: "1rem", md: "1rem", sm: "0.85rem", xs: "0.85rem" },
 };
 
 export default Login;

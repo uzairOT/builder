@@ -1,20 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { Box, Grid, Typography, TextField, Stack } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  TextField,
+  Stack,
+  Snackbar,
+  IconButton,
+} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import AvatarImg from "../../../assets/settings/UploadProfileIcon.png";
 import Button from "../../UI/CustomButton";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { uploadToS3 } from "../../../utils/S3";
-import { useUpdateProfileMutation } from "../../../redux/apis/usersApiSlice";
+import {
+  useUpdateProfileMutation,
+  useDeleteUserProfileMutation,
+} from "../../../redux/apis/usersApiSlice";
 import { setCredentials } from "../../../redux/slices/authSlice";
 import { Textarea } from "@mui/joy";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { PhoneInput } from "react-international-phone";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
-import { PhoneNumberUtil } from 'google-libphonenumber';
+import { PhoneNumberUtil } from "google-libphonenumber";
 import "react-toastify/dist/ReactToastify.css";
+import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
+
 const phoneUtil = PhoneNumberUtil.getInstance();
 
 const isPhoneValid = (phone) => {
@@ -32,9 +45,14 @@ function ProfileView() {
   const [selectedFile, setSelectedFile] = useState("");
   const [image, setImage] = useState(user ? user.user.image : null);
   const [phone, setPhone] = useState(user ? user.user.phoneNumber : "");
-  const [phoneIsValid, setPhoneIsValid] = useState(true)
+  const [phoneIsValid, setPhoneIsValid] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const navigate = useNavigate();
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const [deleteUserProfile, { isLoading: deleteLoading }] =
+    useDeleteUserProfileMutation();
   const dispatch = useDispatch();
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
@@ -72,6 +90,26 @@ function ProfileView() {
     lastName: "",
     email: "",
   });
+  const handleOpenModalClose = () => {
+    setOpenModal(false);
+  };
+  const handleConfirmDelete = async () => {
+    handleOpenModalClose();
+    try {
+      await deleteUserProfile(user.user.id);
+      setSnackbarMessage("Profile deleted successfully");
+      setSnackbarOpen(true);
+      localStorage.clear();
+      navigate("/login");
+    } catch (error) {
+      setSnackbarMessage("Failed to delete profile");
+      setSnackbarOpen(true);
+      console.error("Error deleting profile:", error);
+    }
+  };
+  const handleProfileDeleteFlow = () => {
+    setOpenModal(true);
+  };
 
   const validate = () => {
     const newErrors = {};
@@ -88,7 +126,7 @@ function ProfileView() {
     }
     const isValid = isPhoneValid(phone);
     // Add more validation rules as needed
-    setPhoneIsValid(isValid)
+    setPhoneIsValid(isValid);
     setErrors(newErrors);
 
     // Return true if no errors
@@ -124,7 +162,6 @@ function ProfileView() {
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    //console.log(file)
     setFileName(file.name);
     setFileType(file.type);
     setSelectedFile(file);
@@ -132,14 +169,17 @@ function ProfileView() {
     reader.onloadend = () => {
       setImage(reader.result);
     };
-    setImage(file);
     if (file) {
       reader.readAsDataURL(file);
     }
   };
+  const handleProfileImage = async () => {
+    handleSubmit();
+  };
+
   const handleSubmit = async () => {
     if (!validate()) {
-      toast.error('Your phone number is not valid')
+      toast.error("Your phone number is not valid");
       return;
     }
     try {
@@ -176,38 +216,35 @@ function ProfileView() {
       );
     }
   };
-  const handleReset = () => {
-    setFormData({
-      firstName: `${user.user.firstName}`,
-      lastName: `${user.user?.lastName}`,
-      email: user.user.email,
-      phoneNumber: user.user.phoneNumber,
-      // address: "your address here",
-      userId: user.user.id,
-    });
-  };
-  useEffect(() => {
-    if (selectedFile !== "") {
-      handleSubmit();
-    }
-  }, [selectedFile]);
+  // const handleReset = () => {
+  //   setFormData({
+  //     firstName: `${user.user.firstName}`,
+  //     lastName: `${user.user?.lastName}`,
+  //     email: user.user.email,
+  //     phoneNumber: user.user.phoneNumber,
+  //     // address: "your address here",
+  //     userId: user.user.id,
+  //   });
+  // };
+  // useEffect(() => {
+  //   if (selectedFile !== "") {
+  //     handleSubmit();
+  //   }
+  // }, [selectedFile]);
   return (
     <Box sx={{ mb: 2 }}>
       <Grid container spacing={2}>
         <Grid item md={8} xs={12}>
           <Grid container spacing={2}>
             <Grid item xs={12} sx={Profile}>
-              <Stack direction={'row'}  alignItems={'center'} gap={1}>
-
-              <Typography variant="h5" >
-               My Profile
-              </Typography>
-              <Avatar
+              <Stack direction={"row"} alignItems={"center"} gap={1}>
+                <Typography variant="h5">My Profile</Typography>
+                <Avatar
                   src={image ? image : AvatarImg}
                   alt={image ? "Uploaded Avatar" : "Placeholder Avatar"}
-                  sx={{ width: 40, height: 40}}
-                  />
-                  </Stack>
+                  sx={{ width: 40, height: 40 }}
+                />
+              </Stack>
             </Grid>
 
             <Grid item xs={12}>
@@ -286,7 +323,7 @@ function ProfileView() {
                 }}
                 required
               />
-              { !(phoneIsValid) &&
+              {!phoneIsValid && (
                 <Box>
                   <Typography
                     sx={{
@@ -301,7 +338,7 @@ function ProfileView() {
                     Phone is not valid
                   </Typography>
                 </Box>
-              }
+              )}
             </Grid>
             {/* <Grid item xs={12}>
               <Typography>Address</Typography>
@@ -328,20 +365,33 @@ function ProfileView() {
                 isLoading={isLoading}
               />
               <Button
-                buttonText="Reset"
-                color="#4C8AB1"
-                border={"1px solid #4C8AB1"}
+                buttonText="Delete Profile"
+                // color="#4C8AB1"
+                color="red"
+                border={"1px solid red"}
                 width="112px"
                 height="38px"
                 borderRadius="50px"
                 fontSize={"13px"}
-                onClick={handleReset}
+                onClick={() => handleProfileDeleteFlow()}
               />
             </Grid>
           </Grid>
         </Grid>
-        <Grid item md={4} xs={12} alignItems={'center'} justifyContent={'center'} mt={'64px'}>
-          <Stack textAlign="center" alignItems={'center'} justifyContent={'center'} display={'flex'} >
+        <Grid
+          item
+          md={4}
+          xs={12}
+          alignItems={"center"}
+          justifyContent={"center"}
+          mt={"64px"}
+        >
+          <Stack
+            textAlign="center"
+            alignItems={"center"}
+            justifyContent={"center"}
+            display={"flex"}
+          >
             {/* <Typography variant="subtitle1" sx={changeProfile}>
               Your Profile Picture
             </Typography> */}
@@ -349,26 +399,46 @@ function ProfileView() {
               onDragOver={(e) => e.preventDefault()}
               onDragEnter={(e) => e.preventDefault()}
               onDrop={handleDrop}
-             
             >
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
-                style={{ display: "none", cursor:'pointer'}}
+                style={{ display: "none", cursor: "pointer" }}
                 id="avatarInput"
                 multiple
               />
-              <label htmlFor="avatarInput" style={{border:'1px dashed gray', borderRadius:'999px', padding:'1px'}}>
+              <label
+                htmlFor="avatarInput"
+                style={{
+                  border: "1px dashed gray",
+                  borderRadius: "999px",
+                  padding: "1px",
+                }}
+              >
                 <Avatar
                   src={image ? image : AvatarImg}
                   alt={image ? "Uploaded Avatar" : "Placeholder Avatar"}
-                  sx={{ width: 180, height: 182, mx: "auto", cursor:'pointer' }}
+                  sx={{
+                    width: 180,
+                    height: 182,
+                    mx: "auto",
+                    cursor: "pointer",
+                  }}
                 />
               </label>
             </div>
             <Typography variant="subtitle1" sx={changeProfile}>
-              Drop Picture to Upload
+              <Button
+                buttonText="Change Profile"
+                color="#ffffff"
+                backgroundColor="#4C8AB1"
+                width="112px"
+                height="38px"
+                borderRadius="50px"
+                onClick={handleProfileImage}
+                isLoading={isLoading}
+              />
             </Typography>
           </Stack>
           <Box sx={{ display: "none", justifyContent: "center" }}>
@@ -426,6 +496,13 @@ function ProfileView() {
             </Box> */}
           </Box>
         </Grid>
+        <AreYouSureModal
+          open={openModal}
+          handleClose={handleOpenModalClose}
+          handleConfirmDelete={handleConfirmDelete}
+          // isLoading={deleteLoading}
+          text={"Profile"}
+        />
       </Grid>
     </Box>
   );

@@ -165,7 +165,7 @@ const NotificationDetailModal = ({
             <Typography
               color={"#4C8AB1"}
               fontFamily={"inherit"}
-              sx={{fontSize:{md:22,lg:22,sm:14,xs:14}}}
+              sx={{fontSize:{xl:22,md:16,lg:18,sm:14,xs:14}}}
               fontWeight={"600"}
             >
               Work Order Details
@@ -186,7 +186,7 @@ const NotificationDetailModal = ({
             }}
           >
             <Stack p={3} spacing={1} width={"100%"}>
-              <Typography fontFamily={"inherit"}>
+              <Typography fontSize={{xl:12,md:12,lg:10,sm:12,xs:12}} fontFamily={"inherit"}>
                 <strong>Subject: </strong>{" "}
                 <label>{notification.WorkOrderReq.subject}</label>
               </Typography>

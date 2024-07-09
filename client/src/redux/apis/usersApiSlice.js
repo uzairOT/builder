@@ -124,11 +124,19 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body:data
       })
-    })
+    }),
+    deleteUserProfile: builder.mutation({
+      query: (userId) => ({
+        url: `${USERS_URL}/profile`,
+        method: 'DELETE',
+        body: { userId },
+      }),
+    }),
   }),
 });
 
 export const {
+  useDeleteUserProfileMutation,
   useGoogleLoginMutation,
   useLoginMutation,
   useLogoutMutation,

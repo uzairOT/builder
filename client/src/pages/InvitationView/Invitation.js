@@ -35,6 +35,18 @@ import { useFormik } from "formik";
 import { inviteSchemea } from "../../utils/Validation/settingsPageSchema";
 // import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 //import "react-toastify/dist/ReactToastify.css";
+import { PhoneNumberUtil } from "google-libphonenumber";
+import builderproicon from "../../assets/FileSvg/builderProWhite.png";
+
+const phoneUtil = PhoneNumberUtil.getInstance();
+
+const isPhoneValid = (phone) => {
+  try {
+    return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone));
+  } catch (error) {
+    return false;
+  }
+};
 
 const Invitation = () => {
   const isLG = useMediaQuery("(min-width: 1280px)");
@@ -73,6 +85,19 @@ const Invitation = () => {
   // };
 
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [phoneIsValid, setPhoneIsValid] = useState(true);
+
+  const validate = () => {
+    const newErrors = {};
+
+    const isValid = isPhoneValid(phone);
+    // Add more validation rules as needed
+    setPhoneIsValid(isValid);
+
+    // Return true if no errors
+    return Object.keys(newErrors).length === 0 && isValid;
+  };
+
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -109,8 +134,8 @@ useEffect(() => {
 }, [memoizedCheckUser]);
   const onSubmit = async (e) => {
     // Prepare data to be sent in the request body
-    if(phone ===''){
-      toast.warning('Please enter your phone number.')
+    if (!validate()) {
+      toast.error('Your phone number is not valid')
       return;
     }
     const data = {
@@ -179,12 +204,30 @@ useEffect(() => {
   return (
     <Grid container sx={firstGrid}>
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
-        <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography>
+      <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
+          }}
+        >
+          <img height="55px" src={builderproicon} alt="Builder Pro" />
+          <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography>
+        </Box>
 
         {/* Button */}
 
         <Typography component="p" sx={secondHeading}>
-          On schedule. On budget. On the path to building better.
+          On schedule.
+        </Typography>
+        <Typography component="p" sx={secondHeading}>
+          {" "}
+          On budget.{" "}
+        </Typography>
+
+        <Typography component="p" sx={secondHeading}>
+          {" "}
+          On the path to building better.
         </Typography>
       
         <Box sx={downloadForMobBox}>
@@ -313,19 +356,46 @@ useEffect(() => {
               </label>
 
               <PhoneInput
-              disableDialCodePrefill
+                disableDialCodePrefill
                 style={{ ...customPhoneStyles }}
-                defaultCountry="us"
+                defaultCountry=""
+                name={"phoneNumber"}
                 value={phone}
                 onChange={(phone) => setPhone(phone)}
+                countrySelectorStyleProps={{
+                  style: {
+                    "--react-international-phone-country-selector-background-color":
+                      "#EDF2F6",
+                    "--react-international-phone-country-selector-background-color-hover":
+                      "#EDF2F6",
+                  },
+                  buttonStyle: {
+                    filter: "none",
+                  },
+                }}
                 inputStyle={{ ...customeInputStyles }}
                 inputProps={{
                   border: "none",
-                  placeholder:'+1 (123) 456-7890'
+                  placeholder: "+1 (123) 456-7890",
                 }}
                 required
-                name="phone"
               />
+              {!phoneIsValid && (
+                <Box>
+                  <Typography
+                    sx={{
+                      color: "#d32f2f",
+                      fontSize: "12px",
+                      marginLeft: "14px",
+                      marginRight: "14px",
+                      marginTop: "3px",
+                      fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+                    }}
+                  >
+                    Phone is not valid
+                  </Typography>
+                </Box>
+              )}
             </Box>
 
             <Box sx={{ marginTop: "0.5rem" }}>
