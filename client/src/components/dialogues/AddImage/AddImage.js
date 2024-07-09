@@ -194,11 +194,13 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
           handleClickClose();
           fetchData();
         });
+        console.log(response);
       if (response.status !== 201) {
         throw new Error("Failed to save file URL");
       }
     } catch (error) {
-      console.error("Error:", error.message);
+      toast.error(error?.response?.data?.error)
+      // console.error("Error:", error.response.data.error);
     }
   };
 

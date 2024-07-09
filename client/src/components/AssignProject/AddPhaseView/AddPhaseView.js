@@ -404,7 +404,7 @@ console.log(rowCheckboxes)
               <Button
                 sx={{ ...actionButton, display: (phases[0]?.length < 1 || isLoading) ? 'none' :'flex' }}
                 startIcon={<DeleteOutlinedIcon />}
-                onClick={handleDeletePhase}
+                onClick={handleOpenModal}
               >
                 Delete
               </Button>
