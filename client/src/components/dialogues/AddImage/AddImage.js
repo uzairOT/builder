@@ -29,7 +29,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import CheckIcon from "@mui/icons-material/Check";
 
-function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
+function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelete, setShowDelete }) {
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState(null);
   const [primary, setPrimary] = useState(null);
@@ -155,6 +155,9 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if(showDelete){
+      setShowDelete(false)
+    }
     if (!selectedFile) {
       toast.warning("Please select a file");
       return false;

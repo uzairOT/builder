@@ -39,6 +39,7 @@ import { selectWorkOrderDeclineRecall } from "../../../redux/slices/Notification
 // import { BuilderProNavbarLogo } from "./assets/svgs/builder-pro-logo-navbar.svg";
 import BuilderProNavbarLogo from "../../Navbar/assets/svgs/builder-pro-logo-navbar.svg";
 import GenerateInvoice from "../../dialogues/GenerateInvoice/GenerateInvoice";
+import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
 //import "react-toastify/dist/ReactToastify.css";
 
 function AddPhaseView({
@@ -55,9 +56,10 @@ function AddPhaseView({
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
   const [selectedPhaseData, setSelectedPhaseData] = useState(null);
   const { id } = useParams();
-  const [deleteProjectPhase] = useDeleteProjectPhaseMutation();
+  const [deleteProjectPhase, {isDeletePhaseLoading}] = useDeleteProjectPhaseMutation();
   const phases = useSelector((state) => state.projectInitialProposal.phases);
   const targetRef = useRef();
+  const [openModal, setOpenModal] = useState(false);
   const initialPhases = useSelector(
     (state) => state.projectInitialProposal.initialPhases
   );
@@ -255,6 +257,12 @@ function AddPhaseView({
     }
   };
 
+const handleOpenModalClose = () => {
+  setOpenModal(false);
+}
+const handleOpenModal = () => {
+  setOpenModal(true)
+}
   const handleDeletePhase = async () => {
     //console.log('clicked!')
     if (selectedPhaseId) {
@@ -268,6 +276,7 @@ function AddPhaseView({
       setSelectedPhaseId(null);
       setSelectedPhaseData(null);
       fetchData();
+      handleOpenModalClose();
     } else {
       toast.info("Please Select a Phase");
     }
@@ -306,6 +315,7 @@ console.log(rowCheckboxes)
     const options = { year: "numeric", month: "long", day: "numeric" };
     return date.toLocaleDateString(undefined, options);
   };
+
   return (
     <>
       <Grid container sx={{ ...firstGrid, width: "100%" }}>
@@ -343,24 +353,24 @@ console.log(rowCheckboxes)
                 <>
                   <Stack direction={"row"} sx={buttonBox}>
                     <Button
-                      sx={{ ...actionButton }}
+                      sx={{ ...actionButton, background: "#FFAC00" }}
+                      onClick={handleAddPhase}
+                    >
+                      Add Phase
+                    </Button>
+                    <Button
+                      sx={{ ...actionButton, display: initialPhases[0]?.length < 1 ? 'none' :'flex' }}
                       startIcon={<ModeEditOutlinedIcon />}
                       onClick={handleEditPhase}
                     >
                       Edit
                     </Button>
                     <Button
-                      sx={{ ...actionButton }}
+                      sx={{ ...actionButton, display: initialPhases[0]?.length < 1 ? 'none' :'flex' }}
                       startIcon={<DeleteOutlinedIcon />}
-                      onClick={handleDeletePhase}
+                      onClick={handleOpenModal}
                     >
                       Delete
-                    </Button>
-                    <Button
-                      sx={{ ...actionButton, background: "#FFAC00" }}
-                      onClick={handleAddPhase}
-                    >
-                      Add Phase
                     </Button>
                   </Stack>
                 </>
@@ -379,24 +389,24 @@ console.log(rowCheckboxes)
                 authUserRole === "projectManager" ||
                 authUserRole === "admin") && <Stack direction={"row"} sx={buttonBox}>
               <Button
-                sx={{ ...actionButton }}
+                sx={{ ...actionButton, background: "#FFAC00" }}
+                onClick={handleAddPhase}
+              >
+                Add Phase
+              </Button>
+              <Button
+                sx={{ ...actionButton, display: phases[0]?.length < 1 ? 'none' :'flex' }}
                 startIcon={<ModeEditOutlinedIcon />}
                 onClick={handleEditPhase}
               >
                 Edit
               </Button>
               <Button
-                sx={{ ...actionButton }}
+                sx={{ ...actionButton, display: phases[0]?.length < 1 ? 'none' :'flex' }}
                 startIcon={<DeleteOutlinedIcon />}
                 onClick={handleDeletePhase}
               >
                 Delete
-              </Button>
-              <Button
-                sx={{ ...actionButton, background: "#FFAC00" }}
-                onClick={handleAddPhase}
-              >
-                Add Phase
               </Button>
 
               {adminProjectView ? (
@@ -599,6 +609,15 @@ console.log(rowCheckboxes)
           setRowCheckboxes={setRowCheckboxes}
           authUserRole={authUserRole}
         />
+      )}
+      {openModal && (
+        <AreYouSureModal
+        open={openModal}
+        handleClose={handleOpenModalClose}
+        handleConfirmDelete={handleDeletePhase}
+        isLoading={isDeletePhaseLoading}
+        text={'Phase'}
+      />
       )}
     </>
   );
