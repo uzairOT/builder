@@ -20,6 +20,7 @@ import {
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import DeleteIcon from "../../../assets/settings/delete.png";
 import { toast } from "react-toastify";
+import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
 
 const tableCellStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
@@ -57,8 +58,9 @@ function UnitsTable({
   error,
 }) {
   const userInfo = useSelector((state) => state.auth.userInfo);
-
-  const [deleteUnit] = useDeleteUnitMutation();
+  const [open, setOpen] = useState(false);
+  const [deleteUnitId, setDeleteUnitId] = useState(null);
+  const [deleteUnit, {isLoading: isDeleteUnitLoading}] = useDeleteUnitMutation();
 
   const handleUpdateOpen = (row) => {
     setUnit(row);
@@ -67,11 +69,30 @@ function UnitsTable({
   const handleAddOpen = () => {
     setAddModalOpen(true);
   };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleDeleteFlow = (user) => {
+    setDeleteUnitId(user);
+    setOpen(true);
+  };
+  const handleConfirmDelete = async (confirm) => {
+    if (confirm) {
+      await handleDelete(deleteUnitId);
+      handleClose();
+      setDeleteUnitId(null);
+    } else {
+      setDeleteUnitId(null);
+      handleClose();
+    }
+  };
+
   const handleDelete = async (row) => {
     console.log(row);
     if (row.id) {
       try {
         const res = await deleteUnit({ id: row.id });
+        toast.success('Unit deleted successfully.');
         await refetch({
           userId: userInfo.user.id,
           q: debouncedValue,
@@ -141,7 +162,7 @@ function UnitsTable({
                           src={DeleteIcon}
                           alt=""
                           style={{ width: "35px" }}
-                          onClick={() => handleDelete(row)}
+                          onClick={() => handleDeleteFlow(row)}
                         />
                       </IconButton>
                     </TableCell>
@@ -152,6 +173,13 @@ function UnitsTable({
           )}
         </Table>
       </TableContainer>
+      <AreYouSureModal
+          open={open}
+          handleClose={handleClose}
+          handleConfirmDelete={handleConfirmDelete}
+          isLoading={isDeleteUnitLoading}
+          text={"unit"}
+        />
     </Grid>
   );
 }

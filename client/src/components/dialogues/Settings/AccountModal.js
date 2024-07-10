@@ -13,11 +13,12 @@ import {
   IconButton,
 } from "@mui/material";
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   couponSchema,
   settingsSchema,
 } from "../../../utils/Validation/settingsPageSchema";
+import UploadIcon from "../../../assets/settings/uploadimg.png";
 import Button from "../../UI/CustomButton";
 import {
   useGetCreateUserCouponsMutation,
@@ -40,6 +41,10 @@ const AccountModal = ({
   account,
   updateUserAccount,
 }) => {
+  const [fileName, setFileName] = useState("");
+  const [fileType, setFileType] = useState("");
+  const [selectedFile, setSelectedFile] = useState("");
+  const [image, setImage] = useState(null);
   const handleClose = () => {
     if (updateOpen) {
       updateClose();
@@ -47,7 +52,38 @@ const AccountModal = ({
       onClose();
     }
   };
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    setFileName(file.name);
+    setFileType(file.type);
+    setSelectedFile(file);
+    previewImage(file);
+  };
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    //console.log(file)
+    setFileName(file.name);
+    setFileType(file.type);
+    setSelectedFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImage(reader.result);
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+  const previewImage = (file) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImage(reader.result);
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
   const onSubmit = async (values, action) => {
     if (open) {
       try {
@@ -151,7 +187,52 @@ const AccountModal = ({
               marginTop: "15px",
             }}
           >
+            
             <Grid container spacing={4}>
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                border: "1px dashed #000",
+                borderRadius: "18px",
+                justifyContent: "center",
+                margin: "20px",
+                height: "147px",
+              }}
+            >
+              <div
+                style={{ textAlign: "center", width: "100%", height: "100%" }}
+                onDragOver={(e) => e.preventDefault()}
+                onDragEnter={(e) => e.preventDefault()}
+                onDrop={handleDrop}
+              >
+                {/* Upload image icon */}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  style={{ display: "none" }}
+                  id="avatarInput"
+                  name="image"
+                />
+                <label htmlFor="avatarInput">
+                  <img
+                    src={image ? image : UploadIcon}
+                    alt=""
+                    width={"120px"}
+                    height={"120px"}
+                  />
+
+                  {/* Text */}
+                  <Typography variant="body1" sx={labelStyle}>
+                    {image ? <></> : "Upload your photo"}
+                  </Typography>
+                </label>
+              </div>
+            </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography variant="body1">Account Name</Typography>
                 <TextField
@@ -308,6 +389,13 @@ const InputStyle = {
       border: "none",
     },
   },
+};
+const labelStyle = {
+  marginTop: "10px",
+  fontFamily: "Poppins",
+  fontWeight: "400",
+  fontSize: "13px",
+  color: "#535353C9",
 };
 
 const headingStyle = {

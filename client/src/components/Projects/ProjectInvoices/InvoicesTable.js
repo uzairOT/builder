@@ -132,7 +132,7 @@ function InvoicesTable({
             <TableCell sx={tableCellStyle}>Select</TableCell>
             <TableCell sx={tableCellStyle}>Invoice Number</TableCell>
             <TableCell sx={tableCellStyle}>Invoice Date</TableCell>
-            <TableCell sx={tableCellStyle}>Invoice Due Date</TableCell>
+            <TableCell sx={tableCellStyle}>Invoice Due</TableCell>
             <TableCell sx={tableCellStyle}>Invoice Status</TableCell>
             <TableCell sx={tableCellStyle}>Invoice Bill</TableCell>
             {!paidInvoices && !(userRole.userRole ==='client') &&<TableCell sx={tableCellStyle}>Invoice Paid</TableCell>}
@@ -207,13 +207,14 @@ function InvoicesTable({
 export default InvoicesTable;
 const tableCellStyle = {
   fontWeight: 500,
-  fontSize: "14px",
+  fontSize: {xl:"14px", lg:'11px',md:'11px', xs:'11px'},
   fontFamily: "Poppins",
   color: "#8C8C8C",
   textAlign:'center'
 };
 const tableCellValueStyle = {
   fontWeight: 400,
+  fontSize: {xl:"14px", lg:'11px',md:'11px', xs:'11px'},
   borderBottom: "none",
   fontFamily: "Montserrat",
   color: "#000000",

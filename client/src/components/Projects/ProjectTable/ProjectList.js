@@ -29,18 +29,35 @@ import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import EditProjectModal from "../../dialogues/EditProject/EditProjectModal";
 import moment from "moment-timezone";
-import { useDeleteUserProjectMutation, useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+import {
+  useDeleteUserProjectMutation,
+  useGetUserProjectsQuery,
+} from "../../../redux/apis/Project/userProjectApiSlice";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
 import { useDispatch } from "react-redux";
-import { addProjects, setIsLoading, setLimit, setTotalCount, setTotalPages } from "../../../redux/slices/Project/userProjectsSlice";
+import {
+  addProjects,
+  setIsLoading,
+  setLimit,
+  setTotalCount,
+  setTotalPages,
+} from "../../../redux/slices/Project/userProjectsSlice";
 import { setError } from "../../../redux/slices/Notifications/notificationSlice";
+import { toast } from "react-toastify";
 
-const ProjectList = ({ rows, isLoading, totalPages, limit, totalCount, currentUserId }) => {
+const ProjectList = ({
+  rows,
+  isLoading,
+  totalPages,
+  limit,
+  totalCount,
+  currentUserId,
+}) => {
   console.log(rows);
   const navigate = useNavigate();
   const [deleteProject, { isLoading: deletingProjectLoading }] =
     useDeleteUserProjectMutation();
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const tableHeader = [
     { id: "clientName", title: "Client" },
     { id: "projectName", title: "Project" },
@@ -60,19 +77,25 @@ const ProjectList = ({ rows, isLoading, totalPages, limit, totalCount, currentUs
   const [openEditModel, setOpenEditModel] = useState(false);
   const [page, setPage] = useState(1);
   const [openModal, setOpenModal] = useState(false);
-  const [selectedProjectId, setSelectProjectId] = useState('')
+  const [selectedProjectId, setSelectProjectId] = useState("");
   const rowsPerPage = 7;
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { refetch, data, isLoading: fetchingProjects, error, isSuccess } = useGetUserProjectsQuery({
+  const {
+    refetch,
+    data,
+    isLoading: fetchingProjects,
+    error,
+    isSuccess,
+  } = useGetUserProjectsQuery({
     userId: currentUserId,
     q: "",
     filter: "",
     page: 1,
   });
-useEffect(()=>{
-  console.log('Fetching projects: ', isSuccess)
-  console.log('Fetching data: ', data)
-},[data])
+  useEffect(() => {
+    console.log("Fetching projects: ", isSuccess);
+    console.log("Fetching data: ", data);
+  }, [data]);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -97,23 +120,37 @@ useEffect(()=>{
   };
 
   const handleDeleteFlow = (projectId) => {
-    setSelectProjectId(projectId)
+    setSelectProjectId(projectId);
     setOpenModal(true);
   };
   const handleOpenModalClose = () => {
-    setOpenModal(false)
-  }
-  const handleConfirmDelete  =()=>{
-    handleDeleteProject(selectedProjectId);
-  }
+    setOpenModal(false);
+  };
+  const handleConfirmDelete = (isDelete) => {
+    if (isDelete) {
+      handleDeleteProject(selectedProjectId);
+    } else {
+      handleOpenModalClose();
+    }
+  };
   const handleDeleteProject = async (id) => {
     try {
       const res = await deleteProject({
         id: id,
       });
+      console.log(res)
+      if(res?.error?.data?.message){
+        toast.error(res?.error?.data?.message);
+        return;
+      }
       dispatch(setIsLoading(isLoading));
-      const refetchRes =await refetch({ userId: currentUserId, q: "", filter: "", page: 1 });
-      console.log('REFETCHED DATA: ',refetchRes);
+      const refetchRes = await refetch({
+        userId: currentUserId,
+        q: "",
+        filter: "",
+        page: 1,
+      });
+      console.log("REFETCHED DATA: ", refetchRes);
       if (data) {
         dispatch(addProjects(data?.projects));
         dispatch(setTotalCount(data?.totalCount));
@@ -263,9 +300,9 @@ useEffect(()=>{
             >
               <Stack p={1} borderRadius={"14px"} spacing={1}>
                 <Button
-                  onClick={() => handleClickFeature("Remodel")}
+                  onClick={() => handleClickFeature("remodel")}
                   variant={
-                    selectedFilters.includes("Remodel")
+                    selectedFilters.includes("remodel")
                       ? "contained"
                       : "outlined"
                   }
@@ -279,9 +316,9 @@ useEffect(()=>{
                   </Typography>
                 </Button>
                 <Button
-                  onClick={() => handleClickFeature("New Build")}
+                  onClick={() => handleClickFeature("newbuild")}
                   variant={
-                    selectedFilters.includes("New Build")
+                    selectedFilters.includes("newbuild")
                       ? "contained"
                       : "outlined"
                   }
@@ -295,9 +332,9 @@ useEffect(()=>{
                   </Typography>
                 </Button>
                 <Button
-                  onClick={() => handleClickFeature("Commercial")}
+                  onClick={() => handleClickFeature("commercial")}
                   variant={
-                    selectedFilters.includes("Commercial")
+                    selectedFilters.includes("commercial")
                       ? "contained"
                       : "outlined"
                   }
@@ -419,7 +456,9 @@ useEffect(()=>{
                   <TableCell
                     sx={themeStyle.tableCell}
                     style={{ borderBottom: "1px solid #A1A1A1" }}
-                  >Profile Picture</TableCell>
+                  >
+                    Profile Picture
+                  </TableCell>
                   {tableHeader.map((header) => (
                     <TableCell
                       sx={themeStyle.tableCell}
@@ -432,7 +471,9 @@ useEffect(()=>{
                   <TableCell
                     sx={themeStyle.tableCell}
                     style={{ borderBottom: "1px solid #A1A1A1" }}
-                  >Action</TableCell>
+                  >
+                    Action
+                  </TableCell>
                   <TableCell
                     sx={themeStyle.tableCell}
                     style={{ borderBottom: "1px solid #A1A1A1" }}
@@ -493,41 +534,46 @@ useEffect(()=>{
                                 </TableCell>
                               );
                             })} */}
-                            <TableCell sx={themeStyle.tableCell}>
-
-                        <Box
-                          display="flex"
-                          pt={2.5}
-                          gap={1}
-                          alignItems={"center"}
-                          justifyContent={"flex-start"}
-                        >
-                          {row.userId === currentUserId && <Paper>
-                            <IconButton
-                              variant={"contained"}
-                              onClick={() => handleOpenEditModel(row)}
-                            >
-                              <EditOutlinedIcon style={{ color: "#4C8AB1" }} />
-                            </IconButton>
-                          </Paper>}
-                          {row.userId === currentUserId && <Paper style={{ backgroundColor: "#FFDADA" }}>
-                            <IconButton
-                              onClick={() => handleDeleteFlow(row.id)}
-                            >
-                              <DeleteOutlineOutlinedIcon
-                                style={{ color: "#DF0404" }}
-                              />
-                            </IconButton>
-                          </Paper>}
-                          {/* <Paper style={{ backgroundColor: "#E7E7E7" }}>
+                        <TableCell sx={themeStyle.tableCell}>
+                          <Box
+                            display="flex"
+                            pt={2.5}
+                            gap={1}
+                            alignItems={"center"}
+                            justifyContent={"flex-start"}
+                          >
+                            {row.userId === currentUserId && (
+                              <Paper>
+                                <IconButton
+                                  variant={"contained"}
+                                  onClick={() => handleOpenEditModel(row)}
+                                >
+                                  <EditOutlinedIcon
+                                    style={{ color: "#4C8AB1" }}
+                                  />
+                                </IconButton>
+                              </Paper>
+                            )}
+                            {row.userId === currentUserId && (
+                              <Paper style={{ backgroundColor: "#FFDADA" }}>
+                                <IconButton
+                                  onClick={() => handleDeleteFlow(row.id)}
+                                >
+                                  <DeleteOutlineOutlinedIcon
+                                    style={{ color: "#DF0404" }}
+                                  />
+                                </IconButton>
+                              </Paper>
+                            )}
+                            {/* <Paper style={{ backgroundColor: "#E7E7E7" }}>
                               <IconButton>
                                 <SaveAsOutlinedIcon
                                   style={{ color: "#545454" }}
                                 />
                               </IconButton>
                             </Paper> */}
-                        </Box>
-                            </TableCell>
+                          </Box>
+                        </TableCell>
                         <TableCell sx={themeStyle.tableCell}>
                           <Link
                             to={`/projects/${row.id}`}
@@ -592,7 +638,7 @@ useEffect(()=>{
         handleClose={handleOpenModalClose}
         handleConfirmDelete={handleConfirmDelete}
         isLoading={deletingProjectLoading}
-        text={'project'}
+        text={"project"}
       />
     </Stack>
   );
@@ -604,8 +650,8 @@ const themeStyle = {
   tableCell: {
     maxWidth: { xl: "40px", lg: "30px", md: "70px", xs: "100%" },
     minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
-    textOverflow:'ellipsis',
-    overflow:'hidden',
+    textOverflow: "ellipsis",
+    overflow: "hidden",
     fontWeight: 500,
     fontSize: "14px",
     fontFamily: "Montserrat, sans serif",

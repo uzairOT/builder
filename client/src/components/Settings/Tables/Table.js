@@ -252,22 +252,27 @@ function CustomTable({
                 ) : data?.message === "no records" ? (
                   <>No Records</>
                 ) : (
-                  data?.users?.map((row, index) => (
+                  data?.users?.map((row, index) => { 
+                    if(row === null)
+                      return <></>;
+                    
+                    return(
+                   
                     <TableRow key={index}>
                       <TableCell sx={tableCellValueStyle}>
-                        <Avatar alt="Avatar" src={row.image} />
+                        <Avatar alt="Avatar" src={row?.image} />
                       </TableCell>
                       <TableCell sx={tableCellValueStyle}>
-                        {row.firstName}
+                        {row?.firstName}
                       </TableCell>
                       <TableCell sx={tableCellValueStyle}>
-                        {row.projectName}
+                        {row?.projectName}
                       </TableCell>
                       <TableCell sx={tableCellValueStyle}>
-                        {row.phoneNumber}
+                        {row?.phoneNumber}
                       </TableCell>
                       <TableCell sx={tableCellValueStyle}>
-                        {row.email}
+                        {row?.email}
                       </TableCell>
                       {/* <TableCell sx={tableCellValueStyle}>{row.country}</TableCell> */}
                       {/* <TableCell sx={tableCellValueStyle}>
@@ -325,7 +330,7 @@ function CustomTable({
                         </IconButton>
                       </TableCell>
                     </TableRow>
-                  ))
+                  )})
                 )}
               </TableBody>
             )}

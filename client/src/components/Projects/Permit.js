@@ -107,7 +107,7 @@ function Permit({ view, type }) {
                 opacity: showDelete ? "" : "0.7",
               }}
             >
-              Delete Files
+              Delete {view}
             </Typography>
           </button>
           <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>

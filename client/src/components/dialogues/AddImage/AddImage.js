@@ -357,7 +357,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
             {loading ? (
               <CircularProgress size={"20px"} sx={{ color: "white" }} />
             ) : (
-              "Send"
+              "Add"
             )}
           </Button>
         </DialogActions>

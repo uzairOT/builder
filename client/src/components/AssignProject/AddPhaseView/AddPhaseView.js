@@ -226,6 +226,10 @@ function AddPhaseView({
     setShowAddPhaseDialogue(true);
   };
   const handleGenerateInvoice = () => {
+    if(Object.keys(rowCheckboxes).length < 1){
+      toast.warn('Please select a line item.', {toastId:'Inovice toast'});
+      return;
+    }
     console.log("InvoiceGenerated");
     setDone(false);
     setGenerateInvoice(true);
@@ -261,11 +265,23 @@ const handleOpenModalClose = () => {
   setOpenModal(false);
 }
 const handleOpenModal = () => {
-  setOpenModal(true)
+  if(selectedPhaseId){
+
+    setOpenModal(true)
+    }else{
+      toast.info("Please Select a Phase");
+    }
+}
+const handlePhaseDelete = (isDelete) => {
+  if(isDelete){
+    handleDeletePhase();
+  }else{
+    handleOpenModalClose();
+  }
 }
   const handleDeletePhase = async () => {
     //console.log('clicked!')
-    if (selectedPhaseId) {
+    
       //console.log('in IF statement ', selectedPhaseId)
       await deleteProjectPhase({ id: selectedPhaseId });
       const updatedCardPhase = cardPhase.filter(
@@ -277,9 +293,7 @@ const handleOpenModal = () => {
       setSelectedPhaseData(null);
       fetchData();
       handleOpenModalClose();
-    } else {
-      toast.info("Please Select a Phase");
-    }
+   
   };
 
   const handleAddSubmit = (phaseName, color) => {
@@ -378,7 +392,7 @@ console.log(rowCheckboxes)
             </>
           ) : view ==='Generate Invoice' ? <>
           <Stack direction={"row"} sx={buttonBox}>
-          <Button sx={{ ...actionButton,  }} style={{color: Object.keys(rowCheckboxes).length < 1 ? 'white' : 'white'}} onClick={handleGenerateInvoice} disabled={Object.keys(rowCheckboxes).length < 1}>
+          <Button sx={{ ...actionButton,  }} style={{color: Object.keys(rowCheckboxes).length < 1 ? 'white' : 'white'}} onClick={handleGenerateInvoice}>
                 Generate Invoice
               </Button>
           </Stack>
@@ -614,7 +628,7 @@ console.log(rowCheckboxes)
         <AreYouSureModal
         open={openModal}
         handleClose={handleOpenModalClose}
-        handleConfirmDelete={handleDeletePhase}
+        handleConfirmDelete={handlePhaseDelete}
         isLoading={isDeletePhaseLoading}
         text={'Phase'}
       />
