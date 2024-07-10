@@ -175,7 +175,7 @@ function CustomTable({
                   </TableCell>
                 </TableRow>
               </>
-            ) : data?.message === "no records" ? (
+            ) : data?.coupons<1 ? (
               <>No Records</>
             ) : (
               data?.coupons?.map((row) => (
