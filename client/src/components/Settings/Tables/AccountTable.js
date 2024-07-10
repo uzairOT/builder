@@ -30,7 +30,6 @@ const tableCellStyle = {
   fontSize: "14px",
   fontFamily: "Poppins",
   color: "#8C8C8C",
-  padding: "4px",
 };
 
 const tableCellValueStyle = {
@@ -42,7 +41,6 @@ const tableCellValueStyle = {
   borderBottom: "none",
   fontFamily: "Montserrat",
   color: "#000000",
-  padding: "4px",
 };
 
 function AmountTable({
@@ -127,7 +125,9 @@ function AmountTable({
                     </TableCell>
                   </TableRow>
                 </>
-              ) : (
+               ) : data?.accounts < 1 ? (
+                  <>No Records</>
+                ) : (
                 data?.accounts.map((row, index) => (
                   <TableRow key={index}>
                     <TableCell sx={tableCellValueStyle}>
