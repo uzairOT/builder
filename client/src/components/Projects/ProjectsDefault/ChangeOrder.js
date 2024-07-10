@@ -102,6 +102,11 @@ export default ChangeOrder;
 
 const themeStyle = {
   tableHeader: {
+    maxWidth: { xl: "40px", lg: "30px", md: "70px", xs: "100%" },
+    minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    textAlign:"center",
     fontSize: "12px",
     fontFamily: "Poppins, sans-serif",
     color: "#5B5B5B",
@@ -109,6 +114,11 @@ const themeStyle = {
     border: 'none'
   },
   tableBody: {
+        maxWidth: { xl: "40px", lg: "30px", md: "70px", xs: "100%" },
+    minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    textAlign:"center",
     fontSize: "12px",
     fontWeight: "500",
     fontFamily: "Arial Rounded MT, sans-serif",

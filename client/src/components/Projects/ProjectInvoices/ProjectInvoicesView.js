@@ -71,7 +71,7 @@ const ProjectInvoicesView = () => {
       ) : (
         <>
           {" "}
-          <Box pt={0.5} pb={0}>
+          <Box pt={1} pl={1} pb={0}>
             <BuilderProButton
               backgroundColor={"#4C8AB1"}
               variant={"contained"}

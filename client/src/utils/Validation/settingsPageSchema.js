@@ -16,7 +16,7 @@ export const couponSchema = yup.object().shape({
 })
 export const projectSchema = yup.object().shape({
     location: yup.string(),
-    project: yup.string(),
+    project: yup.string().required('Project name is must required'), // Validation for project name
     start_time: yup.string(),
     end_time: yup.string(),
     projectColor: yup.string(),

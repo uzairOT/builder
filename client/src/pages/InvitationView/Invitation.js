@@ -208,27 +208,31 @@ useEffect(() => {
           sx={{
             display: "flex",
             alignItems: "center",
+            flexDirection: "column",
             marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
           }}
         >
-          <img height="55px" src={builderproicon} alt="Builder Pro" />
-          <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography>
+          <img style={{height:"100px"}} src={builderproicon} alt="Builder Pro" />
+          {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
+          <Typography component="p" pt={2} sx={secondHeading}>
+            On schedule.
+          </Typography>
+          <Typography component="p" sx={secondHeading}>
+            {" "}
+            On budget.{" "}
+          </Typography>
+
+          <Typography component="p" sx={secondHeading}>
+            {" "}
+            On the path to building better.
+          </Typography>
         </Box>
+          {/* <img height="55px" src={builderproicon} alt="Builder Pro" /> */}
+          {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
 
         {/* Button */}
 
-        <Typography component="p" sx={secondHeading}>
-          On schedule.
-        </Typography>
-        <Typography component="p" sx={secondHeading}>
-          {" "}
-          On budget.{" "}
-        </Typography>
-
-        <Typography component="p" sx={secondHeading}>
-          {" "}
-          On the path to building better.
-        </Typography>
+        
       
         <Box sx={downloadForMobBox}>
           <img src={downloadForMob} width={DoMobWidth} alt="" />
@@ -718,8 +722,9 @@ const firstHeading = {
 };
 
 const secondHeading = {
+  textAlign:"center",
   color: "rgba(255, 255, 255, 0.80)",
-  width: { lg: "31.125rem", md: "28rem", sm: "auto" },
+  // width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   marginTop: "0.5rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontFamily: "Arial Rounded MT, sans-serif",
