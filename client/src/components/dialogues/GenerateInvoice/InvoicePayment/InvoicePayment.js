@@ -9,6 +9,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Avatar,
 } from "@mui/material";
 import { Elements } from "@stripe/react-stripe-js";
 import React, { useEffect, useState } from "react";
@@ -161,17 +162,36 @@ const InvoicePayment = () => {
                   control={<Radio />}
                   label={
                     <>
-                      <Typography>
-                        {account.accountName}-
-                        <a
-                          href={account.accountLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {account.accountLink}
-                        </a>{" "}
-                        - {" "}{account.accountType}
-                      </Typography>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                      >
+                        <Avatar>
+                          {account?.accountImage ? (
+                            <img
+                              src={account.accountImage}
+                              alt="Account"
+                              style={{
+                                width: "40px",
+                                height: "40px",
+                                borderRadius: "50%",
+                              }}
+                            />
+                          ) : (
+                            <></>
+                          )}
+                        </Avatar>
+                        <Typography>
+                          {account.accountName}-
+                          <a
+                            href={account.accountLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {account.accountLink}
+                          </a>{" "}
+                          - {account.accountType}
+                        </Typography>
+                      </Box>
                     </>
                   }
                 />

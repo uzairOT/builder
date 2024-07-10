@@ -5,7 +5,7 @@ import {
   Stack,
   CircularProgress,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ProjectCard from "../../UI/Card/ProjectCard";
 import projects from "./assets/data/projects.json";
 import { Link, useNavigate } from "react-router-dom";
@@ -25,6 +25,7 @@ import BuilderProButton from "../../UI/Button/BuilderProButton";
 const ListProjects = () => {
   const userRole = useSelector(authUserRole);
   const navigate = useNavigate();
+  const [activeBtn, setActiveBtn] = useState("remodel");
   const { projects, error, isLoading } = useSelector(projectsPackage);
   //console.log('LIST PROJECTS:', currentUserId)
   // const { data, isLoading, error } = useGetUserProjectsQuery({
@@ -42,6 +43,9 @@ const ListProjects = () => {
     } else {
       navigate(`/projects/${projectId}`);
     }
+  };
+  const handleListedProjectsButton = (btn) => {
+    setActiveBtn(btn);
   };
 
   return (
@@ -69,13 +73,85 @@ const ListProjects = () => {
       >
         All Listed Projects
       </Typography>
+      <Stack
+        direction={"row"}
+        ml={"-16px"}
+        mr={"-16px"}
+        justifyContent={"center"}
+        mb={"4px"}
+      >
+        <BuilderProButton
+          variant={"contained"}
+          marginLeft={"4px"}
+          padding={"8px 8px"}
+          backgroundColor={activeBtn === "remodel" ? "#FFCA5B" : "#F2F2F2"}
+          handleOnClick={() => {
+            handleListedProjectsButton("remodel");
+          }}
+        >
+          <Typography
+            fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
+            fontWeight={"500"}
+            color={"black"}
+            fontFamily={"Inter, sans-serif"}
+            width={"100%"}
+          >
+            Remodel
+          </Typography>
+        </BuilderProButton>
+        <BuilderProButton
+          variant={"contained"}
+          marginLeft={"4px"}
+          padding={"8px 8px"}
+          backgroundColor={activeBtn === "newbuild" ? "#FFCA5B" : "#F2F2F2"}
+          handleOnClick={() => {
+            handleListedProjectsButton("newbuild");
+          }}
+        >
+          <Typography
+            fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
+            fontWeight={"500"}
+            color={"black"}
+            fontFamily={"Inter, sans-serif"}
+            width={"100%"}
+          >
+            New build
+          </Typography>
+        </BuilderProButton>
+        <BuilderProButton
+          variant={"contained"}
+          marginLeft={"4px"}
+          padding={"8px 8px"}
+          backgroundColor={activeBtn === "commercial" ? "#FFCA5B" : "#F2F2F2"}
+          handleOnClick={() => {
+            handleListedProjectsButton("commercial");
+          }}
+        >
+          <Typography
+            fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
+            fontWeight={"500"}
+            color={"black"}
+            fontFamily={"Inter, sans-serif"}
+          >
+            Commercial
+          </Typography>
+        </BuilderProButton>
+      </Stack>
       <Box
-        sx={{ ...themeStyle.scrollable, height:{ xl:"calc(90vh - 390px)",lg:'calc(90vh - 390px)',  md:'calc(90vh - 220px)', xs:'calc(100vh)'} }}
+        sx={{
+          ...themeStyle.scrollable,
+          height: {
+            xl: "calc(90vh - 445px)",
+            lg: "calc(90vh - 445px)",
+            md: "calc(90vh - 275px)",
+            xs: "calc(100vh)",
+          },
+        }}
         pb={2}
       >
         {error ? (
           <>
-          {/* removed error message to prompt user to refresh if error occurs */}
+            {/* removed error message to prompt user to refresh if error occurs */}
           </>
         ) : (
           <Stack spacing={1} pl={"5px"} pr={"5px"}>
@@ -86,19 +162,23 @@ const ListProjects = () => {
             ) : (
               <>
                 {projects[0]?.map((projectProfileCard) => {
-                  return (
-                    <Link
-                      key={projectProfileCard.id}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleClick(projectProfileCard.id, e);
-                      }}
-                      // to={`projects/${projectProfileCard.id}`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <ProjectCard projectProfileCard={projectProfileCard} />
-                    </Link>
-                  );
+                  if (projectProfileCard.buildType === activeBtn) {
+                    return (
+                      <Link
+                        key={projectProfileCard.id}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleClick(projectProfileCard.id, e);
+                        }}
+                        // to={`projects/${projectProfileCard.id}`}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <ProjectCard projectProfileCard={projectProfileCard} />
+                      </Link>
+                    );
+                  } else {
+                    return <></>;
+                  }
                 })}
               </>
             )}

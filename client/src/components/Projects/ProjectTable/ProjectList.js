@@ -43,6 +43,7 @@ import {
   setTotalPages,
 } from "../../../redux/slices/Project/userProjectsSlice";
 import { setError } from "../../../redux/slices/Notifications/notificationSlice";
+import { toast } from "react-toastify";
 
 const ProjectList = ({
   rows,
@@ -125,14 +126,23 @@ const ProjectList = ({
   const handleOpenModalClose = () => {
     setOpenModal(false);
   };
-  const handleConfirmDelete = () => {
-    handleDeleteProject(selectedProjectId);
+  const handleConfirmDelete = (isDelete) => {
+    if (isDelete) {
+      handleDeleteProject(selectedProjectId);
+    } else {
+      handleOpenModalClose();
+    }
   };
   const handleDeleteProject = async (id) => {
     try {
       const res = await deleteProject({
         id: id,
       });
+      console.log(res);
+      if (res?.error?.data?.message) {
+        toast.error(res?.error?.data?.message);
+        return;
+      }
       dispatch(setIsLoading(isLoading));
       const refetchRes = await refetch({
         userId: currentUserId,
@@ -290,9 +300,9 @@ const ProjectList = ({
             >
               <Stack p={1} borderRadius={"14px"} spacing={1}>
                 <Button
-                  onClick={() => handleClickFeature("Remodel")}
+                  onClick={() => handleClickFeature("remodel")}
                   variant={
-                    selectedFilters.includes("Remodel")
+                    selectedFilters.includes("remodel")
                       ? "contained"
                       : "outlined"
                   }
@@ -306,9 +316,9 @@ const ProjectList = ({
                   </Typography>
                 </Button>
                 <Button
-                  onClick={() => handleClickFeature("New Build")}
+                  onClick={() => handleClickFeature("newbuild")}
                   variant={
-                    selectedFilters.includes("New Build")
+                    selectedFilters.includes("newbuild")
                       ? "contained"
                       : "outlined"
                   }
@@ -322,9 +332,9 @@ const ProjectList = ({
                   </Typography>
                 </Button>
                 <Button
-                  onClick={() => handleClickFeature("Commercial")}
+                  onClick={() => handleClickFeature("commercial")}
                   variant={
-                    selectedFilters.includes("Commercial")
+                    selectedFilters.includes("commercial")
                       ? "contained"
                       : "outlined"
                   }
@@ -369,7 +379,7 @@ const ProjectList = ({
           <Stack
             width={{ xl: "150px", lg: "150px", md: "150px", sm: "150px" }}
             justifyContent={"flex-end"}
-            alignSelf={"flex-end"}
+            alignSelf={"center"}
           >
             <BuilderProButton
               variant={"contained"}
@@ -471,92 +481,122 @@ const ProjectList = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows && rows.length > 0 ? (
-                  rows.map((row, index) => (
-                    <TableRow key={index}>
-                      <TableCell sx={themeStyle.tableCell}>
-                        <img
-                          src={row.image ? row.image : logo}
-                          alt="profile"
-                          style={{
-                            borderRadius: "50%",
-                            width: "50px",
-                            height: "50px",
-                            objectFit: "scale-down",
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell sx={themeStyle.tableCell}>
-                        {row.clientName}
-                      </TableCell>
-                      <TableCell sx={themeStyle.tableCell}>
-                        {row.projectName}
-                      </TableCell>
-                      <TableCell sx={themeStyle.tableCell}>
-                        {moment(row.start_time).format("MM/DD/YYYY")}
-                      </TableCell>
-                      <TableCell sx={themeStyle.tableCell}>
-                        {moment(row.end_time).format("MM/DD/YYYY")}
-                      </TableCell>
-                      <TableCell sx={themeStyle.tableCell}>
-                        <Box
-                          display="flex"
-                          pt={2.5}
-                          gap={1}
-                          alignItems="center"
-                          justifyContent="flex-start"
-                        >
-                          {row.userId === currentUserId && (
-                            <Paper>
-                              <IconButton
-                                variant="contained"
-                                onClick={() => handleOpenEditModel(row)}
-                              >
-                                <EditOutlinedIcon
-                                  style={{ color: "#4C8AB1" }}
-                                />
-                              </IconButton>
-                            </Paper>
-                          )}
-                          {row.userId === currentUserId && (
-                            <Paper style={{ backgroundColor: "#FFDADA" }}>
-                              <IconButton
-                                onClick={() => handleDeleteFlow(row.id)}
-                              >
-                                <DeleteOutlineOutlinedIcon
-                                  style={{ color: "#DF0404" }}
-                                />
-                              </IconButton>
-                            </Paper>
-                          )}
-                        </Box>
-                      </TableCell>
-                      <TableCell sx={themeStyle.tableCell}>
-                        <Link
-                          to={`/projects/${row.id}`}
-                          style={{ textDecoration: "none" }}
-                        >
-                          <Typography
-                            color="#4C8AB1"
-                            fontSize="14px"
-                            pl={1}
-                            width="80px"
+                {rows &&
+                  rows.map((row, index) => {
+                    // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    return (
+                      <TableRow>
+                        <TableCell sx={themeStyle.tableCell}>
+                          <img
+                            src={row.image ? row.image : logo}
+                            alt="profile"
+                            style={{
+                              borderRadius: "50%",
+                              width: "50px", // Adjust the width and height as needed
+                              height: "50px",
+                              objectFit: "scale-down",
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell sx={themeStyle.tableCell}>
+                          {row.clientName}
+                        </TableCell>
+                        <TableCell sx={themeStyle.tableCell}>
+                          {row.projectName}
+                        </TableCell>
+                        <TableCell sx={themeStyle.tableCell}>
+                          {moment(row.start_time).format("MM/DD/YYYY")}
+                        </TableCell>
+                        <TableCell sx={themeStyle.tableCell}>
+                          {moment(row.end_time).format("MM/DD/YYYY")}
+                        </TableCell>
+                        {/* {tableHeader &&
+                            tableHeader.map((column, index) => {
+                              const value = row[column.id];
+                              const status = column.id === "projectStatus";
+
+                              return (
+                                <TableCell
+                                  key={value}
+                                  sx={themeStyle.tableCell}
+                                >
+                                  <Typography
+                                    sx={
+                                      status
+                                        ? value === "done"
+                                          ? themeStyle.statusDone
+                                          : themeStyle.statusPending
+                                        : ""
+                                    }
+                                  >
+                                    {value}
+                                  </Typography>
+                                </TableCell>
+                              );
+                            })} */}
+                        <TableCell sx={themeStyle.tableCell}>
+                          <Box
+                            display="flex"
+                            pt={2.5}
+                            gap={1}
+                            alignItems={"center"}
+                            justifyContent={"flex-start"}
                           >
-                            View Details
-                          </Typography>
-                        </Link>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={8} align="center">
-                      <Typography variant="h5" color="textSecondary">
-                        No projects found
-                      </Typography>
-                    </TableCell>
+                            {row.userId === currentUserId && (
+                              <Paper>
+                                <IconButton
+                                  variant={"contained"}
+                                  onClick={() => handleOpenEditModel(row)}
+                                >
+                                  <EditOutlinedIcon
+                                    style={{ color: "#4C8AB1" }}
+                                  />
+                                </IconButton>
+                              </Paper>
+                            )}
+                            {row.userId === currentUserId && (
+                              <Paper style={{ backgroundColor: "#FFDADA" }}>
+                                <IconButton
+                                  onClick={() => handleDeleteFlow(row.id)}
+                                >
+                                  <DeleteOutlineOutlinedIcon
+                                    style={{ color: "#DF0404" }}
+                                  />
+                                </IconButton>
+                              </Paper>
+                            )}
+                            {/* <Paper style={{ backgroundColor: "#E7E7E7" }}>
+                              <IconButton>
+                                <SaveAsOutlinedIcon
+                                  style={{ color: "#545454" }}
+                                />
+                              </IconButton>
+                            </Paper> */}
+                          </Box>
+                        </TableCell>
+                        <TableCell sx={themeStyle.tableCell}>
+                          <Link
+                            to={`/projects/${row.id}`}
+                            style={{ textDecoration: "none" }}
+                          >
+                            <Typography
+                              color={"#4C8AB1"}
+                              fontSize={"14px"}
+                              pl={1}
+                              width={"80px"}
+                            >
+                              View Details
+                            </Typography>
+                          </Link>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {/* {emptyRows > 0 && (
+                  <TableRow sx={themeStyle.tableCell} style={{ height: 60 * emptyRows }}>
+                    <TableCell rowSpan={6} />
                   </TableRow>
-                )}
+                )} */}
               </TableBody>
             </Table>
           )}

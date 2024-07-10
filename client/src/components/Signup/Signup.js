@@ -243,7 +243,9 @@ const SignupComp = () => {
     const isValid = isPhoneValid(phone);
     // Add more validation rules as needed
     setPhoneIsValid(isValid);
-
+    // if(!isValid){
+    //   newErrors.phoneNumber = 'notValid';
+    // }
     // Return true if no errors
     return Object.keys(newErrors).length === 0 && isValid;
   };
@@ -267,6 +269,7 @@ const SignupComp = () => {
             alignItems: "center",
             flexDirection: "column",
             marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
+            gap:2
           }}
         >
           <img style={{height:"100px"}} src={builderproicon} alt="Builder Pro" />

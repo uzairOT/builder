@@ -8,22 +8,38 @@ import { settingsSchema, unitSchema } from '../../../utils/Validation/settingsPa
 import { useAddUnitMutation, useEditUnitMutation } from '../../../redux/apis/Project/userProjectApiSlice';
 import { useSelector } from 'react-redux';
 import { Close } from '@mui/icons-material';
+import { toast } from 'react-toastify';
 
 
 const AddUnitModal = ({open, onClose, unit, refetch}) => {
     console.log(unit)
     const userInfo = useSelector((state) => state.auth.userInfo);
     const [addUnit] = useAddUnitMutation();
+    const handleClose = () => {
+      handleReset();
+      onClose()
+    }
     const onSubmit = async (values, action) => {
         console.log(unit)
+       
         const post ={
             label: values.label,
             value: values.label,
             userId: userInfo.user.id
         }
         const res = await addUnit(post);
+        if(res?.error?.data?.message === 'Unit is a default unit'){
+          toast.error(res.error.data.message)
+          return;
+        }
+        if(res?.error?.data?.message === 'Unit already exists'){
+          toast.error(res.error.data.message)
+          return;
+        }
+        toast.success('Unit added successfully.')
         await refetch({userId: userInfo.user.id})
         console.log(res)
+        handleClose();
       };
     const {
         values,
@@ -56,7 +72,7 @@ const AddUnitModal = ({open, onClose, unit, refetch}) => {
           <DialogTitle sx={headingStyle}>Add Unit</DialogTitle>
           <IconButton
             style={{ width: "30px", height: "30px" }}
-            onClick={onClose}
+            onClick={handleClose}
           >
             <Close />
           </IconButton>

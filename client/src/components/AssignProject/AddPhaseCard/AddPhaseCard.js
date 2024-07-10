@@ -42,6 +42,7 @@ import BuilderProButton from "../../UI/Button/BuilderProButton";
 import LineItemTeamStatus from "../../dialogues/LineItemTeamStatus/LineItemTeamStatus";
 import { useLocation } from "react-router-dom";
 import { formatMoney } from "../../../utils/Formatters/moneyFormat";
+import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
 //import "react-toastify/dist/ReactToastify.css";
 
 const initialRows = [
@@ -105,12 +106,14 @@ const AddPhaseCard = ({
   const [showUpdateUserStatus, setShowUpdateUserStatus] = useState(false);
   const [showTeamStatus, setShowTeamStatus] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [lineItemId, setLineItemId] = useState(null)
+  const [openModal, setOpenModal] = useState(false);
   const [rows, setRows] = useState(initialRows);
   const user = useSelector((state) => state.auth.userInfo);
   const userId = user.user.id;
   const userRoleAuth = useSelector(getUserRoleFromRedux);
   console.log(userRoleAuth);
-  const [deletePhaseLine] = useDeletePhaseLineMutation();
+  const [deletePhaseLine, {isLoading}] = useDeletePhaseLineMutation();
   console.log(adminProjectView);
   const dispatch = useDispatch();
   const { rowCheckbox } = useSelector(selectAddPhase);
@@ -157,7 +160,23 @@ const AddPhaseCard = ({
     const updatedSelectedRows = isChecked ? rows.map((_, index) => index) : [];
     setSelectedRows(updatedSelectedRows);
   };
+const handleOpenModalClose = () => {
+  setOpenModal(false);
+}
 
+const handleDeleteLineItem = (lineItemId) => {
+  setLineItemId(lineItemId);
+  setOpenModal(true);
+}
+const handleConfirmDelete = async (confirm) => {
+  if(confirm){
+    await handleDeleteSelectedRows(lineItemId)
+    handleOpenModalClose();
+  }else{
+    setLineItemId(null)
+    handleOpenModalClose()
+  }
+}
   const handleDeleteSelectedRows = async (lineItemId) => {
     // const updatedRows = rows.filter((_, index) => !selectedRows.includes(index));
     // // Handle the updated rows according to your application logic
@@ -713,7 +732,7 @@ const AddPhaseCard = ({
                             row.status === "Work Order declined" ||
                             row.status === "Change Order declined") && (
                             <DeleteIcon
-                              onClick={() => handleDeleteSelectedRows(row.id)}
+                              onClick={() => handleDeleteLineItem(row.id)}
                               disabled={selectedRows.length === 0}
                             />
                           )}
@@ -766,6 +785,15 @@ const AddPhaseCard = ({
             InitialProposalView={InitialProposalView}
             setRowCheckboxes={setRowCheckboxes}
           />
+        )}
+        {openModal && (
+          <AreYouSureModal
+          open={openModal}
+          handleClose={handleOpenModalClose}
+          handleConfirmDelete={handleConfirmDelete}
+          isLoading={isLoading}
+          text={'Line Item'}
+        />
         )}
       </Grid>
     </div>

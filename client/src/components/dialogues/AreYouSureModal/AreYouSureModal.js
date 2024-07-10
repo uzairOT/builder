@@ -43,7 +43,7 @@ function AreYouSureModal({ open, handleClose,handleConfirmDelete , isLoading, te
           <IconButton aria-label="close" onClick={handleClose}>
             <CloseIcon />
           </IconButton>
-          <DialogTitle sx={typoTitle}>{"Are You Sure"}</DialogTitle>
+          {/* <DialogTitle sx={typoTitle}>{"Are You Sure"}</DialogTitle> */}
         </Stack>
           <DialogContent>
             <DialogContentText
@@ -53,7 +53,7 @@ function AreYouSureModal({ open, handleClose,handleConfirmDelete , isLoading, te
               Are you sure you want to delete this {text}?
             </DialogContentText>
           </DialogContent>
-          <DialogActions sx={{ gap: "1rem", marginTop: "1rem", display:"flex", flexDirection:{xl:"row",lg:"row", md:"row", xs:"column"} }}>
+          <DialogActions sx={{ gap: "2rem", marginTop: "1rem", display:"flex", flexDirection:{xl:"row",lg:"row", md:"row", xs:"column"} }}>
             <Button
               variant="outlined"
               sx={{

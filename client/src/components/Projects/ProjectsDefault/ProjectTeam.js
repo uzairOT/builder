@@ -186,7 +186,7 @@ const ProjectTeam = () => {
                   >
                     <Stack direction={"row"} flex={{xl:5, lg:5, md:5, sm:3, xs:3}} gap={1} justifyContent={"space-between"}>
                     <Typography sx={themeStyle.subTitle}>{role}</Typography>
-                    <Stack direction={"row"} width={'270px'} >
+                    <Stack direction={"row"} width={{xl:'270px', lg:'220px', xs:'270px'}} >
                       {groupedData[role].map((person, index) => {
                           let firstName = person.firstName;
                           let lastName = person.lastName;
@@ -500,7 +500,7 @@ const themeStyle = {
     fontFamily: "Arial Rounded MT, sans-serif",
   },
   subTitle: {
-    fontSize: "13px",
+    fontSize: {xl:"13px", lg:'11px', xs:'13px'},
     color: "#202227",
     fontFamily: "Arial Rounded MT, sans-serif",
     textAlign: "left",

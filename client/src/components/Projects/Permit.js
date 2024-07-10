@@ -70,12 +70,13 @@ function Permit({ view, type }) {
     setShowDelete(!showDelete);
   };
   const deleteProjectFileFunc = async (file) => {
+    setShowDelete(false)
     try {
       const res = await deleteProjectFile({
         fileId: file.id,
         projectId: file.projectId,
-      });
-      toast.success("File Successfully deleted");
+        });
+        toast.success("File Successfully deleted");
       await fetchData();
     } catch (error) {
       console.log("Something went wrong!");
@@ -106,7 +107,7 @@ function Permit({ view, type }) {
                 opacity: showDelete ? "" : "0.7",
               }}
             >
-              Delete Files
+              Delete {view}
             </Typography>
           </button>
           <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>
@@ -344,6 +345,8 @@ function Permit({ view, type }) {
       )}
       {open && (
         <AddImage
+          showDelete={showDelete}
+          setShowDelete={setShowDelete}
           handleOpen={handleOpen}
           handleClose={handleClose}
           heading={type}

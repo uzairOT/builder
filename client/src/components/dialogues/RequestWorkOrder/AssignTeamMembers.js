@@ -107,10 +107,12 @@ const AssignTeamMembers = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {!team ? (
+                {team?.length < 2 ? (
                   <TableRow>
                     <TableCell></TableCell>
                     <TableCell>No Team Members</TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
                   </TableRow>
                 ) : (
                   team?.map((row, index) => {

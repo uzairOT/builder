@@ -113,9 +113,9 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
       action.resetForm();
       setImage(null);
     } catch (err) {
-      //console.log(err);
+      console.log(err);
       toast.error(
-        error?.data?.message ||
+        err?.data?.message ||
         error.error ||
         error?.data?.error ||
         err?.message ||

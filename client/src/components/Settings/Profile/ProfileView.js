@@ -180,10 +180,11 @@ function ProfileView() {
     }
   };
   const handleProfileImage = async () => {
-    handleSubmit();
+    toast.success("Profile Picture updated successfully", {toastId:'123'});
+    handleSubmit('image');
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (image) => {
     if (!validate()) {
       toast.error("Your phone number is not valid");
       return;
@@ -201,7 +202,11 @@ function ProfileView() {
         console.log(res);
         localStorage.setItem("userInfo", JSON.stringify(res.data));
         dispatch(setCredentials(res.data));
-        toast.success("Profile updated successfully");
+        if(image === 'image'){
+
+        }else{
+          toast.success("Profile updated successfully");
+          }
       } else {
         const put = {
           ...formData,
@@ -369,6 +374,7 @@ function ProfileView() {
                 borderRadius="50px"
                 onClick={handleSubmit}
                 isLoading={isLoading}
+                disabled={isLoading}
               />
               <Button
                 buttonText="Delete Profile"
@@ -444,6 +450,7 @@ function ProfileView() {
                 borderRadius="50px"
                 onClick={handleProfileImage}
                 isLoading={isLoading}
+                disabled={isLoading}
               />
             </Typography>
           </Stack>

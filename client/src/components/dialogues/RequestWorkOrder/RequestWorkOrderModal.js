@@ -402,6 +402,9 @@ const RequestWorkOrderModal = ({
   const refetchTeam = async ()=>{
     const res = await refetchProjectTeam();
   }
+  const showToast = () => {
+    toast.warning('Please select a line item to request a work order.')
+  }
 
   useEffect(()=>{
     if(open){
@@ -420,8 +423,8 @@ const RequestWorkOrderModal = ({
           fontSize={"16px"}
           fontWeight={"600"}
           padding={"6px 32px 6px 32px"}
-          handleOnClick={handleOpen}
-          disabled={isButtonDisabled}
+          handleOnClick={isButtonDisabled ? showToast : handleOpen}
+          // disabled={isButtonDisabled}
         >
           {changeOrder ? "Request Change Order" : "Request Work Order"}
         </BuilderProButton>

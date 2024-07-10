@@ -125,14 +125,18 @@ function CustomTable({
         userId: user.userId,
         superAdminId: currentUserId,
         projectId: user.projectId,
+        userRole: userRole
       };
       const res = await assignRoleDelete(deleteUser);
-      //console.log(res);
-      if (res.data.success) {
+      if(res?.error?.data?.success === false){
+        toast.error(res?.error?.data?.error || "something went wrong");
+      }
+      if (res?.data?.success) {
         refetch();
       }
     } catch (e) {
-      toast.error("error");
+      console.log(e)
+      toast.error(e?.error?.data?.error || "something went wrong");
     }
   };
   const handleRefetch = async () => {
@@ -248,22 +252,27 @@ function CustomTable({
                 ) : data?.message === "no records" ? (
                   <>No Records</>
                 ) : (
-                  data?.users?.map((row, index) => (
+                  data?.users?.map((row, index) => { 
+                    if(row === null)
+                      return <></>;
+                    
+                    return(
+                   
                     <TableRow key={index}>
                       <TableCell sx={tableCellValueStyle}>
-                        <Avatar alt="Avatar" src={row.image} />
+                        <Avatar alt="Avatar" src={row?.image} />
                       </TableCell>
                       <TableCell sx={tableCellValueStyle}>
-                        {row.firstName}
+                        {row?.firstName}
                       </TableCell>
                       <TableCell sx={tableCellValueStyle}>
-                        {row.projectName}
+                        {row?.projectName}
                       </TableCell>
                       <TableCell sx={tableCellValueStyle}>
-                        {row.phoneNumber}
+                        {row?.phoneNumber}
                       </TableCell>
                       <TableCell sx={tableCellValueStyle}>
-                        {row.email}
+                        {row?.email}
                       </TableCell>
                       {/* <TableCell sx={tableCellValueStyle}>{row.country}</TableCell> */}
                       {/* <TableCell sx={tableCellValueStyle}>
@@ -321,7 +330,7 @@ function CustomTable({
                         </IconButton>
                       </TableCell>
                     </TableRow>
-                  ))
+                  )})
                 )}
               </TableBody>
             )}

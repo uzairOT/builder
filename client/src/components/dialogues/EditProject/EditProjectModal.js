@@ -47,7 +47,7 @@ import {
   setTotalCount,
   setTotalPages,
 } from "../../../redux/slices/Project/userProjectsSlice";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 import ColorPicker from "../ColorPickerProject/ColorPicker";
 
 function EditProjectModal({ title, open, onClose, project, page }) {
@@ -88,9 +88,9 @@ function EditProjectModal({ title, open, onClose, project, page }) {
     "#ADA1F5",
   ];
   const handleNavigation = () => {
-    navigate(`${project.id}/initial-proposal`)
-  }
-  console.log(project)
+    navigate(`${project.id}/initial-proposal`);
+  };
+  console.log(project);
 
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
@@ -544,7 +544,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                     //     : ""
                     // }
                     borderRadius={"99999px"}
-                    border={'1px dashed gray'}
+                    border={"1px dashed gray"}
                     // onClick={() => {
                     //   handleProjectColorChange(color);
                     // }}
@@ -560,7 +560,11 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                   />
                 </Stack>
                 <Stack>
-                  <Typography onClick={handleNavigation} color={"#4C8AB1"} sx={styles.link}>
+                  <Typography
+                    onClick={handleNavigation}
+                    color={"#4C8AB1"}
+                    sx={styles.link}
+                  >
                     Edit phases
                   </Typography>
                 </Stack>
@@ -622,7 +626,7 @@ const styles = {
       outline: "none", // Remove outline on focus
       color: "#326273", // Change color on focus
     },
-    fontSize:'14px'
+    fontSize: "14px",
   },
 };
 
@@ -630,9 +634,9 @@ const headingStyle = {
   marginTop: "20px",
   // marginBottom: "10px",
   marginLeft: "25px",
-  display:'flex',
-  flexDirection:'row',
-  justifyContent:'space-between'
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
 };
 const headingStyleText = {
   fontFamily: "Poppins",

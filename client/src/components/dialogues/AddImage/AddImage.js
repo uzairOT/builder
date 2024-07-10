@@ -29,7 +29,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import CheckIcon from "@mui/icons-material/Check";
 
-function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
+function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelete, setShowDelete }) {
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState(null);
   const [primary, setPrimary] = useState(null);
@@ -155,6 +155,9 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if(showDelete){
+      setShowDelete(false)
+    }
     if (!selectedFile) {
       toast.warning("Please select a file");
       return false;
@@ -191,11 +194,13 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
           handleClickClose();
           fetchData();
         });
+        console.log(response);
       if (response.status !== 201) {
         throw new Error("Failed to save file URL");
       }
     } catch (error) {
-      console.error("Error:", error.message);
+      toast.error(error?.response?.data?.error)
+      // console.error("Error:", error.response.data.error);
     }
   };
 
@@ -352,7 +357,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData }) {
             {loading ? (
               <CircularProgress size={"20px"} sx={{ color: "white" }} />
             ) : (
-              "Send"
+              "Add"
             )}
           </Button>
         </DialogActions>
