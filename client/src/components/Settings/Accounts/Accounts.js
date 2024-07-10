@@ -51,8 +51,17 @@ const Accounts = () => {
   };
 
   useEffect(() => {
-    fetchUserCoupons(getUserAccounts, { userId: userId, q: debouncedValue, page:page });
-  }, [addAccountSucces, updateAccountSuccess, deleteAccountSuccess, debouncedValue]);
+    fetchUserCoupons(getUserAccounts, {
+      userId: userId,
+      q: debouncedValue,
+      page: page,
+    });
+  }, [
+    addAccountSucces,
+    updateAccountSuccess,
+    deleteAccountSuccess,
+    debouncedValue,
+  ]);
 
   let startIndex = 1;
   let endIndex = data?.limit;

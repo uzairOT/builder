@@ -24,8 +24,8 @@ import { toast } from "react-toastify";
 const tableCellStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
-  textOverflow:'ellipsis',
-  overflow:'hidden',
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 500,
   fontSize: "14px",
   fontFamily: "Poppins",
@@ -35,8 +35,8 @@ const tableCellStyle = {
 const tableCellValueStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
-  textOverflow:'ellipsis',
-  overflow:'hidden',
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 400,
   borderBottom: "none",
   fontFamily: "Montserrat",
@@ -89,6 +89,7 @@ function AmountTable({
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell sx={tableCellStyle}>Account Image</TableCell>
               <TableCell sx={tableCellStyle}>Account Name</TableCell>
               <TableCell sx={tableCellStyle}>Account Details</TableCell>
               {/* <TableCell sx={tableCellStyle}>Account Number</TableCell> */}
@@ -125,11 +126,27 @@ function AmountTable({
                     </TableCell>
                   </TableRow>
                 </>
-               ) : data?.accounts < 1 ? (
-                  <>No Records</>
-                ) : (
+              ) : data?.accounts < 1 ? (
+                <>No Records</>
+              ) : (
                 data?.accounts.map((row, index) => (
                   <TableRow key={index}>
+                    <TableCell sx={tableCellValueStyle}>
+                      {row?.accountImage ? (
+                        <img
+                          src={row.accountImage}
+                          alt="Account"
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      ) : (
+                        <></>
+                      )}
+                    </TableCell>
+
                     <TableCell sx={tableCellValueStyle}>
                       {row.accountName}
                     </TableCell>
