@@ -138,8 +138,8 @@ const ProjectList = ({
       const res = await deleteProject({
         id: id,
       });
-      console.log(res)
-      if(res?.error?.data?.message){
+      console.log(res);
+      if (res?.error?.data?.message) {
         toast.error(res?.error?.data?.message);
         return;
       }

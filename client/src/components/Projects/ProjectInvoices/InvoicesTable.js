@@ -206,6 +206,10 @@ function InvoicesTable({
 }
 export default InvoicesTable;
 const tableCellStyle = {
+  maxWidth: { xl: "40px", lg: "30px", md: "70px", xs: "100%" },
+  minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 500,
   fontSize: {xl:"14px", lg:'11px',md:'11px', xs:'11px'},
   fontFamily: "Poppins",
@@ -213,6 +217,10 @@ const tableCellStyle = {
   textAlign:'center'
 };
 const tableCellValueStyle = {
+  maxWidth: { xl: "40px", lg: "30px", md: "70px", xs: "100%" },
+  minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 400,
   fontSize: {xl:"14px", lg:'11px',md:'11px', xs:'11px'},
   borderBottom: "none",

@@ -1,5 +1,6 @@
 import {
   Box,
+  Snackbar,
   Dialog,
   DialogActions,
   DialogContent,
@@ -132,6 +133,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
         dispatch(setTotalCount(data?.totalCount));
         dispatch(setTotalPages(data?.totalPages));
         dispatch(setLimit(data?.limit));
+        toast.success("Project updated successfully!");
       } else {
         dispatch(setError(error));
       }

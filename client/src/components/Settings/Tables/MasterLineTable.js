@@ -200,7 +200,13 @@ function MasterLineTable({
                     </TableCell>
                   </TableRow>
                 </>
-              ) : (
+                ) : data?.MasterLines?.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={10} sx={{ textAlign: "center" }}>
+                      No Data Present
+                    </TableCell>
+                  </TableRow>
+                ) : (
                 data?.MasterLines?.map((row) => (
                   <TableRow key={row.id}>
                     <TableCell sx={tableCellValueStyle}>{row.title}</TableCell>

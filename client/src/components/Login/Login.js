@@ -20,6 +20,7 @@ import {
   Select,
   CircularProgress,
   Stack,
+  Container,
 } from "@mui/material";
 import builder1 from "../Signup/Assets/pngs/builderProYellowLogo.png";
 import downloadForMob from "../Signup/Assets/pngs/downloadForMob.png";
@@ -27,12 +28,14 @@ import googlePlay from "../Signup/Assets/pngs/googlePlay.png";
 import appStore from "../Signup/Assets/pngs/appStore.png";
 import { Circle, Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "../Signup/Assets/svgs/GoogleIcon.svg";
-import builderProLargeIcon, { BuilderProIcon } from "../../assets/FileSvg/builderPro"
+import builderProLargeIcon, {
+  BuilderProIcon,
+} from "../../assets/FileSvg/builderPro";
 import YellowBtn from "../UI/button";
 import "../../App.css";
 import { useFormik } from "formik";
 import { loginSchemea } from "../../utils/Validation/settingsPageSchema";
-import builderproicon from "../../assets/FileSvg/builderProWhite.png"
+import builderproicon from "../../assets/FileSvg/builderProWhite.png";
 //import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
@@ -182,26 +185,31 @@ const Login = () => {
   return (
     <Grid container sx={firstGrid}>
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
-        <Box sx={{display:"flex", alignItems:"center",   marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
-}}>
-          <img height="55px" src={builderproicon} alt="Builder Pro" />
-        <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+            marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
+          }}
+        >
+          <img style={{height:"100px"}} src={builderproicon} alt="Builder Pro" />
+          {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
+          <Typography component="p" pt={2} sx={secondHeading}>
+            On schedule.
+          </Typography>
+          <Typography component="p" sx={secondHeading}>
+            {" "}
+            On budget.{" "}
+          </Typography>
+
+          <Typography component="p" sx={secondHeading}>
+            {" "}
+            On the path to building better.
+          </Typography>
         </Box>
-
         {/* Button */}
-<Typography component="p" sx={secondHeading}>
-          On schedule.
-        </Typography>
-        <Typography component="p" sx={secondHeading}>
-          {" "}
-          On budget.{" "}
-        </Typography>
 
-        <Typography component="p" sx={secondHeading}>
-          {" "}
-          On the path to building better.
-        </Typography>
-       
         {/* <Typography sx={thirdHeading}>Log in to your account</Typography> */}
         <Box sx={downloadForMobBox}>
           <img src={downloadForMob} width={DoMobWidth} alt="" />
@@ -692,8 +700,8 @@ const hptLinksBox = {
 const firstHeading = {
   color: "#FFF",
   fontFamily: "Arial Rounded MT, sans-serif",
-  mt:2,
-  ml:2,
+  mt: 2,
+  ml: 2,
   // marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
   fontSize: { xl: "2rem", lg: "2rem", md: "1.9rem", sm: "1rem" },
   fontWeight: 400,
@@ -701,8 +709,9 @@ const firstHeading = {
 };
 
 const secondHeading = {
+  textAlign: "center",
   color: "rgba(255, 255, 255, 0.80)",
-  width: { lg: "31.125rem", md: "28rem", sm: "auto" },
+  // width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: { xl: "2rem", lg: "1.5rem", md: "1rem", sm: "1rem" },
