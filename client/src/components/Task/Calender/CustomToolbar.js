@@ -128,7 +128,7 @@ const CustomToolbar = ({
           pb={2}
         >
           <Typography sx={themeStyle.toolbarTitle} pl={1}>
-            Work Order
+            WorkOrder
           </Typography>
           <Box element="div" style={themeStyle.toolbarButtonGroup}>
             <Button
@@ -252,8 +252,8 @@ const CustomToolbar = ({
                   style={{
                     ...themeStyle.monthEventHeader,
                     color: activeHeader === "Work Order" ? "#4C8AB1" : "",
-                    textDecoration:
-                      activeHeader === "Work Order" ? "underline" : "",
+                    // textDecoration:
+                    //   activeHeader === "Work Order" ? "underline" : "",
                   }}
                 >
                   Work Order
@@ -270,7 +270,7 @@ const CustomToolbar = ({
                   style={{
                     ...themeStyle.monthEventHeader,
                     color: activeHeader === "Notes" ? "#4C8AB1" : "",
-                    textDecoration: activeHeader === "Notes" ? "underline" : "",
+                    // textDecoration: activeHeader === "Notes" ? "underline" : "",
                   }}
                 >
                   Notes

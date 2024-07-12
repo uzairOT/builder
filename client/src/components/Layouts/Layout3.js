@@ -75,8 +75,8 @@ function Layout3() {
       <main>
         <Grid sx={{...themeStyle.dashboard, ...themeStyle.scrollable}} container pt={1}>
           {/* Side bar */}
-          <Grid item xs={12} sm={12} md={12} lg={2}>
-            <Paper sx={{ borderRadius: "0 14px 14px 0", height: "98%" }}>
+          <Grid item xs={12} sm={12} md={12} lg={2.5} xl={2}>
+            <Paper sx={{ borderRadius: "0 14px 14px 0", height: "98%", }}>
               <SideBar />{" "}
             </Paper>
           </Grid>
@@ -85,7 +85,8 @@ function Layout3() {
             xs={12}
             sm={12}
             md={12}
-            lg={10}
+            lg={9.5}
+            xl={10}
             mb={1}
             style={{ paddingTop: "0px", paddingLeft: "10px" }}
           >

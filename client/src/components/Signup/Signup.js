@@ -188,7 +188,7 @@ const SignupComp = () => {
   const onSubmit = async (e) => {
     // e.preventDefault();
     if (!validate()) {
-      toast.error('Your phone number is not valid')
+      toast.error("Your phone number is not valid");
       return;
     }
     if (checked) {
@@ -232,6 +232,7 @@ const SignupComp = () => {
         company: "",
         password: "",
         confirmPassword: "",
+        phoneNumber: "",
       },
       validationSchema: signupSchemea,
       onSubmit,
@@ -263,16 +264,20 @@ const SignupComp = () => {
     <Grid container sx={{ ...firstGrid }}>
       <ToastContainer />
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
-      <Box
+        <Box
           sx={{
             display: "flex",
             alignItems: "center",
             flexDirection: "column",
             marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
-            gap:2
+            gap: 2,
           }}
         >
-          <img style={{height:"100px"}} src={builderproicon} alt="Builder Pro" />
+          <img
+            style={{ height: "100px" }}
+            src={builderproicon}
+            alt="Builder Pro"
+          />
           {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
           <Typography component="p" pt={2} sx={secondHeading}>
             On schedule.
@@ -287,7 +292,7 @@ const SignupComp = () => {
             On the path to building better.
           </Typography>
         </Box>
-          {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
+        {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
 
         {/* Button */}
 
@@ -429,6 +434,10 @@ const SignupComp = () => {
                 defaultCountry=""
                 name={"phoneNumber"}
                 value={phone}
+                onBlur={(e) => {
+                  handleBlur(e);
+                  validate(phone); 
+                }}
                 onChange={(phone) => setPhone(phone)}
                 countrySelectorStyleProps={{
                   style: {
@@ -448,6 +457,7 @@ const SignupComp = () => {
                 }}
                 required
               />
+
               {!phoneIsValid && (
                 <Box>
                   <Typography
@@ -612,13 +622,14 @@ const SignupComp = () => {
                 value={checked}
                 onChange={handleChecked}
               />
+
               <label htmlFor="agreeTerms" style={checkBoxText}>
-                By creating an account, I agree to our{" "}
                 <label
                   onClick={() => {
                     navigate("/privacyandterms");
                   }}
                 >
+                  By creating an account, I agree to{" "}
                   <Link style={{ ...linkStyle, ...lableResponsiveFont }}>
                     Terms of use
                   </Link>{" "}
@@ -655,7 +666,7 @@ const SignupComp = () => {
                 </Link>
               </Typography>
             </Stack>
-           
+
             <Box sx={continueWithBox}>
               <hr style={hrLine} />
               <Typography sx={ContinuewithTextStyle}>
@@ -864,6 +875,8 @@ const checkBox = {
 };
 
 const checkBoxText = {
+  gap: 3,
+  display: "flex",
   marginTop: "0.5rem",
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem", xs: "0.75rem" },
 };

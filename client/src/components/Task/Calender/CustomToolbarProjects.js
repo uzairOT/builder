@@ -125,7 +125,15 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                 justifyContent={"center"}
                 alignItems={"center"}
               >
-                <button
+                <Button
+                 sx={{
+                  fontSize: {
+                    xl: "12px !important",
+                    lg: "10px !important",
+                    md: "12px !important",
+                    xs: "12px !important",
+                  },
+                }}
                   style={{
                     ...themeStyle.toolbarButton,
                     backgroundColor:
@@ -142,58 +150,29 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                     handleActiveHeader("Work Order");
                   }}
                 >
-                  <Typography
-                    sx={{
-                      fontSize: {
-                        xl: "12px !important",
-                        lg: "10px !important",
-                        md: "12px !important",
-                        xs: "12px !important",
-                      },
-                    }}
-                    style={{
-                      ...themeStyle.monthEventHeader,
-                      // textDecoration:
-                      //   activeHeader === "Work Order" ? "underline" : "",
-                    }}
-                  >
-                    Work Order
-                  </Typography>
-                </button>
-                <button
+                  Work Order
+                </Button>
+                <Button
+                 sx={{
+                  fontSize: {
+                    xl: "12px !important",
+                    lg: "10px !important",
+                    md: "12px !important",
+                    xs: "12px !important",
+                  },
+                }}
                   style={{
                     ...themeStyle.toolbarButton,
                     backgroundColor: activeHeader === "Notes" ? "white" : "",
+                    color: activeHeader === "Notes" ? "#4C8AB1" : "white",
+
                   }}
                   onClick={() => {
                     handleActiveHeader("Notes");
                   }}
                 >
-                  <Typography
-                    sx={{
-                      fontSize: {
-                        xl: "12px !important",
-                        lg: "10px !important",
-                        md: "12px !important",
-                        xs: "12px !important",
-                      },
-                    }}
-                    style={{
-                      ...themeStyle.monthEventHeader,
-                      color: bgColorClient
-                        ? activeHeader === "Notes"
-                          ? "#4C8AB1"
-                          : "black"
-                        : activeHeader === "Notes"
-                        ? "#4C8AB1"
-                        : "white",
-                      // textDecoration:
-                      //   activeHeader === "Notes" ? "underline" : "",
-                    }}
-                  >
-                    Weather/notes
-                  </Typography>
-                </button>
+                  Weather/notes
+                </Button>
               </Stack>
             )}
             {toolbar.view === "day" && (
@@ -205,7 +184,15 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                 justifyContent={"center"}
                 alignItems={"center"}
               >
-                <button
+                <Button
+                 sx={{
+                  fontSize: {
+                    xl: "12px !important",
+                    lg: "10px !important",
+                    md: "12px !important",
+                    xs: "12px !important",
+                  },
+                }}
                   style={{
                     ...themeStyle.toolbarButton,
                     backgroundColor:
@@ -216,65 +203,29 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                     handleActiveHeader("Work Order");
                   }}
                 >
-                  <Typography
-                    sx={{
-                      fontSize: {
-                        xl: "13px !important",
-                        lg: "13px !important",
-                        md: "13px !important",
-                        xs: "13px !important",
-                      },
-                    }}
-                    style={{
-                      ...themeStyle.monthEventHeader,
-                      color: bgColorClient
-                        ? activeHeader === "Work Order"
-                          ? "#4C8AB1"
-                          : "black"
-                        : activeHeader === "Work Order"
-                        ? "#4C8AB1"
-                        : "",
-                      // textDecoration:
-                      //   activeHeader === "Work Order" ? "underline" : "",
-                    }}
-                  >
-                    Work Order
-                  </Typography>
-                </button>
-                <button
+                  Work Order
+                </Button>
+                <Button
+                  sx={{
+                    fontSize: {
+                      xl: "12px !important",
+                      lg: "10px !important",
+                      md: "12px !important",
+                      xs: "12px !important",
+                    },
+                  }}
                   style={{
                     ...themeStyle.toolbarButton,
                     backgroundColor: activeHeader === "Notes" ? "white" : "",
+                    color: activeHeader === "Notes" ? "#4C8AB1" : "white",
+
                   }}
                   onClick={() => {
                     handleActiveHeader("Notes");
                   }}
                 >
-                  <Typography
-                    sx={{
-                      fontSize: {
-                        xl: "13px !important",
-                        lg: "13px !important",
-                        md: "13px !important",
-                        xs: "13px !important",
-                      },
-                    }}
-                    style={{
-                      ...themeStyle.monthEventHeader,
-                      color: bgColorClient
-                        ? activeHeader === "Notes"
-                          ? "#4C8AB1"
-                          : "black"
-                        : activeHeader === "Notes"
-                        ? "#4C8AB1"
-                        : "white",
-                      // textDecoration:
-                      //   activeHeader === "Notes" ? "underline" : "",
-                    }}
-                  >
-                    Weather/ Notes
-                  </Typography>
-                </button>
+                  Weather/ Notes
+                </Button>
               </Stack>
             )}
           </Stack>
