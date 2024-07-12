@@ -508,7 +508,7 @@ const firstGrid = {
 };
 
 const SecondGrid = {
-  gap: { xl:"4.5rem",lg: "3.5rem", sm: "1rem", xs: "1rem" },
+  gap: { xl:"4.5rem",lg: "3.5rem", md:"3.5rem", sm: "1rem", xs: "1rem" },
   alignItems: { lg: "center", md: "center", sm: "center", xs: "center" },
   justifyContent: {
     lg: "start",
