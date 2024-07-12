@@ -232,9 +232,10 @@ const Login = () => {
           >
             {" "}
             <img
+            
               src={googlePlay}
               // width={widthValue}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", height:62 }}
               alt=""
             />
           </a>
@@ -243,7 +244,7 @@ const Login = () => {
             <img
               src={appStore}
               width={widthValue}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", height:62 }}
               alt=""
             />
           </a>
@@ -500,13 +501,14 @@ const firstGrid = {
     sm: "0rem 2rem",
     xs: "0rem 0rem 0rem 0rem",
   },
+  alignItems:'start',
   backgroundColor: "#4C8AB1",
   // marginTop: { lg: "0rem", sm: "-1rem", xs: "0rem" },
   // border: "2px solid red",
 };
 
 const SecondGrid = {
-  gap: { lg: "1.1rem", sm: "1rem", xs: "1rem" },
+  gap: { xl:"4.5rem",lg: "3.5rem", sm: "1rem", xs: "1rem" },
   alignItems: { lg: "center", md: "center", sm: "center", xs: "center" },
   justifyContent: {
     lg: "start",
@@ -519,7 +521,7 @@ const SecondGrid = {
 };
 
 const downloadForMobBox = {
-  marginTop: "3rem",
+  // marginTop: "3rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   // marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
   justifyContent: "center",
@@ -529,7 +531,7 @@ const googleAppImgsBox = {
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "3rem",
+  // marginTop: "3rem",
   marginLeft: { lg: "3rem", md: "3rem", sm: "3rem" },
   gap: "1rem",
 };
@@ -537,7 +539,7 @@ const googleAppImgsMobile = {
   display: { lg: "none", md: "none", sm: "flex", xs: "none" },
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "1rem",
+  // marginTop: "1rem",
   gap: "1rem",
   cursor: "pointer",
 };
