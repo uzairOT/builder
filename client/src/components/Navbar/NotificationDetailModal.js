@@ -146,15 +146,16 @@ const NotificationDetailModal = ({
           <></>
         )} */}
       </Stack>
-      <Modal open={open} onClose={handleClose} style={{overflow: 'auto'}}>
+      <Modal open={open} onClose={handleClose} >
         <Stack
           sx={{
             ...style,
             ...themeStyle.scrollable,
-            width:{ xs:"90%" ,md:"auto"},
-            height:{xs:"80%",}
+            width:{ xl:'40%', lg:'40%', md:'50%', xs:'90%'},
+            height:{md:'auto',xs:"80%"}
+            
           }}
-          
+         
         >
           <Stack
             p={2}
@@ -176,7 +177,7 @@ const NotificationDetailModal = ({
           </Stack>
           <Divider />
           <Stack
-          sx={{overflow:"auto"}}
+          sx={{overflowY:"auto"}}
             direction={{
               xl: "row",
               lg: "row",
@@ -185,16 +186,16 @@ const NotificationDetailModal = ({
               xs: "column",
             }}
           >
-            <Stack p={3} spacing={1} width={"100%"}>
-              <Typography fontSize={{xl:12,md:12,lg:10,sm:12,xs:12}} fontFamily={"inherit"}>
+            <Stack p={3} pr={0} spacing={1} width={"100%"}>
+              <Typography fontSize={{xl:16,md:14,lg:14,sm:12,xs:12}} fontFamily={"inherit"}>
                 <strong>Subject: </strong>{" "}
                 <label>{notification.WorkOrderReq.subject}</label>
               </Typography>
-              <Typography pb={1} fontFamily={"inherit"} fontWeight={"200"}>
+              <Typography pb={1}  fontSize={{xl:16,md:14,lg:14,sm:12,xs:12}} fontFamily={"inherit"} fontWeight={"200"}>
                 <strong>Description: </strong>{" "}
                 <label>{notification.WorkOrderReq.description}</label>
               </Typography>
-              <Divider />
+              {/* <Divider />
 
               <Typography pt={1} sx={themeStyle.headingText}>
                 Total
@@ -205,7 +206,7 @@ const NotificationDetailModal = ({
                 >
                   ${notification.WorkOrderReq.total}
                 </Typography>
-              </Stack>
+              </Stack> */}
               <Divider />
               <Stack
                 direction={{ xl: "row", lg: "row", md: "column" }}
@@ -258,6 +259,7 @@ const NotificationDetailModal = ({
                       maxHeight: "150px",
                       overflow: "auto",
                       ...themeStyle.scrollable,
+                      padding:0
                     }}
                   >
                     {notification?.WorkOrderReq?.phaseItems?.map(
@@ -265,8 +267,10 @@ const NotificationDetailModal = ({
                         <React.Fragment key={phaseItem.phaseId}>
                           {phaseItem?.LineItems?.map((lineItem) => (
                             <ListItem
+                            
                               key={lineItem?.id}
                               sx={{
+                                fontSize:{xl:'16px', lg:'14px', xs:'14px'},
                                 padding: 1,
                                 cursor: "pointer", // Change cursor to pointer to indicate clickable
                                 backgroundColor: "#f0f0f0", // Add background color on hover
@@ -393,7 +397,7 @@ const NotificationDetailModal = ({
                 </Stack>
               </Stack>
             </Stack>
-            <Stack backgroundColor={"#EFF5FF"} width={"100%"}>
+            <Stack backgroundColor={"#EFF5FF"} width={"100%"} sx={{borderBottomRightRadius:'14px'}}>
               <Box>
                 <Typography
                   sx={{
@@ -669,7 +673,7 @@ const themeStyle = {
     color: "#000000",
     fontWeight: 600,
     marginTop: "0.5rem",
-    fontSize: "1.1rem",
+    fontSize: {xl:"1.1rem", lg:'0.9rem', xs:'0.9rem'},
     display: "flex",
     gap: "1rem",
   },

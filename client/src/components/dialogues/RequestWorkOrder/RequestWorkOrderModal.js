@@ -310,9 +310,13 @@ const RequestWorkOrderModal = ({
       toast.warning("Please complete the Request work order form");
       return;
     }
+    if(!startDate || !endDate){
+      toast.warning("Please enter a date");
+      return;
+    }
     setLoading(true);
-    const formattedStartDate = startDate.utc().format("MMM D, YYYY, h:mm a");
-    const formattedEndDate = endDate.utc().format("MMM D, YYYY, h:mm a");
+    const formattedStartDate = startDate?.utc()?.format("MMM D, YYYY, h:mm a");
+    const formattedEndDate = endDate?.utc()?.format("MMM D, YYYY, h:mm a");
     //added superadmin id to the workorder
     const requestForm = {
       workOrder_id: changeOrder ? checkedRow.id : "",
@@ -340,6 +344,11 @@ const RequestWorkOrderModal = ({
       //await requestWorkOrderPut(requestForm);
       socket.emit("join", userId);
       if (changeOrder) {
+        if(selectedItems?.length < 1){
+          toast.warning('Please select a line item');
+          setLoading(false);
+          return;
+        }
         //Changes implemented
         await socket.emit("updateWorkOrder", requestForm, (response) => {
           console.log(response);
@@ -384,9 +393,9 @@ const RequestWorkOrderModal = ({
         );
 
         // console.log(socketRes)
+      setRowCheckboxes({});
       }
       setLoading(false);
-      setRowCheckboxes({});
       dispatch(setIsLoading(true));
       const res = await getEvents({ userId, dailyForecast });
       const data = res?.data?.formattedWorkOrders;
@@ -605,6 +614,7 @@ const RequestWorkOrderModal = ({
                                       color={"#4C8AB1"}
                                       fontSize={"11px"}
                                       textAlign={"right"}
+                                      pl={0.5}
                                       onClick={() =>
                                         handleUpdateOpen(phase.lineItems[index])
                                       }
@@ -638,6 +648,7 @@ const RequestWorkOrderModal = ({
                                     <Typography
                                       color={"#4C8AB1"}
                                       fontSize={"11px"}
+                                      pl={0.5}
                                       onClick={() =>
                                         handleUpdateOpen(phase.lineItems[index])
                                       }

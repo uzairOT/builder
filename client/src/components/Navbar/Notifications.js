@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchEvents } from "../../redux/slices/Events/eventsSlice";
 import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice";
 import { toggleWorkOrderDeclineRecall } from "../../redux/slices/Notifications/notificationSlice";
+import {socket} from "../../socket"
 
 function Notification({
   notification,
@@ -46,7 +47,7 @@ function Notification({
       setOpen(true)
   }
 
-
+  console.log(notification);
   const handleAccordionChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : -1);
   };
@@ -59,6 +60,18 @@ function Notification({
       });
       await refetch(userId);
       dispatch(fetchEvents({userId: userId, dailyForecast: dailyForecast}));
+      socket.emit('statusDoneNotification', {
+        userId: userId,
+        client:true,
+        workOrderVersion: notification.WorkOrderReq.version,
+        projectName: notification.projectName,
+        projectId: notification?.WorkOrderReq?.phaseItems[0]?.Phase?.project_id,
+        LineItem_id: notification?.WorkOrderReq?.phaseItems[0]?.LineItems[0]?.id,
+        phaseId: notification?.WorkOrderReq?.phaseItems[0]?.phaseId,
+      }, (response) => {
+        console.log(response.data);
+        // dispatch(toggleWorkOrderDeclineRecall());
+      })
       // window.location.reload();
     } catch (err) {
       // console.log(err);

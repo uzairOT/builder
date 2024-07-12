@@ -35,6 +35,7 @@ const LineItemDetailModal = ({
         userId: userId,
         LineItem_id: lineItem.id,
         phaseId: lineItem.phase_id,
+        client: false
       }, (response) => {
         console.log(response.data);
         dispatch(toggleWorkOrderDeclineRecall());
