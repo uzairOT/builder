@@ -29,6 +29,7 @@ import { useLocation } from "react-router-dom";
 import { useCheckUserOnInvitationMutation } from "../../../redux/apis/usersApiSlice";
 import { useAddAssignRoleMutation } from "../../../redux/apis/Admin/assignRoleApiSlice";
 import { toast } from "react-toastify";
+import { SupervisorAccountRounded } from "@mui/icons-material";
 //import "react-toastify/dist/ReactToastify.css";
 
 const ProjectTeam = () => {
@@ -110,6 +111,16 @@ const ProjectTeam = () => {
     }
   };
   console.log(pendingInvitations);
+  const roleFormat = (role) => {
+    switch (role){
+      case "Superadmin":
+        return "Super Admin";
+      case "Subcontractor":
+        return "Sub-Contractor";
+      default:
+        return role;
+    }
+  }
   return (
     <Stack pl={{ xl: 5, lg: 5, md: 1 }}>
       <Stack direction={"row"} sx={{ justifyContent: "space-between" }} pr={1}>
@@ -139,7 +150,7 @@ const ProjectTeam = () => {
             variant={"contained"}
             Icon={BuilderProNavbarShare}
             handleOnClick={handleShare}
-            sx={{fontSize:{xl:12, lg:10,m:12, xs:12, }}}
+            sx={{ fontSize: { xl: 12, lg: 10, m: 12, xs: 12 } }}
           >
             {true ? "Add" : ""}
           </BuilderProButton>
@@ -184,54 +195,61 @@ const ProjectTeam = () => {
                     }}
                     justifyContent={"space-between"}
                   >
-                    <Stack direction={"row"} flex={{xl:5, lg:5, md:5, sm:3, xs:3}} gap={1} justifyContent={"space-between"}>
-                    <Typography sx={themeStyle.subTitle}>{role}</Typography>
-                    <Stack direction={"row"} width={{xl:'270px', lg:'220px', xs:'270px'}} >
-                      {groupedData[role].map((person, index) => {
+                    <Stack
+                      direction={"row"}
+                      flex={{ xl: 5, lg: 5, md: 5, sm: 3, xs: 3 }}
+                      gap={1}
+                      justifyContent={"space-between"}
+                    >
+                      <Typography sx={themeStyle.subTitle}>{roleFormat(role)}</Typography>
+                      <Stack
+                        direction={"row"}
+                        width={{ xl: "270px", lg: "220px", xs: "270px" }}
+                      >
+                        {groupedData[role].map((person, index) => {
                           let firstName = person.firstName;
                           let lastName = person.lastName;
                           let fullName = `${firstName} ${lastName}`;
-                        
+
                           // Truncate the name if it exceeds the max length
                           if (fullName.length > 20) {
-                            fullName = fullName.substring(0, 20 - 3) + '...';
+                            fullName = fullName.substring(0, 20 - 3) + "...";
                           }
-                        
-                        
-                        if (index > 1) {
-                          acc++;
-                          if (index === groupedData[role]?.length - 1) {
+
+                          if (index > 1) {
+                            acc++;
+                            if (index === groupedData[role]?.length - 1) {
+                              return (
+                                <Typography
+                                  sx={{ ...themeStyle.subTitle }}
+                                  style={{ color: "#636363" }}
+                                  position={"relative"}
+                                  top={"-2px"}
+                                  pl={0.5}
+                                >
+                                  +{acc}
+                                </Typography>
+                              );
+                            } else {
+                              return <></>;
+                            }
+                          } else {
                             return (
-                              <Typography
-                                sx={{ ...themeStyle.subTitle }}
-                                style={{ color: "#636363" }}
-                                position={"relative"}
-                                top={"-2px"}
-                                pl={0.5}
-                              >
-                                +{acc}
+                              <Typography sx={themeStyle.subTitle}>
+                                {fullName}
+                                {groupedData[role].length > 1 && index === 0
+                                  ? ","
+                                  : ""}
                               </Typography>
                             );
-                          } else{
-                            return<></>
                           }
-                        } else {
-                          return (
-                            <Typography sx={themeStyle.subTitle}>
-                              {fullName}
-                              {groupedData[role].length > 1 && index === 0
-                                ? ","
-                                : ""}
-                            </Typography>
-                          );
-                        }
-                      })}
-                    </Stack>
+                        })}
+                      </Stack>
                     </Stack>
                     <Stack direction={"row"} flex={1}>
                       {groupedData[role].map((person, index) => {
-                        if(index> 3){
-                          return <></>
+                        if (index > 3) {
+                          return <></>;
                         }
                         return (
                           <>
@@ -239,12 +257,11 @@ const ProjectTeam = () => {
                               key={index}
                               src={person.image}
                               alt="profile"
-                           
                               style={{
                                 borderRadius: "50px",
                                 marginLeft: "-10px",
-                                width:'30px',
-                                height:'30px'
+                                width: "30px",
+                                height: "30px",
                               }}
                             ></Avatar>
                           </>
@@ -327,6 +344,52 @@ const ProjectTeam = () => {
               style={{ marginLeft: "5px", width: "120px" }}
               size="small"
             >
+              {userType ? null : (
+                <InputLabel
+                  id="demo-simple-select-label"
+                  style={{
+                    fontSize: "12px",
+                    top: "3px",
+                    fontFamily: "Arial Rounded MT, sans-serif",
+                    color: "#202227",
+                  }}
+                  sx={{
+                    "&.Mui-focused": {
+                      transform: "translate(14px, -6px) scale(0.75)",
+                    },
+                  }}
+                >
+                  Select Role
+                </InputLabel>
+              )}
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={userType}
+                onChange={handleUserTypeChange}
+                sx={{
+                  ".MuiOutlinedInput-notchedOutline": {
+                    borderWidth: "0px !important",
+                  },
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderWidth: "0px !important",
+                  },
+                }}
+              >
+                <MenuItem value={"admin"}>Admin</MenuItem>
+                <MenuItem value={"projectManager"}>Project Manager</MenuItem>
+                <MenuItem value={"client"}>Client</MenuItem>
+                <MenuItem value={"subcontractor"}>Sub-Contractor</MenuItem>
+                <MenuItem value={"supplier"}>Supplier</MenuItem>
+                <MenuItem value={"employee"}>Employee</MenuItem>
+                <MenuItem value={"others"}>Others</MenuItem>
+              </Select>
+            </FormControl>
+
+            {/* <FormControl
+              style={{ marginLeft: "5px", width: "120px" }}
+              size="small"
+            >
               <InputLabel
                 id="demo-simple-select-label"
                 style={{
@@ -363,7 +426,7 @@ const ProjectTeam = () => {
                 <MenuItem value={"employee"}>Employee</MenuItem>
                 <MenuItem value={"others"}>Others</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
           </Stack>
           <BuilderProButton
             backgroundColor={"#FFAC00"}
@@ -409,7 +472,7 @@ const ProjectTeam = () => {
                 fontFamily={"Arial Rounded MT, sans-serif"}
                 fontSize={"14px"}
               >
-                {user.role}
+               {roleFormat(user.role)}
               </Typography>
             </Stack>
             {team?.length - 1 === index ? <></> : <Divider />}
@@ -500,7 +563,7 @@ const themeStyle = {
     fontFamily: "Arial Rounded MT, sans-serif",
   },
   subTitle: {
-    fontSize: {xl:"13px", lg:'11px', xs:'13px'},
+    fontSize: { xl: "13px", lg: "11px", xs: "13px" },
     color: "#202227",
     fontFamily: "Arial Rounded MT, sans-serif",
     textAlign: "left",

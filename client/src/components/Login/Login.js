@@ -43,7 +43,7 @@ const Login = () => {
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
+  // const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "70%" : "100%";
 
   const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
@@ -185,34 +185,45 @@ const Login = () => {
   return (
     <Grid container sx={firstGrid}>
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
+      <img
+            style={{ height: "226px",width:"425px" }}
+            src={builderproicon}
+            alt="Builder Pro"
+          />
         <Box
           sx={{
             display: "flex",
-            alignItems: "center",
             flexDirection: "column",
-            marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
+            marginTop: { xl: "0rem", lg: "0rem", md: "0rem", sm: "0rem" },
           }}
         >
-          <img style={{height:"100px"}} src={builderproicon} alt="Builder Pro" />
+         
           {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
-          <Typography component="p" pt={2} sx={secondHeading}>
-            On schedule.
-          </Typography>
-          <Typography component="p" sx={secondHeading}>
-            {" "}
-            On budget.{" "}
-          </Typography>
+          <Box>
+            <Typography component="p" pt={2} sx={secondHeading}>
+              On schedule.
+            </Typography>
+            <Typography component="p" sx={secondHeading}>
+              {" "}
+              On budget.{" "}
+            </Typography>
 
-          <Typography component="p" sx={secondHeading}>
-            {" "}
-            On the path to building better.
-          </Typography>
+            <Typography component="p" sx={secondHeading}>
+              {" "}
+              On the path to building better.
+            </Typography>
+          </Box>
         </Box>
         {/* Button */}
 
         {/* <Typography sx={thirdHeading}>Log in to your account</Typography> */}
         <Box sx={downloadForMobBox}>
-          <img src={downloadForMob} width={DoMobWidth} alt="" />
+          <img
+            src={downloadForMob}
+            width={'100%'}
+            alt=""
+            style={{ height: "143px" }}
+          />
         </Box>
         <Box sx={googleAppImgsBox}>
           <a
@@ -222,7 +233,7 @@ const Login = () => {
             {" "}
             <img
               src={googlePlay}
-              width={widthValue}
+              // width={widthValue}
               style={{ cursor: "pointer" }}
               alt=""
             />
@@ -464,7 +475,8 @@ const Login = () => {
         <Box sx={googleAppImgsMobile}>
           <img
             src={googlePlay}
-            width={widthValue}
+            width={'216px'}
+            height={'62px'}
             style={{ cursor: "pointer" }}
             alt=""
           />
@@ -509,7 +521,7 @@ const SecondGrid = {
 const downloadForMobBox = {
   marginTop: "3rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-  marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
+  // marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
   justifyContent: "center",
   alignItems: "center",
 };
@@ -709,12 +721,13 @@ const firstHeading = {
 };
 
 const secondHeading = {
-  textAlign: "center",
+  ml: 10,
+  textAlign: "left",
   color: "rgba(255, 255, 255, 0.80)",
   // width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontFamily: "Arial Rounded MT, sans-serif",
-  fontSize: { xl: "2rem", lg: "1.5rem", md: "1rem", sm: "1rem" },
+  fontSize: { xl: "1.5rem", lg: "1.5rem", md: "1.5rem", sm: "1rem" },
   fontWeight: 400,
 };
 

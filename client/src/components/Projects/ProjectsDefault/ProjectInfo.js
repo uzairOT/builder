@@ -38,18 +38,18 @@ const ProjectInfo = ({ data }) => {
           End
         </Typography>
       </Stack>
-      <Stack direction={"row"} pt={1}>
+      <Stack direction={"row"} pt={0.5} sx={{alignItems:"center"}}>
         <BorderLinearProgress variant="determinate" value={percentage} />
         <Typography sx={themeStyle.label} pl={1}>
           {totalCompletedLineItems}/{totalLineItems}
         </Typography>
       </Stack>
-      <Stack spacing={0.5} pt={1} pb={1.2} width={"100%"}>
+      <Stack spacing={0.5} pt={1} pb={1.2} pl={1.2} width={"100%"} height={"205px"} sx={{overflowY:"auto"}}>
         {activeWorkOrders?.map((workOrder) => {
           return (
             <>
               <Stack direction={"row"} justifyContent={"space-between"}>
-                <Stack direction={"row"}>
+                <Stack direction={"row"} pl={0.3}>
                   {workOrder?.team?.map((user, index) => {
                     return (
                       <Avatar

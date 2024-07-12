@@ -234,7 +234,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
           justifyContent={"space-between"}
           alignItems={"center"}
         >
-          <DialogTitle sx={themeStyle.typoTitle}>{heading}</DialogTitle>
+          <DialogTitle sx={themeStyle.typoTitle}><span style={{textTransform:'capitalize'}}>Add {heading}</span></DialogTitle>
           <IconButton onClick={handleClickClose}>
             <CloseIcon />
           </IconButton>
@@ -286,7 +286,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
                   </>
                 )}
                 <Typography sx={themeStyle.avatarText}>
-                  {image ? "" : "Drag your file here"}
+                  {image ? "" : "Click or Drag your file here"}
                 </Typography>
               </div>
             </label>

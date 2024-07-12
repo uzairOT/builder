@@ -94,12 +94,12 @@ function ProfileView() {
     setOpenModal(false);
   };
   const handleDelete = (isDelete) => {
-    if(isDelete){
+    if (isDelete) {
       handleConfirmDelete();
-    }else{
+    } else {
       handleOpenModalClose();
     }
-  }
+  };
   const handleConfirmDelete = async () => {
     try {
       await deleteUserProfile(user.user.id);
@@ -180,8 +180,8 @@ function ProfileView() {
     }
   };
   const handleProfileImage = async () => {
-    toast.success("Profile Picture updated successfully", {toastId:'123'});
-    handleSubmit('image');
+    toast.success("Profile Picture updated successfully", { toastId: "123" });
+    handleSubmit("image");
   };
 
   const handleSubmit = async (image) => {
@@ -202,11 +202,10 @@ function ProfileView() {
         console.log(res);
         localStorage.setItem("userInfo", JSON.stringify(res.data));
         dispatch(setCredentials(res.data));
-        if(image === 'image'){
-
-        }else{
+        if (image === "image") {
+        } else {
           toast.success("Profile updated successfully");
-          }
+        }
       } else {
         const put = {
           ...formData,
@@ -366,6 +365,7 @@ function ProfileView() {
             </Grid> */}
             <Grid item xs={12} sx={{ display: "flex", gap: 1, my: 6.1 }}>
               <Button
+                sx={{ whiteSpace: "nowrap" }}
                 buttonText="Update Profile"
                 color="#ffffff"
                 backgroundColor="#4C8AB1"
@@ -378,6 +378,7 @@ function ProfileView() {
               />
               <Button
                 buttonText="Delete Profile"
+                sx={{ whiteSpace: "nowrap" }}
                 // color="#4C8AB1"
                 color="red"
                 border={"1px solid red"}
@@ -442,6 +443,7 @@ function ProfileView() {
             </div>
             <Typography variant="subtitle1" sx={changeProfile}>
               <Button
+                sx={{ whiteSpace: "nowrap" }}
                 buttonText="Change Profile"
                 color="#ffffff"
                 backgroundColor="#4C8AB1"
