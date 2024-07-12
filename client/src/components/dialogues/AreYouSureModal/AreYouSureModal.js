@@ -20,58 +20,76 @@ import YellowBtn from "../../UI/button";
 import { useDispatch } from "react-redux";
 import { resetUserAndRoleEmail } from "../../../redux/slices/projectFormSlice";
 
-function AreYouSureModal({ open, handleClose,handleConfirmDelete , isLoading, text }) {
-
+function AreYouSureModal({
+  open,
+  handleClose,
+  handleConfirmDelete,
+  isLoading,
+  text,
+}) {
   const handleClickClose = () => {
     handleClose();
   };
 
   return (
     <div>
-        <Dialog
-          PaperProps={{
-            sx: { ...paperPropsStyle },
-            component: "form",
-          }}
-          open={open}
-          onClose={handleClickClose}
-          keepMounted
-          aria-describedby="alert-dialog-slide-description"
-        >
-        <Stack direction={'row-reverse'} justifyContent={'space-between'}>
-
+      <Dialog
+        PaperProps={{
+          sx: { ...paperPropsStyle },
+          component: "form",
+        }}
+        open={open}
+        onClose={handleClickClose}
+        keepMounted
+        aria-describedby="alert-dialog-slide-description"
+      >
+        {/* <Stack direction={"row-reverse"} justifyContent={"space-between"}>
           <IconButton aria-label="close" onClick={handleClose}>
             <CloseIcon />
-          </IconButton>
+          </IconButton> */}
           {/* <DialogTitle sx={typoTitle}>{"Are You Sure"}</DialogTitle> */}
-        </Stack>
-          <DialogContent>
-            <DialogContentText
-              sx={typoTect}
-              id="alert-dialog-slide-description"
-            >
-              Are you sure you want to delete this {text}?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions sx={{ gap: "2rem", marginTop: "1rem", display:"flex", flexDirection:{xl:"row",lg:"row", md:"row", xs:"column"} }}>
-            <Button
-              variant="outlined"
-              sx={{
-                ...YellowBtn,
-                ...dialogueActionButton,
-              }}
-              onClick={() =>  handleConfirmDelete(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              sx={{ ...YellowBtn, padding: "1rem 1rem" }}
-              onClick={() =>  handleConfirmDelete(true)}
-            >
-               {isLoading ?  <CircularProgress size={'1.25rem'} /> : 'Yes'}
-            </Button>
-          </DialogActions>
-        </Dialog>
+        {/* </Stack> */}
+        <DialogContent>
+          <DialogContentText sx={typoTect} id="alert-dialog-slide-description">
+            Are you sure you want to delete this {text}?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{display:'flex', justifyContent:'space-between', gap: "0rem", marginTop: "1rem" }}>
+          <Button
+            variant="outlined"
+            sx={{
+              ...YellowBtn,
+              ...dialogueActionButton,
+              padding: "0.8rem 0.8rem", 
+              fontSize: {
+                lg: "0.9rem",
+                md: "0.9rem",
+                sm: "0.8rem",
+                xs: "0.8rem",
+              },
+            }}
+            onClick={() => handleConfirmDelete(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            sx={{
+              ...YellowBtn,
+              padding: "0.8rem 0.8rem", 
+              fontSize: {
+                lg: "0.9rem",
+                md: "0.9rem",
+                sm: "0.8rem",
+                xs: "0.8rem",
+              },
+            }}
+
+            onClick={() => handleConfirmDelete(true)}
+          >
+            {isLoading ? <CircularProgress size={"1.25rem"} /> : "Yes"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
@@ -100,7 +118,7 @@ const typoTitle = {
   fontWeight: 600,
   fontSize: "1.5rem",
   color: "#202227",
-  padding:"0px"
+  padding: "0px",
 };
 
 const typoTect = {

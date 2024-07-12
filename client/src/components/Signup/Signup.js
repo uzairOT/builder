@@ -264,44 +264,70 @@ const SignupComp = () => {
     <Grid container sx={{ ...firstGrid }}>
       <ToastContainer />
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column",
-            marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
-            gap: 2,
-          }}
-        >
-          <img
-            style={{ height: "100px" }}
+      <img
+            style={{ height: "226px",width:"425px" }}
             src={builderproicon}
             alt="Builder Pro"
           />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            marginTop: { xl: "0rem", lg: "0rem", md: "0rem", sm: "0rem" },
+          }}
+        >
+         
           {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
-          <Typography component="p" pt={2} sx={secondHeading}>
-            On schedule.
-          </Typography>
-          <Typography component="p" sx={secondHeading}>
-            {" "}
-            On budget.{" "}
-          </Typography>
+          <Box>
+            <Typography component="p"  sx={secondHeading}>
+              On schedule.
+            </Typography>
+            <Typography component="p" sx={secondHeading}>
+              {" "}
+              On budget.{" "}
+            </Typography>
 
-          <Typography component="p" sx={secondHeading}>
-            {" "}
-            On the path to building better.
-          </Typography>
+            <Typography component="p" sx={secondHeading}>
+              {" "}
+              On the path to building better.
+            </Typography>
+          </Box>
         </Box>
         {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
 
         {/* Button */}
 
         <Box sx={downloadForMobBox}>
-          <img src={downloadForMob} width={DoMobWidth} alt="" />
+          <img
+            src={downloadForMob}
+            width={'100%'}
+            alt=""
+            style={{ height: "143px" }}
+          />
         </Box>
         <Box sx={googleAppImgsBox}>
-          <img src={googlePlay} width={widthValue} alt="" />
-          <img src={appStore} width={widthValue} alt="" />
+        <a
+            href="https://play.google.com/store/apps?hl=en&gl=US&pli=1"
+            target="blank"
+          >
+            {" "}
+            <img
+            
+              src={googlePlay}
+              width={'216px'}
+              style={{ cursor: "pointer", height:62 }}
+              alt=""
+            />
+          </a>
+
+          <a href="https://www.apple.com/store" target="blank">
+            <img
+              src={appStore}
+              width={'216px'}
+              style={{ cursor: "pointer", height:62 }}
+              alt=""
+            />
+          </a>
         </Box>
       </Grid>
       <Grid
@@ -751,13 +777,14 @@ const firstGrid = {
     xs: "0rem 0rem 0rem 0rem",
   },
   justifyContent: "center",
-  alignItems: "center",
+  alignItems:"start",
   backgroundColor: "#4C8AB1",
   // marginTop: { lg: "0rem", sm: "0rem", xs: "0rem" },
 };
 
 const SecondGrid = {
-  gap: { lg: "1.1rem", sm: "1rem", xs: "1rem" },
+  // marginTop:{xl:-28,lg:-28,sm:0, xs:0,md:0},
+  gap: { xl:"4.5rem",lg: "3.5rem", sm: "1rem", xs: "1rem" },
   alignItems: { lg: "center", md: "center", sm: "center", xs: "center" },
   justifyContent: {
     lg: "start",
@@ -765,15 +792,14 @@ const SecondGrid = {
     sm: "center",
     xs: "center",
   },
-  display: { sm: "flex", xs: "none" },
+  display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
   flexDirection: "column",
-  // paddingLeft: "4rem",
 };
 
 const downloadForMobBox = {
-  marginTop: "3rem",
-  marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
+  // marginTop: "3rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
+  // marginLeft: { lg: "2.5rem", md: "-1rem", sm: "-3rem" },
   justifyContent: "center",
   alignItems: "center",
 };
@@ -977,7 +1003,8 @@ const firstHeading = {
 };
 
 const secondHeading = {
-  textAlign: "center",
+  ml: 10,
+  textAlign: "left",
   color: "rgba(255, 255, 255, 0.80)",
   // width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
