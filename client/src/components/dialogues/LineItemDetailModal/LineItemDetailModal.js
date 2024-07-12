@@ -108,7 +108,7 @@ const LineItemDetailModal = ({
               Close
             </BuilderProButton>
             <Stack>
-              {userRole === "employee" ? (
+              {(userRole === "employee"|| userRole === "other") ? (
                 <>
                   <BuilderProButton
                     backgroundColor={"#4C8AB1"}
