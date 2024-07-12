@@ -309,7 +309,7 @@ const SignupComp = () => {
       >
         <Grid item sx={formGrid}>
           <form
-            style={{ marginTop: "0.1rem", width: "70%" }}
+            style={{ marginTop: "0.1rem", width: "85%" }}
             onSubmit={handleSubmit}
           >
             <Box sx={logoBox}>
@@ -392,12 +392,11 @@ const SignupComp = () => {
                 name="email"
                 style={{
                   ...inputStyle,
-                  ...placeholderStyle,
                   fontFamily: "GTWalsheimTrial",
                   paddingLeft: "-1.5rem",
                   fontSize: isMobile ? "0.8rem" : "1rem",
                   border:
-                    errors.lastName && touched.lastName
+                    errors.email && touched.email
                       ? "1px solid #d32f2f"
                       : "1px solid #E0E4EC",
                 }}
@@ -656,12 +655,15 @@ const SignupComp = () => {
                 </Link>
               </Typography>
             </Stack>
-            {/* <Box sx={continueWithBox}>
+           
+            <Box sx={continueWithBox}>
               <hr style={hrLine} />
               <Typography sx={ContinuewithTextStyle}>
-                {isMobile ? "Or" : "or continue with"}
+                {/* {isMobile ? "Or" : "or continue with"} */}
+                or
               </Typography>
-            </Box> */}
+              <hr style={hrLine} />
+            </Box>
             <Stack alignItems={"center"} justifyContent={"center"}>
               <GoogleLogin
                 clientId="960267013158-g1avbe0m8oe44tcflp4urhe4gkh5olb1.apps.googleusercontent.com"
@@ -882,12 +884,14 @@ const loginLink = {
 };
 
 const continueWithBox = {
-  position: "relative",
+  // position: "relative",
+  display: "flex",
+  flexDirection: "row",
   marginTop: {
-    lg: "2.5rem",
-    md: "2.5rem",
-    sm: "2.5rem",
-    xs: "3rem",
+    lg: "1.5rem",
+    md: "1.5rem",
+    sm: "1.5rem",
+    xs: "2rem",
   },
 };
 const hrLine = {
@@ -1064,13 +1068,16 @@ const ContinuewithTextStyle = {
   fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
   fontWeight: 400,
   display: "flex",
-  justifyContent: "start",
-  marginTop: "-1.2rem",
-  position: "absolute",
-  left: { lg: "17%", md: "20%", sm: "30%", xs: "50%" },
-  transform: "translateX(-50%)",
+  justifyContent: "center",
+  alignItems: "center",
+  whiteSpace: "nowrap",
+  // marginTop: "-1.2rem",
+  // position: "absolute",
+  // left: { lg: "17%", md: "20%", sm: "30%", xs: "50%" },
+  // transform: "translateX(-50%)",
   backgroundColor: "#FFFFFF",
   padding: "0 10px",
+  // textAlign:'center'
 };
 
 const buttonBox = {

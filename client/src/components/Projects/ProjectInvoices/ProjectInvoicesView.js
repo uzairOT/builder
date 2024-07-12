@@ -73,7 +73,7 @@ const ProjectInvoicesView = () => {
           {" "}
           <Box pt={1} pl={1} pb={0}>
             <BuilderProButton
-              backgroundColor={"#4C8AB1"}
+              backgroundColor={"#FFAC00"}
               variant={"contained"}
               fontFamily={"Inter, sans serif"}
               fontSize={{xl:"16px", lg:"14px",md:"16px",xs:"16px",}}

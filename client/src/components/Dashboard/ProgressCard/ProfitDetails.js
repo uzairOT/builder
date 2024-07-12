@@ -3,6 +3,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import RadialBarsChart from "../../UI/Charts/RadialBarsChart";
 import React from "react";
 import { formatMoney } from "../../../utils/Formatters/moneyFormat";
+import { Textarea } from "@mui/joy";
 
 const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
   return (
@@ -14,7 +15,7 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
         <Box>
           <Stack direction={"row"} sx={themeStyle.innerStackLayout}>
             <Typography textAlign={"left"} sx={themeStyle.innerTitle}>
-              Total Profit
+              Projected Profit
             </Typography>
             <Typography textAlign={"left"} sx={themeStyle.innerSubtitle}>
               ${formatMoney(TotalProfit)}
@@ -30,27 +31,27 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
           </Stack> */}
           <Stack direction={"row"} sx={themeStyle.innerStackLayout}>
             <Typography textAlign={"left"} sx={themeStyle.innerTitle}>
-              Profit Earned
+              Margin
             </Typography>
             <Typography textAlign={"left"} sx={themeStyle.innerSubtitle}>
               ${formatMoney(totalProfitFromPaidInvoices)}
             </Typography>
           </Stack>
         </Box>
-        <Stack pl={4} justifyContent={"flex-end"}>
+        {/* <Stack pl={4} justifyContent={"flex-end"}>
           <Stack direction={"row"} alignItems={"flex-end"}>
             <ArrowUpwardIcon fontSize="small" style={{ color: "#00AC4F" }} />
             <Typography sx={themeStyle.innerStacktext}>
-              {/* <span style={themeStyle.spanItems}>16%</span>this month */}
+              <span style={themeStyle.spanItems}>16%</span>this month
             </Typography>
           </Stack>
           <Stack direction={"row"} alignItems={"flex-end"}>
             <ArrowUpwardIcon fontSize="small" style={{ color: "#00AC4F" }} />
             <Typography sx={themeStyle.innerStacktext}>
-              {/* <span style={themeStyle.spanItems}>6%</span> this month */}
+              <span style={themeStyle.spanItems}>6%</span> this month
             </Typography>
           </Stack>
-        </Stack>
+        </Stack> */}
       </Stack>
       <Stack
         ml={"-16px"}
@@ -58,7 +59,10 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
         alignItems={"flex-end"}
         justifyContent={"space-between"}
       >
-        <RadialBarsChart TotalProfit={TotalProfit} totalProfitFromPaidInvoices={totalProfitFromPaidInvoices} />
+        <RadialBarsChart
+          TotalProfit={TotalProfit}
+          totalProfitFromPaidInvoices={totalProfitFromPaidInvoices}
+        />
         <Stack pb={4} width={"100%"}>
           <Stack spacing={1}>
             <Stack
@@ -73,20 +77,33 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
                 height={"8px"}
                 borderRadius={0.7}
               ></Box>
-              <Stack direction={{xl:'row', lg:'row', md:'column', sm:'row', xs:'row'}} spacing={{xl:0.5, lg:0.5, md:0, sm:0.5, xs:0.5}}>
-
-              <Typography
-                fontSize={"9px"}
-                fontWeight={"700"}
-                pl={0.2}
-                fontFamily={"Inter, sans-serif"}
+              <Stack
+                direction={{
+                  xl: "row",
+                  lg: "row",
+                  md: "column",
+                  sm: "row",
+                  xs: "row",
+                }}
+                spacing={{ xl: 0.5, lg: 0.5, md: 0, sm: 0.5, xs: 0.5 }}
+              >
+                <Typography
+                  fontSize={"9px"}
+                  fontWeight={"700"}
+                  pl={0.2}
+                  fontFamily={"Inter, sans-serif"}
+                
                 >
-                ${formatMoney(TotalProfit)}
-              </Typography>
-              <Typography fontSize={"9px"} fontFamily={"Inter, sans-serif"}>
-                Total Profit
-              </Typography>
-                </Stack>
+                  ${formatMoney(TotalProfit)}
+                </Typography>
+                <Typography
+                  fontSize={"9px"}
+                  fontFamily={"Inter, sans-serif"}
+                 
+                >
+                  Projected Profit
+                </Typography>
+              </Stack>
             </Stack>
             <Stack
               direction={"row"}
@@ -100,18 +117,29 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
                 height={"8px"}
                 borderRadius={0.7}
               ></Box>
-                   <Stack direction={{xl:'row', lg:'row', md:'column', sm:'row', xs:'row'}} spacing={{xl:0.5, lg:0.5, md:0, sm:0.5, xs:0.5}}>
-              <Typography
-                fontSize={"9px"}
-                fontWeight={"700"}
-                pl={0.2}
-                fontFamily={"Inter, sans-serif"}
+              <Stack
+                direction={{
+                  xl: "row",
+                  lg: "row",
+                  md: "column",
+                  sm: "row",
+                  xs: "row",
+                }}
+                spacing={{ xl: 0.5, lg: 0.5, md: 0, sm: 0.5, xs: 0.5 }}
               >
-                ${formatMoney(totalProfitFromPaidInvoices)}
-              </Typography>
-              <Typography fontSize={"9px"} fontFamily={"Inter, sans-serif"}>
-                Profit Earned
-              </Typography>
+                <Typography
+                  fontSize={"9px"}
+                  fontWeight={"700"}
+                  pl={0.2}
+                  fontFamily={"Inter, sans-serif"}
+                  
+                 
+                >
+                  ${formatMoney(totalProfitFromPaidInvoices)}
+                </Typography>
+                <Typography fontSize={"9px"} fontFamily={"Inter, sans-serif"}>
+                  Margin
+                </Typography>
               </Stack>
             </Stack>
           </Stack>
@@ -130,17 +158,24 @@ const themeStyle = {
     opacity: "0.7",
   },
   innerStackLayout: {
+    textAlign: "left",
     width: "100%",
-    justifyContent: "space-between",
+    justifyContent: "left",
     alignItems: "center",
   },
   innerTitle: {
+    maxWidth: 80,
+    minWidth: 80,
+    textAlign: "left",
     fontFamily: "inherit",
     color: "#202227",
     fontSize: "10px",
     paddingRight: "32px",
   },
   innerSubtitle: {
+    maxWidth: 10,
+    minWidth: 10,
+    textAlign: "left",
     fontFamily: "inherit",
     color: "#202227",
     fontSize: "20px",

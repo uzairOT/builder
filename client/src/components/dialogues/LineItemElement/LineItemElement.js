@@ -105,7 +105,7 @@ function AddLineElement({
     LineItem ? LineItem?.currentPayment : 0
   );
   const [totalCost, setTotalCost] = useState(0);
-  const [autoCompleteEvent, setAutoCompleteEvent] = useState(null)
+  const [autoCompleteEvent, setAutoCompleteEvent] = useState(null);
   const creatableRef = useRef();
 
   const handleStartDateChange = (newValue) => {
@@ -188,13 +188,18 @@ function AddLineElement({
   };
 
   useEffect(() => {
-      if (totalCost !== 0 && margin !== 0 && percentage !== 0 && !autoCompleteEvent) {
-        setTotalCost(0);
-        setMargin(0);
-        setPercentage(0);
-      }else if(autoCompleteEvent){
-        setAutoCompleteEvent(null)
-        }
+    if (
+      totalCost !== 0 &&
+      margin !== 0 &&
+      percentage !== 0 &&
+      !autoCompleteEvent
+    ) {
+      setTotalCost(0);
+      setMargin(0);
+      setPercentage(0);
+    } else if (autoCompleteEvent) {
+      setAutoCompleteEvent(null);
+    }
   }, [quantity, unitPrice]);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -219,7 +224,7 @@ function AddLineElement({
       toast.warning("Enter value greater than 0");
       return;
     }
-   
+
     if (LineHeading === "Update Line Item") {
       //console.log("updading..")
       const lineItemId = LineItem.id;
@@ -287,9 +292,12 @@ function AddLineElement({
       }
       try {
         const response = await addPhaseLine(newLineItem);
-        console.log(response)
-        if(response?.error?.data?.message === 'LineItem already exists against this phase!'){
-          toast.error(response?.error?.data?.message)
+        console.log(response);
+        if (
+          response?.error?.data?.message ===
+          "LineItem already exists against this phase!"
+        ) {
+          toast.error(response?.error?.data?.message);
           handleAddClose();
           return;
         }
@@ -376,15 +384,41 @@ function AddLineElement({
 
   //   },
   // ];
+  // const selectStyles = {
+  //   control: (styles) => ({
+  //     ...styles,
+  //     ...inputStyle,
+  //     marginBottom: "0",
+  //     height: "",
+  //     padding: "4px",
+  //   }),
+  // };
+
   const selectStyles = {
     control: (styles) => ({
       ...styles,
       ...inputStyle,
       marginBottom: "0",
-      height: "",
-      padding: "4px",
+      height: "", // Keep this as it was
+      padding: "4px", // Keep this as it was
+    }),
+    menu: (provided) => ({
+      ...provided,
+      height: "90px",
+      overflow: "auto",
+      marginTop: "0px", // Adjust the top margin of the menu
+    }),
+    option: (provided) => ({
+      ...provided,
+      padding: "5px 10px", // Adjust the padding of each option
+    }),
+ 
+    indicatorsContainer: (provided) => ({
+      ...provided,
+      // overflow: "auto",
     }),
   };
+
   // useEffect(() => {
   //   // console.log(isSuccess);
 
@@ -553,7 +587,7 @@ function AddLineElement({
                     (option) => option.title === newValue
                   );
                   if (selectedOption) {
-                    setAutoCompleteEvent(event)
+                    setAutoCompleteEvent(event);
                     setUnitOnAutoComplete(selectedOption.unit);
                     setDescription(selectedOption.description);
                     // handleSetUnit({value: selectedOption.unit});
@@ -580,11 +614,12 @@ function AddLineElement({
                 }}
                 renderInput={(params) => (
                   <TextField
+                    sx={{ ...inputStyle }}
                     {...params}
                     // label="Line Item Name"
                     margin="dense"
                     variant="standard"
-                    placeholder="Demolition"
+                    placeholder="e.g: Demolition"
                     // value={formData.phaseName}
                     onFocus={() => {}}
                     onChange={(event) => setPhaseName(event.target.value)} // Assuming setPhaseName is your state updater function
@@ -665,7 +700,11 @@ function AddLineElement({
                 <Box sx={innerBox}>
                   <Typography sx={typoText}>Quantity</Typography>
                   <TextField
-                    inputProps={{ maxLength: 50, min: 0 }}
+                    inputProps={{
+                      maxLength: 50,
+                      min: 0,
+                      onWheel: (event) => event.target.blur(),
+                    }}
                     sx={{ ...inputStyle, ...leftSpace }}
                     placeholder="20"
                     required
@@ -686,7 +725,10 @@ function AddLineElement({
               </Box>
               <Typography sx={typoText}>Unit Price</Typography>
               <TextField
-                inputProps={{ maxLength: 50 }}
+                inputProps={{
+                  maxLength: 50,
+                  onWheel: (event) => event.target.blur(),
+                }}
                 sx={inputStyle}
                 placeholder="10"
                 required
@@ -711,6 +753,9 @@ function AddLineElement({
 
               <Typography sx={typoText}>Actual Cost</Typography>
               <TextField
+               inputProps={{
+                onWheel: (event) => event.target.blur(),
+              }}
                 sx={inputStyle}
                 placeholder="200"
                 required
@@ -728,6 +773,9 @@ function AddLineElement({
               />
               <Typography sx={typoText}>Client Cost</Typography>
               <TextField
+               inputProps={{
+                onWheel: (event) => event.target.blur(),
+              }}
                 sx={inputStyle}
                 placeholder="200"
                 required
@@ -928,7 +976,7 @@ const generalBox = {
 
 const paperPropsStyle = {
   borderRadius: "1rem",
-  width: { lg: "25%", md: "50%", sm: "100%", xs: "100%" },
+  width: { lg: "35%", md: "50%", sm: "100%", xs: "100%" },
   padding: "0.5rem", // Change background color here
 };
 
@@ -958,4 +1006,5 @@ const innerBox = {
 const leftSpace = {
   marginLeft: "1rem",
 };
+
 export default AddLineElement;

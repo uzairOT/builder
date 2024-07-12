@@ -39,7 +39,7 @@ const RedialBarsChart = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
         },
       },
     },
-    labels: ["Total Profit", "Profit Earned"],
+    labels: ["Projected Profit", "Percentage Margin"],
   };
 
   const series = [TotalProfit, totalProfitFromPaidInvoices];

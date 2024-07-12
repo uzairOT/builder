@@ -187,7 +187,7 @@ function ColorPickerElement({
               margin="dense"
               id="phaseName"
               name="phaseName"
-              placeholder={'Site Preparation'}
+              placeholder={'eg: Site Preparation'}
               // label="Email Address"
               type="text"
               variant="standard"

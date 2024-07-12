@@ -79,6 +79,7 @@ function ProjectFormFields({
                   email.length > MAX_EMAIL_LENGTH ? "error" : "textSecondary"
                 }
                 sx={counterTypo}
+              
               >
                 {email.length}/{MAX_EMAIL_LENGTH}
               </Typography>
@@ -171,6 +172,7 @@ const formBox = {
   justifyContent: "center",
   alignItems: "center",
   marginTop: "0.5rem",
+  marginLeft: '2.5rem'
 };
 
 const formInnerBox = {

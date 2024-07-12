@@ -173,7 +173,7 @@ function ProjectFormFields() {
                      }}
                     value={dayjs(start_time)}
                     onChange={handleStartDateChange}
-                    format="YYYY/MM/DD"
+                    format="MM/DD/YYYY"
                     disablePast
                   />
                 </LocalizationProvider>
@@ -212,7 +212,7 @@ function ProjectFormFields() {
                      }}
                     value={dayjs(end_time)}
                     onChange={handleEndDateChange}
-                    format="YYYY/MM/DD"
+                    format="MM/DD/YYYY"
                     minDate={start_time ? dayjs(start_time).add(1,'day') : dayjs(Date.now()).add(1, 'day')}
                   />
                 </LocalizationProvider>

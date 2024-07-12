@@ -26,6 +26,7 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoadi
   const handleSkip = () => {
     
     handleNextStep();
+    // handleClose();
   };
 
   const handleClickOpen = () => {
@@ -62,11 +63,11 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoadi
                   <CloseIcon />
                 </IconButton>
               </Stack>
-              <Stack>
+              {/* <Stack>
                 <DialogTitle sx={{...typoTitle,fontSize: "1rem",}}>
                   {"Skip without inviting?"}
                 </DialogTitle>
-              </Stack>
+              </Stack> */}
             </Stack>
             <DialogContent>
               <DialogContentText
@@ -107,13 +108,13 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoadi
           keepMounted
           aria-describedby="alert-dialog-slide-description"
         >
-        <Stack direction={'row-reverse'} justifyContent={'space-between'}>
+        {/* <Stack direction={'row-reverse'} justifyContent={'space-between'}>
 
           <IconButton aria-label="close" onClick={handleClose}>
             <CloseIcon />
           </IconButton>
           <DialogTitle sx={typoTitle}>{"Skip without inviting?"}</DialogTitle>
-        </Stack>
+        </Stack> */}
           <DialogContent>
             <DialogContentText
               sx={typoTect}
@@ -122,12 +123,13 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoadi
               Are you sure you want to skip this step without inviting ?
             </DialogContentText>
           </DialogContent>
-          <DialogActions sx={{ gap: "1rem", marginTop: "3rem" }}>
+          <DialogActions sx={{display:'flex', justifyContent:'space-between', gap: "0rem", marginTop: "3rem" }}>
             <Button
               variant="outlined"
               sx={{
                 ...YellowBtn,
                 ...dialogueActionButton,
+               
               }}
               onClick={handleClose}
             >
@@ -136,8 +138,9 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoadi
             <Button
               sx={{ ...YellowBtn, padding: "1rem 1rem" }}
               onClick={handleSkip}
+              // disabled={isLoading}
             >
-               {isLoading ?  <CircularProgress size={'1.25rem'} /> : 'Yes, Skip'}
+               {isLoading ?  <CircularProgress size={'1.25rem'} /> : 'Yes'}
             </Button>
           </DialogActions>
         </Dialog>

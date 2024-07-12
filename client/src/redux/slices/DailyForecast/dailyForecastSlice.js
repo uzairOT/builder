@@ -5,11 +5,11 @@ const initialState = {
     isLoading: true,
     error: null,
     dailyForecast: [],
-    temperatureUnit: 'metric',
+    temperatureUnit: 'imperial',
     query: {
         lat: '',
         lon: '',
-        temperatureUnit: 'metric'
+        temperatureUnit: 'imperial'
     }
 } 
 

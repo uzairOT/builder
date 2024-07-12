@@ -91,14 +91,16 @@ const ProfitMarginBarChartCard = () => {
               sx={{ color: "#2D9CDB", fontSize: {xl:"10px",lg:8, md:10,xs:10}, paddingTop: "4px" }}
             />
             <Stack direction={"column"}>
-              <Typography fontFamily={"Inter, sans serif"} fontSize={{xl:16,lg:14, md:16,xs:16}}>
+              <Typography fontFamily={"Inter, sans serif"} fontSize={{xl:16,lg:14, md:16,xs:16}} sx={{textAlign:"left"}}>
                 Total
               </Typography>
               <Typography
-                textAlign={"center"}
+                // textAlign={"center"}
                 fontFamily={"Inter, sans serif"}
                 fontWeight={"500"}
                 fontSize={{xl:18,lg:15,md:18,xs:18}}
+                sx={{whiteSpace: "nowrap",textAlign: "left"}}
+
               >
                 $ {formatMoney(totalCost)}
               </Typography>
@@ -109,11 +111,11 @@ const ProfitMarginBarChartCard = () => {
               sx={{ color: "#90BE6D", fontSize: "10px", paddingTop: "4px" }}
             />
             <Stack direction={"column"}>
-              <Typography fontFamily={"Inter, sans serif"} fontSize={{xl:16,lg:14, md:16,xs:16}}>
+              <Typography fontFamily={"Inter, sans serif"} fontSize={{xl:16,lg:14, md:16,xs:16}} sx={{textAlign:"left"}}>
                 Profit Margin
               </Typography>
               <Typography
-                textAlign={"center"}
+                sx={{whiteSpace: "nowrap",textAlign: "left"}}
                 fontFamily={"Inter, sans serif"}
                 fontWeight={"500"}
                 fontSize={{xl:18,lg:15,md:18,xs:18}}

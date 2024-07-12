@@ -52,7 +52,7 @@ const Notes = () => {
           backgroundColor="#E7E7E7"
         />
       <Stack direction={'row'} justifyContent={'flex-start'} alignItems={'center'} p={2}>
-        <EventNoteIcon style={{color:'#4C8AB1'}} />
+        {/* <EventNoteIcon style={{color:'#4C8AB1'}} /> */}
         {/* <SelectMenuBarChart listItems={list} color={'#4C8AB1'}/> */}
       </Stack>
        <VerticalTabs notes={data?.notes} handleSelectedButton={handleSelectedButton} selectedButton={selectedButton}/>

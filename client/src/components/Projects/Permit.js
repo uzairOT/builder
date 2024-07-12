@@ -98,21 +98,23 @@ function Permit({ view, type }) {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <button style={themeStyle.button} onClick={handleSetShowDelete}>
-            <Typography
-              fontSize={"12px"}
-              style={{
-                color: "tomato",
-                textDecoration: "underline",
-                opacity: showDelete ? "" : "0.7",
-              }}
-            >
-              Delete {view}
-            </Typography>
-          </button>
           <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>
             Add {view}
           </Button>
+          <button style={themeStyle.button} onClick={handleSetShowDelete}>
+            <Button
+            variant="outlined"
+            sx={{ ...themeStyle.buttonStyle, border:"1px solid red" }}
+              fontSize={"12px"}
+              style={{
+                color: "tomato",
+                // textDecoration: "underline",
+                // opacity: showDelete ? "" : "0.7",
+              }}
+            >
+              Delete {view}
+            </Button>
+          </button>
         </Stack>
       </Box>
       <Box
