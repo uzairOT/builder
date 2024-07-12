@@ -85,6 +85,18 @@ function Notification({
         status: "declined",
       });
       await refetch(userId);
+      socket.emit('statusDoneNotification', {
+        userId: userId,
+        client:true,
+        workOrderVersion: parseInt(notification.WorkOrderReq.version)-9999,
+        projectName: notification.projectName,
+        projectId: notification?.WorkOrderReq?.phaseItems[0]?.Phase?.project_id,
+        LineItem_id: notification?.WorkOrderReq?.phaseItems[0]?.LineItems[0]?.id,
+        phaseId: notification?.WorkOrderReq?.phaseItems[0]?.phaseId,
+      }, (response) => {
+        console.log(response.data);
+        // dispatch(toggleWorkOrderDeclineRecall());
+      })
       dispatch(toggleWorkOrderDeclineRecall());
       // window.location.reload();
     } catch (err) {

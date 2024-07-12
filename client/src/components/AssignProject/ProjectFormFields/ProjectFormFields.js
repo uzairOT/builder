@@ -141,7 +141,7 @@ function ProjectFormFields() {
             </TextField>
           </Box>
           <Stack direction={"row"} justifyContent={"space-between"}>
-            <Box sx={{ marginTop: "0.5rem", width: "45%" }}>
+            <Box sx={{ marginTop: "0.5rem", width: "45%", marginBottom:'1rem' }}>
               <label
                 style={{
                   ...labelStyle,
@@ -237,6 +237,7 @@ function ProjectFormFields() {
                 justifyContent={"flex-start"}
                 gap={2}
                 p={1}
+                pt={0.5}
               >
                 {/* {colors.map((color) => {
                   return (

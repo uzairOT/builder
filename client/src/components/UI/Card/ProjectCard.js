@@ -77,12 +77,13 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
         ...themeStyle.card,
         // boxShadow: "rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px"
         // height:'100%'
+        opacity: 0.9
       }}
     >
       {/* Icon */}
-      <div
-        style={{
-          padding:'10px 0px 10px 10px'
+      <Box
+        sx={{
+          padding:{xl:'10px 0px 10px 10px', lg:'2px 0px 2px 2px'}
         }}
       >
         <CardMedia
@@ -90,8 +91,8 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
           image={projectProfileCard.image ? projectProfileCard.image : logo}
           sx={{ ...themeStyle.image }}
         />
-      </div>
-        <Stack backgroundColor={'#F2F2F2'} ml={0.5} direction={'row'} justifyContent={'space-between'} alignItems={'center'} width={'100%'}  height={'100%'}>
+      </Box>
+        <Stack backgroundColor={'#f6f6f6'} ml={0.5} direction={'row'} p={{xl:"2px", lg:'1px'}} justifyContent={'space-between'} alignItems={'center'} width={'100%'}  height={'100%'}>
       {/* Content */}
       <Box sx={{ pl: 0.5}} height={'100%'}>
         <Typography
@@ -101,8 +102,7 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
              "#202227",
               
             ...themeStyle.cardBody,
-            maxWidth:'30ch',
-            marginBottom: "12px",
+            maxWidth:{xl:'11ch', lg:'9ch', md:'15ch',},
             whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis",

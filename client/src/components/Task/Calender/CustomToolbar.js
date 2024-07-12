@@ -128,7 +128,7 @@ const CustomToolbar = ({
           pb={2}
         >
           <Typography sx={themeStyle.toolbarTitle} pl={1}>
-            WorkOrder
+            Work Order
           </Typography>
           <Box element="div" style={themeStyle.toolbarButtonGroup}>
             <Button

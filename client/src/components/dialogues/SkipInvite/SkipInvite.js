@@ -53,7 +53,7 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoadi
             keepMounted
             aria-describedby="alert-dialog-slide-description"
           >
-            <Stack justifyContent={"center"} alignItems={"center"} gap={1}>
+            {/* <Stack justifyContent={"center"} alignItems={"center"} gap={1}>
               <Stack>
                 <IconButton
                   aria-label="close"
@@ -63,12 +63,12 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoadi
                   <CloseIcon />
                 </IconButton>
               </Stack>
-              {/* <Stack>
+              <Stack>
                 <DialogTitle sx={{...typoTitle,fontSize: "1rem",}}>
                   {"Skip without inviting?"}
                 </DialogTitle>
-              </Stack> */}
-            </Stack>
+              </Stack>
+            </Stack> */}
             <DialogContent>
               <DialogContentText
                 sx={typoTect}
@@ -77,7 +77,7 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoadi
                 Are you sure you want to skip this step without inviting ?
               </DialogContentText>
             </DialogContent>
-            <DialogActions sx={{ marginTop: "3rem" }}>
+            <DialogActions sx={{ marginTop: "1rem" }}>
               <Button
                 variant="outlined"
                 sx={{
@@ -123,20 +123,20 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoadi
               Are you sure you want to skip this step without inviting ?
             </DialogContentText>
           </DialogContent>
-          <DialogActions sx={{display:'flex', justifyContent:'space-between', gap: "0rem", marginTop: "3rem" }}>
+          <DialogActions sx={{display:'flex', justifyContent:'space-between', gap: "0rem", marginTop: "1rem" }}>
             <Button
               variant="outlined"
               sx={{
                 ...YellowBtn,
                 ...dialogueActionButton,
-               
+                fontSize: {  lg: '0.9rem', md: "0.9rem", sm: "0.8rem", xs: "0.8rem" },
               }}
               onClick={handleClose}
             >
               Cancel
             </Button>
             <Button
-              sx={{ ...YellowBtn, padding: "1rem 1rem" }}
+              sx={{ ...YellowBtn, padding: "0.8rem 0.8rem",   fontSize: {  lg: '0.9rem', md: "0.9rem", sm: "0.8rem", xs: "0.8rem" }, }}
               onClick={handleSkip}
               // disabled={isLoading}
             >
@@ -185,7 +185,7 @@ const typoTect = {
 const dialogueActionButton = {
   border: "1px solid #FFAC00",
   background: "#FFF",
-  padding: "1rem 1.5rem",
+  padding: "0.7rem 0.8rem",
   color: "#FFAC00",
   "&:hover": {
     background: "#FFF",

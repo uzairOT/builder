@@ -115,7 +115,7 @@ const ListProjects = () => {
             fontFamily={"Inter, sans-serif"}
             width={"100%"}
           >
-            New build
+            New Build
           </Typography>
         </BuilderProButton>
         <BuilderProButton
@@ -142,7 +142,7 @@ const ListProjects = () => {
           ...themeStyle.scrollable,
           height: {
             xl: "calc(90vh - 445px)",
-            lg: "calc(90vh - 445px)",
+            lg: "calc(90vh - 425px)",
             md: "calc(90vh - 275px)",
             xs: "calc(100vh)",
           },
@@ -196,7 +196,7 @@ const ListProjects = () => {
             navigate("/assignproject");
           }}
         >
-          Add a New Project
+          Add New Project
         </BuilderProButton>
       </Stack>
     </Box>

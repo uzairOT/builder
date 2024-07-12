@@ -63,7 +63,7 @@ const WeatherAppCurrentForecast = () => {
       >
         <Box
           display={"flex"}
-          justifyContent={"center"}
+          justifyContent={"start"}
           alignItems={"center"}
           width={"100%"}
         >

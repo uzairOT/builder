@@ -367,7 +367,7 @@ console.log(rowCheckboxes)
                 <>
                   <Stack direction={"row"} sx={buttonBox}>
                     <Button
-                      sx={{ ...actionButton, background: "#FFAC00",whiteSpace:'nowrap',  width: (initialPhases[0]?.length < 1 || isLoading) ? '300px' : '130px', height: (initialPhases[0]?.length < 1 || isLoading) ? '40px' : '40px' }}
+                      sx={{ ...actionButton, background: "#FFAC00",whiteSpace:'nowrap',  width: (initialPhases[0]?.length < 1 || isLoading) ? '300px' : '130px', height: (initialPhases[0]?.length < 1 || isLoading) ? '50px' : '40px' }}
                       onClick={handleAddPhase}
                     >
                       Add Phase
@@ -403,7 +403,7 @@ console.log(rowCheckboxes)
                 authUserRole === "projectManager" ||
                 authUserRole === "admin") && <Stack direction={"row"} sx={buttonBox}>
               <Button
-                sx={{ ...actionButton, whiteSpace:'nowrap', background: "#FFAC00", width: (phases[0]?.length < 1 || isLoading) ? '300px' : '130px', height: (phases[0]?.length < 1 || isLoading) ? '40px' : '40px'}}
+                sx={{ ...actionButton, whiteSpace:'nowrap', background: "#FFAC00", width: (phases[0]?.length < 1 || isLoading) ? '300px' : '130px', height: (phases[0]?.length < 1 || isLoading) ? '50px' : '40px'}}
                 onClick={handleAddPhase}
               >
                 Add Phase
@@ -440,7 +440,7 @@ console.log(rowCheckboxes)
           )}
         </Stack>
          {isLoading?
-         <Stack height={'60vh'} justifyContent={'center'} alignItems={'center'}>
+         <Stack height={"44vh"} justifyContent={'center'} alignItems={'center'}>
          <CircularProgress /> 
           </Stack>
          :  <>
@@ -505,7 +505,7 @@ console.log(rowCheckboxes)
             ) : (
               <div
                 style={{
-                  height: "60vh",
+                  height: "44vh",
                   alignItems: "center",
                   display: "grid",
                   textAlign: "center",
@@ -575,7 +575,7 @@ console.log(rowCheckboxes)
             ) : (
               <div
                 style={{
-                  height: "60vh",
+                  height: "44vh",
                   alignItems: "center",
                   display: "grid",
                   textAlign: "center",

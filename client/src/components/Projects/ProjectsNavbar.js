@@ -111,11 +111,11 @@ const ProjectsNavbar = ({ project }) => {
               overflow: "hidden",
               textOverflow: "ellipsis",
               maxWidth: {
-                xl: "200px",
-                lg: "100px",
-                md: "250px",
-                sm: "250px",
-                xs: "160px",
+                xl:"19vw",
+                lg: "19vw",
+                md: "50vw",
+                sm: "80vw",
+                xs: "70vw",
               }, // Adjust this value based on your layout
             }}
           >
