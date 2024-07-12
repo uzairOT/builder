@@ -99,6 +99,7 @@ const AddPhaseCard = ({
   authUserRole,
   changeOrder,
   view,
+  isLineItems
 }) => {
   const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
   const [showAddLine, setShowAddLine] = useState(false);
@@ -302,7 +303,7 @@ const handleConfirmDelete = async (confirm) => {
   // console.log('PHASE :', phaseData)
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", }}>
       <Grid
         item
         lg={12}
@@ -310,6 +311,8 @@ const handleConfirmDelete = async (confirm) => {
           ...firstGrid,
           backgroundColor: `${phaseData?.color}`,
           width: "100%",
+          padding:"16px"
+          
         }}
       >
         <Box sx={headingsBox} onClick={() => handleSelectCard(phaseData.id)}>
@@ -482,9 +485,11 @@ const handleConfirmDelete = async (confirm) => {
               <TableHead sx={{ width: "100%" }}>
                 <TableRow>
                   {!InitialProposalView && (
+                    <>
                     <TableCell>
                      
                     </TableCell>
+                    </>
                   )}
                   <TableCell sx={{ ...tableHeadings }}>Line Item</TableCell>
 
@@ -572,7 +577,7 @@ const handleConfirmDelete = async (confirm) => {
                   return (
                     <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
                       {!InitialProposalView && (
-                        <TableCell>
+                        <TableCell sx={tableCell}>
                           {!(path === "assignproject") &&
                             !(view === "Generate Invoice") &&
                             (row.status === "Work Order Not requested" ||
@@ -604,29 +609,29 @@ const handleConfirmDelete = async (confirm) => {
                             )}
                         </TableCell>
                       )}
-                      <TableCell component="th" scope="row">
+                      <TableCell sx={tableCell} component="th" scope="row">
                         {row.title}
                       </TableCell>
                       {/* <TableCell>{row.description}</TableCell> */}
-                      <TableCell>{row.unit}</TableCell>
+                      <TableCell sx={tableCell}>{row.unit}</TableCell>
                       {!(
                         userRoleAuth.userRole === "client" ||
                         userRoleAuth.userRole === "employee" ||
                         userRoleAuth.userRole === "subcontractor" ||
                         userRoleAuth.userRole === "supplier"
                       ) && (
-                        <TableCell>${formatMoney(row.unit_price)}</TableCell>
+                        <TableCell sx={tableCell}>${formatMoney(row.unit_price)}</TableCell>
                       )}
                       {!(
                         userRoleAuth.userRole === "client" ||
                         userRoleAuth.userRole === "employee" ||
                         userRoleAuth.userRole === "subcontractor" ||
                         userRoleAuth.userRole === "supplier"
-                      ) && <TableCell>${formatMoney(row.total)}</TableCell>}
+                      ) && <TableCell sx={tableCell}>${formatMoney(row.total)}</TableCell>}
 
-                      <TableCell>{row.quantity}</TableCell>
+                      <TableCell sx={tableCell}>{row.quantity}</TableCell>
                       {!(path === "assignproject") && (
-                        <TableCell>
+                        <TableCell sx={tableCell}>
                           {row?.start_day
                             ? moment(row?.start_day).format(
                                 "MMM, DD, YYYY HH:mm a"
@@ -635,7 +640,7 @@ const handleConfirmDelete = async (confirm) => {
                         </TableCell>
                       )}
                       {!(path === "assignproject") && (
-                        <TableCell>
+                        <TableCell sx={tableCell}>
                           {row?.end_day
                             ? moment(row?.end_day).format(
                                 "MMM, DD, YYYY HH:mm a"
@@ -649,28 +654,28 @@ const handleConfirmDelete = async (confirm) => {
                         userRoleAuth.userRole === "employee" ||
                         userRoleAuth.userRole === "subcontractor" ||
                         userRoleAuth.userRole === "supplier"
-                      ) && <TableCell>${formatMoney(row?.margin)}</TableCell>}
-                      <TableCell>
+                      ) && <TableCell sx={tableCell}>${formatMoney(row?.margin)}</TableCell>}
+                      <TableCell sx={tableCell}>
                         ${formatMoney(Number(row.total) + Number(row.margin))}
                       </TableCell>
                       {(userRoleAuth.userRole === "superadmin" ||
                         userRoleAuth.userRole === "admin" ||
                         userRoleAuth.userRole === "projectManager") && (
-                        <TableCell>
+                        <TableCell sx={tableCell}>
                           ${formatMoney(row.paymentPending)}
                         </TableCell>
                       )}
-                      <TableCell>{row.notes}</TableCell>
+                      <TableCell sx={tableCell}>{row.notes}</TableCell>
                       {adminProjectView && (
                         <>
                           {view === "Generate Invoice" ? (
-                            <TableCell>
+                            <TableCell sx={tableCell}>
                               {row.invoiceExists
                                 ? "generated"
                                 : "not generated"}
                             </TableCell>
                           ) : (
-                            <TableCell>{row.status}</TableCell>
+                            <TableCell sx={tableCell}>{row.status}</TableCell>
                           )}
                           {(userRoleAuth.userRole === "superadmin" ||
                             userRoleAuth.userRole === "admin" ||
@@ -708,7 +713,7 @@ const handleConfirmDelete = async (confirm) => {
                           {(userRoleAuth.userRole === "employee" ||
                             userRoleAuth.userRole === "subcontractor" ||
                             userRoleAuth.userRole === "supplier") && (
-                            <TableCell sx={{}}>
+                            <TableCell sx={tableCell}>
                               {row.status === "Work Order approved" && (
                                 <IconButton
                                   onClick={() => {
@@ -726,7 +731,7 @@ const handleConfirmDelete = async (confirm) => {
                         userRoleAuth.userRole === "admin" ||
                         userRoleAuth.userRole === "projectManager" ||
                         userRoleAuth.userRole === "") && (
-                        <TableCell>
+                        <TableCell sx={tableCell}>
                           <EditIcon onClick={() => handleUpdateLine(row)} />
                           {(row.status === "Work Order Not requested" ||
                             row.status === "Work Order declined" ||
@@ -835,7 +840,7 @@ const headingInnerBox = {
   whiteSpace: "nowrap",
   gap: { xl: "9rem", lg: "6rem", md: "2rem", sm: "auto", xs: "auto" },
   width: "100%",
-};
+  };
 const phaseBox = {
   display: "flex",
   justifyContent: "center",
@@ -871,13 +876,28 @@ const listOfLineText = {
 };
 
 const tableHeadings = {
+  maxWidth: { xl: "40px", lg: "80px", md: "70px", xs: "100%" },
+  minWidth: { xl: "20px", lg: "40px", md: "40px", xs: "20px" },
   fontFamily: "Poppins, sans-serif",
   whiteSpace: "nowrap",
   fontWeight: 500,
   fontSize: "0.9rem",
   color: "#8C8C8C",
   padding: "8px !important",
+  textAlign:'left'
   // paddingLeft: "0rem",
+};
+const tableCell = {
+  // fontFamily: "Poppins, sans-serif",
+  maxWidth: { xl: "40px", lg: "80px", md: "70px", xs: "100%" },
+  minWidth: { xl: "20px", lg: "40px", md: "40px", xs: "20px" },
+  whiteSpace: "",
+  fontWeight: 500,
+  fontSize: "0.9rem",
+  // color: "#8C8C8C",
+  padding: "8px !important",
+  // paddingLeft: "0rem",
+  textAlign:'left'
 };
 const hrLine = {
   width: "100%",

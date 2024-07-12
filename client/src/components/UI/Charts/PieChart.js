@@ -25,7 +25,7 @@ function PieCenterLabel({ children }) {
 }
 function PieCenterLabel2({ children }) {
   return (
-    <StyledText x={65} y={92}>
+    <StyledText x={65} y={85}>
       {children}
     </StyledText>
   );
@@ -58,7 +58,7 @@ const PieChartDisplay = ({totalProjectCost}) => {
         height={200}
         width={130}
         >
-        <PieCenterLabel>Total Price</PieCenterLabel>
+        {/* <PieCenterLabel>Total Price</PieCenterLabel> */}
         <PieCenterLabel2>${formatMoney(totalProjectCost)}</PieCenterLabel2>
       </PieChart>
     </Box>

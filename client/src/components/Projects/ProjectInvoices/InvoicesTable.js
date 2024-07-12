@@ -168,7 +168,7 @@ function InvoicesTable({
                 <TableCell sx={tableCellValueStyle}>
                   {item.InvoiceBill}
                 </TableCell>
-               {!paidInvoices && !(userRole.userRole ==='client') && <TableCell sx={tableCellValueStyle}>
+               {!paidInvoices && !(userRole.userRole ==='client') && <TableCell sx={TableButtonsStyle}>
                   <BuilderProButton
                     variant={"contained"}
                     backgroundColor={"#4C8AB1"}
@@ -181,7 +181,7 @@ function InvoicesTable({
                     Paid
                   </BuilderProButton>
                 </TableCell>}
-                <TableCell sx={tableCellValueStyle}>
+                <TableCell sx={TableButtonsStyle}>
                   <BuilderProButton
                     variant={"contained"}
                     backgroundColor={"#4C8AB1"}
@@ -206,19 +206,19 @@ function InvoicesTable({
 }
 export default InvoicesTable;
 const tableCellStyle = {
-  maxWidth: { xl: "40px", lg: "30px", md: "70px", xs: "100%" },
-  minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
+  maxWidth: { xl: "80px", lg: "80px", md: "70px", xs: "100%" },
+  minWidth: { xl: "80px", lg: "80px", md: "40px", xs: "20px" },
   textOverflow: "ellipsis",
   overflow: "hidden",
   fontWeight: 500,
   fontSize: {xl:"14px", lg:'11px',md:'11px', xs:'11px'},
   fontFamily: "Poppins",
   color: "#8C8C8C",
-  textAlign:'center'
+  textAlign:'left',
 };
 const tableCellValueStyle = {
-  maxWidth: { xl: "40px", lg: "30px", md: "70px", xs: "100%" },
-  minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
+  maxWidth: { xl: "80px", lg: "80px", md: "70px", xs: "100%" },
+  minWidth: { xl: "80px", lg: "80px", md: "40px", xs: "20px" },
   textOverflow: "ellipsis",
   overflow: "hidden",
   fontWeight: 400,
@@ -226,4 +226,20 @@ const tableCellValueStyle = {
   borderBottom: "none",
   fontFamily: "Montserrat",
   color: "#000000",
+  textAlign:'left',
+  justifyContent: "left",
+
+
+};
+
+const TableButtonsStyle = {
+  textOverflow: "ellipsis",
+  overflow: "hidden",
+  fontWeight: 400,
+  fontSize: {xl:"14px", lg:'11px',md:'11px', xs:'11px'},
+  borderBottom: "none",
+  fontFamily: "Montserrat",
+  color: "#000000",
+  textAlign:'left',
+  justifyContent: "left",
 };

@@ -80,7 +80,7 @@ const ProgressCardHeader = ({ project }) => {
             {project.projectName}
           </Typography>
           <Typography p={1} sx={{ fontSize: "15px", ...themeStyle.colorGray }}>
-            Client Name
+            Client Name: {project.clientName ? project.clientName : "No client" }
           </Typography>
         </Box>
         <Box width={"40%"} pr={1}>

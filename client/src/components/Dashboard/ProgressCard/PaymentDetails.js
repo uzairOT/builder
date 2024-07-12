@@ -6,7 +6,7 @@ const PaymentDetails = ({ totalProjectCost }) => {
   return (
     <Box width={"100%"} pl={1.5} pt={2}>
       <Typography textAlign={"left"} sx={themeStyle.title}>
-        Payment Details
+        Project Cost
       </Typography>
       <PieChartDisplay totalProjectCost={totalProjectCost} />
     </Box>

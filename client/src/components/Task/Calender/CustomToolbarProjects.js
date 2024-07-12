@@ -153,8 +153,8 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                     }}
                     style={{
                       ...themeStyle.monthEventHeader,
-                      textDecoration:
-                        activeHeader === "Work Order" ? "underline" : "",
+                      // textDecoration:
+                      //   activeHeader === "Work Order" ? "underline" : "",
                     }}
                   >
                     Work Order
@@ -187,8 +187,8 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                         : activeHeader === "Notes"
                         ? "#4C8AB1"
                         : "white",
-                      textDecoration:
-                        activeHeader === "Notes" ? "underline" : "",
+                      // textDecoration:
+                      //   activeHeader === "Notes" ? "underline" : "",
                     }}
                   >
                     Weather/notes
@@ -219,10 +219,10 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                   <Typography
                     sx={{
                       fontSize: {
-                        xl: "12px !important",
-                        lg: "10px !important",
-                        md: "12px !important",
-                        xs: "12px !important",
+                        xl: "13px !important",
+                        lg: "13px !important",
+                        md: "13px !important",
+                        xs: "13px !important",
                       },
                     }}
                     style={{
@@ -234,8 +234,8 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                         : activeHeader === "Work Order"
                         ? "#4C8AB1"
                         : "",
-                      textDecoration:
-                        activeHeader === "Work Order" ? "underline" : "",
+                      // textDecoration:
+                      //   activeHeader === "Work Order" ? "underline" : "",
                     }}
                   >
                     Work Order
@@ -253,10 +253,10 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                   <Typography
                     sx={{
                       fontSize: {
-                        xl: "12px !important",
-                        lg: "10px !important",
-                        md: "12px !important",
-                        xs: "12px !important",
+                        xl: "13px !important",
+                        lg: "13px !important",
+                        md: "13px !important",
+                        xs: "13px !important",
                       },
                     }}
                     style={{
@@ -268,8 +268,8 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                         : activeHeader === "Notes"
                         ? "#4C8AB1"
                         : "white",
-                      textDecoration:
-                        activeHeader === "Notes" ? "underline" : "",
+                      // textDecoration:
+                      //   activeHeader === "Notes" ? "underline" : "",
                     }}
                   >
                     Weather/ Notes

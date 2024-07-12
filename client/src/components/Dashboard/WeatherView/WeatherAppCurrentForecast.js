@@ -106,8 +106,8 @@ const WeatherAppCurrentForecast = () => {
               value={query.temperatureUnit}
               onChange={handleUnitChange}
             >
-              <MenuItem value="metric">Celsius</MenuItem>
               <MenuItem value="imperial">Fahrenheit</MenuItem>
+              <MenuItem value="metric">Celsius</MenuItem>
             </Select>
           </Box>
         </Box>

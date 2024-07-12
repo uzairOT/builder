@@ -84,8 +84,8 @@ const RequestWorkOrderModal = ({
     changeOrder ? checkedRow?.subject : ""
   );
 
-  const [startDate, setStartDate] = useState(moment());
-  const [endDate, setEndDate] = useState(moment().add(1, "day"));
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [description, setDescription] = useState(
     changeOrder ? checkedRow?.description : ""
   );
@@ -417,7 +417,7 @@ const RequestWorkOrderModal = ({
     <>
       <Stack alignItems={"flex-end"} justifyContent={"flex-end"} pr={2}>
         <BuilderProButton
-          backgroundColor={"#4C8AB1"}
+          backgroundColor={"#FFAC00"}
           variant={"contained"}
           fontFamily={"Inter, sans serif"}
           fontSize={"16px"}
@@ -426,7 +426,7 @@ const RequestWorkOrderModal = ({
           handleOnClick={isButtonDisabled ? showToast : handleOpen}
           // disabled={isButtonDisabled}
         >
-          {changeOrder ? "Request Change Order" : "Request Work Order"}
+          {changeOrder ? "Submit Change Order" : "Submit Work Order"}
         </BuilderProButton>
       </Stack>
       <Modal open={open} onClose={handleClose}>
@@ -450,7 +450,7 @@ const RequestWorkOrderModal = ({
               fontSize={"22px"}
               fontWeight={"600"}
             >
-              {changeOrder ? "Request Change Order" : "Request Work Order"}
+              {changeOrder ? "Submit Change Order" : "Submit Work Order"}
             </Typography>
             <IconButton onClick={handleClose}>
               <CloseIcon />
@@ -490,7 +490,7 @@ const RequestWorkOrderModal = ({
                   onChange={handleDescriptionChange}
                 ></input>
               </Typography>
-              <Divider />
+              {/* <Divider />
 
               <Typography pt={1} sx={themeStyle.headingText}>
                 Total
@@ -501,8 +501,8 @@ const RequestWorkOrderModal = ({
                 >
                   ${changeOrder ? checkedRow?.total : totalWorkOrder}
                 </Typography>
-                {/* <BorderColorIcon style={{ color: "#484848" }} /> */}
-              </Stack>
+             
+              </Stack> */}
               <Divider />
               <Stack
                 direction={{ xl: "row", lg: "row", md: "column" }}
@@ -529,7 +529,7 @@ const RequestWorkOrderModal = ({
                   <FormControl>
                     {checkedRow
                       ? phaseItems?.map((phase) => (
-                          <ListItem key={phase.phaseId}>
+                          <ListItem sx={{padding:0}} key={phase.phaseId}>
                             <Checkbox
                               checked={selectedItems.some(
                                 (item) => item.phaseId === phase.phaseId
@@ -542,7 +542,7 @@ const RequestWorkOrderModal = ({
                       : Object.keys(rowCheckboxes).map((key, index) => {
                           const phaseId = rowCheckboxes[key]?.rows[0]?.phase_id;
                           return (
-                            <ListItem key={phaseId}>
+                            <ListItem  sx={{padding:0}} key={phaseId}>
                               <ListItemText
                                 secondary={rowCheckboxes[key].phaseName}
                               />
@@ -569,6 +569,7 @@ const RequestWorkOrderModal = ({
                       ...themeStyle.scrollable,
                       maxHeight: "150px",
                       overflow: "auto",
+                      padding:0
                     }}
                   >
                     {changeOrder
@@ -579,6 +580,7 @@ const RequestWorkOrderModal = ({
                               return (
                                 <>
                                   <ListItem
+                                   sx={{padding:0}}
                                     key={counter}
                                     alignItems="center"
                                     justifyContent="center"
@@ -598,7 +600,7 @@ const RequestWorkOrderModal = ({
                                         )
                                       }
                                     />
-                                    <ListItemText secondary={lineItem.title} />
+                                    <ListItemText  sx={{padding:0}} secondary={lineItem.title} />
                                     <Typography
                                       color={"#4C8AB1"}
                                       fontSize={"11px"}
@@ -616,7 +618,7 @@ const RequestWorkOrderModal = ({
                             if (counter > 2 && showLineItems) {
                               return (
                                 <>
-                                  <ListItem key={counter}>
+                                  <ListItem  sx={{padding:0}} key={counter}>
                                     <Checkbox
                                       checked={selectedItems.some(
                                         (item) =>
@@ -632,7 +634,7 @@ const RequestWorkOrderModal = ({
                                         )
                                       }
                                     />
-                                    <ListItemText secondary={lineItem.title} />
+                                    <ListItemText   sx={{padding:0}} secondary={lineItem.title} />
                                     <Typography
                                       color={"#4C8AB1"}
                                       fontSize={"11px"}
@@ -656,24 +658,26 @@ const RequestWorkOrderModal = ({
                             if (counter <= 2) {
                               return (
                                 <ListItem
+                                sx={{padding:0}}
                                   key={counter}
                                   onClick={(e) => {
                                     handleLineItemClick(e, row);
                                   }}
                                 >
-                                  <ListItemText secondary={row.title} />
+                                  <ListItemText  sx={{padding:0}} secondary={row.title} />
                                 </ListItem>
                               );
                             }
                             if (counter > 2 && showLineItems) {
                               return (
                                 <ListItem
+                                sx={{padding:0}}
                                   key={counter}
                                   onClick={(e) => {
                                     handleLineItemClick(e, row);
                                   }}
                                 >
-                                  <ListItemText secondary={row.title} />
+                                  <ListItemText  sx={{padding:0}} secondary={row.title} />
                                 </ListItem>
                               );
                             } else {
@@ -682,7 +686,7 @@ const RequestWorkOrderModal = ({
                           });
                         })}
                     {counter > 2 && (
-                      <ListItem style={{ padding: 0 }}>
+                      <ListItem  sx={{padding:0}} style={{ padding: 0 }}>
                         <Button
                           style={{ padding: 0, textTransform: "lowercase" }}
                           variant="text"
@@ -752,7 +756,7 @@ const RequestWorkOrderModal = ({
                     <LocalizationProvider dateAdapter={AdapterMoment}>
                       <DemoContainer components={["DateTimePicker"]}>
                         <MobileDateTimePicker
-                          minDate={moment().add(1, "day")}
+                          minDate={startDate ? moment(startDate).add(1, 'day') : moment().add(1, "day")}
                           value={endDate}
                           onChange={(newValue) => setEndDate(newValue)}
                           format="MMM D, YYYY,h:mm a"
@@ -794,7 +798,7 @@ const RequestWorkOrderModal = ({
                     marginLeft={"0px"}
                     disabled={loading}
                   >
-                    {changeOrder ? "Request Change" : "Request Work Order"}
+                    {changeOrder ? "Submit Change Order" : "Submit Work Order"}
                   </BuilderProButton>
                 </Stack>
               </Stack>
