@@ -19,7 +19,7 @@ function StepTitles({ Heading, stepHeading, stepDiscription, projectName }) {
       <Typography sx={{ ...stepGeneralText, ...headingStyle, marginBottom:'0.5rem', color: "#FFAC00" }}>
         {projectName}
       </Typography>
-      <Typography sx={{ ...stepGeneralText, ...discriptionTypo, textAlign: stepDiscription === 'Accepting the invitation grants access to a secure project workspace in BuilderBUILDER Pro' ? 'left' : 'center' }}>
+      <Typography sx={{ ...stepGeneralText, ...discriptionTypo, textAlign: 'center' }}>
         {stepDiscription}
       </Typography>
     </Grid>

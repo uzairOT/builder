@@ -192,7 +192,7 @@ const SignupComp = () => {
       return;
     }
     if (checked) {
-      const data = { ...values, phone };
+      const data = { ...values, phoneNumber: phone };
       try {
         const res = await register(data).unwrap();
         console.log("Sign up: ", res);
@@ -265,7 +265,7 @@ const SignupComp = () => {
       <ToastContainer />
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={{...SecondGrid, mt:"1rem"}}>
       <img
-            style={{ height: "226px",width:"425px" }}
+            style={{ height: "236px",width:"435px", paddingLeft:'8px' }}
             src={builderproicon}
             alt="Builder Pro"
           />
@@ -297,12 +297,12 @@ const SignupComp = () => {
 
         {/* Button */}
 
-        <Box sx={downloadForMobBox}>
+        <Box sx={downloadForMobBox} pl={'4px'}>
           <img
             src={downloadForMob}
             width={'100%'}
             alt=""
-            style={{ height: "143px" }}
+            style={{ height: "120px" }}
           />
         </Box>
         <Box sx={googleAppImgsBox}>
@@ -314,8 +314,8 @@ const SignupComp = () => {
             <img
             
               src={googlePlay}
-              width={'216px'}
-              style={{ cursor: "pointer", height:62 }}
+              width={'206px'}
+              style={{ cursor: "pointer", height:52 }}
               alt=""
             />
           </a>
@@ -323,8 +323,8 @@ const SignupComp = () => {
           <a href="https://www.apple.com/store" target="blank">
             <img
               src={appStore}
-              width={'216px'}
-              style={{ cursor: "pointer", height:62 }}
+              width={'206px'}
+              style={{ cursor: "pointer", height:52 }}
               alt=""
             />
           </a>
@@ -510,7 +510,7 @@ const SignupComp = () => {
                 }}
                 htmlFor="company"
               >
-                Company Name
+                Company name
               </label>
               <input
                 type="text"
@@ -596,7 +596,7 @@ const SignupComp = () => {
                 }}
                 htmlFor="confirmPassword"
               >
-                Confirm Password
+                Confirm password
               </label>
               <Box style={{ position: "relative" }}>
                 <input
@@ -654,13 +654,14 @@ const SignupComp = () => {
                   onClick={() => {
                     navigate("/privacyandterms");
                   }}
+                 style={{fontSize:'11px'}}
                 >
                   By creating an account, I agree to{" "}
-                  <Link style={{ ...linkStyle, ...lableResponsiveFont }}>
+                  <Link style={{ ...linkStyle, ...lableResponsiveFont,fontSize:'11px' }}>
                     Terms of use
                   </Link>{" "}
                   and{" "}
-                  <Link style={{ ...linkStyle, ...lableResponsiveFont }}>
+                  <Link style={{ ...linkStyle, ...lableResponsiveFont,fontSize:'11px' }}>
                     Privacy Policy
                   </Link>
                 </label>
@@ -730,7 +731,7 @@ const SignupComp = () => {
               <MenuItem value={3}>Chinese (China)</MenuItem>
             </Select> */}
           </Box>
-          <Box sx={{ ...hptLinksBox, cursor: "pointer" }}>
+          <Box sx={{ ...hptLinksBox, cursor: "pointer", paddingBottom:'8px' }}>
             <Typography
               sx={hptLinksStyle}
               onClick={() => {
@@ -903,8 +904,8 @@ const checkBox = {
 const checkBoxText = {
   gap: 3,
   display: "flex",
-  marginTop: "0.5rem",
-  fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem", xs: "0.75rem" },
+  marginTop: "0.8rem",
+  fontSize: { lg: "11px", md: "11px", sm: "0.8rem", xs: "0.75rem" },
 };
 const alreadyHaveAccountTypo = {
   color: "#202227",

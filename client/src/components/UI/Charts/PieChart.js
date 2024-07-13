@@ -41,7 +41,7 @@ const PieChartDisplay = ({totalProjectCost}) => {
         series={[
           {
             data: [
-              { id: 0, value: totalProjectCost === 0 ? 100 : totalProjectCost, color:  totalProjectCost === 0 ? "#F4F4F4": "#1F9EF3, #1B59F800" },
+              { id: 0, value: totalProjectCost, color:  totalProjectCost === 0 ? "#F4F4F4": "#1F9EF3, #1B59F800" },
               // { id: 1, value: 60, color: "#eff5ff" },
             ],
             innerRadius: 55,

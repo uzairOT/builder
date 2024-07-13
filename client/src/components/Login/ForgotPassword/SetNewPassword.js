@@ -107,7 +107,7 @@ const SetNewPassword = () => {
                 <ArrowBackIosIcon sx={{ fontSize: 16 }} />
               </div>
               <Typography sx={{ fontSize: 14 }} color="#4C8AB1" gutterBottom>
-                Back To Login
+                Back To Log in
               </Typography>
             </Box>
             <Container
@@ -126,7 +126,7 @@ const SetNewPassword = () => {
                 >
                   Set a New Password
                 </Typography>
-                <Typography sx={{ mb: 1.5, mt: 1.5 }} color="text.secondary">
+                <Typography sx={{ mb: 0, mt: 1.5 }} color="text.secondary">
                   Create a new password. Ensure it differs from previous ones
                   for security
                 </Typography>
@@ -209,14 +209,14 @@ const SetNewPassword = () => {
                 </Box>
               </Box>
               {/* Confirm Password 👆 */}
-              <CardActions>
+              <CardActions sx={{display:'flex', justifyContent:'center'}}>
                 <Button
                   sx={{
                     ...YellowBtn,
                   }}
                   onClick={submitHandler}
                 >
-                  {"Password updated"}
+                  {"Password Updated"}
                 </Button>
               </CardActions>
             </Container>
@@ -260,7 +260,7 @@ const SetNewPassword = () => {
                 }}
               >
                 Congratulations! Your password has been changed. <br />
-                Click Continue to Login.
+                Click Continue to Log in.
               </Typography>
             </Box>
           </Box>

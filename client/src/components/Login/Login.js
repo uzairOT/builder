@@ -186,7 +186,7 @@ const Login = () => {
     <Grid container sx={firstGrid}>
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
       <img
-            style={{ height: "226px",width:"425px" }}
+            style={{ height: "236px",width:"435px", paddingLeft:'8px' }}
             src={builderproicon}
             alt="Builder Pro"
           />
@@ -222,7 +222,7 @@ const Login = () => {
             src={downloadForMob}
             width={'100%'}
             alt=""
-            style={{ height: "143px" }}
+            style={{ height: "120px", paddingLeft:'4px' }}
           />
         </Box>
         <Box sx={googleAppImgsBox}>
@@ -234,8 +234,8 @@ const Login = () => {
             <img
             
               src={googlePlay}
-              width={'216px'}
-              style={{ cursor: "pointer", height:62 }}
+              width={'206px'}
+              style={{ cursor: "pointer", height:52 }}
               alt=""
             />
           </a>
@@ -243,8 +243,8 @@ const Login = () => {
           <a href="https://www.apple.com/store" target="blank">
             <img
               src={appStore}
-              width={'216px'}
-              style={{ cursor: "pointer", height:62 }}
+              width={'206px'}
+              style={{ cursor: "pointer", height:52 }}
               alt=""
             />
           </a>
@@ -260,7 +260,7 @@ const Login = () => {
       >
         <Grid item sx={formGrid}>
           <Box sx={logoBox}>
-            <Typography sx={formHeadingStyle}>Login</Typography>
+            <Typography sx={formHeadingStyle}>Log in</Typography>
             <img src={builder1} width={"25%"} alt="" />
           </Box>
           <form style={{ marginTop: "1rem" }} onSubmit={submitHandler}>
@@ -358,6 +358,7 @@ const Login = () => {
                   style={{
                     ...checkBox,
                     ...lableResponsiveFont,
+                    marginTop:'12px'
                   }}
                 >
                   Remember Me
@@ -380,7 +381,7 @@ const Login = () => {
                     ...linkResponsiveColor,
                   }}
                 >
-                  Forgot Password ?
+                  Forgot Password?
                 </Link>
               </Box>
             </Box>
@@ -396,7 +397,7 @@ const Login = () => {
                 {isLoading ? (
                   <CircularProgress size={"1.25rem"} />
                 ) : isMobile ? (
-                  "Login"
+                  "Log in"
                 ) : (
                   "Log in with Email"
                 )}
