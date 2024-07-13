@@ -107,7 +107,7 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
             overflow: "hidden",
             textOverflow: "ellipsis",
             fontSize: { xl: "14px", lg: "12px", md: "14px", xs: "14px" },
-            fontWeight:'600',
+            fontWeight:'550',
           }}
         >
           {projectProfileCard.projectName}
@@ -121,7 +121,7 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
                 color:"#848484",
               }}
             >
-              Client name: {projectProfileCard.clientName}
+              Client name: {projectProfileCard.clientName ? projectProfileCard.clientName : "No Client Name"}
             </Typography>
             <Typography
               variant="body1"

@@ -91,7 +91,7 @@ const ListProjects = () => {
         >
           <Typography
             fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
-            fontWeight={"500"}
+            fontWeight={"600"}
             color={"black"}
             fontFamily={"Inter, sans-serif"}
             width={"100%"}
@@ -110,7 +110,7 @@ const ListProjects = () => {
         >
           <Typography
             fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
-            fontWeight={"500"}
+            fontWeight={"600"}
             color={"black"}
             fontFamily={"Inter, sans-serif"}
             width={"100%"}
@@ -129,7 +129,7 @@ const ListProjects = () => {
         >
           <Typography
             fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
-            fontWeight={"500"}
+            fontWeight={"600"}
             color={"black"}
             fontFamily={"Inter, sans-serif"}
           >
@@ -148,13 +148,14 @@ const ListProjects = () => {
           },
         }}
         pb={2}
+        pt={1}
       >
         {error ? (
           <>
             {/* removed error message to prompt user to refresh if error occurs */}
           </>
         ) : (
-          <Stack spacing={1} pl={"5px"} pr={"5px"}>
+          <Stack spacing={2} pl={"5px"} pr={"5px"}>
             {isLoading ? (
               <Stack justifyContent={"center"} alignItems={"center"}>
                 <CircularProgress />

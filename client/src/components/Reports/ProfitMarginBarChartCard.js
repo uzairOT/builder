@@ -45,6 +45,11 @@ const ProfitMarginBarChartCard = () => {
 
   const totalCost = projects?.totalCost?.toFixed(2);
   const totalMargin = projects?.totalMargin?.toFixed(2);
+  let marginPercentage = 0; // Default value
+
+if (projects?.totalCost) {
+  marginPercentage = ((projects.totalMargin / projects.totalCost) * 100).toFixed(3);
+}
 
   return (
     <>
@@ -124,16 +129,13 @@ const ProfitMarginBarChartCard = () => {
               </Typography>
               <Typography
                 textAlign={"center"}
-                color={"#90BE6D"}
+                color={marginPercentage < 0 ? "#F94144" : "#90BE6D"}
                 fontSize={{xl:26,lg:23,md:26,xs:26}}
                 fontWeight={"600"}
                 fontFamily={"Inter, sans serif"}
               >
                 {projects?.totalCost
-                  ? (
-                      (projects?.totalMargin / projects?.totalCost) *
-                      100
-                    ).toFixed(3)
+                  ? marginPercentage
                   : 0}{" "}
                 %
               </Typography>

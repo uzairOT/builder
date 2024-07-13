@@ -128,7 +128,7 @@ function AssignProject() {
             <Header handlePreviousStep={handlePreviousStep} step={0} />
             <StepTitles
               stepHeading={"Step 1 of 3"}
-              Heading={"What projects is your team currently engaged in?  "}
+              Heading={"Add New Project"}
               stepDiscription={"Select your project type"}
             />
             <StepBoxes />

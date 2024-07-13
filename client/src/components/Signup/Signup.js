@@ -72,7 +72,7 @@ const SignupComp = () => {
     heightValue = "1.8rem";
   }
   const inputStyle = {
-    width: "100%",
+    width: "calc(100% - 16px)",
     height: heightValue,
     marginBottom: "0.5rem",
     alignSelf: "stretch",
@@ -87,7 +87,7 @@ const SignupComp = () => {
     borderRadius: "12px",
     border: "1px solid #D8D8D8",
     background: "#FFF",
-    width: "101.5%",
+    width: "calc(100% - 8px)",
     // height: heightValue,
     alignSelf: "stretch",
     paddingLeft: "8px",
@@ -263,7 +263,7 @@ const SignupComp = () => {
   return (
     <Grid container sx={{ ...firstGrid }}>
       <ToastContainer />
-      <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
+      <Grid item container lg={6} md={6} sm={12} xs={12} sx={{...SecondGrid, mt:"1rem"}}>
       <img
             style={{ height: "226px",width:"425px" }}
             src={builderproicon}
@@ -868,7 +868,7 @@ const subtitleStyle = {
 };
 const passwordEyeBox = {
   position: "absolute",
-  top: "40%",
+  top: "45%",
   right: "10px",
   transform: "translateY(-50%)",
   cursor: "pointer",
@@ -1079,8 +1079,8 @@ const hptLinksStyle = {
 const googleBtnStyle = {
   display: "flex",
   flexDirection: "row",
-  marginBottom: { lg: "3.4rem", sm: "3rem", xs: "1rem" },
-  marginTop: "2rem",
+  marginBottom: { lg: "3rem", sm: "3rem", xs: "1rem" },
+  marginTop: "1.5rem",
   borderRadius: { lg: "2.5rem", md: "2.5rem", sm: "2.5rem", xs: "0.5rem" },
   border: "1px solid rgba(6, 32, 72, 0.11)",
   background: "#FFF",

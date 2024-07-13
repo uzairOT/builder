@@ -397,7 +397,11 @@ useEffect(() => {
                 defaultCountry=""
                 name={"phoneNumber"}
                 value={phone}
-                onChange={(phone) => setPhone(phone)}
+                onChange={(phone) => setPhone(phone) }
+                onBlur={(e) => {
+                  handleBlur(e);
+                  validate(phone); 
+                }}
                 countrySelectorStyleProps={{
                   style: {
                     "--react-international-phone-country-selector-background-color":

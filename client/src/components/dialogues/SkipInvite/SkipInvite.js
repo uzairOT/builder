@@ -119,11 +119,12 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoadi
             <DialogContentText
               sx={typoTect}
               id="alert-dialog-slide-description"
+              pt={1}
             >
               Are you sure you want to skip this step without inviting ?
             </DialogContentText>
           </DialogContent>
-          <DialogActions sx={{display:'flex', justifyContent:'space-between', gap: "0rem", marginTop: "1rem" }}>
+          <DialogActions sx={{display:'flex', justifyContent:'center', gap: "3rem", marginBottom: "8px", flexDirection:'row-reverse' }}>
             <Button
               variant="outlined"
               sx={{
