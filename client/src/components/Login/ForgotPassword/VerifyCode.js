@@ -143,7 +143,7 @@ const VerifyCode = () => {
                 <ArrowBackIosIcon sx={{ fontSize: 16 }} />
               </div>
               <Typography sx={{ fontSize: 14 }} color="#4C8AB1" gutterBottom>
-                Back To Login
+                Back To Log in
               </Typography>
             </Box>
             <Container
@@ -160,7 +160,7 @@ const VerifyCode = () => {
                     fontWeight: 550,
                   }}
                 >
-                  Verify code
+                  Verify Code
                 </Typography>
                 <Typography sx={{ mb: 1.5, mt: 1.5 }} color="text.secondary">
                   We sent a verification code to your email. Enter the 5 digit
@@ -216,6 +216,7 @@ const VerifyCode = () => {
                     fontSize: "16px",
                     fontFamily: "GT Walsheim Trial",
                     marginTop: "15px",
+                    textAlign:'center'
                   }}
                 >
                   Didn’t receive a code?{" "}
@@ -228,10 +229,11 @@ const VerifyCode = () => {
                 </Typography>
               </Box>
 
-              <CardActions>
+              <CardActions sx={{display:'flex', justifyContent:'center'}}>
                 <Button
                   sx={{
                     ...YellowBtn,
+                    alignSelf:'center'
                   }}
                   onClick={submitHandler}
                   type="submit"

@@ -33,7 +33,7 @@ import { fileTypeIcons } from "../../dialogues/AddImage/assets/fileTypes";
 import { handleDownload } from "../../../utils/S3";
 //import "react-toastify/dist/ReactToastify.css";
 
-const OpenNotes = ({ notes, refetchNotes }) => {
+const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
   const isNoteSelected = Boolean(notes);
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height: 10,
@@ -62,6 +62,7 @@ const OpenNotes = ({ notes, refetchNotes }) => {
       return;
     }
     await deleteProjectNote(noteId);
+    setSelectedButton(-1);
     refetchNotes();
   };
   return (

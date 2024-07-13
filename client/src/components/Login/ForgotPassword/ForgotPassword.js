@@ -104,7 +104,7 @@ const ForgotPassword = () => {
                 <ArrowBackIosIcon sx={{ fontSize: 16 }} />
               </div>
               <Typography sx={{ fontSize: 14 }} color="#4C8AB1" gutterBottom>
-                Back To Login
+                Back To Log in
               </Typography>
             </Box>
             <Container
@@ -121,7 +121,7 @@ const ForgotPassword = () => {
                     fontWeight: 550,
                   }}
                 >
-                  Forgot your password?
+                  Forgot Password?
                 </Typography>
                 <Typography sx={{ mb: 1.5, mt: 1.5 }} color="text.secondary">
                   Don’t worry, happens to all of us. Enter your email below to
@@ -145,7 +145,7 @@ const ForgotPassword = () => {
                     padding: "15px",
                     borderRadius: "12px",
                     border: "2px solid #20222759",
-                    width: "60%",
+                    width: "calc(100% - 32px)",
                     marginTop: "10px",
                   }}
                   onChange={formik.handleChange}
@@ -164,7 +164,8 @@ const ForgotPassword = () => {
                   </Typography>
                 ) : null}
               </Box>
-              <CardActions>
+
+              <CardActions sx={{display:'flex', justifyContent:'center'}}>
                 <Button
                   sx={{
                     ...YellowBtn,

@@ -117,10 +117,10 @@ const WeatherAppCurrentForecast = () => {
           sx={{
             justifyContent: {
               xl: "left",
-              lg: "center",
-              md: "center",
-              sm: "center",
-              xs: "center",
+              lg: "left",
+              md: "left",
+              sm: "left",
+              xs: "left",
             },
           }}
           width={"100%"}

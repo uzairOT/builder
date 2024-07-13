@@ -73,8 +73,8 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
             <AccordionDetails>
               <Typography fontFamily={"inherit"} fontSize={"12px"}>
                 <b>{teamNotification.user?.firstName}</b>(
-                {teamNotification.user?.ProjectMembers[0]?.role}) approved{" "}
-                {teamNotification?.workOrderVersion < 0 ? "decline": teamNotification?.workOrderVersion > 1 ? "change" : "work"}{" "}
+                {teamNotification.user?.ProjectMembers[0]?.role}) {teamNotification?.workOrderVersion < 0 ? 'declined' : 'approved'}{" "}
+                {teamNotification?.workOrderVersion > 1 ? "change" : "work"}{" "}
                 order
               </Typography>
               {/* <Typography fontFamily={"inherit"} fontSize={"12px"}>

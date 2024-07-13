@@ -218,6 +218,12 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
               value={noteSubject}
               onChange={handleNoteSubject}
               placeholder="Type Note Subject..."
+              sx={{
+                '.MuiInput-input':{
+                  marginBottom:'0px'
+                }
+              }}
+              // mb={'-8px'}
             />
             <Textarea
               minRows={8}

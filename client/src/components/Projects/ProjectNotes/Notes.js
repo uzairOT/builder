@@ -15,7 +15,7 @@ import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
 import { useEffect } from 'react';
 
 const Notes = () => {
-    const [selectedButton, setSelectedButton] = useState(0);
+    const [selectedButton, setSelectedButton] = useState(-1);
     const { id } = useParams();
     const [searchInput, setSearchInput] = useState('');
     const debouncedValue = QueryDebouncer(searchInput, 500)
@@ -38,7 +38,7 @@ const Notes = () => {
   return (
     <Stack direction={{xl:'row', lg:'row', md:'column-reverse'}} spacing={1} height={'100%'}>
     <Stack flex={1}>
-    <Paper sx={{borderRadius:'14px'}} >
+    <Paper sx={{borderRadius:'14px', height:'99%'}} >
       <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} p={2} >
         <Typography fontSize={{xl:'22px', lg:"18px",md:'22px',xs:'22px',}} fontFamily={'Poppins, sans serif'} fontWeight={'600'} color={'#4C8AB1'}>Notes</Typography>
         <Stack direction={'row'} alignItems={'center'}>
@@ -62,7 +62,7 @@ const Notes = () => {
 
         <Stack flex={2}  >
          <Paper sx={{ borderRadius:'14px', height:'98.88%'}}>
-           <OpenNotes notes={data?.notes[selectedButton]} refetchNotes={refetchNotes}/>
+           <OpenNotes notes={data?.notes[selectedButton]} setSelectedButton={setSelectedButton} refetchNotes={refetchNotes}/>
         </Paper>
           </Stack>
 

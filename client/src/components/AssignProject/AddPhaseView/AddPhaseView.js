@@ -367,7 +367,7 @@ console.log(rowCheckboxes)
                 <>
                   <Stack direction={"row"} sx={buttonBox}>
                     <Button
-                      sx={{ ...actionButton, background: "#FFAC00",whiteSpace:'nowrap',  width: (initialPhases[0]?.length < 1 || isLoading) ? '300px' : '130px', height: (initialPhases[0]?.length < 1 || isLoading) ? '50px' : '40px' }}
+                      sx={{ ...actionButton, background: "#FFAC00",whiteSpace:'nowrap',fontSize:(initialPhases[0]?.length < 1 || isLoading) ? '24px' : '18px' , width: (initialPhases[0]?.length < 1 || isLoading) ? '300px' : '130px', height: (initialPhases[0]?.length < 1 || isLoading) ? '50px' : '40px' }}
                       onClick={handleAddPhase}
                     >
                       Add Phase
@@ -403,7 +403,7 @@ console.log(rowCheckboxes)
                 authUserRole === "projectManager" ||
                 authUserRole === "admin") && <Stack direction={"row"} sx={buttonBox}>
               <Button
-                sx={{ ...actionButton, whiteSpace:'nowrap', background: "#FFAC00", width: (phases[0]?.length < 1 || isLoading) ? '300px' : '130px', height: (phases[0]?.length < 1 || isLoading) ? '50px' : '40px'}}
+                sx={{ ...actionButton, whiteSpace:'nowrap', background: "#FFAC00",fontSize:(phases[0]?.length < 1 || isLoading) ? '24px' : '18px'  ,width: (phases[0]?.length < 1 || isLoading) ? '300px' : '130px', height: (phases[0]?.length < 1 || isLoading) ? '50px' : '40px'}}
                 onClick={handleAddPhase}
               >
                 Add Phase
@@ -477,7 +477,7 @@ console.log(rowCheckboxes)
                           : "none", // Border and glow effect
                       transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
                       marginTop: "1rem",
-                      padding:5,
+                      // padding:5,
                       marginRight:'1rem',
                       marginLeft:'1rem',
                       marginBottom: "1rem",

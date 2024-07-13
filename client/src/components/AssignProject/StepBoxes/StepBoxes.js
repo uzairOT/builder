@@ -19,7 +19,7 @@ function StepBoxes() {
   };
   const boxes = [
     { label: "Remodel", background: "#4C8AB1", name: "remodel" },
-    { label: "New build", background: "#4C8AB1", name: "newbuild" },
+    { label: "New Build", background: "#4C8AB1", name: "newbuild" },
     { label: "Commercial", background: "#4C8AB1", name: "commercial" },
   ];
 

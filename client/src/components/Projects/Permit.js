@@ -101,20 +101,23 @@ function Permit({ view, type }) {
           <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>
             Add {view}
           </Button>
-          <button style={themeStyle.button} onClick={handleSetShowDelete}>
+          
             <Button
             variant="outlined"
-            sx={{ ...themeStyle.buttonStyle, border:"1px solid red" }}
+            sx={{ ...themeStyle.buttonStyle, }}
               fontSize={"12px"}
               style={{
-                color: "tomato",
+                color: "white",
+                backgroundColor:'#FFAC00',
+                // fontWeight:'500'
                 // textDecoration: "underline",
                 // opacity: showDelete ? "" : "0.7",
               }}
+              onClick={handleSetShowDelete}
             >
-              Delete {view}
+              Delete
             </Button>
-          </button>
+        
         </Stack>
       </Box>
       <Box

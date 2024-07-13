@@ -16,7 +16,7 @@ import {
   Stack,
   IconButton,
 } from "@mui/material";
-import UploadIcon from "../../../assets/settings/uploadimg.png";
+import UploadIcon from "../../../assets/settings/uploadimg.svg";
 import Button from "../../UI/CustomButton";
 import { useFormik, useFormikContext } from "formik";
 import { settingsSchema } from "../../../utils/Validation/settingsPageSchema";

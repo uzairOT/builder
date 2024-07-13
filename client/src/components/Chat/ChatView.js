@@ -507,11 +507,11 @@ console.log('conversationId: ',conversationId, 'value: ', value)
           ref={boxRef}
           sx={{
             height: {
-              xl: "72.5vh",
-              lg: "75vh",
-              md: "75vh",
-              sm: "75vh",
-              xs: "75vh",
+              xl: "calc(75vh + 90px)",
+              lg: "calc(75vh + 90px)",
+              md: "calc(75vh + 90px)",
+              sm: "calc(75vh + 90px)",
+              xs: "calc(75vh + 90px)",
             },
             overflowY: "scroll",
             ...scrollable,
