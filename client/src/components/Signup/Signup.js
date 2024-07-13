@@ -784,7 +784,7 @@ const firstGrid = {
 
 const SecondGrid = {
   // marginTop:{xl:-28,lg:-28,sm:0, xs:0,md:0},
-  gap: { xl:"4.5rem",lg: "3.5rem", sm: "1rem", xs: "1rem" },
+  gap: { xl:"4.5rem",lg: "3.5rem", md:"3.5rem", sm: "1rem", xs: "1rem" },
   alignItems: { lg: "center", md: "center", sm: "center", xs: "center" },
   justifyContent: {
     lg: "start",
@@ -1009,7 +1009,7 @@ const secondHeading = {
   // width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontFamily: "Arial Rounded MT, sans-serif",
-  fontSize: { xl: "2rem", lg: "1.5rem", md: "1rem", sm: "1rem" },
+  fontSize: { xl: "1.5rem", lg: "1.5rem", md: "1.5rem", sm: "1rem" },
   fontWeight: 400,
 };
 
