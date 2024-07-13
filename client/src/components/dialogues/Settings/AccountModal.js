@@ -18,7 +18,7 @@ import {
   couponSchema,
   settingsSchema,
 } from "../../../utils/Validation/settingsPageSchema";
-import UploadIcon from "../../../assets/settings/uploadimg.png";
+import UploadIcon from "../../../assets/settings/uploadimg.svg";
 import Button from "../../UI/CustomButton";
 import {
   useGetCreateUserCouponsMutation,
@@ -243,7 +243,7 @@ const AccountModal = ({
                   borderRadius: "18px",
                   justifyContent: "center",
                   margin: "20px",
-                  height: "140px",
+                  height: "180px"
                 }}
               >
                 <div
@@ -337,7 +337,7 @@ const AccountModal = ({
               <Grid item xs={12} sm={12}>
                 <Typography variant="body1">Account Details</Typography>
                 <TextField
-                  padding={1}
+                  // padding={1}
                   multiline
                   minRows={4}
                   error={errors.accountType ? true : false}
@@ -345,6 +345,11 @@ const AccountModal = ({
                   placeholder="Account Details"
                   fullWidth
                   name={"accountType"}
+                  InputProps={{
+                    style:{
+                      padding:0
+                    }
+                  }}
                   inputProps={{
                     style: {
                       ...InputStyle,

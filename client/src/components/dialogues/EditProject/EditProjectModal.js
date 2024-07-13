@@ -34,7 +34,7 @@ import { uploadToS3 } from "../../../utils/S3";
 import { useProjectUpdateMutation } from "../../../redux/apis/Project/projectApiSlice";
 import { PhoneInput } from "react-international-phone";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
-import UploadIcon from "../../../assets/settings/uploadimg.png";
+import UploadIcon from "../../../assets/settings/uploadimg.svg";
 import { useDispatch } from "react-redux";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -262,7 +262,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                 borderRadius: "18px",
                 justifyContent: "center",
                 margin: "20px",
-                height: "147px",
+                height: "180px",
               }}
             >
               <div
@@ -375,7 +375,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                     }}
                     value={dayjs(values.start_time)}
                     onChange={handleStartDateChange}
-                    format="YYYY/MM/DD"
+                    format="MM/DD/YYYY"
                   />
                 </LocalizationProvider>
               </Box>
@@ -405,7 +405,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                     }}
                     value={dayjs(values.end_time)}
                     onChange={handleEndDateChange}
-                    format="YYYY/MM/DD"
+                    format="MM/DD/YYYY"
                     minDate={
                       values.start_time
                         ? dayjs(values.start_time).add(1, "day")

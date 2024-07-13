@@ -13,7 +13,7 @@ import {
   Stack,
   IconButton
 } from "@mui/material";
-import UploadIcon from "../../../assets/settings/uploadimg.png";
+import UploadIcon from "../../../assets/settings/uploadimg.svg";
 import Button from "../../UI/CustomButton";
 import { useFormik } from "formik";
 import { useLocation } from "react-router-dom";

@@ -477,7 +477,7 @@ console.log(rowCheckboxes)
                           : "none", // Border and glow effect
                       transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
                       marginTop: "1rem",
-                      padding:5,
+                      // padding:5,
                       marginRight:'1rem',
                       marginLeft:'1rem',
                       marginBottom: "1rem",
