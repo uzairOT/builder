@@ -89,7 +89,7 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
                 }}
                 spacing={{ xl: 0.5, lg: 0.5, md: 0, sm: 0.5, xs: 0.5 }}
               >
-                <Typography
+                {/* <Typography
                   fontSize={"9px"}
                   fontWeight={"700"}
                   pl={0.2}
@@ -97,7 +97,7 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
                 
                 >
                   ${formatMoney(TotalProfit)}
-                </Typography>
+                </Typography> */}
                 <Typography
                   fontSize={"9px"}
                   fontFamily={"Inter, sans-serif"}
@@ -129,7 +129,7 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
                 }}
                 spacing={{ xl: 0.5, lg: 0.5, md: 0, sm: 0.5, xs: 0.5 }}
               >
-                <Typography
+                {/* <Typography
                   fontSize={"9px"}
                   fontWeight={"700"}
                   pl={0.2}
@@ -138,7 +138,7 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
                  
                 >
                   ${formatMoney(totalProfitFromPaidInvoices)}
-                </Typography>
+                </Typography> */}
                 <Typography fontSize={"9px"} fontFamily={"Inter, sans-serif"}>
                   Margin
                 </Typography>
