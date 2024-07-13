@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   Divider,
   List,
   ListItem,
@@ -25,6 +26,7 @@ import TabList from "@mui/joy/TabList";
 import TabPanel from "@mui/joy/TabPanel";
 import Tabs from "@mui/joy/Tabs";
 import Tab from "@mui/joy/Tab";
+import BuilderProButton from "../../UI/Button/BuilderProButton";
 let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
 const currentUser = userInfo?.user;
@@ -120,14 +122,18 @@ const ConversationList = ({
         Chat
       </Typography>
       <Stack direction={"row"} width={"100%"}>
+        <Button sx={{fontSize:12, borderRadius:15, fontSize:'14px !important',backgroundColor:"#FFAC00", margin:1}} marginLeft={{xl:"20px",lg:"2px",}} >
         <Select
+        IconComponent={''}
           value={""}
           displayEmpty
           onChange={handleSelectChangeEvent}
-          sx={{ width: "100%" , "& .Mui-focused": {border:'none', borderWidth:'0px !important'}, ".MuiOutlinedInput-notchedOutline": {border:'none', borderWidth:'0px !important'}}}
+          sx={{ padding:0,width: "100%", height:"18px", "& .Mui-focused": {border:'none',  borderWidth:'0px !important'}, ".MuiOutlinedInput-notchedOutline": {border:'none', borderWidth:'0px !important'}}}
         >
-          <MenuItem disabled value="">
-            <em>Start a new converstion</em>
+          <MenuItem style={{color:"black", fontWeight:"600px",fontSize:"10px !important"}}  disabled value="">
+          <Typography fontSize={{xl:"11px", lg:'9px'}} pt={0.5} ml={0.6}>
+            Start New Converstion
+          </Typography>
           </MenuItem>
           <MenuItem value={id} disabled={value === id}>
             <Typography>Project Chat: {projectName}</Typography>
@@ -159,6 +165,7 @@ const ConversationList = ({
             );
           })}
         </Select>
+        </Button>
       </Stack>
       {/* <Box sx={{ width: "100%" }}> */}
       <Tabs aria-label="Basic tabs" value={tabValue} onChange={handleTabChange}>

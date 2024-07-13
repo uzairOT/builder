@@ -363,7 +363,7 @@ function ProfileView() {
                 sx={textAreaStyle}
               />
             </Grid> */}
-            <Grid item xs={12} sx={{ display: "flex", gap: 1, my: 6.1 }}>
+            <Grid item xs={12} sx={{ display: "flex", gap: 2, my: 6.1 }}>
               <Button
                 sx={{ whiteSpace: "nowrap" }}
                 buttonText="Update Profile"
