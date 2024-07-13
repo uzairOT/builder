@@ -50,7 +50,7 @@ const Dashboard = () => {
       <main>
         <Grid sx={themeStyle.dashboard} container pt={1}>
           {/* Profile View */}
-          <Grid item xs={12} sm={4} md={3.5} lg={2} xl={2}>
+          <Grid item xs={12} sm={4} md={3.5} lg={2} xl={2} mt={'7px'}>
             <Paper
               sx={{
                 borderRadius: "0 14px 14px 0",

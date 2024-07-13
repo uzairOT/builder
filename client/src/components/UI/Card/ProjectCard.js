@@ -108,6 +108,7 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
             textOverflow: "ellipsis",
             fontSize: { xl: "14px", lg: "12px", md: "14px", xs: "14px" },
             fontWeight:'550',
+            textTransform:'uppercase'
           }}
         >
           {projectProfileCard.projectName}
@@ -121,7 +122,7 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
                 color:"#848484",
               }}
             >
-              Client name: {projectProfileCard.clientName ? projectProfileCard.clientName : "No Client Name"}
+              Client Name: {projectProfileCard.clientName ? projectProfileCard.clientName : "-"}
             </Typography>
             <Typography
               variant="body1"
@@ -139,7 +140,7 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
                 color:  "#848484",
               }}
             >
-              Location: {projectProfileCard.location}
+              Location: {projectProfileCard.location ? projectProfileCard.location : '-'}
             </Typography>
           </>
         ) : (

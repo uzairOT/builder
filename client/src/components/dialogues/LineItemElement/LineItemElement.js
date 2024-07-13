@@ -576,6 +576,7 @@ function AddLineElement({
                 freeSolo
                 disableClearable
                 id="phaseName"
+                // maxLength={}
                 // openOnFocus
                 options={
                   autoComplete ? autoComplete.map((option) => option.title) : []
@@ -621,14 +622,15 @@ function AddLineElement({
                     variant="standard"
                     placeholder="e.g: Demolition"
                     // value={formData.phaseName}
-                    onFocus={() => {}}
+                    // onFocus={() => {}}
                     onChange={(event) => setPhaseName(event.target.value)} // Assuming setPhaseName is your state updater function
                     required
                     InputLabelProps={{ display: "none" }}
+                    // inputProps={{
+                    //   maxLength:50
+                    // }}
                     // InputProps={{
-                    //   inputProps: {
-                    //     maxLength: 10
-                    //   }
+                    //   maxLength:50
                     // }}
                   />
                 )}

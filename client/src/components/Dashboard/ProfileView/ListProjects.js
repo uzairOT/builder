@@ -148,7 +148,7 @@ const ListProjects = () => {
           },
         }}
         pb={2}
-        pt={1}
+        pt={2}
       >
         {error ? (
           <>
@@ -186,19 +186,22 @@ const ListProjects = () => {
           </Stack>
         )}
       </Box>
-      <Stack pt={0.5}>
-        <BuilderProButton
-          variant={"contained"}
-          backgroundColor={"#FFAC00"}
-          fontFamily={"inherit"}
-          fontSize={"12px"}
-          marginLeft={0}
-          handleOnClick={() => {
-            navigate("/assignproject");
-          }}
-        >
-          Add New Project
-        </BuilderProButton>
+      <Stack justifyContent={'center'}>
+        <Stack pt={0.5} width={"90%"} alignSelf={"center"}>
+          <BuilderProButton
+            variant={"contained"}
+            backgroundColor={"#FFAC00"}
+            fontFamily={"inherit"}
+            fontSize={"16px"}
+            marginLeft={0}
+            fontWeight={600}
+            handleOnClick={() => {
+              navigate("/assignproject");
+            }}
+          >
+            Add New Project
+          </BuilderProButton>
+        </Stack>
       </Stack>
     </Box>
   );

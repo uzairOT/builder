@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { setCredentials } from "../../../redux/slices/authSlice";
 
 function Footer({ onNextStep, projectId }) {
+  const phases = useSelector((state) => state.projectInitialProposal.phases);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -36,6 +37,10 @@ function Footer({ onNextStep, projectId }) {
     //console.log(res);
   };
   const handleDone = async () => {
+    if(phases[0]?.length < 1){
+      toast.error('Please add atleast one phase');
+      return;
+    }
     try {
       const res = await setProjectToIncomplete({
         userId: userId,
@@ -99,11 +104,11 @@ function Footer({ onNextStep, projectId }) {
         <Stack mt={1} justifyContent={'center'} alignItems={'center'}>
 
         <Typography sx={{ ...redText }}>
-          Save to return back to editing your Project.
+          Save to return back to edit your project.
         </Typography>
         <Typography sx={{ ...redText }}>
-          Save as to start the Duplicate the Project with same line Item and
-          Phases.
+          Save as to start a duplicate project with the same line items and
+          phases.
         </Typography>
         </Stack>
         <div>

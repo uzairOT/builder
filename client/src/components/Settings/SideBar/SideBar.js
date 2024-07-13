@@ -7,7 +7,7 @@ function SideBar() {
   const location = useLocation();
 
   const paths = [
-    "/settings/profile",
+    "/settings",
     "/settings/materline",
     "/settings/units",
     "/settings/admin",
@@ -29,7 +29,7 @@ function SideBar() {
       <List sx={{ ...listHeading, fontSize: "1rem", marginTop: "2rem" }}>
         <ListItem
           component={Link}
-          to="/settings/profile"
+          to="/settings"
           selected={selectedItem === 0}
           sx={listItemStyle}
         >
@@ -136,10 +136,11 @@ const listHeading = {
 const listItemStyle = {
   color: "#000",
   height: "46px",
-  marginBottom: "1rem",
+  // marginBottom: "1rem",
   cursor: "pointer",
-  fontWeight: '600',
+  fontWeight: '400',
   marginBottom: "0px",
+  padding:'4px',
 
   "&:hover": {
     //   backgroundColor: "#E9F6FF",

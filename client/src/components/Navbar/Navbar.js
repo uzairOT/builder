@@ -232,7 +232,7 @@ const Navbar = () => {
       background: "#FFF",
       boxShadow: "0px 1px 1.3px 0px rgba(0, 0, 0, 0.05)",
       padding: "4px 16px 4px 16px",
-      height: "65px",
+      height: "92px",
     },
     logo: {
       width: "85%",
@@ -246,9 +246,10 @@ const Navbar = () => {
     },
     getTabColor: (tabIndex) => ({
       fontFamily: "inherit",
-      color: selectedTab === tabIndex ? "#FFAC00" : "",
+      color: selectedTab === tabIndex ? "#FFAC00" : "#4C8AB1",
       textTransform: "capitalize",
-      fontSize: "15px",
+      fontSize: "17px",
+      fontWeight:'600'
     }),
     search: {
       display: { xl: "flex", lg: "flex", md: "flex" },

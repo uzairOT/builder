@@ -179,7 +179,7 @@ const formInnerBox = {
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
-  gap: { lg: "2rem", md: "1.5rem", sm: "1rem", xs: "0.5rem" },
+  gap: { lg: "1rem", md: "1rem", sm: "1rem", xs: "0.5rem" },
 };
 const fieldBox1 = {
   flex: 4,

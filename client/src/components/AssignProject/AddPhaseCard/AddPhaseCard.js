@@ -484,18 +484,18 @@ const handleConfirmDelete = async (confirm) => {
             <Table sx={{ width: "100%" }}>
               <TableHead sx={{ width: "100%" }}>
                 <TableRow>
-                  {!InitialProposalView && (
+                 
                     <>
                     <TableCell>
                      
                     </TableCell>
                     </>
-                  )}
+                  
                   <TableCell sx={{ ...tableHeadings }}>Line Item</TableCell>
 
                   {/* <TableCell sx={tableHeadings}>Description</TableCell> */}
                   <TableCell sx={tableHeadings}>Unit</TableCell>
-                  {!(
+                  {/* {!(
                     userRoleAuth.userRole === "client" ||
                     userRoleAuth.userRole === "employee" ||
                     userRoleAuth.userRole === "subcontractor" ||
@@ -507,7 +507,7 @@ const handleConfirmDelete = async (confirm) => {
                     userRoleAuth.userRole === "subcontractor" ||
                     userRoleAuth.userRole === "supplier"
                   ) && <TableCell sx={tableHeadings}>Cost</TableCell>}
-                  <TableCell sx={tableHeadings}>Quantity</TableCell>
+                  <TableCell sx={tableHeadings}>Quantity</TableCell> */}
                   {!(path === "assignproject") && (
                     <TableCell sx={tableHeadings}>Start</TableCell>
                   )}
@@ -521,11 +521,11 @@ const handleConfirmDelete = async (confirm) => {
                     userRoleAuth.userRole === "supplier"
                   ) && <TableCell sx={tableHeadings}>Profit</TableCell>}
                   <TableCell sx={tableHeadings}>Total Cost</TableCell>
-                  {(userRoleAuth.userRole === "superadmin" ||
+                  {/* {(userRoleAuth.userRole === "superadmin" ||
                     userRoleAuth.userRole === "admin" ||
                     userRoleAuth.userRole === "projectManager") && (
                     <TableCell sx={tableHeadings}>Arrears</TableCell>
-                  )}
+                  )} */}
                   <TableCell sx={tableHeadings}>Notes</TableCell>
                   {adminProjectView && (
                     <>
@@ -576,9 +576,11 @@ const handleConfirmDelete = async (confirm) => {
                   }
                   return (
                     <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
-                      {!InitialProposalView && (
+                    
                         <TableCell sx={tableCell}>
-                          {!(path === "assignproject") &&
+                         {!InitialProposalView &&
+                         (<>
+                         {!(path === "assignproject") &&
                             !(view === "Generate Invoice") &&
                             (row.status === "Work Order Not requested" ||
                               row.status === "Work Order declined" ||
@@ -593,7 +595,7 @@ const handleConfirmDelete = async (confirm) => {
                                 }
                                 onChange={() => handleCheckboxChange(row)}
                               />
-                            )}
+                            )}</>)}
                           {view === "Generate Invoice" &&
                             !(row.paymentPending === "0") && (
                               <Checkbox
@@ -608,13 +610,13 @@ const handleConfirmDelete = async (confirm) => {
                               />
                             )}
                         </TableCell>
-                      )}
+                    
                       <TableCell sx={tableCell} component="th" scope="row">
                         {row.title}
                       </TableCell>
                       {/* <TableCell>{row.description}</TableCell> */}
                       <TableCell sx={tableCell}>{row.unit}</TableCell>
-                      {!(
+                      {/* {!(
                         userRoleAuth.userRole === "client" ||
                         userRoleAuth.userRole === "employee" ||
                         userRoleAuth.userRole === "subcontractor" ||
@@ -629,7 +631,7 @@ const handleConfirmDelete = async (confirm) => {
                         userRoleAuth.userRole === "supplier"
                       ) && <TableCell sx={tableCell}>${formatMoney(row.total)}</TableCell>}
 
-                      <TableCell sx={tableCell}>{row.quantity}</TableCell>
+                      <TableCell sx={tableCell}>{row.quantity}</TableCell> */}
                       {!(path === "assignproject") && (
                         <TableCell sx={tableCell}>
                           {row?.start_day
@@ -658,13 +660,13 @@ const handleConfirmDelete = async (confirm) => {
                       <TableCell sx={tableCell}>
                         ${formatMoney(Number(row.total) + Number(row.margin))}
                       </TableCell>
-                      {(userRoleAuth.userRole === "superadmin" ||
+                      {/* {(userRoleAuth.userRole === "superadmin" ||
                         userRoleAuth.userRole === "admin" ||
                         userRoleAuth.userRole === "projectManager") && (
                         <TableCell sx={tableCell}>
                           ${formatMoney(row.paymentPending)}
                         </TableCell>
-                      )}
+                      )} */}
                       <TableCell sx={tableCell}>{row.notes}</TableCell>
                       {adminProjectView && (
                         <>

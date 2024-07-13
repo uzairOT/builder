@@ -44,7 +44,7 @@ function ProfileView() {
   const [fileType, setFileType] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
   const [image, setImage] = useState(user ? user.user.image : null);
-  const [phone, setPhone] = useState(user ? user.user.phoneNumber : "");
+  const [phone, setPhone] = useState(user.user.phoneNumber ? user.user.phoneNumber : "");
   const [phoneIsValid, setPhoneIsValid] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);

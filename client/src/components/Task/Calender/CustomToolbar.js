@@ -109,7 +109,9 @@ const CustomToolbar = ({
         color: "#4C8AB1",
       },
     },
-    monthEventHeader: {},
+    monthEventHeader: {
+      fontSize:'15px'
+    },
   };
   //
 

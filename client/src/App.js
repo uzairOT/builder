@@ -258,7 +258,7 @@ function App() {
             <Route path="/completion" element={<Completion />} />
             <Route path="/settings" element={<Layout3 />}>
               <Route index element={<Profile />} />
-              <Route path="profile" element={<Profile />} />
+              <Route path="" element={<Profile />} />
               <Route path="admin" element={<Admin />} />
               <Route path="projectManager" element={<ProjectManager />} />
               <Route path="client" element={<Client />} />
