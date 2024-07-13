@@ -46,7 +46,7 @@ const ProgressCard = ({ project }) => {
           <PaymentDetails totalProjectCost={totalProjectCost} />
         </Stack>
         <Divider variant="fullWidth"></Divider>
-        <ProfitDetails TotalProfit={TotalProfit} totalProfitFromPaidInvoices={totalProfitFromPaidInvoices} />
+        <ProfitDetails TotalProfit={TotalProfit} totalProjectCost={totalProjectCost} totalProfitFromPaidInvoices={totalProfitFromPaidInvoices} />
       </Link>
     </Box>
   );

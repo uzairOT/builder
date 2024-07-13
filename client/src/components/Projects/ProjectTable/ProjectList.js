@@ -499,7 +499,7 @@ const ProjectList = ({
                           />
                         </TableCell>
                         <TableCell sx={themeStyle.tableCell}>
-                          {row.clientName}
+                          {row.clientName ? row.clientName : 'No Client Name'}
                         </TableCell>
                         <TableCell sx={themeStyle.tableCell}>
                           {row.projectName}

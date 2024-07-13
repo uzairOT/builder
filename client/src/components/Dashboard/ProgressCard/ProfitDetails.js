@@ -4,14 +4,16 @@ import RadialBarsChart from "../../UI/Charts/RadialBarsChart";
 import React from "react";
 import { formatMoney } from "../../../utils/Formatters/moneyFormat";
 import { Textarea } from "@mui/joy";
+import { valueFormatter } from "../../../utils/Formatters/valueFormatter";
 
-const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
+const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectCost }) => {
+  const percentage = (parseFloat(TotalProfit)/parseFloat(totalProjectCost)) * 100;
   return (
     <Stack pt={2} justifyContent={"center"}>
       <Typography pl={4} textAlign={"left"} sx={themeStyle.title}>
         Profit Details
       </Typography>
-      <Stack pl={4} direction={"row"} width={"100%"} pt={2}>
+      <Stack pl={0} direction={"row"} justifyContent={"center"} width={"100%"} pt={2}>
         <Box>
           <Stack direction={"row"} sx={themeStyle.innerStackLayout}>
             <Typography textAlign={"left"} sx={themeStyle.innerTitle}>
@@ -34,7 +36,7 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
               Margin
             </Typography>
             <Typography textAlign={"left"} sx={themeStyle.innerSubtitle}>
-              ${formatMoney(totalProfitFromPaidInvoices)}
+              {isNaN(percentage)  ? 0 : percentage?.toFixed(2)}%
             </Typography>
           </Stack>
         </Box>

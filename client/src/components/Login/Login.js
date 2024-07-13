@@ -495,7 +495,7 @@ const Login = () => {
 
 const firstGrid = {
   padding: {
-    xl: "3rem 3rem 0rem 3rem",
+    xl: "3.5rem 3rem 0rem 3rem",
     lg: "1.19rem 3rem 0rem 3rem",
     md: "2rem 2rem",
     sm: "0rem 2rem",
@@ -518,6 +518,7 @@ const SecondGrid = {
   },
   display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
   flexDirection: "column",
+  marginTop:'0.5rem'
 };
 
 const downloadForMobBox = {
@@ -557,9 +558,9 @@ const formGrid = {
   boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
   flexDirection: "column",
   display: "flex",
-  padding: "20px",
+  padding: "15px",
   paddingLeft: { lg: "2.5rem", md: "1rem", sm: "2rem", xs: "1rem" },
-  paddingRight: { lg: "5rem", md: "2rem", sm: "2rem", xs: "2rem" },
+  paddingRight: { lg: "2.5rem", md: "1rem", sm: "2rem", xs: "1rem" },
   marginLeft: { lg: "3rem", md: "2rem", sm: "0rem", xs: "0rem" },
   borderRadius: {
     lg: "1.5rem",
@@ -575,7 +576,7 @@ const logoBox = {
   marginBottom: "1rem",
   justifyContent: "space-between",
   alignItems: "center",
-  marginTop: "2rem",
+  marginTop: "1rem",
   display: "flex",
 };
 
@@ -753,7 +754,7 @@ const formHeadingStyle = {
 const inputStyle = {
   height: "2.5rem",
   alignSelf: "stretch",
-  width: "100%",
+  width: "calc(100% - 16px)",
   fontSize: "14px",
   border: "1px solid #ccc",
   borderRadius: "0.75rem",
