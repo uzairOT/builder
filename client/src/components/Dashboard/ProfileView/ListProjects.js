@@ -188,7 +188,7 @@ const ListProjects = () => {
         )}
       </Box>
       <Stack justifyContent={'center'}>
-        <Stack pt={0.5} width={"90%"} alignSelf={"center"}>
+        <Stack pt={0.5} pb={0.5} width={"90%"} alignSelf={"center"}>
           <BuilderProButton
             variant={"contained"}
             backgroundColor={"#FFAC00"}

@@ -177,6 +177,10 @@ const themeStyle = {
     color: "#616161",
     fontSize: {md:"13px", xs:"11px"},
     height: "28px",
+    ".MuiOutlinedInput-notchedOutline " :{
+      border: 'none',
+      borderColor: 'transparent'
+    }
   },
   degreeDropdownMenuItem: {
     paddingLeft: "20px",
