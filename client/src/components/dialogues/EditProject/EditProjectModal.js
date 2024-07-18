@@ -14,6 +14,8 @@ import {
   Stack,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import Button from "../../UI/CustomButton";
@@ -71,6 +73,8 @@ function EditProjectModal({ title, open, onClose, project, page }) {
     filter: "",
     page: page,
   });
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const colors = [
     "#FFF",
@@ -284,8 +288,8 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                   <img
                     src={image ? image : UploadIcon}
                     alt=""
-                    width={"120px"}
-                    height={"120px"}
+                    width={isMobile?"80px":"120px"}
+                    height={isMobile?"80px":"120px"}
                   />
 
                   {/* Text */}
