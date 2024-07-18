@@ -144,7 +144,7 @@ const ListProjects = () => {
             xl: "calc(90vh - 445px)",
             lg: "calc(90vh - 425px)",
             md: "calc(90vh - 275px)",
-            xs: "calc(100vh)",
+            xs: "calc(33vh)",
           },
         }}
         pb={2}

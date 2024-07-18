@@ -44,6 +44,7 @@ import { useLocation } from "react-router-dom";
 import { formatMoney } from "../../../utils/Formatters/moneyFormat";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
 //import "react-toastify/dist/ReactToastify.css";
+import AddIcon from "@mui/icons-material/Add";
 
 const initialRows = [
   {
@@ -99,7 +100,7 @@ const AddPhaseCard = ({
   authUserRole,
   changeOrder,
   view,
-  isLineItems
+  isLineItems,
 }) => {
   const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
   const [showAddLine, setShowAddLine] = useState(false);
@@ -107,14 +108,14 @@ const AddPhaseCard = ({
   const [showUpdateUserStatus, setShowUpdateUserStatus] = useState(false);
   const [showTeamStatus, setShowTeamStatus] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
-  const [lineItemId, setLineItemId] = useState(null)
+  const [lineItemId, setLineItemId] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [rows, setRows] = useState(initialRows);
   const user = useSelector((state) => state.auth.userInfo);
   const userId = user.user.id;
   const userRoleAuth = useSelector(getUserRoleFromRedux);
   console.log(userRoleAuth);
-  const [deletePhaseLine, {isLoading}] = useDeletePhaseLineMutation();
+  const [deletePhaseLine, { isLoading }] = useDeletePhaseLineMutation();
   console.log(adminProjectView);
   const dispatch = useDispatch();
   const { rowCheckbox } = useSelector(selectAddPhase);
@@ -161,23 +162,23 @@ const AddPhaseCard = ({
     const updatedSelectedRows = isChecked ? rows.map((_, index) => index) : [];
     setSelectedRows(updatedSelectedRows);
   };
-const handleOpenModalClose = () => {
-  setOpenModal(false);
-}
+  const handleOpenModalClose = () => {
+    setOpenModal(false);
+  };
 
-const handleDeleteLineItem = (lineItemId) => {
-  setLineItemId(lineItemId);
-  setOpenModal(true);
-}
-const handleConfirmDelete = async (confirm) => {
-  if(confirm){
-    await handleDeleteSelectedRows(lineItemId)
-    handleOpenModalClose();
-  }else{
-    setLineItemId(null)
-    handleOpenModalClose()
-  }
-}
+  const handleDeleteLineItem = (lineItemId) => {
+    setLineItemId(lineItemId);
+    setOpenModal(true);
+  };
+  const handleConfirmDelete = async (confirm) => {
+    if (confirm) {
+      await handleDeleteSelectedRows(lineItemId);
+      handleOpenModalClose();
+    } else {
+      setLineItemId(null);
+      handleOpenModalClose();
+    }
+  };
   const handleDeleteSelectedRows = async (lineItemId) => {
     // const updatedRows = rows.filter((_, index) => !selectedRows.includes(index));
     // // Handle the updated rows according to your application logic
@@ -303,7 +304,7 @@ const handleConfirmDelete = async (confirm) => {
   // console.log('PHASE :', phaseData)
 
   return (
-    <div style={{ width: "100%", }}>
+    <div style={{ width: "100%" }}>
       <Grid
         item
         lg={12}
@@ -311,8 +312,7 @@ const handleConfirmDelete = async (confirm) => {
           ...firstGrid,
           backgroundColor: `${phaseData?.color}`,
           width: "100%",
-          padding:"16px"
-          
+          padding: "16px",
         }}
       >
         <Box sx={headingsBox} onClick={() => handleSelectCard(phaseData.id)}>
@@ -340,7 +340,7 @@ const handleConfirmDelete = async (confirm) => {
                   paddingLeft: "1rem",
                   paddingRight: "1rem",
                   fontWeight: "600",
-                  fontSize: {xl:"26px", lg:18,md:26,xs:16},
+                  fontSize: { xl: "26px", lg: 18, md: 26, xs: 16 },
                 }}
               >
                 {phaseData.phase_name}
@@ -408,44 +408,80 @@ const handleConfirmDelete = async (confirm) => {
                   userRoleAuth.userRole === "admin" ||
                   userRoleAuth.userRole === "projectManager" ||
                   userRoleAuth.userRole === "") && (
-                  <Button
+                    <Button
                     sx={{
                       ...actionButton,
                       background: "#4C8AB1",
                       marginTop: "0.7rem",
                       marginBottom: "1rem",
-                      marginRight: {
-                        lg: "1rem",
-                        md: "1rem",
-                        sm: "1rem",
-                        xs: "1rem",
+                      marginRight: "1rem",
+                      '@media (max-width: 600px)': {
+                        minWidth: 0,
+                        width: '2.5rem',
+                        height: '2.5rem',
+                        borderRadius: '50%',
+                        padding: 0,
+                        fontSize: '0.75rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                       },
                     }}
                     onClick={handleAddLine}
                   >
-                    Add Line Item
+                    <AddIcon
+                      sx={{
+                        '@media (min-width: 601px)': { display: 'none' }
+                      }}
+                    />
+                    <Typography
+                      style={{
+                        '@media (min-width: 601px)':{display: 'inline'},
+                        '@media (max-width: 600px)': { display: 'none' }
+                      }}
+                    >
+                      Add Line Item
+                    </Typography>
                   </Button>
                 )
               : (userRoleAuth.userRole === "admin" ||
                   userRoleAuth.userRole === "superadmin" ||
                   userRoleAuth.userRole === "projectManager" ||
                   userRoleAuth.userRole === "") && (
-                  <Button
+                    <Button
                     sx={{
                       ...actionButton,
                       background: "#4C8AB1",
                       marginTop: "0.7rem",
                       marginBottom: "1rem",
-                      marginRight: {
-                        lg: "1rem",
-                        md: "1rem",
-                        sm: "1rem",
-                        xs: "1rem",
+                      marginRight: "1rem",
+                      '@media (max-width: 600px)': {
+                        minWidth: 0,
+                        width: '2.5rem',
+                        height: '2.5rem',
+                        borderRadius: '50%',
+                        padding: 0,
+                        fontSize: '0.75rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                       },
                     }}
                     onClick={handleAddLine}
                   >
-                    Add Line Item
+                    <AddIcon
+                      sx={{
+                        '@media (min-width: 601px)': { display: 'none' }
+                      }}
+                    />
+                    <Typography
+                      sx={{
+                        '@media (min-width: 601px)':{display: 'inline'},
+                        '@media (max-width: 600px)': { display: 'none' }
+                      }}
+                    >
+                      Add Line Item
+                    </Typography>
                   </Button>
                 )}
           </Box>
@@ -486,9 +522,7 @@ const handleConfirmDelete = async (confirm) => {
                 <TableRow>
                   {!InitialProposalView && (
                     <>
-                    <TableCell>
-                     
-                    </TableCell>
+                      <TableCell></TableCell>
                     </>
                   )}
                   <TableCell sx={{ ...tableHeadings }}>Line Item</TableCell>
@@ -620,14 +654,20 @@ const handleConfirmDelete = async (confirm) => {
                         userRoleAuth.userRole === "subcontractor" ||
                         userRoleAuth.userRole === "supplier"
                       ) && (
-                        <TableCell sx={tableCell}>${formatMoney(row.unit_price)}</TableCell>
+                        <TableCell sx={tableCell}>
+                          ${formatMoney(row.unit_price)}
+                        </TableCell>
                       )}
                       {!(
                         userRoleAuth.userRole === "client" ||
                         userRoleAuth.userRole === "employee" ||
                         userRoleAuth.userRole === "subcontractor" ||
                         userRoleAuth.userRole === "supplier"
-                      ) && <TableCell sx={tableCell}>${formatMoney(row.total)}</TableCell>}
+                      ) && (
+                        <TableCell sx={tableCell}>
+                          ${formatMoney(row.total)}
+                        </TableCell>
+                      )}
 
                       <TableCell sx={tableCell}>{row.quantity}</TableCell>
                       {!(path === "assignproject") && (
@@ -654,7 +694,11 @@ const handleConfirmDelete = async (confirm) => {
                         userRoleAuth.userRole === "employee" ||
                         userRoleAuth.userRole === "subcontractor" ||
                         userRoleAuth.userRole === "supplier"
-                      ) && <TableCell sx={tableCell}>${formatMoney(row?.margin)}</TableCell>}
+                      ) && (
+                        <TableCell sx={tableCell}>
+                          ${formatMoney(row?.margin)}
+                        </TableCell>
+                      )}
                       <TableCell sx={tableCell}>
                         ${formatMoney(Number(row.total) + Number(row.margin))}
                       </TableCell>
@@ -793,12 +837,12 @@ const handleConfirmDelete = async (confirm) => {
         )}
         {openModal && (
           <AreYouSureModal
-          open={openModal}
-          handleClose={handleOpenModalClose}
-          handleConfirmDelete={handleConfirmDelete}
-          isLoading={isLoading}
-          text={'Line Item'}
-        />
+            open={openModal}
+            handleClose={handleOpenModalClose}
+            handleConfirmDelete={handleConfirmDelete}
+            isLoading={isLoading}
+            text={"Line Item"}
+          />
         )}
       </Grid>
     </div>
@@ -840,7 +884,7 @@ const headingInnerBox = {
   whiteSpace: "nowrap",
   gap: { xl: "9rem", lg: "6rem", md: "2rem", sm: "auto", xs: "auto" },
   width: "100%",
-  };
+};
 const phaseBox = {
   display: "flex",
   justifyContent: "center",
@@ -855,7 +899,7 @@ const tableGrid = {
   borderBottomLeftRadius: "7px",
   padding: "1rem 0rem",
   width: "100%",
-  fontSize:{lg:"10px"}
+  fontSize: { lg: "10px" },
 };
 const blackHeading = {
   fontFamily: "Arial Rounded MT, sans-serif",
@@ -868,7 +912,7 @@ const blackHeading = {
   marginTop: "1rem",
 };
 const listOfLineText = {
-  fontSize:{xl:"1.25rem",lg:16,md:"1.25rem",xs:"1.25rem",},
+  fontSize: { xl: "1.25rem", lg: 16, md: "1.25rem", xs: "1.25rem" },
   fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 400,
   paddingLeft: "2rem",
@@ -884,7 +928,7 @@ const tableHeadings = {
   fontSize: "0.9rem",
   color: "#8C8C8C",
   padding: "8px !important",
-  textAlign:'left'
+  textAlign: "left",
   // paddingLeft: "0rem",
 };
 const tableCell = {
@@ -897,7 +941,7 @@ const tableCell = {
   // color: "#8C8C8C",
   padding: "8px !important",
   // paddingLeft: "0rem",
-  textAlign:'left'
+  textAlign: "left",
 };
 const hrLine = {
   width: "100%",

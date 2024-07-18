@@ -123,6 +123,7 @@ const firstGrid = {
 };
 const buttonBox = {
   display: "flex",
+  flexDirection:{xl:"row",lg:"row",md:"row",sm:"row",xs:"column"},
   justifyContent: "space-between",
   gap: "2.3rem",
 };

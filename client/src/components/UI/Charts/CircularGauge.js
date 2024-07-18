@@ -32,7 +32,8 @@ const CircularGauge = ({ progress }) => {
   return (
     <Box
       sx={{
-        width: { xs: 180, md: 150, lg: 150, xl: 180 },
+        width: { xs: 160, md: 150, lg: 150, xl: 180 },
+        marginLeft:{xs:"-2"},
         textAlign: "center",
       }}
     >

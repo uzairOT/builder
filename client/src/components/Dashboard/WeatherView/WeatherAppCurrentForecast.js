@@ -175,7 +175,7 @@ const themeStyle = {
     borderRadius: "50px",
     fontFamily: "inherit",
     color: "#616161",
-    fontSize: "13px",
+    fontSize: {md:"13px", xs:"11px"},
     height: "28px",
   },
   degreeDropdownMenuItem: {
