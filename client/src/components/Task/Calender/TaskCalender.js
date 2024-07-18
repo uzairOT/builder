@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 
 import moment from 'moment-timezone'; // or .min.js
@@ -190,8 +190,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
   const messages = {
     allDay: 'Week'
   }
-
-
+  const filteredEvents = isProjectPage ? events.filter(event => !isProjectPage || event.data.projectId === id) : events;
 
   return (
 
@@ -201,7 +200,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
             defaultDate={moment()}
             defaultView="day"
             views={["day", "week", "month"]}
-            events={events}
+            events={filteredEvents}
             localizer={localizer}
             resizable={false}
             style={{ height: "100% " }}
@@ -210,6 +209,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
             messages={messages}
             min={startTime}
             max={endTime}
+           
           />
           </CalenderWrapper>
         </>

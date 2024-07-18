@@ -113,6 +113,10 @@ const ReportView = lazy(() =>
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.userInfo);
   const userId = isAuthenticated ? isAuthenticated?.user?.id : null;
+  let data = localStorage.getItem("userInfo");
+let userInfo = JSON.parse(data);
+const isInLocalStorage = userInfo?.user
+const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
   const [getUserRole] = useGetProjectUserRoleMutation();
   const userRole = useSelector(getUserRoleFromRedux);
   // const [loading, setLoading] = useState(true);
@@ -188,7 +192,7 @@ function App() {
           element={<InvoicePayment />}
         />
 
-        {isAuthenticated ? (
+        {(isAuthenticated && currentUser) ? (
           <Route path="/" element={<Layout1 />}>
             <Route index element={<Dashboard />} />
             <Route

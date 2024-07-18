@@ -307,7 +307,7 @@ const SignupComp = () => {
         </Box>
         <Box sx={googleAppImgsBox}>
         <a
-            href="https://play.google.com/store/apps?hl=en&gl=US&pli=1"
+            href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
             target="blank"
           >
             {" "}
@@ -320,7 +320,7 @@ const SignupComp = () => {
             />
           </a>
 
-          <a href="https://www.apple.com/store" target="blank">
+          <a href="https://testflight.apple.com/join/Fejy1iQ6" target="blank">
             <img
               src={appStore}
               width={'206px'}

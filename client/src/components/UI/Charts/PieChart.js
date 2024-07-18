@@ -13,7 +13,9 @@ const StyledText = styled("text")(({ theme }) => ({
   fontSize: 12,
   fontFamily: "inherit",
   color: "#000000B2",
-  fontWeight:'600'
+  fontWeight:'600',
+  width:'10ch !important',
+  overflow:'hidden'
 }));
 
 function PieCenterLabel({ children }) {

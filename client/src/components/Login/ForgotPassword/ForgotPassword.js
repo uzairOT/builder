@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import builder1 from "../../Signup/Assets/pngs/builderPro2.png";
 import {
   Box,
@@ -10,40 +12,46 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-
 import YellowBtn from "../../UI/button";
 import { useNavigate } from "react-router-dom";
 import { useForgetPasswordMutation } from "../../../redux/apis/usersApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setForgetPasswordEmail } from "../../../redux/slices/authSlice";
 import { toast } from "react-toastify";
-//import "react-toastify/dist/ReactToastify.css";
+
 const ForgotPassword = () => {
   const [forgetPassword] = useForgetPasswordMutation();
-  const [email, setEmail] = useState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const forgetPasswordEmail = useSelector(
     (state) => state.auth.forgetPasswordEmail
   );
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    if (email) {
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email("Invalid email address")
+        .required("Please Enter Email"),
+    }),
+    onSubmit: async (values) => {
       try {
+        dispatch(setForgetPasswordEmail(values.email));
         const res = await forgetPassword({
-          email: forgetPasswordEmail,
+          email: values.email,
         }).unwrap();
-        toast.success(res.message || res.data.message || 'Success');
-          navigate("/verifycode");
-        
-        } catch (err) {
-          console.log(err);
-          toast.error(err?.data?.error || err.error || err.data.message || 'Something went wrong!');
-        }
-    } else {
-      toast.error("Please Enter Email");
-    }
-  };
+        toast.success(res.message || res.data.message || "Success");
+        navigate("/verifycode");
+      } catch (err) {
+        console.log(err);
+        toast.error(
+          err?.data?.error || err.error || err.data.message || "Something went wrong!"
+        );
+      }
+    },
+  });
 
   return (
     <div
@@ -54,7 +62,7 @@ const ForgotPassword = () => {
         flexDirection: "column",
       }}
     >
-      {/* Box 1*/}
+      {/* Box 1 */}
       <Box
         sx={{
           margin: "3rem",
@@ -69,7 +77,7 @@ const ForgotPassword = () => {
       >
         <img alt="builder logo" width={"288px"} style={{}} src={builder1}></img>
       </Box>
-      {/* Box 2*/}
+      {/* Box 2 */}
       <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
         <Card
           sx={{
@@ -140,13 +148,21 @@ const ForgotPassword = () => {
                     width: "calc(100% - 32px)",
                     marginTop: "10px",
                   }}
-                  onChange={(e) => {
-                    dispatch(setForgetPasswordEmail(e.target.value));
-                    setEmail(e.target.value);
-                  }}
-                  value={email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
+                  name="email"
                   placeholder="john.doe@gmail.com"
-                ></input>
+                />
+                {formik.touched.email && formik.errors.email ? (
+                  <Typography
+                    variant="body2"
+                    color="error"
+                    sx={{ mt: 1 }}
+                  >
+                    {formik.errors.email}
+                  </Typography>
+                ) : null}
               </Box>
 
               <CardActions sx={{display:'flex', justifyContent:'center'}}>
@@ -154,7 +170,7 @@ const ForgotPassword = () => {
                   sx={{
                     ...YellowBtn,
                   }}
-                  onClick={submitHandler}
+                  onClick={formik.handleSubmit}
                 >
                   {"Submit"}
                 </Button>

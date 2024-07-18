@@ -21,6 +21,10 @@ function Footer({ onNextStep, projectId }) {
   const dispatch = useDispatch();
 
   const handleSaveAs = () => {
+    if(phases[0]?.length < 1){
+      toast.error('Please add atleast one phase');
+      return;
+    }
     onNextStep();
   };
 

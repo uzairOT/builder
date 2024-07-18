@@ -99,7 +99,7 @@ const AddPhaseCard = ({
   authUserRole,
   changeOrder,
   view,
-  isLineItems
+  isLineItems,
 }) => {
   const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
   const [showAddLine, setShowAddLine] = useState(false);
@@ -107,14 +107,14 @@ const AddPhaseCard = ({
   const [showUpdateUserStatus, setShowUpdateUserStatus] = useState(false);
   const [showTeamStatus, setShowTeamStatus] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
-  const [lineItemId, setLineItemId] = useState(null)
+  const [lineItemId, setLineItemId] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [rows, setRows] = useState(initialRows);
   const user = useSelector((state) => state.auth.userInfo);
   const userId = user.user.id;
   const userRoleAuth = useSelector(getUserRoleFromRedux);
   console.log(userRoleAuth);
-  const [deletePhaseLine, {isLoading}] = useDeletePhaseLineMutation();
+  const [deletePhaseLine, { isLoading }] = useDeletePhaseLineMutation();
   console.log(adminProjectView);
   const dispatch = useDispatch();
   const { rowCheckbox } = useSelector(selectAddPhase);
@@ -161,23 +161,23 @@ const AddPhaseCard = ({
     const updatedSelectedRows = isChecked ? rows.map((_, index) => index) : [];
     setSelectedRows(updatedSelectedRows);
   };
-const handleOpenModalClose = () => {
-  setOpenModal(false);
-}
+  const handleOpenModalClose = () => {
+    setOpenModal(false);
+  };
 
-const handleDeleteLineItem = (lineItemId) => {
-  setLineItemId(lineItemId);
-  setOpenModal(true);
-}
-const handleConfirmDelete = async (confirm) => {
-  if(confirm){
-    await handleDeleteSelectedRows(lineItemId)
-    handleOpenModalClose();
-  }else{
-    setLineItemId(null)
-    handleOpenModalClose()
-  }
-}
+  const handleDeleteLineItem = (lineItemId) => {
+    setLineItemId(lineItemId);
+    setOpenModal(true);
+  };
+  const handleConfirmDelete = async (confirm) => {
+    if (confirm) {
+      await handleDeleteSelectedRows(lineItemId);
+      handleOpenModalClose();
+    } else {
+      setLineItemId(null);
+      handleOpenModalClose();
+    }
+  };
   const handleDeleteSelectedRows = async (lineItemId) => {
     // const updatedRows = rows.filter((_, index) => !selectedRows.includes(index));
     // // Handle the updated rows according to your application logic
@@ -303,7 +303,7 @@ const handleConfirmDelete = async (confirm) => {
   // console.log('PHASE :', phaseData)
 
   return (
-    <div style={{ width: "100%", }}>
+    <div style={{ width: "100%" }}>
       <Grid
         item
         lg={12}
@@ -311,8 +311,7 @@ const handleConfirmDelete = async (confirm) => {
           ...firstGrid,
           backgroundColor: `${phaseData?.color}`,
           width: "100%",
-          padding:"16px"
-          
+          padding: "16px",
         }}
       >
         <Box sx={headingsBox} onClick={() => handleSelectCard(phaseData.id)}>
@@ -340,7 +339,7 @@ const handleConfirmDelete = async (confirm) => {
                   paddingLeft: "1rem",
                   paddingRight: "1rem",
                   fontWeight: "600",
-                  fontSize: {xl:"26px", lg:18,md:26,xs:16},
+                  fontSize: { xl: "26px", lg: 18, md: 26, xs: 16 },
                 }}
               >
                 {phaseData.phase_name}
@@ -484,13 +483,10 @@ const handleConfirmDelete = async (confirm) => {
             <Table sx={{ width: "100%" }}>
               <TableHead sx={{ width: "100%" }}>
                 <TableRow>
-                 
-                    <>
-                    <TableCell>
-                     
-                    </TableCell>
-                    </>
-                  
+                  <>
+                    <TableCell></TableCell>
+                  </>
+
                   <TableCell sx={{ ...tableHeadings }}>Line Item</TableCell>
 
                   {/* <TableCell sx={tableHeadings}>Description</TableCell> */}
@@ -575,42 +571,48 @@ const handleConfirmDelete = async (confirm) => {
                     return <></>;
                   }
                   return (
-                    <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
-                    
-                        <TableCell sx={tableCell}>
-                         {!InitialProposalView &&
-                         (<>
-                         {!(path === "assignproject") &&
-                            !(view === "Generate Invoice") &&
-                            (row.status === "Work Order Not requested" ||
-                              row.status === "Work Order declined" ||
-                              row.status === "Change Order declined") && (
-                              <Checkbox
-                                // checked={checkedRow === row}
-                                sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
-                                checked={
-                                  isRowSelected(row, row.phase_id)
-                                    ? isRowSelected(row, row.phase_id)
-                                    : false
-                                }
-                                onChange={() => handleCheckboxChange(row)}
-                              />
-                            )}</>)}
-                          {view === "Generate Invoice" &&
-                            !(row.paymentPending === "0") && (
-                              <Checkbox
-                                // checked={checkedRow === row}
-                                sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
-                                checked={
-                                  isRowSelected(row, row.phase_id)
-                                    ? isRowSelected(row, row.phase_id)
-                                    : false
-                                }
-                                onChange={() => handleCheckboxChange(row)}
-                              />
-                            )}
-                        </TableCell>
-                    
+                    <TableRow
+                      key={index}
+                      sx={{ paddingLeft: "4rem", maxHeight: "50px" }}
+                    >
+                      <TableCell sx={tableCell}>
+                        {!InitialProposalView && (
+                          <>
+                            {!(path === "assignproject") &&
+                              !(view === "Generate Invoice") &&
+                              (row.status === "Work Order Not requested" ||
+                                row.status === "Work Order declined" ||
+                                row.status === "Change Order declined") && (
+                                <Checkbox
+                                  // checked={checkedRow === row}
+                                  sx={{
+                                    "& .MuiSvgIcon-root": { fontSize: 20 },
+                                  }}
+                                  checked={
+                                    isRowSelected(row, row.phase_id)
+                                      ? isRowSelected(row, row.phase_id)
+                                      : false
+                                  }
+                                  onChange={() => handleCheckboxChange(row)}
+                                />
+                              )}
+                          </>
+                        )}
+                        {view === "Generate Invoice" &&
+                          !(row.paymentPending === "0") && (
+                            <Checkbox
+                              // checked={checkedRow === row}
+                              sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
+                              checked={
+                                isRowSelected(row, row.phase_id)
+                                  ? isRowSelected(row, row.phase_id)
+                                  : false
+                              }
+                              onChange={() => handleCheckboxChange(row)}
+                            />
+                          )}
+                      </TableCell>
+
                       <TableCell sx={tableCell} component="th" scope="row">
                         {row.title}
                       </TableCell>
@@ -656,7 +658,11 @@ const handleConfirmDelete = async (confirm) => {
                         userRoleAuth.userRole === "employee" ||
                         userRoleAuth.userRole === "subcontractor" ||
                         userRoleAuth.userRole === "supplier"
-                      ) && <TableCell sx={tableCell}>${formatMoney(row?.margin)}</TableCell>}
+                      ) && (
+                        <TableCell sx={tableCell}>
+                          ${formatMoney(row?.margin)}
+                        </TableCell>
+                      )}
                       <TableCell sx={tableCell}>
                         ${formatMoney(Number(row.total) + Number(row.margin))}
                       </TableCell>
@@ -667,7 +673,14 @@ const handleConfirmDelete = async (confirm) => {
                           ${formatMoney(row.paymentPending)}
                         </TableCell>
                       )} */}
-                      <TableCell sx={tableCell}>{row.notes}</TableCell>
+                      <TableCell sx={{ ...tableCell }}>
+                        <Typography
+                          maxHeight={"90px"}
+                          sx={{ fontWeight: 500, fontSize: "0.9rem", overflowY:'auto', textAlign:'center' }}
+                        >
+                          {row.notes}
+                        </Typography>
+                      </TableCell>
                       {adminProjectView && (
                         <>
                           {view === "Generate Invoice" ? (
@@ -780,6 +793,7 @@ const handleConfirmDelete = async (confirm) => {
             projectId={projectId}
             InitialProposalView={InitialProposalView}
             setRowCheckboxes={setRowCheckboxes}
+            showAddLine={showAddLine}
           />
         )}
         {showUpdateLine && (
@@ -791,16 +805,17 @@ const handleConfirmDelete = async (confirm) => {
             projectId={projectId}
             InitialProposalView={InitialProposalView}
             setRowCheckboxes={setRowCheckboxes}
+            showUpdateLine={showUpdateLine}
           />
         )}
         {openModal && (
           <AreYouSureModal
-          open={openModal}
-          handleClose={handleOpenModalClose}
-          handleConfirmDelete={handleConfirmDelete}
-          isLoading={isLoading}
-          text={'Line Item'}
-        />
+            open={openModal}
+            handleClose={handleOpenModalClose}
+            handleConfirmDelete={handleConfirmDelete}
+            isLoading={isLoading}
+            text={"Line Item"}
+          />
         )}
       </Grid>
     </div>
@@ -842,7 +857,7 @@ const headingInnerBox = {
   whiteSpace: "nowrap",
   gap: { xl: "9rem", lg: "6rem", md: "2rem", sm: "auto", xs: "auto" },
   width: "100%",
-  };
+};
 const phaseBox = {
   display: "flex",
   justifyContent: "center",
@@ -857,7 +872,7 @@ const tableGrid = {
   borderBottomLeftRadius: "7px",
   padding: "1rem 0rem",
   width: "100%",
-  fontSize:{lg:"10px"}
+  fontSize: { lg: "10px" },
 };
 const blackHeading = {
   fontFamily: "Arial Rounded MT, sans-serif",
@@ -870,7 +885,7 @@ const blackHeading = {
   marginTop: "1rem",
 };
 const listOfLineText = {
-  fontSize:{xl:"1.25rem",lg:16,md:"1.25rem",xs:"1.25rem",},
+  fontSize: { xl: "1.25rem", lg: 16, md: "1.25rem", xs: "1.25rem" },
   fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 400,
   paddingLeft: "2rem",
@@ -886,7 +901,7 @@ const tableHeadings = {
   fontSize: "0.9rem",
   color: "#8C8C8C",
   padding: "8px !important",
-  textAlign:'left'
+  textAlign: "left",
   // paddingLeft: "0rem",
 };
 const tableCell = {
@@ -899,7 +914,9 @@ const tableCell = {
   // color: "#8C8C8C",
   padding: "8px !important",
   // paddingLeft: "0rem",
-  textAlign:'left'
+  textAlign: "left",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 };
 const hrLine = {
   width: "100%",

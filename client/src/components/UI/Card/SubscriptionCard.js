@@ -99,6 +99,9 @@ const SubscriptionCard = ({
               >
                 <ListItemIcon><CheckSharpIcon sx={{color:'white',fontSize:{xl:24, lg:18}}}/></ListItemIcon>
                 <ListItemText
+                primaryTypographyProps={{
+                  fontSize:{xl:'14px', lg:'12px'}
+                }}
                   sx={{...themeStyle.bodyText, marginLeft:'-8px'}}
                   primary={`${value}  ${typeof plan.planPackage[index] === 'boolean' ? '' : `- ${plan.planPackage[index]}`}`}
                   // secondary={secondary ? `Secondary text: ${value}` : null}
@@ -141,7 +144,7 @@ const themeStyle = {
     fontFamily: "Arial Rounded MT, sans-serif",
   },
   bodyText: {
-    fontSize: {xl:"16px",lg:14,md:"16px",xs:"16px",},
+    fontSize: {xl:"16px",lg:"14px",md:"16px",xs:"16px",},
     fontWeight: "400",
     fontFamily: "Arial Rounded MT, sans-serif",
     color: "#FFF",

@@ -19,7 +19,7 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
             <Typography textAlign={"left"} sx={themeStyle.innerTitle}>
               Projected Profit
             </Typography>
-            <Typography textAlign={"left"} sx={themeStyle.innerSubtitle}>
+            <Typography textAlign={"left"} sx={{...themeStyle.innerSubtitle, maxWidth:'300px', overflow:'hidden', textOverflow:'ellipsis'}}>
               ${formatMoney(TotalProfit)}
             </Typography>
           </Stack>

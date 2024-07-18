@@ -62,7 +62,7 @@ const CustomToolbar = ({
     toolbarTitle: {
       color: "#707070",
       fontFamily: "inherit",
-      fontSize: { xl:18,md: 13, lg:10,xs:13,sm:13 } ,
+      fontSize: { xl:18,md: 13, lg:13,xs:13,sm:13 } ,
       fontStyle: "normal",
       fontWeight: 500,
     },
@@ -129,7 +129,7 @@ const CustomToolbar = ({
           pt={2}
           pb={2}
         >
-          <Typography sx={themeStyle.toolbarTitle} pl={1}>
+          <Typography sx={themeStyle.toolbarTitle} pl={{xl:1,lg:3, md:3, xs:3}}>
             Work Order
           </Typography>
           <Box element="div" style={themeStyle.toolbarButtonGroup}>

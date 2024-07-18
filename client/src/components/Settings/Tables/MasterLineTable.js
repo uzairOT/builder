@@ -202,7 +202,7 @@ function MasterLineTable({
                 </>
                 ) : data?.MasterLines?.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={10} sx={{ textAlign: "center" }}>
+                    <TableCell colSpan={10} sx={{ textAlign: "center", borderBottom:'none' }}>
                       No Records
                     </TableCell>
                   </TableRow>
@@ -272,7 +272,6 @@ const tableCellStyle = {
   fontWeight: 500,
   fontSize: "14px",
   fontFamily: "Poppins",
-  color: "#8C8C8C",
 };
 
 const tableCellValueStyle = {

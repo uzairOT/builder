@@ -18,6 +18,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  CircularProgress,
 } from "@mui/material";
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
@@ -46,6 +47,7 @@ const ShareModal = ({
   setInvoiceData,
   setRowCheckboxes,
 }) => {
+  let lineItemData = [];
   let loggedInUser = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(loggedInUser);
   const dispatch = useDispatch();
@@ -55,12 +57,14 @@ const ShareModal = ({
   const [percentage, setPercentage] = useState([[]]);
   const [userExits, setClientExists] = useState(false);
   const location = useLocation();
+  const [errorState, setErrorState] = useState([]);
   const pathSegments = location.pathname.split("/");
   const [selectedUser, setSelectedUser] = useState("");
   const projectId = pathSegments[2];
   const userAuth = userRoleAuth.userRole === "supplier";
   const { data, isError, refetch } = useGetProjectTeamQuery(projectId);
-  const [clientInvoice, { data: invoiceData, isLoading }] =
+  const [ isLoading, setIsLoading] = useState(false)
+  const [clientInvoice, { data: invoiceData }] =
     useClientInvoiceMutation();
   const [updatePhaseLine, { isLoading: updateIsLoading }] =
     useUpdatePhaseLineMutation();
@@ -75,7 +79,7 @@ const ShareModal = ({
         adminId: currentUser.id,
         projectId,
         supplier: userAuth,
-        enteredEmail: formik?.values?.email
+        enteredEmail: formik?.values?.email,
       }).unwrap();
       console.log("Success:", result);
       setInvoiceData(result);
@@ -138,7 +142,6 @@ const ShareModal = ({
     pendingPayment,
     automated = false
   ) => {
-    // Initialize the nested array structure if necessary
     setCurrentPayment((prevPayments) => {
       const updatedPayments = [...prevPayments];
 
@@ -154,12 +157,34 @@ const ShareModal = ({
 
       // Update the value at the specified index
       updatedPayments[outerIndex][index] = value;
+
+      // Perform validation
+      setErrorState((prevState) => {
+        const updatedErrorState = [...prevState];
+
+        // Ensure the outer array has enough arrays
+        while (updatedErrorState.length <= outerIndex) {
+          updatedErrorState.push([]);
+        }
+
+        // Ensure the inner array has enough elements
+        while (updatedErrorState[outerIndex].length <= index) {
+          updatedErrorState[outerIndex].push(false);
+        }
+
+        // Update the error state at the specified index
+        updatedErrorState[outerIndex][index] =
+          parseFloat(value) > parseFloat(pendingPayment);
+
+        return updatedErrorState;
+      });
+
       if (automated) {
         const percentage =
           (parseFloat(value) * 100) / parseFloat(pendingPayment);
-        // console.log(pendingPayment);
         handlePercentage(index, percentage, outerIndex, pendingPayment, false);
       }
+
       return updatedPayments;
     });
   };
@@ -217,13 +242,43 @@ const ShareModal = ({
       toast.warning("Please select a user");
       return;
     }
-    const result = await invoiceDataCall();
-    console.log(result);
-    if (result) {
-      setDone(true);
-      setShareToClient(false);
-    } else {
+    setIsLoading(true)
+    try {
+      await handleSetAllPayments();
+      const result = await invoiceDataCall();
+      console.log(result);
+      if (result) {
+        setDone(true);
+        setShareToClient(false);
+      } else {
+      }
+      
+    } catch (error) {
+      console.log(error);
     }
+    setIsLoading(false);
+  };
+  const handleSetAllPayments = async () => {
+    for (let i = 0; i < lineItemData.length; i++) {
+      const { outerIndex, index, id, pendingPayment } = lineItemData[i];
+      if (
+        parseFloat(currentPayment[outerIndex][index]) >
+        parseFloat(pendingPayment)
+      ) {
+        toast.error("Please enter a value less than the remaining cost");
+        return;
+      }
+      try {
+        await updatePhaseLine({
+          id: id,
+          currentPayment: currentPayment[outerIndex][index],
+          projectId: projectId,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    // toast.success("Succes");
   };
   const isValidIndex = (array, outerIndex, innerIndex) =>
     Array.isArray(array) &&
@@ -298,9 +353,9 @@ const ShareModal = ({
                     maxLength: 50,
                   }}
                   inputProps={{
-                    style:{
-                      padding:'10px'
-                    }
+                    style: {
+                      padding: "10px",
+                    },
                   }}
                 />
               </Box>
@@ -414,7 +469,7 @@ const ShareModal = ({
                       </TableCell>
                       <TableCell sx={tableCellStyles}>Payment</TableCell>
                       <TableCell sx={tableCellStyles}>Percentage</TableCell>
-                      <TableCell sx={tableCellStyles}>Action</TableCell>
+                      {/* <TableCell sx={tableCellStyles}>Action</TableCell> */}
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -422,10 +477,21 @@ const ShareModal = ({
                       phase.rows.map((row, index) => {
                         const totalCost =
                           Number(row.total) + Number(row.margin);
+                        lineItemData.push({
+                          outerIndex,
+                          index,
+                          id: row.id,
+                          pendingPayment: row.paymentPending,
+                        });
                         return (
                           <TableRow key={row.id}>
                             <TableCell>
-                              <Typography sx={{...tableCellStyles, whiteSpace:'nowrap'}}>
+                              <Typography
+                                sx={{
+                                  ...tableCellStyles,
+                                  whiteSpace: "nowrap",
+                                }}
+                              >
                                 {row.title}
                               </Typography>
                             </TableCell>
@@ -454,6 +520,22 @@ const ShareModal = ({
                                 name="total"
                                 type="number"
                                 variant="standard"
+                                error={
+                                  isValidIndex(errorState, outerIndex, index)
+                                    ? errorState[outerIndex][index]
+                                    : false
+                                }
+                                FormHelperTextProps={{
+                                  style: {
+                                    fontSize: "9px",
+                                  },
+                                }}
+                                helperText={
+                                  isValidIndex(errorState, outerIndex, index) &&
+                                  errorState[outerIndex][index]
+                                    ? "Enter below remaining"
+                                    : ""
+                                }
                                 value={
                                   isValidIndex(
                                     currentPayment,
@@ -531,7 +613,7 @@ const ShareModal = ({
                                 }}
                               />
                             </TableCell>
-                            <TableCell sx={tableCellStyles}>
+                            {/* <TableCell sx={tableCellStyles}>
                               <BuilderProButton
                                 handleOnClick={() =>
                                   handleSetPayment(
@@ -544,7 +626,7 @@ const ShareModal = ({
                               >
                                 Set
                               </BuilderProButton>
-                            </TableCell>
+                            </TableCell> */}
                           </TableRow>
                         );
                       })
@@ -644,8 +726,19 @@ const ShareModal = ({
                 handleSend();
               }}
             >
-              <Typography>Send</Typography>
+              {isLoading ? <CircularProgress size={'18px'}/> : <Typography>Send</Typography>}
             </BuilderProButton>
+            {/* <BuilderProButton
+              backgroundColor={"#FFAC00"}
+              variant={"contained"}
+              padding={"6px 32px 6px 32px"}
+              disabled={isLoading}
+              handleOnClick={() => {
+                handleSetAllPayments()
+              }}
+            >
+              <Typography>check object</Typography>
+            </BuilderProButton> */}
           </Stack>
         </Stack>
       </Modal>
@@ -693,5 +786,5 @@ const tableCellStyles = {
   maxWidth: "120px", // Maximum width
   overflow: "hidden", // Hide overflow
   textOverflow: "ellipsis", // Add ellipsis for overflow text
-// Prevent text wrapping
+  // Prevent text wrapping
 };

@@ -148,6 +148,8 @@ const AccountModal = ({
       }
     } else {
       try {
+        const fileUrl = await uploadFileToServer(selectedFile);
+        const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
         await updateUserAccount({
           ...account,
           accountNumber: values.accountNumber,
@@ -155,6 +157,7 @@ const AccountModal = ({
           accountType: values.accountType,
           accountName: values.accountName,
           userId: userId,
+          accountImage: uploadedFileUrl,
         });
         toast.success("Account updated successfully");
       } catch (err) {
