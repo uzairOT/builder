@@ -14,6 +14,8 @@ const StyledText = styled("text")(({ theme }) => ({
   fontFamily: "inherit",
   color: "#000000B2",
   fontWeight: "600",
+  textLength: 100,
+  lengthAdjust: "spacingAndGlyphs"
 }));
 
 function PieCenterLabel({ children }) {
@@ -23,11 +25,23 @@ function PieCenterLabel({ children }) {
     </StyledText>
   );
 }
-function PieCenterLabel2({ children }) {
+const truncateText = (text, maxLength) => {
+  if (text.length > maxLength) {
+    // console.log(text.substring(0, maxLength - 3) + '...')
+    return parseInt(text.substring(0, maxLength - 3));
+  }
+  return text;
+};
+function PieCenterLabel2({ isMobile, totalProjectCost }) {
+
+  const truncatedText = truncateText(totalProjectCost, 10); // Adjust maxLength as needed
+  const decimal = 0
   return (
-    <StyledText x={65} y={85}>
-      {children}
-    </StyledText>
+    <svg width="200" height="100">
+      <StyledText x={isMobile ? 58 : 65} y={85}>
+      ${totalProjectCost?.length > 10 ? `${formatMoney(truncatedText, decimal)}...` : formatMoney(truncatedText)}
+      </StyledText>
+    </svg>
   );
 }
 
@@ -118,9 +132,8 @@ const PieChartDisplay = ({ totalProjectCost }) => {
             data: [
               {
                 id: 0,
-                value: totalProjectCost,
-                color:
-                  totalProjectCost === 0 ? "#F4F4F4" : "#1F9EF3, #1B59F800",
+                value: Number(!totalProjectCost ? 0 : totalProjectCost),
+                color:"#1F9EF3",
               },
               // { id: 1, value: 60, color: "#eff5ff" },
             ],
@@ -139,7 +152,7 @@ const PieChartDisplay = ({ totalProjectCost }) => {
         width={130}
       >
         {/* <PieCenterLabel>Total Price</PieCenterLabel> */}
-        <PieCenterLabel2 style={{fontSize:{fontSize}}} x={cx-20}>${formatMoney(totalProjectCost)}</PieCenterLabel2>
+        <PieCenterLabel2 isMobile={isMobile} style={{fontSize:{fontSize}}} totalProjectCost={totalProjectCost ?totalProjectCost : 0}></PieCenterLabel2>
       </PieChart>
     </Box>
   );

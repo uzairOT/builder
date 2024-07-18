@@ -429,7 +429,7 @@ const RequestWorkOrderModal = ({
           backgroundColor={"#FFAC00"}
           variant={"contained"}
           fontFamily={"Inter, sans serif"}
-          fontSize={{sm:"16px", xs:"11"}}
+          fontSize={{lg:"16px", xs:'11px'}}
           fontWeight={"600"}
           padding={"6px 32px 6px 32px"}
           handleOnClick={isButtonDisabled ? showToast : handleOpen}
@@ -514,7 +514,7 @@ const RequestWorkOrderModal = ({
               </Stack> */}
               <Divider />
               <Stack
-                direction={{ xl: "row", lg: "row", md: "column" }}
+                direction={{ xl: "row", lg: "row", md: "row", xs:'row' }}
                 justifyContent={"space-around"}
                 spacing={1}
                 p={1}
@@ -797,7 +797,7 @@ const RequestWorkOrderModal = ({
                     </LocalizationProvider>
                   </Box>
                 </Typography>
-                <Stack width={"80%"} pt={4}>
+                <Stack width={"80%"} pt={4} display={{md:'flex', xs:'none'}}>
                   <BuilderProButton
                     backgroundColor={"#4C8AB1"}
                     variant={"contained"}
@@ -1031,6 +1031,21 @@ const RequestWorkOrderModal = ({
                     : ""}
                 </Typography>
               </Stack>
+            <Stack width={"100%"} pt={4} pb={4} display={{md:'none', xs:'flex'}} justifyContent={'center'} alignItems={'center'}>
+                  <BuilderProButton
+                    backgroundColor={"#4C8AB1"}
+                    variant={"contained"}
+                    fontFamily={"Inter, sans serif"}
+                    fontSize={"16px"}
+                    fontWeight={"600"}
+                    padding={"6px 32px 6px 32px"}
+                    handleOnClick={handleRequest}
+                    marginLeft={"0px"}
+                    disabled={loading}
+                  >
+                    {changeOrder ? "Submit Change Order" : "Submit Work Order"}
+                  </BuilderProButton>
+                </Stack>
             </Stack>
           </Stack>
         </Stack>
@@ -1061,7 +1076,7 @@ const style = {
   boxShadow: 24,
   p: 0,
   borderRadius: "14px",
-  width: "700px",
+  width: {md:"700px", xs:"80%"},
 };
 const themeStyle = {
   scrollable: {

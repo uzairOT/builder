@@ -107,7 +107,10 @@ const Login = () => {
           localStorage.setItem('login', Date.now()); // Use this key to trigger the storage event
           dispatch(setCredentials({ ...res }));
           if (res?.incompleteProject?.incomplete) {
-            navigate("/assignproject");
+            setTimeout(() => {
+              window.location.href = "/assignproject";
+            }, 1000);
+           
           } else {
             setTimeout(() => {
               window.location.href = "/";
@@ -152,7 +155,9 @@ const Login = () => {
       dispatch(setCredentials({ ...res }));
       // navigate("/");
       if (res?.incompleteProject?.incomplete) {
-        navigate("/assignproject");
+        setTimeout(() => {
+          window.location.href = "/assignproject";
+        }, 1000);
       } else {
         setTimeout(() => {
           window.location.href = "/";

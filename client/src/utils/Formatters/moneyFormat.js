@@ -1,4 +1,7 @@
 export function formatMoney(number, decimals = 2, decimalPoint = '.', thousandsSeparator = ',') {
+  if(!number){
+    return '0.00';
+  }
   if (isNaN(number)) {
     return '0.00'; // Handle non-numeric input
   }
