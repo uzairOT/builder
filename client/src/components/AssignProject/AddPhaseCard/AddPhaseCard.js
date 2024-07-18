@@ -44,6 +44,7 @@ import { useLocation } from "react-router-dom";
 import { formatMoney } from "../../../utils/Formatters/moneyFormat";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
 //import "react-toastify/dist/ReactToastify.css";
+import AddIcon from "@mui/icons-material/Add";
 
 const initialRows = [
   {
@@ -407,44 +408,80 @@ const AddPhaseCard = ({
                   userRoleAuth.userRole === "admin" ||
                   userRoleAuth.userRole === "projectManager" ||
                   userRoleAuth.userRole === "") && (
-                  <Button
+                    <Button
                     sx={{
                       ...actionButton,
                       background: "#4C8AB1",
                       marginTop: "0.7rem",
                       marginBottom: "1rem",
-                      marginRight: {
-                        lg: "1rem",
-                        md: "1rem",
-                        sm: "1rem",
-                        xs: "1rem",
+                      marginRight: "1rem",
+                      '@media (max-width: 600px)': {
+                        minWidth: 0,
+                        width: '2.5rem',
+                        height: '2.5rem',
+                        borderRadius: '50%',
+                        padding: 0,
+                        fontSize: '0.75rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                       },
                     }}
                     onClick={handleAddLine}
                   >
-                    Add Line Item
+                    <AddIcon
+                      sx={{
+                        '@media (min-width: 601px)': { display: 'none' }
+                      }}
+                    />
+                    <Typography
+                      style={{
+                        '@media (min-width: 601px)':{display: 'inline'},
+                        '@media (max-width: 600px)': { display: 'none' }
+                      }}
+                    >
+                      Add Line Item
+                    </Typography>
                   </Button>
                 )
               : (userRoleAuth.userRole === "admin" ||
                   userRoleAuth.userRole === "superadmin" ||
                   userRoleAuth.userRole === "projectManager" ||
                   userRoleAuth.userRole === "") && (
-                  <Button
+                    <Button
                     sx={{
                       ...actionButton,
                       background: "#4C8AB1",
                       marginTop: "0.7rem",
                       marginBottom: "1rem",
-                      marginRight: {
-                        lg: "1rem",
-                        md: "1rem",
-                        sm: "1rem",
-                        xs: "1rem",
+                      marginRight: "1rem",
+                      '@media (max-width: 600px)': {
+                        minWidth: 0,
+                        width: '2.5rem',
+                        height: '2.5rem',
+                        borderRadius: '50%',
+                        padding: 0,
+                        fontSize: '0.75rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                       },
                     }}
                     onClick={handleAddLine}
                   >
-                    Add Line Item
+                    <AddIcon
+                      sx={{
+                        '@media (min-width: 601px)': { display: 'none' }
+                      }}
+                    />
+                    <Typography
+                      sx={{
+                        '@media (min-width: 601px)':{display: 'inline'},
+                        '@media (max-width: 600px)': { display: 'none' }
+                      }}
+                    >
+                      Add Line Item
+                    </Typography>
                   </Button>
                 )}
           </Box>
@@ -624,14 +661,20 @@ const AddPhaseCard = ({
                         userRoleAuth.userRole === "subcontractor" ||
                         userRoleAuth.userRole === "supplier"
                       ) && (
-                        <TableCell sx={tableCell}>${formatMoney(row.unit_price)}</TableCell>
+                        <TableCell sx={tableCell}>
+                          ${formatMoney(row.unit_price)}
+                        </TableCell>
                       )}
                       {!(
                         userRoleAuth.userRole === "client" ||
                         userRoleAuth.userRole === "employee" ||
                         userRoleAuth.userRole === "subcontractor" ||
                         userRoleAuth.userRole === "supplier"
-                      ) && <TableCell sx={tableCell}>${formatMoney(row.total)}</TableCell>}
+                      ) && (
+                        <TableCell sx={tableCell}>
+                          ${formatMoney(row.total)}
+                        </TableCell>
+                      )}
 
                       <TableCell sx={tableCell}>{row.quantity}</TableCell> */}
                       {!(path === "assignproject") && (
