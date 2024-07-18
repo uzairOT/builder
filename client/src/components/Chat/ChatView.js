@@ -772,6 +772,7 @@ console.log('conversationId: ',conversationId, 'value: ', value)
             <Box
               sx={{
                 display: "flex",
+                flexDirection:{lg:"row", xs:"column"},
                 columnGap: 1.5,
                 margin: "0 4px 0 4px",
                 justifyContent: "center",

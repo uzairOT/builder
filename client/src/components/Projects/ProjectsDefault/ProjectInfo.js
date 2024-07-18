@@ -28,9 +28,9 @@ const ProjectInfo = ({ data }) => {
   const percentage = Math.round((parseInt(totalCompletedLineItems) / parseInt(totalLineItems)) * 100);
   console.log(percentage)
   return (
-    <Stack height={"205px"}>
+    <Stack height={"205px"} >
       <Typography sx={themeStyle.title}>Burrow - Home Build</Typography>
-      <Stack direction={"row"} width={"60%"} justifyContent={"space-between"}>
+      <Stack direction={"row"} width={{md:"60%", xs:"65%"}} pl={{md:0,xs:2}} justifyContent={"space-between"}  >
         <Typography sx={themeStyle.label} >
           Start
         </Typography>
@@ -38,7 +38,7 @@ const ProjectInfo = ({ data }) => {
           End
         </Typography>
       </Stack>
-      <Stack direction={"row"} pt={0.5} sx={{alignItems:"center"}}>
+      <Stack direction={"row"} pt={0.5} sx={{alignItems:"center", pl:2}}>
         <BorderLinearProgress variant="determinate" value={percentage} />
         <Typography sx={themeStyle.label} pl={1}>
           {totalCompletedLineItems}/{totalLineItems}

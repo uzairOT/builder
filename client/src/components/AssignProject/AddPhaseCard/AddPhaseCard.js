@@ -435,7 +435,7 @@ const AddPhaseCard = ({
                       }}
                     />
                     <Typography
-                      style={{
+                      sx={{
                         '@media (min-width: 601px)':{display: 'inline'},
                         '@media (max-width: 600px)': { display: 'none' }
                       }}
