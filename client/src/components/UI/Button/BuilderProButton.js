@@ -25,12 +25,12 @@ const BuilderProButton = ({ backgroundColor, variant, Icon,iconProps, children, 
       sx={themeStyle.button}
       disableElevation
       variant={variant}
-      startIcon={Icon ? <Icon sx={iconProps} /> : null}
+      // startIcon={Icon ? <Icon sx={iconProps} /> : null}
       onClick={handleOnClick}
       disabled={disabled}
       alignSelf={alignSelf}
     >
-      {children}
+      {Icon ? <Icon sx={{...iconProps, marginRight:'4px'}} /> : null} {children}
     </Button>
   );
 };
