@@ -250,7 +250,11 @@ function CustomTable({
                     </TableCell>
                   </TableRow>
                 ) : data?.message === "no records" ? (
-                  <>No Records</>
+                  <TableRow>
+                    <TableCell colSpan={10} sx={{ textAlign: "center", borderBottom:'none' }}>
+                      No Records
+                    </TableCell>
+                  </TableRow>
                 ) : (
                   data?.users?.map((row, index) => { 
                     if(row === null)

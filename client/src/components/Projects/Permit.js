@@ -99,7 +99,7 @@ function Permit({ view, type }) {
           alignItems={"center"}
         >
           <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>
-            Add {view}
+            Add 
           </Button>
           
             <Button

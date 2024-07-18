@@ -127,7 +127,11 @@ function AmountTable({
                   </TableRow>
                 </>
               ) : data?.accounts < 1 ? (
-                <>No Records</>
+                <TableRow>
+                <TableCell colSpan={10} sx={{ textAlign: "center", borderBottom:'none' }}>
+                  No Records
+                </TableCell>
+              </TableRow>
               ) : (
                 data?.accounts.map((row, index) => (
                   <TableRow key={index}>

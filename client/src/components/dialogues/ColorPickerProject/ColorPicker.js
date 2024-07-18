@@ -134,6 +134,8 @@ const typoText = {
   fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1rem",
   color: "#202227",
+  textAlign:'center',
+  fontWeight:'600'
 };
 const generalBox = {
   display: "flex",

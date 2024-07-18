@@ -11,7 +11,16 @@ import {
   Stack,
   TextField,
   Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  CircularProgress,
 } from "@mui/material";
+import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import CloseIcon from "@mui/icons-material/Close";
@@ -29,6 +38,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
 import { formatMoney } from "../../../utils/Formatters/moneyFormat";
 import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
+import { useFormik } from "formik";
 
 const ShareModal = ({
   setShareToClient,
@@ -37,6 +47,7 @@ const ShareModal = ({
   setInvoiceData,
   setRowCheckboxes,
 }) => {
+  let lineItemData = [];
   let loggedInUser = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(loggedInUser);
   const dispatch = useDispatch();
@@ -46,12 +57,14 @@ const ShareModal = ({
   const [percentage, setPercentage] = useState([[]]);
   const [userExits, setClientExists] = useState(false);
   const location = useLocation();
+  const [errorState, setErrorState] = useState([]);
   const pathSegments = location.pathname.split("/");
   const [selectedUser, setSelectedUser] = useState("");
   const projectId = pathSegments[2];
   const userAuth = userRoleAuth.userRole === "supplier";
   const { data, isError, refetch } = useGetProjectTeamQuery(projectId);
-  const [clientInvoice, { data: invoiceData, isLoading }] =
+  const [ isLoading, setIsLoading] = useState(false)
+  const [clientInvoice, { data: invoiceData }] =
     useClientInvoiceMutation();
   const [updatePhaseLine, { isLoading: updateIsLoading }] =
     useUpdatePhaseLineMutation();
@@ -66,6 +79,7 @@ const ShareModal = ({
         adminId: currentUser.id,
         projectId,
         supplier: userAuth,
+        enteredEmail: formik?.values?.email,
       }).unwrap();
       console.log("Success:", result);
       setInvoiceData(result);
@@ -128,7 +142,6 @@ const ShareModal = ({
     pendingPayment,
     automated = false
   ) => {
-    // Initialize the nested array structure if necessary
     setCurrentPayment((prevPayments) => {
       const updatedPayments = [...prevPayments];
 
@@ -144,15 +157,51 @@ const ShareModal = ({
 
       // Update the value at the specified index
       updatedPayments[outerIndex][index] = value;
+
+      // Perform validation
+      setErrorState((prevState) => {
+        const updatedErrorState = [...prevState];
+
+        // Ensure the outer array has enough arrays
+        while (updatedErrorState.length <= outerIndex) {
+          updatedErrorState.push([]);
+        }
+
+        // Ensure the inner array has enough elements
+        while (updatedErrorState[outerIndex].length <= index) {
+          updatedErrorState[outerIndex].push(false);
+        }
+
+        // Update the error state at the specified index
+        updatedErrorState[outerIndex][index] =
+          parseFloat(value) > parseFloat(pendingPayment);
+
+        return updatedErrorState;
+      });
+
       if (automated) {
         const percentage =
           (parseFloat(value) * 100) / parseFloat(pendingPayment);
-        // console.log(pendingPayment);
         handlePercentage(index, percentage, outerIndex, pendingPayment, false);
       }
+
       return updatedPayments;
     });
   };
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema: yup.object({
+      email: yup
+        .string()
+        .email("Invalid email address")
+        .required("Email is required"),
+    }),
+    onSubmit: (values) => {
+      console.log("Form submitted with values:", values);
+    },
+  });
   const handlePercentage = (
     index,
     value,
@@ -193,13 +242,43 @@ const ShareModal = ({
       toast.warning("Please select a user");
       return;
     }
-    const result = await invoiceDataCall();
-    console.log(result);
-    if (result) {
-      setDone(true);
-      setShareToClient(false);
-    } else {
+    setIsLoading(true)
+    try {
+      await handleSetAllPayments();
+      const result = await invoiceDataCall();
+      console.log(result);
+      if (result) {
+        setDone(true);
+        setShareToClient(false);
+      } else {
+      }
+      
+    } catch (error) {
+      console.log(error);
     }
+    setIsLoading(false);
+  };
+  const handleSetAllPayments = async () => {
+    for (let i = 0; i < lineItemData.length; i++) {
+      const { outerIndex, index, id, pendingPayment } = lineItemData[i];
+      if (
+        parseFloat(currentPayment[outerIndex][index]) >
+        parseFloat(pendingPayment)
+      ) {
+        toast.error("Please enter a value less than the remaining cost");
+        return;
+      }
+      try {
+        await updatePhaseLine({
+          id: id,
+          currentPayment: currentPayment[outerIndex][index],
+          projectId: projectId,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    // toast.success("Succes");
   };
   const isValidIndex = (array, outerIndex, innerIndex) =>
     Array.isArray(array) &&
@@ -211,24 +290,21 @@ const ShareModal = ({
     innerIndex >= 0 &&
     innerIndex < array[outerIndex].length;
 
-  const filterTeam = useMemo(()=>{
-    if(!data?.team) return [];
+  const filterTeam = useMemo(() => {
+    if (!data?.team) return [];
 
-    return data?.team.filter(user => {
-      if(userRoleAuth.userRole ===  'supplier'){
-        return(
+    return data?.team.filter((user) => {
+      if (userRoleAuth.userRole === "supplier") {
+        return (
           user.role === "Superadmin" ||
           user.role === "admin" ||
           user.role === "projectManager"
-        )
-      }else {
-        return (
-          user.role === 'Client'
-        )
+        );
+      } else {
+        return user.role === "Client";
       }
-    })
-
-  }, [data, userRoleAuth.userRole])
+    });
+  }, [data, userRoleAuth.userRole]);
 
   return (
     <>
@@ -239,275 +315,56 @@ const ShareModal = ({
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <Typography
-              sx={{ p: 1 }}
-              color={"#4C8AB1"}
-              fontWeight={"500"}
-              fontSize={"20px"}
+            <Stack
+              direction={"row"}
+              justifyContent={"start"}
+              alignItems={"center"}
+              gap={1}
             >
-              Send to
-            </Typography>
+              <Typography
+                sx={{ p: 1 }}
+                color={"#4C8AB1"}
+                fontWeight={"500"}
+                fontSize={"20px"}
+              >
+                Send to
+              </Typography>
+              <Box width={"300px"}>
+                {/* Email input */}
+                {/* <Typography variant="body1">Email</Typography> */}
+                <TextField
+                  fullWidth
+                  id="email"
+                  name="email"
+                  placeholder="Email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.email && Boolean(formik.errors.email)}
+                  helperText={formik.touched.email ? formik.errors.email : ""}
+                  InputProps={{
+                    style: {
+                      ...InputStyle,
+                      border:
+                        formik.errors.email && formik.touched.email
+                          ? "1px solid #d32f2f"
+                          : "1px solid #E0E4EC",
+                    },
+                    maxLength: 50,
+                  }}
+                  inputProps={{
+                    style: {
+                      padding: "10px",
+                    },
+                  }}
+                />
+              </Box>
+            </Stack>
             <IconButton onClick={handleClose}>
               <CloseIcon sx={{ p: 2, color: "#535353", fontSize: "20px" }} />
             </IconButton>
           </Stack>
           <Divider variant="fullWidth" />
-          <Stack justifyContent={"center"} alignItems={"flex-start"}>
-            {userAuth ? (
-              <></>
-            ) : (
-              Object.values(rowCheckboxes).map((phase, outerIndex) =>
-                phase.rows.map((row, index) => {
-                  // totalCost =
-                  //   totalCost +
-                  //   parseFloat(invoiceData?.invoiceCompleteObj?.InvoiceLineItems[index]
-                  //     ?.totalAmount);
-
-                  const totalCost = Number(row.total) + Number(row.margin);
-                  return (
-                    <>
-                      <Stack
-                        key={row.id}
-                        p={1}
-                        direction={"row"}
-                        gap={2}
-                        alignItems={"center"}
-                        justifyContent={"space-between"}
-                      >
-                        <Typography sx={label}>{row.title}</Typography>
-                        <Typography
-                          sx={{
-                            ...label,
-                            display: {
-                              xl: "inline-block",
-                              lg: "inline-block",
-                              md: "inline-block",
-                              sm: "none",
-                              xs: "none",
-                            },
-                          }}
-                        >
-                          Total Cost: ${formatMoney(totalCost)}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            ...label,
-                            display: {
-                              xl: "inline-block",
-                              lg: "inline-block",
-                              md: "inline-block",
-                              sm: "none",
-                              xs: "none",
-                            },
-                          }}
-                        >
-                          Remaining: ${formatMoney(row.paymentPending)}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            ...label,
-                            display: {
-                              xl: "inline-block",
-                              lg: "inline-block",
-                              md: "inline-block",
-                              sm: "none",
-                              xs: "none",
-                            },
-                          }}
-                        >
-                          Invoice pending: ${formatMoney(row.pendingAmount)}
-                        </Typography>
-                        <Stack direction={"row"} alignItems={"center"}>
-                          <Typography sx={label}>Payment: </Typography>
-                          <TextField
-                            sx={{
-                              width: {
-                                xl: "150px",
-                                lg: "150px",
-                                md: "150px",
-                                sm: "80px",
-                                xs: "80px",
-                              },
-                            }}
-                            placeholder="200"
-                            required
-                            margin="dense"
-                            id="total"
-                            name="total"
-                            type="number"
-                            variant="standard"
-                            value={
-                              isValidIndex(currentPayment, outerIndex, index)
-                                ? currentPayment[outerIndex][index]
-                                : ""
-                            }
-                            onChange={(e) =>
-                              handleChange(
-                                index,
-                                e.target.value,
-                                outerIndex,
-                                row.paymentPending,
-                                true
-                              )
-                            }
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position="start">
-                                  $
-                                </InputAdornment>
-                              ),
-                            }}
-                          />
-                        </Stack>
-                        <Stack direction={"row"} alignItems={"center"}>
-                          {/* <Typography sx={label}>% </Typography> */}
-                          <TextField
-                            sx={{
-                              width: {
-                                xl: "150px",
-                                lg: "150px",
-                                md: "150px",
-                                sm: "80px",
-                                xs: "80px",
-                              },
-                            }}
-                            placeholder="10"
-                            required
-                            margin="dense"
-                            id="total"
-                            name="total"
-                            type="number"
-                            variant="standard"
-                            value={
-                              isValidIndex(percentage, outerIndex, index)
-                                ? percentage[outerIndex][index]
-                                : ""
-                            }
-                            onChange={(e) =>
-                              handlePercentage(
-                                index,
-                                e.target.value,
-                                outerIndex,
-                                row.paymentPending,
-                                true
-                              )
-                            }
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position="start">
-                                  %
-                                </InputAdornment>
-                              ),
-                            }}
-                          />
-                        </Stack>
-                        <BuilderProButton
-                          handleOnClick={() =>
-                            handleSetPayment(
-                              row.id,
-                              index,
-                              row.paymentPending,
-                              outerIndex
-                            )
-                          }
-                        >
-                          set
-                        </BuilderProButton>
-                        {/* <TableCell align="right">{row.quantity}</TableCell>
-                    <TableCell align="right">{row.unit_price}</TableCell> */}
-                        {/* <TableCell align="right">{row.margin}</TableCell> */}
-                      </Stack>
-                      {/* <TableRow>
-                  <TableCell rowSpan={3} colSpan={2} />
-                  <TableCell colSpan={2}>Subtotal</TableCell>
-                  <TableCell align="right">{row.total}</TableCell>
-                </TableRow> */}
-                    </>
-                  );
-                })
-              )
-            )}
-          </Stack>
-          <Divider variant="fullWidth" />
-          {/* <Stack direction={"row"} pl={4} pr={4} pt={2} pb={2} spacing={3}>
-            <Stack
-              direction={"row"}
-              border={"2px solid #FFAC00"}
-              borderRadius={"30px"}
-              pl={2}
-              width={"100%"}
-            >
-              <Input
-                placeholder="Select Person To Send Email To:"
-                aria-describedby="my-helper-text"
-                value={selectedUser?.firstName || ""}
-                onChange={(e) => setSelectedUser(e.target.value)}
-                sx={{
-                  "&::after": {
-                    borderBottom: "none",
-                  },
-                  "&:before": {
-                    borderBottom: "none",
-                  },
-                  "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before":
-                    {
-                      borderBottom: "none",
-                    },
-                  width: "90%",
-                }}
-              />
-              <FormControl
-                style={{ marginLeft: "5px", width: "120px" }}
-                size="small"
-                fullWidth
-              >
-                <InputLabel
-                  id="demo-simple-select-label"
-                  style={{
-                    fontSize: "12px",
-                    top: "3px",
-                    fontFamily: "Arial Rounded MT, sans-serif",
-                    color: "#202227",
-                  }}
-                  sx={{
-                    marginRight: "5px",
-                    paddingRight: "5px",
-                    "&.Mui-focused": {
-                      display: "none",
-                    },
-                    "&.MuiInputLabel-shrink": {
-                      display: "none",
-                    },
-                  }}
-                >
-                  Select Role
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={userType}
-                  label={userType}
-                  onChange={handleUserTypeChange}
-                  placeholder={`Client`}
-                  sx={{
-                    cursor: "pointer",
-                    ".css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
-                      border: "none",
-                    },
-                  }}
-                >
-                  <MenuItem value={"user"}>Client</MenuItem>
-                  <MenuItem value={"admin"}>Admin</MenuItem>
-                  <MenuItem value={"super admin"}>Super admin</MenuItem>
-                  <MenuItem value={"super admin"}>Project Manager</MenuItem>
-                  <MenuItem value={"super admin"}>Subcontractor</MenuItem>
-                  <MenuItem value={"super admin"}>Supplier</MenuItem>
-                  <MenuItem value={"super admin"}>Employee</MenuItem>
-                </Select>
-              </FormControl>
-            </Stack>
-          </Stack> */}
-
           {data?.team.length > 0 ? (
             filterTeam?.map((user, index) => {
               // if (userRoleAuth.userRole === "supplier") {
@@ -595,6 +452,270 @@ const ShareModal = ({
           ) : (
             <Typography p={2}>No Team Members were Assigned</Typography>
           )}
+
+          <Stack justifyContent={"center"} alignItems={"flex-start"}>
+            {userAuth ? (
+              <></>
+            ) : (
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell sx={tableCellStyles}>Title</TableCell>
+                      <TableCell sx={tableCellStyles}>Total Cost</TableCell>
+                      <TableCell sx={tableCellStyles}>Remaining</TableCell>
+                      <TableCell sx={tableCellStyles}>
+                        Invoice Pending
+                      </TableCell>
+                      <TableCell sx={tableCellStyles}>Payment</TableCell>
+                      <TableCell sx={tableCellStyles}>Percentage</TableCell>
+                      {/* <TableCell sx={tableCellStyles}>Action</TableCell> */}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {Object.values(rowCheckboxes).map((phase, outerIndex) =>
+                      phase.rows.map((row, index) => {
+                        const totalCost =
+                          Number(row.total) + Number(row.margin);
+                        lineItemData.push({
+                          outerIndex,
+                          index,
+                          id: row.id,
+                          pendingPayment: row.paymentPending,
+                        });
+                        return (
+                          <TableRow key={row.id}>
+                            <TableCell>
+                              <Typography
+                                sx={{
+                                  ...tableCellStyles,
+                                  whiteSpace: "nowrap",
+                                }}
+                              >
+                                {row.title}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography sx={tableCellStyles}>
+                                Total Cost: ${formatMoney(totalCost)}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography sx={tableCellStyles}>
+                                Remaining: ${formatMoney(row.paymentPending)}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography sx={tableCellStyles}>
+                                Invoice Pending: $
+                                {formatMoney(row.pendingAmount)}
+                              </Typography>
+                            </TableCell>
+                            <TableCell sx={tableCellStyles}>
+                              <TextField
+                                placeholder="200"
+                                required
+                                margin="dense"
+                                id="total"
+                                name="total"
+                                type="number"
+                                variant="standard"
+                                error={
+                                  isValidIndex(errorState, outerIndex, index)
+                                    ? errorState[outerIndex][index]
+                                    : false
+                                }
+                                FormHelperTextProps={{
+                                  style: {
+                                    fontSize: "9px",
+                                  },
+                                }}
+                                helperText={
+                                  isValidIndex(errorState, outerIndex, index) &&
+                                  errorState[outerIndex][index]
+                                    ? "Enter below remaining"
+                                    : ""
+                                }
+                                value={
+                                  isValidIndex(
+                                    currentPayment,
+                                    outerIndex,
+                                    index
+                                  )
+                                    ? currentPayment[outerIndex][index]
+                                    : ""
+                                }
+                                onChange={(e) =>
+                                  handleChange(
+                                    index,
+                                    e.target.value,
+                                    outerIndex,
+                                    row.paymentPending,
+                                    true
+                                  )
+                                }
+                                InputProps={{
+                                  startAdornment: (
+                                    <InputAdornment position="start">
+                                      $
+                                    </InputAdornment>
+                                  ),
+                                }}
+                                sx={{
+                                  width: {
+                                    xl: "150px",
+                                    lg: "150px",
+                                    md: "150px",
+                                    sm: "80px",
+                                    xs: "80px",
+                                  },
+                                }}
+                              />
+                            </TableCell>
+                            <TableCell sx={tableCellStyles}>
+                              <TextField
+                                placeholder="10"
+                                required
+                                margin="dense"
+                                id="total"
+                                name="total"
+                                type="number"
+                                variant="standard"
+                                value={
+                                  isValidIndex(percentage, outerIndex, index)
+                                    ? percentage[outerIndex][index]
+                                    : ""
+                                }
+                                onChange={(e) =>
+                                  handlePercentage(
+                                    index,
+                                    e.target.value,
+                                    outerIndex,
+                                    row.paymentPending,
+                                    true
+                                  )
+                                }
+                                InputProps={{
+                                  startAdornment: (
+                                    <InputAdornment position="start">
+                                      %
+                                    </InputAdornment>
+                                  ),
+                                }}
+                                sx={{
+                                  width: {
+                                    xl: "150px",
+                                    lg: "150px",
+                                    md: "150px",
+                                    sm: "80px",
+                                    xs: "80px",
+                                  },
+                                }}
+                              />
+                            </TableCell>
+                            {/* <TableCell sx={tableCellStyles}>
+                              <BuilderProButton
+                                handleOnClick={() =>
+                                  handleSetPayment(
+                                    row.id,
+                                    index,
+                                    row.paymentPending,
+                                    outerIndex
+                                  )
+                                }
+                              >
+                                Set
+                              </BuilderProButton>
+                            </TableCell> */}
+                          </TableRow>
+                        );
+                      })
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )}
+          </Stack>
+          <Divider variant="fullWidth" />
+          {/* <Stack direction={"row"} pl={4} pr={4} pt={2} pb={2} spacing={3}>
+            <Stack
+              direction={"row"}
+              border={"2px solid #FFAC00"}
+              borderRadius={"30px"}
+              pl={2}
+              width={"100%"}
+            >
+              <Input
+                placeholder="Select Person To Send Email To:"
+                aria-describedby="my-helper-text"
+                value={selectedUser?.firstName || ""}
+                onChange={(e) => setSelectedUser(e.target.value)}
+                sx={{
+                  "&::after": {
+                    borderBottom: "none",
+                  },
+                  "&:before": {
+                    borderBottom: "none",
+                  },
+                  "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before":
+                    {
+                      borderBottom: "none",
+                    },
+                  width: "90%",
+                }}
+              />
+              <FormControl
+                style={{ marginLeft: "5px", width: "120px" }}
+                size="small"
+                fullWidth
+              >
+                <InputLabel
+                  id="demo-simple-select-label"
+                  style={{
+                    fontSize: "12px",
+                    top: "3px",
+                    fontFamily: "Arial Rounded MT, sans-serif",
+                    color: "#202227",
+                  }}
+                  sx={{
+                    marginRight: "5px",
+                    paddingRight: "5px",
+                    "&.Mui-focused": {
+                      display: "none",
+                    },
+                    "&.MuiInputLabel-shrink": {
+                      display: "none",
+                    },
+                  }}
+                >
+                  Select Role
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={userType}
+                  label={userType}
+                  onChange={handleUserTypeChange}
+                  placeholder={`Client`}
+                  sx={{
+                    cursor: "pointer",
+                    ".css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+                      border: "none",
+                    },
+                  }}
+                >
+                  <MenuItem value={"user"}>Client</MenuItem>
+                  <MenuItem value={"admin"}>Admin</MenuItem>
+                  <MenuItem value={"super admin"}>Super admin</MenuItem>
+                  <MenuItem value={"super admin"}>Project Manager</MenuItem>
+                  <MenuItem value={"super admin"}>Subcontractor</MenuItem>
+                  <MenuItem value={"super admin"}>Supplier</MenuItem>
+                  <MenuItem value={"super admin"}>Employee</MenuItem>
+                </Select>
+              </FormControl>
+            </Stack>
+          </Stack> */}
+
           <Stack direction={"row"} p={2} pl={3} justifyContent={"center"}>
             <BuilderProButton
               backgroundColor={"#FFAC00"}
@@ -605,8 +726,19 @@ const ShareModal = ({
                 handleSend();
               }}
             >
-              <Typography>Send</Typography>
+              {isLoading ? <CircularProgress size={'18px'}/> : <Typography>Send</Typography>}
             </BuilderProButton>
+            {/* <BuilderProButton
+              backgroundColor={"#FFAC00"}
+              variant={"contained"}
+              padding={"6px 32px 6px 32px"}
+              disabled={isLoading}
+              handleOnClick={() => {
+                handleSetAllPayments()
+              }}
+            >
+              <Typography>check object</Typography>
+            </BuilderProButton> */}
           </Stack>
         </Stack>
       </Modal>
@@ -615,6 +747,19 @@ const ShareModal = ({
 };
 
 export default ShareModal;
+const InputStyle = {
+  backgroundColor: "#EDF2F6",
+  borderRadius: "8px",
+  fontFamily: "Manrope, sans-serif",
+  border: "1px solid #E0E4EC",
+  padding: "0px",
+  width: { xl: "100%", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
+  "& .MuiOutlinedInputRoot": {
+    "& fieldset": {
+      border: "none",
+    },
+  },
+};
 
 const style = {
   position: "absolute",
@@ -630,4 +775,16 @@ const style = {
 const label = {
   fontSize: "12px",
   fontFamily: "inherit",
+  maxWidth: { xl: "60px", lg: "60px", md: "70px", xs: "100%" },
+  minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
+  // overflow:'hidden',
+  // whitespace: 'nowrap'
+};
+
+const tableCellStyles = {
+  fontSize: "12px", // Smaller font size
+  maxWidth: "120px", // Maximum width
+  overflow: "hidden", // Hide overflow
+  textOverflow: "ellipsis", // Add ellipsis for overflow text
+  // Prevent text wrapping
 };

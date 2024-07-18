@@ -52,7 +52,7 @@ const ConversationList = ({
   const [tabValue, setTableValue] = useState(0);
 
   const handleTabChange = (event, newValue) => {
-    console.log(newValue)
+    console.log(newValue);
     setTableValue(newValue);
   };
   const CustomTabPanel = (props) => {
@@ -91,7 +91,7 @@ const ConversationList = ({
         console.log(error);
       }
     } else {
-      handleTabChange('',0)
+      handleTabChange("", 0);
       setConversationId(null);
       // setValue(value);
     }
@@ -122,49 +122,86 @@ const ConversationList = ({
         Chat
       </Typography>
       <Stack direction={"row"} width={"100%"}>
-        <Button sx={{fontSize:12, borderRadius:15, fontSize:'14px !important',backgroundColor:"#FFAC00", margin:1}} marginLeft={{xl:"20px",lg:"2px",}} >
-        <Select
-        IconComponent={''}
-          value={""}
-          displayEmpty
-          onChange={handleSelectChangeEvent}
-          sx={{ padding:0,width: "100%", height:"18px", "& .Mui-focused": {border:'none',  borderWidth:'0px !important'}, ".MuiOutlinedInput-notchedOutline": {border:'none', borderWidth:'0px !important'}}}
+        <Button
+          sx={{
+            fontSize: 12,
+            borderRadius: 15,
+            fontSize: "14px !important",
+            backgroundColor: "#FFAC00",
+            margin: 1,
+            "&:hover": {
+              backgroundColor: "#FFAC00", // Change to the color you want on hover
+              cursor: "pointer", // Optional: Change cursor on hover
+            },
+          }}
+          marginLeft={{ xl: "20px", lg: "2px" }}
         >
-          <MenuItem style={{color:"black", fontWeight:"600px",fontSize:"10px !important"}}  disabled value="">
-          <Typography fontSize={{xl:"11px", lg:'9px'}} pt={0.5} ml={0.6}>
-            Start New Converstion
-          </Typography>
-          </MenuItem>
-          <MenuItem value={id} disabled={value === id}>
-            <Typography>Project Chat: {projectName}</Typography>
-          </MenuItem>
-          {team?.team?.map((user, index) => {
-            if (user.userId === userId) {
-              return null;
-            }
-            return (
-              <MenuItem
-                value={user.userId}
-                disabled={value === user.userId}
-                onClick={() => {
-                  handleTabChange('',1);
-                  handleChatUserChange(user)
-                
-                }}
-                sx={{ display: "flex", flexDirection: "row", gap: "8px" }}
+          <Select
+            IconComponent={""}
+            value={""}
+            displayEmpty
+            onChange={handleSelectChangeEvent}
+            sx={{
+              padding: 0,
+              width: "100%",
+              height: "18px",
+              "& .Mui-focused": {
+                border: "none",
+                borderWidth: "0px !important",
+              },
+              ".MuiOutlinedInput-notchedOutline": {
+                border: "none",
+                borderWidth: "0px !important",
+              },
+            }}
+          >
+            <MenuItem
+              style={{
+                color: "black",
+                fontWeight: "600px",
+                fontSize: "10px !important",
+              }}
+              disabled
+              value=""
+            >
+              <Typography
+                fontSize={{ xl: "11px", lg: "9px" }}
+                pt={0.5}
+                ml={0.6}
+                color={"white"}
               >
-                <Avatar
-                  sx={{ width: "25px", height: "25px" }}
-                  src={user.image}
-                  alt={`${user.firstName}'s profile`}
-                ></Avatar>
-                <Typography fontSize={"14px"}>
-                  {user.firstName} {user.lastName}
-                </Typography>
-              </MenuItem>
-            );
-          })}
-        </Select>
+                Start New Converstion
+              </Typography>
+            </MenuItem>
+            <MenuItem value={id} disabled={value === id}>
+              <Typography>Project Chat: {projectName}</Typography>
+            </MenuItem>
+            {team?.team?.map((user, index) => {
+              if (user.userId === userId) {
+                return null;
+              }
+              return (
+                <MenuItem
+                  value={user.userId}
+                  disabled={value === user.userId}
+                  onClick={() => {
+                    handleTabChange("", 1);
+                    handleChatUserChange(user);
+                  }}
+                  sx={{ display: "flex", flexDirection: "row", gap: "8px" }}
+                >
+                  <Avatar
+                    sx={{ width: "25px", height: "25px" }}
+                    src={user.image}
+                    alt={`${user.firstName}'s profile`}
+                  ></Avatar>
+                  <Typography fontSize={"14px"}>
+                    {user.firstName} {user.lastName}
+                  </Typography>
+                </MenuItem>
+              );
+            })}
+          </Select>
         </Button>
       </Stack>
       {/* <Box sx={{ width: "100%" }}> */}
@@ -202,6 +239,11 @@ const ConversationList = ({
                 <Avatar alt={""} src={""} />
               </ListItemAvatar>
               <ListItemText
+                // sx={{overflow:'hidden', textOverflow:'ellipsis'}}
+                primaryTypographyProps={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
                 primary={
                   <React.Fragment>
                     <Typography

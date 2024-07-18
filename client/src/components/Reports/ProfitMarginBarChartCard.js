@@ -48,7 +48,7 @@ const ProfitMarginBarChartCard = () => {
   let marginPercentage = 0; // Default value
 
 if (projects?.totalCost) {
-  marginPercentage = ((projects.totalMargin / projects.totalCost) * 100).toFixed(3);
+  marginPercentage = ((projects.totalMargin / projects.totalCost) * 100).toFixed(2);
 }
 
   return (

@@ -13,7 +13,9 @@ const StyledText = styled("text")(({ theme }) => ({
   fontSize: 12,
   fontFamily: "inherit",
   color: "#000000B2",
-  fontWeight:'600'
+  fontWeight:'600',
+  width:'10ch !important',
+  overflow:'hidden'
 }));
 
 function PieCenterLabel({ children }) {
@@ -41,7 +43,7 @@ const PieChartDisplay = ({totalProjectCost}) => {
         series={[
           {
             data: [
-              { id: 0, value: totalProjectCost, color:  totalProjectCost === 0 ? "#F4F4F4": "#1F9EF3, #1B59F800" },
+              { id: 0, value: totalProjectCost, color:  "#1F9EF3, #1B59F800" },
               // { id: 1, value: 60, color: "#eff5ff" },
             ],
             innerRadius: 50,

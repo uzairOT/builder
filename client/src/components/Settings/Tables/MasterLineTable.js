@@ -202,7 +202,7 @@ function MasterLineTable({
                 </>
                 ) : data?.MasterLines?.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={10} sx={{ textAlign: "center" }}>
+                    <TableCell colSpan={10} sx={{ textAlign: "center", borderBottom:'none' }}>
                       No Records
                     </TableCell>
                   </TableRow>

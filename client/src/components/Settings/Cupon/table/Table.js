@@ -175,8 +175,15 @@ function CustomTable({
                   </TableCell>
                 </TableRow>
               </>
-            ) : data?.coupons<1 ? (
-              <>No Records</>
+            ) : data?.coupons < 1 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={10}
+                  sx={{ textAlign: "center", borderBottom: "none" }}
+                >
+                  No Records
+                </TableCell>
+              </TableRow>
             ) : (
               data?.coupons?.map((row) => (
                 <TableRow key={row.id}>
@@ -257,8 +264,8 @@ export default CustomTable;
 const tableCellStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
-  textOverflow:'ellipsis',
-  overflow:'hidden',
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 500,
   fontSize: "14px",
   fontFamily: "Poppins",
@@ -267,8 +274,8 @@ const tableCellStyle = {
 const tableCellValueStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
-  textOverflow:'ellipsis',
-  overflow:'hidden',
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 400,
   borderBottom: "none",
   fontFamily: "Montserrat",

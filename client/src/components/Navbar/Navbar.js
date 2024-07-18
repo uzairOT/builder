@@ -55,6 +55,7 @@ import {
 import { socket } from "../../socket";
 import TeamNotifications from "./TeamNotifications";
 import InvoiceNotification from "./InvoiceNotification";
+import { toast } from "react-toastify";
 const local = localStorage.getItem("userInfo");
 const currentUser = JSON.parse(local);
 
@@ -206,7 +207,8 @@ const Navbar = () => {
     navigate(lowercasedValue === "dashboard" ? "/" : lowercasedValue);
   };
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.setItem("logout", Date.now());
+    localStorage.clear(); // Clear the local storage after setting the logout item
     navigate("/login");
   };
   // const handleShare = (e) => {
@@ -226,13 +228,33 @@ const Navbar = () => {
     dispatch(setTeamNotifications(teamStatusData?.data));
   }, [teamStatusData]);
 
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      if (event.key === "logout") {
+        // Handle logout in other tabs
+        toast.info("You have been logged out in another tab!");
+        navigate("/login"); // Redirect to the login page or perform other logout handling
+      } else if (event.key === "login") {
+        // Handle login in other tabs
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, [navigate]);
+
   // Navbar styles
   const themeStyle = {
     navbar: {
       background: "#FFF",
       boxShadow: "0px 1px 1.3px 0px rgba(0, 0, 0, 0.05)",
       padding: "4px 16px 4px 16px",
-      height: "65px",
+      height: "92px",
     },
     logo: {
       width: "85%",
@@ -246,9 +268,10 @@ const Navbar = () => {
     },
     getTabColor: (tabIndex) => ({
       fontFamily: "inherit",
-      color: selectedTab === tabIndex ? "#FFAC00" : "",
+      color: selectedTab === tabIndex ? "#FFAC00" : "#4C8AB1",
       textTransform: "capitalize",
-      fontSize: "15px",
+      fontSize: "17px",
+      fontWeight: "600",
     }),
     search: {
       display: { xl: "flex", lg: "flex", md: "flex" },
@@ -343,7 +366,10 @@ const Navbar = () => {
               placement="bottom-end"
             >
               {invoiceNotification && (
-                <InvoiceNotification data={invoiceNotification} setInvoiceNotification={setInvoiceNotification}/>
+                <InvoiceNotification
+                  data={invoiceNotification}
+                  setInvoiceNotification={setInvoiceNotification}
+                />
               )}
               {Array.isArray(teamNotifications) ? (
                 teamNotifications.map((teamNotification, index) => {
@@ -474,7 +500,7 @@ const Navbar = () => {
             <CloseIcon sx={{ p: 2, color: "#535353", fontSize: "19px" }} />
           </IconButton>
         </Stack>
-        <Divider  />
+        <Divider />
         <Stack direction={"row"} pl={4} pr={4} pt={2} pb={2} spacing={3}>
           <Stack
             direction={"row"}

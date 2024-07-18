@@ -297,7 +297,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
               minRows={5}
               maxLength={1000}
               style={themeStyle.inputStyle}
-              required
+              // required
               placeholder="Type Note Here ....."
               margin="dense"
               id="notes"

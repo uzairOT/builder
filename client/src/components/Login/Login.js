@@ -104,6 +104,7 @@ const Login = () => {
         const res = await googleLogin({ email }).unwrap();
 
         if (res.message === "Login Successful!") {
+          localStorage.setItem('login', Date.now()); // Use this key to trigger the storage event
           dispatch(setCredentials({ ...res }));
           if (res?.incompleteProject?.incomplete) {
             navigate("/assignproject");
@@ -147,6 +148,7 @@ const Login = () => {
       }).unwrap();
       // console.log("login :", res);
       // localStorage.setItem('userInfo', JSON.stringify({...res}));
+      localStorage.setItem('login', Date.now()); // Use this key to trigger the storage event
       dispatch(setCredentials({ ...res }));
       // navigate("/");
       if (res?.incompleteProject?.incomplete) {
@@ -227,7 +229,7 @@ const Login = () => {
         </Box>
         <Box sx={googleAppImgsBox}>
           <a
-            href="https://play.google.com/store/apps?hl=en&gl=US&pli=1"
+            href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
             target="blank"
           >
             {" "}
@@ -240,7 +242,7 @@ const Login = () => {
             />
           </a>
 
-          <a href="https://www.apple.com/store" target="blank">
+          <a href="https://testflight.apple.com/join/Fejy1iQ6" target="blank">
             <img
               src={appStore}
               width={'206px'}
@@ -287,7 +289,7 @@ const Login = () => {
                   ...placeholderStyle,
                   ...lableResponsiveFont,
                   border:
-                    errors.email && errors.email
+                    touched.email && errors.email
                       ? "1px solid #d32f2f"
                       : "1px solid #E0E4EC",
                 }}
@@ -320,7 +322,7 @@ const Login = () => {
                     ...placeholderStyle,
                     ...lableResponsiveFont,
                     border:
-                      errors.password && errors.password
+                      touched.password && errors.password
                         ? "1px solid #d32f2f"
                         : "1px solid #E0E4EC",
                   }}

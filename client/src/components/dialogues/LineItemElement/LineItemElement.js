@@ -26,6 +26,7 @@ import {
   IconButton,
   InputAdornment,
   CircularProgress,
+  MenuList,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -45,6 +46,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc"; // Optional if you need UTC handling
 import Close from "@mui/icons-material/Close";
 import CreateableSelect from "react-select/creatable";
+import { components } from 'react-select';
 import {
   useAddUnitMutation,
   useGetUnitsQuery,
@@ -72,6 +74,8 @@ function AddLineElement({
   InitialProposalView,
   reqWorkOrderModal,
   setRowCheckboxes,
+  showUpdateLine,
+  showAddLine
 }) {
   // const { data, isLoading, isSuccess } = useGetLineItemQuery({
   //   lineItemId: LineItem,
@@ -400,17 +404,26 @@ function AddLineElement({
       ...inputStyle,
       marginBottom: "0",
       height: "", // Keep this as it was
-      padding: "4px", // Keep this as it was
+      padding: "4px", // Keep this as it was,
+         overflow:'auto'
     }),
     menu: (provided) => ({
       ...provided,
+      // height: "90px",
+      // overflowY: "scroll",
+      // marginTop: "0px", // Adjust the top margin of the menu
+   
+    }),
+    menuList: (provided) => ({
+      ...provided,
       height: "90px",
-      overflow: "auto",
+      overflowY: "scroll",
       marginTop: "0px", // Adjust the top margin of the menu
     }),
     option: (provided) => ({
       ...provided,
       padding: "5px 10px", // Adjust the padding of each option
+      // overflowY: "scroll",
     }),
  
     indicatorsContainer: (provided) => ({
@@ -449,6 +462,7 @@ function AddLineElement({
     if (existingUnit) {
       setUnit(selectedOption.value);
     } else if (selectedOption.value) {
+      // const slicedValue = selectedOption?.value?.slice(0,10);
       setUnit(selectedOption.value);
       await addUnit({ ...selectedOption, userId: userInfo.user.id });
       await refetch({ userId: userInfo.user.id });
@@ -539,10 +553,43 @@ function AddLineElement({
 
   //   handleTotalCostChange();
   // }, [margin]);
+  const CustomInput = (props) => {
+    const { value, ...rest } = props;
+  
+    // Limit input value to 10 characters
+    const newValue = value
+  
+    return <components.Input {...rest} value={newValue} maxLength={50}/>;
+  };
+  // const CustomOption = ({ innerRef, innerProps, isDisabled, children, isSelected, isFocused }) => {
+  //   // Ensure children is a string to safely check its length
+  //   const text = typeof children === 'string' ? children : '';
+  //   const limitedText = text.length > 18 ? text.slice(0, 18) + '"' : text;
+  
+  //   // Conditional styles for selected and focused states
+  //   const optionStyles = {
+  //     padding: '4px',
+  //     backgroundColor: isSelected ? '#f0f0f0' : 'transparent', // Example selected background color
+  //     fontWeight: isSelected ? 'bold' : 'normal', // Example selected font weight
+  //     color: isFocused ? '#007bff' : 'inherit' // Example focused text color
+  //   };
+  
+  //   return !isDisabled ? (
+  //     <div ref={innerRef} {...innerProps} style={optionStyles}>
+  //       {limitedText}
+  //     </div>
+  //   ) : null;
+  // };
+  
+  
+
 
   useEffect(() => {
-    console.log(margin);
-  }, [margin]);
+    const recallUnits = async () => {
+      await refetch();
+    }
+    recallUnits();
+  }, [showAddLine, showUpdateLine]);
   return (
     <div className="App">
       <>
@@ -576,6 +623,7 @@ function AddLineElement({
                 freeSolo
                 disableClearable
                 id="phaseName"
+                // maxLength={}
                 // openOnFocus
                 options={
                   autoComplete ? autoComplete.map((option) => option.title) : []
@@ -621,14 +669,16 @@ function AddLineElement({
                     variant="standard"
                     placeholder="e.g: Demolition"
                     // value={formData.phaseName}
-                    onFocus={() => {}}
+                    // onFocus={() => {}}
                     onChange={(event) => setPhaseName(event.target.value)} // Assuming setPhaseName is your state updater function
                     required
                     InputLabelProps={{ display: "none" }}
+                    inputProps={{
+                      ...params.inputProps,
+                      maxLength:50
+                    }}
                     // InputProps={{
-                    //   inputProps: {
-                    //     maxLength: 10
-                    //   }
+                    //   maxLength:50
                     // }}
                   />
                 )}
@@ -666,13 +716,15 @@ function AddLineElement({
                       ref={creatableRef}
                       defaultInputValue={LineItem ? LineItem?.unit : unit}
                       // value={findValueInData(unit)}
+                      inputProps={{maxLength: 10}}
                       placeholder={"Select Unit"}
                       styles={selectStyles}
                       // defaultValue={unit}
                       onChange={handleSetUnit}
-                      options={data?.allUnits ? data?.allUnits : []}
+                      options={data?.allUnits?.filter(option => option.label) || []}
                       isLoading={isLoading}
                       isDisabled={isLoading}
+                      components={{ Input: CustomInput }}
                       // onCreateOption={handleCreateNewUnit}
                       // isClearable
                     ></CreateableSelect>

@@ -520,16 +520,15 @@ const AddPhaseCard = ({
             <Table sx={{ width: "100%" }}>
               <TableHead sx={{ width: "100%" }}>
                 <TableRow>
-                  {!InitialProposalView && (
-                    <>
-                      <TableCell></TableCell>
-                    </>
-                  )}
+                  <>
+                    <TableCell></TableCell>
+                  </>
+
                   <TableCell sx={{ ...tableHeadings }}>Line Item</TableCell>
 
                   {/* <TableCell sx={tableHeadings}>Description</TableCell> */}
                   <TableCell sx={tableHeadings}>Unit</TableCell>
-                  {!(
+                  {/* {!(
                     userRoleAuth.userRole === "client" ||
                     userRoleAuth.userRole === "employee" ||
                     userRoleAuth.userRole === "subcontractor" ||
@@ -541,7 +540,7 @@ const AddPhaseCard = ({
                     userRoleAuth.userRole === "subcontractor" ||
                     userRoleAuth.userRole === "supplier"
                   ) && <TableCell sx={tableHeadings}>Cost</TableCell>}
-                  <TableCell sx={tableHeadings}>Quantity</TableCell>
+                  <TableCell sx={tableHeadings}>Quantity</TableCell> */}
                   {!(path === "assignproject") && (
                     <TableCell sx={tableHeadings}>Start</TableCell>
                   )}
@@ -555,11 +554,11 @@ const AddPhaseCard = ({
                     userRoleAuth.userRole === "supplier"
                   ) && <TableCell sx={tableHeadings}>Profit</TableCell>}
                   <TableCell sx={tableHeadings}>Total Cost</TableCell>
-                  {(userRoleAuth.userRole === "superadmin" ||
+                  {/* {(userRoleAuth.userRole === "superadmin" ||
                     userRoleAuth.userRole === "admin" ||
                     userRoleAuth.userRole === "projectManager") && (
                     <TableCell sx={tableHeadings}>Arrears</TableCell>
-                  )}
+                  )} */}
                   <TableCell sx={tableHeadings}>Notes</TableCell>
                   {adminProjectView && (
                     <>
@@ -609,46 +608,54 @@ const AddPhaseCard = ({
                     return <></>;
                   }
                   return (
-                    <TableRow key={index} sx={{ paddingLeft: "4rem" }}>
-                      {!InitialProposalView && (
-                        <TableCell sx={tableCell}>
-                          {!(path === "assignproject") &&
-                            !(view === "Generate Invoice") &&
-                            (row.status === "Work Order Not requested" ||
-                              row.status === "Work Order declined" ||
-                              row.status === "Change Order declined") && (
-                              <Checkbox
-                                // checked={checkedRow === row}
-                                sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
-                                checked={
-                                  isRowSelected(row, row.phase_id)
-                                    ? isRowSelected(row, row.phase_id)
-                                    : false
-                                }
-                                onChange={() => handleCheckboxChange(row)}
-                              />
-                            )}
-                          {view === "Generate Invoice" &&
-                            !(row.paymentPending === "0") && (
-                              <Checkbox
-                                // checked={checkedRow === row}
-                                sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
-                                checked={
-                                  isRowSelected(row, row.phase_id)
-                                    ? isRowSelected(row, row.phase_id)
-                                    : false
-                                }
-                                onChange={() => handleCheckboxChange(row)}
-                              />
-                            )}
-                        </TableCell>
-                      )}
+                    <TableRow
+                      key={index}
+                      sx={{ paddingLeft: "4rem", maxHeight: "50px" }}
+                    >
+                      <TableCell sx={tableCell}>
+                        {!InitialProposalView && (
+                          <>
+                            {!(path === "assignproject") &&
+                              !(view === "Generate Invoice") &&
+                              (row.status === "Work Order Not requested" ||
+                                row.status === "Work Order declined" ||
+                                row.status === "Change Order declined") && (
+                                <Checkbox
+                                  // checked={checkedRow === row}
+                                  sx={{
+                                    "& .MuiSvgIcon-root": { fontSize: 20 },
+                                  }}
+                                  checked={
+                                    isRowSelected(row, row.phase_id)
+                                      ? isRowSelected(row, row.phase_id)
+                                      : false
+                                  }
+                                  onChange={() => handleCheckboxChange(row)}
+                                />
+                              )}
+                          </>
+                        )}
+                        {view === "Generate Invoice" &&
+                          !(row.paymentPending === "0") && (
+                            <Checkbox
+                              // checked={checkedRow === row}
+                              sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
+                              checked={
+                                isRowSelected(row, row.phase_id)
+                                  ? isRowSelected(row, row.phase_id)
+                                  : false
+                              }
+                              onChange={() => handleCheckboxChange(row)}
+                            />
+                          )}
+                      </TableCell>
+
                       <TableCell sx={tableCell} component="th" scope="row">
                         {row.title}
                       </TableCell>
                       {/* <TableCell>{row.description}</TableCell> */}
                       <TableCell sx={tableCell}>{row.unit}</TableCell>
-                      {!(
+                      {/* {!(
                         userRoleAuth.userRole === "client" ||
                         userRoleAuth.userRole === "employee" ||
                         userRoleAuth.userRole === "subcontractor" ||
@@ -669,7 +676,7 @@ const AddPhaseCard = ({
                         </TableCell>
                       )}
 
-                      <TableCell sx={tableCell}>{row.quantity}</TableCell>
+                      <TableCell sx={tableCell}>{row.quantity}</TableCell> */}
                       {!(path === "assignproject") && (
                         <TableCell sx={tableCell}>
                           {row?.start_day
@@ -702,14 +709,21 @@ const AddPhaseCard = ({
                       <TableCell sx={tableCell}>
                         ${formatMoney(Number(row.total) + Number(row.margin))}
                       </TableCell>
-                      {(userRoleAuth.userRole === "superadmin" ||
+                      {/* {(userRoleAuth.userRole === "superadmin" ||
                         userRoleAuth.userRole === "admin" ||
                         userRoleAuth.userRole === "projectManager") && (
                         <TableCell sx={tableCell}>
                           ${formatMoney(row.paymentPending)}
                         </TableCell>
-                      )}
-                      <TableCell sx={tableCell}>{row.notes}</TableCell>
+                      )} */}
+                      <TableCell sx={{ ...tableCell }}>
+                        <Typography
+                          maxHeight={"90px"}
+                          sx={{ fontWeight: 500, fontSize: "0.9rem", overflowY:'auto', textAlign:'center' }}
+                        >
+                          {row.notes}
+                        </Typography>
+                      </TableCell>
                       {adminProjectView && (
                         <>
                           {view === "Generate Invoice" ? (
@@ -822,6 +836,7 @@ const AddPhaseCard = ({
             projectId={projectId}
             InitialProposalView={InitialProposalView}
             setRowCheckboxes={setRowCheckboxes}
+            showAddLine={showAddLine}
           />
         )}
         {showUpdateLine && (
@@ -833,6 +848,7 @@ const AddPhaseCard = ({
             projectId={projectId}
             InitialProposalView={InitialProposalView}
             setRowCheckboxes={setRowCheckboxes}
+            showUpdateLine={showUpdateLine}
           />
         )}
         {openModal && (
@@ -942,6 +958,8 @@ const tableCell = {
   padding: "8px !important",
   // paddingLeft: "0rem",
   textAlign: "left",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 };
 const hrLine = {
   width: "100%",

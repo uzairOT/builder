@@ -830,7 +830,7 @@ const CustomEventMonthTasks = ({ event, isProjectPage, projectId }) => {
                 </>
               ) : (
                 <Stack direction={"row"} justifyContent={"space-between"}>
-                  <Typography fontSize={"10px"} color={"#454545"}>
+                  <Typography fontSize={"10px"} color={"#454545"} overflow={'hidden'} textOverflow={'ellipsis'} backgroundColor={'#F7F9FC'} width={'70px'} ml={'8px'}>
                     {event?.data?.task}
                   </Typography>
                   <Stack alignItems={"end"} justifyContent={"end"}>

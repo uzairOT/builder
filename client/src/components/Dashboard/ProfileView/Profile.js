@@ -41,7 +41,7 @@ const themeStyle = {
   },
   containerTitle: {
     fontSize: { xs: "14px", md: "13px", lg:'11px',  xl: "13px" },
-    fontWeight: "400",
+    fontWeight: "600",
     fontFamily: "inherit",
     textTransform: "uppercase",
   },

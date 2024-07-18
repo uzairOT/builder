@@ -201,7 +201,7 @@ function ChatView({
         projectId: project === "project" ? id : null,
         conversationId: conversationId ? conversationId : null,
         offset: newOffset,
-        recipientType: "team+client",
+        recipientType: recipientType,
       }).unwrap();
       console.log("messages length: ", res)
       console.log('has more messages: ', hasMoreMessages)
@@ -306,7 +306,7 @@ function ChatView({
       socket.off("privateMessage", messageListener);
       socket.off("userStatusChanged", userStatusListener);
     };
-  }, [id, conversationId]);
+  }, [id, conversationId, recipientType]);
 
   const handleImageUpload = (e) => {
     const file = e.target?.files[0];
@@ -507,11 +507,11 @@ console.log('conversationId: ',conversationId, 'value: ', value)
           ref={boxRef}
           sx={{
             height: {
-              xl: "calc(75vh + 90px)",
-              lg: "calc(75vh + 90px)",
-              md: "calc(75vh + 90px)",
-              sm: "calc(75vh + 90px)",
-              xs: "calc(75vh + 90px)",
+              xl: "calc(72vh)",
+              lg: "600px",
+              md: "600px",
+              sm: "600px",
+              xs: "600px",
             },
             overflowY: "scroll",
             ...scrollable,
@@ -742,6 +742,7 @@ console.log('conversationId: ',conversationId, 'value: ', value)
           sx={{
             display: "flex",
             alignItems: "center",
+            justifyContent:'space-between',
             mb: 2,
             ml: 2,
             mr: 2,
@@ -775,6 +776,7 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                 margin: "0 4px 0 4px",
                 justifyContent: "center",
                 alignItems: "center",
+               
               }}
             >
               <button
@@ -884,6 +886,7 @@ const buttonStyle = {
   whiteSpace: "nowrap",
   padding: "13.2px",
   cursor: "pointer",
+  width:'100%'
 };
 
 const scrollable = {

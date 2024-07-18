@@ -44,7 +44,7 @@ function ProfileView() {
   const [fileType, setFileType] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
   const [image, setImage] = useState(user ? user.user.image : null);
-  const [phone, setPhone] = useState(user ? user.user.phoneNumber : "");
+  const [phone, setPhone] = useState(user.user.phoneNumber ? user.user.phoneNumber : "");
   const [phoneIsValid, setPhoneIsValid] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -185,6 +185,7 @@ function ProfileView() {
   };
 
   const handleSubmit = async (image) => {
+    console.log(image);
     if (!validate()) {
       toast.error("Your phone number is not valid");
       return;
@@ -192,7 +193,7 @@ function ProfileView() {
     try {
       const fileUrl = await uploadFileToServer(selectedFile);
       const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
-      if (uploadedFileUrl) {
+     if (uploadedFileUrl) {
         const put = {
           ...formData,
           phoneNumber: phone,
@@ -203,6 +204,7 @@ function ProfileView() {
         localStorage.setItem("userInfo", JSON.stringify(res.data));
         dispatch(setCredentials(res.data));
         if (image === "image") {
+
         } else {
           toast.success("Profile updated successfully");
         }
@@ -215,7 +217,11 @@ function ProfileView() {
         const res = await updateProfile(put);
         localStorage.setItem("userInfo", JSON.stringify(res.data));
         dispatch(setCredentials(res.data));
-        toast.success("Profile updated successfully");
+        if (image === "image") {
+          
+        } else {
+          toast.success("Profile updated successfully");
+        }
       }
     } catch (error) {
       toast.error(
@@ -363,7 +369,7 @@ function ProfileView() {
                 sx={textAreaStyle}
               />
             </Grid> */}
-            <Grid item xs={12} sx={{ display: "flex", gap: 2, my: 6.1 }}>
+            <Grid item xs={12} sx={{ display: "flex", gap: 4, my: 6.1 }}>
               <Button
                 sx={{ whiteSpace: "nowrap" }}
                 buttonText="Update Profile"

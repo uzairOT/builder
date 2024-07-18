@@ -46,6 +46,10 @@ const ConversationCard = ({conversation, conversationId, handleSetConversationId
                   <Avatar alt={conversation?.id} src={conversation?.image} />
                 </ListItemAvatar>
                 <ListItemText
+                 secondaryTypographyProps={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
                   secondary={
                     <React.Fragment>
                       <Typography

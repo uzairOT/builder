@@ -306,7 +306,7 @@ const RequestWorkOrderModal = ({
   }, [changeOrder, checkedRow, phaseItems]);
 
   const handleRequest = async () => {
-    if (subject === "" || description === "" || notes === "") {
+    if (subject === "") {
       toast.warning("Please complete the Request work order form");
       return;
     }
@@ -443,7 +443,7 @@ const RequestWorkOrderModal = ({
           sx={{
             ...style,
             ...themeStyle.scrollable,
-            height: { xl: "100%", lg: "95%", md: "90%", sm: "90%", xs: "90%" },
+            height: { xl: "90%", lg: "90%", md: "90%", sm: "90%", xs: "90%" },
           }}
           overflow={"scroll"}
         >

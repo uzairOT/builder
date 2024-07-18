@@ -5,11 +5,13 @@ import { Box, Grid, Button, useMediaQuery } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import builder1 from "../../Signup/Assets/pngs/builderProYellowLogo.png";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { resetUserAndRoleEmail } from "../../../redux/slices/projectFormSlice";
+import { toast } from "react-toastify";
 
 function Header({ step, gap, handlePreviousStep, step2 }) {
   //console.log("Header step: ", step);
+  const phases = useSelector((state) => state.projectInitialProposal.phases);
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTab = useMediaQuery("(max-width:900px)");
   const isMd = useMediaQuery("(max-width:1200px)");
@@ -33,6 +35,10 @@ function Header({ step, gap, handlePreviousStep, step2 }) {
     handlePreviousStep();
   };
   const handleLogoClcik = () => {
+    if(phases[0]?.length < 1){
+      toast.error('Please add atleast one phase');
+      return;
+    }
     dispatch(resetUserAndRoleEmail());
     navigate("/");
   };
