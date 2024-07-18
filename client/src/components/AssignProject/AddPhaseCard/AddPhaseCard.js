@@ -435,7 +435,7 @@ const AddPhaseCard = ({
                       }}
                     />
                     <Typography
-                      style={{
+                      sx={{
                         '@media (min-width: 601px)':{display: 'inline'},
                         '@media (max-width: 600px)': { display: 'none' }
                       }}
@@ -500,6 +500,10 @@ const AddPhaseCard = ({
                     paddingRight: "1rem",
                     fontSize: "20px",
                     marginTop: "0",
+                    width:{sm:"100%", xs:'14ch'},
+                    overflow:'hidden',
+                    textOverflow: 'ellipsis',
+                 
                   }}
                 >
                   Price: ${formatMoney(totalCost)}

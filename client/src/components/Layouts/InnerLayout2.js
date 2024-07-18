@@ -33,8 +33,8 @@ const InnerLayout2 = () => {
    <>
    <Stack direction={{xl:'row', lg:'row', md:'column'}} pt={1} spacing={1}>
         {/* Monitoring And Accounting */}
-        <Stack flex={{xl:2}}display={{xl:"flex",lg:'flex'}}><Paper style={themeStyle.border}><MonitoringFinances projectId={id} userId={userId}/></Paper></Stack>
-        <Stack flex={{xl:8,lg:7}}><Paper style={themeStyle.border}><ProjectInfoAndTeam  projectId={id} userId={userId}/></Paper></Stack>
+        <Stack p={{md:0, xs:1}} flex={{xl:2}}display={{xl:"flex",lg:'flex'}}><Paper style={themeStyle.border}><MonitoringFinances projectId={id} userId={userId}/></Paper></Stack>
+        <Stack p={{md:0, xs:1}}  flex={{xl:8,lg:7}}><Paper style={themeStyle.border}><ProjectInfoAndTeam  projectId={id} userId={userId}/></Paper></Stack>
         </Stack>
         <Stack direction={{xl:'row', lg:'row'}} pt={1} spacing={1} sx={{height:'calc(92vh - 295px)'}}>
           <Stack flex={2} height={'inherit'}>

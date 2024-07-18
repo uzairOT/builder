@@ -57,7 +57,7 @@ const SubscriptionPlans = ({
       <Typography sx={themeStyle.title} pb={2}>
         {currentPayment ? "Update Plan" : "Choose plan"}
       </Typography>
-      <Grid container spacing={4} p={1}>
+      <Grid container spacing={4} p={1} >
         <Grid item xl={6} lg={6}>
           <SubscriptionCard
             currentPlan={currentPlan}
@@ -91,7 +91,7 @@ export default SubscriptionPlans;
 
 const themeStyle = {
   title: {
-    fontSize: {xl:"28px",lg:"25px",md:"28px",xs:"28px",},
+    fontSize: { xl: "28px", lg: "25px", md: "28px", xs: "28px" },
     fontWeight: "500",
     fontFamily: "Arial Rounded MT, sans-serif",
     color: "#000000",

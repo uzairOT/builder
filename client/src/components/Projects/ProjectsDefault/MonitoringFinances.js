@@ -51,11 +51,11 @@ const MonitoringFinances = ({projectId, userId}) => {
             return<></>
           }
             return(
-                <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}><Typography sx={themeStyle.label}>{item?.phase_name}</Typography><Typography sx={themeStyle.price}>${formatMoney(item?.totalCost)}</Typography></Stack>
+                <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} gap={0.5}><Typography sx={themeStyle.label}>{item?.phase_name}</Typography><Typography sx={themeStyle.price}>${formatMoney(item?.totalCost)}</Typography></Stack>
             )
         })}
-        <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} ><Typography width={'100px'} overflow={'hidden'} sx={themeStyle.label}>Total Cost</Typography><Typography sx={themeStyle.price}>${formatMoney(data?.totalCost)}</Typography></Stack>
-        <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}><Typography sx={themeStyle.label}>Projected Margin</Typography><Typography sx={themeStyle.price}>${formatMoney(data?.totalMargin)}</Typography></Stack>
+        <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} gap={0.5} ><Typography width={'100px'} overflow={'hidden'} sx={themeStyle.label}>Total Cost</Typography><Typography sx={themeStyle.price}>${formatMoney(data?.totalCost)}</Typography></Stack>
+        <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} gap={0.5}><Typography sx={themeStyle.label}>Projected Margin</Typography><Typography sx={themeStyle.price}>${formatMoney(data?.totalMargin)}</Typography></Stack>
     </Stack>
   )
 }
@@ -73,9 +73,14 @@ const themeStyle = {
         
     },
     price: {
+      
         fontSize: '14px',
         color: '#4C8AB1',
         fontFamily: 'Montserrat, sans-serif',
         fontWeight: '600',
+        width:'30ch',
+        overflow:'hidden',
+        textOverflow: 'ellipsis',
+        textAlign:'right'
     }
 }

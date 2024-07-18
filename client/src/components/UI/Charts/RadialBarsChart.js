@@ -50,7 +50,7 @@ const RedialBarsChart = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
         options={options}
         series={series}
         type="radialBar"
-        width="250"
+        width={{md:"250", xs:"200"}}
         height={'200'}
       />
     </div>

@@ -50,14 +50,14 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
     toolbarTitle: {
       color: bgColorClient ? "black" : "white",
       fontFamily: "inherit",
-      fontSize: { xl: "20px", lg: "16px", md: "20px", xs: "20px" },
+      fontSize: { xl: "20px", lg: "16px", md: "20px", xs: "16px" },
       fontStyle: "normal",
       fontWeight: 500,
     },
     toolbarButton: {
       textAlign: "center",
       fontFamily: "inherit",
-      fontSize: "12px",
+      fontSize: { xl: "12px", lg: "12px", md: "12px", xs: "11px" },
       fontStyle: "normal",
       fontWeight: 500,
       padding: "10px",
@@ -118,7 +118,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
             </Typography>
             {toolbar.view === "month" && (
               <Stack
-                direction={"row"}
+                direction={{sm:"row", xs:"column"}}
                 spacing={2}
                 pr={0.5}
                 pl={5}
@@ -131,7 +131,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                     xl: "12px !important",
                     lg: "10px !important",
                     md: "12px !important",
-                    xs: "12px !important",
+                    xs: "11px !important",
                   },
                 }}
                   style={{
@@ -158,7 +158,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                     xl: "12px !important",
                     lg: "10px !important",
                     md: "12px !important",
-                    xs: "12px !important",
+                    xs: "11px !important",
                   },
                 }}
                   style={{
@@ -177,9 +177,9 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
             )}
             {toolbar.view === "day" && (
               <Stack
-                direction={"row"}
-                spacing={2}
-                pr={1}
+              direction={{sm:"row", xs:"column"}}
+              spacing={2}
+                pr={0.5}
                 pl={5}
                 justifyContent={"center"}
                 alignItems={"center"}
@@ -190,7 +190,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                     xl: "12px !important",
                     lg: "10px !important",
                     md: "12px !important",
-                    xs: "12px !important",
+                    xs: "11px !important",
                   },
                 }}
                   style={{
@@ -211,7 +211,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                       xl: "12px !important",
                       lg: "10px !important",
                       md: "12px !important",
-                      xs: "12px !important",
+                      xs: "11px !important",
                     },
                   }}
                   style={{
@@ -236,7 +236,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                   xl: "12px !important",
                   lg: "10px !important",
                   md: "12px !important",
-                  xs: "12px !important",
+                  xs: "11px !important",
                 },
               }}
               style={{
@@ -254,7 +254,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                   xl: "12px !important",
                   lg: "10px !important",
                   md: "12px !important",
-                  xs: "12px !important",
+                  xs: "11px !important",
                 },
               }}
               style={{
@@ -275,7 +275,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                   xl: "12px !important",
                   lg: "10px !important",
                   md: "12px !important",
-                  xs: "12px !important",
+                  xs: "11px !important",
                 },
               }}
               style={{

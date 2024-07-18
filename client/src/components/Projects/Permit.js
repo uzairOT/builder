@@ -93,7 +93,7 @@ function Permit({ view, type }) {
           {view} ({RecentfileUrls?.length} items){" "}
         </Typography>
         <Stack
-          direction={"row"}
+          direction={{sm:"row", xs:"column"}}
           gap={2}
           justifyContent={"center"}
           alignItems={"center"}

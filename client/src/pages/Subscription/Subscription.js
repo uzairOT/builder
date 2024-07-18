@@ -18,7 +18,7 @@ const Subscription = () => {
         overflow={"hidden"}
         sx={themeStyle.scrollable}
       >
-        <Grid item xl={2} lg={2} md={4} sm={12} xs={12} height={"93vh"} overflow={'hidden'}>
+        <Grid item xl={2} lg={2} md={4} sm={12} xs={12} height={"93vh"} overflow={'hidden'} mb={4}>
           <SubscriptionSidebar />
         </Grid>
         <Grid

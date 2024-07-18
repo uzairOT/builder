@@ -405,7 +405,8 @@ function AddLineElement({
       marginBottom: "0",
       height: "", // Keep this as it was
       padding: "4px", // Keep this as it was,
-         overflow:'auto'
+         overflow:'auto',
+         width:'calc(100% + 16px)'
     }),
     menu: (provided) => ({
       ...provided,
@@ -1046,14 +1047,15 @@ const doneButton = {
 
 const parallelBox = {
   display: "flex",
-  gap: "2rem",
+  gap: {md:"2rem", xs:'0.5rem'},
   justifyContent: "center",
   alignItems: "center",
+  flexDirection:{md:'row', xs:'column'}
 };
 const innerBox = {
   display: "flex",
   flexDirection: "column",
-  width: "50%",
+  width: {md:"50%", xs:'100%'},
 };
 const leftSpace = {
   marginLeft: "1rem",

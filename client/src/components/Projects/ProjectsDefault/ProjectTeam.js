@@ -191,20 +191,21 @@ const ProjectTeam = () => {
                       lg: "100%",
                       md: "100%",
                       sm: "100%",
-                      xs: "300px",
+                      xs: "380px",
                     }}
                     justifyContent={"space-between"}
                   >
                     <Stack
                       direction={"row"}
-                      flex={{ xl: 5, lg: 5, md: 5, sm: 3, xs: 3 }}
+                      pl={{md:0, xs:2}}
+                      flex={{ xl: 5, lg: 5, md: 5, sm: 5, xs: 5 }}
                       gap={1}
                       justifyContent={"space-between"}
                     >
                       <Typography sx={themeStyle.subTitle}>{roleFormat(role)}</Typography>
                       <Stack
                         direction={"row"}
-                        width={{ xl: "270px", lg: "220px", xs: "270px" }}
+                        width={{ xl: "270px", lg: "220px",md:"300px",sm:"250px", xs: "190px" }}
                       >
                         {groupedData[role].map((person, index) => {
                           let firstName = person.firstName;
@@ -561,9 +562,10 @@ const themeStyle = {
     fontSize: "16px",
     color: "#4C8AB1",
     fontFamily: "Arial Rounded MT, sans-serif",
+    pl:{md:0,xs:2.5}
   },
   subTitle: {
-    fontSize: { xl: "13px", lg: "11px", xs: "13px" },
+    fontSize: { xl: "13px", lg: "11px", xs: "11px" },
     color: "#202227",
     fontFamily: "Arial Rounded MT, sans-serif",
     textAlign: "left",

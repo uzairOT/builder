@@ -180,7 +180,7 @@ const themeStyle = {
     textAlign: "left",
     fontFamily: "inherit",
     color: "#202227",
-    fontSize: {md:"20px",xs:"10px"},
+    fontSize: {xl:"20px",lg:"20px"},
   },
   innerStacktext: {
     fontSize: "10px",

@@ -772,14 +772,16 @@ console.log('conversationId: ',conversationId, 'value: ', value)
             <Box
               sx={{
                 display: "flex",
+                flexDirection:{sm:"row", xs:"column"},
                 columnGap: 1.5,
+                gap:{md:"12px", xs:"2px"},
                 margin: "0 4px 0 4px",
                 justifyContent: "center",
                 alignItems: "center",
                
               }}
             >
-              <button
+              <Button
               type="button"
                 onClick={handleTeamClick}
                 style={{
@@ -789,10 +791,11 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                   color: recipientType === "team" ? "#FFF" : "#4C8AB1",
                   margin: 0,
                 }}
+                sx={{paddingY:{sm:"12px",xs:"4px"},fontSize:{sm:"11px", xs:"8px"},paddingX:{sm:"18px",xs:"10px"}}}
               >
                 Team
-              </button>
-              <button
+              </Button>
+              <Button
               type="button"
                 onClick={handleTeamClientClick}
                 style={{
@@ -802,9 +805,11 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                   color: recipientType === "team+client" ? "#FFF" : "#4C8AB1",
                   margin: 0,
                 }}
+                sx={{paddingY:{sm:"12px",xs:"4px"},fontSize:{sm:"11px", xs:"8px"},paddingX:{sm:"18px",xs:"10px"}}}
+
               >
                 Team + Client
-              </button>
+              </Button>
             </Box>
           )}
           
@@ -884,7 +889,7 @@ const buttonStyle = {
   border: "1px solid #4C8AB1",
   borderRadius: "10px",
   whiteSpace: "nowrap",
-  padding: "13.2px",
+  // padding: "13.2px",
   cursor: "pointer",
   width:'100%'
 };
