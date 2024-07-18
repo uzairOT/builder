@@ -8,6 +8,8 @@ import {
   Modal,
   Container,
   CircularProgress,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
@@ -40,6 +42,7 @@ import { selectWorkOrderDeclineRecall } from "../../../redux/slices/Notification
 import BuilderProNavbarLogo from "../../Navbar/assets/svgs/builder-pro-logo-navbar.svg";
 import GenerateInvoice from "../../dialogues/GenerateInvoice/GenerateInvoice";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
+import AddIcon from "@mui/icons-material/Add";
 //import "react-toastify/dist/ReactToastify.css";
 
 function AddPhaseView({
@@ -56,9 +59,13 @@ function AddPhaseView({
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
   const [selectedPhaseData, setSelectedPhaseData] = useState(null);
   const { id } = useParams();
-  const [deleteProjectPhase, {isDeletePhaseLoading}] = useDeleteProjectPhaseMutation();
+  const [deleteProjectPhase, { isDeletePhaseLoading }] =
+    useDeleteProjectPhaseMutation();
   const phases = useSelector((state) => state.projectInitialProposal.phases);
   const targetRef = useRef();
+  const theme = useTheme();
+  const downView = useMediaQuery(theme.breakpoints.down("lg"));
+  const mobileView = useMediaQuery(theme.breakpoints.down("md"));
   const [openModal, setOpenModal] = useState(false);
   const initialPhases = useSelector(
     (state) => state.projectInitialProposal.initialPhases
@@ -163,7 +170,7 @@ function AddPhaseView({
     fetchData();
   };
 
-  console.log(projectId)
+  console.log(projectId);
 
   const handleGridToggle = (currentIndex, previousIndex) => {
     // Ensure indices are within the valid range
@@ -226,8 +233,8 @@ function AddPhaseView({
     setShowAddPhaseDialogue(true);
   };
   const handleGenerateInvoice = () => {
-    if(Object.keys(rowCheckboxes).length < 1){
-      toast.warn('Please select a line item.', {toastId:'Inovice toast'});
+    if (Object.keys(rowCheckboxes).length < 1) {
+      toast.warn("Please select a line item.", { toastId: "Inovice toast" });
       return;
     }
     console.log("InvoiceGenerated");
@@ -261,39 +268,37 @@ function AddPhaseView({
     }
   };
 
-const handleOpenModalClose = () => {
-  setOpenModal(false);
-}
-const handleOpenModal = () => {
-  if(selectedPhaseId){
-
-    setOpenModal(true)
-    }else{
+  const handleOpenModalClose = () => {
+    setOpenModal(false);
+  };
+  const handleOpenModal = () => {
+    if (selectedPhaseId) {
+      setOpenModal(true);
+    } else {
       toast.info("Please Select a Phase");
     }
-}
-const handlePhaseDelete = (isDelete) => {
-  if(isDelete){
-    handleDeletePhase();
-  }else{
-    handleOpenModalClose();
-  }
-}
+  };
+  const handlePhaseDelete = (isDelete) => {
+    if (isDelete) {
+      handleDeletePhase();
+    } else {
+      handleOpenModalClose();
+    }
+  };
   const handleDeletePhase = async () => {
     //console.log('clicked!')
-    
-      //console.log('in IF statement ', selectedPhaseId)
-      await deleteProjectPhase({ id: selectedPhaseId });
-      const updatedCardPhase = cardPhase.filter(
-        (card) => card.id !== selectedPhaseId
-      );
-      setCardPhase(updatedCardPhase);
-      //console.log(updatedCardPhase);
-      setSelectedPhaseId(null);
-      setSelectedPhaseData(null);
-      fetchData();
-      handleOpenModalClose();
-   
+
+    //console.log('in IF statement ', selectedPhaseId)
+    await deleteProjectPhase({ id: selectedPhaseId });
+    const updatedCardPhase = cardPhase.filter(
+      (card) => card.id !== selectedPhaseId
+    );
+    setCardPhase(updatedCardPhase);
+    //console.log(updatedCardPhase);
+    setSelectedPhaseId(null);
+    setSelectedPhaseData(null);
+    fetchData();
+    handleOpenModalClose();
   };
 
   const handleAddSubmit = (phaseName, color) => {
@@ -323,7 +328,7 @@ const handlePhaseDelete = (isDelete) => {
     "This is rowCheckboxes lenght",
     Object.keys(rowCheckboxes).length < 1
   );
-console.log(rowCheckboxes)
+  console.log(rowCheckboxes);
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -335,7 +340,7 @@ console.log(rowCheckboxes)
       <Grid container sx={{ ...firstGrid, width: "100%" }}>
         <Stack
           direction={"row"}
-          justifyContent={view ? "space-between" :"center"}
+          justifyContent={view ? "space-between" : "center"}
           // sx={{ width: "100%" }}
         >
           <Stack sx={{ justifyContent: "center" }}>
@@ -367,226 +372,370 @@ console.log(rowCheckboxes)
                 <>
                   <Stack direction={"row"} sx={buttonBox}>
                     <Button
-                      sx={{ ...actionButton, background: "#FFAC00",whiteSpace:'nowrap',height:(initialPhases[0]?.length < 1 || isLoading) ? '4rem' : '2.375rem',fontSize:(initialPhases[0]?.length < 1 || isLoading) ? '24px' : '18px' , width: (initialPhases[0]?.length < 1 || isLoading) ? '300px' : '130px', height: (initialPhases[0]?.length < 1 || isLoading) ? '50px' : '40px' }}
+                      sx={{
+                        ...actionButton,
+                        background: "#FFAC00",
+                        whiteSpace: "nowrap",
+                        height:
+                          initialPhases[0]?.length < 1 || isLoading
+                            ? "4rem"
+                            : "2.375rem",
+                        display: isLoading ? "none" : "flex",
+                        fontSize:
+                          initialPhases[0]?.length < 1 || isLoading
+                            ? "24px"
+                            : "18px",
+                        width:
+                          initialPhases[0]?.length < 1 || isLoading
+                            ? "300px"
+                            : downView
+                            ? "40px"
+                            : "130px",
+                        height:
+                          initialPhases[0]?.length < 1 || isLoading
+                            ? "50px"
+                            : "40px",
+                      }}
                       onClick={handleAddPhase}
                     >
-                      Add Phase
+                      {downView && <AddIcon />}
+                      {downView ? (mobileView ? "" : "Add") : "Add Phase"}
                     </Button>
                     <Button
-                      sx={{ ...actionButton, display: (initialPhases[0]?.length < 1 || isLoading) ? 'none' :'flex' }}
-                      startIcon={<ModeEditOutlinedIcon />}
+                      sx={{
+                        ...actionButton,
+                        display:
+                          initialPhases[0]?.length < 1 || isLoading
+                            ? "none"
+                            : "flex",
+                        fontSize: { lg: "18px", xs: "11px" },
+                      }}
+                      startIcon={
+                        <ModeEditOutlinedIcon
+                          sx={{ marginLeft: { md: "0px", xs: "12px" } }}
+                        />
+                      }
                       onClick={handleEditPhase}
                     >
-                      Edit
+                      <Typography
+                        sx={{
+                          fontSize: { lg: "18px", xs: "11px" },
+                          display: { md: "block", xs: "none" },
+                        }}
+                      >
+                        Edit
+                      </Typography>
                     </Button>
                     <Button
-                      sx={{ ...actionButton, display: (initialPhases[0]?.length < 1 || isLoading) ? 'none' :'flex' }}
-                      startIcon={<DeleteOutlinedIcon />}
+                      sx={{
+                        ...actionButton,
+                        display:
+                          initialPhases[0]?.length < 1 || isLoading
+                            ? "none"
+                            : "flex",
+                        fontSize: { lg: "18px", xs: "11px" },
+                      }}
+                      startIcon={
+                        <DeleteOutlinedIcon
+                          sx={{ marginLeft: { md: "0px", xs: "12px" } }}
+                        />
+                      }
                       onClick={handleOpenModal}
                     >
-                      Delete
+                      <Typography
+                        sx={{
+                          fontSize: { lg: "18px", xs: "11px" },
+                          display: { md: "block", xs: "none" },
+                        }}
+                      >
+                        Delete
+                      </Typography>
                     </Button>
                   </Stack>
                 </>
               )}
             </>
-          ) : view ==='Generate Invoice' ? <>
-          <Stack direction={"row"} sx={buttonBox}>
-          <Button sx={{ ...actionButton,  }} style={{color: Object.keys(rowCheckboxes).length < 1 ? 'white' : 'white'}} onClick={handleGenerateInvoice}>
-                Generate Invoice
-              </Button>
-          </Stack>
-          </> : (
+          ) : view === "Generate Invoice" ? (
             <>
-            {(authUserRole === "superadmin" ||
-            authUserRole === "" ||
+              <Stack direction={"row"} sx={buttonBox}>
+                <Button
+                  sx={{ ...actionButton }}
+                  style={{
+                    color:
+                      Object.keys(rowCheckboxes).length < 1 ? "white" : "white",
+                  }}
+                  onClick={handleGenerateInvoice}
+                >
+                  Generate Invoice
+                </Button>
+              </Stack>
+            </>
+          ) : (
+            <>
+              {(authUserRole === "superadmin" ||
+                authUserRole === "" ||
                 authUserRole === "projectManager" ||
-                authUserRole === "admin") && <Stack direction={"row"} sx={buttonBox}>
-              <Button
-                sx={{ ...actionButton, whiteSpace:'nowrap', background: "#FFAC00" ,fontSize:(phases[0]?.length < 1 || isLoading) ? '40px' : '18px'  ,width: (phases[0]?.length < 1 || isLoading) ? '400px' : '130px', height: (phases[0]?.length < 1 || isLoading) ? '90px' : '40px'}}
-                onClick={handleAddPhase}
-              >
-                Add Phase
-              </Button>
-              <Button
-                sx={{ ...actionButton, display: (phases[0]?.length < 1 || isLoading) ? 'none' :'flex' }}
-                startIcon={<ModeEditOutlinedIcon />}
-                onClick={handleEditPhase}
-              >
-                Edit
-              </Button>
-              <Button
-                sx={{ ...actionButton, display: (phases[0]?.length < 1 || isLoading) ? 'none' :'flex' }}
-                startIcon={<DeleteOutlinedIcon />}
-                onClick={handleOpenModal}
-              >
-                Delete
-              </Button>
+                authUserRole === "admin") && (
+                <Stack direction={"row"} sx={buttonBox}>
+                  <Button
+                    sx={{
+                      ...actionButton,
+                      whiteSpace: "nowrap",
+                      background: "#FFAC00",
+                      fontSize:
+                        phases[0]?.length < 1 || isLoading
+                          ? "40px"
+                          : { lg: "18px", xs: "12px" },
+                      width:
+                        phases[0]?.length < 1 || isLoading
+                          ? "400px"
+                          : downView
+                          ? "40px"
+                          : "130px",
+                      height:
+                        phases[0]?.length < 1 || isLoading ? "90px" : "40px",
+                      display: isLoading ? "none" : "flex",
+                    }}
+                    onClick={handleAddPhase}
+                  >
+                    {downView && <AddIcon />}
+                    {downView ? (mobileView ? "" : "Add") : "Add Phase"}
+                  </Button>
+                  <Button
+                    sx={{
+                      ...actionButton,
+                      display:
+                        phases[0]?.length < 1 || isLoading ? "none" : "flex",
+                      fontSize: { lg: "18px", xs: "11px" },
+                    }}
+                    startIcon={
+                      <ModeEditOutlinedIcon
+                        sx={{ marginLeft: { md: "0px", xs: "12px" } }}
+                      />
+                    }
+                    onClick={handleEditPhase}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: { lg: "18px", xs: "11px" },
+                        display: { md: "block", xs: "none" },
+                      }}
+                    >
+                      Edit
+                    </Typography>
+                  </Button>
+                  <Button
+                    sx={{
+                      ...actionButton,
+                      display:
+                        phases[0]?.length < 1 || isLoading ? "none" : "flex",
+                    }}
+                    startIcon={
+                      <DeleteOutlinedIcon
+                        sx={{ marginLeft: { md: "0px", xs: "12px" } }}
+                      />
+                    }
+                    onClick={handleOpenModal}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: { lg: "18px", xs: "11px" },
+                        display: { md: "block", xs: "none" },
+                      }}
+                    >
+                      Delete
+                    </Typography>
+                  </Button>
 
-              {adminProjectView ? (
-                <RequestWorkOrderModal
-                  rowCheckboxes={rowCheckboxes}
-                  setRowCheckboxes={setRowCheckboxes}
-                  phases={phases}
-                  fetchData={fetchData}
-                  refetchChangeOrder={refetchChangeOrder}
-                />
-              ) : (
-                <></>
+                  {adminProjectView && !mobileView ? (
+                    <RequestWorkOrderModal
+                      rowCheckboxes={rowCheckboxes}
+                      setRowCheckboxes={setRowCheckboxes}
+                      phases={phases}
+                      fetchData={fetchData}
+                      refetchChangeOrder={refetchChangeOrder}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </Stack>
               )}
-             
-            </Stack>}
             </>
           )}
         </Stack>
-         {isLoading?
-         <Stack height={"44vh"} justifyContent={'center'} alignItems={'center'}>
-         <CircularProgress /> 
+        {view !== "Initial Proposal" && (authUserRole === "superadmin" ||
+          authUserRole === "" ||
+          authUserRole === "projectManager" ||
+          authUserRole === "admin") &&
+          adminProjectView && mobileView &&(
+            <Stack justifyContent={'center'} alignItems={'center'} py={1}>
+              {" "}
+              <RequestWorkOrderModal
+                rowCheckboxes={rowCheckboxes}
+                setRowCheckboxes={setRowCheckboxes}
+                phases={phases}
+                fetchData={fetchData}
+                refetchChangeOrder={refetchChangeOrder}
+              />
+            </Stack>
+          )}
+        {isLoading ? (
+          <Stack
+            height={"44vh"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <CircularProgress />
           </Stack>
-         :  <>
-        {InitialProposalView ? (
-          <Box
-            sx={{
-              height: "calc(93vh - 140px)",
-              ...themeStyle.scrollable,
-              width: {
-                xl: "100%",
-                lg: "100%",
-                md: "100%",
-                sm: "100%",
-                xs: "95vw",
-              },
-            }}
-          >
-            {initialPhases !== null &&
-            initialPhases[0] !== undefined &&
-            initialPhases[0].length !== 0 &&
-            !isLoading ? (
-              initialPhases[0]?.map((phase, index) => {
-                return (
-                  <Stack
-                    key={phase.id}
-                    style={{
-                      ...slectedCardStyle,
-                      // width: "100%",
-                      cursor: "pointer", // Add cursor pointer to indicate clickable
-                      borderRadius: "8px", // Rounded corners
-                      boxShadow:
-                        selectedPhaseId === phase.id
-                          ? `0 0 0 2px #1B1B1B, 0 5px 20px ${phase.color}`
-                          : "none", // Border and glow effect
-                      transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
-                      marginTop: "1rem",
-                      // padding:5,
-                      marginRight:'1rem',
-                      marginLeft:'1rem',
-                      marginBottom: "1rem",
-                    }}
-                  >
-                    <PhaseCard
-                      projectId={adminProjectView ? id : projectId}
-                      key={phase?.id}
-                      phaseData={phase}
-                      length={phase.length}
-                      onGridToggle={() =>
-                        handleGridToggle(index, phase?.previousIndex)
-                      }
-                      handleSelectCard={handleSelectCard}
-                      adminProjectView={adminProjectView}
-                      setRowCheckboxes={setRowCheckboxes}
-                      handleAddRow={handleAddRow}
-                      InitialProposalView={InitialProposalView}
-                      authUserRole={authUserRole}
-                      rowCheckboxes={rowCheckboxes}
-                    />
-                  </Stack>
-                );
-              })
-            ) : (
-              <div
-                style={{
-                  height: "44vh",
-                  alignItems: "center",
-                  display: "grid",
-                  textAlign: "center",
-                }}
-              >
-                No Phases Available
-              </div>
-            )}
-          </Box>
         ) : (
-          <Box
-            sx={{
-              height: adminProjectView ? view ==='Generate Invoice' ? "calc(93vh - 140px)" : "calc(92vh - 300px)" : "",
-              ...themeStyle.scrollable,
-              width: {
-                xl: "100%",
-                lg: "100%",
-                md: "100%",
-                sm: "100%",
-                xs: "95vw",
-              },
-            }}
-          >
-            {phases !== null &&
-            phases[0] !== undefined &&
-            phases[0].length !== 0 &&
-            !isLoading ? (
-              phases[0]?.map((phase, index) => {
-                return (
-                  <Stack
-                    key={phase.id}
-                    style={{
-                      ...slectedCardStyle,
-                      // width: "100%",
-                      cursor: "pointer", // Add cursor pointer to indicate clickable
-                      borderRadius: "8px", // Rounded corners
-                      boxShadow:
-                        selectedPhaseId === phase.id
-                          ? `0 0 0 2px #1B1B1B, 0 5px 20px ${phase.color}`
-                          : "none", // Border and glow effect
-                      transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
-                      marginTop: "1rem",
-                      marginRight:'1rem',
-                      marginLeft:'1rem',
-                      marginBottom: "1rem",
-                    }}
-                  >
-                    <PhaseCard
-                      projectId={adminProjectView ? id : projectId}
-                      key={phase?.id}
-                      phaseData={phase}
-                      length={phase.length}
-                      onGridToggle={() =>
-                        handleGridToggle(index, phase?.previousIndex)
-                      }
-                      view={view}
-                      handleSelectCard={handleSelectCard}
-                      adminProjectView={adminProjectView}
-                      setRowCheckboxes={setRowCheckboxes}
-                      handleAddRow={handleAddRow}
-                      rowCheckboxes={rowCheckboxes}
-                      
-                    />
-                  </Stack>
-                );
-              })
-            ) : (
-              <div
-                style={{
-                  height: "44vh",
-                  alignItems: "center",
-                  display: "grid",
-                  textAlign: "center",
+          <>
+            {InitialProposalView ? (
+              <Box
+                sx={{
+                  height: "calc(93vh - 140px)",
+                  ...themeStyle.scrollable,
+                  width: {
+                    xl: "100%",
+                    lg: "100%",
+                    md: "100%",
+                    sm: "100%",
+                    xs: "95vw",
+                  },
                 }}
               >
-                No Phases Available
-              </div>
+                {initialPhases !== null &&
+                initialPhases[0] !== undefined &&
+                initialPhases[0].length !== 0 &&
+                !isLoading ? (
+                  initialPhases[0]?.map((phase, index) => {
+                    return (
+                      <Stack
+                        key={phase.id}
+                        style={{
+                          ...slectedCardStyle,
+                          // width: "100%",
+                          cursor: "pointer", // Add cursor pointer to indicate clickable
+                          borderRadius: "8px", // Rounded corners
+                          boxShadow:
+                            selectedPhaseId === phase.id
+                              ? `0 0 0 2px #1B1B1B, 0 5px 20px ${phase.color}`
+                              : "none", // Border and glow effect
+                          transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
+                          marginTop: "1rem",
+                          // padding:5,
+                          marginRight: "1rem",
+                          marginLeft: "1rem",
+                          marginBottom: "1rem",
+                        }}
+                      >
+                        <PhaseCard
+                          projectId={adminProjectView ? id : projectId}
+                          key={phase?.id}
+                          phaseData={phase}
+                          length={phase.length}
+                          onGridToggle={() =>
+                            handleGridToggle(index, phase?.previousIndex)
+                          }
+                          handleSelectCard={handleSelectCard}
+                          adminProjectView={adminProjectView}
+                          setRowCheckboxes={setRowCheckboxes}
+                          handleAddRow={handleAddRow}
+                          InitialProposalView={InitialProposalView}
+                          authUserRole={authUserRole}
+                          rowCheckboxes={rowCheckboxes}
+                        />
+                      </Stack>
+                    );
+                  })
+                ) : (
+                  <div
+                    style={{
+                      height: "44vh",
+                      alignItems: "center",
+                      display: "grid",
+                      textAlign: "center",
+                    }}
+                  >
+                    No Phases Available
+                  </div>
+                )}
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  height: adminProjectView
+                    ? view === "Generate Invoice"
+                      ? "calc(93vh - 140px)"
+                      : "calc(92vh - 300px)"
+                    : "",
+                  ...themeStyle.scrollable,
+                  width: {
+                    xl: "100%",
+                    lg: "100%",
+                    md: "100%",
+                    sm: "100%",
+                    xs: "95vw",
+                  },
+                }}
+              >
+                {phases !== null &&
+                phases[0] !== undefined &&
+                phases[0].length !== 0 &&
+                !isLoading ? (
+                  phases[0]?.map((phase, index) => {
+                    return (
+                      <Stack
+                        key={phase.id}
+                        style={{
+                          ...slectedCardStyle,
+                          // width: "100%",
+                          cursor: "pointer", // Add cursor pointer to indicate clickable
+                          borderRadius: "8px", // Rounded corners
+                          boxShadow:
+                            selectedPhaseId === phase.id
+                              ? `0 0 0 2px #1B1B1B, 0 5px 20px ${phase.color}`
+                              : "none", // Border and glow effect
+                          transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
+                          marginTop: "1rem",
+                          marginRight: "1rem",
+                          marginLeft: "1rem",
+                          marginBottom: "1rem",
+                        }}
+                      >
+                        <PhaseCard
+                          projectId={adminProjectView ? id : projectId}
+                          key={phase?.id}
+                          phaseData={phase}
+                          length={phase.length}
+                          onGridToggle={() =>
+                            handleGridToggle(index, phase?.previousIndex)
+                          }
+                          view={view}
+                          handleSelectCard={handleSelectCard}
+                          adminProjectView={adminProjectView}
+                          setRowCheckboxes={setRowCheckboxes}
+                          handleAddRow={handleAddRow}
+                          rowCheckboxes={rowCheckboxes}
+                        />
+                      </Stack>
+                    );
+                  })
+                ) : (
+                  <div
+                    style={{
+                      height: "44vh",
+                      alignItems: "center",
+                      display: "grid",
+                      textAlign: "center",
+                    }}
+                  >
+                    No Phases Available
+                  </div>
+                )}
+              </Box>
             )}
-          </Box>
+          </>
         )}
-        </>}
         {showUpdatePhaseDialogue && (
           <UpdatePhaseDialogue
             handleUpdateOpen={handleUpdateOpen}
@@ -613,7 +762,12 @@ console.log(rowCheckboxes)
       </Grid>
       {/* {open && ( */}
       {done && (
-        <GenerateInvoice open={open} handleClose={handleClose} invoiceData={invoiceData} rowCheckboxes={rowCheckboxes}/>
+        <GenerateInvoice
+          open={open}
+          handleClose={handleClose}
+          invoiceData={invoiceData}
+          rowCheckboxes={rowCheckboxes}
+        />
       )}
       {generateInvoice && (
         <GenerateInvoicePopup
@@ -634,12 +788,12 @@ console.log(rowCheckboxes)
       )}
       {openModal && (
         <AreYouSureModal
-        open={openModal}
-        handleClose={handleOpenModalClose}
-        handleConfirmDelete={handlePhaseDelete}
-        isLoading={isDeletePhaseLoading}
-        text={'Phase'}
-      />
+          open={openModal}
+          handleClose={handleOpenModalClose}
+          handleConfirmDelete={handlePhaseDelete}
+          isLoading={isDeletePhaseLoading}
+          text={"Phase"}
+        />
       )}
     </>
   );
