@@ -118,7 +118,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
             </Typography>
             {toolbar.view === "month" && (
               <Stack
-                direction={{md:"row", xs:"column"}}
+                direction={{sm:"row", xs:"column"}}
                 spacing={2}
                 pr={0.5}
                 pl={5}
@@ -177,7 +177,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
             )}
             {toolbar.view === "day" && (
               <Stack
-              direction={{md:"row", xs:"column"}}
+              direction={{sm:"row", xs:"column"}}
               spacing={2}
                 pr={0.5}
                 pl={5}
