@@ -24,7 +24,7 @@ function SideBar() {
   const selectedItem = paths.findIndex((path) => path === location.pathname);
 
   return (
-    <Box padding={"2rem"}>
+    <Box padding={"2rem"} display={{lg:'block', xs:'none'}}>
       <Typography sx={listHeading}>My Profile</Typography>
       <List sx={{ ...listHeading, fontSize: "1rem", marginTop: "2rem" }}>
         <ListItem

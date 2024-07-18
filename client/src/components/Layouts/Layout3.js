@@ -1,28 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Paper } from "@mui/material";
+import { Grid, IconButton, Paper, Stack, useMediaQuery, useTheme } from "@mui/material";
 import SideBar from "../Settings/SideBar/SideBar";
 import { Outlet } from "react-router";
 import Navbar from "../../components/Navbar/Navbar.js";
+import MenuIcon from "@mui/icons-material/Menu";
 import { useLocation } from "react-router-dom";
-import { useAddAssignRoleMutation, useUpdateAssignRoleMutation } from "../../redux/apis/Admin/assignRoleApiSlice.js";
+import {
+  useAddAssignRoleMutation,
+  useUpdateAssignRoleMutation,
+} from "../../redux/apis/Admin/assignRoleApiSlice.js";
+import ProjectNavbarDrawer from "../Projects/ProjectNavbarDrawer.js";
 function Layout3() {
   const [userInfo, setUserInfo] = useState({
-    userRole:'',
-    image:'',
-    name: '',
-    projects: '',
-    email:'',
-    phoneNumber: '',
-    country: '',
-    status:'',
-  })
+    userRole: "",
+    image: "",
+    name: "",
+    projects: "",
+    email: "",
+    phoneNumber: "",
+    country: "",
+    status: "",
+  });
+  const theme = useTheme();
+  const showHamburger = useMediaQuery(theme.breakpoints.down("lg"));
 
   const location = useLocation();
-  const pathSegments = location.pathname.split('/')
-  const userRole = pathSegments[pathSegments.length-1]
+  const pathSegments = location.pathname.split("/");
+  const userRole = pathSegments[pathSegments.length - 1];
   //console.log(userRole);
 
-  const [assignRolePost] = useAddAssignRoleMutation()
+  const [assignRolePost] = useAddAssignRoleMutation();
   const [assignRolePut] = useUpdateAssignRoleMutation();
 
   const [userId, setUserId] = useState(null);
@@ -30,53 +37,70 @@ function Layout3() {
     //console.log(userInfo);
   }, [userInfo]);
 
-
   const handleAssignRoleButton = (e) => {
     e.preventDefault();
     const post = {
       ...userInfo,
       userRole: userRole,
-    }
+    };
     //console.log(post)
     assignRolePost(post);
     setUserInfo({
-      userRole:'',
-      image:'',
-      name: '',
-      projects: '',
-      email:'',
-      phoneNumber: '',
-      country: '',
-      status:'',
-    })
-  }
+      userRole: "",
+      image: "",
+      name: "",
+      projects: "",
+      email: "",
+      phoneNumber: "",
+      country: "",
+      status: "",
+    });
+  };
   const handleUpdateAssignRole = (e) => {
     e.preventDefault();
     const put = {
       ...userInfo,
-      userRole: userRole
-    }
+      userRole: userRole,
+    };
     //console.log(put);
     assignRolePut(put);
     setUserInfo({
-      userRole:'',
-      image:'',
-      name: '',
-      projects: '',
-      email:'',
-      phoneNumber: '',
-      country: '',
-      status:'',
-    })
-  }
+      userRole: "",
+      image: "",
+      name: "",
+      projects: "",
+      email: "",
+      phoneNumber: "",
+      country: "",
+      status: "",
+    });
+  };
+  const navLinks = [
+    { path: "/settings", title: "Profile" },
+    { path: "/settings/materline", title: "Master Line Items" },
+    { path: "/settings/units", title: "Units" },
+    { path: "/settings/admin", title: "Admin" },
+    { path: "/settings/projectManager", title: "Project Manager" },
+    { path: "/settings/client", title: "Clients" },
+    { path: "/settings/employee", title: "Employee" },
+    { path: "/settings/subcontractor", title: "Subcontractor" },
+    { path: "/settings/supplier", title: "Supplier" },
+    { path: "/settings/others", title: "Others" },
+    { path: "/settings/accounts", title: "Accounts" },
+    { path: "/settings/coupon", title: "Coupon" },
+  ];
+
   return (
     <>
-      
       <main>
-        <Grid sx={{...themeStyle.dashboard, ...themeStyle.scrollable}} container pt={1}>
+        <Grid
+          sx={{ ...themeStyle.dashboard, ...themeStyle.scrollable }}
+          container
+          pt={1}
+        >
           {/* Side bar */}
           <Grid item xs={12} sm={12} md={12} lg={2.5} xl={2}>
-            <Paper sx={{ borderRadius: "0 14px 14px 0", height: "98%", }}>
+            <Paper sx={{ borderRadius: "0 14px 14px 0", height: "98%" }}>
               <SideBar />{" "}
             </Paper>
           </Grid>
@@ -91,7 +115,19 @@ function Layout3() {
             style={{ paddingTop: "0px", paddingLeft: "10px" }}
           >
             <Paper sx={themeStyle.Layout3Pages} margin={1}>
-              <Outlet context={[userInfo,setUserInfo, handleAssignRoleButton,userId, setUserId, handleUpdateAssignRole]} />
+              {showHamburger && <Stack justifyContent={'flex-end'} alignItems={'flex-end'} marginBottom={'-26px'}>
+              <ProjectNavbarDrawer navLinks={navLinks} />
+              </Stack>}
+              <Outlet
+                context={[
+                  userInfo,
+                  setUserInfo,
+                  handleAssignRoleButton,
+                  userId,
+                  setUserId,
+                  handleUpdateAssignRole,
+                ]}
+              />
             </Paper>
           </Grid>
         </Grid>
@@ -105,7 +141,7 @@ export default Layout3;
 const themeStyle = {
   dashboard: {
     backgroundColor: "#eff5ff",
-    height: {xl:"93vh", lg: '93vh', md:'100%', xs:'100%', sm:'100%'},
+    height: { xl: "93vh", lg: "93vh", md: "100%", xs: "100%", sm: "100%" },
   },
   dashboardViews: {
     height: "100%",
