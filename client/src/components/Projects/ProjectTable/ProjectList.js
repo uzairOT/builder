@@ -217,23 +217,23 @@ const ProjectList = ({
             lg: "row",
             md: "row",
             sm: "row",
-            xs: "column",
+            xs: "row",
           }}
           justifyContent={{
             xl: "space-between",
             lg: "space-between",
             md: "space-between",
-            sm: "space-between",
-            xs: "flex-start",
+            xs: "space-between",
+            // xs: "flex-start",
           }}
           alignItems={{ xs: "flex-start" }}
           spacing={1}
         >
-          <Stack pl={{ xl: 8, lg: 8, md: 8, sm: 8, xs: 3 }}>
+          <Stack pl={{ xl: 8, lg: 8, md: 8, sm: 1, xs: 1 }}>
             <Typography
               color={"#4C8AB1"}
               fontFamily={"Poppins, san serif"}
-              fontSize={"22px"}
+              fontSize={{ md: "22px", xs: "18px" }}
               fontWeight={"600"}
             >
               Project List
@@ -241,7 +241,7 @@ const ProjectList = ({
             <Typography
               color={"#4C8AB1"}
               fontFamily={"Poppins, san serif"}
-              fontSize={"14px"}
+              fontSize={{ md: "14px", xs: "11px" }}
               fontWeight={"400"}
             >
               All projects are displayed here
@@ -249,26 +249,28 @@ const ProjectList = ({
           </Stack>
           {/* Buttons Remodel And Filter */}
           <Stack direction={"row"} height={"35px"}>
-            {selectedFilters?.map((filter) => (
-              <BuilderProButton
-                variant={"contained"}
-                backgroundColor={"#E7E7E7"}
-                Icon={CloseIcon}
-                iconProps={{ color: "#272727" }}
-                handleOnClick={() => {
-                  handleClickFeatureRemove(filter);
-                }}
-              >
-                <Typography
-                  color={"#272727"}
-                  fontFamily={"Inter, sans serif"}
-                  fontSize={"12px"}
-                  fontWeight={"500"}
+            <Box display={{ md: "flex", xs: "none" }}>
+              {selectedFilters?.map((filter) => (
+                <BuilderProButton
+                  variant={"contained"}
+                  backgroundColor={"#E7E7E7"}
+                  Icon={CloseIcon}
+                  iconProps={{ color: "#272727" }}
+                  handleOnClick={() => {
+                    handleClickFeatureRemove(filter);
+                  }}
                 >
-                  {filter}
-                </Typography>
-              </BuilderProButton>
-            ))}
+                  <Typography
+                    color={"#272727"}
+                    fontFamily={"Inter, sans serif"}
+                    fontSize={"12px"}
+                    fontWeight={"500"}
+                  >
+                    {filter}
+                  </Typography>
+                </BuilderProButton>
+              ))}
+            </Box>
             <BuilderProButton
               variant={"contained"}
               backgroundColor={"#FFAC00"}
@@ -276,8 +278,14 @@ const ProjectList = ({
               fontFamily={"inherit"}
               fontSize={"12px"}
               handleOnClick={handleClick}
+              marginLeft={"0px"}
             >
-              Filter
+              <Typography
+                fontSize={"14px"}
+                display={{ md: "inline-block", xs: "none" }}
+              >
+                Filter
+              </Typography>
             </BuilderProButton>
             <Popover
               id={id}
@@ -300,7 +308,13 @@ const ProjectList = ({
             >
               <Stack p={1} borderRadius={"14px"} spacing={1}>
                 <Button
-                  onClick={() => handleClickFeature("remodel")}
+                  onClick={() => {
+                    if (selectedFilters.includes("remodel")) {
+                      handleClickFeatureRemove("remodel");
+                    } else {
+                      handleClickFeature("remodel");
+                    }
+                  }}
                   variant={
                     selectedFilters.includes("remodel")
                       ? "contained"
@@ -316,7 +330,13 @@ const ProjectList = ({
                   </Typography>
                 </Button>
                 <Button
-                  onClick={() => handleClickFeature("newbuild")}
+                  onClick={() => {
+                    if (selectedFilters.includes("newbuild")) {
+                      handleClickFeatureRemove("newbuild");
+                    } else {
+                      handleClickFeature("newbuild");
+                    }
+                  }}
                   variant={
                     selectedFilters.includes("newbuild")
                       ? "contained"
@@ -332,7 +352,13 @@ const ProjectList = ({
                   </Typography>
                 </Button>
                 <Button
-                  onClick={() => handleClickFeature("commercial")}
+                  onClick={() => {
+                    if (selectedFilters.includes("commercial")) {
+                      handleClickFeatureRemove("commercial");
+                    } else {
+                      handleClickFeature("commercial");
+                    }
+                  }}
                   variant={
                     selectedFilters.includes("commercial")
                       ? "contained"
@@ -364,7 +390,7 @@ const ProjectList = ({
             lg: "row",
             md: "row",
             sm: "row",
-            xs: "column-reverse",
+            xs: "row",
           }}
           spacing={1}
         >
@@ -386,12 +412,21 @@ const ProjectList = ({
               backgroundColor={"#FFAC00"}
               fontFamily={"inherit"}
               fontSize={"12px"}
-              marginLeft={0}
+              marginLeft={"0px"}
               handleOnClick={() => {
                 navigate("/assignproject");
               }}
             >
-              Add New
+              Add{" "}
+              <Box
+                component={"span"}
+                sx={{
+                  display: { md: "inline-block", xs: "none" },
+                  marginLeft: { md: "3px", xs: "0px" },
+                }}
+              >
+                New
+              </Box>
             </BuilderProButton>
           </Stack>
         </Stack>
@@ -499,7 +534,7 @@ const ProjectList = ({
                           />
                         </TableCell>
                         <TableCell sx={themeStyle.tableCell}>
-                          {row.clientName ? row.clientName : 'No Client Name'}
+                          {row.clientName ? row.clientName : "No Client Name"}
                         </TableCell>
                         <TableCell sx={themeStyle.tableCell}>
                           {row.projectName}
@@ -545,10 +580,12 @@ const ProjectList = ({
                             {row.userId === currentUserId && (
                               <Paper>
                                 <IconButton
+                                  
                                   variant={"contained"}
                                   onClick={() => handleOpenEditModel(row)}
                                 >
                                   <EditOutlinedIcon
+                                  sx={{fontSize:{md:'20px', xs:'14px'}}}
                                     style={{ color: "#4C8AB1" }}
                                   />
                                 </IconButton>
@@ -560,6 +597,7 @@ const ProjectList = ({
                                   onClick={() => handleDeleteFlow(row.id)}
                                 >
                                   <DeleteOutlineOutlinedIcon
+                                   sx={{fontSize:{md:'20px', xs:'14px'}}}
                                     style={{ color: "#DF0404" }}
                                   />
                                 </IconButton>
@@ -619,6 +657,7 @@ const ProjectList = ({
       </Stack>
       <Stack justifyContent={"flex-end"} alignItems={"flex-end"} p={1}>
         <Pagination
+          size="small"
           count={totalPages}
           variant="outlined"
           shape="rounded"
@@ -653,7 +692,7 @@ const themeStyle = {
     textOverflow: "ellipsis",
     overflow: "hidden",
     fontWeight: 500,
-    fontSize: "14px",
+    fontSize: { md: "14px", xs: "11px" },
     fontFamily: "Montserrat, sans serif",
     color: "#8C8C8C",
     padding: "4px",
