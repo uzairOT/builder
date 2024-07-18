@@ -168,7 +168,7 @@ export default function MyApp() {
         Password
       </Typography>
       <Grid container spacing={2} alignItems="center">
-        <Grid item xs={6}>
+        <Grid item  md={6} xs={12}>
           <Typography sx={subHeadings}>Current Password</Typography>
           <TextField
             inputProps={{ maxLength: 50 }}
@@ -183,12 +183,12 @@ export default function MyApp() {
             }}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item md={6} xs={0}>
          
         </Grid>
 
  
-        <Grid item xs={6}>
+        <Grid item md={6} xs={12}>
           <Typography sx={subHeadings}>New Password</Typography>
           <TextField
             inputProps={{ maxLength: 50 }}
@@ -210,10 +210,10 @@ export default function MyApp() {
             </Typography>
           )}
         </Grid>
-        <Grid item xs={6}>
+        <Grid item md={6} xs={0}>
          
          </Grid>
-        <Grid item xs={6}>
+        <Grid item md={6} xs={12}>
           <Typography sx={subHeadings}>Confirm Password</Typography>
           <TextField
             inputProps={{ maxLength: 50 }}
