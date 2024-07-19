@@ -66,7 +66,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
           {workOrder ? view : 'Change Order'}
         </Typography>
         <Tabs defaultValue={0} sx={{ backgroundColor: "transparent",overflowX:"auto" }}>
-          <Stack direction={"row"} justifyContent={"space-between"}>
+          <Stack direction={{sm:"row", xs:"column-reverse"}} gap={{sm:"0", xs:"1rem"}} justifyContent={"space-between"}>
             <TabList
               sx={{
                 [`& .${tabClasses.root}[aria-selected="true"]`]: {
@@ -84,7 +84,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
               <Tab
                 sx={{
                   fontFamily: "Poppins, sans serif",
-                  fontSize:{xl:'15px', lg:"12px",md:'15px',xs:'15px',}
+                  fontSize:{xl:'15px', lg:"12px",md:'15px',xs:'11px',}
                 }}
               >
                 Approved
@@ -92,7 +92,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
               <Tab
                 sx={{
                   fontFamily: "Poppins, sans serif",
-                  fontSize:{xl:'15px', lg:"12px",md:'15px',xs:'15px',}
+                  fontSize:{xl:'15px', lg:"12px",md:'15px',xs:'11px',}
 
                 }}
               >
@@ -102,14 +102,14 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
               <Tab
                 sx={{
                   fontFamily: "Poppins, sans serif",
-                  fontSize:{xl:'15px', lg:"12px",md:'15px',xs:'15px',}
+                  fontSize:{xl:'15px', lg:"12px",md:'15px',xs:'11px',}
 
                 }}
               >
                 Declined
               </Tab>
             </TabList>
-            <Stack direction={"row"} style={{ paddingRight: "16px" }}>
+            <Stack direction={"row"} justifyContent={'flex-end'} style={{ paddingRight: "16px" }}>
               {workOrder ? (
                 <>
                 {/* <BuilderProButton
