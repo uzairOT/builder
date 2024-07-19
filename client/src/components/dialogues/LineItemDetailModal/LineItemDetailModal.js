@@ -65,35 +65,33 @@ const LineItemDetailModal = ({
     >
       <Box sx={style}>
         <Stack>
-          <Typography variant="h5" component="h2" gutterBottom>
-            {lineItem?.title}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            <strong>Description:</strong> {lineItem?.description}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            <strong>Unit:</strong> {lineItem?.unit}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            <strong>Quantity:</strong> {lineItem?.quantity}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            <strong>Unit Price:</strong> {lineItem?.unit_price}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            <strong>Total:</strong> {lineItem?.total}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            <strong>Start Day:</strong>{" "}
-            {new Date(lineItem?.start_day).toLocaleDateString()}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            <strong>End Day:</strong>{" "}
-            {new Date(lineItem?.end_day).toLocaleDateString()}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            <strong>Notes:</strong> {lineItem?.notes}
-          </Typography>
+        <Typography variant="h5" sx={{ width: '100%' }} component="h2" gutterBottom>
+      {lineItem?.title}
+    </Typography>
+    <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
+      <strong>Description:</strong> {lineItem?.description}
+    </Typography>
+    <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
+      <strong>Unit:</strong> {lineItem?.unit}
+    </Typography>
+    <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
+      <strong>Quantity:</strong> {lineItem?.quantity}
+    </Typography>
+    <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
+      <strong>Unit Price:</strong> {lineItem?.unit_price}
+    </Typography>
+    <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
+      <strong>Total:</strong> {lineItem?.total}
+    </Typography>
+    <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
+      <strong>Start Day:</strong> {new Date(lineItem?.start_day).toLocaleDateString()}
+    </Typography>
+    <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
+      <strong>End Day:</strong> {new Date(lineItem?.end_day).toLocaleDateString()}
+    </Typography>
+    <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
+      <strong>Notes:</strong> {lineItem?.notes}
+    </Typography>
           <Stack
             direction={"row"}
             justifyContent={"space-between"}
@@ -170,6 +168,23 @@ const style = {
   borderRadius: "8px",
   boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
   padding: "20px",
+  // maxWidth: '100%',
+  // padding: '20px',
+  wordWrap: 'break-word',
+  wordBreak: 'break-all',
+  overflowY:'auto',
+  height:'80vh'
 };
+const modalContentStyle = {
+  maxWidth: '100%',
+  padding: '20px',
+  wordWrap: 'break-word',
+  wordBreak: 'break-all',
+};
+
+const typographyBody1Style = {
+  marginBottom: '10px',
+};
+
 
 export default LineItemDetailModal;

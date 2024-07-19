@@ -63,9 +63,8 @@ const ShareModal = ({
   const projectId = pathSegments[2];
   const userAuth = userRoleAuth.userRole === "supplier";
   const { data, isError, refetch } = useGetProjectTeamQuery(projectId);
-  const [ isLoading, setIsLoading] = useState(false)
-  const [clientInvoice, { data: invoiceData }] =
-    useClientInvoiceMutation();
+  const [isLoading, setIsLoading] = useState(false);
+  const [clientInvoice, { data: invoiceData }] = useClientInvoiceMutation();
   const [updatePhaseLine, { isLoading: updateIsLoading }] =
     useUpdatePhaseLineMutation();
   const rowsArray = Object.values(rowCheckboxes).flatMap(({ rows }) => rows);
@@ -242,7 +241,7 @@ const ShareModal = ({
       toast.warning("Please select a user");
       return;
     }
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       await handleSetAllPayments();
       const result = await invoiceDataCall();
@@ -252,7 +251,6 @@ const ShareModal = ({
         setShareToClient(false);
       } else {
       }
-      
     } catch (error) {
       console.log(error);
     }
@@ -325,11 +323,11 @@ const ShareModal = ({
                 sx={{ p: 1 }}
                 color={"#4C8AB1"}
                 fontWeight={"500"}
-                fontSize={{sm:"20px", xs:'16px'}}
+                fontSize={{ sm: "20px", xs: "16px" }}
               >
                 Send to
               </Typography>
-              <Box width={{sm:"300px", xs:'150px'}}>
+              <Box width={{ sm: "300px", xs: "150px" }}>
                 {/* Email input */}
                 {/* <Typography variant="body1">Email</Typography> */}
                 <TextField
@@ -462,13 +460,32 @@ const ShareModal = ({
                   <TableHead>
                     <TableRow>
                       <TableCell sx={tableCellStyles}>Title</TableCell>
-                      <TableCell sx={{...tableCellStyles, display:{sm:'table-cell', xs:'none'}}}>Total Cost</TableCell>
+                      <TableCell
+                        sx={{
+                          ...tableCellStyles,
+                          display: { sm: "table-cell", xs: "none" },
+                        }}
+                      >
+                        Total Cost
+                      </TableCell>
                       <TableCell sx={tableCellStyles}>Remaining</TableCell>
-                      <TableCell sx={{...tableCellStyles, display:{sm:'table-cell', xs:'none'}}}>
+                      <TableCell
+                        sx={{
+                          ...tableCellStyles,
+                          display: { sm: "table-cell", xs: "none" },
+                        }}
+                      >
                         Invoice Pending
                       </TableCell>
                       <TableCell sx={tableCellStyles}>Payment</TableCell>
-                      <TableCell sx={{...tableCellStyles, display:{sm:'table-cell', xs:'none'}}}>Percentage</TableCell>
+                      <TableCell
+                        sx={{
+                          ...tableCellStyles,
+                          display: { sm: "table-cell", xs: "none" },
+                        }}
+                      >
+                        Percentage
+                      </TableCell>
                       {/* <TableCell sx={tableCellStyles}>Action</TableCell> */}
                     </TableRow>
                   </TableHead>
@@ -495,7 +512,9 @@ const ShareModal = ({
                                 {row.title}
                               </Typography>
                             </TableCell>
-                            <TableCell sx={{ display:{sm:'table-cell', xs:'none'}}}>
+                            <TableCell
+                              sx={{ display: { sm: "table-cell", xs: "none" } }}
+                            >
                               <Typography sx={tableCellStyles}>
                                 Total Cost: ${formatMoney(totalCost)}
                               </Typography>
@@ -505,7 +524,9 @@ const ShareModal = ({
                                 Remaining: ${formatMoney(row.paymentPending)}
                               </Typography>
                             </TableCell>
-                            <TableCell sx={{display:{sm:'table-cell', xs:'none'}}}>
+                            <TableCell
+                              sx={{ display: { sm: "table-cell", xs: "none" } }}
+                            >
                               <Typography sx={tableCellStyles}>
                                 Invoice Pending: $
                                 {formatMoney(row.pendingAmount)}
@@ -572,7 +593,12 @@ const ShareModal = ({
                                 }}
                               />
                             </TableCell>
-                            <TableCell sx={{ ...tableCellStyles,display:{sm:'table-cell', xs:'none'}}}>
+                            <TableCell
+                              sx={{
+                                ...tableCellStyles,
+                                display: { sm: "table-cell", xs: "none" },
+                              }}
+                            >
                               <TextField
                                 placeholder="10"
                                 required
@@ -726,7 +752,11 @@ const ShareModal = ({
                 handleSend();
               }}
             >
-              {isLoading ? <CircularProgress size={'18px'}/> : <Typography>Send</Typography>}
+              {isLoading ? (
+                <CircularProgress size={"18px"} />
+              ) : (
+                <Typography>Send</Typography>
+              )}
             </BuilderProButton>
             {/* <BuilderProButton
               backgroundColor={"#FFAC00"}
@@ -771,7 +801,7 @@ const style = {
   boxShadow: 24,
   p: 1,
   borderRadius: "14px",
-  overflowX:'auto'
+  overflowX: "auto",
 };
 const label = {
   fontSize: "12px",

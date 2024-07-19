@@ -333,7 +333,7 @@ function Permit({ view, type }) {
                   // maxWidth: '700px', // Set a maximum width for responsiveness
                   // maxHeight: '500px', // Set a maximum height for responsiveness
                   maxWidth: "90vw",
-                  maxHeight: "90vh",
+                  maxHeight: "82vh",
                 }}
               />
               <Typography

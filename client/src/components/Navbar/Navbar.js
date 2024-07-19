@@ -359,7 +359,9 @@ const Navbar = () => {
                 zIndex: "100",
                 backgroundColor: "white",
                 borderRadius: "14px",
+                
               }}
+              sx={{width:{sm:'400px', xs:'300px'}}}
               id={noti_id}
               open={openNotification}
               anchorEl={anchorEl}

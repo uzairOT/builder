@@ -408,36 +408,36 @@ const AddPhaseCard = ({
                   userRoleAuth.userRole === "admin" ||
                   userRoleAuth.userRole === "projectManager" ||
                   userRoleAuth.userRole === "") && (
-                    <Button
+                  <Button
                     sx={{
                       ...actionButton,
                       background: "#4C8AB1",
                       marginTop: "0.7rem",
                       marginBottom: "1rem",
                       marginRight: "1rem",
-                      '@media (max-width: 600px)': {
+                      "@media (max-width: 600px)": {
                         minWidth: 0,
-                        width: '2.5rem',
-                        height: '2.5rem',
-                        borderRadius: '50%',
+                        width: "2.5rem",
+                        height: "2.5rem",
+                        borderRadius: "50%",
                         padding: 0,
-                        fontSize: '0.75rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        fontSize: "0.75rem",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                       },
                     }}
                     onClick={handleAddLine}
                   >
                     <AddIcon
                       sx={{
-                        '@media (min-width: 601px)': { display: 'none' }
+                        "@media (min-width: 601px)": { display: "none" },
                       }}
                     />
                     <Typography
                       sx={{
-                        '@media (min-width: 601px)':{display: 'inline'},
-                        '@media (max-width: 600px)': { display: 'none' }
+                        "@media (min-width: 601px)": { display: "inline" },
+                        "@media (max-width: 600px)": { display: "none" },
                       }}
                     >
                       Add Line Item
@@ -448,36 +448,36 @@ const AddPhaseCard = ({
                   userRoleAuth.userRole === "superadmin" ||
                   userRoleAuth.userRole === "projectManager" ||
                   userRoleAuth.userRole === "") && (
-                    <Button
+                  <Button
                     sx={{
                       ...actionButton,
                       background: "#4C8AB1",
                       marginTop: "0.7rem",
                       marginBottom: "1rem",
                       marginRight: "1rem",
-                      '@media (max-width: 600px)': {
+                      "@media (max-width: 600px)": {
                         minWidth: 0,
-                        width: '2.5rem',
-                        height: '2.5rem',
-                        borderRadius: '50%',
+                        width: "2.5rem",
+                        height: "2.5rem",
+                        borderRadius: "50%",
                         padding: 0,
-                        fontSize: '0.75rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        fontSize: "0.75rem",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                       },
                     }}
                     onClick={handleAddLine}
                   >
                     <AddIcon
                       sx={{
-                        '@media (min-width: 601px)': { display: 'none' }
+                        "@media (min-width: 601px)": { display: "none" },
                       }}
                     />
                     <Typography
                       sx={{
-                        '@media (min-width: 601px)':{display: 'inline'},
-                        '@media (max-width: 600px)': { display: 'none' }
+                        "@media (min-width: 601px)": { display: "inline" },
+                        "@media (max-width: 600px)": { display: "none" },
                       }}
                     >
                       Add Line Item
@@ -500,10 +500,9 @@ const AddPhaseCard = ({
                     paddingRight: "1rem",
                     fontSize: "20px",
                     marginTop: "0",
-                    width:{sm:"100%", xs:'14ch'},
-                    overflow:'hidden',
-                    textOverflow: 'ellipsis',
-                 
+                    width: { sm: "100%", xs: "14ch" },
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                   }}
                 >
                   Price: ${formatMoney(totalCost)}
@@ -525,7 +524,14 @@ const AddPhaseCard = ({
               <TableHead sx={{ width: "100%" }}>
                 <TableRow>
                   <>
-                    <TableCell></TableCell>
+                    <TableCell
+                      sx={{
+                        ...tableHeadings,
+                        maxWidth: "",
+                        minWidth: "",
+                        width: "10px",
+                      }}
+                    ></TableCell>
                   </>
 
                   <TableCell sx={{ ...tableHeadings }}>Line Item</TableCell>
@@ -546,10 +552,28 @@ const AddPhaseCard = ({
                   ) && <TableCell sx={tableHeadings}>Cost</TableCell>}
                   <TableCell sx={tableHeadings}>Quantity</TableCell> */}
                   {!(path === "assignproject") && (
-                    <TableCell sx={tableHeadings}>Start</TableCell>
+                    <TableCell
+                      sx={{
+                        ...tableHeadings,
+                        maxWidth: "",
+                        minWidth: "",
+                        width: "60px",
+                      }}
+                    >
+                      Start
+                    </TableCell>
                   )}
                   {!(path === "assignproject") && (
-                    <TableCell sx={tableHeadings}>End</TableCell>
+                    <TableCell
+                      sx={{
+                        ...tableHeadings,
+                        maxWidth: "",
+                        minWidth: "",
+                        width: "60px",
+                      }}
+                    >
+                      End
+                    </TableCell>
                   )}
                   {!(
                     userRoleAuth.userRole === "client" ||
@@ -616,7 +640,14 @@ const AddPhaseCard = ({
                       key={index}
                       sx={{ paddingLeft: "4rem", maxHeight: "50px" }}
                     >
-                      <TableCell sx={tableCell}>
+                      <TableCell
+                        sx={{
+                          ...tableCell,
+                          maxWidth: "",
+                          minWidth: "",
+                          width: "10px",
+                        }}
+                      >
                         {!InitialProposalView && (
                           <>
                             {!(path === "assignproject") &&
@@ -682,7 +713,14 @@ const AddPhaseCard = ({
 
                       <TableCell sx={tableCell}>{row.quantity}</TableCell> */}
                       {!(path === "assignproject") && (
-                        <TableCell sx={tableCell}>
+                        <TableCell
+                          sx={{
+                            ...tableCell,
+                            maxWidth: "",
+                            minWidth: "",
+                            width: "60px",
+                          }}
+                        >
                           {row?.start_day
                             ? moment(row?.start_day).format(
                                 "MMM, DD, YYYY HH:mm a"
@@ -691,7 +729,14 @@ const AddPhaseCard = ({
                         </TableCell>
                       )}
                       {!(path === "assignproject") && (
-                        <TableCell sx={tableCell}>
+                        <TableCell
+                          sx={{
+                            ...tableCell,
+                            maxWidth: "",
+                            minWidth: "",
+                            width: "60px",
+                          }}
+                        >
                           {row?.end_day
                             ? moment(row?.end_day).format(
                                 "MMM, DD, YYYY HH:mm a"
@@ -723,7 +768,12 @@ const AddPhaseCard = ({
                       <TableCell sx={{ ...tableCell }}>
                         <Typography
                           maxHeight={"90px"}
-                          sx={{ fontWeight: 500, fontSize: "0.9rem", overflowY:'auto', textAlign:'center' }}
+                          sx={{
+                            fontWeight: 500,
+                            fontSize: "0.9rem",
+                            overflowY: "auto",
+                            textAlign: "center",
+                          }}
                         >
                           {row.notes}
                         </Typography>
@@ -742,7 +792,7 @@ const AddPhaseCard = ({
                           {(userRoleAuth.userRole === "superadmin" ||
                             userRoleAuth.userRole === "admin" ||
                             userRoleAuth.userRole === "projectManager") && (
-                            <TableCell>
+                            <TableCell sx={tableCell}>
                               <Button
                                 sx={{
                                   height: "2rem",
@@ -955,7 +1005,7 @@ const tableCell = {
   // fontFamily: "Poppins, sans-serif",
   maxWidth: { xl: "40px", lg: "80px", md: "70px", xs: "100%" },
   minWidth: { xl: "20px", lg: "40px", md: "40px", xs: "20px" },
-  whiteSpace: "",
+  whiteSpace: "nowrap",
   fontWeight: 500,
   fontSize: "0.9rem",
   // color: "#8C8C8C",

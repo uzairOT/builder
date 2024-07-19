@@ -170,43 +170,47 @@ function Notification({
           <Grid container spacing={1}>
             <Grid item xs={6}>
               <List dense>
-                <ListItem style={listItemStyle}>
+                <ListItem sx={listItemStyle}>
                   <ListItemText
                     primary={
-                      <Typography variant="subtitle1" style={textStyle}>
+                      <Typography variant="subtitle1" sx={textStyle}>
                         Subject
                       </Typography>
                     }
+                    secondaryTypographyProps={{sx:textSecondaryStyle}}
                     secondary={notification.WorkOrderReq.subject}
                   />
                 </ListItem>
-                <ListItem style={listItemStyle}>
+                <ListItem sx={listItemStyle}>
                   <ListItemText
                     primary={
-                      <Typography variant="subtitle1" style={textStyle}>
+                      <Typography variant="subtitle1" sx={textStyle}>
                         Description
                       </Typography>
                     }
+                    secondaryTypographyProps={{sx:textSecondaryStyle}}
                     secondary={notification.WorkOrderReq.description}
                   />
                 </ListItem>
-                <ListItem style={listItemStyle}>
+                <ListItem sx={listItemStyle}>
                   <ListItemText
                     primary={
-                      <Typography variant="subtitle1" style={textStyle}>
+                      <Typography variant="subtitle1" sx={textStyle}>
                         Priority
                       </Typography>
                     }
+                    secondaryTypographyProps={{sx:textSecondaryStyle}}
                     secondary={notification.WorkOrderReq.priority}
                   />
                 </ListItem>
-                <ListItem style={listItemStyle}>
+                <ListItem sx={listItemStyle}>
                   <ListItemText
                     primary={
-                      <Typography variant="subtitle1" style={textStyle}>
+                      <Typography variant="subtitle1" sx={textStyle}>
                         Total
                       </Typography>
                     }
+                    secondaryTypographyProps={{sx:textSecondaryStyle}}
                     secondary={notification.WorkOrderReq.total}
                   />
                 </ListItem>
@@ -214,43 +218,47 @@ function Notification({
             </Grid>
             <Grid item xs={6}>
               <List dense>
-                <ListItem style={listItemStyle}>
+                <ListItem sx={listItemStyle}>
                   <ListItemText
                     primary={
-                      <Typography variant="subtitle1" style={textStyle}>
+                      <Typography variant="subtitle1" sx={textStyle}>
                         Start
                       </Typography>
                     }
+                    secondaryTypographyProps={{sx:textSecondaryStyle}}
                     secondary={moment(notification.WorkOrderReq.start_day).format('MMM, D,YYYY HH:mm a')}
                   />
                 </ListItem>
-                <ListItem style={listItemStyle}>
+                <ListItem sx={listItemStyle}>
                   <ListItemText
                     primary={
-                      <Typography variant="subtitle1" style={textStyle}>
+                      <Typography variant="subtitle1" sx={textStyle}>
                         End
                       </Typography>
                     }
+                    secondaryTypographyProps={{sx:textSecondaryStyle}}
                     secondary={moment(notification.WorkOrderReq.end_day).format('MMM, D,YYYY HH:mm a')}
                   />
                 </ListItem>
-                <ListItem style={listItemStyle}>
+                <ListItem sx={listItemStyle}>
                   <ListItemText
                     primary={
-                      <Typography variant="subtitle1" style={textStyle}>
+                      <Typography variant="subtitle1" sx={textStyle}>
                         Status
                       </Typography>
                     }
+                    secondaryTypographyProps={{sx:textSecondaryStyle}}
                     secondary={notification.WorkOrderReq.status}
                   />
                 </ListItem>
-                <ListItem style={listItemStyle}>
+                <ListItem sx={listItemStyle}>
                   <ListItemText
                     primary={
-                      <Typography variant="subtitle1" style={textStyle}>
+                      <Typography variant="subtitle1" sx={textStyle}>
                         Notes
                       </Typography>
                     }
+                    secondaryTypographyProps={{sx:textSecondaryStyle}}
                     secondary={notification.WorkOrderReq.notes}
                   />
                 </ListItem>
@@ -316,6 +324,14 @@ const textStyle = {
   fontFamily: "inherit",
   fontWeight: "bold",
   fontSize: "14px",
+  width:{sm:'25ch', xs:'10ch'}
+};
+const textSecondaryStyle = {
+  fontFamily: "inherit",
+  fontSize: "14px",
+  width:{sm:'25ch', xs:'10ch'},
+  overflow:'hidden',
+  textOverflow:'ellipsis'
 };
 
 /* 

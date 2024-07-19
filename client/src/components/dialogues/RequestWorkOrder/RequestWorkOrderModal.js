@@ -89,7 +89,8 @@ const RequestWorkOrderModal = ({
   const [description, setDescription] = useState(
     changeOrder ? checkedRow?.description : ""
   );
-  const { data, refetch: refetchProjectTeam } = useGetTeamMembersQuery(projectId);
+  const { data, refetch: refetchProjectTeam } =
+    useGetTeamMembersQuery(projectId);
   const [assignedCheckboxes, setAssignedCheckboxes] = useState([]);
   const [superAdminId, setSuperAdminId] = useState();
   const userInfo = localStorage.getItem("userInfo");
@@ -310,7 +311,7 @@ const RequestWorkOrderModal = ({
       toast.warning("Please complete the Request work order form");
       return;
     }
-    if(!startDate || !endDate){
+    if (!startDate || !endDate) {
       toast.warning("Please enter a date");
       return;
     }
@@ -344,8 +345,8 @@ const RequestWorkOrderModal = ({
       //await requestWorkOrderPut(requestForm);
       socket.emit("join", userId);
       if (changeOrder) {
-        if(selectedItems?.length < 1){
-          toast.warning('Please select a line item');
+        if (selectedItems?.length < 1) {
+          toast.warning("Please select a line item");
           setLoading(false);
           return;
         }
@@ -393,7 +394,7 @@ const RequestWorkOrderModal = ({
         );
 
         // console.log(socketRes)
-      setRowCheckboxes({});
+        setRowCheckboxes({});
       }
       setLoading(false);
       dispatch(setIsLoading(true));
@@ -408,18 +409,18 @@ const RequestWorkOrderModal = ({
     }
     handleClose();
   };
-  const refetchTeam = async ()=>{
+  const refetchTeam = async () => {
     const res = await refetchProjectTeam();
-  }
+  };
   const showToast = () => {
-    toast.warning('Please select a line item to request a work order.')
-  }
+    toast.warning("Please select a line item to request a work order.");
+  };
 
-  useEffect(()=>{
-    if(open){
-      refetchTeam()
+  useEffect(() => {
+    if (open) {
+      refetchTeam();
     }
-  },[open])
+  }, [open]);
   console.log(rowCheckboxes);
 
   return (
@@ -429,7 +430,7 @@ const RequestWorkOrderModal = ({
           backgroundColor={"#FFAC00"}
           variant={"contained"}
           fontFamily={"Inter, sans serif"}
-          fontSize={{lg:"16px", xs:'11px'}}
+          fontSize={{ lg: "16px", xs: "11px" }}
           fontWeight={"600"}
           padding={"6px 32px 6px 32px"}
           handleOnClick={isButtonDisabled ? showToast : handleOpen}
@@ -476,7 +477,7 @@ const RequestWorkOrderModal = ({
             }}
             height={"100%"}
           >
-            <Stack p={3} spacing={1} width={"100%"}>
+            <Stack p={3} spacing={1} width={"calc(100% - 48px)"}>
               <Typography fontFamily={"inherit"}>
                 <strong>Subject: </strong>{" "}
                 <input
@@ -514,7 +515,7 @@ const RequestWorkOrderModal = ({
               </Stack> */}
               <Divider />
               <Stack
-                direction={{ xl: "row", lg: "row", md: "row", xs:'row' }}
+                direction={{ xl: "row", lg: "row", md: "row", xs: "row" }}
                 justifyContent={"space-around"}
                 spacing={1}
                 p={1}
@@ -538,21 +539,37 @@ const RequestWorkOrderModal = ({
                   <FormControl>
                     {checkedRow
                       ? phaseItems?.map((phase) => (
-                          <ListItem sx={{padding:0}} key={phase.phaseId}>
+                          <ListItem sx={{ padding: 0 }} key={phase.phaseId}>
                             <Checkbox
                               checked={selectedItems.some(
                                 (item) => item.phaseId === phase.phaseId
                               )}
                               onChange={() => handlePhaseChange(phase.phaseId)}
                             />
-                            <ListItemText secondary={phase.phase_name} />
+                            <ListItemText
+                              secondaryTypographyProps={{
+                                sx: {
+                                  width: "11ch",
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                },
+                              }}
+                              secondary={phase.phase_name}
+                            />
                           </ListItem>
                         ))
                       : Object.keys(rowCheckboxes).map((key, index) => {
                           const phaseId = rowCheckboxes[key]?.rows[0]?.phase_id;
                           return (
-                            <ListItem  sx={{padding:0}} key={phaseId}>
+                            <ListItem sx={{ padding: 0 }} key={phaseId}>
                               <ListItemText
+                                secondaryTypographyProps={{
+                                  sx: {
+                                    width: "11ch",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                  },
+                                }}
                                 secondary={rowCheckboxes[key].phaseName}
                               />
                             </ListItem>
@@ -578,7 +595,7 @@ const RequestWorkOrderModal = ({
                       ...themeStyle.scrollable,
                       maxHeight: "150px",
                       overflow: "auto",
-                      padding:0
+                      padding: 0,
                     }}
                   >
                     {changeOrder
@@ -589,7 +606,7 @@ const RequestWorkOrderModal = ({
                               return (
                                 <>
                                   <ListItem
-                                   sx={{padding:0}}
+                                    sx={{ padding: 0 }}
                                     key={counter}
                                     alignItems="center"
                                     justifyContent="center"
@@ -609,7 +626,17 @@ const RequestWorkOrderModal = ({
                                         )
                                       }
                                     />
-                                    <ListItemText  sx={{padding:0}} secondary={lineItem.title} />
+                                    <ListItemText
+                                      secondaryTypographyProps={{
+                                        sx: {
+                                          width: "11ch",
+                                          overflow: "hidden",
+                                          textOverflow: "ellipsis",
+                                        },
+                                      }}
+                                      sx={{ padding: 0 }}
+                                      secondary={lineItem.title}
+                                    />
                                     <Typography
                                       color={"#4C8AB1"}
                                       fontSize={"11px"}
@@ -628,7 +655,7 @@ const RequestWorkOrderModal = ({
                             if (counter > 2 && showLineItems) {
                               return (
                                 <>
-                                  <ListItem  sx={{padding:0}} key={counter}>
+                                  <ListItem sx={{ padding: 0 }} key={counter}>
                                     <Checkbox
                                       checked={selectedItems.some(
                                         (item) =>
@@ -644,7 +671,17 @@ const RequestWorkOrderModal = ({
                                         )
                                       }
                                     />
-                                    <ListItemText   sx={{padding:0}} secondary={lineItem.title} />
+                                    <ListItemText
+                                      secondaryTypographyProps={{
+                                        sx: {
+                                          width: "11ch",
+                                          overflow: "hidden",
+                                          textOverflow: "ellipsis",
+                                        },
+                                      }}
+                                      sx={{ padding: 0 }}
+                                      secondary={lineItem.title}
+                                    />
                                     <Typography
                                       color={"#4C8AB1"}
                                       fontSize={"11px"}
@@ -669,26 +706,46 @@ const RequestWorkOrderModal = ({
                             if (counter <= 2) {
                               return (
                                 <ListItem
-                                sx={{padding:0}}
+                                  sx={{ padding: 0 }}
                                   key={counter}
                                   onClick={(e) => {
                                     handleLineItemClick(e, row);
                                   }}
                                 >
-                                  <ListItemText  sx={{padding:0}} secondary={row.title} />
+                                  <ListItemText
+                                    secondaryTypographyProps={{
+                                      sx: {
+                                        width: "11ch",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                      },
+                                    }}
+                                    sx={{ padding: 0 }}
+                                    secondary={row.title}
+                                  />
                                 </ListItem>
                               );
                             }
                             if (counter > 2 && showLineItems) {
                               return (
                                 <ListItem
-                                sx={{padding:0}}
+                                  sx={{ padding: 0 }}
                                   key={counter}
                                   onClick={(e) => {
                                     handleLineItemClick(e, row);
                                   }}
                                 >
-                                  <ListItemText  sx={{padding:0}} secondary={row.title} />
+                                  <ListItemText
+                                    secondaryTypographyProps={{
+                                      sx: {
+                                        width: "11ch",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                      },
+                                    }}
+                                    sx={{ padding: 0 }}
+                                    secondary={row.title}
+                                  />
                                 </ListItem>
                               );
                             } else {
@@ -697,7 +754,7 @@ const RequestWorkOrderModal = ({
                           });
                         })}
                     {counter > 2 && (
-                      <ListItem  sx={{padding:0}} style={{ padding: 0 }}>
+                      <ListItem sx={{ padding: 0 }} style={{ padding: 0 }}>
                         <Button
                           style={{ padding: 0, textTransform: "lowercase" }}
                           variant="text"
@@ -767,7 +824,11 @@ const RequestWorkOrderModal = ({
                     <LocalizationProvider dateAdapter={AdapterMoment}>
                       <DemoContainer components={["DateTimePicker"]}>
                         <MobileDateTimePicker
-                          minDate={startDate ? moment(startDate).add(1, 'day') : moment().add(1, "day")}
+                          minDate={
+                            startDate
+                              ? moment(startDate).add(1, "day")
+                              : moment().add(1, "day")
+                          }
                           value={endDate}
                           onChange={(newValue) => setEndDate(newValue)}
                           format="MMM D, YYYY,h:mm a"
@@ -797,7 +858,11 @@ const RequestWorkOrderModal = ({
                     </LocalizationProvider>
                   </Box>
                 </Typography>
-                <Stack width={"80%"} pt={4} display={{md:'flex', xs:'none'}}>
+                <Stack
+                  width={"80%"}
+                  pt={4}
+                  display={{ md: "flex", xs: "none" }}
+                >
                   <BuilderProButton
                     backgroundColor={"#4C8AB1"}
                     variant={"contained"}
@@ -917,7 +982,7 @@ const RequestWorkOrderModal = ({
                 <Typography fontFamily={"inherit"} pb={4} pl={2}>
                   <input
                     value={notes}
-                    placeholder="Type your description..."
+                    placeholder="Type your notes..."
                     type="text"
                     multiple
                     style={{
@@ -1031,21 +1096,28 @@ const RequestWorkOrderModal = ({
                     : ""}
                 </Typography>
               </Stack>
-            <Stack width={"100%"} pt={4} pb={4} display={{md:'none', xs:'flex'}} justifyContent={'center'} alignItems={'center'}>
-                  <BuilderProButton
-                    backgroundColor={"#4C8AB1"}
-                    variant={"contained"}
-                    fontFamily={"Inter, sans serif"}
-                    fontSize={"16px"}
-                    fontWeight={"600"}
-                    padding={"6px 32px 6px 32px"}
-                    handleOnClick={handleRequest}
-                    marginLeft={"0px"}
-                    disabled={loading}
-                  >
-                    {changeOrder ? "Submit Change Order" : "Submit Work Order"}
-                  </BuilderProButton>
-                </Stack>
+              <Stack
+                width={"100%"}
+                pt={4}
+                pb={4}
+                display={{ md: "none", xs: "flex" }}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <BuilderProButton
+                  backgroundColor={"#4C8AB1"}
+                  variant={"contained"}
+                  fontFamily={"Inter, sans serif"}
+                  fontSize={"16px"}
+                  fontWeight={"600"}
+                  padding={"6px 32px 6px 32px"}
+                  handleOnClick={handleRequest}
+                  marginLeft={"0px"}
+                  disabled={loading}
+                >
+                  {changeOrder ? "Submit Change Order" : "Submit Work Order"}
+                </BuilderProButton>
+              </Stack>
             </Stack>
           </Stack>
         </Stack>
@@ -1076,7 +1148,7 @@ const style = {
   boxShadow: 24,
   p: 0,
   borderRadius: "14px",
-  width: {md:"700px", xs:"80%"},
+  width: { md: "700px", xs: "80%" },
 };
 const themeStyle = {
   scrollable: {
@@ -1097,7 +1169,7 @@ const themeStyle = {
   inputFields: {
     border: "0px solid #FFF",
     outline: "none",
-    width: "100%",
+    width: "calc(100% - 8px)",
     padding: 4,
   },
   typoTitle: {

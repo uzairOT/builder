@@ -22,7 +22,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 600,
+  width: {sm:'550px', xs:'250px'},
   bgcolor: "background.paper",
   border: "none",
   boxShadow: 24,
@@ -96,8 +96,8 @@ const AssignTeamMembers = ({
             {hideCheck ? "Assigned Users" : "Assign Users"}
           </Typography>
           <Divider />
-          <Box>
-            <Table>
+          <Box sx={{overflow:'auto'}}>
+            <Table >
               <TableHead>
                 <TableRow>
                   {!hideCheck && <TableCell></TableCell>}

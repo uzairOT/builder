@@ -277,14 +277,14 @@ const NotificationDetailModal = ({
                                 transition: "background-color 0.3s ease", // Add transition effect
                                 borderRadius: "8px",
                                 marginBottom: "4px",
-                                width:'90%',
+                                width:'18ch',
                                 "&:hover": {
                                   backgroundColor: "#e0e0e0", // Change background color on hover
                                 },
                               }}
                               onClick={() => handleListItemClick(lineItem)}
                             >
-                              <label>{lineItem?.title}</label>
+                              <label style={{width:'15ch', overflow:'hidden', textOverflow:'ellipsis'}}>{lineItem?.title}</label>
                             </ListItem>
                           ))}
                         </React.Fragment>
