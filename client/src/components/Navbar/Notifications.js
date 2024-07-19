@@ -156,7 +156,7 @@ function Notification({
 
           <Typography fontFamily={"inherit"} fontSize={"12px"}>
             Sent you a{" "}
-            {notification.WorkOrderReq.version > 1
+            {notification.WorkOrderReq.changeOrder
               ? "change order request"
               : "work order request"}{" "}
             of project: {notification.projectName}
