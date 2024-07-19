@@ -325,11 +325,11 @@ const ShareModal = ({
                 sx={{ p: 1 }}
                 color={"#4C8AB1"}
                 fontWeight={"500"}
-                fontSize={"20px"}
+                fontSize={{sm:"20px", xs:'16px'}}
               >
                 Send to
               </Typography>
-              <Box width={"300px"}>
+              <Box width={{sm:"300px", xs:'150px'}}>
                 {/* Email input */}
                 {/* <Typography variant="body1">Email</Typography> */}
                 <TextField
@@ -462,13 +462,13 @@ const ShareModal = ({
                   <TableHead>
                     <TableRow>
                       <TableCell sx={tableCellStyles}>Title</TableCell>
-                      <TableCell sx={tableCellStyles}>Total Cost</TableCell>
+                      <TableCell sx={{...tableCellStyles, display:{sm:'table-cell', xs:'none'}}}>Total Cost</TableCell>
                       <TableCell sx={tableCellStyles}>Remaining</TableCell>
-                      <TableCell sx={tableCellStyles}>
+                      <TableCell sx={{...tableCellStyles, display:{sm:'table-cell', xs:'none'}}}>
                         Invoice Pending
                       </TableCell>
                       <TableCell sx={tableCellStyles}>Payment</TableCell>
-                      <TableCell sx={tableCellStyles}>Percentage</TableCell>
+                      <TableCell sx={{...tableCellStyles, display:{sm:'table-cell', xs:'none'}}}>Percentage</TableCell>
                       {/* <TableCell sx={tableCellStyles}>Action</TableCell> */}
                     </TableRow>
                   </TableHead>
@@ -495,7 +495,7 @@ const ShareModal = ({
                                 {row.title}
                               </Typography>
                             </TableCell>
-                            <TableCell>
+                            <TableCell sx={{ display:{sm:'table-cell', xs:'none'}}}>
                               <Typography sx={tableCellStyles}>
                                 Total Cost: ${formatMoney(totalCost)}
                               </Typography>
@@ -505,7 +505,7 @@ const ShareModal = ({
                                 Remaining: ${formatMoney(row.paymentPending)}
                               </Typography>
                             </TableCell>
-                            <TableCell>
+                            <TableCell sx={{display:{sm:'table-cell', xs:'none'}}}>
                               <Typography sx={tableCellStyles}>
                                 Invoice Pending: $
                                 {formatMoney(row.pendingAmount)}
@@ -572,7 +572,7 @@ const ShareModal = ({
                                 }}
                               />
                             </TableCell>
-                            <TableCell sx={tableCellStyles}>
+                            <TableCell sx={{ ...tableCellStyles,display:{sm:'table-cell', xs:'none'}}}>
                               <TextField
                                 placeholder="10"
                                 required
@@ -771,6 +771,7 @@ const style = {
   boxShadow: 24,
   p: 1,
   borderRadius: "14px",
+  overflowX:'auto'
 };
 const label = {
   fontSize: "12px",
