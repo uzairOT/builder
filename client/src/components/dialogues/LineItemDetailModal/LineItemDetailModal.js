@@ -175,12 +175,7 @@ const style = {
   overflowY:'auto',
   height:'80vh'
 };
-const modalContentStyle = {
-  maxWidth: '100%',
-  padding: '20px',
-  wordWrap: 'break-word',
-  wordBreak: 'break-all',
-};
+
 
 const typographyBody1Style = {
   marginBottom: '10px',
