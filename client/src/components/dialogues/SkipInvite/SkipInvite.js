@@ -20,11 +20,16 @@ import YellowBtn from "../../UI/button";
 import { useDispatch } from "react-redux";
 import { resetUserAndRoleEmail } from "../../../redux/slices/projectFormSlice";
 
-function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoading }) {
-  const dispatch = useDispatch()
+function SkipInvite({
+  handleOpen,
+  handleClose,
+  handleNextStep,
+  isMobile,
+  isLoading,
+}) {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const handleSkip = () => {
-    
     handleNextStep();
     // handleClose();
   };
@@ -77,7 +82,15 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoadi
                 Are you sure you want to skip this step without inviting ?
               </DialogContentText>
             </DialogContent>
-            <DialogActions sx={{ marginTop: "1rem" }}>
+            <DialogActions
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "1rem",
+                marginBottom: "8px",
+                flexDirection: { sm: "row-reverse", xs: "column-reverse" },
+              }}
+            >
               <Button
                 variant="outlined"
                 sx={{
@@ -92,7 +105,11 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoadi
                 sx={{ ...YellowBtn, padding: "1rem 1rem" }}
                 onClick={handleSkip}
               >
-                {isLoading ?  <CircularProgress size={'1.25rem'} /> : 'Yes, Skip'}
+                {isLoading ? (
+                  <CircularProgress size={"1.25rem"} />
+                ) : (
+                  "Yes"
+                )}
               </Button>
             </DialogActions>
           </Dialog>
@@ -108,7 +125,7 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoadi
           keepMounted
           aria-describedby="alert-dialog-slide-description"
         >
-        {/* <Stack direction={'row-reverse'} justifyContent={'space-between'}>
+          {/* <Stack direction={'row-reverse'} justifyContent={'space-between'}>
 
           <IconButton aria-label="close" onClick={handleClose}>
             <CloseIcon />
@@ -124,24 +141,46 @@ function SkipInvite({ handleOpen, handleClose, handleNextStep, isMobile, isLoadi
               Are you sure you want to skip this step without inviting ?
             </DialogContentText>
           </DialogContent>
-          <DialogActions sx={{display:'flex', justifyContent:'center', gap: "3rem", marginBottom: "8px", flexDirection:'row-reverse' }}>
+          <DialogActions
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "3rem",
+              marginBottom: "8px",
+              flexDirection: { sm: "row-reverse", xs: "column-reverse" },
+            }}
+          >
             <Button
               variant="outlined"
               sx={{
                 ...YellowBtn,
                 ...dialogueActionButton,
-                fontSize: {  lg: '0.9rem', md: "0.9rem", sm: "0.8rem", xs: "0.8rem" },
+                fontSize: {
+                  lg: "0.9rem",
+                  md: "0.9rem",
+                  sm: "0.8rem",
+                  xs: "0.8rem",
+                },
               }}
               onClick={handleClose}
             >
               Cancel
             </Button>
             <Button
-              sx={{ ...YellowBtn, padding: "0.8rem 0.8rem",   fontSize: {  lg: '0.9rem', md: "0.9rem", sm: "0.8rem", xs: "0.8rem" }, }}
+              sx={{
+                ...YellowBtn,
+                padding: "0.8rem 0.8rem",
+                fontSize: {
+                  lg: "0.9rem",
+                  md: "0.9rem",
+                  sm: "0.8rem",
+                  xs: "0.8rem",
+                },
+              }}
               onClick={handleSkip}
               // disabled={isLoading}
             >
-               {isLoading ?  <CircularProgress size={'1.25rem'} /> : 'Yes'}
+              {isLoading ? <CircularProgress size={"1.25rem"} /> : "Yes"}
             </Button>
           </DialogActions>
         </Dialog>
@@ -174,7 +213,7 @@ const typoTitle = {
   fontWeight: 600,
   fontSize: "1.5rem",
   color: "#202227",
-  padding:"0px"
+  padding: "0px",
 };
 
 const typoTect = {

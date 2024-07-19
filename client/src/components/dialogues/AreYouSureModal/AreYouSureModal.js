@@ -47,20 +47,30 @@ function AreYouSureModal({
           <IconButton aria-label="close" onClick={handleClose}>
             <CloseIcon />
           </IconButton> */}
-          {/* <DialogTitle sx={typoTitle}>{"Are You Sure"}</DialogTitle> */}
+        {/* <DialogTitle sx={typoTitle}>{"Are You Sure"}</DialogTitle> */}
         {/* </Stack> */}
         <DialogContent>
           <DialogContentText sx={typoTect} id="alert-dialog-slide-description">
             Are you sure you want to delete this {text}?
           </DialogContentText>
         </DialogContent>
-        <DialogActions sx={{display:'flex', justifyContent:'space-between', gap: "0rem", marginTop: "1rem" }}>
+
+        <DialogActions
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "1rem",
+            marginTop: "1rem",
+            flexDirection: { sm: "row", xs: "column-reverse" },
+          }}
+        >
           <Button
             variant="outlined"
             sx={{
               ...YellowBtn,
               ...dialogueActionButton,
-              padding: "0.8rem 0.8rem", 
+              padding: "0.8rem 0.8rem",
               fontSize: {
                 lg: "0.9rem",
                 md: "0.9rem",
@@ -75,7 +85,7 @@ function AreYouSureModal({
           <Button
             sx={{
               ...YellowBtn,
-              padding: "0.8rem 0.8rem", 
+              padding: "0.8rem 0.8rem",
               fontSize: {
                 lg: "0.9rem",
                 md: "0.9rem",
@@ -83,7 +93,6 @@ function AreYouSureModal({
                 xs: "0.8rem",
               },
             }}
-
             onClick={() => handleConfirmDelete(true)}
           >
             {isLoading ? <CircularProgress size={"1.25rem"} /> : "Yes"}
@@ -130,7 +139,7 @@ const typoTect = {
 const dialogueActionButton = {
   border: "1px solid #FFAC00",
   background: "#FFF",
-  padding: "1rem 1.5rem",
+  padding: { sm: "1rem 1.5rem", xs: "0rem" },
   color: "#FFAC00",
   "&:hover": {
     background: "#FFF",

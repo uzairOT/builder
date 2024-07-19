@@ -16,13 +16,14 @@ import { setProjectColor } from "../../../redux/slices/projectFormSlice";
 const style = {
   position: "absolute",
   top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
+  left: {sm:"50%",xs:"40%"},
+  transform: {sm:"translate(-50%, -50%)", xs:"translate(-50%, -50%)"},
+  width: { sm: 400, xs: 250 },
   bgcolor: "background.paper",
   border: "2px solid #000",
+  borderRadius:{sm:"0px", xs:"20px"},
   boxShadow: 24,
-  p: 4,
+  p: { sm: 4, xs: 1 },
 };
 
 const styles = {
@@ -71,6 +72,7 @@ export default function ColorPicker({ editModal, handleProjectColorChange }) {
       </Typography>
 
       <Modal
+        sx={{ width: { sm: "100%", xs: 250 }, left: { sm: 0, xs: "20%" } }}
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -134,8 +136,8 @@ const typoText = {
   fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1rem",
   color: "#202227",
-  textAlign:'center',
-  fontWeight:'600'
+  textAlign: "center",
+  fontWeight: "600",
 };
 const generalBox = {
   display: "flex",

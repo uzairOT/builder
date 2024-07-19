@@ -374,6 +374,7 @@ function AddPhaseView({
                     <Button
                       sx={{
                         ...actionButton,
+                        padding: { lg: "0.75rem 1.5rem" },
                         background: "#FFAC00",
                         whiteSpace: "nowrap",
                         height:
@@ -488,7 +489,9 @@ function AddPhaseView({
                           : { lg: "18px", xs: "12px" },
                       width:
                         phases[0]?.length < 1 || isLoading
-                          ? downView? "300px" : "400px"
+                          ? downView
+                            ? "300px"
+                            : "400px"
                           : downView
                           ? "40px"
                           : "130px",
@@ -498,9 +501,14 @@ function AddPhaseView({
                     }}
                     onClick={handleAddPhase}
                   >
-
                     {downView && !(phases[0]?.length < 1) && <AddIcon />}
-                    {downView ? phases[0]?.length < 1 ? "Add Phase" : (mobileView ? "" : "Add") : "Add Phase"}
+                    {downView
+                      ? phases[0]?.length < 1
+                        ? "Add Phase"
+                        : mobileView
+                        ? ""
+                        : "Add"
+                      : "Add Phase"}
                   </Button>
                   <Button
                     sx={{
@@ -564,12 +572,14 @@ function AddPhaseView({
             </>
           )}
         </Stack>
-        {view !== "Initial Proposal" && (authUserRole === "superadmin" ||
-          authUserRole === "" ||
-          authUserRole === "projectManager" ||
-          authUserRole === "admin") &&
-          adminProjectView && mobileView &&(
-            <Stack justifyContent={'center'} alignItems={'center'} py={1}>
+        {view !== "Initial Proposal" &&
+          (authUserRole === "superadmin" ||
+            authUserRole === "" ||
+            authUserRole === "projectManager" ||
+            authUserRole === "admin") &&
+          adminProjectView &&
+          mobileView && (
+            <Stack justifyContent={"center"} alignItems={"center"} py={1}>
               {" "}
               <RequestWorkOrderModal
                 rowCheckboxes={rowCheckboxes}
@@ -821,15 +831,15 @@ const buttonBox = {
     sm: "center",
     xs: "center",
   },
-  overflowX: "auto",
-  gap: "0.5rem",
+  // overflowX: "auto",
+  gap: "0.3rem",
   marginTop: "0.5rem",
   padding: {
     //changes
     lg: "0.5rem 2rem",
     md: "0.1rem 0rem",
     sm: "1rem 2rem",
-    xs: "0rem 0rem",
+    xs: "0rem 0.5rem",
   },
 };
 const approvalButton = {

@@ -411,11 +411,11 @@ const themeStyle = {
     color: "#FFFFFF",
     fontFamily: "Arial Rounded MT, sans-serif",
     fontSize: {xl:"1.3rem", lg:15,md:"1.3rem",xs:"1.3rem",},
-    margin: "1rem 2rem",
+    margin: {sm:"1rem 2rem", xs:"2rem"},
   },
   buttonStyle: {
     padding: "0.7rem 0.1rem",
-    fontSize: {xl:"0.9rem",lg:"0.8rem",md:"0.9rem",xs:"0.9rem",},
+    fontSize: {xl:"0.9rem",lg:"0.8rem",md:"0.9rem",sm:"0.9rem",xs:"0.9rem",},
     marginRight: "1rem",
     backgroundColor: "#FFFFFF",
     color: "#4C8AB1",

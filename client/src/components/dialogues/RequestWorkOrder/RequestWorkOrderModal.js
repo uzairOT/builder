@@ -425,14 +425,14 @@ const RequestWorkOrderModal = ({
 
   return (
     <>
-      <Stack alignItems={"flex-end"} justifyContent={"flex-end"} pr={2}>
+      <Stack alignItems={"flex-end"} justifyContent={{xs:"flex-end"}} pr={2} ml={0}>
         <BuilderProButton
           backgroundColor={"#FFAC00"}
           variant={"contained"}
           fontFamily={"Inter, sans serif"}
           fontSize={{ lg: "16px", xs: "11px" }}
           fontWeight={"600"}
-          padding={"6px 32px 6px 32px"}
+          padding={{sm:"6px 32px 6px 32px", xs:"5px 20px 5px 20px",}}
           handleOnClick={isButtonDisabled ? showToast : handleOpen}
           // disabled={isButtonDisabled}
         >

@@ -26,7 +26,7 @@ function ProjectFormFields({
   userInfo,
 }) {
   const MAX_EMAIL_LENGTH = 50;
-
+  const isSmallMobile = useMediaQuery("(max-width:500px)");
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTab = useMediaQuery("(max-width:900px)");
   const formWidth = { width: isMobile ? "75%" : isTab ? "65%" : "48%" };
@@ -74,16 +74,20 @@ function ProjectFormFields({
                 value={email}
                 onChange={handleEmailChange}
               />
-              <Typography
-                color={
-                  email.length > MAX_EMAIL_LENGTH ? "error" : "textSecondary"
-                }
-                sx={counterTypo}
-              
-              >
-                {email.length}/{MAX_EMAIL_LENGTH}
-              </Typography>
+              {email.length > 5 && isSmallMobile ? (
+                <></>
+              ) : (
+                <Typography
+                  color={
+                    email.length > MAX_EMAIL_LENGTH ? "error" : "textSecondary"
+                  }
+                  sx={counterTypo}
+                >
+                  {email.length}/{MAX_EMAIL_LENGTH}
+                </Typography>
+              )}
             </Box>
+
             <Box sx={{ flex: 1 }}>
               <TextField
                 sx={{
@@ -91,12 +95,11 @@ function ProjectFormFields({
                   ...borderRadiusResponsive,
                   "& input": {
                     borderBottom: "none", // Remove bottom border of the input
-                    },
+                  },
 
-                  
-                  ".MuiInput-input":{
+                  ".MuiInput-input": {
                     color: role === "none" ? "lightgray" : "#202227",
-                  }
+                  },
                 }}
                 inputProps={{ maxLength: 50 }}
                 id="standard-select-currency"
@@ -120,7 +123,7 @@ function ProjectFormFields({
                   Client
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"subcontractor"}>
-                  Subcontractor
+                  Sub-Contractor
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"supplier"}>
                   Supplier
@@ -172,7 +175,7 @@ const formBox = {
   justifyContent: "center",
   alignItems: "center",
   marginTop: "0.5rem",
-  marginLeft: '2.5rem'
+  marginLeft: "2.5rem",
 };
 
 const formInnerBox = {
@@ -182,6 +185,7 @@ const formInnerBox = {
   gap: { lg: "1rem", md: "1rem", sm: "1rem", xs: "0.5rem" },
 };
 const fieldBox1 = {
+  justifyContent: "space-between",
   flex: 4,
   marginRight: "1rem",
   marginLeft: "-1rem",
