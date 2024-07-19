@@ -71,7 +71,7 @@ const RequestWorkOrderModal = ({
   fetchData,
   refetchChangeOrder,
   setRowCheckboxes,
-  changeOrderView
+  changeOrderView,
 }) => {
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
@@ -338,7 +338,7 @@ const RequestWorkOrderModal = ({
       notes: notes,
       projectId: projectId,
       total: changeOrder ? checkedRow?.total : totalWorkOrder,
-      changeOrder: changeOrderView ? true : false
+      changeOrder: changeOrderView ? true : false,
     };
     console.log(requestForm);
     if (requestForm.teamIds.length === 0) {
@@ -427,14 +427,19 @@ const RequestWorkOrderModal = ({
 
   return (
     <>
-      <Stack alignItems={"flex-end"} justifyContent={{xs:"flex-end"}} pr={2} ml={0}>
+      <Stack
+        alignItems={"flex-end"}
+        justifyContent={{ xs: "flex-end" }}
+        pr={2}
+        ml={0}
+      >
         <BuilderProButton
           backgroundColor={"#FFAC00"}
           variant={"contained"}
           fontFamily={"Inter, sans serif"}
           fontSize={{ lg: "16px", xs: "11px" }}
           fontWeight={"600"}
-          padding={{sm:"6px 32px 6px 32px", xs:"5px 20px 5px 20px",}}
+          padding={{ sm: "6px 32px 6px 32px", xs: "5px 20px 5px 20px" }}
           handleOnClick={isButtonDisabled ? showToast : handleOpen}
           // disabled={isButtonDisabled}
         >
@@ -483,6 +488,7 @@ const RequestWorkOrderModal = ({
               <Typography fontFamily={"inherit"}>
                 <strong>Subject: </strong>{" "}
                 <input
+                  maxlength="50"
                   required
                   value={subject}
                   placeholder="Type your subject..."
@@ -494,6 +500,7 @@ const RequestWorkOrderModal = ({
               <Typography pb={1} fontFamily={"inherit"} fontWeight={"200"}>
                 <strong>Description: </strong>{" "}
                 <input
+                  maxlength="50"
                   value={description}
                   placeholder="Type your description..."
                   type="text"
@@ -983,6 +990,7 @@ const RequestWorkOrderModal = ({
                 </Typography>
                 <Typography fontFamily={"inherit"} pb={4} pl={2}>
                   <input
+                    maxlength="50"
                     value={notes}
                     placeholder="Type your notes..."
                     type="text"

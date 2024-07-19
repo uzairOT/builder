@@ -189,11 +189,11 @@ const NotificationDetailModal = ({
             <Stack p={3} pr={0} spacing={1} width={"100%"}>
               <Typography fontSize={{xl:16,md:14,lg:14,sm:12,xs:12}} fontFamily={"inherit"}>
                 <strong>Subject: </strong>{" "}
-                <label>{notification.WorkOrderReq.subject}</label>
+                <label  style={{ wordBreak:"break-all",maxWidth:"90%"}}>{notification.WorkOrderReq.subject}</label>
               </Typography>
               <Typography pb={1}  fontSize={{xl:16,md:14,lg:14,sm:12,xs:12}} fontFamily={"inherit"} fontWeight={"200"}>
                 <strong>Description: </strong>{" "}
-                <label>{notification.WorkOrderReq.description}</label>
+                <label style={{ wordBreak:"break-all",maxWidth:"90%"}}>{notification.WorkOrderReq.description}</label>
               </Typography>
               {/* <Divider />
 
@@ -480,7 +480,7 @@ const NotificationDetailModal = ({
                 >
                   Notes
                 </Typography>
-                <Typography fontFamily={"inherit"} pb={4} pl={2}>
+                <Typography style={{ wordBreak:"break-all",maxWidth:"90%"}}  fontFamily={"inherit"} pb={4} pl={2}>
                   {notification.WorkOrderReq.notes}
                 </Typography>
 

@@ -108,7 +108,7 @@ function WorkOrder({
       <Table>
         <TableHead>
           <TableRow>
-            {workOrder ? <></> : <TableCell sx={tableCellStyle}>Select</TableCell>}
+            {/* {workOrder ? <></> : <TableCell sx={tableCellStyle}>Select</TableCell>} */}
             <TableCell sx={tableCellStyle}>Subject</TableCell>
             <TableCell sx={tableCellStyle}>Description</TableCell>
             {/* <TableCell sx={tableCellStyle}>Unit</TableCell> */}
@@ -132,12 +132,13 @@ function WorkOrder({
                   {workOrder ? (
                     <></>
                   ) : (
-                    <TableCell sx={tableCellValueStyle}>
-                      <Checkbox
-                        checked={checkedRow === item}
-                        onChange={() => handleCheckboxChange(item, data)}
-                      />
-                    </TableCell>
+                    <></>
+                    // <TableCell sx={tableCellValueStyle}>
+                    //   <Checkbox
+                    //     checked={checkedRow === item}
+                    //     onChange={() => handleCheckboxChange(item, data)}
+                    //   />
+                    // </TableCell>
                   )}
                   <TableCell sx={tableCellValueStyle}>{item.subject}</TableCell>
                   <TableCell sx={tableCellValueStyle}>
@@ -208,7 +209,7 @@ const tableCellStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
   // textOverflow:'ellipsis',
-  // overflow:'hidden',
+  overflow:'hidden',
   fontWeight: 500,
   fontSize: "11px",
   // fontFamily: "Poppins",
@@ -220,8 +221,8 @@ const tableCellStyle = {
 const tableCellValueStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
-  // textOverflow:'ellipsis',
-  // overflow:'hidden',
+  textOverflow:'ellipsis',
+  overflow:'hidden',
   // whiteSpace: "wrap",
   fontSize: "11px",
   fontWeight: 500,
