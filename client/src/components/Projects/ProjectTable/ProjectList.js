@@ -278,7 +278,7 @@ const ProjectList = ({
               fontFamily={"inherit"}
               fontSize={"12px"}
               handleOnClick={handleClick}
-              marginLeft={"0px"}
+              marginLeft={"16px"}
             >
               <Typography
                 fontSize={"14px"}

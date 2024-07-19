@@ -488,7 +488,7 @@ function AddPhaseView({
                           : { lg: "18px", xs: "12px" },
                       width:
                         phases[0]?.length < 1 || isLoading
-                          ? "400px"
+                          ? downView? "300px" : "400px"
                           : downView
                           ? "40px"
                           : "130px",
@@ -498,8 +498,9 @@ function AddPhaseView({
                     }}
                     onClick={handleAddPhase}
                   >
-                    {downView && <AddIcon />}
-                    {downView ? (mobileView ? "" : "Add") : "Add Phase"}
+
+                    {downView && !(phases[0]?.length < 1) && <AddIcon />}
+                    {downView ? phases[0]?.length < 1 ? "Add Phase" : (mobileView ? "" : "Add") : "Add Phase"}
                   </Button>
                   <Button
                     sx={{
