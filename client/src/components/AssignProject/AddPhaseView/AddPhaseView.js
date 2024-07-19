@@ -53,6 +53,7 @@ function AddPhaseView({
   authUserRole,
   refetchChangeOrder,
   changeOrder,
+  changeOrderView
 }) {
   const [cardPhase, setCardPhase] = useState([]);
   const [invoiceData, setInvoiceData] = useState();
@@ -563,6 +564,7 @@ function AddPhaseView({
                       phases={phases}
                       fetchData={fetchData}
                       refetchChangeOrder={refetchChangeOrder}
+                      changeOrderView={changeOrderView}
                     />
                   ) : (
                     <></>
@@ -587,6 +589,7 @@ function AddPhaseView({
                 phases={phases}
                 fetchData={fetchData}
                 refetchChangeOrder={refetchChangeOrder}
+                changeOrderView={changeOrderView}
               />
             </Stack>
           )}

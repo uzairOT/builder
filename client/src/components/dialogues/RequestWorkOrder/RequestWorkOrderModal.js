@@ -71,6 +71,7 @@ const RequestWorkOrderModal = ({
   fetchData,
   refetchChangeOrder,
   setRowCheckboxes,
+  changeOrderView
 }) => {
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
@@ -337,6 +338,7 @@ const RequestWorkOrderModal = ({
       notes: notes,
       projectId: projectId,
       total: changeOrder ? checkedRow?.total : totalWorkOrder,
+      changeOrder: changeOrderView ? true : false
     };
     console.log(requestForm);
     if (requestForm.teamIds.length === 0) {
@@ -436,7 +438,7 @@ const RequestWorkOrderModal = ({
           handleOnClick={isButtonDisabled ? showToast : handleOpen}
           // disabled={isButtonDisabled}
         >
-          {changeOrder ? "Submit Change Order" : "Submit Work Order"}
+          {changeOrderView ? "Submit Change Order" : "Submit Work Order"}
         </BuilderProButton>
       </Stack>
       <Modal open={open} onClose={handleClose}>
@@ -460,7 +462,7 @@ const RequestWorkOrderModal = ({
               fontSize={"22px"}
               fontWeight={"600"}
             >
-              {changeOrder ? "Submit Change Order" : "Submit Work Order"}
+              {changeOrderView ? "Submit Change Order" : "Submit Work Order"}
             </Typography>
             <IconButton onClick={handleClose}>
               <CloseIcon />
