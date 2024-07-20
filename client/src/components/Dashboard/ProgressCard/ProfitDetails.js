@@ -56,9 +56,9 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
         </Stack> */}
       </Stack>
       <Stack
-        ml={"-16px"}
+        ml={"16px"}
         direction={"row"}
-        alignItems={"flex-end"}
+        alignItems={"center"}
         justifyContent={"space-between"}
       >
         <RadialBarsChart
