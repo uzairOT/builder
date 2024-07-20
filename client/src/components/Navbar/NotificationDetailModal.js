@@ -54,6 +54,7 @@ const NotificationDetailModal = ({
   open,
   setOpen,
   handleOnClick,
+  data1,
 }) => {
   const { data } = useGetTeamMembersQuery(notification.WorkOrderReq.projectId);
 
@@ -69,7 +70,7 @@ const NotificationDetailModal = ({
   const user = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(user);
   const userId = currentUser.user.id;
-  console.log(notification);
+  console.log(data1);
   const [assignedCheckboxes, setAssignedCheckboxes] = useState([]);
 
   const handleClose = () => {
@@ -146,16 +147,14 @@ const NotificationDetailModal = ({
           <></>
         )} */}
       </Stack>
-      <Modal open={open} onClose={handleClose} >
+      <Modal open={open} onClose={handleClose}>
         <Stack
           sx={{
             ...style,
             ...themeStyle.scrollable,
-            width:{ xl:'40%', lg:'40%', md:'50%', xs:'90%'},
-            height:{md:'auto',xs:"80%"}
-            
+            width: { xl: "40%", lg: "40%", md: "50%", xs: "90%" },
+            height: { md: "auto", xs: "80%" },
           }}
-         
         >
           <Stack
             p={2}
@@ -166,10 +165,10 @@ const NotificationDetailModal = ({
             <Typography
               color={"#4C8AB1"}
               fontFamily={"inherit"}
-              sx={{fontSize:{xl:22,md:16,lg:18,sm:14,xs:14}}}
+              sx={{ fontSize: { xl: 22, md: 16, lg: 18, sm: 14, xs: 14 } }}
               fontWeight={"600"}
             >
-              Work Order Details
+              {notification?.WorkOrderReq?.changeOrder ? "Change Order Details" :"Work Order Details"}
             </Typography>
             <IconButton onClick={handleClose}>
               <CloseIcon />
@@ -177,7 +176,7 @@ const NotificationDetailModal = ({
           </Stack>
           <Divider />
           <Stack
-          sx={{overflowY:"auto"}}
+            sx={{ overflowY: "auto" }}
             direction={{
               xl: "row",
               lg: "row",
@@ -187,13 +186,25 @@ const NotificationDetailModal = ({
             }}
           >
             <Stack p={3} pr={0} spacing={1} width={"100%"}>
-              <Typography fontSize={{xl:16,md:14,lg:14,sm:12,xs:12}} fontFamily={"inherit"}>
+              <Typography
+                fontSize={{ xl: 16, md: 14, lg: 14, sm: 12, xs: 12 }}
+                fontFamily={"inherit"}
+              >
                 <strong>Subject: </strong>{" "}
-                <label  style={{ wordBreak:"break-all",maxWidth:"90%"}}>{notification.WorkOrderReq.subject}</label>
+                <label style={{ wordBreak: "break-all", maxWidth: "90%" }}>
+                  {notification.WorkOrderReq.subject}
+                </label>
               </Typography>
-              <Typography pb={1}  fontSize={{xl:16,md:14,lg:14,sm:12,xs:12}} fontFamily={"inherit"} fontWeight={"200"}>
+              <Typography
+                pb={1}
+                fontSize={{ xl: 16, md: 14, lg: 14, sm: 12, xs: 12 }}
+                fontFamily={"inherit"}
+                fontWeight={"200"}
+              >
                 <strong>Description: </strong>{" "}
-                <label style={{ wordBreak:"break-all",maxWidth:"90%"}}>{notification.WorkOrderReq.description}</label>
+                <label style={{ wordBreak: "break-all", maxWidth: "90%" }}>
+                  {notification.WorkOrderReq.description}
+                </label>
               </Typography>
               {/* <Divider />
 
@@ -259,35 +270,81 @@ const NotificationDetailModal = ({
                       maxHeight: "150px",
                       overflow: "auto",
                       ...themeStyle.scrollable,
-                      padding:0
+                      padding: 0,
                     }}
                   >
-                    {notification?.WorkOrderReq?.phaseItems?.map(
-                      (phaseItem) => (
-                        <React.Fragment key={phaseItem.phaseId}>
-                          {phaseItem?.LineItems?.map((lineItem) => (
-                            <ListItem
-                            
-                              key={lineItem?.id}
-                              sx={{
-                                fontSize:{xl:'16px', lg:'14px', xs:'14px'},
-                                padding: 1,
-                                cursor: "pointer", // Change cursor to pointer to indicate clickable
-                                backgroundColor: "#f0f0f0", // Add background color on hover
-                                transition: "background-color 0.3s ease", // Add transition effect
-                                borderRadius: "8px",
-                                marginBottom: "4px",
-                                width:'18ch',
-                                "&:hover": {
-                                  backgroundColor: "#e0e0e0", // Change background color on hover
-                                },
+                    {notification?.WorkOrderReq?.changeOrder &&
+                    data1?.changeOrderItems?.length > 1 ? (
+                      <>
+                        {data1?.changeOrderItems?.map((lineItem) => (
+                          <ListItem
+                            key={lineItem?.id}
+                            sx={{
+                              fontSize: { xl: "16px", lg: "14px", xs: "14px" },
+                              padding: 1,
+                              cursor: "pointer", // Change cursor to pointer to indicate clickable
+                              backgroundColor: "#f0f0f0", // Add background color on hover
+                              transition: "background-color 0.3s ease", // Add transition effect
+                              borderRadius: "8px",
+                              marginBottom: "4px",
+                              width: "18ch",
+                              "&:hover": {
+                                backgroundColor: "#e0e0e0", // Change background color on hover
+                              },
+                            }}
+                            onClick={() => handleListItemClick(lineItem)}
+                          >
+                            <label
+                              style={{
+                                width: "15ch",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
                               }}
-                              onClick={() => handleListItemClick(lineItem)}
                             >
-                              <label style={{width:'15ch', overflow:'hidden', textOverflow:'ellipsis'}}>{lineItem?.title}</label>
-                            </ListItem>
-                          ))}
-                        </React.Fragment>
+                              {lineItem?.title}
+                            </label>
+                          </ListItem>
+                        ))}
+                      </>
+                    ) : (
+                      notification?.WorkOrderReq?.phaseItems?.map(
+                        (phaseItem) => (
+                          <React.Fragment key={phaseItem.phaseId}>
+                            {phaseItem?.LineItems?.map((lineItem) => (
+                              <ListItem
+                                key={lineItem?.id}
+                                sx={{
+                                  fontSize: {
+                                    xl: "16px",
+                                    lg: "14px",
+                                    xs: "14px",
+                                  },
+                                  padding: 1,
+                                  cursor: "pointer", // Change cursor to pointer to indicate clickable
+                                  backgroundColor: "#f0f0f0", // Add background color on hover
+                                  transition: "background-color 0.3s ease", // Add transition effect
+                                  borderRadius: "8px",
+                                  marginBottom: "4px",
+                                  width: "18ch",
+                                  "&:hover": {
+                                    backgroundColor: "#e0e0e0", // Change background color on hover
+                                  },
+                                }}
+                                onClick={() => handleListItemClick(lineItem)}
+                              >
+                                <label
+                                  style={{
+                                    width: "15ch",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                  }}
+                                >
+                                  {lineItem?.title}
+                                </label>
+                              </ListItem>
+                            ))}
+                          </React.Fragment>
+                        )
                       )
                     )}
                   </List>
@@ -328,8 +385,7 @@ const NotificationDetailModal = ({
                           }}
                           sx={{
                             input: {
-                              fontFamily:
-                                "Arial Rounded MT, sans serif",
+                              fontFamily: "Arial Rounded MT, sans serif",
                             },
                           }}
                         />
@@ -372,8 +428,7 @@ const NotificationDetailModal = ({
                           }}
                           sx={{
                             input: {
-                              fontFamily:
-                                "Arial Rounded MT, sans serif",
+                              fontFamily: "Arial Rounded MT, sans serif",
                             },
                           }}
                         />
@@ -397,7 +452,11 @@ const NotificationDetailModal = ({
                 </Stack>
               </Stack>
             </Stack>
-            <Stack backgroundColor={"#EFF5FF"} width={"100%"} sx={{borderBottomRightRadius:'14px'}}>
+            <Stack
+              backgroundColor={"#EFF5FF"}
+              width={"100%"}
+              sx={{ borderBottomRightRadius: "14px" }}
+            >
               <Box>
                 <Typography
                   sx={{
@@ -480,7 +539,12 @@ const NotificationDetailModal = ({
                 >
                   Notes
                 </Typography>
-                <Typography style={{ wordBreak:"break-all",maxWidth:"90%"}}  fontFamily={"inherit"} pb={4} pl={2}>
+                <Typography
+                  style={{ wordBreak: "break-all", maxWidth: "90%" }}
+                  fontFamily={"inherit"}
+                  pb={4}
+                  pl={2}
+                >
                   {notification.WorkOrderReq.notes}
                 </Typography>
 
@@ -521,20 +585,23 @@ const NotificationDetailModal = ({
                 <hr style={themeStyle.hrLine} />
 
                 {isEvent && (
-                  <Stack pr={1} sx={{ paddingBottom:{md:0, lg:0, sm:2, xs:2}}}>
-                  <BuilderProButton
-                    sx={{fontSize:{md:16,lg:16,sm:14,xs:14},}}
-                    backgroundColor={"#4C8AB1"}
-                    variant={"contained"}
-                    fontFamily={"Inter, sans serif"}
-                    fontWeight={"600"}
-                    padding={"6px 32px 6px 32px"}
-                    disabled={disable}
-                    handleOnClick={handleCompleteWorkOrder}
+                  <Stack
+                    pr={1}
+                    sx={{ paddingBottom: { md: 0, lg: 0, sm: 2, xs: 2 } }}
+                  >
+                    <BuilderProButton
+                      sx={{ fontSize: { md: 16, lg: 16, sm: 14, xs: 14 } }}
+                      backgroundColor={"#4C8AB1"}
+                      variant={"contained"}
+                      fontFamily={"Inter, sans serif"}
+                      fontWeight={"600"}
+                      padding={"6px 32px 6px 32px"}
+                      disabled={disable}
+                      handleOnClick={handleCompleteWorkOrder}
                     >
-                    Complete Work Order
-                  </BuilderProButton>
-                </Stack>
+                      Complete Work Order
+                    </BuilderProButton>
+                  </Stack>
                 )}
               </Box>
             </Stack>
@@ -673,7 +740,7 @@ const themeStyle = {
     color: "#000000",
     fontWeight: 600,
     marginTop: "0.5rem",
-    fontSize: {xl:"1.1rem", lg:'0.9rem', xs:'0.9rem'},
+    fontSize: { xl: "1.1rem", lg: "0.9rem", xs: "0.9rem" },
     display: "flex",
     gap: "1rem",
   },

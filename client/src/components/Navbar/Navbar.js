@@ -409,8 +409,8 @@ const Navbar = () => {
               ) : (
                 <></>
               )}
-              {Array.isArray(teamNotifications)?.length > 1 && <Divider />}
-              {Array.isArray(notificationsArr)?.length > 1 ? (
+              {Array.isArray(teamNotifications) && <Divider />}
+              {Array.isArray(notificationsArr) ? (
                 notificationsArr?.map((notification, index) => {
                   if (index < 3) {
                     return (

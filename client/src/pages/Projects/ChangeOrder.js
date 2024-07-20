@@ -75,7 +75,7 @@ const ChangeOrder = () => {
                   refetchChangeOrder={refetch}
                   projectId={currentProjectId}
                   adminProjectView={true}
-                  view={"Work Order"}
+                  view={"Change Order"}
                   authUserRole={authUserRole.userRole}
                   changeOrderView={true}
                 />

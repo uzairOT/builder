@@ -19,17 +19,17 @@ const RedialBarsChart = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
           name: {
             show: true,
             fontSize: "16px",
-            fontFamily: undefined,
+            // fontFamily: undefined,
             fontWeight: 600,
-            color: undefined,
+            // color: undefined,
             offsetY: -10,
           },
           value: {
             show: true,
             fontSize: "14px",
-            fontFamily: undefined,
+            // fontFamily: undefined,
             fontWeight: 400,
-            color: undefined,
+            // color: undefined,
             offsetY: 16,
             formatter: function (val) {
               const formattedVal = formatMoney(val);
@@ -42,7 +42,7 @@ const RedialBarsChart = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
     labels: ["Projected Profit", "Percentage Margin"],
   };
 
-  const series = [TotalProfit, totalProfitFromPaidInvoices];
+  const series = (TotalProfit && totalProfitFromPaidInvoices) ? [TotalProfit, totalProfitFromPaidInvoices] : [0,0];
 
   return (
     <div>
@@ -50,7 +50,7 @@ const RedialBarsChart = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
         options={options}
         series={series}
         type="radialBar"
-        width={{md:"250", xs:"200"}}
+        // width={"250"}
         height={'200'}
       />
     </div>

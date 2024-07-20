@@ -249,6 +249,7 @@ function AddLineElement({
       // const lineItemId = LineItem.id;
 
       updateLineItem(phaseId, lineItemIndex, formData);
+      handleClickClose();
       return;
     }
     setRowCheckboxes({});
