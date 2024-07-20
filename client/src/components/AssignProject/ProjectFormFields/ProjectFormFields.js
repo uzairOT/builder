@@ -106,7 +106,7 @@ function ProjectFormFields() {
               style={{ ...labelStyle, ...labelDisplay, ...labelResponsiveFont }}
               htmlFor="location"
             >
-              Location
+              Project Location
             </label>
             <TextField
              

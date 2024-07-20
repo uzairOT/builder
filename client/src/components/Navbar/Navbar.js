@@ -409,8 +409,8 @@ const Navbar = () => {
               ) : (
                 <></>
               )}
-              <Divider />
-              {Array.isArray(notificationsArr) ? (
+              {Array.isArray(teamNotifications)?.length > 1 && <Divider />}
+              {Array.isArray(notificationsArr)?.length > 1 ? (
                 notificationsArr?.map((notification, index) => {
                   if (index < 3) {
                     return (
@@ -447,12 +447,13 @@ const Navbar = () => {
               ) : (
                 <div
                   style={{
-                    backgroundColor: "lightgray",
-                    padding: 20,
+                    backgroundColor: "#F2F2F2",
+                    padding: 15,
                     borderRadius: "14px",
+                    textAlign:'center'
                   }}
                 >
-                  No new notifications available
+                  No new notifications
                 </div>
               )}
             </Popper>

@@ -46,7 +46,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc"; // Optional if you need UTC handling
 import Close from "@mui/icons-material/Close";
 import CreateableSelect from "react-select/creatable";
-import { components } from 'react-select';
+import { components } from "react-select";
 import {
   useAddUnitMutation,
   useGetUnitsQuery,
@@ -75,7 +75,10 @@ function AddLineElement({
   reqWorkOrderModal,
   setRowCheckboxes,
   showUpdateLine,
-  showAddLine
+  showAddLine,
+  updateRow,
+  setUpdateRow,
+  lineItemIndex
 }) {
   // const { data, isLoading, isSuccess } = useGetLineItemQuery({
   //   lineItemId: LineItem,
@@ -205,9 +208,26 @@ function AddLineElement({
       setAutoCompleteEvent(null);
     }
   }, [quantity, unitPrice]);
+  const updateLineItem = useCallback((phaseId, lineItemIndex, formData) => {
+    setUpdateRow(prevState => {
+      // const index = prevState[phaseId].rows.findIndex(row => row.id === lineItemId);
+      if (lineItemIndex !== -1) {
+        const updatedRows = [...prevState[phaseId].rows];
+        updatedRows[lineItemIndex] = {...prevState[phaseId].rows[lineItemIndex],title:formData.phaseName, unit_price:formData.unitPrice, ...formData};
+        console.log(updatedRows)
+        return {
+          ...prevState,
+          [phaseId]: {
+            ...prevState[phaseId],
+            rows: updatedRows
+          }
+        };
+      }
+      return prevState;
+    });
+  }, [setUpdateRow]);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setRowCheckboxes({});
     // if (start === null) {
     //   toast.warning("Please enter a date");
     //   return;
@@ -224,6 +244,14 @@ function AddLineElement({
     //   toast.warning("End date cannot be after start date");
     //   return;
     // }
+    if (reqWorkOrderModal) {
+      const phaseId = LineItem.phase_id;
+      // const lineItemId = LineItem.id;
+
+      updateLineItem(phaseId, lineItemIndex, formData);
+      return;
+    }
+    setRowCheckboxes({});
     if (quantity <= 0 || unitPrice <= 0) {
       toast.warning("Enter value greater than 0");
       return;
@@ -405,15 +433,14 @@ function AddLineElement({
       marginBottom: "0",
       height: "", // Keep this as it was
       padding: "4px", // Keep this as it was,
-         overflow:'auto',
-         width:'calc(100% + 16px)'
+      overflow: "auto",
+      width: "calc(100% + 16px)",
     }),
     menu: (provided) => ({
       ...provided,
       // height: "90px",
       // overflowY: "scroll",
       // marginTop: "0px", // Adjust the top margin of the menu
-   
     }),
     menuList: (provided) => ({
       ...provided,
@@ -426,7 +453,7 @@ function AddLineElement({
       padding: "5px 10px", // Adjust the padding of each option
       // overflowY: "scroll",
     }),
- 
+
     indicatorsContainer: (provided) => ({
       ...provided,
       // overflow: "auto",
@@ -556,17 +583,17 @@ function AddLineElement({
   // }, [margin]);
   const CustomInput = (props) => {
     const { value, ...rest } = props;
-  
+
     // Limit input value to 10 characters
-    const newValue = value
-  
-    return <components.Input {...rest} value={newValue} maxLength={50}/>;
+    const newValue = value;
+
+    return <components.Input {...rest} value={newValue} maxLength={50} />;
   };
   // const CustomOption = ({ innerRef, innerProps, isDisabled, children, isSelected, isFocused }) => {
   //   // Ensure children is a string to safely check its length
   //   const text = typeof children === 'string' ? children : '';
   //   const limitedText = text.length > 18 ? text.slice(0, 18) + '"' : text;
-  
+
   //   // Conditional styles for selected and focused states
   //   const optionStyles = {
   //     padding: '4px',
@@ -574,21 +601,18 @@ function AddLineElement({
   //     fontWeight: isSelected ? 'bold' : 'normal', // Example selected font weight
   //     color: isFocused ? '#007bff' : 'inherit' // Example focused text color
   //   };
-  
+
   //   return !isDisabled ? (
   //     <div ref={innerRef} {...innerProps} style={optionStyles}>
   //       {limitedText}
   //     </div>
   //   ) : null;
   // };
-  
-  
-
 
   useEffect(() => {
     const recallUnits = async () => {
       await refetch();
-    }
+    };
     recallUnits();
   }, [showAddLine, showUpdateLine]);
   return (
@@ -676,7 +700,7 @@ function AddLineElement({
                     InputLabelProps={{ display: "none" }}
                     inputProps={{
                       ...params.inputProps,
-                      maxLength:50
+                      maxLength: 50,
                     }}
                     // InputProps={{
                     //   maxLength:50
@@ -717,12 +741,14 @@ function AddLineElement({
                       ref={creatableRef}
                       defaultInputValue={LineItem ? LineItem?.unit : unit}
                       // value={findValueInData(unit)}
-                      inputProps={{maxLength: 10}}
+                      inputProps={{ maxLength: 10 }}
                       placeholder={"Select Unit"}
                       styles={selectStyles}
                       // defaultValue={unit}
                       onChange={handleSetUnit}
-                      options={data?.allUnits?.filter(option => option.label) || []}
+                      options={
+                        data?.allUnits?.filter((option) => option.label) || []
+                      }
                       isLoading={isLoading}
                       isDisabled={isLoading}
                       components={{ Input: CustomInput }}
@@ -806,9 +832,9 @@ function AddLineElement({
 
               <Typography sx={typoText}>Actual Cost</Typography>
               <TextField
-               inputProps={{
-                onWheel: (event) => event.target.blur(),
-              }}
+                inputProps={{
+                  onWheel: (event) => event.target.blur(),
+                }}
                 sx={inputStyle}
                 placeholder="200"
                 required
@@ -826,9 +852,9 @@ function AddLineElement({
               />
               <Typography sx={typoText}>Client Cost</Typography>
               <TextField
-               inputProps={{
-                onWheel: (event) => event.target.blur(),
-              }}
+                inputProps={{
+                  onWheel: (event) => event.target.blur(),
+                }}
                 sx={inputStyle}
                 placeholder="200"
                 required
@@ -1047,15 +1073,15 @@ const doneButton = {
 
 const parallelBox = {
   display: "flex",
-  gap: {md:"2rem", xs:'0.5rem'},
+  gap: { md: "2rem", xs: "0.5rem" },
   justifyContent: "center",
   alignItems: "center",
-  flexDirection:{md:'row', xs:'column'}
+  flexDirection: { md: "row", xs: "column" },
 };
 const innerBox = {
   display: "flex",
   flexDirection: "column",
-  width: {md:"50%", xs:'100%'},
+  width: { md: "50%", xs: "100%" },
 };
 const leftSpace = {
   marginLeft: "1rem",

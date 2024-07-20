@@ -62,7 +62,7 @@ const CustomToolbar = ({
     toolbarTitle: {
       color: "#707070",
       fontFamily: "inherit",
-      fontSize: { xl:18,md: 13, lg:13,xs:13,sm:13 } ,
+      fontSize: { xl: 18, md: 13, lg: 13, xs: 13, sm: 13 },
       fontStyle: "normal",
       fontWeight: 500,
     },
@@ -86,6 +86,7 @@ const CustomToolbar = ({
       fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
       color: "#484848",
       fontWeight: "500",
+      fontSize:'14px'
     },
     toolbarIcon: {
       padding: 3,
@@ -110,7 +111,7 @@ const CustomToolbar = ({
       },
     },
     monthEventHeader: {
-      fontSize:'15px'
+      fontSize: "15px",
     },
   };
   //
@@ -124,17 +125,28 @@ const CustomToolbar = ({
           alignItems={"center"}
           width={"100%"}
           p={1}
-          pl={{xl:4, lg:2.5}}
+          pl={{ xl: 4, lg: 2.5 }}
           mt={1}
           pt={2}
           pb={2}
         >
-          <Typography sx={themeStyle.toolbarTitle} pl={{xl:1,lg:3, md:3, xs:3}}>
+          <Typography
+            sx={themeStyle.toolbarTitle}
+            pl={{ xl: 1, lg: 3, md: 3, xs: 3 }}
+          >
             Work Order
           </Typography>
           <Box element="div" style={themeStyle.toolbarButtonGroup}>
             <Button
-              sx={{ fontSize: { xl:"12px !important" , lg:"8px !important" , md: "12px !important", sm:"12px !important", xs:"12px !important" } }}
+              sx={{
+                fontSize: {
+                  xl: "12px !important",
+                  lg: "8px !important",
+                  md: "12px !important",
+                  sm: "12px !important",
+                  xs: "12px !important",
+                },
+              }}
               style={{
                 ...themeStyle.toolbarButton,
                 backgroundColor: activeButton === "day" ? "#4C8AB1" : "",
@@ -145,7 +157,15 @@ const CustomToolbar = ({
               Day
             </Button>
             <Button
-              sx={{ fontSize: { xl:"12px !important" , lg:"8px !important" , md: "12px !important", sm:"12px !important", xs:"12px !important" } }}
+              sx={{
+                fontSize: {
+                  xl: "12px !important",
+                  lg: "8px !important",
+                  md: "12px !important",
+                  sm: "12px !important",
+                  xs: "12px !important",
+                },
+              }}
               style={{
                 ...themeStyle.toolbarButton,
                 backgroundColor: activeButton === "week" ? "#4C8AB1" : "",
@@ -156,7 +176,15 @@ const CustomToolbar = ({
               Week
             </Button>
             <Button
-              sx={{ fontSize: { xl:"12px !important" , lg:"8px !important" , md: "12px !important", sm:"12px !important", xs:"12px !important" } }}
+              sx={{
+                fontSize: {
+                  xl: "12px !important",
+                  lg: "8px !important",
+                  md: "12px !important",
+                  sm: "12px !important",
+                  xs: "12px !important",
+                },
+              }}
               style={{
                 ...themeStyle.toolbarButton,
                 backgroundColor: activeButton === "month" ? "#4C8AB1" : "",
@@ -198,41 +226,47 @@ const CustomToolbar = ({
               justifyContent={"center"}
               alignItems={"center"}
             >
-              <button
-                style={themeStyle.button}
+              <Button
+                sx={{
+                  fontSize: {
+                    xl: "12px !important",
+                    lg: "10px !important",
+                    md: "12px !important",
+                    xs: "11px !important",
+                  },
+                }}
+                style={{
+                  ...themeStyle.toolbarButton,
+                  backgroundColor:
+                    activeHeader === "Work Order" ? "#4C8AB1" : "",
+                  color: activeHeader === "Work Order" ? "#FFF" : "",
+                }}
                 onClick={() => {
                   handleActiveHeader("Work Order");
                 }}
               >
-                <Typography
-                  fontSize={"12px"}
-                  style={{
-                    ...themeStyle.monthEventHeader,
-                    color: activeHeader === "Work Order" ? "#4C8AB1" : "",
-                    // textDecoration:
-                    //   activeHeader === "Work Order" ? "underline" : "",
-                  }}
-                >
-                  Work Order
-                </Typography>
-              </button>
-              <button
-                style={themeStyle.button}
+                Work Order
+              </Button>
+              <Button
+                sx={{
+                  fontSize: {
+                    xl: "12px !important",
+                    lg: "10px !important",
+                    md: "12px !important",
+                    xs: "11px !important",
+                  },
+                }}
+                style={{
+                  ...themeStyle.toolbarButton,
+                  backgroundColor: activeHeader === "Notes" ? "#4C8AB1" : "",
+                  color: activeHeader === "Notes" ? "#FFF" : "",
+                }}
                 onClick={() => {
                   handleActiveHeader("Notes");
                 }}
               >
-                <Typography
-                  fontSize={"12px"}
-                  style={{
-                    ...themeStyle.monthEventHeader,
-                    color: activeHeader === "Notes" ? "#4C8AB1" : "",
-                    // textDecoration: activeHeader === "Notes" ? "underline" : "",
-                  }}
-                >
-                  Weather/notes
-                </Typography>
-              </button>
+                Weather/ Notes
+              </Button>
             </Stack>
           )}
           {toolbar.view === "day" && (
@@ -243,41 +277,47 @@ const CustomToolbar = ({
               justifyContent={"center"}
               alignItems={"center"}
             >
-              <button
-                style={themeStyle.button}
+              <Button
+                sx={{
+                  fontSize: {
+                    xl: "12px !important",
+                    lg: "10px !important",
+                    md: "12px !important",
+                    xs: "11px !important",
+                  },
+                }}
+                style={{
+                  ...themeStyle.toolbarButton,
+                  backgroundColor:
+                    activeHeader === "Work Order" ? "#4C8AB1" : "",
+                  color: activeHeader === "Work Order" ? "#FFF" : "",
+                }}
                 onClick={() => {
                   handleActiveHeader("Work Order");
                 }}
               >
-                <Typography
-                  fontSize={"12px"}
-                  style={{
-                    ...themeStyle.monthEventHeader,
-                    color: activeHeader === "Work Order" ? "#4C8AB1" : "",
-                    // textDecoration:
-                    //   activeHeader === "Work Order" ? "underline" : "",
-                  }}
-                >
-                  Work Order
-                </Typography>
-              </button>
-              <button
-                style={themeStyle.button}
+                Work Order
+              </Button>
+              <Button
+                sx={{
+                  fontSize: {
+                    xl: "12px !important",
+                    lg: "10px !important",
+                    md: "12px !important",
+                    xs: "11px !important",
+                  },
+                }}
+                style={{
+                  ...themeStyle.toolbarButton,
+                  backgroundColor: activeHeader === "Notes" ? "#4C8AB1" : "",
+                  color: activeHeader === "Notes" ? "#FFF" : "",
+                }}
                 onClick={() => {
                   handleActiveHeader("Notes");
                 }}
               >
-                <Typography
-                  fontSize={"12px"}
-                  style={{
-                    ...themeStyle.monthEventHeader,
-                    color: activeHeader === "Notes" ? "#4C8AB1" : "",
-                    // textDecoration: activeHeader === "Notes" ? "underline" : "",
-                  }}
-                >
-                  Notes
-                </Typography>
-              </button>
+                Weather/ Notes
+              </Button>
             </Stack>
           )}
         </Stack>

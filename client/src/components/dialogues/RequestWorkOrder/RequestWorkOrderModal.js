@@ -79,6 +79,7 @@ const RequestWorkOrderModal = ({
   const [done, setDone] = useState(false);
   const [showLineItems, setShowLineItems] = useState(false);
   const { addPhase } = useSelector(selectAddPhase);
+  const [updateRow, setUpdateRow] = useState(rowCheckboxes)
   const [priority, setPriority] = useState("normal");
   const [status, setStatus] = useState("pending");
   const [subject, setSubject] = useState(
@@ -107,6 +108,7 @@ const RequestWorkOrderModal = ({
   const [showUpdateLine, setShowUpdateLine] = useState(false);
   const phaseId = rowCheckboxes[0]?.rows[0]?.phase_id;
   const [getPhasesAndLineItems] = useGetPhasesAndLineItemsByIdMutation();
+  const [lineItemIndex, setLineItemIndex] = useState()
   const [lineItem, setLineItem] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -269,7 +271,9 @@ const RequestWorkOrderModal = ({
     }
   };
 
-  const handleUpdateOpen = (lineItem) => {
+  const handleUpdateOpen = (lineItem, index) => {
+    // setUpdateRow(() => rowCheckboxes);
+    setLineItemIndex(index)
     setLineItem(lineItem);
     setShowUpdateLine(true);
   };
@@ -339,6 +343,7 @@ const RequestWorkOrderModal = ({
       projectId: projectId,
       total: changeOrder ? checkedRow?.total : totalWorkOrder,
       changeOrder: changeOrderView ? true : false,
+      changeOrderItems: updateRow
     };
     console.log(requestForm);
     if (requestForm.teamIds.length === 0) {
@@ -417,6 +422,12 @@ const RequestWorkOrderModal = ({
   const showToast = () => {
     toast.warning("Please select a line item to request a work order.");
   };
+
+  useEffect(()=>{
+    if(changeOrderView){
+      setUpdateRow(rowCheckboxes)
+    }
+  },[rowCheckboxes])
 
   useEffect(() => {
     if (open) {
@@ -607,7 +618,7 @@ const RequestWorkOrderModal = ({
                       padding: 0,
                     }}
                   >
-                    {changeOrder
+                    {/* {changeOrder
                       ? phaseItems?.map((phase, phaseIndex) => {
                           return phase.lineItems?.map((lineItem, index) => {
                             counter++;
@@ -732,6 +743,16 @@ const RequestWorkOrderModal = ({
                                     sx={{ padding: 0 }}
                                     secondary={row.title}
                                   />
+                                  {changeOrderView && <Typography
+                                      color={"#4C8AB1"}
+                                      fontSize={"11px"}
+                                      pl={0.5}
+                                      onClick={() =>
+                                        handleUpdateOpen(row.id)
+                                      }
+                                    >
+                                      edit
+                                    </Typography>}
                                 </ListItem>
                               );
                             }
@@ -755,13 +776,104 @@ const RequestWorkOrderModal = ({
                                     sx={{ padding: 0 }}
                                     secondary={row.title}
                                   />
+                                  {changeOrderView && <Typography
+                                      color={"#4C8AB1"}
+                                      fontSize={"11px"}
+                                      pl={0.5}
+                                      onClick={() =>
+                                        handleUpdateOpen(row.id)
+                                      }
+                                    >
+                                      edit
+                                    </Typography>}
                                 </ListItem>
                               );
                             } else {
                               return <></>;
                             }
                           });
-                        })}
+                        })} */}
+                    {Object?.keys(changeOrderView ? updateRow : rowCheckboxes)?.map((phase) => {
+                      const phaseData = changeOrderView ? updateRow[phase] : rowCheckboxes[phase];
+                      return phaseData.rows.map((row, index) => {
+                        counter++;
+                        if (counter <= 2) {
+                          return (
+                            <ListItem
+                              sx={{ padding: 0 }}
+                              key={counter}
+                              onClick={(e) => {
+                                handleLineItemClick(e, row);
+                              }}
+                            >
+                              <ListItemText
+                                secondaryTypographyProps={{
+                                  sx: {
+                                    width: "11ch",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                  },
+                                }}
+                                sx={{ padding: 0 }}
+                                secondary={row.title}
+                              />
+                              {changeOrderView && (
+                                <Typography
+                                  color={"#4C8AB1"}
+                                  fontSize={"11px"}
+                                  pl={0.5}
+                                  onClick={() => handleUpdateOpen(row, index)}
+                                  sx={{
+                                   cursor:'pointer'
+                                  }}
+                                >
+                                  edit
+                                </Typography>
+                              )}
+                            </ListItem>
+                          );
+                        }
+                        if (counter > 2 && showLineItems) {
+                          return (
+                            <ListItem
+                              sx={{ padding: 0 }}
+                              key={counter}
+                              onClick={(e) => {
+                                handleLineItemClick(e, row);
+                              }}
+                            >
+                              <ListItemText
+                                secondaryTypographyProps={{
+                                  sx: {
+                                    width: "11ch",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                  },
+                                }}
+                                sx={{ padding: 0 }}
+                                secondary={row.title}
+                              />
+                              {changeOrderView && (
+                                <Typography
+                                  color={"#4C8AB1"}
+                                  fontSize={"11px"}
+                                  pl={0.5}
+                                  onClick={() => handleUpdateOpen(row, index)}
+                                  sx={{
+                                    cursor:'pointer'
+                                  }}
+                                >
+                                  edit
+                                </Typography>
+                              )}
+                            </ListItem>
+                          );
+                        } else {
+                          return <></>;
+                        }
+                      });
+                    })}
+
                     {counter > 2 && (
                       <ListItem sx={{ padding: 0 }} style={{ padding: 0 }}>
                         <Button
@@ -1138,7 +1250,10 @@ const RequestWorkOrderModal = ({
           setPhaseItems={setPhaseItems}
           handleUpdateClose={handleUpdateClose}
           LineItem={lineItem}
+          lineItemIndex={lineItemIndex}
           reqWorkOrderModal={true}
+          updateRow={updateRow}
+          setUpdateRow={setUpdateRow}
         />
       )}
       {done && <GenerateInvoiceDone setDone={setDone} />}

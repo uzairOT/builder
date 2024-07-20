@@ -772,7 +772,7 @@ const AddPhaseCard = ({
                             fontWeight: 500,
                             fontSize: "0.9rem",
                             overflowY: "auto",
-                            textAlign: "center",
+                            textAlign: "left",
                           }}
                         >
                           {row.notes}
