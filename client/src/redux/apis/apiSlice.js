@@ -20,8 +20,8 @@ export const getTokenFromLocalStorage = () => {
     if(pathnameArr[1] === 'invitation'){
       return;
     }
-    if (window.location.pathname !== '/login' ) {
-      window.location.href = '/login';
+    if (window.location.pathname !== '/home' && window.location.pathname !== '/login'  ) {
+      window.location.href = '/home';
     }
   }
 };

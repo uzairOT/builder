@@ -10,7 +10,7 @@ const StyledText = styled("text")(({ theme, color }) => ({
   textAnchor: "middle",
   dominantBaseline: "central",
   fontSize: "16px",
-  fontFamily: "Inter, sans serif",
+  fontFamily: "Arial Rounded MT, sans-serif",
   color: theme.palette.text.color,
 }));
 

@@ -356,7 +356,7 @@ const BudgetPieChartCard = () => {
                 sx={{
                   backgroundColor: "#4C8AB1",
                   borderRadius: "28px",
-                  fontFamily: "Inter, sans serif",
+                  fontFamily: "Arial Rounded MT, sans-serif",
                   textTransform: "capitalize",
                   fontSize: "16px",
                 }}

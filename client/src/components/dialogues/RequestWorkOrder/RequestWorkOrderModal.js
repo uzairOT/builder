@@ -1276,7 +1276,7 @@ const themeStyle = {
     margin: "1rem 0rem 0rem 1rem",
   },
   linkButton: {
-    fontFamily: "Inter",
+    fontFamily: "Arial Rounded MT, sans-serif",
     fontWeight: 500,
     textTransform: "none",
     color: "#858585",

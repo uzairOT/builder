@@ -29,7 +29,7 @@ const style = {
 const styles = {
   link: {
     cursor: "pointer",
-    textDecoration: "underline",
+    // textDecoration: "underline",
     "&:hover": {
       color: "#326273", // Change color on hover
     },

@@ -107,7 +107,7 @@ if (projects?.totalCost) {
                 sx={{whiteSpace: "nowrap",textAlign: "left"}}
 
               >
-                $ {formatMoney(totalCost)}
+                ${formatMoney(totalCost)}
               </Typography>
             </Stack>
           </Stack>
@@ -125,7 +125,7 @@ if (projects?.totalCost) {
                 fontWeight={"500"}
                 fontSize={{xl:18,lg:15,md:18,xs:18}}
               >
-                $ {formatMoney(totalMargin)}
+                ${formatMoney(totalMargin)}
               </Typography>
               <Typography
                 textAlign={"center"}
@@ -136,8 +136,7 @@ if (projects?.totalCost) {
               >
                 {projects?.totalCost
                   ? marginPercentage
-                  : 0}{" "}
-                %
+                  : 0}%
               </Typography>
             </Stack>
           </Stack>

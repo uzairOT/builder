@@ -72,7 +72,7 @@ const boxStyles = {
 };
 
 const boxText = {
-  fontFamily: "Inter",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 500,
   fontSize: { lg: '1.1rem', md: "1rem", sm: "1rem", xs: "0.8rem" }
 };

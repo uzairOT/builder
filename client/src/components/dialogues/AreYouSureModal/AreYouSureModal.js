@@ -123,7 +123,7 @@ const crossIcon = {
   top: 8,
 };
 const typoTitle = {
-  fontFamily: "Inter",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 600,
   fontSize: "1.5rem",
   color: "#202227",
@@ -131,7 +131,7 @@ const typoTitle = {
 };
 
 const typoTect = {
-  fontFamily: "Inter",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 500,
   fontSize: "1rem",
   color: "#575757",

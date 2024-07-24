@@ -72,7 +72,7 @@ const PaidTransactionsCard = () => {
                   fontSize={{ xl: "16px", lg: "13px", md: "16px", xs: "16px" }}
                   color={"#000000"}
                 >
-                  $ {transaction?.PaymentAmount}
+                  ${transaction?.PaymentAmount}
                 </Typography>
               </Stack>
             ))}
@@ -95,7 +95,7 @@ const PaidTransactionsCard = () => {
             fontSize={{ xl: "16px", lg: "13px", md: "16px", xs: "16px" }}
             color={"#000000"}
           >
-            $ {totalPayment}
+            ${totalPayment}
           </Typography>
         </Stack>
       </Stack>

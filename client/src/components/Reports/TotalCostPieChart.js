@@ -76,7 +76,7 @@ const TotalCostPieChart = () => {
               </Typography>
             </Stack>
             <Typography textAlign={"right"}>
-              $ {formatMoney(data?.spent)}
+              ${formatMoney(data?.spent)}
             </Typography>
           </Stack>
           <Stack direction={"row"} justifyContent={"space-between"}>
@@ -90,7 +90,7 @@ const TotalCostPieChart = () => {
               </Typography>
             </Stack>
             <Typography textAlign={"center"}>
-              $ {formatMoney(data?.remaining)}
+              ${formatMoney(data?.remaining)}
             </Typography>
           </Stack>
         </Stack>

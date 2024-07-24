@@ -24,8 +24,6 @@ import {
 } from "@mui/material";
 import builder1 from "../Signup/Assets/pngs/builderProYellowLogo.png";
 import downloadForMob from "../Signup/Assets/pngs/downloadForMob.png";
-import googlePlay from "../Signup/Assets/pngs/googlePlay.png";
-import appStore from "../Signup/Assets/pngs/appStore.png";
 import { Circle, Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "../Signup/Assets/svgs/GoogleIcon.svg";
 import builderProLargeIcon, {
@@ -36,6 +34,9 @@ import "../../App.css";
 import { useFormik } from "formik";
 import { loginSchemea } from "../../utils/Validation/settingsPageSchema";
 import builderproicon from "../../assets/FileSvg/builderProWhite.png";
+import googlePlay from "../../assets/FileSvg/googlePlay.svg";
+import appStore from "../../assets/FileSvg/appStore.svg";
+
 //import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
@@ -104,13 +105,12 @@ const Login = () => {
         const res = await googleLogin({ email }).unwrap();
 
         if (res.message === "Login Successful!") {
-          localStorage.setItem('login', Date.now()); // Use this key to trigger the storage event
+          localStorage.setItem("login", Date.now()); // Use this key to trigger the storage event
           dispatch(setCredentials({ ...res }));
           if (res?.incompleteProject?.incomplete) {
             setTimeout(() => {
               window.location.href = "/assignproject";
             }, 1000);
-           
           } else {
             setTimeout(() => {
               window.location.href = "/";
@@ -151,7 +151,7 @@ const Login = () => {
       }).unwrap();
       // console.log("login :", res);
       // localStorage.setItem('userInfo', JSON.stringify({...res}));
-      localStorage.setItem('login', Date.now()); // Use this key to trigger the storage event
+      localStorage.setItem("login", Date.now()); // Use this key to trigger the storage event
       dispatch(setCredentials({ ...res }));
       // navigate("/");
       if (res?.incompleteProject?.incomplete) {
@@ -192,11 +192,11 @@ const Login = () => {
   return (
     <Grid container sx={firstGrid}>
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
-      <img
-            style={{ height: "236px",width:"435px", paddingLeft:'8px' }}
-            src={builderproicon}
-            alt="Builder Pro"
-          />
+        <img
+          style={{ height: "236px", width: "435px", paddingLeft: "8px" }}
+          src={builderproicon}
+          alt="Builder Pro"
+        />
         <Box
           sx={{
             display: "flex",
@@ -204,7 +204,6 @@ const Login = () => {
             marginTop: { xl: "0rem", lg: "0rem", md: "0rem", sm: "0rem" },
           }}
         >
-         
           {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
           <Box>
             <Typography component="p" sx={secondHeading}>
@@ -227,9 +226,9 @@ const Login = () => {
         <Box sx={downloadForMobBox}>
           <img
             src={downloadForMob}
-            width={'100%'}
+            width={"100%"}
             alt=""
-            style={{ height: "120px", paddingLeft:'4px' }}
+            style={{ height: "120px", paddingLeft: "4px" }}
           />
         </Box>
         <Box sx={googleAppImgsBox}>
@@ -237,23 +236,11 @@ const Login = () => {
             href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
             target="blank"
           >
-            {" "}
-            <img
-            
-              src={googlePlay}
-              width={'206px'}
-              style={{ cursor: "pointer", height:52 }}
-              alt=""
-            />
+            <img src={googlePlay} style={{ cursor: "pointer" }} alt="" />
           </a>
 
           <a href="https://testflight.apple.com/join/Fejy1iQ6" target="blank">
-            <img
-              src={appStore}
-              width={'206px'}
-              style={{ cursor: "pointer", height:52 }}
-              alt=""
-            />
+            <img src={appStore} style={{ cursor: "pointer" }} alt="" />
           </a>
         </Box>
       </Grid>
@@ -365,7 +352,7 @@ const Login = () => {
                   style={{
                     ...checkBox,
                     ...lableResponsiveFont,
-                    marginTop:'12px'
+                    marginTop: "12px",
                   }}
                 >
                   Remember Me
@@ -484,8 +471,8 @@ const Login = () => {
         <Box sx={googleAppImgsMobile}>
           <img
             src={googlePlay}
-            width={'216px'}
-            height={'62px'}
+            width={"216px"}
+            height={"62px"}
             style={{ cursor: "pointer" }}
             alt=""
           />
@@ -509,14 +496,14 @@ const firstGrid = {
     sm: "0rem 2rem",
     xs: "0rem 0rem 0rem 0rem",
   },
-  alignItems:'start',
+  alignItems: "start",
   backgroundColor: "#4C8AB1",
   // marginTop: { lg: "0rem", sm: "-1rem", xs: "0rem" },
   // border: "2px solid red",
 };
 
 const SecondGrid = {
-  gap: { xl:"4.5rem",lg: "3.5rem", md:"3.5rem", sm: "1rem", xs: "1rem" },
+  gap: { xl: "4.5rem", lg: "3.5rem", md: "3.5rem", sm: "1rem", xs: "1rem" },
   alignItems: { lg: "center", md: "center", sm: "center", xs: "center" },
   justifyContent: {
     lg: "start",
@@ -526,7 +513,7 @@ const SecondGrid = {
   },
   display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
   flexDirection: "column",
-  marginTop:'0.5rem'
+  marginTop: "0.5rem",
 };
 
 const downloadForMobBox = {

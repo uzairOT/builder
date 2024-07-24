@@ -2,6 +2,7 @@ import { apiSlice } from './apiSlice';
 const USERS_URL = 'http://3.135.107.71/user';
 const AUTH_URL = 'http://3.135.107.71/auth';
 const PROJECTS_URL = "http://3.135.107.71/project";
+const API_URL="http://3.135.107.71/api/";
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -125,17 +126,26 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body:data
       })
     }),
+    sendContactForm: builder.mutation({
+      query: (contactData) => ({
+        url: `${API_URL}/contact-us`,
+        method: 'POST',
+        body: contactData,
+      }),
+    }),
     deleteUserProfile: builder.mutation({
       query: (userId) => ({
         url: `${USERS_URL}/profile`,
         method: 'DELETE',
         body: { userId },
       }),
+    
     }),
   }),
 });
 
 export const {
+  useSendContactFormMutation,
   useDeleteUserProfileMutation,
   useGoogleLoginMutation,
   useLoginMutation,
@@ -152,5 +162,5 @@ export const {
   useResetPasswordMutation,
   useCheckUserOnInvitationMutation,
   useResetProfilePasswordMutation,
-  useUpdateUserNotificationsMutation
+  useUpdateUserNotificationsMutation,
 } = userApiSlice;
