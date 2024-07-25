@@ -15,8 +15,6 @@ import {
 } from "@mui/material";
 import builder1 from "./Assets/pngs/builderProYellowLogo.png";
 import downloadForMob from "./Assets/pngs/downloadForMob.png";
-import googlePlay from "./Assets/pngs/googlePlay.png";
-import appStore from "./Assets/pngs/appStore.png";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "./Assets/svgs/GoogleIcon.svg";
 import { PhoneInput } from "react-international-phone";
@@ -40,6 +38,8 @@ import { useFormik } from "formik";
 import { signupSchemea } from "../../utils/Validation/settingsPageSchema";
 import builderproicon from "../../assets/FileSvg/builderProWhite.png";
 import { PhoneNumberUtil } from "google-libphonenumber";
+import googlePlay from "../../assets/FileSvg/googlePlay.svg";
+import appStore from "../../assets/FileSvg/appStore.svg";
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
@@ -306,27 +306,15 @@ const SignupComp = () => {
           />
         </Box>
         <Box sx={googleAppImgsBox}>
-        <a
+          <a
             href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
             target="blank"
           >
-            {" "}
-            <img
-            
-              src={googlePlay}
-              width={'206px'}
-              style={{ cursor: "pointer", height:52 }}
-              alt=""
-            />
+            <img src={googlePlay} style={{ cursor: "pointer" }} alt="" />
           </a>
 
           <a href="https://testflight.apple.com/join/Fejy1iQ6" target="blank">
-            <img
-              src={appStore}
-              width={'206px'}
-              style={{ cursor: "pointer", height:52 }}
-              alt=""
-            />
+            <img src={appStore} style={{ cursor: "pointer" }} alt="" />
           </a>
         </Box>
       </Grid>
