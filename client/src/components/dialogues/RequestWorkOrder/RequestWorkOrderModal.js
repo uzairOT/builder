@@ -447,7 +447,7 @@ const RequestWorkOrderModal = ({
         <BuilderProButton
           backgroundColor={"#FFAC00"}
           variant={"contained"}
-          fontFamily={"Inter, sans serif"}
+          fontFamily={"inherit"}
           fontSize={{ lg: "16px", xs: "11px" }}
           fontWeight={"600"}
           padding={{ sm: "6px 32px 6px 32px", xs: "5px 20px 5px 20px" }}
@@ -987,7 +987,7 @@ const RequestWorkOrderModal = ({
                   <BuilderProButton
                     backgroundColor={"#4C8AB1"}
                     variant={"contained"}
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={"inherit"}
                     fontSize={"16px"}
                     fontWeight={"600"}
                     padding={"6px 32px 6px 32px"}
@@ -1229,7 +1229,7 @@ const RequestWorkOrderModal = ({
                 <BuilderProButton
                   backgroundColor={"#4C8AB1"}
                   variant={"contained"}
-                  fontFamily={"Inter, sans serif"}
+                  fontFamily={"inherit"}
                   fontSize={"16px"}
                   fontWeight={"600"}
                   padding={"6px 32px 6px 32px"}
@@ -1391,7 +1391,7 @@ const themeStyle = {
     margin: "1rem 0rem 0rem 1rem",
   },
   linkButton: {
-    fontFamily: "Inter",
+    fontFamily: "Arial Rounded MT, sans-serif",
     fontWeight: 500,
     textTransform: "none",
     color: "#858585",

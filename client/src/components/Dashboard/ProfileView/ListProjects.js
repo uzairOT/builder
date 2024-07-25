@@ -90,10 +90,10 @@ const ListProjects = () => {
           }}
         >
           <Typography
-            fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
+            fontSize={{ xl: "11px", lg: "9px", md: "9px", xs: "11px" }}
             fontWeight={"600"}
             color={"black"}
-            fontFamily={"Inter, sans-serif"}
+            fontFamily={"inherit"}
             width={"100%"}
           >
             Remodel
@@ -109,10 +109,10 @@ const ListProjects = () => {
           }}
         >
           <Typography
-            fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
+            fontSize={{ xl: "11px", lg: "9px", md: "9px", xs: "11px" }}
             fontWeight={"600"}
             color={"black"}
-            fontFamily={"Inter, sans-serif"}
+            fontFamily={"inherit"}
             width={"100%"}
           >
             New Build
@@ -128,10 +128,10 @@ const ListProjects = () => {
           }}
         >
           <Typography
-            fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
+            fontSize={{ xl: "11px", lg: "9px", md: "9px", xs: "11px" }}
             fontWeight={"600"}
             color={"black"}
-            fontFamily={"Inter, sans-serif"}
+            fontFamily={"inherit"}
           >
             Commercial
           </Typography>

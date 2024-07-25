@@ -123,7 +123,7 @@ function ProjectFormFields({
                   Client
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"subcontractor"}>
-                  Sub-Contractor
+                  Subcontractor
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"supplier"}>
                   Supplier
@@ -202,7 +202,7 @@ const counterTypo = {
   bottom: "1.5rem",
   fontSize: "0.8rem",
   color: "#B8B8B8",
-  fontFamily: "Inter",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontWeight: 500,
 };
 

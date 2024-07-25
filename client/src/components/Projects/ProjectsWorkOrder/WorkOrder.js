@@ -175,7 +175,7 @@ function WorkOrder({
                       variant={"contained"}
                       backgroundColor={"#4C8AB1"}
                       fontSize={"11px"}
-                      fontFamily={"Inter, sans serif"}
+                      fontFamily={"inherit"}
                       marginLeft={"5px"}
                       handleOnClick={() => handleOnClick(item.id)}
                     >
@@ -212,7 +212,7 @@ const tableCellStyle = {
   overflow:'hidden',
   fontWeight: 500,
   fontSize: "11px",
-  // fontFamily: "Poppins",
+  // fontFamily: "inherit",
    textAlign:'left'
 };
 

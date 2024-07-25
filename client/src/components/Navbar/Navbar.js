@@ -229,11 +229,12 @@ const Navbar = () => {
   }, [teamStatusData]);
 
   useEffect(() => {
+    
     const handleStorageChange = (event) => {
       if (event.key === "logout") {
         // Handle logout in other tabs
         toast.info("You have been logged out in another tab!");
-        navigate("/login"); // Redirect to the login page or perform other logout handling
+        navigate("/login"); // Redirect to the login page or  perform other logout handling
       } else if (event.key === "login") {
         // Handle login in other tabs
         window.location.reload();

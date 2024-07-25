@@ -37,7 +37,7 @@ const InvoiceNotification = ({ data, setInvoiceNotification }) => {
           variant={"contained"}
           backgroundColor={"#4C8AB1"}
           fontSize={"11px"}
-          fontFamily={"Inter, sans serif"}
+          fontFamily={"inherit"}
           marginLeft={"5px"}
           alignSelf={"right"}
           handleOnClick={() => {

@@ -312,7 +312,7 @@ export default function MyApp() {
           <Grid item xs={12} md={6} lg={8} xl={5} sx={{ display: "flex" }}>
             <Grid item xs={12} md={6} lg={8} xl={5}>
               <Typography sx={switchLabelstyles} variant="body1">
-                Sub- Contractor
+                Subcontractor
               </Typography>
             </Grid>
             <Switch

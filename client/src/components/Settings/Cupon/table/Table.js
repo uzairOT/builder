@@ -268,7 +268,7 @@ const tableCellStyle = {
   overflow: "hidden",
   fontWeight: 500,
   fontSize: "14px",
-  fontFamily: "Poppins",
+  fontFamily: "inherit",
 };
 
 const tableCellValueStyle = {

@@ -298,7 +298,7 @@ function ProjectFormFields() {
 const labelStyle = {
   marginBottom: "5px",
   color: "#202227",
-  fontFamily: "Inter",
+  fontFamily: "Arial Rounded MT, sans-serif",
   fontSize: "1rem",
   fontWeight: 500,
 };

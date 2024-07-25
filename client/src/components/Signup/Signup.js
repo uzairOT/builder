@@ -493,7 +493,7 @@ const SignupComp = () => {
                       marginLeft: "14px",
                       marginRight: "14px",
                       marginTop: "3px",
-                      fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+                      fontFamily: 'inherit',
                     }}
                   >
                     Phone is not valid
@@ -882,7 +882,7 @@ const linkBox = {
   paddingBottom: "1rem",
   marginLeft: "-0.5rem",
   color: "#202227",
-  fontFamily: "Poppins",
+  fontFamily: "inherit",
   fontSize: "1rem",
   fontStyle: "normal",
   fontWeight: 400,
@@ -890,7 +890,7 @@ const linkBox = {
 };
 const linkStyle = {
   color: "#4C8AB1",
-  fontFamily: "Poppins",
+  fontFamily: "inherit",
   fontWeight: 600,
   lineHeight: "normal",
   width: "100%",

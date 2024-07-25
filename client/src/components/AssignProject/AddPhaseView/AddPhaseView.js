@@ -350,7 +350,7 @@ function AddPhaseView({
                 // pl={3}
                 // pt={1}
                 color={"#4C8AB1"}
-                fontFamily={"Poppins, san serif"}
+                fontFamily={"inherit"}
                 fontSize={{
                   xl: "22px",
                   lg: "15px",

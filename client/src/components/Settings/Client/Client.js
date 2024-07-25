@@ -92,7 +92,7 @@ export default Client;
 const tableCellStyle = {
   fontWeight: 400,
   fontSize: "14px",
-  fontFamily: "Poppins",
+  fontFamily: "inherit",
   color: "#8C8C8C",
 };
 // <div><ChatView /></div>
@@ -117,7 +117,7 @@ const paginationTextStyle = {
   },
   fontWeight: 400,
   fontSize: "14px",
-  fontFamily: "Poppins",
+  fontFamily: "inherit",
   color: "#8C8C8C",
 
 };

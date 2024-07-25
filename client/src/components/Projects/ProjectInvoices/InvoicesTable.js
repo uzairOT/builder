@@ -173,7 +173,7 @@ function InvoicesTable({
                     variant={"contained"}
                     backgroundColor={"#4C8AB1"}
                     fontSize={"11px"}
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={"inherit"}
                     marginLeft={"5px"}
                     handleOnClick={() => handleOnClick(item.id)}
                     disabled={isLoading}
@@ -186,7 +186,7 @@ function InvoicesTable({
                     variant={"contained"}
                     backgroundColor={"#4C8AB1"}
                     fontSize={"11px"}
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={"inherit"}
                     marginLeft={"5px"}
                     handleOnClick={() => handleOnClickDetails(item)}
                     disabled={isLoading}
@@ -212,7 +212,7 @@ const tableCellStyle = {
   overflow: "hidden",
   fontWeight: 500,
   fontSize: {xl:"14px", lg:'11px',md:'11px', xs:'11px'},
-  fontFamily: "Poppins",
+  fontFamily: "inherit",
   color: "#8C8C8C",
   textAlign:'left',
 };

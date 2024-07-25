@@ -166,6 +166,6 @@ const paginationTextStyle = {
   },
   fontWeight: 400,
   fontSize: "14px",
-  fontFamily: "Poppins",
+  fontFamily: "Arial Rounded MT, sans-serif",
   color: "#8C8C8C",
 };

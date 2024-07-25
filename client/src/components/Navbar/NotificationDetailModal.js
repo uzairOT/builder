@@ -137,7 +137,7 @@ const NotificationDetailModal = ({
             variant={"contained"}
             backgroundColor={"#4C8AB1"}
             fontSize={"11px"}
-            fontFamily={"Inter, sans serif"}
+            fontFamily={"inherit"}
             marginLeft={"5px"}
             handleOnClick={handleOnClick}
           >
@@ -242,12 +242,12 @@ const NotificationDetailModal = ({
                   <FormControl>
                     {notification?.WorkOrderReq?.phaseItems?.map(
                       (phaseItem) => (
-                        <React.Fragment key={phaseItem.Phase.id}>
+                        <React.Fragment key={phaseItem?.Phase?.id}>
                           <ListItem
-                            key={phaseItem.Phase.id}
+                            key={phaseItem?.Phase?.id}
                             style={{ padding: "4px" }}
                           >
-                            <label>{phaseItem.Phase.phase_name}</label>
+                            <label>{phaseItem?.Phase?.phase_name}</label>
                           </ListItem>
                         </React.Fragment>
                       )
@@ -309,7 +309,7 @@ const NotificationDetailModal = ({
                     ) : (
                       notification?.WorkOrderReq?.phaseItems?.map(
                         (phaseItem) => (
-                          <React.Fragment key={phaseItem.phaseId}>
+                          <React.Fragment key={phaseItem?.phaseId}>
                             {phaseItem?.LineItems?.map((lineItem) => (
                               <ListItem
                                 key={lineItem?.id}
@@ -440,7 +440,7 @@ const NotificationDetailModal = ({
                   {/* <BuilderProButton
                     backgroundColor={"#4C8AB1"}
                     variant={"contained"}
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={"inherit"}
                     fontSize={"16px"}
                     fontWeight={"600"}
                     padding={"6px 32px 6px 32px"}
@@ -593,7 +593,7 @@ const NotificationDetailModal = ({
                       sx={{ fontSize: { md: 16, lg: 16, sm: 14, xs: 14 } }}
                       backgroundColor={"#4C8AB1"}
                       variant={"contained"}
-                      fontFamily={"Inter, sans serif"}
+                      fontFamily={"inherit"}
                       fontWeight={"600"}
                       padding={"6px 32px 6px 32px"}
                       disabled={disable}

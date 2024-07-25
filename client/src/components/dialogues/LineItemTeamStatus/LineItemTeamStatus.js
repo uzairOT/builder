@@ -28,7 +28,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableHeaderCell = styled(TableCell)(({ theme }) => ({
-  fontFamily: "Poppins, sans-serif",
+  fontFamily: "inherit",
   whiteSpace: "nowrap",
   fontWeight: 500,
   fontSize: "0.9rem",

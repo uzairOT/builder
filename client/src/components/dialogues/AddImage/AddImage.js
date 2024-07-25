@@ -424,7 +424,7 @@ const themeStyle = {
     position: "relative",
   },
   avatarText: {
-    fontFamily: "Poppins",
+    fontFamily: "inherit",
     fontWeight: 600,
     fontSize: "0.8rem",
     color: "#121212",

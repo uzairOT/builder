@@ -139,7 +139,7 @@ const buttonBox = {
 const redText = {
   color: "#BE1D1D",
   marginTop: "0rem",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: "inherit",
   fontSize: "0.875rem",
   fontStyle: "normal",
   fontWeight: 400,

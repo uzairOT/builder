@@ -348,7 +348,7 @@ function ProfileView() {
                       marginLeft: "14px",
                       marginRight: "14px",
                       marginTop: "3px",
-                      fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+                      fontFamily: 'inherit',
                     }}
                   >
                     Phone is not valid
@@ -453,7 +453,7 @@ function ProfileView() {
                 buttonText="Change Profile"
                 color="#ffffff"
                 backgroundColor="#4C8AB1"
-                width="112px"
+                width="120px"
                 height="38px"
                 borderRadius="50px"
                 onClick={handleProfileImage}

@@ -187,7 +187,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
           variant={"contained"}
           backgroundColor={"#4C8AB1"}
           fontSize={{xl:"11px",lg:"10px", md:"11px", xs:"11px"}}
-          fontFamily={"Inter, sans serif"}
+          fontFamily={"inherit"}
           handleOnClick={handleOpen}
         >
           Add Notes
@@ -341,7 +341,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
               variant={"contained"}
               backgroundColor={"#4C8AB1"}
               fontSize={"11px"}
-              fontFamily={"Inter, sans serif"}
+              fontFamily={"inherit"}
               handleOnClick={handleSubmit}
             >
               {isLoading ? <CircularProgress size={"18px"} /> : showEditModal ? "Edit Notes" : "Add Notes"}

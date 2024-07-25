@@ -93,14 +93,14 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
                   fontSize={"9px"}
                   fontWeight={"700"}
                   pl={0.2}
-                  fontFamily={"Inter, sans-serif"}
+                  fontFamily={"inherit"}
                 
                 >
                   ${formatMoney(TotalProfit)}
                 </Typography> */}
                 <Typography
                   fontSize={"9px"}
-                  fontFamily={"Inter, sans-serif"}
+                  fontFamily={"inherit"}
                  
                 >
                   Projected Profit
@@ -133,13 +133,13 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
                   fontSize={"9px"}
                   fontWeight={"700"}
                   pl={0.2}
-                  fontFamily={"Inter, sans-serif"}
+                  fontFamily={"inherit"}
                   
                  
                 >
                   ${formatMoney(totalProfitFromPaidInvoices)}
                 </Typography> */}
-                <Typography fontSize={"9px"} fontFamily={"Inter, sans-serif"}>
+                <Typography fontSize={"9px"} fontFamily={"inherit"}>
                   Margin
                 </Typography>
               </Stack>

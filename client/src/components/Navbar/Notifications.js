@@ -272,7 +272,7 @@ function Notification({
                 variant={"outlined"}
                 backgroundColor={"#4C8AB1"}
                 fontSize={"11px"}
-                fontFamily={"Inter, sans serif"}
+                fontFamily={"inherit"}
                 handleOnClick={handleDecline}
               >
                 Decline
@@ -281,7 +281,7 @@ function Notification({
                 variant={"contained"}
                 backgroundColor={"#4C8AB1"}
                 fontSize={"11px"}
-                fontFamily={"Inter, sans serif"}
+                fontFamily={"inherit"}
                 marginLeft={"5px"}
                 handleOnClick={handleAccept}
               >
@@ -291,7 +291,7 @@ function Notification({
                       variant={"contained"}
                       backgroundColor={"#4C8AB1"}
                       fontSize={"11px"}
-                      fontFamily={"Inter, sans serif"}
+                      fontFamily={"inherit"}
                       marginLeft={"5px"}
                       handleOnClick={() => handleOnClick(notification.WorkOrderReq.workOrderId)}
                     >
@@ -405,7 +405,7 @@ function Notification({ notification, refetch, userId }) {
             variant={"outlined"}
             backgroundColor={"#4C8AB1"}
             fontSize={"11px"}
-            fontFamily={"Inter, sans serif"}
+            fontFamily={"inherit"}
             handleOnClick={handleDecline}
           >
             Decline
@@ -414,7 +414,7 @@ function Notification({ notification, refetch, userId }) {
             variant={"contained"}
             backgroundColor={"#4C8AB1"}
             fontSize={"11px"}
-            fontFamily={"Inter, sans serif"}
+            fontFamily={"inherit"}
             marginLeft={'5px'}
             handleOnClick={handleAccept}
             >

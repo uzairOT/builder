@@ -108,7 +108,7 @@ const themeStyle = {
     overflow: "hidden",
     textAlign:"Left",
     fontSize: "12px",
-    fontFamily: "Poppins, sans-serif",
+    fontFamily: "inherit",
     color: "#5B5B5B",
     whiteSpace: "nowrap",
     border: 'none'

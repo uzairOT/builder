@@ -1,0 +1,409 @@
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  Typography,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  useMediaQuery,
+  Snackbar,
+  Alert,
+} from "@mui/material";
+import { useSendContactFormMutation } from "../../../redux/apis/usersApiSlice";
+import * as yup from "yup";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { PhoneInput } from "react-international-phone";
+import { useFormik } from "formik";
+import { PhoneNumberUtil } from "google-libphonenumber";
+
+const phoneUtil = PhoneNumberUtil.getInstance();
+
+const isPhoneValid = (phone) => {
+  try {
+    return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone));
+  } catch (error) {
+    return false;
+  }
+};
+
+const GetInTouch = () => {
+  const [sendContactForm, { isLoading, isSuccess, isError, error }] =
+    useSendContactFormMutation();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(false);
+
+  const isMobile = useMediaQuery("(max-width:600px)");
+
+  const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
+  const borderRadiusResponsive = {
+    borderRadius: isMobile ? "0.5rem" : "0.75rem",
+  };
+  const [phone, setPhone] = useState("");
+  const [phoneIsValid, setPhoneIsValid] = useState(false);
+
+  const validate = () => {
+    const newErrors = {};
+
+    const isValid = isPhoneValid(phone);
+    setPhoneIsValid(isValid);
+
+    return Object.keys(newErrors).length === 0 && isValid;
+  };
+
+  const validationSchema = yup.object({
+    firstName: yup.string().required("First Name is required"),
+    lastName: yup.string().required("Last Name is required"),
+    email: yup
+      .string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    phoneNumber: yup.string().required("Phone number is required"),
+    message: yup.string().required("Message is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      message: "",
+      privacyPolicy: false,
+    },
+    validationSchema,
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        if (!isPhoneValid(values.phoneNumber)) {
+          setSnackbarMessage("Phone number is not valid");
+          setSnackbarSeverity("error");
+          setSnackbarOpen(true);
+          return;
+        }
+        if (!values.privacyPolicy) {
+          setSnackbarMessage("You must agree to the privacy policy");
+          setSnackbarSeverity("error");
+          setSnackbarOpen(true);
+          return;
+        }
+        await sendContactForm(values).unwrap();
+        setSnackbarMessage("Your message has been sent successfully!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
+        resetForm();
+
+        
+      } catch (err) {
+        setSnackbarMessage(
+          `There was an error sending your message: ${err.message}`
+        );
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+      }
+    },
+  });
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  return (
+    <Box
+      sx={{
+        padding: "20px",
+        maxWidth: "900px",
+        margin: "auto",
+        textAlign: "center",
+      }}
+    >
+      <Typography
+        sx={{
+          marginBottom: "20px",
+          fontFamily: "Arial Rounded MT, sans-serif",
+          fontWeight: 600,
+          fontSize: "16px",
+          color: "#2E728F",
+        }}
+      >
+        Contact Us
+      </Typography>
+      <Typography variant="h4" sx={{ marginBottom: "20px" }}>
+        Let’s talk on something great together
+      </Typography>
+      <Typography variant="body1" sx={{ marginBottom: "20px" }}>
+        Have something in mind that you think we'd be a great fit for it? We'd
+        love to know what you're thinking.
+      </Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
+          <iframe
+            width={isMobile ? "100%" : "100%"}
+            height={isMobile ? "100%" : "100%"}
+            borderRadius="13px"
+            frameBorder="0"
+            style={{ border: 0, borderRadius: "10px", marginTop: "1rem" }}
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d33.6074086!2d73.100091!3dYOUR_ZOOM_LEVEL!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38dfeb96a77dbcff%3A0x936bce527a1d6838!2sOctathorn+Technologies!5e0!3m2!1sen!2sus!4vYOUR_EMBED_API_KEY"
+            allowFullScreen
+            title="Google Map"
+          ></iframe>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <form onSubmit={formik.handleSubmit}>
+            <Grid container spacing={0.3}>
+              <Grid item xs={12} sm={6}>
+                <label style={{ ...labelStyle, ...lableResponsiveFont }}>
+                  First Name
+                </label>
+                <input
+                  name="firstName"
+                  type="text"
+                  value={formik.values.firstName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  style={{
+                    ...inputStyle,
+                    ...borderRadiusResponsive,
+                    ...placeholderStyle,
+                    ...lableResponsiveFont,
+                  }}
+                  placeholder="First Name"
+                />
+                {formik.touched.firstName && formik.errors.firstName && (
+                  <Typography sx={{ color: "#d32f2f", fontSize: "12px" }}>
+                    {formik.errors.firstName}
+                  </Typography>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <label style={{ ...labelStyle, ...lableResponsiveFont }}>
+                  Last Name
+                </label>
+                <input
+                  name="lastName"
+                  type="text"
+                  value={formik.values.lastName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  style={{
+                    ...inputStyle,
+                    ...borderRadiusResponsive,
+                    ...placeholderStyle,
+                    ...lableResponsiveFont,
+                  }}
+                  placeholder="Last Name"
+                />
+                {formik.touched.lastName && formik.errors.lastName && (
+                  <Typography sx={{ color: "#d32f2f", fontSize: "12px" }}>
+                    {formik.errors.lastName}
+                  </Typography>
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                <label style={{ ...labelStyle, ...lableResponsiveFont }}>
+                  Email address
+                </label>
+                <input
+                  name="email"
+                  type="email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  style={{
+                    ...inputStyle,
+                    ...borderRadiusResponsive,
+                    ...placeholderStyle,
+                    ...lableResponsiveFont,
+                  }}
+                  placeholder="JohnDoe@gmail.com"
+                />
+                {formik.touched.email && formik.errors.email && (
+                  <Typography sx={{ color: "#d32f2f", fontSize: "12px" }}>
+                    {formik.errors.email}
+                  </Typography>
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                <label
+                  style={{ ...labelStyle, fontSize: "1rem", paddingTop: "5px" }}
+                >
+                  Phone number
+                </label>
+                <PhoneInput
+                  disableDialCodePrefill
+                  style={{ ...customPhoneStyles }}
+                  defaultCountry=""
+                  name="phoneNumber"
+                  value={formik.values.phoneNumber}
+                  onBlur={(e) => {
+                    formik.handleBlur(e);
+                    validate();
+                  }}
+                  onChange={(phone) =>
+                    formik.setFieldValue("phoneNumber", phone)
+                  }
+                  countrySelectorStyleProps={{
+                    style: {
+                      "--react-international-phone-country-selector-background-color":
+                        "#EDF2F6",
+                      "--react-international-phone-country-selector-background-color-hover":
+                        "#EDF2F6",
+                    },
+                    buttonStyle: {
+                      filter: "none",
+                    },
+                  }}
+                  inputStyle={{ ...customeInputStyles }}
+                  inputProps={{
+                    border: "none",
+                    placeholder: "+1 (123) 456-7890",
+                  }}
+                />
+                {!isPhoneValid(formik.values.phoneNumber) && (
+                  <Typography
+                    sx={{
+                      color: "#d32f2f",
+                      fontSize: "12px",
+                      marginLeft: "14px",
+                      marginTop: "3px",
+                    }}
+                  >
+                    Phone number is not valid
+                  </Typography>
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                <label style={{ ...labelStyle, ...lableResponsiveFont }}>
+                  Message
+                </label>
+                <textarea
+                  name="message"
+                  value={formik.values.message}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  style={{
+                    ...inputStyle,
+                    ...borderRadiusResponsive,
+                    ...placeholderStyle,
+                    ...lableResponsiveFont,
+                    height: "100px",
+                  }}
+                  placeholder="Your message here"
+                />
+                {formik.touched.message && formik.errors.message && (
+                  <Typography sx={{ color: "#d32f2f", fontSize: "12px" }}>
+                    {formik.errors.message}
+                  </Typography>
+                )}
+              </Grid>
+            </Grid>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="privacyPolicy"
+                  checked={formik.values.privacyPolicy}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+              }
+              label={
+                <Typography variant="body2">
+                  You agree to our friendly{" "}
+                  <a href="#privacy-policy">privacy policy</a>.
+                </Typography>
+              }
+            />
+            {formik.touched.privacyPolicy && formik.errors.privacyPolicy && (
+              <Typography sx={{ color: "#d32f2f", fontSize: "12px" }}>
+                {formik.errors.privacyPolicy}
+              </Typography>
+            )}
+            <Button
+              type="submit"
+              fullWidth
+              sx={{
+                backgroundColor: "#2E728F",
+                color: "white",
+                borderRadius: 1,
+              }}
+              disabled={isLoading}
+            >
+              {isLoading ? "Sending..." : "Send message"}
+            </Button>
+          </form>
+        </Grid>
+      </Grid>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+    </Box>
+  );
+};
+
+export default GetInTouch;
+
+const containerStyle = {
+  width: "100%",
+  height: "400px",
+};
+const center = {
+  lat: -6.217,
+  lng: 106.845,
+};
+
+const inputStyle = {
+  height: "2.5rem",
+  alignSelf: "stretch",
+  width: "calc(100% - 16px)",
+  fontSize: "14px",
+  border: "1px solid #ccc",
+  borderRadius: 1,
+  marginBottom: { lg: "1rem", md: "1rem", sm: "1rem", xs: "1rem" },
+};
+
+const placeholderStyle = {
+  color: "black",
+  padding: "5px",
+  fontFamily: "Arial Rounded MT, sans-serif",
+  fontSize: "1rem",
+  fontWeight: 400,
+};
+
+const labelStyle = {
+  textAlign: "left",
+  display: "block",
+  marginBottom: "0.2rem",
+  color: "#16181B",
+  fontFamily: "Arial Rounded MT, sans-serif",
+  fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.75rem" },
+  fontWeight: 400,
+};
+
+const customPhoneStyles = {
+  borderRadius: "12px",
+  border: "1px solid #D8D8D8",
+  background: "#FFF",
+  width: "calc(100% - 8px)",
+  // height: heightValue,
+  alignSelf: "stretch",
+  paddingLeft: "8px",
+  height: "2.8rem",
+  display: "flex",
+  alignItems: "center",
+  // paddingTop: "0.5rem",
+  // padding: "0.5rem",
+};
+
+const customeInputStyles = {
+  width: "85%",
+  border: "none",
+  padding: "0px 10px 0px 0px",
+};

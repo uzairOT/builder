@@ -116,7 +116,7 @@ const ProjectTeam = () => {
       case "Superadmin":
         return "Super Admin";
       case "Subcontractor":
-        return "Sub-Contractor";
+        return "Subcontractor";
       default:
         return role;
     }
@@ -380,7 +380,7 @@ const ProjectTeam = () => {
                 <MenuItem value={"admin"}>Admin</MenuItem>
                 <MenuItem value={"projectManager"}>Project Manager</MenuItem>
                 <MenuItem value={"client"}>Client</MenuItem>
-                <MenuItem value={"subcontractor"}>Sub-Contractor</MenuItem>
+                <MenuItem value={"subcontractor"}>Subcontractor</MenuItem>
                 <MenuItem value={"supplier"}>Supplier</MenuItem>
                 <MenuItem value={"employee"}>Employee</MenuItem>
                 <MenuItem value={"others"}>Others</MenuItem>

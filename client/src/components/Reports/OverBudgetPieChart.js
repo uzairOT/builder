@@ -38,20 +38,20 @@ const OverBudgetPieChart = () => {
     <Paper sx={{ height: "100%", borderRadius: "14px" }}>
       <Stack p={2}>
         <Typography
-          fontFamily={"Inter, sans serif"}
+          fontFamily={"inherit"}
           fontWeight={"500"}
           fontSize={{ xl: "18px", lg: "15px", md: "18px", xs: "18px" }}
         >
           Upcoming DeadLines
         </Typography>
         {/* <Typography
-          fontFamily={"Inter, sans serif"}
+          fontFamily={"inherit"}
           fontWeight={"500"}
           fontSize={"28px"}
         >
           25
         </Typography> */}
-        {/* <Typography fontFamily={'Inter, sans serif'} fontWeight={'400'} fontSize={'12px'} color={'#4F4F4F'}>
+        {/* <Typography fontFamily={'inherit'} fontWeight={'400'} fontSize={'12px'} color={'#4F4F4F'}>
                US Dollars
             </Typography> */}
       </Stack>
@@ -59,10 +59,11 @@ const OverBudgetPieChart = () => {
       {/* <OverBudgetPie /> */}
       <Stack
         direction={"row"}
-        justifyContent={"space-around"}
+        justifyContent={"space-between"}
         spacing={1}
         pt={2}
         pb={2}
+        px={2}
         sx={{
           height: {
             xl: height,
@@ -84,7 +85,7 @@ const OverBudgetPieChart = () => {
           />
           <Stack direction={"column"}>
             <Typography
-              fontFamily={"Inter, sans serif"}
+              fontFamily={"inherit"}
               fontSize={{ xl: "14px", lg: "12px", md: "14px", xs: "14px" }}
               fontWeight="bold"
             >
@@ -93,8 +94,12 @@ const OverBudgetPieChart = () => {
             {projects.map((project, index) => (
               <Typography
                 key={index}
-                fontFamily={"Inter, sans serif"}
+                fontFamily={"inherit"}
                 fontSize={"14px"}
+                width={"25ch"}
+                overflow={'hidden'}
+                whiteSpace={'nowrap'}
+                textOverflow={'ellipsis'}
               >
                 {project.projectName}
               </Typography>
@@ -111,7 +116,7 @@ const OverBudgetPieChart = () => {
           />
           <Stack direction={"column"}>
             <Typography
-              fontFamily={"Inter, sans-serif"}
+              fontFamily={"inherit"}
               fontSize={{ xl: "14px", lg: "12px", md: "14px", xs: "14px" }}
               fontWeight="bold"
             >
@@ -120,8 +125,8 @@ const OverBudgetPieChart = () => {
             {projects.map((project, index) => (
               <Typography
                 key={index}
-                fontFamily={"Inter, sans serif"}
-                fontSize={{ xl: "13px", lg: "11px", md: "13px", xs: "13px" }}
+                fontFamily={"inherit"}
+                fontSize={{ xl: "14px", lg: "14px", md: "14px", xs: "14px" }}
               >
                 {moment(project.end_time).format("YYYY-MM-DD")}
               </Typography>

@@ -29,7 +29,7 @@ const InvoicePayment = () => {
   // const [amount, setAmount] = useState(10);
   const [message, setMessage] = useState("");
   const userInfo = useSelector((state) => state.auth.userInfo);
-  const userId = userInfo.user.id;
+  const userId = userInfo?.user?.id;
   const [getUserAccounts, { data, isLoading, isError }] =
     useGetUserAccountsMutation({ userId: userId });
   const [loading, setLoading] = useState(true);

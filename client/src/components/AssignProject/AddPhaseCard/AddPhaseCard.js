@@ -992,7 +992,7 @@ const listOfLineText = {
 const tableHeadings = {
   maxWidth: { xl: "40px", lg: "80px", md: "70px", xs: "100%" },
   minWidth: { xl: "20px", lg: "40px", md: "40px", xs: "20px" },
-  fontFamily: "Poppins, sans-serif",
+  fontFamily: "inherit",
   whiteSpace: "nowrap",
   fontWeight: 500,
   fontSize: "0.9rem",
@@ -1002,7 +1002,7 @@ const tableHeadings = {
   // paddingLeft: "0rem",
 };
 const tableCell = {
-  // fontFamily: "Poppins, sans-serif",
+  // fontFamily: "inherit",
   maxWidth: { xl: "40px", lg: "80px", md: "70px", xs: "100%" },
   minWidth: { xl: "20px", lg: "40px", md: "40px", xs: "20px" },
   whiteSpace: "nowrap",

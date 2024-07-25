@@ -103,7 +103,7 @@ export default Header;
 const headingStyle = {
   marginTop: "20px",
   marginBottom: "10px",
-  fontFamily: "Poppins",
+  fontFamily: "inherit",
   fontWeight: "600",
   fontSize: "22px",
   color: "#4C8AB1",

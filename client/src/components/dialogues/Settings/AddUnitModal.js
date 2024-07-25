@@ -143,7 +143,7 @@ const InputStyle = {
     marginTop: "20px",
     // marginBottom: "10px",
     marginLeft: "25px",
-    fontFamily: "Poppins",
+    fontFamily: "inherit",
     fontWeight: "500",
     fontSize: "22px",
     color: "#4C8AB1",

@@ -40,7 +40,7 @@ const Notes = () => {
     <Stack flex={1}>
     <Paper sx={{borderRadius:'14px', height:'99%'}} >
       <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} p={2} >
-        <Typography fontSize={{xl:'22px', lg:"18px",md:'22px',xs:'22px',}} fontFamily={'Poppins, sans serif'} fontWeight={'600'} color={'#4C8AB1'}>Notes</Typography>
+        <Typography fontSize={{xl:'22px', lg:"18px",md:'22px',xs:'22px',}} fontFamily={'inherit'} fontWeight={'600'} color={'#4C8AB1'}>Notes</Typography>
         <Stack direction={'row'} alignItems={'center'}>
             <NotesModal q={debouncedValue}/>
         </Stack>

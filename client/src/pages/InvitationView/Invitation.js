@@ -429,7 +429,7 @@ useEffect(() => {
                       marginLeft: "14px",
                       marginRight: "14px",
                       marginTop: "3px",
-                      fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+                      fontFamily: 'inherit',
                     }}
                   >
                     Phone is not valid

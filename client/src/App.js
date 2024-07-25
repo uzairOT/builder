@@ -95,6 +95,7 @@ import Coupon from "./components/Settings/Cupon/Coupon.js";
 import Accounts from "./components/Settings/Accounts/Accounts.js";
 import Others from "./components/Settings/Others/Others.js";
 import Chat from "./components/Projects/ProjectsChat/Chat.js";
+import MainHome from "./components/LandingPageComponents/MainHome.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -177,7 +178,8 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route index path="/signup" element={<Signup />} />
+      {/* <Route path="/home" element={<MainHome/>}/> */}
+        <Route  path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/userinfo" element={<GoogleLogin />} />
         <Route path="/assignproject" element={<AssignProject />} />
@@ -280,7 +282,8 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
             </Route>
           </Route>
         ) : (
-          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          
         )}
         <Route
           path="/invitation/:invitationId/:email/:companyName"

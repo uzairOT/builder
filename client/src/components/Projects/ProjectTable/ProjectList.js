@@ -232,7 +232,7 @@ const ProjectList = ({
           <Stack pl={{ xl: 8, lg: 8, md: 8, sm: 1, xs: 1 }}>
             <Typography
               color={"#4C8AB1"}
-              fontFamily={"Poppins, san serif"}
+              fontFamily={"inherit"}
               fontSize={{ md: "22px", xs: "18px" }}
               fontWeight={"600"}
             >
@@ -240,7 +240,7 @@ const ProjectList = ({
             </Typography>
             <Typography
               color={"#4C8AB1"}
-              fontFamily={"Poppins, san serif"}
+              fontFamily={"inherit"}
               fontSize={{ md: "14px", xs: "11px" }}
               fontWeight={"400"}
             >
@@ -262,7 +262,7 @@ const ProjectList = ({
                 >
                   <Typography
                     color={"#272727"}
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={"inherit"}
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
@@ -322,7 +322,7 @@ const ProjectList = ({
                   }
                 >
                   <Typography
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={"inherit"}
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
@@ -344,7 +344,7 @@ const ProjectList = ({
                   }
                 >
                   <Typography
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={"inherit"}
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
@@ -366,7 +366,7 @@ const ProjectList = ({
                   }
                 >
                   <Typography
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={"inherit"}
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
@@ -741,6 +741,6 @@ const paginationTextStyle = {
   },
   fontWeight: 400,
   fontSize: "14px",
-  fontFamily: "Poppins",
+  fontFamily: "inherit",
   color: "#8C8C8C",
 };

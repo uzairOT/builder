@@ -21,10 +21,10 @@ const Reports = () => {
     <>
     <Stack p={2} spacing={1}>
       <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} p={1} >
-        <Typography fontSize={{xl:'22px', lg:"18px",md:'22px',xs:'22px',}} fontFamily={'Poppins, sans serif'} fontWeight={'600'} color={'#4C8AB1'}>Reports</Typography>
+        <Typography fontSize={{xl:'22px', lg:"18px",md:'22px',xs:'22px',}} fontFamily={'inherit'} fontWeight={'600'} color={'#4C8AB1'}>Reports</Typography>
         <Stack direction={'row'} alignItems={'center'}>
             {/* <SearchIcon  sx={{color: '#535353C9'}}/> */}
-            <BuilderProButton variant={'contained'} backgroundColor={'#FFAC00'} fontSize={'13px'} fontFamily={'Inter, sans serif'} handleOnClick={handleOpen}>Invoice History</BuilderProButton>
+            <BuilderProButton variant={'contained'} backgroundColor={'#FFAC00'} fontSize={'13px'} fontFamily={'inherit'} handleOnClick={handleOpen}>Invoice History</BuilderProButton>
         </Stack>
       </Stack>
       <Stack flex={1} direction={{xl:'row', lg:'row', md:'column', sm:'column', xs:'column'}} spacing={1}>

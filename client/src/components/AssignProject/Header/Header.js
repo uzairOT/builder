@@ -21,7 +21,7 @@ function Header({ step, gap, handlePreviousStep, step2 }) {
   const buttonStyle = {
     height: "50%",
     marginTop: { lg: "2rem", sm: "2rem", xs: "0rem" },
-    fontFamily: "Inter",
+    fontFamily: "Arial Rounded MT, sans-serif",
     color: step === 1 ? "gray" : "",
   };
 

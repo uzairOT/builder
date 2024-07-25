@@ -622,7 +622,7 @@ const InputStyle = {
 const styles = {
   link: {
     cursor: "pointer",
-    textDecoration: "underline",
+    // textDecoration: "underline",
     "&:hover": {
       color: "#326273", // Change color on hover
     },
@@ -643,14 +643,14 @@ const headingStyle = {
   justifyContent: "space-between",
 };
 const headingStyleText = {
-  fontFamily: "Poppins",
+  fontFamily: "inherit",
   fontWeight: "500",
   fontSize: "22px",
   color: "#4C8AB1",
 };
 const labelStyle = {
   marginTop: "10px",
-  fontFamily: "Poppins",
+  fontFamily: "inherit",
   fontWeight: "400",
   fontSize: "13px",
   color: "#535353C9",

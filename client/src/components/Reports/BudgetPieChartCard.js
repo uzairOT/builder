@@ -117,7 +117,7 @@ const BudgetPieChartCard = () => {
       >
         <Typography
           fontSize={{xl:'20px', lg:"16px",md:'20px',xs:'20px',}}
-          fontFamily={"Inter, sans serif"}
+          fontFamily={"inherit"}
           fontWeight={"500"}
           color={"#4C8AB1"}
         >
@@ -125,7 +125,7 @@ const BudgetPieChartCard = () => {
         </Typography>
         <Typography
           color={"#606060"}
-          fontFamily={"Inter, sans serif"}
+          fontFamily={"inherit"}
           fontWeight={"500"}
           fontSize={"13px"}
         >
@@ -142,7 +142,7 @@ const BudgetPieChartCard = () => {
         />
         <Typography
           pl={3}
-          fontFamily={"Inter, sans serif"}
+          fontFamily={"inherit"}
           fontWeight={"500"}
           fontSize={{xl:'24px', lg:"21px",md:'24px',xs:'24px',}}
         >
@@ -150,7 +150,7 @@ const BudgetPieChartCard = () => {
         </Typography>
         <Typography
           pl={3}
-          fontFamily={"Inter, sans serif"}
+          fontFamily={"inherit"}
           fontSize={{xl:'12px', lg:"11px",md:'12px',xs:'12px',}}
           color={"#4F4F4F"}
         >
@@ -168,12 +168,12 @@ const BudgetPieChartCard = () => {
               sx={{ color: "#F8961E", fontSize: "10px", paddingTop: "4px" }}
             />
             <Stack direction={"column"}>
-              <Typography fontFamily={"Inter, sans serif"} fontSize={"12px"}>
+              <Typography fontFamily={"inherit"} fontSize={"12px"}>
                 Unpaid
               </Typography>
               <Typography
                 textAlign={"left"}
-                fontFamily={"Inter, sans serif"}
+                fontFamily={"inherit"}
                 fontWeight={"500"}
               >
                 {projects?.unpaidInvoices}
@@ -185,12 +185,12 @@ const BudgetPieChartCard = () => {
               sx={{ color: "#F94144", fontSize: "10px", paddingTop: "4px" }}
             />
             <Stack direction={"column"}>
-              <Typography fontFamily={"Inter, sans serif"} fontSize={"12px"}>
+              <Typography fontFamily={"inherit"} fontSize={"12px"}>
                 OverDue
               </Typography>
               <Typography
                 textAlign={"center"}
-                fontFamily={"Inter, sans serif"}
+                fontFamily={"inherit"}
                 fontWeight={"500"}
               >
                 {projects?.overdueInvoices}
@@ -202,12 +202,12 @@ const BudgetPieChartCard = () => {
               sx={{ color: "green", fontSize: "10px", paddingTop: "4px" }}
             />
             <Stack direction={"column"}>
-              <Typography fontFamily={"Inter, sans serif"} fontSize={"12px"}>
+              <Typography fontFamily={"inherit"} fontSize={"12px"}>
                 Paid
               </Typography>
               <Typography
                 textAlign={"center"}
-                fontFamily={"Inter, sans serif"}
+                fontFamily={"inherit"}
                 fontWeight={"500"}
               >
                 {projects?.paidInvoices}
@@ -251,7 +251,7 @@ const BudgetPieChartCard = () => {
                   variant={"contained"}
                   backgroundColor={"#4C8AB1"}
                   fontSize={"16px"}
-                  fontFamily={"Inter, sans serif"}
+                  fontFamily={"inherit"}
                 >
                   Download Invoice
                 </BuilderProButton>
@@ -356,12 +356,12 @@ const BudgetPieChartCard = () => {
                 sx={{
                   backgroundColor: "#4C8AB1",
                   borderRadius: "28px",
-                  fontFamily: "Inter, sans serif",
+                  fontFamily: "Arial Rounded MT, sans-serif",
                   textTransform: "capitalize",
                   fontSize: "16px",
                 }}
                 fontSize={"16px"}
-                fontFamily={"Inter, sans serif"}
+                fontFamily={"inherit"}
                 onClick={() => {
                   handleClose();
                   handleGenerateInvoice();

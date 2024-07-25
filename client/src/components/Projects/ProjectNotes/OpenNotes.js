@@ -233,7 +233,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                               fontSize={"0.7rem"}
                               fontWeight={"500"}
                               color={"#324054"}
-                              fontFamily={"Inter, sans serif"}
+                              fontFamily={"inherit"}
                               overflow={"hidden"}
                             >
                               {fileName}
@@ -243,7 +243,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                               fontSize={"12px"}
                               fontWeight={"500"}
                               color={"#71839B"}
-                              fontFamily={"Inter, sans serif"}
+                              fontFamily={"inherit"}
                             ></Typography>
                           </Stack>
                         </Stack>
@@ -276,7 +276,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                         fontSize={"14px"}
                         fontWeight={"500"}
                         color={"#324054"}
-                        fontFamily={"Inter, sans serif"}
+                        fontFamily={"inherit"}
                         pb={1}
                         >File Title.png</Typography>
                         <BorderLinearProgress variant="determinate" value={45}/>
@@ -285,7 +285,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                         fontSize={"12px"}
                         fontWeight={"500"}
                         color={"#71839B"}
-                        fontFamily={"Inter, sans serif"}
+                        fontFamily={"inherit"}
                         >45% Complete</Typography>
                     </Stack>
                 </Stack>

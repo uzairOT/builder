@@ -160,7 +160,7 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
       <form>
         <Stack p={3} px={4}>
           <Typography
-            fontFamily={"Inter, sans serif"}
+            fontFamily={"inherit"}
             fontSize={"18px"}
             fontWeight={"500"}
           >
@@ -245,7 +245,7 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
             py={1}
           >
             <Typography
-              fontFamily={"Inter, sans serif"}
+              fontFamily={"inherit"}
               fontSize={"18px"}
               fontWeight={"500"}
             >

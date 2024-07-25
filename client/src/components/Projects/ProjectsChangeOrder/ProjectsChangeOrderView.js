@@ -47,7 +47,7 @@ const ProjectsChangeOrderView = () => {
         <BuilderProButton
           backgroundColor={"#4C8AB1"}
           variant={"contained"}
-          fontFamily={"Inter, sans serif"}
+          fontFamily={"inherit"}
           fontSize={"16px"}
           fontWeight={"600"}
           padding={{ md: "6px 32px 6px 32px" }}

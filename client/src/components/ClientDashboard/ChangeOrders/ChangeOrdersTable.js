@@ -83,7 +83,7 @@ const themeStyle = {
 
     tableHeadings: {
         width: "21%",
-        fontFamily: "Poppins, sans-serif",
+        fontFamily: "inherit",
         whiteSpace: "nowrap",
         fontWeight: 500,
         fontSize: "0.9rem",

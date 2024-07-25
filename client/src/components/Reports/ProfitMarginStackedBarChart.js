@@ -1,7 +1,7 @@
 import React from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
 
-const valueFormatter = (value) => `$ ${value}`;
+const valueFormatter = (value) => `$${value}`;
 const ProfitMarginStackedBarChart = ({ totalMargin, totalCost }) => {
   
   return (

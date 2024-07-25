@@ -62,9 +62,9 @@ const InnerLayout2 = () => {
               },
               boxShadow: 'none',
             }}>
-            <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:{xl:'15px', lg:"12px", md:15, xs:15}}}>Approved</Tab>
-            <Tab sx={{fontFamily: 'Poppins, sans serif',fontSize:{xl:'15px', lg:"12px", md:15, xs:15}}}>Pending</Tab>
-            <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:{xl:'15px', lg:"12px", md:15, xs:15}}}>Declined</Tab>
+            <Tab sx={{fontFamily: 'inherit', fontSize:{xl:'15px', lg:"12px", md:15, xs:15}}}>Approved</Tab>
+            <Tab sx={{fontFamily: 'inherit',fontSize:{xl:'15px', lg:"12px", md:15, xs:15}}}>Pending</Tab>
+            <Tab sx={{fontFamily: 'inherit', fontSize:{xl:'15px', lg:"12px", md:15, xs:15}}}>Declined</Tab>
             </TabList>
             <TabPanel sx={{padding: 0, width:{xl:'28.5vw'}}} value={0}>
           <ChangeOrder value={0} />
