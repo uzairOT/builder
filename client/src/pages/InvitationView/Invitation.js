@@ -12,8 +12,8 @@ import {
 } from "@mui/material";
 import builder1 from "../../components/Signup/Assets/pngs/builderProYellowLogo.png";
 import downloadForMob from "../../components/Signup/Assets/pngs/downloadForMob.png";
-import googlePlay from "../../components/Signup/Assets/pngs/googlePlay.png";
-import appStore from "../../components/Signup/Assets/pngs/appStore.png";
+import googlePlay from "../../assets/FileSvg/googlePlay.svg";
+import appStore from "../../assets/FileSvg/appStore.svg";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "../../components/Signup/Assets/svgs/GoogleIcon.svg";
 import { PhoneInput } from "react-international-phone";
@@ -98,44 +98,43 @@ const Invitation = () => {
     return Object.keys(newErrors).length === 0 && isValid;
   };
 
-
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
-//   const checkUserOnInvitation = async () =>{
-//     const res = await checkUser(params);
-//     console.log("gabrodanaa",res)
-//     if(res?.data?.success){
-//       navigate('/login');
-//     } else{
-//       return false
-//     }
-// }
-// useEffect(()=> {
-//   checkUserOnInvitation();
+  //   const checkUserOnInvitation = async () =>{
+  //     const res = await checkUser(params);
+  //     console.log("gabrodanaa",res)
+  //     if(res?.data?.success){
+  //       navigate('/login');
+  //     } else{
+  //       return false
+  //     }
+  // }
+  // useEffect(()=> {
+  //   checkUserOnInvitation();
 
-// },[])
+  // },[])
 
-const timeoutRef = useRef(); // Store timeout ID
-const memoizedCheckUser = useCallback(async () => {
-  const res = await checkUser(params);
-  console.log(res); // Log response
-  if (res?.data?.success) {
-    window.location.href='/login';
-  } else {
-    timeoutRef.current = null;
-  }
-}, []);
+  const timeoutRef = useRef(); // Store timeout ID
+  const memoizedCheckUser = useCallback(async () => {
+    const res = await checkUser(params);
+    console.log(res); // Log response
+    if (res?.data?.success) {
+      window.location.href = "/login";
+    } else {
+      timeoutRef.current = null;
+    }
+  }, []);
 
-useEffect(() => {
-  timeoutRef.current = setTimeout(memoizedCheckUser, 1000); // Timeout after 1 second
+  useEffect(() => {
+    timeoutRef.current = setTimeout(memoizedCheckUser, 1000); // Timeout after 1 second
 
-  return () => clearTimeout(timeoutRef.current); // Cleanup
-}, [memoizedCheckUser]);
+    return () => clearTimeout(timeoutRef.current); // Cleanup
+  }, [memoizedCheckUser]);
   const onSubmit = async (e) => {
     // Prepare data to be sent in the request body
     if (!validate()) {
-      toast.error('Your phone number is not valid')
+      toast.error("Your phone number is not valid");
       return;
     }
     const data = {
@@ -204,11 +203,11 @@ useEffect(() => {
   return (
     <Grid container sx={firstGrid}>
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
-      <img
-            style={{ height: "226px",width:"425px" }}
-            src={builderproicon}
-            alt="Builder Pro"
-          />
+        <img
+          style={{ height: "226px", width: "425px" }}
+          src={builderproicon}
+          alt="Builder Pro"
+        />
         <Box
           sx={{
             display: "flex",
@@ -216,7 +215,6 @@ useEffect(() => {
             marginTop: { xl: "0rem", lg: "0rem", md: "0rem", sm: "0rem" },
           }}
         >
-         
           {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
           <Box>
             <Typography component="p" sx={secondHeading}>
@@ -233,44 +231,29 @@ useEffect(() => {
             </Typography>
           </Box>
         </Box>
-          {/* <img height="55px" src={builderproicon} alt="Builder Pro" /> */}
-          {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
+        {/* <img height="55px" src={builderproicon} alt="Builder Pro" /> */}
+        {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
 
         {/* Button */}
 
-        
-      
-       
         <Box sx={downloadForMobBox}>
           <img
             src={downloadForMob}
-            width={'100%'}
+            width={"100%"}
             alt=""
             style={{ height: "143px" }}
           />
         </Box>
         <Box sx={googleAppImgsBox}>
-        <a
-            href="https://play.google.com/store/apps?hl=en&gl=US&pli=1"
+          <a
+            href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
             target="blank"
           >
-            {" "}
-            <img
-            
-              src={googlePlay}
-              width={'216px'}
-              style={{ cursor: "pointer", height:62 }}
-              alt=""
-            />
+            <img src={googlePlay} style={{ cursor: "pointer" }} alt="" />
           </a>
 
-          <a href="https://www.apple.com/store" target="blank">
-            <img
-              src={appStore}
-              width={'216px'}
-              style={{ cursor: "pointer", height:62 }}
-              alt=""
-            />
+          <a href="https://testflight.apple.com/join/Fejy1iQ6" target="blank">
+            <img src={appStore} style={{ cursor: "pointer" }} alt="" />
           </a>
         </Box>
       </Grid>
@@ -287,9 +270,12 @@ useEffect(() => {
             <Typography sx={formHeadingStyle}>Signup</Typography>
             <img src={builder1} width={"25%"} alt="" />
           </Box>
-          <form style={{ marginTop: "0.1rem", width:'100%' }} onSubmit={handleSubmit}>
+          <form
+            style={{ marginTop: "0.1rem", width: "100%" }}
+            onSubmit={handleSubmit}
+          >
             <Box sx={namesFieldBox}>
-              <Box sx={topSpace} width={'100%'}>
+              <Box sx={topSpace} width={"100%"}>
                 <label
                   style={{ ...labelStyle, ...lableResponsiveFont }}
                   htmlFor="firstName"
@@ -318,7 +304,7 @@ useEffect(() => {
                     : ""}
                 </Typography>
               </Box>
-              <Box sx={{ marginTop: "0.2rem" }} width={'100%'}>
+              <Box sx={{ marginTop: "0.2rem" }} width={"100%"}>
                 <label
                   style={{
                     ...labelStyle,
@@ -384,7 +370,7 @@ useEffect(() => {
                 style={{
                   ...labelStyle,
                   fontSize: isMobile ? "0.8rem" : "1rem",
-                  marginTop:'1.5rem'
+                  marginTop: "1.5rem",
                 }}
                 htmlFor="phone"
               >
@@ -397,10 +383,10 @@ useEffect(() => {
                 defaultCountry=""
                 name={"phoneNumber"}
                 value={phone}
-                onChange={(phone) => setPhone(phone) }
+                onChange={(phone) => setPhone(phone)}
                 onBlur={(e) => {
                   handleBlur(e);
-                  validate(phone); 
+                  validate(phone);
                 }}
                 countrySelectorStyleProps={{
                   style: {
@@ -498,7 +484,7 @@ useEffect(() => {
                 style={{
                   ...labelStyle,
                   fontSize: isMobile ? "0.8rem" : "1rem",
-                  marginTop:'1.5rem'
+                  marginTop: "1.5rem",
                 }}
                 htmlFor="password"
               >
@@ -514,7 +500,7 @@ useEffect(() => {
                         ? "1px solid #d32f2f"
                         : "1px solid #E0E4EC",
                   }}
-                   placeholder="Confirm your password"
+                  placeholder="Confirm your password"
                   type={passwordVisible ? "text" : "password"}
                   name="confirmPassword"
                   value={values.confirmPassword}
@@ -609,7 +595,7 @@ const firstGrid = {
 };
 
 const SecondGrid = {
-  gap: { xl:"4.5rem",lg: "3.5rem", md:"3.5rem", sm: "1rem", xs: "1rem" },
+  gap: { xl: "4.5rem", lg: "3.5rem", md: "3.5rem", sm: "1rem", xs: "1rem" },
   alignItems: { lg: "center", md: "center", sm: "center", xs: "center" },
   justifyContent: {
     lg: "start",
@@ -667,7 +653,7 @@ const logoBox = {
   marginBottom: "0.3rem",
   justifyContent: "space-between",
   marginTop: "1rem",
-  display: 'flex'
+  display: "flex",
 };
 const namesFieldBox = {
   display: "flex",
@@ -759,7 +745,7 @@ const firstHeading = {
 
 const secondHeading = {
   ml: 10,
-  textAlign:"Left",
+  textAlign: "Left",
   color: "rgba(255, 255, 255, 0.80)",
   // width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   marginTop: "0.5rem",
@@ -836,7 +822,6 @@ const hptLinksStyle = {
 
 const topSpace = {
   marginTop: "0.2rem",
-
 };
 
 export default Invitation;
