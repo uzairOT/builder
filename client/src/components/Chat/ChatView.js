@@ -21,7 +21,7 @@ import {
   useCreateConverstaionMutation,
   useGetChatMessagesMutation,
 } from "../../redux/apis/Chat/chatApiSlice";
-import moment from 'moment-timezone';
+import moment from "moment-timezone";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import axios from "axios";
@@ -59,7 +59,7 @@ function ChatView({
   id,
   refetchConverstations,
   isLoadingChat,
-  setIsLoadingChat
+  setIsLoadingChat,
 }) {
   const userRoleProject = useSelector(getUserRoleFromRedux);
   const [openModal, setOpenModal] = useState(false);
@@ -126,15 +126,14 @@ function ChatView({
         fileName: fileName,
         fileType: fileType,
       });
-    } else{
-      console.log(chatUser)
-      if(messages?.length < 1){
-        await socket.emit('conversation',{
+    } else {
+      console.log(chatUser);
+      if (messages?.length < 1) {
+        await socket.emit("conversation", {
           userId: chatUser?.userId,
-       
-        })
+        });
       }
-      
+
       await socket.emit("privateMessage", {
         content: message,
         userId: currentUser?.id,
@@ -195,7 +194,7 @@ function ChatView({
   //
   const projectRole = userRoleProject.userRole;
   const fetchProjectChat = async (newOffset, direction, project) => {
-    console.log("conversation Id: ",conversationId);
+    console.log("conversation Id: ", conversationId);
     try {
       const res = await getChatMessages({
         projectId: project === "project" ? id : null,
@@ -203,15 +202,14 @@ function ChatView({
         offset: newOffset,
         recipientType: recipientType,
       }).unwrap();
-      console.log("messages length: ", res)
-      console.log('has more messages: ', hasMoreMessages)
+      console.log("messages length: ", res);
+      console.log("has more messages: ", hasMoreMessages);
       if (res.data.length === 0 && direction === "up") {
         setHasMoreMessages(false);
         setMsgLoading(false);
         return;
-      }else{
-        if(!hasMoreMessages)
-        setHasMoreMessages(true);
+      } else {
+        if (!hasMoreMessages) setHasMoreMessages(true);
         // setMsgLoading(false);
       }
       if (direction === "up") {
@@ -233,7 +231,7 @@ function ChatView({
         return;
       } else {
         setMessages([...res.data].reverse());
-        setIsLoadingChat(false)
+        setIsLoadingChat(false);
         if (boxRef.current) {
           boxRef.current.scrollIntoView({ behavior: "smooth" });
         }
@@ -246,8 +244,8 @@ function ChatView({
   //
   useEffect(() => {
     // console.log("run");
-    console.log("scrollHeight : ",boxRef.current.scrollHeight);
-    console.log("scrollTop: ",boxRef.current.scrollTop);
+    console.log("scrollHeight : ", boxRef.current.scrollHeight);
+    console.log("scrollTop: ", boxRef.current.scrollTop);
     boxRef.current.scrollTop = boxRef.current.scrollHeight;
 
     setScrollingUp(false);
@@ -282,16 +280,15 @@ function ChatView({
         //   duration: 300,
         //   smooth: true,
         // });
-        
+
         return newMessages;
       });
     };
     if (value === id) {
-      
       socket.on("message", messageListener);
-    }else{
+    } else {
       socket.on("privateMessage", messageListener);
-      }
+    }
 
     const userStatusListener = (data) => {
       setUsersOnline((prevUsersOnline) => ({
@@ -300,7 +297,7 @@ function ChatView({
       }));
     };
     socket.on("userStatusChanged", userStatusListener);
- 
+
     return () => {
       socket.off("message", messageListener);
       socket.off("privateMessage", messageListener);
@@ -325,18 +322,18 @@ function ChatView({
       reader.readAsDataURL(file);
     }
   };
-  const isToday = (date) =>{
-    const today = moment().startOf('day');
-    return moment(date).isSame(today, 'day');
-  }
+  const isToday = (date) => {
+    const today = moment().startOf("day");
+    return moment(date).isSame(today, "day");
+  };
   const formatDate = (date) => {
-    console.log(date)
-    if(isToday(date)){
+    console.log(date);
+    if (isToday(date)) {
       return moment.utc(date).tz(moment.tz.guess()).format("HH:mm A");
-    }else{
-      return moment.utc(date).tz(moment.tz.guess()).format("MMM DD, YYYY")
+    } else {
+      return moment.utc(date).tz(moment.tz.guess()).format("MMM DD, YYYY");
     }
-  }
+  };
 
   useEffect(() => {
     if (selectedFile) {
@@ -407,7 +404,7 @@ function ChatView({
     // console.log("scrollTop: ",boxRef.current.scrollTop);
     if (boxRef.current && !scrollingUp) {
       boxRef.current.scrollTop = boxRef.current.scrollHeight;
-      console.log("scrollTop2: ",boxRef.current.scrollTop);
+      console.log("scrollTop2: ", boxRef.current.scrollTop);
     }
   }, [messages, id, conversationId]);
 
@@ -418,20 +415,28 @@ function ChatView({
     setImage(null);
     setS3Url("");
   };
-console.log('conversationId: ',conversationId, 'value: ', value)
-
-
+  console.log("conversationId: ", conversationId, "value: ", value);
 
   useEffect(() => {
     const boxElement = boxRef.current;
-    console.log('Inside useEffect conversationId: ',conversationId, 'value: ', value)
+    console.log(
+      "Inside useEffect conversationId: ",
+      conversationId,
+      "value: ",
+      value
+    );
     const handleLoadOld = () => {
-      console.log('Inside handleLoadOld conversationId: ',conversationId, 'value: ', value)
+      console.log(
+        "Inside handleLoadOld conversationId: ",
+        conversationId,
+        "value: ",
+        value
+      );
       // const newOffset = offset + 10;
       // setOffset(newOffset);
       // fetchProjectChat(newOffset, "up");
       // setScrollingUp(true);
-      console.log('scroll up!', value)
+      console.log("scroll up!", value);
       setOffset((prev) => {
         const newOffset = offset + 10;
         if (!(value === id)) {
@@ -443,12 +448,12 @@ console.log('conversationId: ',conversationId, 'value: ', value)
         return newOffset;
       });
     };
-  
+
     const handleScroll = () => {
       if (!boxRef.current) return;
-  
+
       const { scrollTop, scrollHeight, clientHeight } = boxRef.current;
-      console.log('scrolling up', scrollTop , hasMoreMessages)
+      console.log("scrolling up", scrollTop, hasMoreMessages);
       if (scrollTop === 0 && hasMoreMessages) {
         handleLoadOld();
       }
@@ -471,7 +476,13 @@ console.log('conversationId: ',conversationId, 'value: ', value)
               src={!(value === id) ? chatUser?.image : currentUser?.image}
               sx={{ marginRight: "1rem" }}
             ></Avatar>
-            <Typography sx={{ fontSize: {xl:"15px", lg:"12px",md:"15px",xs:"15px",}, fontWeight: 600 }}>
+            <Typography
+              sx={{
+                  fontFamily: 'var(--main-font-family)',
+                fontSize: { xl: "15px", lg: "12px", md: "15px", xs: "15px" },
+                fontWeight: 600,
+              }}
+            >
               {/* This value greater than 0 checks whether it's a group chat or a one-on-one chat */}
               {!(value === id)
                 ? `${chatUser?.firstName} ${chatUser?.lastName}`
@@ -502,7 +513,7 @@ console.log('conversationId: ',conversationId, 'value: ', value)
             })}
           </Select> */}
         </Stack>
-        <Divider sx={{marginBottom:'1px'}} />
+        <Divider sx={{ marginBottom: "1px" }} />
         <Box
           ref={boxRef}
           sx={{
@@ -527,7 +538,15 @@ console.log('conversationId: ',conversationId, 'value: ', value)
             )}
           </Box>
           {/* <Button onClick={handleLoadMore}>Load More</Button> */}
-          {isLoadingChat ? (<Stack height={'90%'} justifyContent={'flex-end'} alignItems={'center'}><CircularProgress /></Stack>) :image ? (
+          {isLoadingChat ? (
+            <Stack
+              height={"90%"}
+              justifyContent={"flex-end"}
+              alignItems={"center"}
+            >
+              <CircularProgress />
+            </Stack>
+          ) : image ? (
             <Box
               height={"95%"}
               style={{
@@ -564,7 +583,19 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                     download="document"
                     aria-label="download"
                   >
-                    <Typography  sx={{ fontSize: {xl:"15px", lg:"12px",md:"15px",xs:"15px",}}} variant="body2" component="span">
+                    <Typography
+                      sx={{
+                          fontFamily: 'var(--main-font-family)',
+                        fontSize: {
+                          xl: "15px",
+                          lg: "12px",
+                          md: "15px",
+                          xs: "15px",
+                        },
+                      }}
+                      variant="body2"
+                      component="span"
+                    >
                       <Box sx={{ color: "primary.main" }}>
                         {loading ? (
                           <CircularProgress />
@@ -583,6 +614,7 @@ console.log('conversationId: ',conversationId, 'value: ', value)
               {!messages || !Array?.isArray(messages) ? (
                 <div
                   style={{
+                      fontFamily: 'var(--main-font-family)',
                     marginLeft: "1rem",
                     justifyContent: "center",
                     display: "flex",
@@ -627,7 +659,7 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                             ? "flex-end"
                             : "  flex-start",
                           overflow: "hidden",
-                          gap:'4px'
+                          gap: "4px",
                         }}
                       >
                         {!isSender && (
@@ -652,7 +684,10 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                               ".webp",
                               ".bmp",
                               ".tiff",
-                            ].some((ext) => msg?.fileUrl?.endsWith(ext)) ? (
+                            ].some((ext) => {
+                              const lowercaseFileUrl = msg?.fileUrl?.toLowerCase();
+                              return lowercaseFileUrl?.endsWith(ext);
+                            }) ? (
                               <>
                                 <img
                                   src={msg.fileUrl}
@@ -660,8 +695,7 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                                   download="image"
                                   alt="file"
                                   style={{
-                                    width: "220px",
-                                    height: "220px",
+                                    width: '100%',
                                     objectFit: "contain",
                                     wordWrap: "break-word",
                                   }}
@@ -679,7 +713,18 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                                   download="document"
                                   aria-label="download"
                                 >
-                                  <Typography sx={{ fontSize: {xl:"12px", lg:"10px",md:"12px",xs:"12px",}}}  variant="body2" component="span">
+                                  <Typography
+                                    sx={{
+                                      fontSize: {
+                                        xl: "12px",
+                                        lg: "10px",
+                                        md: "12px",
+                                        xs: "12px",
+                                      },
+                                    }}
+                                    variant="body2"
+                                    component="span"
+                                  >
                                     <Box sx={{ color: "primary.main" }}>
                                       <InsertDriveFileIcon />
                                     </Box>
@@ -725,8 +770,7 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                           marginBottom: 2,
                         }}
                       >
-                        {activeName}{" "}
-                        {formatDate(msg.createdAt)}
+                        {activeName} {formatDate(msg.createdAt)}
                       </Box>
                     </>
                   );
@@ -737,12 +781,12 @@ console.log('conversationId: ',conversationId, 'value: ', value)
           {/* <Button onClick={handleLoadOld}>Load Below</Button> */}
         </Box>
         <Box
-         component={'form'}
-         onSubmit={handleSend}
+          component={"form"}
+          onSubmit={handleSend}
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent:'space-between',
+            justifyContent: "space-between",
             mb: 2,
             ml: 2,
             mr: 2,
@@ -768,21 +812,20 @@ console.log('conversationId: ',conversationId, 'value: ', value)
             onChange={(e) => setMessage(e.target.value)}
             sx={InputStyle}
           />
-          {projectRole !== "client" &&  value === id && (
+          {projectRole !== "client" && value === id && (
             <Box
               sx={{
                 display: "flex",
-                flexDirection:{sm:"row", xs:"column"},
+                flexDirection: { sm: "row", xs: "column" },
                 columnGap: 1.5,
-                gap:{md:"12px", xs:"2px"},
+                gap: { md: "12px", xs: "2px" },
                 margin: "0 4px 0 4px",
                 justifyContent: "center",
                 alignItems: "center",
-               
               }}
             >
               <Button
-              type="button"
+                type="button"
                 onClick={handleTeamClick}
                 style={{
                   ...buttonStyle,
@@ -790,13 +833,18 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                     recipientType === "team" ? "#4C8AB1" : "#FFFFFF",
                   color: recipientType === "team" ? "#FFF" : "#4C8AB1",
                   margin: 0,
+                  textTransform:"capitalize"
                 }}
-                sx={{paddingY:{sm:"12px",xs:"4px"},fontSize:{sm:"11px", xs:"8px"},paddingX:{sm:"18px",xs:"10px"}}}
+                sx={{
+                  paddingY: { sm: "12px", xs: "4px" },
+                  fontSize: { sm: "11px", xs: "8px" },
+                  paddingX: { sm: "18px", xs: "10px" },
+                }}
               >
                 Team
               </Button>
               <Button
-              type="button"
+                type="button"
                 onClick={handleTeamClientClick}
                 style={{
                   ...buttonStyle,
@@ -804,29 +852,31 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                     recipientType === "team+client" ? "#4C8AB1" : "#FFFFFF",
                   color: recipientType === "team+client" ? "#FFF" : "#4C8AB1",
                   margin: 0,
+                  textTransform:"capitalize"
                 }}
-                sx={{paddingY:{sm:"12px",xs:"4px"},fontSize:{sm:"11px", xs:"8px"},paddingX:{sm:"18px",xs:"10px"}}}
-
+                sx={{
+                  paddingY: { sm: "12px", xs: "4px" },
+                  fontSize: { sm: "11px", xs: "8px" },
+                  paddingX: { sm: "18px", xs: "10px" },
+                }}
               >
                 Team + Client
               </Button>
             </Box>
           )}
-          
+
           <IconButton
             color="primary"
             aria-label="send"
-            
             type="submit"
             disabled={loading}
             sx={{
               paddingBottom: "16px",
-              }}
-              >
+            }}
+          >
             <SendIcon sx={{ transform: "rotate(-35deg)" }} />
           </IconButton>
-            </Box>
-       
+        </Box>
       </Stack>
 
       {/* Image Show Modal */}
@@ -863,10 +913,13 @@ console.log('conversationId: ',conversationId, 'value: ', value)
 export default ChatView;
 
 const InputStyle = {
+  '& .MuiInputBase-input::placeholder': {
+    fontFamily: 'var(--main-font-family)',
+  },
   width: "60%",
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   "& input": {
     border: "1px solid #E0E4EC",
     borderRadius: "8px",
@@ -886,12 +939,13 @@ const headerStyle = {
   alignItems: "center",
 };
 const buttonStyle = {
+    fontFamily: 'var(--main-font-family)',
   border: "1px solid #4C8AB1",
   borderRadius: "10px",
   whiteSpace: "nowrap",
   // padding: "13.2px",
   cursor: "pointer",
-  width:'100%'
+  width: "100%",
 };
 
 const scrollable = {

@@ -138,7 +138,7 @@ function Notification({
     >
       <AccordionSummary>
         <Stack>
-        {index === 0 &&  <Typography display={'block'} fontFamily={'inherit'} fontSize={'12px'} sx={{textDecoration:'underline', fontWeight:'600'}}>Work Order Notifications:</Typography>}
+        {index === 0 &&  <Typography display={'block'} fontFamily={'var(--main-font-family)'} fontSize={'12px'} sx={{textDecoration:'underline', fontWeight:'600'}}>Work Order Notifications:</Typography>}
         
         <Stack
           direction={"row"}
@@ -150,11 +150,11 @@ function Notification({
             alt="User Avatar"
           />
 
-          <Typography fontFamily={"inherit"} fontSize={"12px"}>
+          <Typography fontFamily={'var(--main-font-family)'} fontSize={"12px"}>
             {notification.WorkOrderReq.User.firstName} &nbsp;
           </Typography>
 
-          <Typography fontFamily={"inherit"} fontSize={"12px"}>
+          <Typography fontFamily={'var(--main-font-family)'} fontSize={"12px"}>
             Sent you a{" "}
             {notification.WorkOrderReq.changeOrder
               ? "change order request"
@@ -271,7 +271,7 @@ function Notification({
                 variant={"outlined"}
                 backgroundColor={"#4C8AB1"}
                 fontSize={"11px"}
-                fontFamily={"Inter, sans serif"}
+                fontFamily={'var(--main-font-family)'}
                 handleOnClick={handleDecline}
               >
                 Decline
@@ -280,7 +280,7 @@ function Notification({
                 variant={"contained"}
                 backgroundColor={"#4C8AB1"}
                 fontSize={"11px"}
-                fontFamily={"Inter, sans serif"}
+                fontFamily={'var(--main-font-family)'}
                 marginLeft={"5px"}
                 handleOnClick={handleAccept}
               >
@@ -290,7 +290,7 @@ function Notification({
                       variant={"contained"}
                       backgroundColor={"#4C8AB1"}
                       fontSize={"11px"}
-                      fontFamily={"Inter, sans serif"}
+                      fontFamily={'var(--main-font-family)'}
                       marginLeft={"5px"}
                       handleOnClick={() => handleOnClick(notification.WorkOrderReq.workOrderId)}
                     >
@@ -321,13 +321,13 @@ const listItemStyle = {
 };
 
 const textStyle = {
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "bold",
   fontSize: "14px",
   width:{sm:'25ch', xs:'10ch'}
 };
 const textSecondaryStyle = {
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "14px",
   width:{sm:'25ch', xs:'10ch'},
   overflow:'hidden',
@@ -391,19 +391,19 @@ function Notification({ notification, refetch, userId }) {
     <div style={style}>
       <p></p>
       <div>
-        <Typography sx={{fontFamily: 'Arial Rounded MT, sans-serif',}} p={1}>You have {notification.WorkOrderReq.version > 1 ? 'change order request':  'work order request'} of project: {notification.projectName}</Typography>
+        <Typography sx={{fontFamily: 'var(--main-font-family)',}} p={1}>You have {notification.WorkOrderReq.version > 1 ? 'change order request':  'work order request'} of project: {notification.projectName}</Typography>
         <Divider />
         <Stack direction={"row"} gap={1} p={1} alignItems={'center'}>
           <Avatar src={`${notification.User.image}`} alt="User Avatar"></Avatar>
           <Stack>
-            <Typography sx={{fontFamily: 'Arial Rounded MT, sans-serif',}}>{notification.User.firstName}</Typography>
+            <Typography sx={{fontFamily: 'var(--main-font-family)',}}>{notification.User.firstName}</Typography>
           </Stack>
           <Stack direction={'row'} sx={{height:'35px'}}>
           <BuilderProButton
             variant={"outlined"}
             backgroundColor={"#4C8AB1"}
             fontSize={"11px"}
-            fontFamily={"Inter, sans serif"}
+            fontFamily={'var(--main-font-family)'}
             handleOnClick={handleDecline}
           >
             Decline
@@ -412,7 +412,7 @@ function Notification({ notification, refetch, userId }) {
             variant={"contained"}
             backgroundColor={"#4C8AB1"}
             fontSize={"11px"}
-            fontFamily={"Inter, sans serif"}
+            fontFamily={'var(--main-font-family)'}
             marginLeft={'5px'}
             handleOnClick={handleAccept}
             >

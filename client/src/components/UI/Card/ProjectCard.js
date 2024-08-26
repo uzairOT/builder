@@ -49,7 +49,7 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
     cardBody: {
       marginBottom: "2px",
       fontSize: { xl: "12px", lg: "11px", md: "12px", xs: "12px" },
-      fontFamily: "inherit",
+      fontFamily: 'var(--main-font-family)',
       fontStyle: selected ? "italic" : "normal",
     },
     card: {

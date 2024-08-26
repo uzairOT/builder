@@ -23,7 +23,7 @@ import LinearProgress, {
 } from "@mui/material/LinearProgress";
 import CloseIcon from "@mui/icons-material/Close";
 import NotesModal from "./NotesModal";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import {
   useDeleteProjectNotesMutation,
   useGetProjectNotesQuery,
@@ -31,9 +31,10 @@ import {
 import { toast } from "react-toastify";
 import { fileTypeIcons } from "../../dialogues/AddImage/assets/fileTypes";
 import { handleDownload } from "../../../utils/S3";
+import { usePermissionCheck } from "../../Settings/PermissionAccess/PermissionCheck";
 //import "react-toastify/dist/ReactToastify.css";
 
-const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
+const OpenNotes = ({ notes, refetchNotes, setSelectedButton, canManageNotes }) => {
   const isNoteSelected = Boolean(notes);
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height: 10,
@@ -65,6 +66,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
     setSelectedButton(-1);
     refetchNotes();
   };
+
   return (
     <Stack>
       <Stack direction={"row"} justifyContent={"space-between"} p={2}>
@@ -75,7 +77,9 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
           spacing={6}
         >
           {/* <ShareIcon style={{ color: "#3F3F3F" }} /> */}
-          <ButtonGroup
+
+
+          {canManageNotes && <ButtonGroup
             disableElevation
             variant="contained"
             aria-label="Disabled button group"
@@ -102,7 +106,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
             >
               <BorderColorIcon />
             </Button>
-          </ButtonGroup>
+          </ButtonGroup>}
           {showEditModal && (
             <NotesModal
               notes={notes}
@@ -233,7 +237,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                               fontSize={"0.7rem"}
                               fontWeight={"500"}
                               color={"#324054"}
-                              fontFamily={"Inter, sans serif"}
+                              fontFamily={'var(--main-font-family)'}
                               overflow={"hidden"}
                             >
                               {fileName}
@@ -243,7 +247,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                               fontSize={"12px"}
                               fontWeight={"500"}
                               color={"#71839B"}
-                              fontFamily={"Inter, sans serif"}
+                              fontFamily={'var(--main-font-family)'}
                             ></Typography>
                           </Stack>
                         </Stack>
@@ -276,7 +280,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                         fontSize={"14px"}
                         fontWeight={"500"}
                         color={"#324054"}
-                        fontFamily={"Inter, sans serif"}
+                        fontFamily={'var(--main-font-family)'}
                         pb={1}
                         >File Title.png</Typography>
                         <BorderLinearProgress variant="determinate" value={45}/>
@@ -285,7 +289,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                         fontSize={"12px"}
                         fontWeight={"500"}
                         color={"#71839B"}
-                        fontFamily={"Inter, sans serif"}
+                        fontFamily={'var(--main-font-family)'}
                         >45% Complete</Typography>
                     </Stack>
                 </Stack>

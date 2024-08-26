@@ -25,18 +25,18 @@ function ProfileChatView() {
                 </Box>
                 <Stack direction={{ lg: 'row', xs: "column" }} gap={{ lg: '0rem', xs: "0.5rem" }} ml={'-16px'} mr={'-16px'} mt={'1rem'} p={{ lg: '0rem', xs: "1rem" }} justifyContent={'center'} >
                     <BuilderProButton variant={'contained'} marginLeft={'4px'} padding={'8px 8px'} backgroundColor={activeBtn === 'Remodel' ? '#FFCA5B' : '#F2F2F2'} handleOnClick={() => { handleListedProjectsButton('Remodel') }}>
-                        <Typography fontSize={'11px'} fontWeight={'500'} color={'black'} fontFamily={'Inter, sans-serif'} width={'100%'}>
+                        <Typography fontSize={'11px'} fontWeight={'500'} color={'black'} fontFamily={'var(--main-font-family)'} width={'100%'}>
                             Remodel
                         </Typography>
                     </BuilderProButton>
                     <BuilderProButton variant={'contained'} marginLeft={'4px'} padding={'8px 8px'} backgroundColor={activeBtn === 'New build' ? '#FFCA5B' : '#F2F2F2'} handleOnClick={() => { handleListedProjectsButton('New build') }}>
-                        <Typography fontSize={'11px'} fontWeight={'500'} color={'black'} fontFamily={'Inter, sans-serif'} width={'100%'}>
+                        <Typography fontSize={'11px'} fontWeight={'500'} color={'black'} fontFamily={'var(--main-font-family)'} width={'100%'}>
 
                             New build
                         </Typography>
                     </BuilderProButton>
                     <BuilderProButton variant={'contained'} marginLeft={'4px'} padding={'8px 8px'} backgroundColor={activeBtn === 'Commercial' ? '#FFCA5B' : '#F2F2F2'} handleOnClick={() => { handleListedProjectsButton('Commercial') }}>
-                        <Typography fontSize={'11px'} fontWeight={'500'} color={'black'} fontFamily={'Inter, sans-serif'}>
+                        <Typography fontSize={'11px'} fontWeight={'500'} color={'black'} fontFamily={'var(--main-font-family)'}>
                             Commercial
                         </Typography>
                     </BuilderProButton>

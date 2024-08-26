@@ -39,7 +39,7 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                 {index === 0 && (
                   <Typography
                     display={"block"}
-                    fontFamily={"inherit"}
+                    fontFamily={'var(--main-font-family)'}
                     fontSize={"12px"}
                     sx={{ textDecoration: "underline", fontWeight: "600" }}
                   >
@@ -62,7 +62,7 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                     style={{ marginLeft: "0px" }}
                     className="notification-text"
                   >
-                    <Typography fontFamily={"inherit"} fontSize={"13px"}>
+                    <Typography fontFamily={'var(--main-font-family)'} fontSize={"13px"}>
                       You have a notification for project{" "}
                       <b>{teamNotification.projectName}</b>
                     </Typography>
@@ -71,13 +71,13 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
               </Stack>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography fontFamily={"inherit"} fontSize={"12px"}>
+              <Typography fontFamily={'var(--main-font-family)'} fontSize={"12px"}>
                 <b>{teamNotification.user?.firstName}</b>(
                 {teamNotification.user?.ProjectMembers[0]?.role}) {teamNotification?.workOrderVersion < 0 ? 'declined' : 'approved'}{" "}
                 {teamNotification?.workOrderVersion > 1 ? "change" : "work"}{" "}
                 order
               </Typography>
-              {/* <Typography fontFamily={"inherit"} fontSize={"12px"}>
+              {/* <Typography fontFamily={'var(--main-font-family)'} fontSize={"12px"}>
                 <b>{teamNotification?.phase?.LineItems[0]?.title || ""}</b> of
                 phase <b>{teamNotification?.phase.phase_name}</b>.
               </Typography> */}
@@ -86,7 +86,7 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                   variant={"contained"}
                   backgroundColor={"#4C8AB1"}
                   fontSize={"11px"}
-                  fontFamily={"Inter, sans serif"}
+                  fontFamily={'var(--main-font-family)'}
                   marginLeft={"5px"}
                   alignSelf={"right"}
                   handleOnClick={handleMarkRead}
@@ -107,7 +107,7 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                 {index === 0 && (
                   <Typography
                     display={"block"}
-                    fontFamily={"inherit"}
+                    fontFamily={'var(--main-font-family)'}
                     fontSize={"12px"}
                     sx={{ textDecoration: "underline", fontWeight: "600" }}
                   >
@@ -130,7 +130,7 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                     style={{ marginLeft: "0px" }}
                     className="notification-text"
                   >
-                    <Typography fontFamily={"inherit"} fontSize={"13px"}>
+                    <Typography fontFamily={'var(--main-font-family)'} fontSize={"13px"}>
                       You have a notification for project{" "}
                       <b>{teamNotification.projectName}</b>
                     </Typography>
@@ -139,12 +139,12 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
               </Stack>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography fontFamily={"inherit"} fontSize={"12px"}>
+              <Typography fontFamily={'var(--main-font-family)'} fontSize={"12px"}>
                 <b>{teamNotification.user?.firstName}</b>(
                 {teamNotification.user?.ProjectMembers[0]?.role}) completed the
                 assigned task
               </Typography>
-              <Typography fontFamily={"inherit"} fontSize={"12px"}>
+              <Typography fontFamily={'var(--main-font-family)'} fontSize={"12px"}>
                 <b>{teamNotification?.phase?.LineItems[0]?.title || ""}</b> of
                 phase <b>{teamNotification?.phase.phase_name}</b>.
               </Typography>
@@ -153,7 +153,7 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                   variant={"contained"}
                   backgroundColor={"#4C8AB1"}
                   fontSize={"11px"}
-                  fontFamily={"Inter, sans serif"}
+                  fontFamily={'var(--main-font-family)'}
                   marginLeft={"5px"}
                   alignSelf={"right"}
                   handleOnClick={handleMarkRead}

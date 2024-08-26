@@ -79,7 +79,7 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
             >
               <Typography
                 fontSize={"24px"}
-                fontFamily={"inherit"}
+                fontFamily={'var(--main-font-family)'}
                 fontWeight={"600"}
                 color={"#4C8AB1"}
               >
@@ -94,7 +94,7 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
                   variant={"contained"}
                   backgroundColor={"#4C8AB1"}
                   fontSize={"16px"}
-                  fontFamily={"Inter, sans serif"}
+                  fontFamily={'var(--main-font-family)'}
                   handleOnClick={() => {
                     // console.log("Click Chala");
                     handleInvoicePrint();
@@ -278,12 +278,12 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
                 sx={{
                   backgroundColor: "#4C8AB1",
                   borderRadius: "28px",
-                  fontFamily: "Inter, sans serif",
+                  fontFamily: 'var(--main-font-family)',
                   textTransform: "capitalize",
                   fontSize: "16px",
                 }}
                 fontSize={"16px"}
-                fontFamily={"Inter, sans serif"}
+                fontFamily={'var(--main-font-family)'}
                 onClick={() => {
                   handleClose();
                   handleGenerateInvoice();

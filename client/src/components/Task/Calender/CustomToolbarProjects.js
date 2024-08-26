@@ -49,14 +49,14 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
   const themeStyle = {
     toolbarTitle: {
       color: bgColorClient ? "black" : "white",
-      fontFamily: "inherit",
+      fontFamily: 'var(--main-font-family)',
       fontSize: { xl: "20px", lg: "16px", md: "20px", xs: "16px" },
       fontStyle: "normal",
       fontWeight: 500,
     },
     toolbarButton: {
       textAlign: "center",
-      fontFamily: "inherit",
+      fontFamily: 'var(--main-font-family)',
       fontSize: { xl: "12px", lg: "12px", md: "12px", xs: "11px" },
       fontStyle: "normal",
       fontWeight: 500,
@@ -69,7 +69,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
       padding: "5px",
     },
     toolbarLabel: {
-      fontFamily: "Arial Rounded MT, sans-serif",
+      fontFamily: 'var(--main-font-family)',
       color: "#484848",
       fontWeight: "500",
     },
@@ -83,7 +83,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
       lineHeight: "32px",
     },
     button: {
-      fontFamily: "inherit",
+      fontFamily: 'var(--main-font-family)',
       fontSize: "12px",
       fontStyle: "normal",
       fontWeight: 500,

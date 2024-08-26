@@ -17,7 +17,7 @@ export default PaymentDetails;
 
 const themeStyle = {
   title: {
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     color: "#202224",
     opacity: "0.7",
   },

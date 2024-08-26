@@ -45,6 +45,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
       
     }),
+    editAssignProject: builder.mutation({
+      query: (data) => ({
+        url: `http://3.135.107.71/user/editAssignproject`,
+        method: "POST",
+        body: data,
+      }),
+      
+    }),
     existingProject: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/existingProject/${data.userId}`,
@@ -152,6 +160,7 @@ export const {
   useLogoutMutation,
   useRegisterMutation,
   useAssignProjectMutation,
+  useEditAssignProjectMutation,
   useExistingProjectMutation,
   useUpdateProjectMutation,
   useGetUserEventsMutation,

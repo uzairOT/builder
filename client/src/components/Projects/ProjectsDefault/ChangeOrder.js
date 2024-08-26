@@ -56,7 +56,7 @@ const ChangeOrder = ({value}) => {
               {/* <TableCell sx={themeStyle.tableBody}>{index+1}.</TableCell> */}
               <TableCell sx={themeStyle.tableBody}>{row.subject}</TableCell>
               <TableCell sx={{ ...themeStyle.tableBody }}>
-                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} fontSize={'12px'} fontFamily={'Arial Rounded MT, sans-serif'} >
+                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} fontSize={'12px'} fontFamily={'var(--main-font-family)'} >
                 {row.description}
                 </Typography>
               </TableCell>
@@ -69,7 +69,7 @@ const ChangeOrder = ({value}) => {
               {/* <TableCell sx={themeStyle.tableBody}>{index+1}.</TableCell> */}
               <TableCell sx={themeStyle.tableBody}>{row.subject}</TableCell>
               <TableCell sx={{ ...themeStyle.tableBody }}>
-                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} fontSize={'12px'} fontFamily={'Arial Rounded MT, sans-serif'} >
+                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} fontSize={'12px'} fontFamily={'var(--main-font-family)'} >
                 {row.description}
                 </Typography>
               </TableCell>
@@ -82,7 +82,7 @@ const ChangeOrder = ({value}) => {
               {/* <TableCell sx={themeStyle.tableBody}>{index+1}.</TableCell> */}
               <TableCell sx={themeStyle.tableBody}>{row.subject}</TableCell>
               <TableCell sx={{ ...themeStyle.tableBody }}>
-                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} fontSize={'12px'} fontFamily={'Arial Rounded MT, sans-serif'} >
+                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} fontSize={'12px'} fontFamily={'var(--main-font-family)'} >
                 {row.description}
                 </Typography>
               </TableCell>
@@ -108,7 +108,7 @@ const themeStyle = {
     overflow: "hidden",
     textAlign:"Left",
     fontSize: "12px",
-    fontFamily: "Poppins, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     color: "#5B5B5B",
     whiteSpace: "nowrap",
     border: 'none'
@@ -121,7 +121,7 @@ const themeStyle = {
     textAlign:"Left",
     fontSize: "12px",
     fontWeight: "500",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     color: "#000000",
     // padding: "8px 4px 4px 4px",
   },

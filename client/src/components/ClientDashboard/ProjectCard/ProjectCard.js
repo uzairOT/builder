@@ -137,13 +137,13 @@ function ProjectCard() {
 const themeStyle = {
   heading: {
     color: "#4C8AB1",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "1.3rem",
     marginBottom: "1rem",
   },
   descriptionText: {
     color: "#202227",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     padding: "0rem 1rem",
   },
   box: {
@@ -158,14 +158,14 @@ const themeStyle = {
   listItem: {
     color: "#2F2F2F",
     fontSize: "0.7rem",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     opacity: "70%",
     paddingLeft: "1rem",
     fontWeight: 300,
   },
   costText: {
     color: "#4C8AB1",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "0.7rem",
     marginRight: "1rem",
     fontWeight: 600,
@@ -177,7 +177,7 @@ const themeStyle = {
     mt: 1,
   },
   text: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "14px",
     width: "160px",
     color: "#202227",

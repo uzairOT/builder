@@ -136,7 +136,7 @@ const NotificationDetailModal = ({
             variant={"contained"}
             backgroundColor={"#4C8AB1"}
             fontSize={"11px"}
-            fontFamily={"Inter, sans serif"}
+            fontFamily={'var(--main-font-family)'}
             marginLeft={"5px"}
             handleOnClick={handleOnClick}
           >
@@ -165,7 +165,7 @@ const NotificationDetailModal = ({
           >
             <Typography
               color={"#4C8AB1"}
-              fontFamily={"inherit"}
+              fontFamily={'var(--main-font-family)'}
               sx={{fontSize:{xl:22,md:16,lg:18,sm:14,xs:14}}}
               fontWeight={"600"}
             >
@@ -187,11 +187,11 @@ const NotificationDetailModal = ({
             }}
           >
             <Stack p={3} pr={0} spacing={1} width={"100%"}>
-              <Typography fontSize={{xl:16,md:14,lg:14,sm:12,xs:12}} fontFamily={"inherit"}>
+              <Typography fontSize={{xl:16,md:14,lg:14,sm:12,xs:12}} fontFamily={'var(--main-font-family)'}>
                 <strong>Subject: </strong>{" "}
                 <label  style={{ wordBreak:"break-all",maxWidth:"90%"}}>{notification.WorkOrderReq.subject}</label>
               </Typography>
-              <Typography pb={1}  fontSize={{xl:16,md:14,lg:14,sm:12,xs:12}} fontFamily={"inherit"} fontWeight={"200"}>
+              <Typography pb={1}  fontSize={{xl:16,md:14,lg:14,sm:12,xs:12}} fontFamily={'var(--main-font-family)'} fontWeight={"200"}>
                 <strong>Description: </strong>{" "}
                 <label style={{ wordBreak:"break-all",maxWidth:"90%"}}>{notification.WorkOrderReq.description}</label>
               </Typography>
@@ -385,7 +385,7 @@ const NotificationDetailModal = ({
                   {/* <BuilderProButton
                     backgroundColor={"#4C8AB1"}
                     variant={"contained"}
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={'var(--main-font-family)'}
                     fontSize={"16px"}
                     fontWeight={"600"}
                     padding={"6px 32px 6px 32px"}
@@ -414,7 +414,7 @@ const NotificationDetailModal = ({
                     src={notification.WorkOrderReq.User.image}
                   />
 
-                  <Typography fontFamily={"inherit"} alignSelf={"end"} pl={1}>
+                  <Typography fontFamily={'var(--main-font-family)'} alignSelf={"end"} pl={1}>
                     {notification.WorkOrderReq.User.firstName}
                   </Typography>
                 </Box>
@@ -480,7 +480,7 @@ const NotificationDetailModal = ({
                 >
                   Notes
                 </Typography>
-                <Typography style={{ wordBreak:"break-all",maxWidth:"90%"}}  fontFamily={"inherit"} pb={4} pl={2}>
+                <Typography style={{ wordBreak:"break-all",maxWidth:"90%"}}  fontFamily={'var(--main-font-family)'} pb={4} pl={2}>
                   {notification.WorkOrderReq.notes}
                 </Typography>
 
@@ -493,7 +493,7 @@ const NotificationDetailModal = ({
                 >
                   Status
                 </Typography>
-                <Typography fontFamily={"inherit"} pb={4} pl={2}>
+                <Typography fontFamily={'var(--main-font-family)'} pb={4} pl={2}>
                   {notification.WorkOrderReq.status}
                 </Typography>
                 <hr style={themeStyle.hrLine} />
@@ -506,7 +506,7 @@ const NotificationDetailModal = ({
                   Priority
                 </Typography>
                 <Typography
-                  fontFamily={"inherit"}
+                  fontFamily={'var(--main-font-family)'}
                   pb={4}
                   pl={2}
                   color={
@@ -526,7 +526,7 @@ const NotificationDetailModal = ({
                     sx={{fontSize:{md:16,lg:16,sm:14,xs:14},}}
                     backgroundColor={"#4C8AB1"}
                     variant={"contained"}
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={'var(--main-font-family)'}
                     fontWeight={"600"}
                     padding={"6px 32px 6px 32px"}
                     disabled={disable}
@@ -590,7 +590,7 @@ const themeStyle = {
     padding: 4,
   },
   typoTitle: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "1.5rem",
     fontWeight: 500,
     color: "#4C8AB1",
@@ -630,13 +630,13 @@ const themeStyle = {
   },
 
   typoText: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "1rem",
     color: "#202227",
   },
   sendButton: {
     width: { lg: "35%", md: "35%", sm: "40%", xs: "60%" },
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
   },
   declineButton: {
     background: "#FFF",
@@ -647,7 +647,7 @@ const themeStyle = {
     },
   },
   time: {
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "1rem",
     fontStyle: "italic",
     color: "#484848",
@@ -661,7 +661,7 @@ const themeStyle = {
   },
   radioText: {
     color: "#3D3D3D",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
   },
   radioChecked: {
     "&, &.Mui-checked": {
@@ -669,7 +669,7 @@ const themeStyle = {
     },
   },
   headingText: {
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     color: "#000000",
     fontWeight: 600,
     marginTop: "0.5rem",
@@ -683,7 +683,7 @@ const themeStyle = {
     margin: "1rem 0rem 0rem 1rem",
   },
   linkButton: {
-    fontFamily: "Inter",
+    fontFamily: 'var(--main-font-family)',
     fontWeight: 500,
     textTransform: "none",
     color: "#858585",

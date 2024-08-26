@@ -11,6 +11,7 @@ import {
   TableBody,
   Checkbox,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import { ReactComponent as ArrowDown } from "../Assets/svgs/ArrowDown.svg";
 import { ReactComponent as Arrowup } from "../Assets/svgs/Arrowup.svg";
@@ -45,6 +46,10 @@ import { formatMoney } from "../../../utils/Formatters/moneyFormat";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
 //import "react-toastify/dist/ReactToastify.css";
 import AddIcon from "@mui/icons-material/Add";
+import SendIcon from "@mui/icons-material/Send";
+import { socket } from "../../../socket";
+import InfoIcon from "@mui/icons-material/Info";
+import { toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
 
 const initialRows = [
   {
@@ -126,7 +131,9 @@ const AddPhaseCard = ({
   console.log("changeOrder ", changeOrder);
   const location = useLocation();
   const path = location.pathname.split("/")[1];
-  console.log(path);
+  const pathCheck = location.pathname;
+
+  console.log("", phaseData);
 
   phaseData.LineItems.forEach((row) => {
     totalCost += parseFloat(row.total) + parseFloat(row.margin); // Accumulate the total cost
@@ -211,6 +218,13 @@ const AddPhaseCard = ({
     setShowAddLine(true);
   };
 
+  // const handleSendApproval = () => {
+  //   const projectId = projectId;
+  //   const userId = userId;
+
+  //   socket.emit('sendApprovalNotification', { projectId, userId });
+  // };
+
   const handleAddOpen = () => {
     setShowAddLine(true);
   };
@@ -248,6 +262,29 @@ const AddPhaseCard = ({
     overflowY: "auto",
     height: "245px",
     // Add horizontal scrollbar when needed
+  };
+
+  const handleSendApprove = () => {
+    console.log("run");
+    socket.emit(
+      "sendPhaseApprovalNotification",
+      {
+        projectId: projectId,
+        phaseId: phaseData?.id,
+        sentBy: userId,
+      },
+      (data) => {
+        toast(data?.message, {
+          className:
+            data?.success === true
+              ? "toast-success"
+              : data?.success === false
+              ? "toast-error"
+              : "toast-default",
+        });
+        dispatch(toggleWorkOrderDeclineRecall())
+      }
+    );
   };
 
   const handleUpdateRow = (index, newData) => {
@@ -408,81 +445,179 @@ const AddPhaseCard = ({
                   userRoleAuth.userRole === "admin" ||
                   userRoleAuth.userRole === "projectManager" ||
                   userRoleAuth.userRole === "") && (
-                  <Button
-                    sx={{
-                      ...actionButton,
-                      background: "#4C8AB1",
-                      marginTop: "0.7rem",
-                      marginBottom: "1rem",
-                      marginRight: "1rem",
-                      "@media (max-width: 600px)": {
-                        minWidth: 0,
-                        width: "2.5rem",
-                        height: "2.5rem",
-                        borderRadius: "50%",
-                        padding: 0,
-                        fontSize: "0.75rem",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      },
-                    }}
-                    onClick={handleAddLine}
-                  >
-                    <AddIcon
-                      sx={{
-                        "@media (min-width: 601px)": { display: "none" },
-                      }}
-                    />
-                    <Typography
-                      sx={{
-                        "@media (min-width: 601px)": { display: "inline" },
-                        "@media (max-width: 600px)": { display: "none" },
-                      }}
-                    >
-                      Add Line Item
-                    </Typography>
-                  </Button>
+                  <>
+                    {phaseData?.status === "unapproved" ||
+                    phaseData?.status === "pending" ? (
+                      <>
+                        {phaseData?.declinedReason && (
+                          <>
+                            <Tooltip
+                              title={
+                                phaseData?.declinedReason
+                                  ? phaseData?.declinedReason
+                                  : ""
+                              }
+                              arrow
+                            >
+                              <IconButton>
+                                <InfoIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </>
+                        )}
+
+                       { phaseData?.status === "unapproved" && ( <Button
+                          sx={{
+                            ...actionButton,
+                            background: "#4C8AB1",
+                            marginTop: "0.7rem",
+                            marginBottom: "1rem",
+                            marginRight: "1rem",
+                            "@media (max-width: 600px)": {
+                              minWidth: 0,
+                              width: "2.5rem",
+                              height: "2.5rem",
+                              borderRadius: "50%",
+                              padding: 0,
+                              fontSize: "0.75rem",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              fontFamily: "var(--main-font-family)",
+                            },
+                          }}
+                          onClick={handleAddLine}
+                        >
+                          <AddIcon
+                            sx={{
+                              "@media (min-width: 601px)": { display: "none" },
+                            }}
+                          />
+                          <Typography
+                            sx={{
+                              fontFamily: "var(--main-font-family)",
+                              "@media (min-width: 601px)": {
+                                display: "inline",
+                              },
+                              "@media (max-width: 600px)": { display: "none" },
+                            }}
+                          >
+                            Add Line Item
+                          </Typography>
+                        </Button>)}
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </>
                 )
               : (userRoleAuth.userRole === "admin" ||
                   userRoleAuth.userRole === "superadmin" ||
                   userRoleAuth.userRole === "projectManager" ||
                   userRoleAuth.userRole === "") && (
-                  <Button
-                    sx={{
-                      ...actionButton,
-                      background: "#4C8AB1",
-                      marginTop: "0.7rem",
-                      marginBottom: "1rem",
-                      marginRight: "1rem",
-                      "@media (max-width: 600px)": {
-                        minWidth: 0,
-                        width: "2.5rem",
-                        height: "2.5rem",
-                        borderRadius: "50%",
-                        padding: 0,
-                        fontSize: "0.75rem",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      },
-                    }}
-                    onClick={handleAddLine}
-                  >
-                    <AddIcon
+                  <Box sx={{ display: "flex" }}>
+                    {phaseData?.declinedReason && (
+                      <>
+                        <Tooltip
+                          title={
+                            phaseData?.declinedReason
+                              ? phaseData?.declinedReason
+                              : ""
+                          }
+                          arrow
+                        >
+                          <IconButton>
+                            <InfoIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </>
+                    )}
+                    
+                   <Button
                       sx={{
-                        "@media (min-width: 601px)": { display: "none" },
+                        ...actionButton,
+                        background: "#4C8AB1",
+                        marginTop: "0.7rem",
+                        marginBottom: "1rem",
+                        marginRight: "1rem",
+                        "@media (max-width: 600px)": {
+                          fontFamily: "var(--main-font-family)",
+                          minWidth: 0,
+                          width: "2.5rem",
+                          height: "2.5rem",
+                          borderRadius: "50%",
+                          padding: 0,
+                          fontSize: "0.75rem",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        },
                       }}
-                    />
-                    <Typography
-                      sx={{
-                        "@media (min-width: 601px)": { display: "inline" },
-                        "@media (max-width: 600px)": { display: "none" },
-                      }}
+                      onClick={handleAddLine}
                     >
-                      Add Line Item
-                    </Typography>
-                  </Button>
+                      <AddIcon
+                        sx={{
+                          "@media (min-width: 601px)": { display: "none" },
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          fontFamily: "var(--main-font-family)",
+                          "@media (min-width: 601px)": { display: "inline" },
+                          "@media (max-width: 600px)": { display: "none" },
+                        }}
+                      >
+                        Add Line Item
+                      </Typography>
+                    </Button>
+
+                    {
+                    pathCheck.includes("/change-order") ? (
+                      <Button
+                        onClick={handleSendApprove}
+                        sx={{
+                          ...actionButton,
+                          background: "#4C8AB1",
+                          marginTop: "0.7rem",
+                          marginBottom: "1rem",
+                          marginRight: { sm: "8rem", xs: "2rem" },
+                          "@media (max-width: 600px)": {
+                            minWidth: 0,
+                            width: "2.5rem",
+                            height: "2.5rem",
+                            borderRadius: "50%",
+                            padding: 0,
+                            fontSize: "0.75rem",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontFamily: "var(--main-font-family)",
+                          },
+                        }}
+                        disabled={phaseData?.status === "pending"}
+                      >
+                        <SendIcon
+                          sx={{
+                            "@media (min-width: 601px)": { display: "none" },
+                          }}
+                        />
+                        <Typography
+                          sx={{
+                            fontFamily: "var(--main-font-family)",
+                            "@media (min-width: 601px)": { display: "inline" },
+                            "@media (max-width: 600px)": { display: "none" },
+                          }}
+                        >
+                          {phaseData?.status === "pending"
+                            ? "Pending"
+                            : "Send Approval"}
+                        </Typography>
+                      </Button>
+                    ) : (
+                      <></>
+                    )}
+                    <></>
+                  </Box>
                 )}
           </Box>
         </Box>
@@ -599,11 +734,11 @@ const AddPhaseCard = ({
                         userRoleAuth.userRole === "supplier") && (
                         <TableCell sx={tableHeadings}>Update Status</TableCell>
                       )}
-                      {(userRoleAuth.userRole === "superadmin" ||
+                      {/* {(userRoleAuth.userRole === "superadmin" ||
                         userRoleAuth.userRole === "admin" ||
                         userRoleAuth.userRole === "projectManager") && (
                         <TableCell sx={tableHeadings}>Team Status</TableCell>
-                      )}
+                      )} */}
                     </>
                   )}
                   {(userRoleAuth.userRole === "superadmin" ||
@@ -723,7 +858,7 @@ const AddPhaseCard = ({
                         >
                           {row?.start_day
                             ? moment(row?.start_day).format(
-                                "MMM, DD, YYYY HH:mm a"
+                                "MM/DD/YYYY HH:mm a"
                               )
                             : "-"}
                         </TableCell>
@@ -738,9 +873,7 @@ const AddPhaseCard = ({
                           }}
                         >
                           {row?.end_day
-                            ? moment(row?.end_day).format(
-                                "MMM, DD, YYYY HH:mm a"
-                              )
+                            ? moment(row?.end_day).format("MM/DD/YYYY HH:mm a")
                             : "-"}
                         </TableCell>
                       )}
@@ -772,7 +905,6 @@ const AddPhaseCard = ({
                             fontWeight: 500,
                             fontSize: "0.9rem",
                             overflowY: "auto",
-                            textAlign: "center",
                           }}
                         >
                           {row.notes}
@@ -789,7 +921,7 @@ const AddPhaseCard = ({
                           ) : (
                             <TableCell sx={tableCell}>{row.status}</TableCell>
                           )}
-                          {(userRoleAuth.userRole === "superadmin" ||
+                          {/* {(userRoleAuth.userRole === "superadmin" ||
                             userRoleAuth.userRole === "admin" ||
                             userRoleAuth.userRole === "projectManager") && (
                             <TableCell sx={tableCell}>
@@ -821,7 +953,7 @@ const AddPhaseCard = ({
                                 Details
                               </Button>
                             </TableCell>
-                          )}
+                          )} */}
                           {(userRoleAuth.userRole === "employee" ||
                             userRoleAuth.userRole === "subcontractor" ||
                             userRoleAuth.userRole === "supplier") && (
@@ -972,7 +1104,7 @@ const tableGrid = {
   fontSize: { lg: "10px" },
 };
 const blackHeading = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   color: "#4B4B4B",
   fontSize: "20px",
   fontWeight: 400,
@@ -983,7 +1115,7 @@ const blackHeading = {
 };
 const listOfLineText = {
   fontSize: { xl: "1.25rem", lg: 16, md: "1.25rem", xs: "1.25rem" },
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontWeight: 400,
   paddingLeft: "2rem",
   color: "#4C8AB1",
@@ -992,7 +1124,7 @@ const listOfLineText = {
 const tableHeadings = {
   maxWidth: { xl: "40px", lg: "80px", md: "70px", xs: "100%" },
   minWidth: { xl: "20px", lg: "40px", md: "40px", xs: "20px" },
-  fontFamily: "Poppins, sans-serif",
+  fontFamily: "var(--main-font-family)",
   whiteSpace: "nowrap",
   fontWeight: 500,
   fontSize: "0.9rem",
@@ -1002,7 +1134,7 @@ const tableHeadings = {
   // paddingLeft: "0rem",
 };
 const tableCell = {
-  // fontFamily: "Poppins, sans-serif",
+  // fontFamily: 'var(--main-font-family)',
   maxWidth: { xl: "40px", lg: "80px", md: "70px", xs: "100%" },
   minWidth: { xl: "20px", lg: "40px", md: "40px", xs: "20px" },
   whiteSpace: "nowrap",

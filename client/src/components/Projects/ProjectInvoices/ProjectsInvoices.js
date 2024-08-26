@@ -83,7 +83,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
             p={3}
             pb={2}
             color={"#4C8AB1"}
-            fontFamily={"Poppins, san serif"}
+            fontFamily={'var(--main-font-family)'}
             fontSize={"22px"}
             fontWeight={"600"}
           >
@@ -118,7 +118,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
             >
               <Tab
                 sx={{
-                  fontFamily: "Poppins, sans serif",
+                  fontFamily: 'var(--main-font-family)',
                   fontSize: "15px",
                 }}
               >
@@ -126,7 +126,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
               </Tab>
               <Tab
                 sx={{
-                  fontFamily: "Poppins, sans serif",
+                  fontFamily: 'var(--main-font-family)',
                   fontSize: "15px",
                 }}
               >
@@ -135,7 +135,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
 
               <Tab
                 sx={{
-                  fontFamily: "Poppins, sans serif",
+                  fontFamily: 'var(--main-font-family)',
                   fontSize: "15px",
                 }}
               >
@@ -148,7 +148,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
                 <BuilderProButton
                   backgroundColor={"#4C8AB1"}
                   variant={"contained"}
-                  fontFamily={"Inter, sans serif"}
+                  fontFamily={'var(--main-font-family)'}
                   fontSize={"16px"}
                   fontWeight={"600"}
                   padding={{md:"6px 32px 6px 32px"}}
@@ -219,7 +219,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
         {/* <BuilderProButton
                   backgroundColor={"#4C8AB1"}
                   variant={"contained"}
-                  fontFamily={"Inter, sans serif"}
+                  fontFamily={'var(--main-font-family)'}
                   fontSize={"16px"}
                   fontWeight={"600"}
                   handleOnClick={handleButton}

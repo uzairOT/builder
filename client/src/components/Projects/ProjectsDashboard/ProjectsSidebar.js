@@ -59,7 +59,7 @@ const ProjectsSidebar = ({ reports }) => {
       (projectProfileCard) => Number(projectProfileCard.id) === Number(id)
     );
     if (selectedProject) {
-      setActiveBtn(selectedProject?.buildType);
+      setActiveBtn(selectedProject?.buildType.toLowerCase());
     }
   }, [id]);
 
@@ -200,19 +200,19 @@ const themeStyle = {
   title: {
     fontSize: "22px",
     fontWeight: "500",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     color: "#000000",
   },
   subtile: {
     fontSize: "16px",
     fontWeight: "500",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     color: "#4C8AB1",
   },
   listTitle: {
     fontSize: "12px",
     fontWeight: "500",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     color: "#535353C9",
   },
   scrollable: {

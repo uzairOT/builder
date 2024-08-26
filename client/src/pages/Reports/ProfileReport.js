@@ -35,13 +35,13 @@ const themeStyle = {
     fontSize: { xs: "10px", md: "10px", lg: "1.2rem", xl: "1.2rem" },
     color: "#FFAC00",
     fontWeight: "400",
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
 
   },
   containerSubtitle: {
     fontSize: { xs: "13px", md: "10px", xl: "13px" },
     fontWeight: "400",
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     fontStyle: "normal",
   },
 };

@@ -179,7 +179,11 @@ function CustomTable({
               <TableRow>
                 <TableCell
                   colSpan={10}
-                  sx={{ textAlign: "center", borderBottom: "none" }}
+                  sx={{
+                    textAlign: "center",
+                    borderBottom: "none",
+                    fontFamily: "var(--main-font-family)",
+                  }}
                 >
                   No Records
                 </TableCell>
@@ -268,7 +272,7 @@ const tableCellStyle = {
   overflow: "hidden",
   fontWeight: 500,
   fontSize: "14px",
-  fontFamily: "Poppins",
+  fontFamily: "var(--main-font-family)",
 };
 
 const tableCellValueStyle = {
@@ -278,6 +282,6 @@ const tableCellValueStyle = {
   overflow: "hidden",
   fontWeight: 400,
   borderBottom: "none",
-  fontFamily: "Montserrat",
+  fontFamily: "var(--main-font-family)",
   color: "#000000",
 };

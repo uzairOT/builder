@@ -415,7 +415,7 @@ const Invitation = () => {
                       marginLeft: "14px",
                       marginRight: "14px",
                       marginTop: "3px",
-                      fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+                      fontFamily: 'var(--main-font-family)',
                     }}
                   >
                     Phone is not valid
@@ -664,7 +664,7 @@ const namesFieldBox = {
 
 const subtitleStyle = {
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "0.75rem",
   fontWeight: 400,
   marginBottom: "0.2rem",
@@ -718,7 +718,7 @@ const selectStyle = {
   ".MuiOutlinedInput-notchedOutline": { border: 0 },
   color: "white",
   border: "none",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1rem",
   fontWeight: "400",
   lineHeight: "normal",
@@ -735,7 +735,7 @@ const hptLinksBox = {
 
 const firstHeading = {
   color: "#FFF",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
   marginTop: "1rem",
   fontSize: { xl: "2rem", lg: "2rem", md: "1.9rem", sm: "1rem" },
@@ -750,14 +750,14 @@ const secondHeading = {
   // width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   marginTop: "0.5rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: { xl: "1.5rem", lg: "1.5rem", md: "1.5rem", sm: "1rem" },
   fontWeight: 400,
 };
 
 const thirdHeading = {
   color: "#FFF",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   marginTop: "1rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
@@ -767,7 +767,7 @@ const thirdHeading = {
 const formHeadingStyle = {
   color: "#4C8AB1",
   textAlign: "center",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "2.1875rem",
   fontWeight: 700,
   lineHeight: "normal",
@@ -798,7 +798,7 @@ const inputStyle = {
   fontSize: "14px",
   border: "1px solid #ccc",
   borderRadius: "12px",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   paddingLeft: "-1.5rem",
 };
 
@@ -806,7 +806,7 @@ const labelStyle = {
   display: "block",
   marginBottom: "0.5rem",
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1rem",
   fontWeight: 400,
   lineHeight: "normal",
@@ -815,7 +815,7 @@ const labelStyle = {
 const hptLinksStyle = {
   color: "#FFF",
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem" },
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: 400,
   lineHeight: "normal",
 };

@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import { userApiSlice } from '../../../redux/apis/usersApiSlice';
 import { allEvents } from '../../../redux/slices/Events/eventsSlice';
 import { getForecast } from '../../../redux/slices/DailyForecast/dailyForecastSlice';
+import { useOutletContext } from 'react-router-dom';
 
 const themeStyle = {
   border: {

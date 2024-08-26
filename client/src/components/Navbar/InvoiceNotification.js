@@ -13,22 +13,22 @@ const InvoiceNotification = ({ data, setInvoiceNotification }) => {
       <Typography
         variant="h6"
         display={"block"}
-        fontFamily={"inherit"}
+        fontFamily={'var(--main-font-family)'}
         fontSize={"12px"}
       >
         New Invoice: {data?.data?.InvoiceNumber}
       </Typography>
-      <Typography variant="body2" fontFamily={"inherit"} fontSize={"14px"}>
+      <Typography variant="body2" fontFamily={'var(--main-font-family)'} fontSize={"14px"}>
         A new invoice (INV-{data?.data?.InvoiceNumber}) has been created for{" "}
         {data?.data?.Client?.firstName} by {data?.data?.Admin?.firstName}.
       </Typography>
-      <Typography fontFamily={"inherit"} fontSize={"14px"}>
+      <Typography fontFamily={'var(--main-font-family)'} fontSize={"14px"}>
         Please review the invoice and make a payment by:
       </Typography>
       <Typography>
         {moment(data?.data?.InvoiceDueDate).format("MMM, DD, YYYY")}.
       </Typography>
-      <Typography fontFamily={"inherit"} fontSize={"14px"}>
+      <Typography fontFamily={'var(--main-font-family)'} fontSize={"14px"}>
         Please check your email.
       </Typography>
       <Stack alignItems={"flex-end"}>
@@ -37,7 +37,7 @@ const InvoiceNotification = ({ data, setInvoiceNotification }) => {
           variant={"contained"}
           backgroundColor={"#4C8AB1"}
           fontSize={"11px"}
-          fontFamily={"Inter, sans serif"}
+          fontFamily={'var(--main-font-family)'}
           marginLeft={"5px"}
           alignSelf={"right"}
           handleOnClick={() => {

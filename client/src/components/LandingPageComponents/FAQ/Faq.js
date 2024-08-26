@@ -23,22 +23,15 @@ const FAQ = () => {
   return (
     <Container style={styles.container}>
       <Typography
-        sx={{
-          marginBottom: "20px",
-          fontFamily: "Arial Rounded MT, sans-serif",
-          fontWeight: 600,
-          fontSize: "16px",
-          color: "#2E728F",
-          textAlign: "center",
-        }}
+        sx={styles.titleFont}
       >
         FAQ's
       </Typography>
 
-      <Typography variant="h4" align="center" gutterBottom>
+      <Typography sx={styles.SubtitleFont} align="center" gutterBottom>
         Frequently Asked Questions
       </Typography>
-      <Typography variant="body1" align="center" paragraph>
+      <Typography sx={styles.SubtitleFont} align="center" paragraph>
         Everything you need to know about the product and billing.
       </Typography>
       {faqData.map((item, index) => (
@@ -89,6 +82,26 @@ const FAQ = () => {
 export default FAQ;
 
 const styles = {
+    titleFont:{
+      marginBottom: "20px",
+          fontFamily: 'var(--main-font-family)',
+          fontWeight: 600,
+          fontSize: { md: "16px",sm:"16px", xs: "14px" },
+          color: "#2E728F",
+          textAlign: "center",
+    },
+    SubtitleFont:{
+      fontFamily: 'var(--main-font-family)',
+      fontSize: { md: "36px",sm:"36px", xs: "18px" },
+        fontWeight:500,
+        marginBottom: 2,
+    },
+    DecsFont:{
+      fontFamily: 'var(--main-font-family)',
+      fontSize: { md: "16px",sm:"16px", xs: "14px" },
+        fontWeight:400,
+        color:"#454245"
+    },
   container: {
     padding: "32px 16px",
   },
@@ -100,10 +113,15 @@ const styles = {
     color: "#1976D2",
   },
   question: {
-    fontWeight: "bold",
+    fontFamily: 'var(--main-font-family)',
+    fontSize: { md: "16px",sm:"16px", xs: "14px" },
+      fontWeight:700,
   },
   answer: {
-    color: "#555",
+    fontFamily: 'var(--main-font-family)',
+    fontSize: { md: "16px",sm:"16px", xs: "14px" },
+      fontWeight:400,
+      color:"#454245"
   },
   contactSection: {
     marginTop: "32px",
@@ -113,12 +131,12 @@ const styles = {
     textAlign: "center",
   },
   contactFirstHeading: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontWeight: 900,
     fontSize: "20px",
   },
   Contactsecondheading: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontWeight: 400,
     fontSize: "18px",
   },
@@ -131,7 +149,7 @@ const styles = {
     backgroundColor: "#2E728F",
     color: "white",
     fontSize: "14px",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontWeight: 600,
   },
 };

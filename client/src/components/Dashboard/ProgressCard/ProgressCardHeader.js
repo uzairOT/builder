@@ -145,15 +145,15 @@ export default ProgressCardHeader;
 const themeStyle = {
   colorBlue: {
     color: "#4C8AB1",
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
   },
   colorGray: {
     color: "#535353C9",
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
   },
   badge: {
     display: "flex",
     color: "#FFF",
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
   },
 };

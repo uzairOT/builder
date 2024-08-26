@@ -128,7 +128,7 @@ const themeStyle = {
     tabText: {
         color: "#484848",
         '& .MuiTypography-root': {
-            fontFamily: 'Arial Rounded MT, sans-serif',
+            fontFamily: 'var(--main-font-family)',
             fontSize: "1rem"
         },
         '&:hover': {

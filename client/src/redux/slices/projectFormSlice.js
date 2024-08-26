@@ -91,7 +91,7 @@ export const {
   resetUserAndRoleEmail,
   setEndTime,
   setStartTime,
-  setSkipInvite
+  setSkipInvite,
 } = projectFormSlice.actions;
 
 export const selectProjectForm = state => state.projectForm;

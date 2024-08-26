@@ -200,13 +200,20 @@ function MasterLineTable({
                     </TableCell>
                   </TableRow>
                 </>
-                ) : data?.MasterLines?.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={10} sx={{ textAlign: "center", borderBottom:'none' }}>
-                      No Records
-                    </TableCell>
-                  </TableRow>
-                ) : (
+              ) : data?.MasterLines?.length === 0 ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={10}
+                    sx={{
+                      textAlign: "center",
+                      borderBottom: "none",
+                      fontFamily: "var(--main-font-family)",
+                    }}
+                  >
+                    No Records
+                  </TableCell>
+                </TableRow>
+              ) : (
                 data?.MasterLines?.map((row) => (
                   <TableRow key={row.id}>
                     <TableCell sx={tableCellValueStyle}>{row.title}</TableCell>
@@ -267,20 +274,20 @@ export default MasterLineTable;
 const tableCellStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
-  textOverflow:'ellipsis',
-  overflow:'hidden',
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 500,
   fontSize: "14px",
-  fontFamily: "Poppins",
+  fontFamily: "var(--main-font-family)",
 };
 
 const tableCellValueStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
-  textOverflow:'ellipsis',
-  overflow:'hidden',
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 400,
   borderBottom: "none",
-  fontFamily: "Montserrat",
+  fontFamily: "var(--main-font-family)",
   color: "#000000",
 };

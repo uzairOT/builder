@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import Input from "@mui/joy/Input";
 import Textarea from "@mui/joy/Textarea";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import axios from "axios";
 import {
   useAddProjectNotesMutation,
@@ -23,9 +23,11 @@ import { fileTypeIcons } from "../../dialogues/AddImage/assets/fileTypes";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CloseIcon from "@mui/icons-material/Close";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
+import { usePermissionCheck } from "../../Settings/PermissionAccess/PermissionCheck";
+import { useSelector } from "react-redux";
 //import "react-toastify/dist/ReactToastify.css";
 
-const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
+const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
   const [open, setOpen] = useState(false);
   const { id } = useParams();
   //console.log(notes);
@@ -34,6 +36,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
   // const [fileName, setFileName] = useState("");
   // const [fileType, setFileType] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
+
   const [images, setImages] = useState(notes ? notes.files : []);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -180,19 +183,22 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
     console.log(images);
   }, [images]);
 
+
   return (
     <>
-      {!showEditModal && (
-        <BuilderProButton
-          variant={"contained"}
-          backgroundColor={"#4C8AB1"}
-          fontSize={{xl:"11px",lg:"10px", md:"11px", xs:"11px"}}
-          fontFamily={"Inter, sans serif"}
-          handleOnClick={handleOpen}
-        >
-          Add Notes
-        </BuilderProButton>
-      )}
+
+{!showEditModal && (
+  <BuilderProButton
+    variant={"contained"}
+    backgroundColor={"#4C8AB1"}
+    fontSize={{ xl: "11px", lg: "10px", md: "11px", xs: "11px" }}
+    fontFamily={'var(--main-font-family)'}
+    handleOnClick={handleOpen}
+  >
+    Add Notes
+  </BuilderProButton>
+)}
+
       <Modal open={showEditModal ? showEditModal : open} onClose={handleClose}>
         <Stack sx={style}>
           <Stack
@@ -202,7 +208,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
             alignItems={"center"}
           >
             <Typography
-              fontFamily={"inherit"}
+              fontFamily={'var(--main-font-family)'}
               fontSize={"24px"}
               fontWeight={"500"}
             >
@@ -341,7 +347,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
               variant={"contained"}
               backgroundColor={"#4C8AB1"}
               fontSize={"11px"}
-              fontFamily={"Inter, sans serif"}
+              fontFamily={'var(--main-font-family)'}
               handleOnClick={handleSubmit}
             >
               {isLoading ? <CircularProgress size={"18px"} /> : showEditModal ? "Edit Notes" : "Add Notes"}

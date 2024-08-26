@@ -48,28 +48,32 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
-  const [promoCode, setPromoCode] = useState('');
-  const [discounted, setDiscounted] = useState('');
+  const [promoCode, setPromoCode] = useState("");
+  const [discounted, setDiscounted] = useState("");
   const [newAmount, setNewAmount] = useState(0);
-  const [percentageOff, setPercentageOff] = useState(0)
-  const [verifyCoupon, {isLoading}] = useVerifyCouponMutation();
+  const [percentageOff, setPercentageOff] = useState(0);
+  const [verifyCoupon, { isLoading }] = useVerifyCouponMutation();
 
-  const handlePromoCodeChange = (e) =>{
+  const handlePromoCodeChange = (e) => {
     setPromoCode(e.target.value);
-  }
+  };
   const handlePromoCode = async () => {
-      try{
-        const res = await verifyCoupon({couponCode: promoCode, amount:currentPlan}).unwrap().then(res=>{
-          console.log(res)
+    try {
+      const res = await verifyCoupon({
+        couponCode: promoCode,
+        amount: currentPlan,
+      })
+        .unwrap()
+        .then((res) => {
+          console.log(res);
           setNewAmount(res.newAmount);
           setDiscounted(res.discount);
           setPercentageOff(res.discountPercentage);
-        })
-
-      }catch(error){
-        console.error(error)
-      }
-  }
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const amount = currentPlan;
   useEffect(() => {
     console.log("==============1111111111 ", currentUser);
@@ -78,12 +82,14 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getTokenFromLocalStorage()}`,
       }),
-    }).then(async (r) => {
-      const { publishableKey } = await r.json();
-      setStripePromise(loadStripe(publishableKey));
-    }).catch(error => {
-      console.log(error)
-    });
+    })
+      .then(async (r) => {
+        const { publishableKey } = await r.json();
+        setStripePromise(loadStripe(publishableKey));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   useEffect(() => {
@@ -94,13 +100,15 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
         Authorization: `Bearer ${getTokenFromLocalStorage()}`,
       }),
       body: JSON.stringify({ amount: amount }),
-    }).then(async (result) => {
-      // console.log("-=-=-=-result ", result);
-      var { clientSecret } = await result.json();
-      setClientSecret(clientSecret);
-    }).catch(error => {
-      console.log(error)
-    });
+    })
+      .then(async (result) => {
+        // console.log("-=-=-=-result ", result);
+        var { clientSecret } = await result.json();
+        setClientSecret(clientSecret);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [amount]);
 
   const handleInputChange = (e) => {
@@ -127,17 +135,15 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
     fetchData();
   }, []);
 
-  useEffect(()=>{
-    console.log(promoCode)
-  }, [promoCode])
-  useEffect(()=>{
-    if(discounted === ''){
-
-    }else{
-
-      setDiscounted('')
-      }
-  },[currentPakage])
+  useEffect(() => {
+    console.log(promoCode);
+  }, [promoCode]);
+  useEffect(() => {
+    if (discounted === "") {
+    } else {
+      setDiscounted("");
+    }
+  }, [currentPakage]);
 
   const themeStyle = {
     promoCode: {
@@ -145,6 +151,7 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
       width: "100%",
     },
     inputLabels: {
+      fontFamily: "var(--main-font-family)",
       fontSize: "14px",
       color: "gray",
     },
@@ -160,7 +167,7 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
       <form>
         <Stack p={3} px={4}>
           <Typography
-            fontFamily={"Inter, sans serif"}
+            fontFamily={"var(--main-font-family)"}
             fontSize={"18px"}
             fontWeight={"500"}
           >
@@ -171,7 +178,12 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
               Organization Name
             </label>
             <TextField
-            inputProps={{ maxLength: 50 }}
+              sx={{
+                "& .MuiInputBase-input::placeholder": {
+                  fontFamily: "var(--main-font-family)",
+                },
+              }}
+              inputProps={{ maxLength: 50 }}
               id="organizationName"
               label=""
               variant="outlined"
@@ -204,8 +216,13 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
               Address Line 1
             </label>
             <OutlinedInput
-            inputProps={{ maxLength: 50 }}
-            // inputProps={{maxLength:1}}
+              sx={{
+                "& .MuiInputBase-input::placeholder": {
+                  fontFamily: "var(--main-font-family)",
+                },
+              }}
+              inputProps={{ maxLength: 50 }}
+              // inputProps={{maxLength:1}}
               id="address"
               name="address"
               placeholder={"Street address"}
@@ -217,7 +234,9 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
           </Stack>
           <Stack p={1} py={4} spacing={1}>
             <Stack flex={1} direction={"row"} spacing={1}>
-              <Typography color={"gray"}>Have a promo code?</Typography>
+              <Typography fontFamily={"var(--main-font-family)"} color={"gray"}>
+                Have a promo code?
+              </Typography>
               <HelpIcon
                 fontSize={"small"}
                 sx={{ color: "GrayText", "&:hover": { color: "black" } }}
@@ -228,13 +247,34 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
                 variant={"outlined"}
                 placeholder="Enter promo code"
                 size="small"
-                style={{ width: "67%", backgroundColor: "#F5F5F5" }}
+                sx={{
+                  width: "67%",
+                  backgroundColor: "#F5F5F5",
+                  "& .MuiInputBase-input::placeholder": {
+                    fontFamily: "var(--main-font-family)",
+                  },
+                }}
                 value={promoCode}
                 onChange={(e) => handlePromoCodeChange(e)}
               ></OutlinedInput>
-              <PromoCodeButton  width={"30%"} variant="contained" disabled={isLoading} onClick={handlePromoCode}>
-                
-                {isLoading ? <CircularProgress sx={{fontSize:'14px'}} /> :<Typography  fontSize={{xl:14,lg:11}}>Apply Code </Typography> }
+              <PromoCodeButton
+                width={"30%"}
+                variant="contained"
+                disabled={isLoading}
+                onClick={handlePromoCode}
+              >
+                {isLoading ? (
+                  <CircularProgress sx={{ fontSize: "14px" }} />
+                ) : (
+                  <Typography
+                    sx={{
+                      fontFamily: "var(--main-font-family)",
+                    }}
+                    fontSize={{ xl: 14, lg: 11 }}
+                  >
+                    Apply Code{" "}
+                  </Typography>
+                )}
               </PromoCodeButton>
             </Stack>
           </Stack>
@@ -245,7 +285,7 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
             py={1}
           >
             <Typography
-              fontFamily={"Inter, sans serif"}
+              fontFamily={"var(--main-font-family)"}
               fontSize={"18px"}
               fontWeight={"500"}
             >
@@ -263,20 +303,32 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
             alignItems={"center"}
             py={0.1}
           >
-            <Typography>
-              <b>Choosen Plan: </b>
+            <Typography fontFamily={"var(--main-font-family)"}>
+              <b
+                style={{
+                  fontFamily: "var(--main-font-family)",
+                }}
+              >
+                Choosen Plan:{" "}
+              </b>
               {currentPakage}
             </Typography>
             <Typography>{amount}$</Typography>
             {/* <Typography fontSize={'14px'} color={'tomato'}>{discounted ? ` -${((discounted/amount) *100)}% off` : ''}</Typography> */}
           </Stack>
-          {discounted && <Stack direction={'row'} justifyContent={'space-between'} >
-            <Stack direction={'row'} gap={1}>
-            <Typography><b>Discounted price: </b></Typography>
-            <Typography>{discounted ? `${newAmount}$    ` : ''}</Typography>
+          {discounted && (
+            <Stack direction={"row"} justifyContent={"space-between"}>
+              <Stack direction={"row"} gap={1}>
+                <Typography>
+                  <b>Discounted price: </b>
+                </Typography>
+                <Typography>{discounted ? `${newAmount}$    ` : ""}</Typography>
+              </Stack>
+              <Typography fontSize={"14px"} color={"tomato"}>
+                {discounted ? ` -${percentageOff}%` : ""}
+              </Typography>
             </Stack>
-            <Typography fontSize={'14px'} color={'tomato'}>{discounted ? ` -${percentageOff}%` : ''}</Typography>
-          </Stack>}
+          )}
           {clientSecret && stripePromise && (
             <Elements stripe={stripePromise} options={{ clientSecret }}>
               <CheckoutForm

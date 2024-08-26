@@ -148,7 +148,7 @@ const themeStyle = {
         objectFit: 'contain'
     },
     typoText: {
-        fontFamily: 'Arial Rounded MT, sans-serif',
+        fontFamily: 'var(--main-font-family)',
         fontSize: '1.3rem',
         color: '#484848',
         margin: "1rem 0rem 0rem 1.5rem"
@@ -182,7 +182,7 @@ const themeStyle = {
 
     },
     commentText: {
-        fontFamily: 'Arial Rounded MT, sans-serif',
+        fontFamily: 'var(--main-font-family)',
         fontSize: "1rem",
         color: "#484848",
         margin: "0.5rem"

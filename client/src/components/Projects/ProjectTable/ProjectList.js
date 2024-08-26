@@ -232,7 +232,7 @@ const ProjectList = ({
           <Stack pl={{ xl: 8, lg: 8, md: 8, sm: 1, xs: 1 }}>
             <Typography
               color={"#4C8AB1"}
-              fontFamily={"Poppins, san serif"}
+              fontFamily={'var(--main-font-family)'}
               fontSize={{ md: "22px", xs: "18px" }}
               fontWeight={"600"}
             >
@@ -240,7 +240,7 @@ const ProjectList = ({
             </Typography>
             <Typography
               color={"#4C8AB1"}
-              fontFamily={"Poppins, san serif"}
+              fontFamily={'var(--main-font-family)'}
               fontSize={{ md: "14px", xs: "11px" }}
               fontWeight={"400"}
             >
@@ -262,7 +262,7 @@ const ProjectList = ({
                 >
                   <Typography
                     color={"#272727"}
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={'var(--main-font-family)'}
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
@@ -275,7 +275,7 @@ const ProjectList = ({
               variant={"contained"}
               backgroundColor={"#FFAC00"}
               Icon={FilterListIcon}
-              fontFamily={"inherit"}
+              fontFamily={'var(--main-font-family)'}
               fontSize={"12px"}
               handleOnClick={handleClick}
               marginLeft={"16px"}
@@ -322,7 +322,7 @@ const ProjectList = ({
                   }
                 >
                   <Typography
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={'var(--main-font-family)'}
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
@@ -344,7 +344,7 @@ const ProjectList = ({
                   }
                 >
                   <Typography
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={'var(--main-font-family)'}
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
@@ -366,7 +366,7 @@ const ProjectList = ({
                   }
                 >
                   <Typography
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={'var(--main-font-family)'}
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
@@ -410,7 +410,7 @@ const ProjectList = ({
             <BuilderProButton
               variant={"contained"}
               backgroundColor={"#FFAC00"}
-              fontFamily={"inherit"}
+              fontFamily={'var(--main-font-family)'}
               fontSize={"12px"}
               marginLeft={"0px"}
               handleOnClick={() => {
@@ -687,13 +687,13 @@ export default ProjectList;
 
 const themeStyle = {
   tableCell: {
+      fontFamily: 'var(--main-font-family)',
     maxWidth: { xl: "40px", lg: "30px", md: "70px", xs: "100%" },
     minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
     textOverflow: "ellipsis",
     overflow: "hidden",
     fontWeight: 500,
     fontSize: { md: "14px", xs: "11px" },
-    fontFamily: "Montserrat, sans serif",
     color: "#8C8C8C",
     padding: "4px",
     border: "none",
@@ -704,7 +704,7 @@ const themeStyle = {
     backgroundColor: "#FFC8C8",
     color: "#F03434",
     fontSize: "12px",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     width: "80px",
     textAlign: "center",
   },
@@ -714,7 +714,7 @@ const themeStyle = {
     backgroundColor: "#16C09821",
     color: "#008767",
     fontSize: "12px",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     width: "80px",
     textAlign: "center",
   },
@@ -741,6 +741,6 @@ const paginationTextStyle = {
   },
   fontWeight: 400,
   fontSize: "14px",
-  fontFamily: "Poppins",
+  fontFamily: 'var(--main-font-family)',
   color: "#8C8C8C",
 };

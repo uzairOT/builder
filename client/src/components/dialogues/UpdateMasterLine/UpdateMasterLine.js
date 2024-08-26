@@ -672,7 +672,7 @@ function UpdateMasterLine({
                       border: "1px solid #ccc",
                       borderRadius: "12px",
                       color: "#202227",
-                      fontFamily: "Arial Rounded MT, sans-serif",
+                      fontFamily: 'var(--main-font-family)',
                       backgroundColor: "#EDF2F6",
                       ...leftSpace,
                     }}
@@ -696,7 +696,7 @@ function UpdateMasterLine({
                       border: "1px solid #ccc",
                       borderRadius: "12px",
                       color: "#202227",
-                      fontFamily: "Arial Rounded MT, sans-serif",
+                      fontFamily: 'var(--main-font-family)',
                       backgroundColor: "#EDF2F6",
                       ...leftSpace,
                     }}
@@ -742,7 +742,7 @@ function UpdateMasterLine({
 }
 
 const typoTitle = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1.5rem",
   color: "#4C8AB1",
 };
@@ -756,7 +756,7 @@ const inputStyle = {
   border: "1px solid #ccc",
   borderRadius: "12px",
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   paddingLeft: "-1.5rem",
   backgroundColor: "#EDF2F6",
   outline: "none !important",
@@ -778,7 +778,7 @@ const paperPropsStyle = {
 };
 
 const typoText = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "0.8rem",
   color: "#202227",
 };

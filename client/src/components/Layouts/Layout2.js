@@ -8,6 +8,9 @@ import {useGetProjectDataQuery} from '../../redux/apis/Project/projectApiSlice';
 import { useDispatch, useSelector } from 'react-redux'
 import { useGetProjectUserRoleMutation } from '../../redux/apis/Project/userProjectApiSlice'
 import { authUserRole, getUserRoleFromRedux, setUserRoleError, setUserRoleIsLoading } from '../../redux/slices/auth/userRoleSlice'
+import { useGetProjectPermssionsListMutation, usePermissionsMutation } from '../../redux/apis/Permissions/permissionsApiSlice'
+import { setPermissionsState } from '../../redux/slices/Permissions/permissionsSlice'
+import { socket } from '../../socket'
 
 
 const Layout2 = () => {
@@ -20,20 +23,61 @@ useEffect(()=>{
     const isAuthenticated = useSelector((state) => state.auth.userInfo);
     const userId = isAuthenticated ? isAuthenticated.user.id : null;
     const [getUserRole, {isLoading}] = useGetProjectUserRoleMutation();
+    const [getPermissions, {isLoading:isPermissionsLoading}] = usePermissionsMutation();
     const userRole = useSelector(getUserRoleFromRedux);
     const dispatch = useDispatch();
     // projects.find(project => project.id === parseInt(currentProjectId));
     const selectedProjectId = data?.data;
     const projectName = selectedProjectId?.projectName;
     const projectLocation = selectedProjectId?.location
-    //console.log("cascasc");
+    const SuperAdminId = selectedProjectId?.userId;
+    console.log("Selected Project:", SuperAdminId);
     // console.log('APP.JS: ',id)
+
+
+ const [GetPermissions] = usePermissionsMutation();
+
+  const handleUpdatePermission = async () => {
+    try {
+      const response = await GetPermissions({projectId:currentProjectId}).unwrap();
+
+      if (response && Array.isArray(response)) {
+        dispatch(setPermissionsState(response)); 
+      }
+
+    } catch (error) {
+      console.error("Failed to update permission:", error);
+    }
+  };
+
+ useEffect(() => {
+  const handleSocketUpdate = async () => {
+    try {
+      await handleUpdatePermission();
+    } catch (error) {
+      console.error("Failed to update permissions from socket:", error);
+    }
+  };
+
+  // Listen for the socket event
+  socket.on("project-permissions-updated", handleSocketUpdate);
+
+  // Cleanup on component unmount
+  return () => {
+    socket.off("project-permissions-updated", handleSocketUpdate);
+  };
+}, [socket]);
+
+
+
 
     const getUserRoleAuth = async () => {
       if(currentProjectId){
         try{
           dispatch(setUserRoleIsLoading(true));
           const res = await getUserRole({projectId: currentProjectId, userId: userId});
+          const permissions = await getPermissions({projectId: currentProjectId})
+          dispatch(setPermissionsState(permissions))
           dispatch(authUserRole(res.data.role));
         } catch(error){
           console.log(error)
@@ -66,7 +110,7 @@ useEffect(()=>{
         </Grid>
         <Grid item  xl={10} lg={10} md={8} sm={12} xs={12}  pr={1} pb={1}  height={{xl:'calc(93vh - 5px)' ,lg:'93vh', md:'calc(93vh + 15px)', sm:'93vh', xs:'93vh' }} sx={themeStyle.scrollable} overflow={'hidden'}>
         <Stack><Paper sx={{ borderRadius: '14px', }}><ProjectsNavbar project={selectedProjectId} /></Paper></Stack>
-        {userRole.isLoading ?<Stack m={'auto'} width={'100%'}  justifyContent={'center'} alignItems={'center'}><CircularProgress /></Stack> : <Outlet context={[projectName, projectLocation]}  />}
+        {userRole.isLoading ?<Stack m={'auto'} width={'100%'}  justifyContent={'center'} alignItems={'center'}><CircularProgress /></Stack> : <Outlet context={[projectName, projectLocation, SuperAdminId]}  />}
         </Grid>
     </Grid>
 
@@ -80,7 +124,7 @@ const themeStyle = {
   title: {
     fontSize: {xl:'22px', lg:'17px', md:'19px', xs:'20px'},
     fontWeight: '500',
-    fontFamily: 'Arial Rounded MT, sans-serif',
+    fontFamily: 'var(--main-font-family)',
     color: '#000000'
 },scrollable: {
   scrollbarWidth: 'none',  // For Firefox

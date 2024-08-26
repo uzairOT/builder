@@ -45,7 +45,7 @@ const ChangeOrder = () => {
         <BuilderProButton
           backgroundColor={"#FFAC00"}
           variant={"contained"}
-          fontFamily={"Inter, sans serif"}
+          fontFamily={'var(--main-font-family)'}
           fontSize={{ xl: "16px", lg: 12, md: "16px", xs: "16px" }}
           fontWeight={"600"}
           padding={{ md: "6px 32px 6px 32px" }}
@@ -75,7 +75,7 @@ const ChangeOrder = () => {
                   refetchChangeOrder={refetch}
                   projectId={currentProjectId}
                   adminProjectView={true}
-                  view={"Work Order"}
+                  view={"Change Order"}
                   authUserRole={authUserRole.userRole}
                   changeOrderView={true}
                 />

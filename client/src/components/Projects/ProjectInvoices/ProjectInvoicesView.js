@@ -1,7 +1,7 @@
 import { Box, Paper, Stack } from "@mui/material";
 import React, { useState } from "react";
 import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import ProjectsChangeOrder from "../ProjectsChangeOrder/ProjectsChangeOrder";
 import TaskCalender from "../../Task/Calender/TaskCalender";
 import { useSelector } from "react-redux";
@@ -18,6 +18,7 @@ const ProjectInvoicesView = () => {
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
   const userRole = useSelector(getUserRoleFromRedux);
+  const role = useSelector(state => state.userRole.userRole);
   const events = allEvent.events;
   const params = useParams();
   const userRoleAuth = useSelector(getUserRoleFromRedux);
@@ -37,7 +38,8 @@ const ProjectInvoicesView = () => {
     setChangeView(!changeView);
   };
   console.log(userRole)
-
+  // const [projectName, projectLocation, SuperAdminId] = useOutletContext(); 
+  // const canGenerate = usePermissionCheck("generate-invoices", role, SuperAdminId)
   return (
     <Paper
       style={{
@@ -75,7 +77,7 @@ const ProjectInvoicesView = () => {
             <BuilderProButton
               backgroundColor={"#FFAC00"}
               variant={"contained"}
-              fontFamily={"Inter, sans serif"}
+              fontFamily={'var(--main-font-family)'}
               fontSize={{xl:"16px", lg:"14px",md:"16px",xs:"16px",}}
               fontWeight={"600"}
               padding={{ md: "6px 32px 6px 32px" }}
@@ -102,6 +104,7 @@ const ProjectInvoicesView = () => {
                 <>
                   <Stack p={1} borderRadius={"14px"} width={"99%"}>
                     <AddPhaseView
+                    // canGenerate={canGenerate}
                       refetchChangeOrder={refetch}
                       projectId={id}
                       adminProjectView={true}

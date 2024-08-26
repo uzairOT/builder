@@ -80,7 +80,7 @@ const SignupComp = () => {
     fontSize: "14px",
     border: "1px solid #ccc",
     borderRadius: "12px",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     paddingLeft: "-1.5rem",
   };
   const customPhoneStyles = {
@@ -151,7 +151,7 @@ const SignupComp = () => {
       try {
         const res = await googleLogin({ email }).unwrap();
         if (res.message === "Login Successful!") {
-          dispatch(setCredentials({ ...res }));
+          dispatch(setCredentials({ ...res.data }));
           setTimeout(() => {
             window.location.href = "/";
           }, 1000);
@@ -481,7 +481,7 @@ const SignupComp = () => {
                       marginLeft: "14px",
                       marginRight: "14px",
                       marginTop: "3px",
-                      fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+                      fontFamily: 'var(--main-font-family)',
                     }}
                   >
                     Phone is not valid
@@ -503,7 +503,7 @@ const SignupComp = () => {
               <input
                 type="text"
                 name="company"
-                placeholder="Builder Builder Pro"
+                placeholder="BuilderBuilder Pro"
                 style={{
                   ...inputStyle,
                   border:
@@ -639,17 +639,18 @@ const SignupComp = () => {
 
               <label htmlFor="agreeTerms" style={checkBoxText}>
                 <label
-                  onClick={() => {
-                    navigate("/privacyandterms");
-                  }}
                  style={{fontSize:'11px'}}
                 >
                   By creating an account, I agree to{" "}
-                  <Link style={{ ...linkStyle, ...lableResponsiveFont,fontSize:'11px' }}>
+                  <Link    onClick={() => {
+                    navigate("/terms");
+                  }} style={{ ...linkStyle, ...lableResponsiveFont,fontSize:'11px',textDecoration: 'none' }}>
                     Terms of use
                   </Link>{" "}
                   and{" "}
-                  <Link style={{ ...linkStyle, ...lableResponsiveFont,fontSize:'11px' }}>
+                  <Link    onClick={() => {
+                    navigate("/privacypolicy");
+                  }} style={{ ...linkStyle, ...lableResponsiveFont,fontSize:'11px', textDecoration: 'none' }}>
                     Privacy Policy
                   </Link>
                 </label>
@@ -675,6 +676,7 @@ const SignupComp = () => {
                     ...loginLink,
                     ...linkResponsiveColor,
                     ...lableResponsiveFont,
+                    textDecoration: 'none'
                   }}
                 >
                   Log in
@@ -849,7 +851,7 @@ const namesFieldBox = {
 
 const subtitleStyle = {
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "0.75rem",
   fontWeight: 400,
   marginBottom: "0.2rem",
@@ -870,7 +872,7 @@ const linkBox = {
   paddingBottom: "1rem",
   marginLeft: "-0.5rem",
   color: "#202227",
-  fontFamily: "Poppins",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1rem",
   fontStyle: "normal",
   fontWeight: 400,
@@ -878,7 +880,7 @@ const linkBox = {
 };
 const linkStyle = {
   color: "#4C8AB1",
-  fontFamily: "Poppins",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: 600,
   lineHeight: "normal",
   width: "100%",
@@ -897,7 +899,7 @@ const checkBoxText = {
 };
 const alreadyHaveAccountTypo = {
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.8rem" },
   fontWeight: 400,
   lineHeight: "normal",
@@ -908,7 +910,7 @@ const alreadyHaveAccountTypo = {
 
 const loginLink = {
   fontWeight: 600,
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
 };
 
 const continueWithBox = {
@@ -966,7 +968,7 @@ const selectStyle = {
   ".MuiOutlinedInput-notchedOutline": { border: 0 },
   color: "white",
   border: "none",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1rem",
   fontWeight: "400",
   lineHeight: "normal",
@@ -983,7 +985,7 @@ const hptLinksBox = {
 
 const firstHeading = {
   color: "#FFF",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
   // marginTop: "1rem",
   fontSize: { xl: "2rem", lg: "2rem", md: "1.9rem", sm: "1rem" },
@@ -997,14 +999,14 @@ const secondHeading = {
   color: "rgba(255, 255, 255, 0.80)",
   // width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: { xl: "1.5rem", lg: "1.5rem", md: "1.5rem", sm: "1rem" },
   fontWeight: 400,
 };
 
 const thirdHeading = {
   color: "#FFF",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   marginTop: "1rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontSize: { xl: "2rem", lg: "1.5rem", md: "1rem", sm: "1rem" },
@@ -1014,7 +1016,7 @@ const thirdHeading = {
 const formHeadingStyle = {
   color: "#4C8AB1",
   textAlign: "center",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "2.1875rem",
   fontWeight: 700,
   lineHeight: "normal",
@@ -1029,7 +1031,7 @@ const customeInputStyles = {
 
 const placeholderStyle = {
   color: "#B8B8B8",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1rem",
   paddingLeft: "0.5rem",
   fontWeight: 400,
@@ -1039,7 +1041,7 @@ const labelStyle = {
   display: "block",
   marginBottom: "5px",
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1rem",
   fontWeight: 400,
   lineHeight: "normal",
@@ -1048,7 +1050,7 @@ const labelStyle = {
 const hptLinksStyle = {
   color: "#FFF",
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem" },
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: 400,
   lineHeight: "normal",
   cursor: "pointer", // Ensure cursor changes on hover
@@ -1074,7 +1076,7 @@ const googleBtnStyle = {
   border: "1px solid rgba(6, 32, 72, 0.11)",
   background: "#FFF",
   color: "#333",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   width: { lg: "19rem", md: "19rem", sm: "19rem", xs: "100%" },
   fontSize: { lg: "1.1rem", md: "1.1rem", sm: "1rem", xs: "0.9rem" },
   fontWeight: 400,
@@ -1093,7 +1095,7 @@ const googleBtnStyle = {
 
 const ContinuewithTextStyle = {
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
   fontWeight: 400,
   display: "flex",

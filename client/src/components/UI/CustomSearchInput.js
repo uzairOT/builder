@@ -6,6 +6,9 @@ function CustomInput({ value, onChange, onKeyPress, placeholder,backgroundColor 
   return (
     <TextField
       sx={{
+        '& .MuiInputBase-input::placeholder': {
+          fontFamily: 'var(--main-font-family)',
+        },
         backgroundColor: backgroundColor,
         height: "40px",
         borderRadius: 25,

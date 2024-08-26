@@ -15,12 +15,14 @@ import shallowButton from "../../UI/shallowButton";
 import "../../../App.css";
 import StepTitles from "../StepTitles/StepTitles";
 import ProjectFormFields from "../ProjectFormFields/ProjectFormFields";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectProjectForm } from "../../../redux/slices/projectFormSlice";
 import { toast } from "react-toastify";
 import { useCheckProjectDuplicationMutation } from "../../../redux/apis/Project/projectApiSlice";
+import { setIsSaveAs } from "../../../redux/slices/Project/handlingProjectFlowSlice";
 //import "react-toastify/dist/ReactToastify.css";
-function SaveAsProject({ onSaveStep, onNextStep, setIsSaveAs, currentUserId }) {
+function SaveAsProject({ onSaveStep, onNextStep, currentUserId }) {
+  const dispatch = useDispatch();
   const { projectName, location, projectColor } =
     useSelector(selectProjectForm);
   const [checkProjectDuplication, { isLoading }] =
@@ -41,7 +43,8 @@ function SaveAsProject({ onSaveStep, onNextStep, setIsSaveAs, currentUserId }) {
         console.log(res);
         if (res?.data?.success) {
           onSaveStep();
-          setIsSaveAs(true);
+          dispatch(setIsSaveAs(true))
+          // setIsSaveAs(true);
         } else {
           toast.error(res.error.data.message || "Project name error");
         }
@@ -102,7 +105,7 @@ const typoBox = {
 };
 
 const typoText = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   letterSpacing: "0.01em",
   color: "#202227",
   textAlign: "center",

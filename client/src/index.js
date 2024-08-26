@@ -7,6 +7,11 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "@fontsource/josefin-sans"; 
+import "@fontsource/josefin-sans/400.css"; 
+import "@fontsource/josefin-sans/500.css"; 
+import "@fontsource/josefin-sans/600.css"; 
+import "@fontsource/josefin-sans/700.css"; 
 
 
 

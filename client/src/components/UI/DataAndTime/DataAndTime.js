@@ -37,13 +37,14 @@ const themeStyle = {
   time: {
     fontSize: { xs: "71px", sm:'50px', md: "50px",lg:'58px',  xl: "71px" },
     color: "#FFAC00",
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     fontWeight: "300",
   },
   date: {
     paddingLeft:2,
     fontSize: { xs: "16px", sm:'14px', md: "14px",lg:'16px' , xl: "18px" },
     color: "#4C8AB1",
+    fontFamily: 'var(--main-font-family)',
     fontWeight: "400",
   },
 };

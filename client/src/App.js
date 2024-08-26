@@ -8,7 +8,7 @@ import {
   useParams,
 } from "react-router-dom";
 // import Signup from "./pages/SignUp/Signup";
-import { lazy, Suspense, useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout3 from "./components/Layouts/Layout3";
 import Profile from "./components/Settings/Profile/Profile";
@@ -96,6 +96,12 @@ import Accounts from "./components/Settings/Accounts/Accounts.js";
 import Others from "./components/Settings/Others/Others.js";
 import Chat from "./components/Projects/ProjectsChat/Chat.js";
 import MainHome from "./components/LandingPageComponents/MainHome.js";
+import PolicyPage from "./components/LandingPageComponents/PrivacyPolicy/index.js";
+import TermsPage from "./components/LandingPageComponents/Terms/index.js";
+import PermissionAccess from "./components/Settings/PermissionAccess/Permissions.js";
+import { usePermissionsMutation } from "./redux/apis/Permissions/permissionsApiSlice.js";
+import { setPermissionsState, updatePermission } from "./redux/slices/LoginPermissions/PermissionsSlice.js";
+import { socket } from "./socket.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -107,6 +113,11 @@ const PermitView = lazy(() =>
 const DrawingFilesView = lazy(() =>
   import("./components/Projects/ProjectsDrawingFiles/DrawingFilesView")
 );
+
+const ProjectPermissionsView = lazy(() =>
+  import("./components/Projects/ProjectPermissions/ProjectPermissionsView.js")
+);
+
 const ReportView = lazy(() =>
   import("./components/Projects/ProjectsReport/ReportView")
 );
@@ -131,6 +142,41 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
   const forecast = useSelector(getForecast);
   const dailyForecast = forecast.dailyForecast || [];
   const dispatch = useDispatch();
+
+  // const [GetPermissions] = usePermissionsMutation();
+
+  // const handleUpdatePermission = async () => {
+  //   try {
+  //     const response = await GetPermissions().unwrap();
+
+  //     if (response && Array.isArray(response)) {
+  //       dispatch(setPermissionsState(response)); 
+  //     }
+
+  //   } catch (error) {
+  //     console.error("Failed to update permission:", error);
+  //   }
+  // };
+
+  // React.useEffect(() => {
+  //   handleUpdatePermission();
+  // }, [GetPermissions]);
+
+
+  // useEffect(()=>{
+  //   socket.on("organization-permissions-updated", ()=>{
+  //     handleUpdatePermission();
+  //   });
+
+  //   return ()=>{
+  //     socket.off("organization-permissions-updated", ()=>{
+  //       handleUpdatePermission();
+  //     });
+  //   }
+  // },[])
+
+
+
   useEffect(()=>{
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition((position) =>{
@@ -178,7 +224,10 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-      <Route path="/home" element={<MainHome/>}/>
+      <Route path="/" element={<MainHome/>}/>
+      <Route path="/terms" element={<TermsPage/>}/>
+      <Route path="/privacypolicy" element={<PolicyPage/>}/>
+
         <Route  path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/userinfo" element={<GoogleLogin />} />
@@ -256,6 +305,10 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
                   <Route path="project-report" element={<ReportView />} />
                   <Route path="change-order" element={<ChangeOrder />}></Route>
                   <Route path="invoices" element={<ProjectInvoicesView />} />
+                  <Route
+                      path="project-permissions"
+                      element={<ProjectPermissionsView />}
+                    />
                 </>
               )}
             </Route>
@@ -278,6 +331,7 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
               <Route path="coupon" element={<Coupon />} />
               {/* -- */}
               <Route path="materline" element={<MasterLineItem />} />
+              <Route path="permissions" element={<PermissionAccess/>}/>
               <Route path="units" element={<Units />} />
             </Route>
           </Route>

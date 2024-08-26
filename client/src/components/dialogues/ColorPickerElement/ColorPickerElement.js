@@ -183,11 +183,16 @@ function ColorPickerElement({
             <Typography sx={typoText}>Phase</Typography>
             <TextField
             inputProps={{ maxLength: 50 }}
-              sx={inputStyle}         
+            sx={{
+              ...inputStyle, 
+              '& .MuiInputBase-input::placeholder': {
+                fontFamily: 'var(--main-font-family)',
+              },
+            }}       
               margin="dense"
               id="phaseName"
               name="phaseName"
-              placeholder={'eg: Site Preparation'}
+              placeholder={'ex: Site Preparation'}
               // label="Email Address"
               type="text"
               variant="standard"
@@ -262,7 +267,7 @@ function ColorPickerElement({
 }
 
 const typoTitle = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1.5rem",
   color: "#4C8AB1",
 };
@@ -276,7 +281,7 @@ const inputStyle = {
   border: "1px solid #ccc",
   borderRadius: "12px",
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   paddingLeft: "-1.5rem",
   backgroundColor: "#EDF2F6",
 };
@@ -294,7 +299,7 @@ const paperPropsStyle = {
 };
 
 const typoText = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1rem",
   color: "#202227",
 };

@@ -59,7 +59,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
           p={3}
           pb={2}
           color={"#4C8AB1"}
-          fontFamily={"Poppins, san serif"}
+          fontFamily={'var(--main-font-family)'}
           fontSize={{xl:'22px', lg:"18px",md:'22px',xs:'22px',}}
           fontWeight={"600"}
         >
@@ -83,7 +83,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
             >
               <Tab
                 sx={{
-                  fontFamily: "Poppins, sans serif",
+                  fontFamily: 'var(--main-font-family)',
                   fontSize:{xl:'15px', lg:"12px",md:'15px',xs:'11px',}
                 }}
               >
@@ -91,7 +91,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
               </Tab>
               <Tab
                 sx={{
-                  fontFamily: "Poppins, sans serif",
+                  fontFamily: 'var(--main-font-family)',
                   fontSize:{xl:'15px', lg:"12px",md:'15px',xs:'11px',}
 
                 }}
@@ -101,7 +101,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
               
               <Tab
                 sx={{
-                  fontFamily: "Poppins, sans serif",
+                  fontFamily: 'var(--main-font-family)',
                   fontSize:{xl:'15px', lg:"12px",md:'15px',xs:'11px',}
 
                 }}
@@ -115,7 +115,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
                 {/* <BuilderProButton
                   backgroundColor={"#4C8AB1"}
                   variant={"contained"}
-                  fontFamily={"Inter, sans serif"}
+                  fontFamily={'var(--main-font-family)'}
                   fontSize={"16px"}
                   fontWeight={"600"}
                   padding={{md:"6px 32px 6px 32px"}}
@@ -188,7 +188,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
         {/* <BuilderProButton
                   backgroundColor={"#4C8AB1"}
                   variant={"contained"}
-                  fontFamily={"Inter, sans serif"}
+                  fontFamily={'var(--main-font-family)'}
                   fontSize={"16px"}
                   fontWeight={"600"}
                   handleOnClick={handleButton}

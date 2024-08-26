@@ -78,7 +78,7 @@ export default WeatherView;
 const themeStyle = {
   title: {
     color: "var(--Link-Text, #4C8AB1)",
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     fontSize: {xs:'18px',sm:'18px', md:'18px',lg:'22px',xl:"22px"},
     fontStyle: "normal",
     fontWeight: "400",

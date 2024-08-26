@@ -95,7 +95,7 @@ function ProjectFormFields() {
                 ...borderRadiusResponsive,
                 ...labelResponsiveFont,
               }}
-              placeholder="eg: Skyrise Sanctuary"
+              placeholder="ex: Skyrise Sanctuary"
               value={projectName}
               onChange={handleProjectNameChange}
               required

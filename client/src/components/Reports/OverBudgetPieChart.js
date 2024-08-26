@@ -38,20 +38,20 @@ const OverBudgetPieChart = () => {
     <Paper sx={{ height: "100%", borderRadius: "14px" }}>
       <Stack p={2}>
         <Typography
-          fontFamily={"Inter, sans serif"}
+          fontFamily={'var(--main-font-family)'}
           fontWeight={"500"}
           fontSize={{ xl: "18px", lg: "15px", md: "18px", xs: "18px" }}
         >
           Upcoming DeadLines
         </Typography>
         {/* <Typography
-          fontFamily={"Inter, sans serif"}
+          fontFamily={'var(--main-font-family)'}
           fontWeight={"500"}
           fontSize={"28px"}
         >
           25
         </Typography> */}
-        {/* <Typography fontFamily={'Inter, sans serif'} fontWeight={'400'} fontSize={'12px'} color={'#4F4F4F'}>
+        {/* <Typography fontFamily={'var(--main-font-family)'} fontWeight={'400'} fontSize={'12px'} color={'#4F4F4F'}>
                US Dollars
             </Typography> */}
       </Stack>
@@ -84,7 +84,7 @@ const OverBudgetPieChart = () => {
           />
           <Stack direction={"column"}>
             <Typography
-              fontFamily={"Inter, sans serif"}
+              fontFamily={'var(--main-font-family)'}
               fontSize={{ xl: "14px", lg: "12px", md: "14px", xs: "14px" }}
               fontWeight="bold"
             >
@@ -93,7 +93,7 @@ const OverBudgetPieChart = () => {
             {projects.map((project, index) => (
               <Typography
                 key={index}
-                fontFamily={"Inter, sans serif"}
+                fontFamily={'var(--main-font-family)'}
                 fontSize={"14px"}
               >
                 {project.projectName}
@@ -111,7 +111,7 @@ const OverBudgetPieChart = () => {
           />
           <Stack direction={"column"}>
             <Typography
-              fontFamily={"Inter, sans-serif"}
+              fontFamily={'var(--main-font-family)'}
               fontSize={{ xl: "14px", lg: "12px", md: "14px", xs: "14px" }}
               fontWeight="bold"
             >
@@ -120,7 +120,7 @@ const OverBudgetPieChart = () => {
             {projects.map((project, index) => (
               <Typography
                 key={index}
-                fontFamily={"Inter, sans serif"}
+                fontFamily={'var(--main-font-family)'}
                 fontSize={{ xl: "13px", lg: "11px", md: "13px", xs: "13px" }}
               >
                 {moment(project.end_time).format("YYYY-MM-DD")}

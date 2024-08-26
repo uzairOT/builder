@@ -181,7 +181,7 @@ const themeStyle = {
   },
   titleTypo: {
     color: "#484848",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "1.3rem",
     margin: "1rem 2rem",
   },
@@ -214,7 +214,7 @@ const themeStyle = {
     minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
     textOverflow:'ellipsis',
     overflow:'hidden',
-    fontFamily: "Poppins, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     whiteSpace: "nowrap",
     fontWeight: 500,
     fontSize: "0.9rem",

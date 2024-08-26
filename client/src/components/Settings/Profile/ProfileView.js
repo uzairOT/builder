@@ -254,7 +254,7 @@ function ProfileView() {
           <Grid container spacing={2}>
             <Grid item xs={12} sx={Profile}>
               <Stack direction={"row"} alignItems={"center"} gap={1}>
-                <Typography variant="h5">My Profile</Typography>
+                <Typography sx={{ fontFamily:'var(--main-font-family)'}} variant="h5">My Profile</Typography>
                 <Avatar
                   src={image ? image : AvatarImg}
                   alt={image ? "Uploaded Avatar" : "Placeholder Avatar"}
@@ -264,8 +264,9 @@ function ProfileView() {
             </Grid>
 
             <Grid item xs={12}>
-              <Typography>First Name</Typography>
+              <Typography sx={{ fontFamily:'var(--main-font-family)'}}>First Name</Typography>
               <TextField
+            
                 inputProps={{ maxLength: 50 }}
                 name="firstName"
                 type="text"
@@ -279,7 +280,7 @@ function ProfileView() {
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography>Last name</Typography>
+              <Typography sx={{ fontFamily:'var(--main-font-family)'}}>Last name</Typography>
               <TextField
                 inputProps={{ maxLength: 50 }}
                 name="lastName"
@@ -293,7 +294,7 @@ function ProfileView() {
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography>Email</Typography>
+              <Typography sx={{ fontFamily:'var(--main-font-family)'}}>Email</Typography>
               <TextField
                 inputProps={{ maxLength: 50 }}
                 name="email"
@@ -305,7 +306,7 @@ function ProfileView() {
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography>Phone Number</Typography>
+              <Typography sx={{ fontFamily:'var(--main-font-family)'}}>Phone Number</Typography>
               {/* <TextField
                 name="phoneNumber"
                 placeholder="Please enter your phone number"
@@ -343,12 +344,13 @@ function ProfileView() {
                 <Box>
                   <Typography
                     sx={{
+                      fontFamily:'var(--main-font-family)',
                       color: "#d32f2f",
                       fontSize: "12px",
                       marginLeft: "14px",
                       marginRight: "14px",
                       marginTop: "3px",
-                      fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+                      fontFamily: 'var(--main-font-family)',
                     }}
                   >
                     Phone is not valid
@@ -371,7 +373,7 @@ function ProfileView() {
             </Grid> */}
             <Grid item xs={12} sx={{ display: "flex", gap: 4, my: 6.1 }}>
               <Button
-                sx={{ whiteSpace: "nowrap" }}
+                sx={{ whiteSpace: "nowrap",fontFamily:'var(--main-font-family)'  }}
                 buttonText="Update Profile"
                 color="#ffffff"
                 backgroundColor="#4C8AB1"
@@ -384,7 +386,7 @@ function ProfileView() {
               />
               <Button
                 buttonText="Delete Profile"
-                sx={{ whiteSpace: "nowrap" }}
+                sx={{ whiteSpace: "nowrap",fontFamily:'var(--main-font-family)' }}
                 // color="#4C8AB1"
                 color="red"
                 border={"1px solid red"}
@@ -449,7 +451,7 @@ function ProfileView() {
             </div>
             <Typography variant="subtitle1" sx={changeProfile}>
               <Button
-                sx={{ whiteSpace: "nowrap" }}
+                sx={{ whiteSpace: "nowrap", fontFamily:'var(--main-font-family)' }}
                 buttonText="Change Profile"
                 color="#ffffff"
                 backgroundColor="#4C8AB1"
@@ -534,11 +536,15 @@ export default ProfileView;
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   "& input": {
+    fontFamily: 'var(--main-font-family)',
     border: "1px solid #E0E4EC",
     borderRadius: "8px",
     padding: "10px",
+  },
+  '& .MuiInputBase-input::placeholder': {
+    fontFamily: 'var(--main-font-family)',
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
@@ -562,7 +568,7 @@ const TextStyle = {
   color: "#202227",
   display: "inline-block",
   width: 100,
-  fontFamily: "GT Walsheim Trial",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: 400,
   marginBottom: "8px",
   fontSize: "1.2rem",
@@ -571,7 +577,7 @@ const ValueStyle = {
   whiteSpace: "nowrap",
   color: "#535353C9",
   display: "flex",
-  fontFamily: "GT Walsheim Trial",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: 400,
   marginBottom: "8px",
   overflow: "hidden",
@@ -580,7 +586,7 @@ const ValueStyle = {
 const Profile = {
   marginTop: "20px",
   marginBottom: "30px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "700",
   color: "#4C8AB1",
 };
@@ -607,6 +613,7 @@ const customPhoneStyles = {
   // padding: "0.5rem",
 };
 const customeInputStyles = {
+  
   width: "85%",
   border: "none",
   padding: "0px 10px 0px 0px",

@@ -12,6 +12,7 @@ import {
   useTheme,
 } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import SendIcon from "@mui/icons-material/Send";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import PhaseCard from "../AddPhaseCard/AddPhaseCard";
 import actionButton from "../../UI/actionButton";
@@ -29,20 +30,22 @@ import {
 import RequestWorkOrderModal from "../../dialogues/RequestWorkOrder/RequestWorkOrderModal";
 import { selectAddPhase } from "../../../redux/slices/addPhaseSlice";
 import axios from "axios";
-import { useLocation, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useLocation, useOutletContext, useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import GenerateInvoiceTable from "../../dialogues/GenerateInvoice/GenerateInvoiceTable";
 import GenerateInvoicePopup from "../../dialogues/GenerateInvoice/GenerateInvoicePopup";
 import ShareModal from "../../dialogues/ShareModal/ShareModal";
 import GenerateInvoiceDone from "../../dialogues/GenerateInvoice/GenerateInvoiceDone";
-import { selectWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
+import { selectWorkOrderDeclineRecall, toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
 // import { BuilderProNavbarLogo } from "./assets/svgs/builder-pro-logo-navbar.svg";
 import BuilderProNavbarLogo from "../../Navbar/assets/svgs/builder-pro-logo-navbar.svg";
 import GenerateInvoice from "../../dialogues/GenerateInvoice/GenerateInvoice";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
 import AddIcon from "@mui/icons-material/Add";
+import { usePermissionCheck } from "../../Settings/PermissionAccess/PermissionCheck";
+import { socket } from "../../../socket";
 //import "react-toastify/dist/ReactToastify.css";
 
 function AddPhaseView({
@@ -53,12 +56,15 @@ function AddPhaseView({
   authUserRole,
   refetchChangeOrder,
   changeOrder,
-  changeOrderView
+  changeOrderView,
+  // canGenerate
 }) {
   const [cardPhase, setCardPhase] = useState([]);
   const [invoiceData, setInvoiceData] = useState();
   const [selectedPhaseId, setSelectedPhaseId] = useState(null);
   const [selectedPhaseData, setSelectedPhaseData] = useState(null);
+  const user = useSelector((state) => state.auth.userInfo);
+  const userId = user.user.id;
   const { id } = useParams();
   const [deleteProjectPhase, { isDeletePhaseLoading }] =
     useDeleteProjectPhaseMutation();
@@ -71,13 +77,14 @@ function AddPhaseView({
   const initialPhases = useSelector(
     (state) => state.projectInitialProposal.initialPhases
   );
+
   const [showUpdatePhaseDialogue, setShowUpdatePhaseDialogue] = useState(false);
   const [showAddPhaseDialogue, setShowAddPhaseDialogue] = useState(false);
   const [rowCheckboxes, setRowCheckboxes] = useState({}); // State to track the checked state of each checkbox in the table rows
 
   const dispatch = useDispatch();
 
-  const toggleWorkOrderDeclineRecall = useSelector(
+  const toggleWorkOrderDeclineRecall1 = useSelector(
     selectWorkOrderDeclineRecall
   );
 
@@ -157,6 +164,7 @@ function AddPhaseView({
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
     console.log("UserEffect run");
     fetchData();
@@ -165,13 +173,28 @@ function AddPhaseView({
     return () => {
       // Any cleanup code if needed
     };
-  }, [projectId, toggleWorkOrderDeclineRecall]);
+  }, [projectId, toggleWorkOrderDeclineRecall1]);
 
   const handleAddRow = () => {
     fetchData();
   };
 
-  console.log(projectId);
+  const handleSendApproval = () => {
+    const sentBy = userId;
+    socket.emit("sendApprovalNotification", { projectId, sentBy }, (data) => {
+      toast(data?.message, {
+        className:
+          data?.success === true
+            ? "toast-success"
+            : data?.success === false
+            ? "toast-error"
+            : "toast-default",
+      });
+      dispatch(toggleWorkOrderDeclineRecall())
+    });
+  };
+
+  // console.log(projectId);
 
   const handleGridToggle = (currentIndex, previousIndex) => {
     // Ensure indices are within the valid range
@@ -329,7 +352,7 @@ function AddPhaseView({
     "This is rowCheckboxes lenght",
     Object.keys(rowCheckboxes).length < 1
   );
-  console.log(rowCheckboxes);
+  console.log("rows", rowCheckboxes);
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -350,7 +373,7 @@ function AddPhaseView({
                 // pl={3}
                 // pt={1}
                 color={"#4C8AB1"}
-                fontFamily={"Poppins, san serif"}
+                fontFamily={"var(--main-font-family)"}
                 fontSize={{
                   xl: "22px",
                   lg: "15px",
@@ -366,99 +389,135 @@ function AddPhaseView({
           </Stack>
           {view === "Initial Proposal" ? (
             <>
-              {(authUserRole === "superadmin" ||
-                authUserRole === "projectManager" ||
-                authUserRole === "" ||
-                authUserRole === "admin") && (
-                <>
+              <>
+                {initialPhases?.[0]?.[0]?.status === "unapproved" ||
+                initialPhases?.[0]?.[0]?.status === "pending" ? (
                   <Stack direction={"row"} sx={buttonBox}>
+                    {initialPhases?.[0]?.[0]?.status === "unapproved" && (
+                      <>
+                        <Button
+                          sx={{
+                            ...actionButton,
+                            padding: { lg: "0.75rem 1.5rem" },
+                            background: "#FFAC00",
+                            whiteSpace: "nowrap",
+                            height:
+                              initialPhases[0]?.length < 1 || isLoading
+                                ? "4rem"
+                                : "2.375rem",
+                            display: isLoading ? "none" : "flex",
+                            fontSize:
+                              initialPhases[0]?.length < 1 || isLoading
+                                ? "24px"
+                                : "18px",
+                            width:
+                              initialPhases[0]?.length < 1 || isLoading
+                                ? "300px"
+                                : downView
+                                ? "40px"
+                                : "130px",
+                            height:
+                              initialPhases[0]?.length < 1 || isLoading
+                                ? "50px"
+                                : "40px",
+                          }}
+                          onClick={handleAddPhase}
+                        >
+                          {downView && <AddIcon />}
+                          {downView ? (mobileView ? "" : "Add") : "Add Phase"}
+                        </Button>
+                        <Button
+                          sx={{
+                            ...actionButton,
+                            display:
+                              initialPhases[0]?.length < 1 || isLoading
+                                ? "none"
+                                : "flex",
+                            fontSize: { lg: "18px", xs: "11px" },
+                          }}
+                          startIcon={
+                            <ModeEditOutlinedIcon
+                              sx={{ marginLeft: { md: "0px", xs: "12px" } }}
+                            />
+                          }
+                          onClick={handleEditPhase}
+                        >
+                          <Typography
+                            sx={{
+                              fontFamily: "var(--main-font-family)",
+                              fontSize: { lg: "18px", xs: "11px" },
+                              display: { md: "block", xs: "none" },
+                            }}
+                          >
+                            Edit
+                          </Typography>
+                        </Button>
+                        <Button
+                          sx={{
+                            ...actionButton,
+                            display:
+                              initialPhases[0]?.length < 1 || isLoading
+                                ? "none"
+                                : "flex",
+                            fontSize: { lg: "18px", xs: "11px" },
+                          }}
+                          startIcon={
+                            <DeleteOutlinedIcon
+                              sx={{ marginLeft: { md: "0px", xs: "12px" } }}
+                            />
+                          }
+                          onClick={handleOpenModal}
+                        >
+                          <Typography
+                            sx={{
+                              fontFamily: "var(--main-font-family)",
+                              fontSize: { lg: "18px", xs: "11px" },
+                              display: { md: "block", xs: "none" },
+                            }}
+                          >
+                            Delete
+                          </Typography>
+                        </Button>
+                      </>
+                    )}
+
                     <Button
-                      sx={{
-                        ...actionButton,
-                        padding: { lg: "0.75rem 1.5rem" },
-                        background: "#FFAC00",
-                        whiteSpace: "nowrap",
-                        height:
-                          initialPhases[0]?.length < 1 || isLoading
-                            ? "4rem"
-                            : "2.375rem",
-                        display: isLoading ? "none" : "flex",
-                        fontSize:
-                          initialPhases[0]?.length < 1 || isLoading
-                            ? "24px"
-                            : "18px",
-                        width:
-                          initialPhases[0]?.length < 1 || isLoading
-                            ? "300px"
-                            : downView
-                            ? "40px"
-                            : "130px",
-                        height:
-                          initialPhases[0]?.length < 1 || isLoading
-                            ? "50px"
-                            : "40px",
-                      }}
-                      onClick={handleAddPhase}
-                    >
-                      {downView && <AddIcon />}
-                      {downView ? (mobileView ? "" : "Add") : "Add Phase"}
-                    </Button>
-                    <Button
+                      onClick={handleSendApproval}
+                      startIcon={
+                        <SendIcon
+                          sx={{ marginLeft: { md: "0px", xs: "12px" } }}
+                        />
+                      }
                       sx={{
                         ...actionButton,
                         display:
                           initialPhases[0]?.length < 1 || isLoading
                             ? "none"
                             : "flex",
-                        fontSize: { lg: "18px", xs: "11px" },
                       }}
-                      startIcon={
-                        <ModeEditOutlinedIcon
-                          sx={{ marginLeft: { md: "0px", xs: "12px" } }}
-                        />
-                      }
-                      onClick={handleEditPhase}
+                      disabled={initialPhases?.[0]?.[0]?.status === "pending"}
                     >
                       <Typography
                         sx={{
+                          fontFamily: "var(--main-font-family)",
                           fontSize: { lg: "18px", xs: "11px" },
                           display: { md: "block", xs: "none" },
                         }}
                       >
-                        Edit
-                      </Typography>
-                    </Button>
-                    <Button
-                      sx={{
-                        ...actionButton,
-                        display:
-                          initialPhases[0]?.length < 1 || isLoading
-                            ? "none"
-                            : "flex",
-                        fontSize: { lg: "18px", xs: "11px" },
-                      }}
-                      startIcon={
-                        <DeleteOutlinedIcon
-                          sx={{ marginLeft: { md: "0px", xs: "12px" } }}
-                        />
-                      }
-                      onClick={handleOpenModal}
-                    >
-                      <Typography
-                        sx={{
-                          fontSize: { lg: "18px", xs: "11px" },
-                          display: { md: "block", xs: "none" },
-                        }}
-                      >
-                        Delete
+                        {initialPhases?.[0]?.[0]?.status === "pending"
+                          ? "Pending"
+                          : "Send Approval"}
                       </Typography>
                     </Button>
                   </Stack>
-                </>
-              )}
+                ) : (
+                  <></>
+                )}
+              </>
             </>
           ) : view === "Generate Invoice" ? (
             <>
+              {/* {canGenerate &&  */}
               <Stack direction={"row"} sx={buttonBox}>
                 <Button
                   sx={{ ...actionButton }}
@@ -471,6 +530,7 @@ function AddPhaseView({
                   Generate Invoice
                 </Button>
               </Stack>
+              {/* } */}
             </>
           ) : (
             <>
@@ -527,6 +587,7 @@ function AddPhaseView({
                   >
                     <Typography
                       sx={{
+                        fontFamily: "var(--main-font-family)",
                         fontSize: { lg: "18px", xs: "11px" },
                         display: { md: "block", xs: "none" },
                       }}
@@ -549,6 +610,7 @@ function AddPhaseView({
                   >
                     <Typography
                       sx={{
+                        fontFamily: "var(--main-font-family)",
                         fontSize: { lg: "18px", xs: "11px" },
                         display: { md: "block", xs: "none" },
                       }}
@@ -556,6 +618,28 @@ function AddPhaseView({
                       Delete
                     </Typography>
                   </Button>
+                  {/* <Button
+                    startIcon={
+                      <SendIcon
+                        sx={{ marginLeft: { md: "0px", xs: "12px" } }}
+                      />
+                    }
+                    sx={{
+                      ...actionButton,
+                      display:
+                        phases[0]?.length < 1 || isLoading ? "none" : "flex",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontFamily: "var(--main-font-family)",
+                        fontSize: { lg: "18px", xs: "11px" },
+                        display: { md: "block", xs: "none" },
+                      }}
+                    >
+                      Send Approval
+                    </Typography>
+                  </Button> */}
 
                   {adminProjectView && !mobileView ? (
                     <RequestWorkOrderModal
@@ -842,7 +926,7 @@ const buttonBox = {
     lg: "0.5rem 2rem",
     md: "0.1rem 0rem",
     sm: "1rem 2rem",
-    xs: "0rem 0.5rem",
+    xs: "0rem 0.10rem",
   },
 };
 const approvalButton = {

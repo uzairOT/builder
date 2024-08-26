@@ -120,7 +120,7 @@ const SetNewPassword = () => {
                   sx={{
                     color: "#000000",
                     fontSize: "20px",
-                    fontFamily: "GT Walsheim Trial",
+                    fontFamily: 'var(--main-font-family)',
                     fontWeight: 550,
                   }}
                 >
@@ -252,7 +252,7 @@ const SetNewPassword = () => {
                 sx={{
                   mt: 2,
                   color: "#A9A9A9",
-                  fontFamily: "GT Walsheim Trial",
+                  fontFamily: 'var(--main-font-family)',
                   fontWeight: 400,
                   fontSize: "14px",
                   lineHeight: "24px",
@@ -284,14 +284,14 @@ const labelStyle = {
   display: "block",
   marginBottom: "1rem",
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.75rem" },
   fontWeight: 400,
 };
 const placeholderStyle = {
   color: "#B8B8B8",
   padding: "8px",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1rem",
   fontWeight: 400,
 };

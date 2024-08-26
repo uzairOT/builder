@@ -53,7 +53,7 @@ const WeatherAppDailyForecast = ({ forecast }) => {
 const themeStyle = {
     dailyForecastBubbleText: {
       textAlign: "center",
-      fontFamily: "Montserrat, sans-serif",
+      fontFamily: 'var(--main-font-family)',
       fontWeight: "600",
       fontSize: {xl:"12px", lg:"10px", md:"10px", xs:"10px"},
       textTransform: 'uppercase',

@@ -76,23 +76,25 @@ const SubscriptionSidebar = () => {
           Payment History
         </Typography>
         <Box sx={themeStyle.scrollable} overflow={"hidden"} pb={0.5}>
-        <Stack px={2} spacing={1}>
-          {paymentHistory.length > 0 ? (
-            paymentHistory.map((item) => (
-              <PaymentHistoryCard
-                key={item.id}
-                data={{
-                  plan: item.planType,
-                  payment: `$${item.amount} USD`,
-                  date: new Date(item.createdAt).toLocaleDateString(),
-                }}
-              />
-            ))
-          ) : (
-            <Typography>No payment history available.</Typography>
-          )}
-        </Stack>
-      </Box>
+          <Stack px={2} spacing={1}>
+            {paymentHistory.length > 0 ? (
+              paymentHistory.map((item) => (
+                <PaymentHistoryCard
+                  key={item.id}
+                  data={{
+                    plan: item.planType,
+                    payment: `$${item.amount} USD`,
+                    date: new Date(item.createdAt).toLocaleDateString(),
+                  }}
+                />
+              ))
+            ) : (
+              <Typography fontFamily={"var(--main-font-family)"}>
+                No payment history available.
+              </Typography>
+            )}
+          </Stack>
+        </Box>
       </Paper>
     </>
   );
@@ -104,13 +106,13 @@ const themeStyle = {
   title: {
     fontSize: "22px",
     fontWeight: "500",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     color: "#000000",
   },
   subtitle: {
-    fontSize: {xl:"28px",lg:20,md:"28px",xs:"28px",},
+    fontSize: { xl: "28px", lg: 20, md: "28px", xs: "28px" },
     fontWeight: "500",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     color: "#000000",
   },
   scrollable: {

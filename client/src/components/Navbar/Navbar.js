@@ -21,6 +21,8 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { ReactComponent as BuilderProNavbarLogo } from "./assets/svgs/builder-pro-logo-navbar.svg";
 // import { ReactComponent as BuilderProNavbarShare } from "./assets/svgs/builder-pro-navbar-share.svg";
@@ -37,6 +39,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useDispatch, useSelector } from "react-redux";
 import Notification from "./Notifications";
 import {
+  addApprovalNotifications,
   addNotifications,
   addTeamNotifications,
   selectNotifications,
@@ -47,6 +50,7 @@ import {
   setTeamNotifications,
 } from "../../redux/slices/Notifications/notificationSlice";
 import {
+  useGetApprovalNotificationsQuery,
   useGetNotificationsQuery,
   useGetNotificationsUnreadQuery,
   useGetTeamStatusNotificationsQuery,
@@ -56,6 +60,7 @@ import { socket } from "../../socket";
 import TeamNotifications from "./TeamNotifications";
 import InvoiceNotification from "./InvoiceNotification";
 import { toast } from "react-toastify";
+import ApprovalNotification from "./ApprovalNoifications";
 const local = localStorage.getItem("userInfo");
 const currentUser = JSON.parse(local);
 
@@ -80,6 +85,7 @@ const Navbar = () => {
   // const { emit, on } = useSocket();
   const notifications = useSelector(selectNotifications);
   const teamNotifications = useSelector(selectTeamNotifications);
+  const approvalNotifications = useSelector(selectTeamNotifications);
   const notificationsArr = useSelector(selectNotificationsArr);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { data: data1, refetch: refetchNotifcations } =
@@ -88,6 +94,8 @@ const Navbar = () => {
   const { data: teamStatusData, refetch: refetchTeamStatusData } =
     useGetTeamStatusNotificationsQuery(userId);
   const [expanded, setExpanded] = useState(null);
+  const { data: approvalData, refetch: refetchApprovalNotifications } =
+    useGetApprovalNotificationsQuery(userId);
   const [invoiceNotification, setInvoiceNotification] = useState(null);
   const [updateNotificationRead] = useUpdateWorkOrderReadMutation();
   dispatch(setNotificationsArr(data?.data));
@@ -164,16 +172,38 @@ const Navbar = () => {
       console.log("err:", err);
     }
   };
+  // console.log("APPROVED DATA: ",approvalData)
 
+  const approvalRefetchCall = async () => {
+    try {
+      await refetchApprovalNotifications(userId);
+      if (Array.isArray(approvalData?.data)) {
+        dispatch(addApprovalNotifications(approvalData?.data));
+      } else {
+        dispatch(addApprovalNotifications([]));
+      }
+    } catch (err) {
+      dispatch(addApprovalNotifications([]));
+      console.log("err:", err);
+    }
+  };
+
+  console.log("data", approvalData);
   useEffect(() => {
     //listen for notifications
     // console.log('=-------------------> notifications on')
-
     socket.emit("join", userId);
     socket.on("newNotification", async (data) => {
       await refetchCall();
       dispatch(addNotifications(data));
     });
+
+    socket.on("receiveNotifications", async (response) => {
+      await approvalRefetchCall();
+    });
+    // socket.on("sendApprovalNotification", async () => {
+    //   await approvalRefetchCall();
+    // });
     socket.on("statusDoneNotificationResponse", async (socketReponse) => {
       console.log("SOCKET RESPONSE: ", socketReponse);
       dispatch(addTeamNotifications(socketReponse));
@@ -197,6 +227,7 @@ const Navbar = () => {
         setInvoiceNotification(socketReponse);
         // dispatch(addTeamNotifications(socketReponse));
       });
+      socket.off("receiveNotifications");
     };
   }, [dispatch]);
 
@@ -229,7 +260,6 @@ const Navbar = () => {
   }, [teamStatusData]);
 
   useEffect(() => {
-    
     const handleStorageChange = (event) => {
       if (event.key === "logout") {
         // Handle logout in other tabs
@@ -268,7 +298,7 @@ const Navbar = () => {
       display: { xl: "flex", lg: "flex", md: "none", sm: "none", xs: "none" },
     },
     getTabColor: (tabIndex) => ({
-      fontFamily: "inherit",
+      fontFamily: "var(--main-font-family)",
       color: selectedTab === tabIndex ? "#FFAC00" : "#4C8AB1",
       textTransform: "capitalize",
       fontSize: "17px",
@@ -283,8 +313,11 @@ const Navbar = () => {
     },
   };
 
+
   return (
     <>
+    
+
       <AppBar position="static" sx={themeStyle.navbar}>
         <Toolbar
           sx={themeStyle.toolbar}
@@ -348,7 +381,8 @@ const Navbar = () => {
                   (data1?.count ? data1.count : 0) +
                   notifications?.length +
                   (teamNotifications?.length ? teamNotifications?.length : 0) +
-                  (invoiceNotification ? 1 : 0)
+                  (invoiceNotification ? 1 : 0) +
+                  (approvalData?.data?.length ? approvalData?.data?.length : 0)
                 }
                 color="error"
               >
@@ -360,14 +394,35 @@ const Navbar = () => {
                 zIndex: "100",
                 backgroundColor: "white",
                 borderRadius: "14px",
-                
               }}
-              sx={{width:{sm:'400px', xs:'300px'}}}
+              sx={{
+                width: { sm: "400px", xs: "300px" },
+                maxHeight: "350px",
+                overflowY: "auto",
+                scrollbarWidth: "none",
+                "&::-webkit-scrollbar": {
+                  display: "none",
+                },
+              }}
               id={noti_id}
               open={openNotification}
               anchorEl={anchorEl}
               placement="bottom-end"
             >
+              {Array.isArray(approvalData?.data) ? (
+                approvalData?.data.map((notification, index) => (
+                  <ApprovalNotification
+                    approvalRefetchCall={approvalRefetchCall}
+                    userId={userId}
+                    index={index}
+                    setExpanded={setExpanded}
+                    notification={notification}
+                    expanded={expanded}
+                  ></ApprovalNotification>
+                ))
+              ) : (
+                <></>
+              )}
               {invoiceNotification && (
                 <InvoiceNotification
                   data={invoiceNotification}
@@ -391,7 +446,7 @@ const Navbar = () => {
                     return index === 3 ? (
                       <Stack textAlign={"right"}>
                         <Typography
-                          fontFamily={"inherit"}
+                          fontFamily={"var(--main-font-family)"}
                           fontSize={"12px"}
                           sx={{
                             textDecoration: "underline",
@@ -429,7 +484,7 @@ const Navbar = () => {
                     return index === 3 ? (
                       <Stack textAlign={"right"}>
                         <Typography
-                          fontFamily={"inherit"}
+                          fontFamily={"var(--main-font-family)"}
                           fontSize={"12px"}
                           sx={{
                             textDecoration: "underline",
@@ -535,7 +590,7 @@ const Navbar = () => {
                 style={{
                   fontSize: "12px",
                   top: "3px",
-                  fontFamily: "Arial Rounded MT, sans-serif",
+                  fontFamily: "var(--main-font-family)",
                   color: "#202227",
                 }}
                 sx={{
@@ -596,13 +651,13 @@ const Navbar = () => {
                   color={"#202227"}
                   fontSize={"14px"}
                   pl={2}
-                  fontFamily={"Arial Rounded MT, sans-serif"}
+                  fontFamily={"var(--main-font-family)"}
                 >
                   {user.name}
                 </Typography>
               </Stack>
               <Typography
-                fontFamily={"Arial Rounded MT, sans-serif"}
+                fontFamily={"var(--main-font-family)"}
                 fontSize={"14px"}
               >
                 {user.userType}

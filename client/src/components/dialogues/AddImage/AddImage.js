@@ -322,7 +322,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
               >
                 <Typography
                   textAlign={"left"}
-                  fontFamily={"inherit"}
+                  fontFamily={'var(--main-font-family)'}
                   fontSize={"12px"}
                   pl={primary ? "" : "13px"}
                 >
@@ -368,7 +368,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
 
 const themeStyle = {
   typoTitle: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "1.5rem",
     color: "#4C8AB1",
     marginLeft: "-1rem",
@@ -381,7 +381,7 @@ const themeStyle = {
     border: "1px solid #D8D8D8",
     borderRadius: "0.5rem",
     color: "#202227",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     backgroundColor: "#FAFAFA",
   },
   generalBox: {
@@ -395,7 +395,7 @@ const themeStyle = {
     padding: "1rem 2rem",
   },
   typoText: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "1rem",
     color: "#202227",
   },
@@ -424,7 +424,7 @@ const themeStyle = {
     position: "relative",
   },
   avatarText: {
-    fontFamily: "Poppins",
+    fontFamily: 'var(--main-font-family)',
     fontWeight: 600,
     fontSize: "0.8rem",
     color: "#121212",

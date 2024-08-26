@@ -140,13 +140,13 @@ export default MasterLineTable;
 const tableCellStyle = {
   fontWeight: 500,
   fontSize: "14px",
-  fontFamily: "Poppins",
+  fontFamily: 'var(--main-font-family)',
   color: "#8C8C8C",
 };
 
 const tableCellValueStyle = {
   fontWeight: 400,
   borderBottom: "none",
-  fontFamily: "Montserrat",
+  fontFamily: 'var(--main-font-family)',
   color: "#000000",
 };

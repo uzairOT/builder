@@ -959,7 +959,7 @@ const themeStyle = {
     fontSize: "10px",
     textOverflow: "ellipsis",
     color: "#454545",
-    fontFamily: "Inter, sans-serif",
+    fontFamily: 'var(--main-font-family)',
   },
   eventText:{
     color:'black',
@@ -971,7 +971,7 @@ const themeStyle = {
     fontSize: "10px",
     textOverflow: "ellipsis",
     fontStyle: "italic",
-    fontFamily: "Inter, sans-serif",
+    fontFamily: 'var(--main-font-family)',
   },
   weather: {
     color: "#FFF",

@@ -4,7 +4,7 @@ import React from 'react'
 const TimeGutterHeader = () => {
   return (
     <Box>
-        <Typography color={"#6A6A6A"} fontFamily={"Montserrat, sans-serif"} textAlign={'center'}>Week</Typography>
+        <Typography color={"#6A6A6A"} fontFamily={'var(--main-font-family)'} textAlign={'center'}>Week</Typography>
     </Box>
   )
 }

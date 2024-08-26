@@ -173,7 +173,7 @@ function InvoicesTable({
                     variant={"contained"}
                     backgroundColor={"#4C8AB1"}
                     fontSize={"11px"}
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={'var(--main-font-family)'}
                     marginLeft={"5px"}
                     handleOnClick={() => handleOnClick(item.id)}
                     disabled={isLoading}
@@ -186,7 +186,7 @@ function InvoicesTable({
                     variant={"contained"}
                     backgroundColor={"#4C8AB1"}
                     fontSize={"11px"}
-                    fontFamily={"Inter, sans serif"}
+                    fontFamily={'var(--main-font-family)'}
                     marginLeft={"5px"}
                     handleOnClick={() => handleOnClickDetails(item)}
                     disabled={isLoading}
@@ -212,7 +212,7 @@ const tableCellStyle = {
   overflow: "hidden",
   fontWeight: 500,
   fontSize: {xl:"14px", lg:'11px',md:'11px', xs:'11px'},
-  fontFamily: "Poppins",
+  fontFamily: 'var(--main-font-family)',
   color: "#8C8C8C",
   textAlign:'left',
 };
@@ -224,7 +224,7 @@ const tableCellValueStyle = {
   fontWeight: 400,
   fontSize: {xl:"14px", lg:'11px',md:'11px', xs:'11px'},
   borderBottom: "none",
-  fontFamily: "Montserrat",
+  fontFamily: 'var(--main-font-family)',
   color: "#000000",
   textAlign:'left',
   justifyContent: "left",
@@ -238,7 +238,7 @@ const TableButtonsStyle = {
   fontWeight: 400,
   fontSize: {xl:"14px", lg:'11px',md:'11px', xs:'11px'},
   borderBottom: "none",
-  fontFamily: "Montserrat",
+  fontFamily: 'var(--main-font-family)',
   color: "#000000",
   textAlign:'left',
   justifyContent: "left",

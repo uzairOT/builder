@@ -19,7 +19,7 @@ function StepTitles({ Heading, stepHeading, stepDiscription, projectName }) {
       <Typography sx={{ ...stepGeneralText, ...headingStyle, marginBottom:'0.5rem', color: "#FFAC00" }}>
         {projectName}
       </Typography>
-      <Typography sx={{ ...stepGeneralText, ...discriptionTypo, textAlign:  'center' , marginLeft:stepDiscription === 'Accepting the invitation grants access to a secure project workspace in Builder Builder Pro' ? '-1rem' : '0px'}}>
+      <Typography sx={{ ...stepGeneralText, ...discriptionTypo, textAlign:  'center' , marginLeft:stepDiscription === 'Accepting the invitation grants access to a secure project workspace in BuilderBuilder Pro' ? '-1rem' : '0px'}}>
         {stepDiscription}
       </Typography>
     </Grid>
@@ -41,7 +41,7 @@ const discriptionTypo = {
   marginBottom: '1rem'
 }
 const stepGeneralText = {
-  fontFamily: 'Arial Rounded MT, sans-serif',
+  fontFamily: 'var(--main-font-family)',
   fontSize: '1rem',
   letterSpacing: '0.01em',
   color: "#4C8AB1",
@@ -50,7 +50,7 @@ const stepGeneralText = {
 const headingStyle = {
   fontSize: { xl: "2.5rem",lg: "2.2rem", md: "2rem", sm: "1.9rem", xs: "1.5rem" },
   fontWeight: { lg: 400, md: 400, sm: 400, xs: 700 },
-  // fontFamily: "Inter",
+  // fontFamily: 'var(--main-font-family)',
   width: { lg: "50%", md: "60%", sm: "70%", xs: "95%" },
   maxWidth: "46rem",
   // whiteSpace: "nowrap",

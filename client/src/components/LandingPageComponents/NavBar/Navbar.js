@@ -1,16 +1,30 @@
-import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Button, Box, IconButton, Drawer, List, ListItem, ListItemText } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import MenuIcon from '@mui/icons-material/Menu';
-import { Buildericn } from '../assets/svg';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Buildericn } from "../assets/svg";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const toggleDrawer = (open) => (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
       return;
     }
     setDrawerOpen(open);
@@ -21,71 +35,140 @@ const Navbar = () => {
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
+      sx={{ textAlign: "center", justifyContent: "center" }}
     >
       <List>
-        {['About Us', 'Features', 'Contact', 'FAQs'].map((text) => (
-          <ListItem button key={text} component="a" href={`#${text.toLowerCase().replace(/\s+/g, '-')}`}>
+        {[
+          { text: "About Us", path: "/#about" },
+          { text: "Features", path: "/#features" },
+          { text: "Contact", path: "/#contact" },
+          { text: "FAQs", path: "/#faqs" },
+        ].map(({ text, path }) => (
+          <ListItem
+            button
+            key={text}
+            component="a"
+            href={path}
+          >
             <ListItemText primary={text} />
           </ListItem>
         ))}
-        <ListItem button>
+        {/* <ListItem button>
           <IconButton color="inherit">
             <SearchIcon />
           </IconButton>
-        </ListItem>
-        <ListItem button>
-          <Button variant="outlined" sx={{ borderColor: '#2E728E', color: '#2E728E' }}>
+        </ListItem> */}
+        {/* <ListItem button>
+          <Button
+            variant="outlined"
+            sx={{ borderColor: "#2E728E", color: "#2E728E" }}
+          >
             Video Demo • See now
           </Button>
-        </ListItem>
+        </ListItem> */}
         <ListItem button>
-          <Button sx={{ backgroundColor: '#2E728E', color: 'white' }}>
+          <Button
+            onClick={() => navigate("/login")}
+            fullWidth
+            sx={{ backgroundColor: "#2E728E", color: "white" }}
+          >
             Login
           </Button>
         </ListItem>
       </List>
     </Box>
   );
+  
 
   return (
-    <AppBar position="static" color="transparent" elevation={0} sx={{ padding: '10px 0px' }}>
-      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+    <AppBar
+      position="static"
+      color="transparent"
+      elevation={0}
+      sx={{ backgroundColor: "transparent", padding: "10px 0px" }}
+    >
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         {/* Logo */}
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
           <Buildericn />
         </Box>
 
         {/* Desktop Menu */}
-        <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 10 }}>
-          <Typography variant="body1" component="a" href="#about" sx={{ color: '#000', textDecoration: 'none' }}>
+        <Box
+          sx={{
+            display: { xs: "none", lg: "flex" },
+            alignItems: "center",
+            gap: 10,
+          }}
+        >
+          <Typography
+            variant="body1"
+            component="a"
+            href="/"
+            sx={styles.navItemFont}
+          >
+            Home
+          </Typography>
+          <Typography
+            variant="body1"
+            component="a"
+            href="/#about"
+            sx={styles.navItemFont}
+          >
             About Us
           </Typography>
-          <Typography variant="body1" component="a" href="#features" sx={{ color: '#000', textDecoration: 'none' }}>
+          <Typography
+            variant="body1"
+            component="a"
+            href="/#features"
+            sx={styles.navItemFont}
+          >
             Features
           </Typography>
-          <Typography variant="body1" component="a" href="#contact" sx={{ color: '#000', textDecoration: 'none' }}>
+          <Typography
+            variant="body1"
+            component="a"
+            href="/#contact"
+            sx={styles.navItemFont}
+          >
             Contact
           </Typography>
-          <Typography variant="body1" component="a" href="#faqs" sx={{ color: '#000', textDecoration: 'none' }}>
+          <Typography
+            variant="body1"
+            component="a"
+            href="/#faqs"
+            sx={styles.navItemFont}
+          >
             FAQs
           </Typography>
         </Box>
 
-        <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 2 }}>
-          <IconButton color="inherit">
+        <Box
+          sx={{
+            display: { xs: "none", lg: "flex" },
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          {/* <IconButton color="inherit">
             <SearchIcon />
           </IconButton>
-          <Button variant="outlined" sx={{ borderColor: '#2E728E', color: '#2E728E' }}>
+          <Button variant="outlined" sx={styles.navBtns}>
             Video Demo • See now
-          </Button>
-          <Button sx={{ backgroundColor: '#2E728E', color: 'white' }} onClick={()=>navigate("/login")}>
+          </Button> */}
+          <Button sx={styles.navLoginBtn} onClick={() => navigate("/login")}>
             Login
           </Button>
         </Box>
 
         {/* Mobile Menu */}
-        <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
-          <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
+        <Box sx={{ display: { xs: "flex", lg: "none" }, alignItems: "center" }}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={toggleDrawer(true)}
+          >
             <MenuIcon />
           </IconButton>
         </Box>
@@ -99,3 +182,29 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+const styles = {
+  navItemFont: {
+    color: "#454245",
+    textDecoration: "none",
+    fontFamily: 'var(--main-font-family)',
+    fontWeight: 400,
+    fontSize: "16px",
+  },
+
+  navBtns: {
+    borderColor: "#2E728E",
+    color: "#2E728E",
+    fontFamily: 'var(--main-font-family)',
+    fontWeight: 500,
+    fontSize: "16px",
+  },
+
+  navLoginBtn: {
+    backgroundColor: "#2E728E",
+    color: "white",
+    fontFamily: 'var(--main-font-family)',
+    fontWeight: 400,
+    fontSize: "16px",
+  },
+};

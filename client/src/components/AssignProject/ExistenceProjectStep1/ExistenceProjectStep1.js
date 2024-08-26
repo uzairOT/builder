@@ -101,7 +101,7 @@ const buttonBox = {
 const labelStyle = {
   marginBottom: '5px',
   color: '#202227',
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: '1rem',
   fontWeight: 500,
 }
@@ -116,7 +116,7 @@ const inputStyle = {
   border: '1px solid #ccc',
   borderRadius: '12px',
   color: "#202227",
-  fontFamily: 'Arial Rounded MT, sans-serif',
+  fontFamily: 'var(--main-font-family)',
   paddingLeft: "-1.5rem",
 };
 const formBox = {

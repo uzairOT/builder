@@ -65,6 +65,10 @@ const ProjectsNavbar = ({ project }) => {
       title: "Invoices",
       path: "invoices",
     },
+    {
+      title: "Project Permissions",
+      path: "project-permissions",
+    },
   ];
   const [selectedNav, setSelectedNav] = useState(navLinks.path);
   const handleNavClick = (path) => {
@@ -106,7 +110,7 @@ const ProjectsNavbar = ({ project }) => {
               color: "#494A4A",
               fontSize: {xl:"20px",lg:"17px",md:"20px",xs:"20px"},
               fontWeight: 600,
-              fontFamily: "Arial Rounded MT, sans-serif",
+              fontFamily: 'var(--main-font-family)',
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -149,7 +153,7 @@ const ProjectsNavbar = ({ project }) => {
                   color={selectedNav === navlink.path ? "#ffac00" : "#494A4A"}
                   fontSize={{xl:"15px", lg:'11px'}}
                   fontWeight={"400"}
-                  fontFamily={"Arial Rounded MT, sans-serif"}
+                  fontFamily={'var(--main-font-family)'}
                   pr={1}
                 >
                   {navlink.title}

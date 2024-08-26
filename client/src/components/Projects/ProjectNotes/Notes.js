@@ -8,11 +8,13 @@ import VerticalTabs from './VerticalTabs';
 import ButtonGroup from '@mui/joy/ButtonGroup';
 import OpenNotes from './OpenNotes';
 import NotesModal from './NotesModal';
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { useGetProjectNotesQuery } from '../../../redux/apis/Project/projectApiSlice';
 import  Search  from '../../UI/CustomSearchInput';
 import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+// import { usePermissionCheck } from '../../Settings/PermissionAccess/PermissionCheck';
 
 const Notes = () => {
     const [selectedButton, setSelectedButton] = useState(-1);
@@ -20,7 +22,9 @@ const Notes = () => {
     const [searchInput, setSearchInput] = useState('');
     const debouncedValue = QueryDebouncer(searchInput, 500)
     const { data, refetch } = useGetProjectNotesQuery({ projectId: id, q:debouncedValue ? debouncedValue : '' });
-
+    const role = useSelector(state => state.userRole.userRole);
+    const [projectName, projectLocation, SuperAdminId] = useOutletContext(); 
+    // const canManageNotes = usePermissionCheck("manage-project-notes", role, SuperAdminId)
   
       const handleSelectedButton = (index) =>{
         setSelectedButton(index);
@@ -40,7 +44,7 @@ const Notes = () => {
     <Stack flex={1}>
     <Paper sx={{borderRadius:'14px', height:'99%'}} >
       <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} p={2} >
-        <Typography fontSize={{xl:'22px', lg:"18px",md:'22px',xs:'22px',}} fontFamily={'Poppins, sans serif'} fontWeight={'600'} color={'#4C8AB1'}>Notes</Typography>
+        <Typography fontSize={{xl:'22px', lg:"18px",md:'22px',xs:'22px',}} fontFamily={'var(--main-font-family)'} fontWeight={'600'} color={'#4C8AB1'}>Notes</Typography>
         <Stack direction={'row'} alignItems={'center'}>
             <NotesModal q={debouncedValue}/>
         </Stack>
@@ -62,7 +66,7 @@ const Notes = () => {
 
         <Stack flex={2}  >
          <Paper sx={{ borderRadius:'14px', height:'98.88%'}}>
-           <OpenNotes notes={data?.notes[selectedButton]} setSelectedButton={setSelectedButton} refetchNotes={refetchNotes}/>
+           <OpenNotes  notes={data?.notes[selectedButton]} setSelectedButton={setSelectedButton} refetchNotes={refetchNotes}/>
         </Paper>
           </Stack>
 

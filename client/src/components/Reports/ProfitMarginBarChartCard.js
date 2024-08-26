@@ -63,7 +63,7 @@ if (projects?.totalCost) {
       >
         <Typography
           fontSize={{ xl: "20px", lg: "16px", md: "20px", xs: "20px" }}
-          fontFamily={"Inter, sans serif"}
+          fontFamily={'var(--main-font-family)'}
           fontWeight={"500"}
           color={"#4C8AB1"}
         >
@@ -71,7 +71,7 @@ if (projects?.totalCost) {
         </Typography>
         <Typography
           color={"#606060"}
-          fontFamily={"Inter, sans serif"}
+          fontFamily={'var(--main-font-family)'}
           fontWeight={"500"}
           fontSize={"13px"}
         >
@@ -96,12 +96,12 @@ if (projects?.totalCost) {
               sx={{ color: "#2D9CDB", fontSize: {xl:"10px",lg:8, md:10,xs:10}, paddingTop: "4px" }}
             />
             <Stack direction={"column"}>
-              <Typography fontFamily={"Inter, sans serif"} fontSize={{xl:16,lg:14, md:16,xs:16}} sx={{textAlign:"left"}}>
+              <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:16,lg:14, md:16,xs:16}} sx={{textAlign:"left"}}>
                 Total
               </Typography>
               <Typography
                 // textAlign={"center"}
-                fontFamily={"Inter, sans serif"}
+                fontFamily={'var(--main-font-family)'}
                 fontWeight={"500"}
                 fontSize={{xl:18,lg:15,md:18,xs:18}}
                 sx={{whiteSpace: "nowrap",textAlign: "left"}}
@@ -116,12 +116,12 @@ if (projects?.totalCost) {
               sx={{ color: "#90BE6D", fontSize: "10px", paddingTop: "4px" }}
             />
             <Stack direction={"column"}>
-              <Typography fontFamily={"Inter, sans serif"} fontSize={{xl:16,lg:14, md:16,xs:16}} sx={{textAlign:"left"}}>
+              <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:16,lg:14, md:16,xs:16}} sx={{textAlign:"left"}}>
                 Profit Margin
               </Typography>
               <Typography
                 sx={{whiteSpace: "nowrap",textAlign: "left"}}
-                fontFamily={"Inter, sans serif"}
+                fontFamily={'var(--main-font-family)'}
                 fontWeight={"500"}
                 fontSize={{xl:18,lg:15,md:18,xs:18}}
               >
@@ -132,7 +132,7 @@ if (projects?.totalCost) {
                 color={marginPercentage < 0 ? "#F94144" : "#90BE6D"}
                 fontSize={{xl:26,lg:23,md:26,xs:26}}
                 fontWeight={"600"}
-                fontFamily={"Inter, sans serif"}
+                fontFamily={'var(--main-font-family)'}
               >
                 {projects?.totalCost
                   ? marginPercentage

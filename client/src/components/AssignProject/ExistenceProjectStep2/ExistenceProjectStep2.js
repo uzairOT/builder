@@ -158,7 +158,7 @@ const buttonStyle = {
   },
 };
 const buttonLnks = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: 500,
   height: "50%",
   marginTop: "2rem",

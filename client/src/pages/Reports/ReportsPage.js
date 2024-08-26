@@ -53,7 +53,7 @@ const themeStyle = {
     title: {
       fontSize: '22px',
       fontWeight: '500',
-      fontFamily: 'inherit',
+      fontFamily: 'var(--main-font-family)',
       color: '#000000'
   }
   }

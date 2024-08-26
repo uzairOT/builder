@@ -73,7 +73,7 @@ function Header({ title, OpenAddModal, searchInput, setSearchInput }) {
           backgroundColor="#E7E7E7"
         />
 
-        {!(title ==='Master Line Item') && <Button
+        {!(title ==='Master Line Item' || title==="Permission Access" || title==="Project Permissions") && <Button
           onClick={OpenAddModal}
           buttonText="Add"
           color="#ffffff"
@@ -103,7 +103,7 @@ export default Header;
 const headingStyle = {
   marginTop: "20px",
   marginBottom: "10px",
-  fontFamily: "Poppins",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "600",
   fontSize: "22px",
   color: "#4C8AB1",

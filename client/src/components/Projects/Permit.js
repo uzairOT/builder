@@ -224,7 +224,7 @@ function Permit({ view, type }) {
                       />
                       <Typography
                         ml={"0.5rem"}
-                        fontFamily={"inherit"}
+                        fontFamily={'var(--main-font-family)'}
                         fontSize={"12px"}
                         width={"100px"}
                         whiteSpace={"nowrap"}
@@ -273,7 +273,7 @@ function Permit({ view, type }) {
                       />
                       <Typography
                         ml={"0.5rem"}
-                        fontFamily={"inherit"}
+                        fontFamily={'var(--main-font-family)'}
                         fontSize={"12px"}
                         width={"100px"}
                         whiteSpace={"nowrap"}
@@ -337,7 +337,7 @@ function Permit({ view, type }) {
                 }}
               />
               <Typography
-                fontFamily={"inherit"}
+                fontFamily={'var(--main-font-family)'}
                 fontSize={"12px"}
                 p={1}
                 textOverflow={"ellipsis"}
@@ -389,7 +389,7 @@ const scrollable = {
 };
 const themeStyle = {
   button: {
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "12px",
     fontStyle: "normal",
     fontWeight: 500,
@@ -409,7 +409,7 @@ const themeStyle = {
   },
   titleTypo: {
     color: "#FFFFFF",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: {xl:"1.3rem", lg:15,md:"1.3rem",xs:"1.3rem",},
     margin: {sm:"1rem 2rem", xs:"2rem"},
   },
@@ -433,7 +433,7 @@ const themeStyle = {
     "&:hover": {
       backgroundColor: "lightgray",
     },
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     lineHeight: "normal",
   },
   permitBox: {

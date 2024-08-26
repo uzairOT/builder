@@ -42,13 +42,13 @@ const themeStyle = {
   containerTitle: {
     fontSize: { xs: "14px", md: "13px", lg:'11px',  xl: "13px" },
     fontWeight: "600",
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     textTransform: "uppercase",
   },
   containerSubtitle: {
     fontSize: { xs: "12px", sm:'11px', md: "11px", lg:'11px', xl: "11px" },
     fontWeight: "400",
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     fontStyle: "normal",
     overflow: "hidden",
     textOverflow: "ellipsis",

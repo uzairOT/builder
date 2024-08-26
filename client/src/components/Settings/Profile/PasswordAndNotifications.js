@@ -41,18 +41,17 @@ export default function MyApp() {
   const [confrimPassword, setConfrimPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [errorConfirmPassword, setErrorConfirmPassword] = useState(false)
-  const [errorNewPassword, setErrorNewPassword] = useState(false)
-  
+  const [errorConfirmPassword, setErrorConfirmPassword] = useState(false);
+  const [errorNewPassword, setErrorNewPassword] = useState(false);
+
   const handleConfirmPasswordBlur = () => {
     const passwordMatch = newPassword === confrimPassword;
-    setErrorConfirmPassword(!passwordMatch)
-    
-    }
-    const handleNewPasswordBlur = () => {
-    const isPasswordValidLength = newPassword.length >= 8
-    setErrorNewPassword(!isPasswordValidLength)
-  }
+    setErrorConfirmPassword(!passwordMatch);
+  };
+  const handleNewPasswordBlur = () => {
+    const isPasswordValidLength = newPassword.length >= 8;
+    setErrorNewPassword(!isPasswordValidLength);
+  };
   const validationStyle = {
     "& input": {
       border: !errorConfirmPassword ? "1px solid #E0E4EC" : "1px solid #D02E2E",
@@ -93,7 +92,13 @@ export default function MyApp() {
 
   const handleSubmit = async () => {
     if (errorConfirmPassword || errorNewPassword) {
-      toast.error(`${errorConfirmPassword ? "Passwords don't match!" : "Password must be at least 8 characters long"}`);
+      toast.error(
+        `${
+          errorConfirmPassword
+            ? "Passwords don't match!"
+            : "Password must be at least 8 characters long"
+        }`
+      );
       return false;
     } else {
       try {
@@ -168,7 +173,7 @@ export default function MyApp() {
         Password
       </Typography>
       <Grid container spacing={2} alignItems="center">
-        <Grid item  md={6} xs={12}>
+        <Grid item md={6} xs={12}>
           <Typography sx={subHeadings}>Current Password</Typography>
           <TextField
             inputProps={{ maxLength: 50 }}
@@ -183,11 +188,8 @@ export default function MyApp() {
             }}
           />
         </Grid>
-        <Grid item md={6} xs={0}>
-         
-        </Grid>
+        <Grid item md={6} xs={0}></Grid>
 
- 
         <Grid item md={6} xs={12}>
           <Typography sx={subHeadings}>New Password</Typography>
           <TextField
@@ -203,16 +205,13 @@ export default function MyApp() {
             }}
             onBlur={handleNewPasswordBlur}
           />
-          {errorNewPassword && 
-          (
+          {errorNewPassword && (
             <Typography fontSize={"11px"} color={"#D02E2E"}>
               Password must be at least 8 characters long
             </Typography>
           )}
         </Grid>
-        <Grid item md={6} xs={0}>
-         
-         </Grid>
+        <Grid item md={6} xs={0}></Grid>
         <Grid item md={6} xs={12}>
           <Typography sx={subHeadings}>Confirm Password</Typography>
           <TextField
@@ -233,9 +232,7 @@ export default function MyApp() {
               Passwords dont match
             </Typography>
           )}
-          
         </Grid>
-      
       </Grid>
 
       {/* Divider */}
@@ -345,6 +342,9 @@ export default function MyApp() {
           sx={{ display: "flex", justifyContent: "flex-start", gap: 1, my: 6 }}
         >
           <Button
+          sx={{  
+            fontFamily: 'var(--main-font-family)',
+          }}
             buttonText="Update Profile"
             color="#ffffff"
             backgroundColor="#4C8AB1"
@@ -371,7 +371,7 @@ export default function MyApp() {
 }
 
 const switchLabelstyles = {
-  fontFamily: "GT Walsheim Trial",
+  fontFamily: "var(--main-font-family)",
   fontWeight: "400",
   color: "#2022279C",
   marginLeft: "15px",
@@ -379,14 +379,14 @@ const switchLabelstyles = {
 const passwordHeadings = {
   marginTop: "20px",
   marginBottom: "20px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontWeight: "400",
   color: "#4C8AB1",
 };
 const headings = {
   marginTop: "10px",
   marginBottom: "10px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontWeight: "400",
   color: "#4C8AB1",
 };
@@ -400,11 +400,15 @@ const subHeadings = {
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: "var(--main-font-family)",
   "& input": {
     border: "1px solid #E0E4EC",
     borderRadius: "8px",
     padding: "10px",
+    fontFamily: "var(--main-font-family)",
+  },
+  "& .MuiInputBase-input::placeholder": {
+    fontFamily: "var(--main-font-family)",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {

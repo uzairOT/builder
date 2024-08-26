@@ -115,14 +115,14 @@ const ClientNavbar = () => {
             display: { xl: 'flex', lg: 'flex', md: 'none', sm: 'none', xs: 'none' },
             color: "#484848",
             '& .MuiTypography-root': {
-                fontFamily: 'Arial Rounded MT, sans-serif',
+                fontFamily: 'var(--main-font-family)',
                 fontSize: "1rem"
             },
 
         },
         tabText: {
             color: "#484848",
-            fontFamily: 'Arial Rounded MT, sans-serif',
+            fontFamily: 'var(--main-font-family)',
             '&:hover': {
                 color: "#FFAC00"
             },
@@ -157,7 +157,7 @@ const ClientNavbar = () => {
                                     sx={{
                                         ...themeStyle.tabText,
                                         ...(selectedTab === 'Dashboard' && { color: '#FFAC00' }),
-                                        fontFamily: 'Arial Rounded MT, sans-serif',
+                                        fontFamily: 'var(--main-font-family)',
                                     }}
                                 >
                                     Dashboard

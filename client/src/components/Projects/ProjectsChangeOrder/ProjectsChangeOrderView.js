@@ -47,7 +47,7 @@ const ProjectsChangeOrderView = () => {
         <BuilderProButton
           backgroundColor={"#4C8AB1"}
           variant={"contained"}
-          fontFamily={"Inter, sans serif"}
+          fontFamily={'var(--main-font-family)'}
           fontSize={"16px"}
           fontWeight={"600"}
           padding={{ md: "6px 32px 6px 32px" }}
@@ -88,7 +88,7 @@ const ProjectsChangeOrderView = () => {
                   refetchChangeOrder={refetch}
                   projectId={id}
                   adminProjectView={true}
-                  view={"Work Order"}
+                  view={"Change Order"}
                 />
               </Stack>
             </>

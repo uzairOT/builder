@@ -42,7 +42,7 @@ const PaidTransactionsCard = () => {
         <Stack direction={"row"} alignItems={"center"} p={1} pl={2} pr={2}>
           <Typography
             fontSize={{ xl: "20px", lg: "16px", md: "20px", xs: "20px" }}
-            fontFamily={"Inter, sans serif"}
+            fontFamily={'var(--main-font-family)'}
             fontWeight={"500"}
             color={"#4C8AB1"}
           >
@@ -59,7 +59,7 @@ const PaidTransactionsCard = () => {
                 justifyContent={"space-between"}
               >
                 <Typography
-                  fontFamily={"Inter, sans-serif"}
+                  fontFamily={'var(--main-font-family)'}
                   fontWeight={"500"}
                   fontSize={{ xl: "16px", lg: "13px", md: "16px", xs: "16px" }}
                   color={"#5B5B5B"}
@@ -67,7 +67,7 @@ const PaidTransactionsCard = () => {
                   {transaction?.Client?.firstName}
                 </Typography>
                 <Typography
-                  fontFamily={"Inter, sans-serif"}
+                  fontFamily={'var(--main-font-family)'}
                   fontWeight={"500"}
                   fontSize={{ xl: "16px", lg: "13px", md: "16px", xs: "16px" }}
                   color={"#000000"}
@@ -82,7 +82,7 @@ const PaidTransactionsCard = () => {
         <Divider variant="fullWidth" />
         <Stack direction={"row"} justifyContent={"space-between"} p={2}>
           <Typography
-            fontFamily={"Inter, sans-serif"}
+            fontFamily={'var(--main-font-family)'}
             fontWeight={"500"}
             fontSize={{ xl: "16px", lg: "13px", md: "16px", xs: "16px" }}
             color={"#5B5B5B"}
@@ -90,7 +90,7 @@ const PaidTransactionsCard = () => {
             Total Payment Done
           </Typography>
           <Typography
-            fontFamily={"Inter, sans-serif"}
+            fontFamily={'var(--main-font-family)'}
             fontWeight={"500"}
             fontSize={{ xl: "16px", lg: "13px", md: "16px", xs: "16px" }}
             color={"#000000"}

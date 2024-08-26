@@ -128,25 +128,25 @@ const themeStyle = {
   title: {
     fontSize: {xl:"28px",lg:23,md:"28px",xs:"28px",},
     fontWeight: "500",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     color: "#FFF",
     padding: "8px",
   },
   subtitle: {
     fontSize: {xl:"16px",lg:14,md:"16px",xs:"16px"},
     fontWeight: "500",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     color: "#FFF",
   },
   bodyTitle: {
     fontSize: {xl:"24px",lg:22,md:"24px",xs:"24px"},
     fontWeight: "500",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
   },
   bodyText: {
     fontSize: {xl:"16px",lg:"14px",md:"16px",xs:"16px",},
     fontWeight: "400",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     color: "#FFF",
    
   },

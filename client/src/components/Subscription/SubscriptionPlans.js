@@ -93,7 +93,7 @@ const themeStyle = {
   title: {
     fontSize: { xl: "28px", lg: "25px", md: "28px", xs: "28px" },
     fontWeight: "500",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     color: "#000000",
   },
 };

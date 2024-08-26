@@ -520,7 +520,7 @@ export default AddModal;
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   border: "1px solid #E0E4EC",
   padding: "10px",
   width: { xl: "250px", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
@@ -535,14 +535,14 @@ const headingStyle = {
   marginTop: "20px",
   // marginBottom: "10px",
   marginLeft: "25px",
-  fontFamily: "Poppins",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "500",
   fontSize: "22px",
   color: "#4C8AB1",
 };
 const labelStyle = {
   marginTop: "10px",
-  fontFamily: "Poppins",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "400",
   fontSize: "13px",
   color: "#535353C9",

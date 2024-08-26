@@ -118,13 +118,12 @@ const ConversationList = ({
 
   return (
     <Stack>
-      <Typography fontFamily={"inherit"} variant="h6" pl={2}>
+      <Typography fontFamily={"var(--main-font-family)"} variant="h6" pl={2}>
         Chat
       </Typography>
       <Stack direction={"row"} width={"100%"}>
         <Button
           sx={{
-            fontSize: 12,
             borderRadius: 15,
             fontSize: "14px !important",
             backgroundColor: "#FFAC00",
@@ -165,6 +164,8 @@ const ConversationList = ({
               value=""
             >
               <Typography
+              textTransform={"capitalize"}
+                fontFamily={ 'var(--main-font-family)'}
                 fontSize={{ xl: "11px", lg: "9px" }}
                 pt={0.5}
                 ml={0.6}
@@ -174,7 +175,9 @@ const ConversationList = ({
               </Typography>
             </MenuItem>
             <MenuItem value={id} disabled={value === id}>
-              <Typography>Project Chat: {projectName}</Typography>
+              <Typography fontFamily={"var(--main-font-family)"}>
+                Project Chat: {projectName}
+              </Typography>
             </MenuItem>
             {team?.team?.map((user, index) => {
               if (user.userId === userId) {
@@ -208,10 +211,24 @@ const ConversationList = ({
       <Tabs aria-label="Basic tabs" value={tabValue} onChange={handleTabChange}>
         <TabList>
           <Tab style={{ width: "100%", padding: "0px" }}>
-            <Typography fontSize={"14px"}>Group Chat</Typography>
+            <Typography
+              fontSize={"14px"}
+              sx={{
+                fontFamily: "var(--main-font-family)",
+              }}
+            >
+              Group Chat
+            </Typography>
           </Tab>
           <Tab sx={{ width: "100%" }}>
-            <Typography fontSize={"14px"}>Private Chat</Typography>
+            <Typography
+              fontSize={"14px"}
+              sx={{
+                fontFamily: "var(--main-font-family)",
+              }}
+            >
+              Private Chat
+            </Typography>
           </Tab>
         </TabList>
         <TabPanel style={{ padding: 0 }} value={0}>
@@ -225,6 +242,7 @@ const ConversationList = ({
             <ListItem
               alignItems="flex-start"
               style={{
+                fontFamily: "var(--main-font-family)",
                 cursor: "pointer",
                 marginBottom: "1px",
                 backgroundColor: value === id ? "#e0e0e0" : "inherit",
@@ -239,6 +257,7 @@ const ConversationList = ({
                 <Avatar alt={""} src={""} />
               </ListItemAvatar>
               <ListItemText
+                fontFamily={"var(--main-font-family)"}
                 // sx={{overflow:'hidden', textOverflow:'ellipsis'}}
                 primaryTypographyProps={{
                   overflow: "hidden",
@@ -247,7 +266,10 @@ const ConversationList = ({
                 primary={
                   <React.Fragment>
                     <Typography
-                      sx={{ display: "flex" }}
+                      sx={{
+                        display: "flex",
+                        fontFamily: "var(--main-font-family)",
+                      }}
                       component="span"
                       variant="body1"
                       color="text.primary"
@@ -265,6 +287,7 @@ const ConversationList = ({
         <TabPanel style={{ padding: 0 }} value={1}>
           <List
             sx={{
+              fontFamily: "var(--main-font-family)",
               width: "100%",
               maxWidth: { xl: 360 },
               bgcolor: "background.paper",

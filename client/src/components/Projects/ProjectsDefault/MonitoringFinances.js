@@ -66,7 +66,7 @@ const themeStyle = {
     label: {
         fontSize: {xl:'13px', lg:10.5, md:"13px", xs:"13px"},
         color: '#2F2F2F',
-        fontFamily: 'Montserrat, sans-serif',
+        fontFamily: 'var(--main-font-family)',
         fontWeight: '500',
         whiteSpace: 'nowrap',
 
@@ -76,7 +76,7 @@ const themeStyle = {
       
         fontSize: '14px',
         color: '#4C8AB1',
-        fontFamily: 'Montserrat, sans-serif',
+        fontFamily: 'var(--main-font-family)',
         fontWeight: '600',
         width:'30ch',
         overflow:'hidden',

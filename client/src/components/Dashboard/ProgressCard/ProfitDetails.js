@@ -93,14 +93,14 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
                   fontSize={"9px"}
                   fontWeight={"700"}
                   pl={0.2}
-                  fontFamily={"Inter, sans-serif"}
+                  fontFamily={'var(--main-font-family)'}
                 
                 >
                   ${formatMoney(TotalProfit)}
                 </Typography> */}
                 <Typography
                   fontSize={"9px"}
-                  fontFamily={"Inter, sans-serif"}
+                  fontFamily={'var(--main-font-family)'}
                  
                 >
                   Projected Profit
@@ -133,13 +133,13 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
                   fontSize={"9px"}
                   fontWeight={"700"}
                   pl={0.2}
-                  fontFamily={"Inter, sans-serif"}
+                  fontFamily={'var(--main-font-family)'}
                   
                  
                 >
                   ${formatMoney(totalProfitFromPaidInvoices)}
                 </Typography> */}
-                <Typography fontSize={"9px"} fontFamily={"Inter, sans-serif"}>
+                <Typography fontSize={"9px"} fontFamily={'var(--main-font-family)'}>
                   Margin
                 </Typography>
               </Stack>
@@ -155,7 +155,7 @@ export default ProfitDetails;
 
 const themeStyle = {
   title: {
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     color: "#202224",
     opacity: "0.7",
   },
@@ -169,7 +169,7 @@ const themeStyle = {
     maxWidth: 80,
     minWidth: 80,
     textAlign: "left",
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     color: "#202227",
     fontSize: "10px",
     paddingRight: "32px",
@@ -178,7 +178,7 @@ const themeStyle = {
     maxWidth: 10,
     minWidth: 10,
     textAlign: "left",
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     color: "#202227",
     fontSize: {xl:"20px",lg:"20px"},
   },

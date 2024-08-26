@@ -125,17 +125,17 @@ function CustomTable({
         userId: user.userId,
         superAdminId: currentUserId,
         projectId: user.projectId,
-        userRole: userRole
+        userRole: userRole,
       };
       const res = await assignRoleDelete(deleteUser);
-      if(res?.error?.data?.success === false){
+      if (res?.error?.data?.success === false) {
         toast.error(res?.error?.data?.error || "something went wrong");
       }
       if (res?.data?.success) {
         refetch();
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
       toast.error(e?.error?.data?.error || "something went wrong");
     }
   };
@@ -251,35 +251,40 @@ function CustomTable({
                   </TableRow>
                 ) : data?.message === "no records" ? (
                   <TableRow>
-                    <TableCell colSpan={10} sx={{ textAlign: "center", borderBottom:'none' }}>
+                    <TableCell
+                      colSpan={10}
+                      sx={{
+                        textAlign: "center",
+                        borderBottom: "none",
+                        fontFamily: "var(--main-font-family)",
+                      }}
+                    >
                       No Records
                     </TableCell>
                   </TableRow>
                 ) : (
-                  data?.users?.map((row, index) => { 
-                    if(row === null)
-                      return <></>;
-                    
-                    return(
-                   
-                    <TableRow key={index}>
-                      <TableCell sx={tableCellValueStyle}>
-                        <Avatar alt="Avatar" src={row?.image} />
-                      </TableCell>
-                      <TableCell sx={tableCellValueStyle}>
-                        {row?.firstName}
-                      </TableCell>
-                      <TableCell sx={tableCellValueStyle}>
-                        {row?.projectName}
-                      </TableCell>
-                      <TableCell sx={tableCellValueStyle}>
-                        {row?.phoneNumber}
-                      </TableCell>
-                      <TableCell sx={tableCellValueStyle}>
-                        {row?.email}
-                      </TableCell>
-                      {/* <TableCell sx={tableCellValueStyle}>{row.country}</TableCell> */}
-                      {/* <TableCell sx={tableCellValueStyle}>
+                  data?.users?.map((row, index) => {
+                    if (row === null) return <></>;
+
+                    return (
+                      <TableRow key={index}>
+                        <TableCell sx={tableCellValueStyle}>
+                          <Avatar alt="Avatar" src={row?.image} />
+                        </TableCell>
+                        <TableCell sx={tableCellValueStyle}>
+                          {row?.firstName}
+                        </TableCell>
+                        <TableCell sx={tableCellValueStyle}>
+                          {row?.projectName}
+                        </TableCell>
+                        <TableCell sx={tableCellValueStyle}>
+                          {row?.phoneNumber}
+                        </TableCell>
+                        <TableCell sx={tableCellValueStyle}>
+                          {row?.email}
+                        </TableCell>
+                        {/* <TableCell sx={tableCellValueStyle}>{row.country}</TableCell> */}
+                        {/* <TableCell sx={tableCellValueStyle}>
                   {" "}
                   <Button
                     buttonText={row.status}
@@ -292,7 +297,7 @@ function CustomTable({
                     borderRadius="45px"
                   />
                 </TableCell> */}
-                      {/* {showEmailAndRecords && (
+                        {/* {showEmailAndRecords && (
                       <TableCell sx={tableCellValueStyle}>
                         <IconButton
                           aria-label="email"
@@ -303,38 +308,39 @@ function CustomTable({
                         </IconButton>
                       </TableCell>
                     )} */}
-                      <TableCell sx={tableCellValueStyle}>
-                        <IconButton
-                          aria-label="edit"
-                          size="small"
-                          onClick={() => handleUserId(row)}
-                        >
-                          <img
-                            src={EditIcon}
-                            alt=""
-                            style={{ width: "35px" }}
-                          />
-                        </IconButton>
-                        <IconButton
-                          aria-label="delete"
-                          size="small"
-                          // onClick={() => handleDelete(row.id)}
-                          onClick={() =>
-                            handleDeleteFlow({
-                              userId: row.id,
-                              projectId: row.projectId,
-                            })
-                          }
-                        >
-                          <img
-                            src={DeleteIcon}
-                            alt=""
-                            style={{ width: "35px" }}
-                          />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  )})
+                        <TableCell sx={tableCellValueStyle}>
+                          <IconButton
+                            aria-label="edit"
+                            size="small"
+                            onClick={() => handleUserId(row)}
+                          >
+                            <img
+                              src={EditIcon}
+                              alt=""
+                              style={{ width: "35px" }}
+                            />
+                          </IconButton>
+                          <IconButton
+                            aria-label="delete"
+                            size="small"
+                            // onClick={() => handleDelete(row.id)}
+                            onClick={() =>
+                              handleDeleteFlow({
+                                userId: row.id,
+                                projectId: row.projectId,
+                              })
+                            }
+                          >
+                            <img
+                              src={DeleteIcon}
+                              alt=""
+                              style={{ width: "35px" }}
+                            />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
                 )}
               </TableBody>
             )}
@@ -357,21 +363,21 @@ export default CustomTable;
 const tableCellStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
-  textOverflow:'ellipsis',
-  overflow:'hidden',
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 500,
   fontSize: "14px",
-  fontFamily: "Poppins",
+  fontFamily: "var(--main-font-family)",
 };
 
 const tableCellValueStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minwidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
-  textOverflow:'ellipsis',
-  overflow:'hidden',
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 400,
   borderBottom: "none",
-  fontFamily: "Montserrat",
+  fontFamily: "var(--main-font-family)",
   color: "#000000",
   whiteSpace: "wrap",
 };

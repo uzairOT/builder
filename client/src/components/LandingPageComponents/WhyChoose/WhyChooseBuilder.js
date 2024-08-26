@@ -1,7 +1,5 @@
 import React from "react";
 import { Box, Container, Grid, Typography } from "@mui/material";
-import CreateIcon from "@mui/icons-material/Create";
-import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 import {
   ComprehensiveIcn,
   ColabIcn,
@@ -14,7 +12,7 @@ const features = [
     icon: <ComprehensiveIcn />,
     title: "Comprehensive Solution",
     description:
-      "Manage all aspects of your projects seamlessly with Builder Pro’s complete toolkit.",
+      "Manage all aspects of your projects seamlessly with BuilderBuilder Pro’s complete toolkit.",
   },
   {
     icon: <ColabIcn />,
@@ -32,7 +30,7 @@ const features = [
     icon: <InnovateIcn />,
     title: "Innovative & Reliability",
     description:
-      "Trust Builder Pro’s cutting-edge technology for reliable project management innovations.",
+      "Trust BuilderBuilder Pro’s cutting-edge technology for reliable project management innovations.",
   },
 ];
 
@@ -40,31 +38,37 @@ const WhyChooseBuilder = () => {
   return (
     <Box py={8}>
       <Container>
-        <Typography
-          variant="h5"
-          align="center"
-          gutterBottom
-          sx={{ mb: 3, color: "#2D6F8C" }}
-        >
-          Why Choose Builder Pro?
+        <Typography align="center" sx={styles.titleFont}>
+          Why Choose BuilderBuilder Pro?
         </Typography>
-        <Typography
-          variant="h4"
-          align="center"
-          gutterBottom
-          sx={{ mb: 5, color: "#003366" }}
-        >
-          Simplify Your Experience
+        <Typography sx={styles.SubtitleFont} align="center">
+          We understand the unique challenges of the construction industry.
         </Typography>
-        <Grid container spacing={4} justifyContent="center">
+
+        <Typography sx={styles.DecsFont}>
+          Our platform is designed by construction professionals for
+          construction professionals, offering unmatched functionality, ease of
+          use, and mobile accessibility. With BuilderBuilder Pro, you gain a
+          partner committed to your success, providing the tools you need to
+          manage your projects with confidence and precision.
+        </Typography>
+        <Grid
+          container
+          spacing={2}
+          justifyContent="center"
+          mt={2}
+          alignItems={"center"}
+        >
           {features.map((feature, index) => (
-            <Grid item xs={12} md={3} key={index}>
+            <Grid item xs={12} md={3} key={index} alignItems={"center"}>
               <Box textAlign="center">
-                {feature.icon}
-                <Typography variant="h6" gutterBottom>
+                <Typography>{feature.icon}</Typography>
+                <Typography sx={styles.featureTitle} gutterBottom>
                   {feature.title}
                 </Typography>
-                <Typography variant="body1">{feature.description}</Typography>
+                <Typography sx={styles.featureDesc}>
+                  {feature.description}
+                </Typography>
               </Box>
             </Grid>
           ))}
@@ -75,3 +79,36 @@ const WhyChooseBuilder = () => {
 };
 
 export default WhyChooseBuilder;
+
+const styles = {
+  titleFont: {
+    fontFamily: "var(--main-font-family)",
+    fontWeight: 500,
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    mb: 3,
+    color: "#4C8AB1",
+  },
+  SubtitleFont: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "36px", sm: "36px", xs: "18px" },
+    fontWeight: 500,
+    marginBottom: 2,
+  },
+  DecsFont: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    fontWeight: 400,
+    color: "#454245",
+  },
+  featureTitle: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "24px", sm: "24px", xs: "22px" },
+    fontWeight: 500,
+  },
+  featureDesc: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    fontWeight: 400,
+    color: "#454245",
+  },
+};

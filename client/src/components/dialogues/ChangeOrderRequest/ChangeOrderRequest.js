@@ -215,7 +215,7 @@ function ChangeOrderRequest({ handleOpen, handleClose, heading }) {
 }
 const themeStyle = {
     typoTitle: {
-        fontFamily: 'Arial Rounded MT, sans-serif',
+        fontFamily: 'var(--main-font-family)',
         fontSize: { lg: "1.5rem", sm: "1.5rem", xs: "1.2rem" },
         fontWeight: 500,
         color: "#4C8AB1",
@@ -246,7 +246,7 @@ const themeStyle = {
     },
 
     typoText: {
-        fontFamily: 'Arial Rounded MT, sans-serif',
+        fontFamily: 'var(--main-font-family)',
         fontSize: "1rem",
         color: "#202227"
     },
@@ -254,7 +254,7 @@ const themeStyle = {
         width: { lg: "35%", md: "35%", sm: "40%", xs: "50%" },
         justifyContent: "center",
         alignItems: "center",
-        fontFamily: 'Arial Rounded MT, sans-serif',
+        fontFamily: 'var(--main-font-family)',
     },
     declineButton: {
         marginLeft: "0.5rem",
@@ -264,7 +264,7 @@ const themeStyle = {
         }
     },
     time: {
-        fontFamily: "inherit",
+        fontFamily: 'var(--main-font-family)',
         fontSize: "1rem",
         fontStyle: 'italic',
         color: '#484848',
@@ -279,7 +279,7 @@ const themeStyle = {
     radioText: {
         '& .MuiTypography-root': {
             color: '#3D3D3D', // Change color of the radio button text
-            fontFamily: 'Arial Rounded MT, sans-serif',
+            fontFamily: 'var(--main-font-family)',
             fontSize: { lg: "1rem", xs: "0.8rem" },
         },
 
@@ -290,7 +290,7 @@ const themeStyle = {
         },
     },
     headingText: {
-        fontFamily: "inherit",
+        fontFamily: 'var(--main-font-family)',
         color: '#000000',
         fontWeight: 500,
         marginTop: "0.5rem",
@@ -305,7 +305,7 @@ const themeStyle = {
 
     },
     linkButton: {
-        fontFamily: "Inter", fontWeight: 500, textTransform: "none", color: "#858585", fontSize: { lg: "0.9rem", md: "0.9rem", sm: "0.8rem", xs: "0.6rem" }, justifyContent: "flex-start", marginLeft: "-0.3rem",
+        fontFamily: 'var(--main-font-family)', fontWeight: 500, textTransform: "none", color: "#858585", fontSize: { lg: "0.9rem", md: "0.9rem", sm: "0.8rem", xs: "0.6rem" }, justifyContent: "flex-start", marginLeft: "-0.3rem",
         marginBottom: "1rem"
     },
     costText: {

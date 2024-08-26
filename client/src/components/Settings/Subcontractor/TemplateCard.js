@@ -70,14 +70,14 @@ const headingStyle = {
   fontWeight: 600,
   color: "#000000",
   fontSize: "18px",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
 };
 
 const subheadingStyle = {
   fontWeight: 600,
   color: "#000000",
   fontSize: "14px",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
 };
 
 const contentStyle = {

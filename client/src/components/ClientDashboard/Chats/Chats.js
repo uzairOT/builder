@@ -51,7 +51,7 @@ export default Chats;
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   "& input": {
     border: "1px solid #E0E4EC",
     borderRadius: "8px",

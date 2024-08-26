@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
+import { useAssignProjectMutation,} from "../../../redux/apis/usersApiSlice";
 
 import { Box, Grid, Typography, Button, Stack } from "@mui/material";
-import { selectProjectForm } from "../../../redux/slices/projectFormSlice";
+import { resetUserAndRoleEmail, selectProjectForm } from "../../../redux/slices/projectFormSlice";
 import YellowBtn from "../../UI/button";
 import FooterCircles from "../FooterCircles/FooterCircles";
 import "../../../App.css";
@@ -13,6 +13,7 @@ import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
 import { useSetProjectToIncompleteMutation } from "../../../redux/apis/Project/userProjectApiSlice";
 import { toast } from "react-toastify";
 import { setCredentials } from "../../../redux/slices/authSlice";
+import { setBackButtonProjectId, setIsSaveAs } from "../../../redux/slices/Project/handlingProjectFlowSlice";
 
 function Footer({ onNextStep, projectId }) {
   const phases = useSelector((state) => state.projectInitialProposal.phases);
@@ -25,6 +26,9 @@ function Footer({ onNextStep, projectId }) {
       toast.error('Please add atleast one phase');
       return;
     }
+    dispatch(setIsSaveAs(true));
+    dispatch(setBackButtonProjectId(null));
+    dispatch(resetUserAndRoleEmail());
     onNextStep();
   };
 
@@ -53,6 +57,9 @@ function Footer({ onNextStep, projectId }) {
       });
       dispatch(setCredentials({...userdata, incompleteProject: res?.data.data}));
       dispatch(addPhase([]));
+      dispatch(setIsSaveAs(false));
+      dispatch(setBackButtonProjectId(null));
+      dispatch(resetUserAndRoleEmail());
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -77,6 +84,7 @@ function Footer({ onNextStep, projectId }) {
     <div>
       <Grid item lg={12} sx={firstGrid}>
         <Box sx={buttonBox}>
+          
           <Button
             sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}
             onClick={handleDone}
@@ -139,7 +147,7 @@ const buttonBox = {
 const redText = {
   color: "#BE1D1D",
   marginTop: "0rem",
-  fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "0.875rem",
   fontStyle: "normal",
   fontWeight: 400,

@@ -35,21 +35,21 @@ const TotalCostPieChart = () => {
     <Paper sx={{ borderRadius: "14px" }}>
       <Stack p={2}>
         <Typography
-          fontFamily={"Inter, sans serif"}
+          fontFamily={'var(--main-font-family)'}
           fontWeight={"500"}
           fontSize={{ xl: "18px", lg: "15px", md: "18px", xs: "18px" }}
         >
           Total Cost
         </Typography>
         <Typography
-          fontFamily={"Inter, sans serif"}
+          fontFamily={'var(--main-font-family)'}
           fontWeight={"500"}
           fontSize={{ xl: "28px", lg: "24px", md: "28px", xs: "28px" }}
         >
           ${isLoading ? <>...</> : formatMoney(data?.totalCost)}
         </Typography>
         <Typography
-          fontFamily={"Inter, sans serif"}
+          fontFamily={'var(--main-font-family)'}
           fontWeight={"400"}
           fontSize={{ xl: "12px", lg: "11px", md: "12px", xs: "12px" }}
           color={"#4F4F4F"}
@@ -69,7 +69,7 @@ const TotalCostPieChart = () => {
             <Stack direction={"row"} spacing={1} alignItems={"center"}>
               <CircleIcon sx={{ color: "#F9C74F",  fontSize: { xl: "10px", lg: "8px", md: "10px", xs: "10px" }, }} />
               <Typography
-                fontFamily={"Inter, sans serif"}
+                fontFamily={'var(--main-font-family)'}
                 fontSize={{ xl: "12px", lg: "11px", md: "12px", xs: "12px" }}
               >
                 Spent Amount
@@ -83,7 +83,7 @@ const TotalCostPieChart = () => {
             <Stack direction={"row"} spacing={1} alignItems={"center"}>
               <CircleIcon sx={{ color: "#45A5F6",   fontSize: { xl: "10px", lg: "8px", md: "10px", xs: "10px" }, }} />
               <Typography
-                fontFamily={"Inter, sans serif"}
+                fontFamily={'var(--main-font-family)'}
                 fontSize={{ xl: "12px", lg: "11px", md: "12px", xs: "12px" }}
               >
                 Remaining Amount

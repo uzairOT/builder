@@ -82,7 +82,7 @@ const PAsswordReset = () => {
                   sx={{
                     color: "#000000",
                     fontSize: "20px",
-                    fontFamily: "GT Walsheim Trial",
+                    fontFamily: 'var(--main-font-family)',
                     fontWeight: 550,
                   }}
                 >

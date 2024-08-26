@@ -117,7 +117,7 @@ const ForgotPassword = () => {
                   sx={{
                     color: "#000000",
                     fontSize: "20px",
-                    fontFamily: "GT Walsheim Trial",
+                    fontFamily: 'var(--main-font-family)',
                     fontWeight: 550,
                   }}
                 >
@@ -135,7 +135,7 @@ const ForgotPassword = () => {
                     color: "#202227",
                     fontWeight: 500,
                     fontSize: "16px",
-                    fontFamily: "GT Walsheim Trial",
+                    fontFamily: 'var(--main-font-family)',
                   }}
                 >
                   Email

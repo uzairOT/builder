@@ -425,18 +425,18 @@ const ShareModal = ({
                         color={"#202227"}
                         fontSize={"14px"}
                         pl={2}
-                        fontFamily={"Arial Rounded MT, sans-serif"}
+                        fontFamily={'var(--main-font-family)'}
                       >
                         {user?.firstName}
                       </Typography>
                       <Typography
-                        fontFamily={"Arial Rounded MT, sans-serif"}
+                        fontFamily={'var(--main-font-family)'}
                         fontSize={"14px"}
                       >
                         {user.role}
                       </Typography>
                       <Typography
-                        fontFamily={"Arial Rounded MT, sans-serif"}
+                        fontFamily={'var(--main-font-family)'}
                         fontSize={"14px"}
                       >
                         {user.email}
@@ -700,7 +700,7 @@ const ShareModal = ({
                   style={{
                     fontSize: "12px",
                     top: "3px",
-                    fontFamily: "Arial Rounded MT, sans-serif",
+                    fontFamily: 'var(--main-font-family)',
                     color: "#202227",
                   }}
                   sx={{
@@ -780,7 +780,7 @@ export default ShareModal;
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   border: "1px solid #E0E4EC",
   padding: "0px",
   width: { xl: "100%", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
@@ -805,7 +805,7 @@ const style = {
 };
 const label = {
   fontSize: "12px",
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   maxWidth: { xl: "60px", lg: "60px", md: "70px", xs: "100%" },
   minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
   // overflow:'hidden',

@@ -133,7 +133,7 @@ const addPhaseButton = {
 };
 
 const typoText = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1rem",
   color: "#202227",
   textAlign: "center",

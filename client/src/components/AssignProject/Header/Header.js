@@ -6,10 +6,10 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import builder1 from "../../Signup/Assets/pngs/builderProYellowLogo.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { resetUserAndRoleEmail } from "../../../redux/slices/projectFormSlice";
+import { resetUserAndRoleEmail, setProjectIdOnBackBtn } from "../../../redux/slices/projectFormSlice";
 import { toast } from "react-toastify";
 
-function Header({ step, gap, handlePreviousStep, step2 }) {
+function Header({ step, gap, handlePreviousStep, step2, step3 }) {
   //console.log("Header step: ", step);
   const phases = useSelector((state) => state.projectInitialProposal.phases);
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -21,7 +21,7 @@ function Header({ step, gap, handlePreviousStep, step2 }) {
   const buttonStyle = {
     height: "50%",
     marginTop: { lg: "2rem", sm: "2rem", xs: "0rem" },
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     color: step === 1 ? "gray" : "",
   };
 
@@ -31,12 +31,13 @@ function Header({ step, gap, handlePreviousStep, step2 }) {
     // } else {
     //   handlePreviousStep();
     // }
+
     e.preventDefault();
     handlePreviousStep();
   };
   const handleLogoClcik = () => {
-    if(phases[0]?.length < 1){
-      toast.error('Please add atleast one phase');
+    if (phases[0]?.length < 1) {
+      toast.error("Please add atleast one phase");
       return;
     }
     dispatch(resetUserAndRoleEmail());
@@ -47,41 +48,40 @@ function Header({ step, gap, handlePreviousStep, step2 }) {
       <Grid item lg={12} sx={firstGrid}>
         {isMobile ? (
           <>
-            <Box
-              display={"flex"}
-              flexDirection={"row"}
-              
-            >
+            <Box display={"flex"} flexDirection={"row"}>
               <Box sx={mobileImageBox} onClick={handleLogoClcik}>
                 <img src={builder1} width={"45%"} alt="" />
               </Box>
-              {step2 && <Box sx={mobileButtonBox}>
-                <Button
-                  sx={buttonStyle}
-                  startIcon={<ArrowBackIosIcon />}
-                  onClick={(e) => handleStep(e)}
-                 
-                >
-                  Back
-                </Button>
-              </Box>}
+              {(step2 || step3) && (
+                <Box sx={mobileButtonBox}>
+                  <Button
+                    sx={buttonStyle}
+                    startIcon={<ArrowBackIosIcon />}
+                    onClick={(e) => handleStep(e)}
+                  >
+                    Back
+                  </Button>
+                </Box>
+              )}
             </Box>
           </>
         ) : (
-          <Box
-            sx={{ ...headerBox, cursor: "pointer" }}
-            gap={gap}
-           
-          >
-            <img src={builder1} width={imgWidth} alt=""  onClick={handleLogoClcik}/>
-            {step2 && <Button
-              sx={buttonStyle}
-              startIcon={<ArrowBackIosIcon />}
-              onClick={(e) => handleStep(e)}
-             
-            >
-              Back
-            </Button>}
+          <Box sx={{ ...headerBox, cursor: "pointer" }} gap={gap}>
+            <img
+              src={builder1}
+              width={imgWidth}
+              alt=""
+              onClick={handleLogoClcik}
+            />
+            { (step2 || step3) &&  (
+              <Button
+                sx={buttonStyle}
+                startIcon={<ArrowBackIosIcon />}
+                onClick={(e) => handleStep(e)}
+              >
+                Back
+              </Button>
+            )}
           </Box>
         )}
       </Grid>

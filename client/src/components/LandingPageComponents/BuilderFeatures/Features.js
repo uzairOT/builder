@@ -24,27 +24,30 @@ import InvitationFeature from "../assets/PNG/InvitationFeature.png";
 import InvoiceFeature from "../assets/PNG/InvoiceFeature.png";
 import {
   CheckIcn,
-  CommonFeatureIcn,
-  MessageIcn,
-  SubFeatureIcn,
+  DashboardCardIcn,
+  InvoiceCardIcn,
+  ReportCardIcn,
+  SubCardIcn,
+  TeamCardIcn,
+  WorkOrderCardIcn,
 } from "../assets/svg";
 
 const FeatureCard = ({ title, features, image, icon }) => {
   return (
     <Box style={styles.card}>
       <Grid container sx={{ justifyContent: "center" }}>
-        <Container maxWidth={"sm"}>
+        <Container maxWidth={"sm"} textAlign="center" justifyContent="center" alignItems="center" display="flex">
           {icon && <icon.Component />}
-          <Typography variant="h5" gutterBottom>
+          <Typography sx={styles.CardTitle} gutterBottom>
             {title}
           </Typography>
           <List>
             {features.map((feature, index) => (
-              <ListItem key={index} style={styles.listItem}>
+              <ListItem sx={styles.CardDesc}  key={index} style={styles.listItem}>
                 <ListItemIcon>
                   <CheckIcn />
                 </ListItemIcon>
-                <ListItemText primary={feature} />
+                <ListItemText style={styles.CardDesc} primary={feature} />
               </ListItem>
             ))}
           </List>
@@ -59,7 +62,8 @@ const BuilderFeatures = () => {
   const xsView = useMediaQuery(theme.breakpoints.down("xs"));
   return (
     <Grid style={styles.container}>
-      <Container maxWidth={"lg"} sx={{ textAlign: "center" }}>
+      <Container maxWidth={"xl"} sx={{ textAlign: "center" }}>
+      <Typography sx={styles.titleFont}>Features</Typography>
         <Typography
           variant="h4"
           align="center"
@@ -67,20 +71,23 @@ const BuilderFeatures = () => {
           style={styles.title}
         >
           Here's how{" "}
-          <strong style={{ color: "#2E728F" }}>BUILDER BUILDER PRO</strong> sets
+          <strong style={{ color: "#2E728F" }}>BuilderBuilder Pro</strong> sets
           you up for the best Management
         </Typography>
+        <Container maxWidth={"lg"}>
+
         <Typography
           variant="body1"
           align="center"
           paragraph
-          style={styles.description}
+          style={styles.DecsFont}
         >
           Choose us for a seamless blend of innovation, reliability, and
           customer-centric solutions. With a track record of delivering
           unparalleled quality, our dedicated team ensures your experience is
           nothing short of exceptional.
         </Typography>
+        </Container>
       </Container>
       {/* Dashboard Feature Section */}
       <Grid container alignItems="center" justifyContent="center" padding={2}>
@@ -98,7 +105,7 @@ const BuilderFeatures = () => {
             title="Dashboard"
             features={features.dashboardFeature}
             image={DashboardFeature}
-            icon={{ Component: MessageIcn }}
+            icon={{ Component: DashboardCardIcn }}
           />
         </Grid>
       </Grid>
@@ -110,7 +117,7 @@ const BuilderFeatures = () => {
             title="Work Order Events"
             features={features.eventFeature}
             image={EventFeature}
-            icon={{ Component: CommonFeatureIcn }}
+            icon={{ Component: WorkOrderCardIcn }}
           />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -146,7 +153,7 @@ const BuilderFeatures = () => {
             title="Subscription"
             features={features.subscriptionFeature}
             image={SubscriptionFeature}
-            icon={{ Component: SubFeatureIcn }}
+            icon={{ Component: SubCardIcn }}
           />
         </Grid>
       </Grid>
@@ -158,7 +165,7 @@ const BuilderFeatures = () => {
             title="Reports"
             features={features.reportFeature}
             image={ReportsFeature}
-            icon={{ Component: CommonFeatureIcn }}
+            icon={{ Component: ReportCardIcn }}
           />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -194,7 +201,7 @@ const BuilderFeatures = () => {
             title="Team Invitations"
             features={features.inviteFeature}
             image={SubscriptionFeature}
-            icon={{ Component: SubFeatureIcn }}
+            icon={{ Component: TeamCardIcn }}
           />
         </Grid>
       </Grid>
@@ -203,10 +210,10 @@ const BuilderFeatures = () => {
       <Grid container padding={2} mt={5}>
         <Grid item xs={12} md={6} sx={{ justifyContent: "left" }}>
           <FeatureCard
-            title="Team Invitations"
+            title="Invoice Management"
             features={features.invoiceFeature}
             image={InvitationFeature}
-            icon={{ Component: CommonFeatureIcn }}
+            icon={{ Component: InvoiceCardIcn }}
           />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -224,12 +231,46 @@ const BuilderFeatures = () => {
 };
 export default BuilderFeatures;
 
-export const styles = {
+
+
+const styles={
+  titleFont:{
+    fontFamily: 'var(--main-font-family)',
+    fontWeight: 500,
+    fontSize: { md: "16px",sm:"16px", xs: "14px" },
+    mb: 3, 
+    color: "#4C8AB1"
+  },
+  SubtitleFont:{
+    fontFamily: 'var(--main-font-family)',
+    fontSize: { md: "36px",sm:"36px", xs: "18px" },
+      fontWeight:500,
+      marginBottom: 2,
+  },
+  DecsFont:{
+    fontFamily: 'var(--main-font-family)',
+    fontSize: { md: "16px",sm:"16px", xs: "14px" },
+      fontWeight:400,
+      color:"#454245"
+  },
+  CardTitle:{
+    fontFamily: 'var(--main-font-family)',
+    fontSize: { md: "30px",sm:"30px", xs: "20px" },
+    fontWeight:400,
+  },
+  CardDesc:{
+    fontFamily: "GT Walsheim Trial !important",
+    fontSize: { md: "18px",sm:"18px", xs: "16px" },
+    fontWeight:400,
+    color:"#454245"
+  },
   container: {
     padding: "32px",
   },
   title: {
-    fontWeight: "bold",
+    fontFamily: 'var(--main-font-family)',
+    fontSize: { md: "36px",sm:"36px", xs: "18px" },
+    fontWeight:500,
   },
   description: {
     marginBottom: "16px",
@@ -245,4 +286,6 @@ export const styles = {
   listItem: {
     marginBottom: "8px",
   },
-};
+  }
+
+

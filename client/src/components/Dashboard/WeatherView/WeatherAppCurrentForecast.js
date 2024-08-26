@@ -26,8 +26,8 @@ const WeatherAppCurrentForecast = () => {
     const fetchWeather = async () => {
       try {
         const data = await getFormattedWeatherData({
-          lat: "34.0549",
-          lon: "118.2426",
+          lat: "36.7783",
+          lon: "119.4179",
           units: query.temperatureUnit,
         });
         //console.log(data);
@@ -167,13 +167,14 @@ const WeatherAppCurrentForecast = () => {
 
 const themeStyle = {
   degreeDropdown: {
+    fontFamily: 'var(--main-font-family)',
     display: "flex",
     alignSelf: "flex-start",
     justifySelf: "flex-end",
   },
   degreeDropdownMenu: {
     borderRadius: "50px",
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     color: "#616161",
     fontSize: {md:"13px", xs:"11px"},
     height: "28px",
@@ -191,6 +192,8 @@ const themeStyle = {
   },
   text: {
     color: "#4C8AB1",
+    fontFamily: 'var(--main-font-family)',
+
   },
 };
 

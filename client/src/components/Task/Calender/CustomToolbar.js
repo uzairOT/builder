@@ -61,14 +61,14 @@ const CustomToolbar = ({
   const themeStyle = {
     toolbarTitle: {
       color: "#707070",
-      fontFamily: "inherit",
+      fontFamily: 'var(--main-font-family)',
       fontSize: { xl:18,md: 13, lg:13,xs:13,sm:13 } ,
       fontStyle: "normal",
       fontWeight: 500,
     },
     toolbarButton: {
       textAlign: "center",
-      fontFamily: "inherit",
+      fontFamily: 'var(--main-font-family)',
       fontSize: "12px",
       fontStyle: "normal",
       fontWeight: 500,
@@ -83,7 +83,7 @@ const CustomToolbar = ({
       padding: "5px",
     },
     toolbarLabel: {
-      fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+      fontFamily: 'var(--main-font-family)',
       color: "#484848",
       fontWeight: "500",
     },
@@ -97,7 +97,7 @@ const CustomToolbar = ({
       lineHeight: "32px",
     },
     button: {
-      fontFamily: "inherit",
+      fontFamily: 'var(--main-font-family)',
       fontSize: "12px",
       fontStyle: "normal",
       fontWeight: 500,

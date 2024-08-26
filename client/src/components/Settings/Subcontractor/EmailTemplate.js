@@ -65,7 +65,7 @@ const headingStyle = {
   flexGrow: 1,
   mr: 2,
   margin: "10px 20px",
-  fontFamily: "Poppins",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "600",
   fontSize: "22px",
   color: "#4C8AB1",

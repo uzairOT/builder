@@ -10,6 +10,7 @@ import {
   useUpdateAssignRoleMutation,
 } from "../../redux/apis/Admin/assignRoleApiSlice.js";
 import ProjectNavbarDrawer from "../Projects/ProjectNavbarDrawer.js";
+import { useOutletContext } from 'react-router-dom';
 function Layout3() {
   const [userInfo, setUserInfo] = useState({
     userRole: "",
@@ -77,6 +78,7 @@ function Layout3() {
   };
   const navLinks = [
     { path: "/settings", title: "Profile" },
+    // { path: "/settings/permissions", title: "Permission Access" },
     { path: "/settings/materline", title: "Master Line Items" },
     { path: "/settings/units", title: "Units" },
     { path: "/settings/admin", title: "Admin" },

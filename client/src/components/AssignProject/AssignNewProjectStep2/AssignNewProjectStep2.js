@@ -25,15 +25,23 @@ import {
   setProjectName,
   setLocation,
 } from "../../../redux/slices/projectFormSlice";
-import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
+import {
+  useAssignProjectMutation,
+  useEditAssignProjectMutation,
+} from "../../../redux/apis/usersApiSlice";
 import { toast } from "react-toastify";
 //import "react-toastify/dist/ReactToastify.css";
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+import {
+  getBackButtonProjectId,
+  getIsSaveAs,
+  setBackButtonProjectId,
+} from "../../../redux/slices/Project/handlingProjectFlowSlice";
 
 function AssignNewProjectStep2({
   onNextStep,
   setProjectId,
-  isSaveAs,
+  // isSaveAs,
   projectId,
 }) {
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -50,14 +58,21 @@ function AssignNewProjectStep2({
   const [emailCount, setEmailCount] = useState(1);
   const [showSkipInvite, setShowSkipInvite] = useState(false);
   const { projectName } = useSelector(selectProjectForm);
+  const isSaveAs = useSelector(getIsSaveAs);
   const { refetch } = useGetUserProjectsQuery({ userId: userInfo.user.id });
+  const local = localStorage.getItem("userInfo");
+  const currentUser = JSON.parse(local);
+  const organizationId = currentUser?.user?.organization?.organizationId;
+  const backButtonProjectId = useSelector(getBackButtonProjectId);
+  const [editAssignProject, { isLoading: isEditLoading }] =
+    useEditAssignProjectMutation();
 
   const handleAddEmail = () => {
     setEmailCount(emailCount + 1);
   };
 
   const handleSkip = () => {
-    dispatch(setSkipInvite());  
+    dispatch(setSkipInvite());
     setShowSkipInvite(true);
   };
 
@@ -98,26 +113,50 @@ function AssignNewProjectStep2({
         ...Data,
         userId: userId,
         isSaveAs: isSaveAs,
-        projectId: projectId,
+        projectId: backButtonProjectId ? backButtonProjectId : projectId,
+        organizationId: organizationId,
       };
 
       // Call the assignProject function and wait for the result
-      const res = await assignProject(FormData).unwrap();
+      console.log(backButtonProjectId)
+      if (backButtonProjectId) {
+        console.log(backButtonProjectId)
+        const res = await editAssignProject(FormData).unwrap();
 
-      // If successful, store the project ID in local storage
-      localStorage.setItem("projectId", res.project.id);
-      setProjectId(res.project.id);
-      await refetch();
+        // If successful, store the project ID in local storage
+        localStorage.setItem("projectId", res.project.id);
+        setProjectId(res.project.id);
+        dispatch(setBackButtonProjectId(res.project.id));
+        onNextStep();
+      } else {
+        const res = await assignProject(FormData).unwrap();
+        console.log(res)
+        if(res.message === "Existing User is not part of the organization."){
+          toast.error(
+       "Existing User is not part of the organization."
+          );
+          return;
+        }
+        // If successful, store the project ID in local storage
+        localStorage.setItem("projectId", res?.project?.id);
+        setProjectId(res?.project?.id);
+        dispatch(setBackButtonProjectId(res?.project?.id));
+        onNextStep();
+      }
+
+      // await refetch();
       // localStorage.setItem("projectId", res.project.id);
       // setProjectId(res.project.id);
       // await refetch();
-      onNextStep();
-      dispatch(resetUserAndRoleEmail());
     } catch (error) {
-      toast.error(error?.data?.message || error?.data?.error || 'Something went wrong!');
+      console.log(error);
+      toast.error(
+        error?.data?.message || error?.data?.error || error?.message || "Something went wrong!"
+      );
       return;
     }
   };
+  // console.log("Assign Error", assignProject?.message)
   const removeIndex = (index) => {
     // Input validation (optional but recommended)
     if (index < 0 || index >= users.length) {
@@ -129,16 +168,16 @@ function AssignNewProjectStep2({
     // console.log(users);
     // // Efficient removal using splice
     // console.log(users.slice(0, index).concat(users.slice(index + 1)));
-    dispatch(removeUser(index))
+    dispatch(removeUser(index));
   };
   console.log(showSkipInvite);
   return (
     <>
       <StepTitles
         stepHeading={"Step 2 of 3"}
-        Heading={"Invite your Team to"}
+        Heading={"Invite your team to"}
         projectName={projectName}
-        stepDiscription={`Accepting the invitation grants access to a secure project workspace in Builder Builder Pro`}
+        stepDiscription={`Accepting the invitation grants access to a secure project workspace in BuilderBuilder Pro`}
       />
 
       {users.map((user, index) => (
@@ -158,7 +197,6 @@ function AssignNewProjectStep2({
           ...buttonBox,
           justifyContent: "space-evenly",
           marginTop: "-1rem",
-          
         }}
       >
         <Button
@@ -179,11 +217,18 @@ function AssignNewProjectStep2({
       </Box>
       <Box sx={{ ...buttonBox, ...buttoncontainer }}>
         <Button
-          disabled={isLoading}
+          disabled={isLoading || isEditLoading}
           sx={{ ...YellowBtn, ...buttonStyle }}
-          onClick={handleNextStep}
+          onClick={() => {  
+               handleNextStep();
+
+          }}
         >
-          {isLoading ? <CircularProgress size={"1.25rem"} /> : "Next"}
+          {isLoading || isEditLoading ? (
+            <CircularProgress size={"1.25rem"} />
+          ) : (
+            "Next"
+          )}
         </Button>
         <Button sx={{ ...YellowBtn, ...buttonStyle }} onClick={handleSkip}>
           Skip
@@ -198,12 +243,14 @@ function AssignNewProjectStep2({
           handleOpen={handleOpen}
           handleClose={handleClose}
           handleNextStep={() => {
-            handleCreateNewProject();
+
+              handleCreateNewProject();
+
+
           }}
           isTab={isTab}
           isMobile={isMobile}
-          isLoading={isLoading}
-        
+          isLoading={isLoading || isEditLoading}
         />
       )}
     </>
@@ -233,7 +280,7 @@ const buttonStyle = {
 };
 
 const buttonLnks = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontWeight: 500,
   height: "50%",
   marginTop: "2rem",
@@ -253,7 +300,7 @@ const inputStyle = {
   border: "1px solid #ccc",
   borderRadius: "12px",
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   paddingLeft: "-1.5rem",
 };
 

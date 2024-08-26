@@ -51,7 +51,7 @@ const VerifyCode = () => {
       toast.success("OTP matched successfully");
       if (data === "signup") {
         console.log("wwwwwwwwwwwwwhhhhhhhhhhattttttttt::::", res);
-        dispatch(setCredentials({ ...res }));
+        dispatch(setCredentials({ ...res.data }));
         // navigate("/assignproject");
         setTimeout(() => {
           window.location.href = '/assignproject';
@@ -156,7 +156,7 @@ const VerifyCode = () => {
                   sx={{
                     color: "#000000",
                     fontSize: "20px",
-                    fontFamily: "GT Walsheim Trial",
+                    fontFamily: 'var(--main-font-family)',
                     fontWeight: 550,
                   }}
                 >
@@ -175,7 +175,7 @@ const VerifyCode = () => {
                     color: "#202227",
                     fontWeight: 500,
                     fontSize: "16px",
-                    fontFamily: "GT Walsheim Trial",
+                    fontFamily: 'var(--main-font-family)',
                   }}
                 >
                   Enter Code
@@ -214,7 +214,7 @@ const VerifyCode = () => {
                     color: "#202227",
                     fontWeight: 500,
                     fontSize: "16px",
-                    fontFamily: "GT Walsheim Trial",
+                    fontFamily: 'var(--main-font-family)',
                     marginTop: "15px",
                     textAlign:'center'
                   }}

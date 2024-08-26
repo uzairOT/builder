@@ -364,7 +364,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                   // border: "1px solid #ccc",
                   // borderRadius: "12px",
                   color: "#202227",
-                  fontFamily: "Arial Rounded MT, sans-serif",
+                  fontFamily: 'var(--main-font-family)',
                 }}
               >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -394,7 +394,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                   // border: "1px solid #ccc",
                   // borderRadius: "12px",
                   color: "#202227",
-                  fontFamily: "Arial Rounded MT, sans-serif",
+                  fontFamily: 'var(--main-font-family)',
                 }}
               >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -609,7 +609,7 @@ export default EditProjectModal;
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   border: "1px solid #E0E4EC",
   padding: "10px",
 
@@ -643,14 +643,14 @@ const headingStyle = {
   justifyContent: "space-between",
 };
 const headingStyleText = {
-  fontFamily: "Poppins",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "500",
   fontSize: "22px",
   color: "#4C8AB1",
 };
 const labelStyle = {
   marginTop: "10px",
-  fontFamily: "Poppins",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "400",
   fontSize: "13px",
   color: "#535353C9",

@@ -30,17 +30,21 @@ import { useCheckUserOnInvitationMutation } from "../../../redux/apis/usersApiSl
 import { useAddAssignRoleMutation } from "../../../redux/apis/Admin/assignRoleApiSlice";
 import { toast } from "react-toastify";
 import { SupervisorAccountRounded } from "@mui/icons-material";
+// import { usePermissionCheck } from "../../Settings/PermissionAccess/PermissionCheck";
+import { useSelector } from "react-redux";
 //import "react-toastify/dist/ReactToastify.css";
 
-const ProjectTeam = () => {
+const ProjectTeam = ({SuperAdminId}) => {
   const [open, setOpen] = useState(null);
   const [openPending, setOpenPending] = useState(null);
   const [userType, setUserType] = useState("");
   const openShare = Boolean(open);
   const openPendingInvitations = Boolean(openPending);
   const [email, setEmail] = useState("");
+  const [error, setError] = useState(false);
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
+  const role = useSelector(state => state.userRole.userRole);
   const local = localStorage.getItem("userInfo");
   const projectId = pathSegments[2];
   const currentUser = JSON.parse(local);
@@ -79,8 +83,12 @@ const ProjectTeam = () => {
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
+       // Simple email validation regex
+      
   };
   const handleInviteUser = async () => {
     const userRole = userType;
@@ -102,6 +110,10 @@ const ProjectTeam = () => {
         toast.warning("Please Enter An Email.");
         return false;
       }
+      if (!emailRegex.test(email)) {
+        toast.error("Please Enter A Valid Email.");
+        return false;
+      }
       const res = await assignRolePost(userInviteBody).unwrap();
       console.log(res);
       toast.info(res?.data?.message || res?.message || "Success");
@@ -121,11 +133,14 @@ const ProjectTeam = () => {
         return role;
     }
   }
+  // const canInvite = usePermissionCheck("invite-users", role, SuperAdminId)
+  // console.log("cantInvite: ", canInvite, role, SuperAdminId)
   return (
     <Stack pl={{ xl: 5, lg: 5, md: 1 }}>
       <Stack direction={"row"} sx={{ justifyContent: "space-between" }} pr={1}>
         <Typography sx={themeStyle.title}>Project Team</Typography>
-        <Stack
+       
+         <Stack
           direction={"row"}
           justifyContent={"center"}
           alignItems={"center"}
@@ -135,7 +150,7 @@ const ProjectTeam = () => {
               <BuilderProButton
                 variant={"outlined"}
                 handleOnClick={handleOpenPendingInvitations}
-                fontFamily={"inherit"}
+                fontFamily={'var(--main-font-family)'}
                 fontSize={"15px"}
               >
                 Pending Invitations
@@ -171,7 +186,9 @@ const ProjectTeam = () => {
           ) : isLoading ? (
             <>Loading...</>
           ) : (
-            Object?.keys(groupedData)?.map((role) => {
+            Object?.keys(groupedData)
+            ?.filter(role => role !== 'Superadmin') 
+            ?.map((role) => {
               let acc = 0;
               return (
                 <Stack
@@ -351,7 +368,7 @@ const ProjectTeam = () => {
                   style={{
                     fontSize: "12px",
                     top: "3px",
-                    fontFamily: "Arial Rounded MT, sans-serif",
+                    fontFamily: 'var(--main-font-family)',
                     color: "#202227",
                   }}
                   sx={{
@@ -396,7 +413,7 @@ const ProjectTeam = () => {
                 style={{
                   fontSize: "12px",
                   top: "3px",
-                  fontFamily: "Arial Rounded MT, sans-serif",
+                  fontFamily: 'var(--main-font-family)',
                   color: "#202227",
                 }}
                 sx={{
@@ -438,7 +455,9 @@ const ProjectTeam = () => {
           </BuilderProButton>
         </Stack>
 
-        {team?.map((user, index) => (
+        {team
+        ?.filter(user => user.role !== 'Superadmin') 
+        ?.map((user, index) => (
           <Stack key={index} p={0.5} pl={2.5} pr={2.5}>
             <Stack
               id={user.userId}
@@ -464,13 +483,13 @@ const ProjectTeam = () => {
                   color={"#202227"}
                   fontSize={"14px"}
                   pl={2}
-                  fontFamily={"Arial Rounded MT, sans-serif"}
+                  fontFamily={'var(--main-font-family)'}
                 >
                   {user.firstName}
                 </Typography>
               </Stack>
               <Typography
-                fontFamily={"Arial Rounded MT, sans-serif"}
+                fontFamily={'var(--main-font-family)'}
                 fontSize={"14px"}
               >
                {roleFormat(user.role)}
@@ -561,13 +580,13 @@ const themeStyle = {
   title: {
     fontSize: "16px",
     color: "#4C8AB1",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     pl:{md:0,xs:2.5}
   },
   subTitle: {
     fontSize: { xl: "13px", lg: "11px", xs: "11px" },
     color: "#202227",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     textAlign: "left",
   },
 };

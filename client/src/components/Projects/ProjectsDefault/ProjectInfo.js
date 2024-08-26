@@ -118,16 +118,16 @@ const themeStyle = {
   title: {
     fontSize: "16px",
     color: "#4C8AB1",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
   },
   text: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "14px",
     width: "160px",
     color: "#202227",
   },
   label: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     color: "#202227",
     fontSize:{xl:"13px", lg:12, md:12, xs:"12px"}
   },

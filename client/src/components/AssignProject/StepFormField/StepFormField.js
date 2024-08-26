@@ -35,17 +35,17 @@ function ProjectFormFields({
   };
   const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
   const placeholderText =
-    !isTab && !isMobile ? "e.g. johndoe@workmail.com" : "@mail";
+    !isTab && !isMobile ? "ex: johndoe@workmail.com" : "@mail";
 
   const handleEmailChange = (event) => {
-    const userEmail = userInfo.user.email;
+    // const userEmail = userInfo.user.email;
     const { value } = event.target;
-    if (value === userEmail) {
-      toast.warning("You can't invite yourself to the project", {
-        toastId: "invitationValidation",
-      });
-      return;
-    }
+    // if (value === userEmail) {
+    //   toast.warning("You can't invite yourself to the project", {
+    //     toastId: "invitationValidation",
+    //   });
+    //   return;
+    // }
     if (value.length <= MAX_EMAIL_LENGTH) {
       onUpdateEmail(value);
     }
@@ -165,7 +165,7 @@ const inputStyle = {
   fontSize: "14px",
   border: "1px solid #ccc",
   borderRadius: "12px",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   paddingLeft: "-1.5rem",
 };
 const formBox = {
@@ -202,7 +202,7 @@ const counterTypo = {
   bottom: "1.5rem",
   fontSize: "0.8rem",
   color: "#B8B8B8",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: 500,
 };
 

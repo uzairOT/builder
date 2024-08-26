@@ -29,7 +29,7 @@ const TotalDaysAllotted = ({ data }) => {
       <Typography
         fontSize={{ xl: "15px", lg: "12px", md: "15px", xs: "15px" }}
         fontWeight={"500"}
-        fontFamily={"Inter, sans serif"}
+        fontFamily={'var(--main-font-family)'}
         p={1}
         pl={2}
       >
@@ -38,7 +38,7 @@ const TotalDaysAllotted = ({ data }) => {
       <Typography
         fontSize={{ xl: "27px", lg: "24px", md: "27px", xs: "27px" }}
         fontWeight={"500"}
-        fontFamily={"Inter, sans serif"}
+        fontFamily={'var(--main-font-family)'}
         p={"0px 8px 8px 16px"}
       >
         {data?.totalProjectsCount}
@@ -68,7 +68,7 @@ const TotalDaysAllotted = ({ data }) => {
         <Stack direction={"row"} justifyContent={"space-between"}>
           <Stack direction={"row"} spacing={1} alignItems={"center"}>
             <CircleIcon sx={{ color: "#2D9CDB",  fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
-            <Typography fontFamily={"Inter, sans serif"} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
+            <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
               Work Days spent
             </Typography>
           </Stack>
@@ -79,7 +79,7 @@ const TotalDaysAllotted = ({ data }) => {
         <Stack direction={"row"} justifyContent={"space-between"}>
           <Stack direction={"row"} spacing={1} alignItems={"center"}>
             <CircleIcon sx={{ color: "#90BE6D", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
-            <Typography fontFamily={"Inter, sans serif"} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
+            <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
               Work Days Remaining
             </Typography>
           </Stack>
@@ -90,7 +90,7 @@ const TotalDaysAllotted = ({ data }) => {
         <Stack direction={"row"} justifyContent={"space-between"}>
           <Stack direction={"row"} spacing={1} alignItems={"center"}>
             <CircleIcon sx={{ color: "#F94144", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
-            <Typography fontFamily={"Inter, sans serif"} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
+            <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
               Work Days Overdue
             </Typography>
           </Stack>

@@ -19,6 +19,8 @@ function SideBar() {
     "/settings/others",
     "/settings/accounts",
     "/settings/coupon",
+    // "/settings/permissions",
+
   ];
 
   const selectedItem = paths.findIndex((path) => path === location.pathname);
@@ -123,12 +125,20 @@ function SideBar() {
         >
           Coupon
         </ListItem>
+        {/* <ListItem
+          component={Link}
+          to="/settings/permissions"
+          selected={selectedItem === 12}
+          sx={listItemStyle}
+        >
+          Permission Access
+        </ListItem> */}
       </List>
     </Box>
   );
 }
 const listHeading = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1.5rem",
   color: "#000",
 };

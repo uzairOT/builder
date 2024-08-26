@@ -83,7 +83,7 @@ function WhatsHappeningCard() {
 const themeStyle = {
   heading: {
     color: "#4C8AB1",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "1.3rem",
     marginBottom: "1rem",
   },
@@ -95,7 +95,7 @@ const themeStyle = {
   },
   listItem: {
     color: "#000000",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     opacity: "70%",
     whiteSpace: "nowrap",
     paddingLeft: "2rem",
@@ -117,13 +117,13 @@ const themeStyle = {
   label: {
     fontSize: '20px',
     color: '#2F2F2F',
-    fontFamily: 'Montserrat, sans-serif',
+    fontFamily: 'var(--main-font-family)',
     fontWeight: '500',
 },
 price: {
     fontSize: '18px',
     color: '#4C8AB1',
-    fontFamily: 'Montserrat, sans-serif',
+    fontFamily: 'var(--main-font-family)',
     fontWeight: '600',
 }
 };

@@ -26,6 +26,7 @@ import dayjs from "dayjs";
 import { authUserRole } from "../../redux/slices/auth/userRoleSlice";
 import AssignNewProjectStep3 from "../../components/AssignProject/AssignNewProjectStep3/AssignNewProjectStep3";
 import { useCheckProjectDuplicationMutation } from "../../redux/apis/Project/projectApiSlice";
+import { getBackButtonProjectId } from "../../redux/slices/Project/handlingProjectFlowSlice";
 
 function AssignProject() {
   const local = localStorage.getItem("userInfo");
@@ -38,6 +39,7 @@ function AssignProject() {
   const [postExistingProject] = useExistingProjectMutation();
   const isMobile = useMediaQuery("(max-width:600px)");
   const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
+  const backButtonProjectId= useSelector(getBackButtonProjectId)
   // const notify = () => toast.success("Wow so easy!");
   const dispatch = useDispatch();
   const [checkProjectDuplication, { isLoading }] =
@@ -86,12 +88,17 @@ function AssignProject() {
     //   return;
     // }
     else if (projectName !== "") {
+      if(backButtonProjectId){
+      setProjectType(value)
+      return;
+      }
       const data = {
         userId: currentUserId,
         projectName: projectName,
       };
       try {
         const res = await checkProjectDuplication(data);
+        
         console.log(res);
         if (res?.data?.success) {
           setProjectType(value);
@@ -128,7 +135,7 @@ function AssignProject() {
             <Header handlePreviousStep={handlePreviousStep} step={0} />
             <StepTitles
               stepHeading={"Step 1 of 3"}
-              Heading={"Add New Project"}
+              Heading={"Add new project"}
               stepDiscription={"Select your project type"}
             />
             <StepBoxes />

@@ -56,6 +56,12 @@ const wordOrderApiSlice = apiSlice.injectEndpoints({
             method: 'PUT',
             body: data
         })
+       }),
+       getApprovalNotifications: builder.query({
+        query: (data) => ({
+            url: `${USERS_URL}/getSendApprovalNotifications/${data}`,
+            method: 'GET',
+        })
        })
     })
 })
@@ -69,4 +75,5 @@ export const {
     useGetNotificationsUnreadQuery,
     useGetTeamStatusNotificationsQuery,
     useUpdateTeamStatusNotificationsMutation,
+    useGetApprovalNotificationsQuery
 } = wordOrderApiSlice;

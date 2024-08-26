@@ -46,7 +46,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc"; // Optional if you need UTC handling
 import Close from "@mui/icons-material/Close";
 import CreateableSelect from "react-select/creatable";
-import { components } from 'react-select';
+import { components } from "react-select";
 import {
   useAddUnitMutation,
   useGetUnitsQuery,
@@ -75,7 +75,7 @@ function AddLineElement({
   reqWorkOrderModal,
   setRowCheckboxes,
   showUpdateLine,
-  showAddLine
+  showAddLine,
 }) {
   // const { data, isLoading, isSuccess } = useGetLineItemQuery({
   //   lineItemId: LineItem,
@@ -405,15 +405,14 @@ function AddLineElement({
       marginBottom: "0",
       height: "", // Keep this as it was
       padding: "4px", // Keep this as it was,
-         overflow:'auto',
-         width:'calc(100% + 16px)'
+      overflow: "auto",
+      width: "calc(100% + 16px)",
     }),
     menu: (provided) => ({
       ...provided,
       // height: "90px",
       // overflowY: "scroll",
       // marginTop: "0px", // Adjust the top margin of the menu
-   
     }),
     menuList: (provided) => ({
       ...provided,
@@ -426,7 +425,7 @@ function AddLineElement({
       padding: "5px 10px", // Adjust the padding of each option
       // overflowY: "scroll",
     }),
- 
+
     indicatorsContainer: (provided) => ({
       ...provided,
       // overflow: "auto",
@@ -556,17 +555,17 @@ function AddLineElement({
   // }, [margin]);
   const CustomInput = (props) => {
     const { value, ...rest } = props;
-  
+
     // Limit input value to 10 characters
-    const newValue = value
-  
-    return <components.Input {...rest} value={newValue} maxLength={50}/>;
+    const newValue = value;
+
+    return <components.Input {...rest} value={newValue} maxLength={50} />;
   };
   // const CustomOption = ({ innerRef, innerProps, isDisabled, children, isSelected, isFocused }) => {
   //   // Ensure children is a string to safely check its length
   //   const text = typeof children === 'string' ? children : '';
   //   const limitedText = text.length > 18 ? text.slice(0, 18) + '"' : text;
-  
+
   //   // Conditional styles for selected and focused states
   //   const optionStyles = {
   //     padding: '4px',
@@ -574,21 +573,18 @@ function AddLineElement({
   //     fontWeight: isSelected ? 'bold' : 'normal', // Example selected font weight
   //     color: isFocused ? '#007bff' : 'inherit' // Example focused text color
   //   };
-  
+
   //   return !isDisabled ? (
   //     <div ref={innerRef} {...innerProps} style={optionStyles}>
   //       {limitedText}
   //     </div>
   //   ) : null;
   // };
-  
-  
-
 
   useEffect(() => {
     const recallUnits = async () => {
       await refetch();
-    }
+    };
     recallUnits();
   }, [showAddLine, showUpdateLine]);
   return (
@@ -663,12 +659,17 @@ function AddLineElement({
                 }}
                 renderInput={(params) => (
                   <TextField
-                    sx={{ ...inputStyle }}
+                    sx={{
+                      ...inputStyle,
+                      "& .MuiInputBase-input::placeholder": {
+                        fontFamily: "YourFontFamily",
+                      },
+                    }}
                     {...params}
                     // label="Line Item Name"
                     margin="dense"
                     variant="standard"
-                    placeholder="e.g: Demolition"
+                    placeholder="ex: Demolition"
                     // value={formData.phaseName}
                     // onFocus={() => {}}
                     onChange={(event) => setPhaseName(event.target.value)} // Assuming setPhaseName is your state updater function
@@ -676,7 +677,7 @@ function AddLineElement({
                     InputLabelProps={{ display: "none" }}
                     inputProps={{
                       ...params.inputProps,
-                      maxLength:50
+                      maxLength: 50,
                     }}
                     // InputProps={{
                     //   maxLength:50
@@ -698,7 +699,12 @@ function AddLineElement({
 
               <Typography sx={typoText}>Description</Typography>
               <TextField
-                sx={{ ...inputStyle }}
+                sx={{
+                  ...inputStyle,
+                  "& .MuiInputBase-input::placeholder": {
+                    fontFamily: "var(--main-font-family)",
+                  },
+                }}
                 margin="dense"
                 id="description"
                 name="description"
@@ -714,15 +720,22 @@ function AddLineElement({
                   <Typography sx={{ ...typoText }}>Unit</Typography>
                   <Box mt={"8px"} mb={"8px"}>
                     <CreateableSelect
+                      sx={{
+                        "& .MuiInputBase-input::placeholder": {
+                          fontFamily: "var(--main-font-family)",
+                        },
+                      }}
                       ref={creatableRef}
                       defaultInputValue={LineItem ? LineItem?.unit : unit}
                       // value={findValueInData(unit)}
-                      inputProps={{maxLength: 10}}
+                      inputProps={{ maxLength: 10 }}
                       placeholder={"Select Unit"}
                       styles={selectStyles}
                       // defaultValue={unit}
                       onChange={handleSetUnit}
-                      options={data?.allUnits?.filter(option => option.label) || []}
+                      options={
+                        data?.allUnits?.filter((option) => option.label) || []
+                      }
                       isLoading={isLoading}
                       isDisabled={isLoading}
                       components={{ Input: CustomInput }}
@@ -758,7 +771,13 @@ function AddLineElement({
                       min: 0,
                       onWheel: (event) => event.target.blur(),
                     }}
-                    sx={{ ...inputStyle, ...leftSpace }}
+                    sx={{
+                      ...inputStyle,
+                      ...leftSpace,
+                      "& .MuiInputBase-input::placeholder": {
+                        fontFamily: "var(--main-font-family)",
+                      },
+                    }}
                     placeholder="20"
                     required
                     margin="dense"
@@ -782,7 +801,12 @@ function AddLineElement({
                   maxLength: 50,
                   onWheel: (event) => event.target.blur(),
                 }}
-                sx={inputStyle}
+                sx={{
+                  ...inputStyle,
+                  "& .MuiInputBase-input::placeholder": {
+                    fontFamily: "var(--main-font-family)",
+                  },
+                }}
                 placeholder="10"
                 required
                 margin="dense"
@@ -806,10 +830,15 @@ function AddLineElement({
 
               <Typography sx={typoText}>Actual Cost</Typography>
               <TextField
-               inputProps={{
-                onWheel: (event) => event.target.blur(),
-              }}
-                sx={inputStyle}
+                inputProps={{
+                  onWheel: (event) => event.target.blur(),
+                }}
+                sx={{
+                  ...inputStyle,
+                  "& .MuiInputBase-input::placeholder": {
+                    fontFamily: "var(--main-font-family)",
+                  },
+                }}
                 placeholder="200"
                 required
                 margin="dense"
@@ -826,10 +855,15 @@ function AddLineElement({
               />
               <Typography sx={typoText}>Client Cost</Typography>
               <TextField
-               inputProps={{
-                onWheel: (event) => event.target.blur(),
-              }}
-                sx={inputStyle}
+                inputProps={{
+                  onWheel: (event) => event.target.blur(),
+                }}
+                sx={{
+                  ...inputStyle,
+                  "& .MuiInputBase-input::placeholder": {
+                    fontFamily: "var(--main-font-family)",
+                  },
+                }}
                 placeholder="200"
                 required
                 margin="dense"
@@ -837,7 +871,7 @@ function AddLineElement({
                 name="total"
                 type="number"
                 variant="standard"
-                value={totalCost}
+                value={totalCost !== 0 ? totalCost : ''}
                 onChange={handleTotalCostChange1}
                 InputProps={{
                   startAdornment: (
@@ -850,7 +884,13 @@ function AddLineElement({
                   <Typography sx={typoText}>Profit</Typography>
 
                   <TextField
-                    sx={{ ...inputStyle, marginLeft: "18px" }}
+                    sx={{
+                      ...inputStyle,
+                      marginLeft: "18px",
+                      "& .MuiInputBase-input::placeholder": {
+                        fontFamily: "var(--main-font-family)",
+                      },
+                    }}
                     placeholder="4"
                     required
                     margin="dense"
@@ -858,7 +898,7 @@ function AddLineElement({
                     name="margin"
                     type="margin"
                     variant="standard"
-                    value={Math.round(formData.margin * 100) / 100}
+                    value={Math.round(formData.margin * 100) / 100 !== 0 ? Math.round(formData.margin * 100) / 100 : ''}
                     onChange={handleMarginChange}
                     InputProps={{
                       startAdornment: (
@@ -870,7 +910,13 @@ function AddLineElement({
                 <Box sx={innerBox}>
                   <Typography sx={typoText}>Percentage</Typography>
                   <TextField
-                    sx={{ ...inputStyle, marginLeft: "18px" }}
+                    sx={{
+                      ...inputStyle,
+                      marginLeft: "18px",
+                      "& .MuiInputBase-input::placeholder": {
+                        fontFamily: "var(--main-font-family)",
+                      },
+                    }}
                     placeholder="2"
                     required
                     margin="dense"
@@ -878,7 +924,8 @@ function AddLineElement({
                     name="margin"
                     type="margin"
                     variant="standard"
-                    value={Math.round(formData.percentage * 100) / 100}
+                    
+                    value={Math.round(formData.percentage * 100) / 100 !== 0 ? Math.round(formData.percentage * 100) / 100 : ''}
                     onChange={handlePercentageChange}
                     InputProps={{
                       endAdornment: (
@@ -917,7 +964,7 @@ function AddLineElement({
                       border: "1px solid #ccc",
                       borderRadius: "12px",
                       color: "#202227",
-                      fontFamily: "Arial Rounded MT, sans-serif",
+                      fontFamily: 'var(--main-font-family)',
                       backgroundColor: "#EDF2F6",
                       ...leftSpace,
                     }}
@@ -941,7 +988,7 @@ function AddLineElement({
                       border: "1px solid #ccc",
                       borderRadius: "12px",
                       color: "#202227",
-                      fontFamily: "Arial Rounded MT, sans-serif",
+                      fontFamily: 'var(--main-font-family)',
                       backgroundColor: "#EDF2F6",
                       ...leftSpace,
                     }}
@@ -961,7 +1008,13 @@ function AddLineElement({
               <Typography sx={typoText}>Notes</Typography>
               <TextField
                 inputProps={{ maxLength: 1000 }}
-                sx={{ ...inputStyle, height: "5rem" }}
+                sx={{
+                  ...inputStyle,
+                  height: "5rem",
+                  "& .MuiInputBase-input::placeholder": {
+                    fontFamily: "var(--main-font-family)",
+                  },
+                }}
                 placeholder="Enter your Notes"
                 margin="dense"
                 id="longDescription"
@@ -998,7 +1051,7 @@ function AddLineElement({
 }
 
 const typoTitle = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "1.5rem",
   color: "#4C8AB1",
 };
@@ -1012,7 +1065,7 @@ const inputStyle = {
   border: "1px solid #ccc",
   borderRadius: "12px",
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   paddingLeft: "-1.5rem",
   backgroundColor: "#EDF2F6",
   outline: "none !important",
@@ -1034,7 +1087,7 @@ const paperPropsStyle = {
 };
 
 const typoText = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "0.8rem",
   color: "#202227",
 };
@@ -1047,15 +1100,15 @@ const doneButton = {
 
 const parallelBox = {
   display: "flex",
-  gap: {md:"2rem", xs:'0.5rem'},
+  gap: { md: "2rem", xs: "0.5rem" },
   justifyContent: "center",
   alignItems: "center",
-  flexDirection:{md:'row', xs:'column'}
+  flexDirection: { md: "row", xs: "column" },
 };
 const innerBox = {
   display: "flex",
   flexDirection: "column",
-  width: {md:"50%", xs:'100%'},
+  width: { md: "50%", xs: "100%" },
 };
 const leftSpace = {
   marginLeft: "1rem",

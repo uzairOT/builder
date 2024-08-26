@@ -32,7 +32,7 @@ const HelpComp = () => {
           sx={{
             fontSize: "32px",
             fontWeight: 600,
-            fontFamily: "inherit",
+            fontFamily: 'var(--main-font-family)',
             marginBottom: "2rem",
             color: "#202227",
           }}
