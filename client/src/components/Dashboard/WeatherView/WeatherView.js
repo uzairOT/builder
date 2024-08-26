@@ -42,7 +42,7 @@ const WeatherView = ({
           flexWrap={"wrap"}
           display={{md:'flex', xs:'none'}}
         >
-          {!loading ? (
+          {(!loading && Array.isArray(dailyForecast)) ? (
             dailyForecast?.map((forecast, index) => (
               <React.Fragment key={index}>
                 <WeatherAppDailyForecast

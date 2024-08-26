@@ -170,7 +170,7 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
     // getFormattedEvents();
     if (dailyForecast.length > 1) {
       dispatch(fetchEvents({ userId: userId, dailyForecast: dailyForecast }));
-    }
+    } 
   }, [userId, dailyForecast]); // Run this effect whenever userId or dailyForecast changes
 
 

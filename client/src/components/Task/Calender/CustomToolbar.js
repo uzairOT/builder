@@ -221,7 +221,7 @@ const CustomToolbar = ({
           {toolbar.view === "month" && (
             <Stack
               direction={"row"}
-              spacing={2}
+              spacing={1}
               pr={0.5}
               justifyContent={"center"}
               alignItems={"center"}
@@ -229,7 +229,7 @@ const CustomToolbar = ({
               <Button
                 sx={{
                   fontSize: {
-                    xl: "12px !important",
+                    xl: "11px !important",
                     lg: "10px !important",
                     md: "12px !important",
                     xs: "11px !important",
@@ -237,6 +237,7 @@ const CustomToolbar = ({
                 }}
                 style={{
                   ...themeStyle.toolbarButton,
+                  padding: '7px',
                   backgroundColor:
                     activeHeader === "Work Order" ? "#4C8AB1" : "",
                   color: activeHeader === "Work Order" ? "#FFF" : "",
@@ -250,7 +251,7 @@ const CustomToolbar = ({
               <Button
                 sx={{
                   fontSize: {
-                    xl: "12px !important",
+                    xl: "11px !important",
                     lg: "10px !important",
                     md: "12px !important",
                     xs: "11px !important",
@@ -258,6 +259,7 @@ const CustomToolbar = ({
                 }}
                 style={{
                   ...themeStyle.toolbarButton,
+                  padding: '7px',
                   backgroundColor: activeHeader === "Notes" ? "#4C8AB1" : "",
                   color: activeHeader === "Notes" ? "#FFF" : "",
                 }}
@@ -272,7 +274,7 @@ const CustomToolbar = ({
           {toolbar.view === "day" && (
             <Stack
               direction={"row"}
-              spacing={2}
+              spacing={1}
               pr={1}
               justifyContent={"center"}
               alignItems={"center"}
@@ -280,7 +282,7 @@ const CustomToolbar = ({
               <Button
                 sx={{
                   fontSize: {
-                    xl: "12px !important",
+                    xl: "11px !important",
                     lg: "10px !important",
                     md: "12px !important",
                     xs: "11px !important",
@@ -288,6 +290,7 @@ const CustomToolbar = ({
                 }}
                 style={{
                   ...themeStyle.toolbarButton,
+                  padding: '7px',
                   backgroundColor:
                     activeHeader === "Work Order" ? "#4C8AB1" : "",
                   color: activeHeader === "Work Order" ? "#FFF" : "",
@@ -301,7 +304,7 @@ const CustomToolbar = ({
               <Button
                 sx={{
                   fontSize: {
-                    xl: "12px !important",
+                    xl: "11px !important",
                     lg: "10px !important",
                     md: "12px !important",
                     xs: "11px !important",
@@ -309,6 +312,7 @@ const CustomToolbar = ({
                 }}
                 style={{
                   ...themeStyle.toolbarButton,
+                  padding: '7px',
                   backgroundColor: activeHeader === "Notes" ? "#4C8AB1" : "",
                   color: activeHeader === "Notes" ? "#FFF" : "",
                 }}
@@ -316,7 +320,7 @@ const CustomToolbar = ({
                   handleActiveHeader("Notes");
                 }}
               >
-                Weather/ Notes
+                Weather/Notes
               </Button>
             </Stack>
           )}

@@ -357,9 +357,10 @@ const RequestWorkOrderModal = ({
           setLoading(false);
           return;
         }
+        console.log("update");
         //Changes implemented
         await socket.emit("updateWorkOrder", requestForm, (response) => {
-          console.log(response);
+          console.log("update",response);
           if (response.success) {
             setDone(true);
             toast.success("Change Order request sent!");
@@ -375,12 +376,13 @@ const RequestWorkOrderModal = ({
           }
         });
       } else {
+        console.log("work");
         const socketRes = await socket.emit(
           "notification",
           requestForm,
           async (response) => {
             if (response.success) {
-              console.log(response);
+              // console.log("work order",response);
               setDone(true);
               toast.success("Work Order request sent!");
               await refetchChangeOrder({ projectId, userId: userId });
