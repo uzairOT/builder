@@ -15,17 +15,23 @@ function UpdateLineDialogue({
   projectId,
   showUpdateLine,
   setRowCheckboxes,
+  updateRow,
+  setUpdateRow,
+  lineItemIndex
 }) {
   return (
     <div>
       <LineItemElement
         setRowCheckboxes={setRowCheckboxes}
         reqWorkOrderModal={reqWorkOrderModal}
+        updateRow={updateRow}
+        setUpdateRow={setUpdateRow}
         projectId={projectId}
         setPhaseItems={setPhaseItems}
         adminProjectView={adminProjectView}
         LineHeading={"Update Line Item"}
         handleUpdateOpen={handleUpdateOpen}
+        lineItemIndex={lineItemIndex}
         handleUpdateClose={handleUpdateClose}
         handleUpdateRow={handleUpdateRow}
         selectedRowIndex={selectedRowIndex}

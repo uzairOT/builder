@@ -216,7 +216,7 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
     // getFormattedEvents();
     if (dailyForecast.length > 1) {
       dispatch(fetchEvents({ userId: userId, dailyForecast: dailyForecast }));
-    }
+    } 
   }, [userId, dailyForecast]); // Run this effect whenever userId or dailyForecast changes
 
 
@@ -336,8 +336,8 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
             </Route>
           </Route>
         ) : (
-          // <Route path="/home" element={<MainHome />} />
-          <></>
+          <Route path="/login" element={<Login />} />
+          
         )}
         <Route
           path="/invitation/:invitationId/:email/:companyName"

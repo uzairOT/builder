@@ -242,6 +242,8 @@ const ShareModal = ({
       return;
     }
     setIsLoading(true);
+    console.log(lineItemData)
+    console.log(currentPayment)
     try {
       await handleSetAllPayments();
       const result = await invoiceDataCall();
@@ -259,6 +261,10 @@ const ShareModal = ({
   const handleSetAllPayments = async () => {
     for (let i = 0; i < lineItemData.length; i++) {
       const { outerIndex, index, id, pendingPayment } = lineItemData[i];
+      if(!currentPayment[outerIndex][index]) {
+        // toast.error("Please enter all fields");
+        return;
+      }
       if (
         parseFloat(currentPayment[outerIndex][index]) >
         parseFloat(pendingPayment)
@@ -269,7 +275,7 @@ const ShareModal = ({
       try {
         await updatePhaseLine({
           id: id,
-          currentPayment: currentPayment[outerIndex][index],
+          currentPayment: parseFloat(currentPayment[outerIndex][index]),
           projectId: projectId,
         });
       } catch (err) {

@@ -773,7 +773,7 @@ const AddPhaseCard = ({
                   return (
                     <TableRow
                       key={index}
-                      sx={{ paddingLeft: "4rem", maxHeight: "50px" }}
+                      sx={{ paddingLeft: "4rem", maxHeight: "50px", backgroundColor: (row.status === "Change Order Requested" || row.status === "Change Order approved" || row.status === "Change Order declined") ? "#F4F4F4": ""}}
                     >
                       <TableCell
                         sx={{
@@ -905,6 +905,7 @@ const AddPhaseCard = ({
                             fontWeight: 500,
                             fontSize: "0.9rem",
                             overflowY: "auto",
+                            textAlign: "left",
                           }}
                         >
                           {row.notes}
@@ -1122,7 +1123,7 @@ const listOfLineText = {
 };
 
 const tableHeadings = {
-  maxWidth: { xl: "40px", lg: "80px", md: "70px", xs: "100%" },
+  maxWidth: { xl: "80px", lg: "100px", md: "100px", xs: "100%" },
   minWidth: { xl: "20px", lg: "40px", md: "40px", xs: "20px" },
   fontFamily: "var(--main-font-family)",
   whiteSpace: "nowrap",

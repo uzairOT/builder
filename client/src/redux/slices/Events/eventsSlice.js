@@ -18,7 +18,8 @@ export const fetchEvents = createAsyncThunk(
       );
       return res.data.formattedWorkOrders;
     } catch (error) {
-      return error?.message;
+      console.log(error);
+      return ;
     }
   }
 );

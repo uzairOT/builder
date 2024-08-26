@@ -194,6 +194,7 @@ const AccountModal = ({
         accountType: account.accountType,
         accountName: account.accountName,
       });
+      setImage(account.accountImage)
     } else {
       handleReset();
     }

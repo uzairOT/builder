@@ -264,7 +264,7 @@ const Navbar = () => {
       if (event.key === "logout") {
         // Handle logout in other tabs
         toast.info("You have been logged out in another tab!");
-        navigate("/home"); // Redirect to the login page or  perform other logout handling
+        navigate("/login"); // Redirect to the login page or  perform other logout handling
       } else if (event.key === "login") {
         // Handle login in other tabs
         window.location.reload();
@@ -465,7 +465,7 @@ const Navbar = () => {
               ) : (
                 <></>
               )}
-              <Divider />
+              {Array.isArray(teamNotifications) && <Divider />}
               {Array.isArray(notificationsArr) ? (
                 notificationsArr?.map((notification, index) => {
                   if (index < 3) {
@@ -503,12 +503,13 @@ const Navbar = () => {
               ) : (
                 <div
                   style={{
-                    backgroundColor: "lightgray",
-                    padding: 20,
+                    backgroundColor: "#F2F2F2",
+                    padding: 15,
                     borderRadius: "14px",
+                    textAlign:'center'
                   }}
                 >
-                  No new notifications available
+                  No new notifications
                 </div>
               )}
             </Popper>

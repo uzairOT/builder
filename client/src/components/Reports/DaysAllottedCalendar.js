@@ -142,7 +142,7 @@ const DaysAllottedCalendar = ({
         <DateCalendar
           sx={{
             width: {xl:"250px", lg:'150px',md:"150px",xs:"200px"},
-            height: "250px",
+            height: "280px",
             backgroundColor: "#F5F5F5",
             padding: 1,
             borderRadius: 1,

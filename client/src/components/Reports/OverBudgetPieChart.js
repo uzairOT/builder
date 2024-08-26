@@ -59,10 +59,11 @@ const OverBudgetPieChart = () => {
       {/* <OverBudgetPie /> */}
       <Stack
         direction={"row"}
-        justifyContent={"space-around"}
+        justifyContent={"space-between"}
         spacing={1}
         pt={2}
         pb={2}
+        px={2}
         sx={{
           height: {
             xl: height,
@@ -95,6 +96,10 @@ const OverBudgetPieChart = () => {
                 key={index}
                 fontFamily={'var(--main-font-family)'}
                 fontSize={"14px"}
+                width={"25ch"}
+                overflow={'hidden'}
+                whiteSpace={'nowrap'}
+                textOverflow={'ellipsis'}
               >
                 {project.projectName}
               </Typography>

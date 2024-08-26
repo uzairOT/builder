@@ -37,12 +37,13 @@ function Notification({
   const [checkedRow, setCheckedRow] = useState(null);
   const [open, setOpen] = useState(false);
   const [data1, setData1] = useState(null);
-  const [getWorkOrder, {isLoading}] = useGetWorkOrderDetailsMutation()
+  const [getWorkOrder, {isLoading, data}] = useGetWorkOrderDetailsMutation()
   const forecast = useSelector(getForecast);
   const dailyForecast = forecast.dailyForecast || [];
   const dispatch = useDispatch();
   const handleOnClick = async () => {
-      const res = await getWorkOrder({workOrderId:notification.WorkOrderReq.id})
+      const res = await getWorkOrder({workOrderId:notification.WorkOrderReq.id});
+      console.log("after handleonclick",res)
       setData1(res.data);
       setOpen(true)
   }
@@ -296,15 +297,16 @@ function Notification({
                     >
                       Detail
                     </BuilderProButton>
-              {data1 ===null ? <></>: <NotificationDetailModal
+              {open ?  <NotificationDetailModal
                 rowCheckboxes={rowCheckboxes}
                 checkedRow={checkedRow}
                 changeOrder={true}
                 notification={notification}
+                data1={data1}
                 open={open}
                 setOpen={setOpen}
                 handleOnClick={handleOnClick}
-              />}
+              /> :<></>}
             </Stack>
           </Stack>
         </div>

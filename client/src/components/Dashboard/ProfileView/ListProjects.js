@@ -90,7 +90,7 @@ const ListProjects = () => {
           }}
         >
           <Typography
-            fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
+            fontSize={{ xl: "11px", lg: "9px", md: "9px", xs: "11px" }}
             fontWeight={"600"}
             color={"black"}
             fontFamily={'var(--main-font-family)'}
@@ -109,7 +109,7 @@ const ListProjects = () => {
           }}
         >
           <Typography
-            fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
+            fontSize={{ xl: "11px", lg: "9px", md: "9px", xs: "11px" }}
             fontWeight={"600"}
             color={"black"}
             fontFamily={'var(--main-font-family)'}
@@ -128,7 +128,7 @@ const ListProjects = () => {
           }}
         >
           <Typography
-            fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
+            fontSize={{ xl: "11px", lg: "9px", md: "9px", xs: "11px" }}
             fontWeight={"600"}
             color={"black"}
             fontFamily={'var(--main-font-family)'}
