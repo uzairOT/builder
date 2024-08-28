@@ -82,7 +82,9 @@ const Login = () => {
       });
     });
   }, []);
-
+  const openInNewTab = (url) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
   const responseGoogle = async (response) => {
     // const auth2 = gapi.auth2.getAuthInstance();
     if (response?.profileObj) {
@@ -463,7 +465,7 @@ const Login = () => {
             <Typography
               sx={hptLinksStyle}
               onClick={() => {
-                navigate("/privacypolicy");
+                openInNewTab("/privacypolicy");
               }}
             >
               Privacy & Terms

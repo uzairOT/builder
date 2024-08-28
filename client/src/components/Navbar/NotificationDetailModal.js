@@ -377,8 +377,7 @@ const NotificationDetailModal = ({
                           }}
                           sx={{
                             input: {
-                              fontFamily: "Arial Rounded MT, sans serif",
-                            },
+                              fontFamily: "var(--main-font-family)",                            },
                           }}
                         />
                       </DemoContainer>
@@ -420,8 +419,7 @@ const NotificationDetailModal = ({
                           }}
                           sx={{
                             input: {
-                              fontFamily: "Arial Rounded MT, sans serif",
-                            },
+                              fontFamily: "var(--main-font-family)",                            },
                           }}
                         />
                       </DemoContainer>

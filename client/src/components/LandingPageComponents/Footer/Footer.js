@@ -69,6 +69,10 @@ const Footer = () => {
                             borderRadius: 2,
                             backgroundColor: "#2E728F",
                             color: "white",
+                            "&:hover": {
+                              backgroundColor: 'grey',
+                              color:"white"
+                            },
                             fontWeight: 600,
                           }}
                         >

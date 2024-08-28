@@ -706,6 +706,7 @@ function AddPhaseView({
                 initialPhases[0].length !== 0 &&
                 !isLoading ? (
                   initialPhases[0]?.map((phase, index) => {
+                    // console.log("inital",view)
                     return (
                       <Stack
                         key={phase.id}
@@ -781,6 +782,10 @@ function AddPhaseView({
                 phases[0].length !== 0 &&
                 !isLoading ? (
                   phases[0]?.map((phase, index) => {
+                    console.log("PHASE",phase.status)
+                    if(view === 'Work Order' && (phase.status === 'pending' || phase.status === 'unapproved')){
+                    return <></>;
+                    }
                     return (
                       <Stack
                         key={phase.id}

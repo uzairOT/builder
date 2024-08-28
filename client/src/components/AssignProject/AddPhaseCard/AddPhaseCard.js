@@ -624,7 +624,8 @@ const AddPhaseCard = ({
 
         <Grid item sx={tableGrid}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography sx={listOfLineText}>List of Line Items</Typography>
+            <Typography sx={listOfLineText}>List of Line Items <Typography sx={tableHeadings}>Status: {phaseData?.status}</Typography></Typography>
+            
             <Box>
               {(userRoleAuth.userRole === "superadmin" ||
                 userRoleAuth.userRole === "admin" ||
@@ -745,7 +746,7 @@ const AddPhaseCard = ({
                     userRoleAuth.userRole === "admin" ||
                     userRoleAuth.userRole === "projectManager" ||
                     userRoleAuth.userRole === "") && (
-                    <TableCell sx={tableHeadings}>Action</TableCell>
+                    ((phaseData?.status === "unapproved" || phaseData?.status === "approved") && !InitialProposalView) && (<TableCell sx={tableHeadings}>Action</TableCell>)
                   )}
                 </TableRow>
 
@@ -976,7 +977,7 @@ const AddPhaseCard = ({
                         userRoleAuth.userRole === "admin" ||
                         userRoleAuth.userRole === "projectManager" ||
                         userRoleAuth.userRole === "") && (
-                        <TableCell sx={tableCell}>
+                          ((phaseData?.status === "unapproved" || phaseData?.status === "approved") && !InitialProposalView) && (<TableCell sx={tableCell}>
                           <EditIcon onClick={() => handleUpdateLine(row)} />
                           {(row.status === "Work Order Not requested" ||
                             row.status === "Work Order declined" ||
@@ -986,7 +987,7 @@ const AddPhaseCard = ({
                               disabled={selectedRows.length === 0}
                             />
                           )}
-                        </TableCell>
+                        </TableCell>)
                       )}
                     </TableRow>
                   );

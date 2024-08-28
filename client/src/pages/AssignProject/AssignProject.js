@@ -39,7 +39,7 @@ function AssignProject() {
   const [postExistingProject] = useExistingProjectMutation();
   const isMobile = useMediaQuery("(max-width:600px)");
   const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
-  const backButtonProjectId= useSelector(getBackButtonProjectId)
+  const backButtonProjectId = useSelector(getBackButtonProjectId);
   // const notify = () => toast.success("Wow so easy!");
   const dispatch = useDispatch();
   const [checkProjectDuplication, { isLoading }] =
@@ -88,9 +88,9 @@ function AssignProject() {
     //   return;
     // }
     else if (projectName !== "") {
-      if(backButtonProjectId){
-      setProjectType(value)
-      return;
+      if (backButtonProjectId) {
+        setProjectType(value);
+        return;
       }
       const data = {
         userId: currentUserId,
@@ -98,7 +98,7 @@ function AssignProject() {
       };
       try {
         const res = await checkProjectDuplication(data);
-        
+
         console.log(res);
         if (res?.data?.success) {
           setProjectType(value);
@@ -221,7 +221,7 @@ const buttonStyle = {
   padding: "1rem 0.5rem",
 };
 const orTypo = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "0.8rem",
 };
 

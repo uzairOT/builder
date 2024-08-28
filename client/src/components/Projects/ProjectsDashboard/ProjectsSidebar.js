@@ -105,7 +105,7 @@ const ProjectsSidebar = ({ reports }) => {
               fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
               fontWeight={"500"}
               color={"black"}
-              fontFamily={"Inter, sans-serif"}
+              fontFamily={"var(--main-font-family)"}
               width={"100%"}
             >
               Remodel
@@ -124,7 +124,7 @@ const ProjectsSidebar = ({ reports }) => {
               fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
               fontWeight={"500"}
               color={"black"}
-              fontFamily={"Inter, sans-serif"}
+              fontFamily={"var(--main-font-family)"}
               width={"100%"}
             >
               New build
@@ -143,7 +143,7 @@ const ProjectsSidebar = ({ reports }) => {
               fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
               fontWeight={"500"}
               color={"black"}
-              fontFamily={"Inter, sans-serif"}
+              fontFamily={"var(--main-font-family)"}
             >
               Commercial
             </Typography>
@@ -200,19 +200,19 @@ const themeStyle = {
   title: {
     fontSize: "22px",
     fontWeight: "500",
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     color: "#000000",
   },
   subtile: {
     fontSize: "16px",
     fontWeight: "500",
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     color: "#4C8AB1",
   },
   listTitle: {
     fontSize: "12px",
     fontWeight: "500",
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     color: "#535353C9",
   },
   scrollable: {

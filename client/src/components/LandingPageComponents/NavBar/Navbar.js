@@ -70,7 +70,11 @@ const Navbar = () => {
           <Button
             onClick={() => navigate("/login")}
             fullWidth
-            sx={{ backgroundColor: "#2E728E", color: "white" }}
+            sx={{ backgroundColor: "#2E728E", 
+              "&:hover": {
+      backgroundColor: 'grey',
+      color:"white"
+    }, color: "white" }}
           >
             Login
           </Button>
@@ -203,6 +207,10 @@ const styles = {
   navLoginBtn: {
     backgroundColor: "#2E728E",
     color: "white",
+    "&:hover": {
+      backgroundColor: 'grey',
+      color:"white"
+    },
     fontFamily: 'var(--main-font-family)',
     fontWeight: 400,
     fontSize: "16px",

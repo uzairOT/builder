@@ -59,7 +59,9 @@ const ProjectsPermissionAccess = () => {
     const fetchPermissions = async () => {
       try {
         setDataLoading(true);
-        const response = await GetPermissionsList({ projectId: currentProjectId }).unwrap();
+        const response = await GetPermissionsList({
+          projectId: currentProjectId,
+        }).unwrap();
         setPermissionsList(response);
       } catch (error) {
         console.error("Failed to fetch permissions:", error);
@@ -86,7 +88,7 @@ const ProjectsPermissionAccess = () => {
     });
 
     setTimeout(() => {
-      setPermissionsList(prevList => {
+      setPermissionsList((prevList) => {
         updatedList[index] = {
           ...permission,
           roles: {
@@ -156,6 +158,7 @@ const ProjectsPermissionAccess = () => {
           <TableHead>
             <TableRow>
               <TableCell
+              fontFamily={"var(--main-font-family)"}
                 sx={{
                   borderBottom: "1px solid #DCDCDC",
                   margin: 5,
@@ -164,6 +167,7 @@ const ProjectsPermissionAccess = () => {
               ></TableCell>
               {roles.map((role) => (
                 <TableCell
+                fontFamily={"var(--main-font-family)"}
                   key={`header-${role}`}
                   align="center"
                   sx={{
@@ -181,13 +185,17 @@ const ProjectsPermissionAccess = () => {
           <TableBody>
             {dataLoading ? (
               <TableRow>
-                <TableCell colSpan={roles.length + 1} align="center">
+                <TableCell fontFamily={"var(--main-font-family)"} colSpan={roles.length + 1} align="center">
                   <CircularProgress />
                 </TableCell>
               </TableRow>
             ) : (
               filteredPermissions.map((permission, index) => {
-                const { permissionId, roles: permissionRoles, permission: perm } = permission;
+                const {
+                  permissionId,
+                  roles: permissionRoles,
+                  permission: perm,
+                } = permission;
 
                 return (
                   <TableRow
@@ -197,6 +205,7 @@ const ProjectsPermissionAccess = () => {
                     }}
                   >
                     <TableCell
+                    fontFamily={"var(--main-font-family)"}
                       sx={{
                         borderBottom: "1px solid #DCDCDC",
                         borderRight: "1px solid #DCDCDC",
@@ -210,6 +219,7 @@ const ProjectsPermissionAccess = () => {
                     </TableCell>
                     {roles.map((role) => (
                       <TableCell
+                      fontFamily={"var(--main-font-family)"}
                         key={`${permissionId}-${role}`}
                         align="center"
                         sx={{
@@ -220,7 +230,9 @@ const ProjectsPermissionAccess = () => {
                       >
                         <Checkbox
                           checked={permissionRoles[role] || false}
-                          onChange={() => handleCheckboxChange(permissionId, role, index)}
+                          onChange={() =>
+                            handleCheckboxChange(permissionId, role, index)
+                          }
                           sx={{
                             "&.Mui-checked": {
                               color: "#4C8AB1",
@@ -239,7 +251,7 @@ const ProjectsPermissionAccess = () => {
       <Dialog open={modalOpen} onClose={handleCloseModal}>
         <DialogTitle
           sx={{
-            fontFamily: "Poppins",
+            fontFamily: "var(--main-font-family)",
             fontWeight: "600",
             fontSize: "22px",
             color: "#4C8AB1",

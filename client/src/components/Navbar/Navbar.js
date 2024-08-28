@@ -286,14 +286,17 @@ const Navbar = () => {
       boxShadow: "0px 1px 1.3px 0px rgba(0, 0, 0, 0.05)",
       padding: "4px 16px 4px 16px",
       height: "92px",
+      fontFamily: "var(--main-font-family)",
     },
     logo: {
+      fontFamily: "var(--main-font-family)",
       width: "85%",
       height: "100%",
       marginLeft: "8px",
       marginBottom: "0px",
     },
     tabs: {
+      fontFamily: "var(--main-font-family)",
       // margin: "auto",
       display: { xl: "flex", lg: "flex", md: "none", sm: "none", xs: "none" },
     },
@@ -313,11 +316,8 @@ const Navbar = () => {
     },
   };
 
-
   return (
     <>
-    
-
       <AppBar position="static" sx={themeStyle.navbar}>
         <Toolbar
           sx={themeStyle.toolbar}
@@ -506,7 +506,7 @@ const Navbar = () => {
                     backgroundColor: "#F2F2F2",
                     padding: 15,
                     borderRadius: "14px",
-                    textAlign:'center'
+                    textAlign: "center",
                   }}
                 >
                   No new notifications

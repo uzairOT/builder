@@ -1,7 +1,7 @@
 
 body {
   margin: 0;
-  font-family: 'Arial Rounded MT', sans-serif;
+  font-family: 'Josefin Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -14,6 +14,9 @@ code {
 button {
   background-color: "#635bff";
   border-radius: "10px";
+}
+:root {
+  --main-font-family: 'Josefin Sans', sans-serif;
 }
 
 button {

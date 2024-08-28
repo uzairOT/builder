@@ -69,7 +69,7 @@ const AboutSection = () => {
       icon: <InnIcn />,
       title: "Innovation",
       description:
-        "Innovation is at the heart of Builder Builder pro. We continually invest in the latest technologies and integrate advanced features to keep our users ahead of the curve, making construction management more efficient, transparent, and adaptable to changing industry demands.",
+        "Innovation is at the heart of BuilderBuilder pro. We continually invest in the latest technologies and integrate advanced features to keep our users ahead of the curve, making construction management more efficient, transparent, and adaptable to changing industry demands.",
     },
   ];
 

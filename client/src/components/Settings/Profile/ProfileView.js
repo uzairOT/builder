@@ -377,7 +377,7 @@ function ProfileView() {
                 buttonText="Update Profile"
                 color="#ffffff"
                 backgroundColor="#4C8AB1"
-                width="112px"
+                width="120px"
                 height="38px"
                 borderRadius="50px"
                 onClick={handleSubmit}

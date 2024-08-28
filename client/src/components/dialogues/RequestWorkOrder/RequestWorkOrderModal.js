@@ -79,7 +79,7 @@ const RequestWorkOrderModal = ({
   const [done, setDone] = useState(false);
   const [showLineItems, setShowLineItems] = useState(false);
   const { addPhase } = useSelector(selectAddPhase);
-  const [updateRow, setUpdateRow] = useState(rowCheckboxes)
+  const [updateRow, setUpdateRow] = useState(rowCheckboxes);
   const [priority, setPriority] = useState("normal");
   const [status, setStatus] = useState("pending");
   const [subject, setSubject] = useState(
@@ -108,7 +108,7 @@ const RequestWorkOrderModal = ({
   const [showUpdateLine, setShowUpdateLine] = useState(false);
   const phaseId = rowCheckboxes[0]?.rows[0]?.phase_id;
   const [getPhasesAndLineItems] = useGetPhasesAndLineItemsByIdMutation();
-  const [lineItemIndex, setLineItemIndex] = useState()
+  const [lineItemIndex, setLineItemIndex] = useState();
   const [lineItem, setLineItem] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -273,7 +273,7 @@ const RequestWorkOrderModal = ({
 
   const handleUpdateOpen = (lineItem, index) => {
     // setUpdateRow(() => rowCheckboxes);
-    setLineItemIndex(index)
+    setLineItemIndex(index);
     setLineItem(lineItem);
     setShowUpdateLine(true);
   };
@@ -343,7 +343,7 @@ const RequestWorkOrderModal = ({
       projectId: projectId,
       total: changeOrder ? checkedRow?.total : totalWorkOrder,
       changeOrder: changeOrderView ? true : false,
-      changeOrderItems: updateRow
+      changeOrderItems: updateRow,
     };
     console.log(requestForm);
     if (requestForm.teamIds.length === 0) {
@@ -360,7 +360,7 @@ const RequestWorkOrderModal = ({
         console.log("update");
         //Changes implemented
         await socket.emit("updateWorkOrder", requestForm, (response) => {
-          console.log("update",response);
+          console.log("update", response);
           if (response.success) {
             setDone(true);
             toast.success("Change Order request sent!");
@@ -425,11 +425,11 @@ const RequestWorkOrderModal = ({
     toast.warning("Please select a line item to request a work order.");
   };
 
-  useEffect(()=>{
-    if(changeOrderView){
-      setUpdateRow(rowCheckboxes)
+  useEffect(() => {
+    if (changeOrderView) {
+      setUpdateRow(rowCheckboxes);
     }
-  },[rowCheckboxes])
+  }, [rowCheckboxes]);
 
   useEffect(() => {
     if (open) {
@@ -449,7 +449,7 @@ const RequestWorkOrderModal = ({
         <BuilderProButton
           backgroundColor={"#FFAC00"}
           variant={"contained"}
-          fontFamily={"inherit"}
+          fontFamily={"var(--main-font-family)"}
           fontSize={{ lg: "16px", xs: "11px" }}
           fontWeight={"600"}
           padding={{ sm: "6px 32px 6px 32px", xs: "5px 20px 5px 20px" }}
@@ -476,7 +476,7 @@ const RequestWorkOrderModal = ({
           >
             <Typography
               color={"#4C8AB1"}
-              fontFamily={"inherit"}
+              fontFamily={"var(--main-font-family)"}
               fontSize={"22px"}
               fontWeight={"600"}
             >
@@ -498,7 +498,7 @@ const RequestWorkOrderModal = ({
             height={"100%"}
           >
             <Stack p={3} spacing={1} width={"calc(100% - 48px)"}>
-              <Typography fontFamily={"inherit"}>
+              <Typography fontFamily={"var(--main-font-family)"}>
                 <strong>Subject: </strong>{" "}
                 <input
                   maxlength="50"
@@ -510,7 +510,11 @@ const RequestWorkOrderModal = ({
                   onChange={handleSubjectChange}
                 ></input>
               </Typography>
-              <Typography pb={1} fontFamily={"inherit"} fontWeight={"200"}>
+              <Typography
+                pb={1}
+                fontFamily={"var(--main-font-family)"}
+                fontWeight={"200"}
+              >
                 <strong>Description: </strong>{" "}
                 <input
                   maxlength="50"
@@ -795,8 +799,12 @@ const RequestWorkOrderModal = ({
                             }
                           });
                         })} */}
-                    {Object?.keys(changeOrderView ? updateRow : rowCheckboxes)?.map((phase) => {
-                      const phaseData = changeOrderView ? updateRow[phase] : rowCheckboxes[phase];
+                    {Object?.keys(
+                      changeOrderView ? updateRow : rowCheckboxes
+                    )?.map((phase) => {
+                      const phaseData = changeOrderView
+                        ? updateRow[phase]
+                        : rowCheckboxes[phase];
                       return phaseData.rows.map((row, index) => {
                         counter++;
                         if (counter <= 2) {
@@ -826,7 +834,7 @@ const RequestWorkOrderModal = ({
                                   pl={0.5}
                                   onClick={() => handleUpdateOpen(row, index)}
                                   sx={{
-                                   cursor:'pointer'
+                                    cursor: "pointer",
                                   }}
                                 >
                                   edit
@@ -862,7 +870,7 @@ const RequestWorkOrderModal = ({
                                   pl={0.5}
                                   onClick={() => handleUpdateOpen(row, index)}
                                   sx={{
-                                    cursor:'pointer'
+                                    cursor: "pointer",
                                   }}
                                 >
                                   edit
@@ -927,7 +935,7 @@ const RequestWorkOrderModal = ({
                           }}
                           sx={{
                             input: {
-                              fontFamily: "inherit",
+                              fontFamily: "var(--main-font-family)",
                             },
                           }}
                         />
@@ -973,7 +981,7 @@ const RequestWorkOrderModal = ({
                           }}
                           sx={{
                             input: {
-                              fontFamily: "inherit",
+                              fontFamily: "var(--main-font-family)",
                             },
                           }}
                         />
@@ -989,7 +997,7 @@ const RequestWorkOrderModal = ({
                   <BuilderProButton
                     backgroundColor={"#4C8AB1"}
                     variant={"contained"}
-                    fontFamily={"inherit"}
+                    fontFamily={"var(--main-font-family)"}
                     fontSize={"16px"}
                     fontWeight={"600"}
                     padding={"6px 32px 6px 32px"}
@@ -1030,7 +1038,11 @@ const RequestWorkOrderModal = ({
                       src={user.user.image ? user?.user?.image : Avatarimg}
                     />
                   )}
-                  <Typography fontFamily={"inherit"} alignSelf={"end"} pl={1}>
+                  <Typography
+                    fontFamily={"var(--main-font-family)"}
+                    alignSelf={"end"}
+                    pl={1}
+                  >
                     {changeOrder
                       ? checkedRow?.team.map((user) => {
                           if (checkedRow?.createdby == user?.userId) {
@@ -1102,7 +1114,11 @@ const RequestWorkOrderModal = ({
                 >
                   Notes
                 </Typography>
-                <Typography fontFamily={"inherit"} pb={4} pl={2}>
+                <Typography
+                  fontFamily={"var(--main-font-family)"}
+                  pb={4}
+                  pl={2}
+                >
                   <input
                     maxlength="50"
                     value={notes}
@@ -1140,7 +1156,7 @@ const RequestWorkOrderModal = ({
                         <Typography
                           color={priority === "urgent" ? "#EB1717" : "#4C8AB1"}
                           textTransform={"capitalize"}
-                          fontFamily={"Inter"}
+                          fontFamily={"var(--main-font-family)"}
                           fontWeight={"500"}
                           fontSize={{
                             lg: "0.9rem",
@@ -1178,7 +1194,7 @@ const RequestWorkOrderModal = ({
                 <Typography
                   fontSize={"13px"}
                   style={{
-                    fontFamily: "inherit",
+                    fontFamily: "var(--main-font-family)",
                   }}
                 >
                   Created
@@ -1188,7 +1204,7 @@ const RequestWorkOrderModal = ({
                   color={"black"}
                   fontWeight={"600"}
                   style={{
-                    fontFamily: "inherit",
+                    fontFamily: "var(--main-font-family)",
                   }}
                 >
                   {changeOrder
@@ -1200,7 +1216,7 @@ const RequestWorkOrderModal = ({
                 <Typography
                   fontSize={"13px"}
                   style={{
-                    fontFamily: "inherit",
+                    fontFamily: "var(--main-font-family)",
                   }}
                 >
                   Updated
@@ -1210,7 +1226,7 @@ const RequestWorkOrderModal = ({
                   color={"black"}
                   fontWeight={"600"}
                   style={{
-                    fontFamily: "inherit",
+                    fontFamily: "var(--main-font-family)",
                   }}
                 >
                   {changeOrder
@@ -1231,7 +1247,7 @@ const RequestWorkOrderModal = ({
                 <BuilderProButton
                   backgroundColor={"#4C8AB1"}
                   variant={"contained"}
-                  fontFamily={"inherit"}
+                  fontFamily={"var(--main-font-family)"}
                   fontSize={"16px"}
                   fontWeight={"600"}
                   padding={"6px 32px 6px 32px"}
@@ -1300,7 +1316,7 @@ const themeStyle = {
     padding: 4,
   },
   typoTitle: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     fontSize: "1.5rem",
     fontWeight: 500,
     color: "#4C8AB1",
@@ -1340,13 +1356,13 @@ const themeStyle = {
   },
 
   typoText: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     fontSize: "1rem",
     color: "#202227",
   },
   sendButton: {
     width: { lg: "35%", md: "35%", sm: "40%", xs: "60%" },
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
   },
   declineButton: {
     background: "#FFF",
@@ -1357,7 +1373,7 @@ const themeStyle = {
     },
   },
   time: {
-    fontFamily: "inherit",
+    fontFamily: "var(--main-font-family)",
     fontSize: "1rem",
     fontStyle: "italic",
     color: "#484848",
@@ -1371,7 +1387,7 @@ const themeStyle = {
   },
   radioText: {
     color: "#3D3D3D",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
   },
   radioChecked: {
     "&, &.Mui-checked": {
@@ -1379,7 +1395,7 @@ const themeStyle = {
     },
   },
   headingText: {
-    fontFamily: "inherit",
+    fontFamily: "var(--main-font-family)",
     color: "#000000",
     fontWeight: 600,
     marginTop: "0.5rem",
@@ -1393,7 +1409,7 @@ const themeStyle = {
     margin: "1rem 0rem 0rem 1rem",
   },
   linkButton: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     fontWeight: 500,
     textTransform: "none",
     color: "#858585",

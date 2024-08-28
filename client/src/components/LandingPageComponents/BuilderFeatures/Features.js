@@ -36,14 +36,24 @@ const FeatureCard = ({ title, features, image, icon }) => {
   return (
     <Box style={styles.card}>
       <Grid container sx={{ justifyContent: "center" }}>
-        <Container maxWidth={"sm"} textAlign="center" justifyContent="center" alignItems="center" display="flex">
+        <Container
+          maxWidth={"sm"}
+          textAlign="center"
+          justifyContent="center"
+          alignItems="center"
+          display="flex"
+        >
           {icon && <icon.Component />}
           <Typography sx={styles.CardTitle} gutterBottom>
             {title}
           </Typography>
           <List>
             {features.map((feature, index) => (
-              <ListItem sx={styles.CardDesc}  key={index} style={styles.listItem}>
+              <ListItem
+                sx={styles.CardDesc}
+                key={index}
+                style={styles.listItem}
+              >
                 <ListItemIcon>
                   <CheckIcn />
                 </ListItemIcon>
@@ -63,7 +73,7 @@ const BuilderFeatures = () => {
   return (
     <Grid style={styles.container}>
       <Container maxWidth={"xl"} sx={{ textAlign: "center" }}>
-      <Typography sx={styles.titleFont}>Features</Typography>
+        <Typography sx={styles.titleFont}>Features</Typography>
         <Typography
           variant="h4"
           align="center"
@@ -75,18 +85,17 @@ const BuilderFeatures = () => {
           you up for the best Management
         </Typography>
         <Container maxWidth={"lg"}>
-
-        <Typography
-          variant="body1"
-          align="center"
-          paragraph
-          style={styles.DecsFont}
-        >
-          Choose us for a seamless blend of innovation, reliability, and
-          customer-centric solutions. With a track record of delivering
-          unparalleled quality, our dedicated team ensures your experience is
-          nothing short of exceptional.
-        </Typography>
+          <Typography
+            variant="body1"
+            align="center"
+            paragraph
+            style={styles.DecsFont}
+          >
+            Choose us for a seamless blend of innovation, reliability, and
+            customer-centric solutions. With a track record of delivering
+            unparalleled quality, our dedicated team ensures your experience is
+            nothing short of exceptional.
+          </Typography>
         </Container>
       </Container>
       {/* Dashboard Feature Section */}
@@ -231,46 +240,44 @@ const BuilderFeatures = () => {
 };
 export default BuilderFeatures;
 
-
-
-const styles={
-  titleFont:{
-    fontFamily: 'var(--main-font-family)',
+const styles = {
+  titleFont: {
+    fontFamily: "var(--main-font-family)",
     fontWeight: 500,
-    fontSize: { md: "16px",sm:"16px", xs: "14px" },
-    mb: 3, 
-    color: "#4C8AB1"
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    mb: 3,
+    color: "#4C8AB1",
   },
-  SubtitleFont:{
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "36px",sm:"36px", xs: "18px" },
-      fontWeight:500,
-      marginBottom: 2,
+  SubtitleFont: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "36px", sm: "36px", xs: "18px" },
+    fontWeight: 500,
+    marginBottom: 2,
   },
-  DecsFont:{
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "16px",sm:"16px", xs: "14px" },
-      fontWeight:400,
-      color:"#454245"
+  DecsFont: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    fontWeight: 400,
+    color: "#454245",
   },
-  CardTitle:{
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "30px",sm:"30px", xs: "20px" },
-    fontWeight:400,
+  CardTitle: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "30px", sm: "30px", xs: "20px" },
+    fontWeight: 400,
   },
-  CardDesc:{
-    fontFamily: "GT Walsheim Trial !important",
-    fontSize: { md: "18px",sm:"18px", xs: "16px" },
-    fontWeight:400,
-    color:"#454245"
+  CardDesc: {
+    fontFamily: "var(--main-font-family) !important",
+    fontSize: { md: "18px", sm: "18px", xs: "16px" },
+    fontWeight: 400,
+    color: "#454245",
   },
   container: {
     padding: "32px",
   },
   title: {
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "36px",sm:"36px", xs: "18px" },
-    fontWeight:500,
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "36px", sm: "36px", xs: "18px" },
+    fontWeight: 500,
   },
   description: {
     marginBottom: "16px",
@@ -286,6 +293,4 @@ const styles={
   listItem: {
     marginBottom: "8px",
   },
-  }
-
-
+};

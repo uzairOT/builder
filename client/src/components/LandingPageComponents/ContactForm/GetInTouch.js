@@ -93,8 +93,6 @@ const GetInTouch = () => {
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
         resetForm();
-
-        
       } catch (err) {
         setSnackbarMessage(
           `There was an error sending your message: ${err.message}`
@@ -118,15 +116,11 @@ const GetInTouch = () => {
         textAlign: "center",
       }}
     >
-      <Typography
-        sx={styles.titleFont}
-      >
-        Contact Us
-      </Typography>
-      <Typography  sx={styles.SubtitleFont}>
+      <Typography sx={styles.titleFont}>Contact Us</Typography>
+      <Typography sx={styles.SubtitleFont}>
         Let’s talk on something great together
       </Typography>
-      <Typography  sx={styles.DecsFont}>
+      <Typography sx={styles.DecsFont}>
         Have something in mind that you think we'd be a great fit for it? We'd
         love to know what you're thinking.
       </Typography>
@@ -144,8 +138,11 @@ const GetInTouch = () => {
           ></iframe>
         </Grid>
         <Grid item xs={12} md={6} mt={3}>
-
-          <Typography sx={styles.TouchFont} textAlign="left" pb={2}> Get in <span style={ {...styles.TouchFont, color:"#4C8AB1"}}>Touch</span></Typography>
+          <Typography sx={styles.TouchFont} textAlign="left" pb={2}>
+            {" "}
+            Get in{" "}
+            <span style={{ ...styles.TouchFont, color: "#4C8AB1" }}>Touch</span>
+          </Typography>
           <form onSubmit={formik.handleSubmit}>
             <Grid container spacing={0.3}>
               <Grid item xs={12} sm={6}>
@@ -306,7 +303,13 @@ const GetInTouch = () => {
               label={
                 <Typography variant="body2">
                   You agree to our friendly{" "}
-                  <a style={{textDecoration: 'none', color:"#4C8AB1"}} href="/privacypolicy">privacy policy</a>.
+                  <a
+                    style={{ textDecoration: "none", color: "#4C8AB1" }}
+                    href="/privacypolicy"
+                  >
+                    privacy policy
+                  </a>
+                  .
                 </Typography>
               }
             />
@@ -359,7 +362,7 @@ const inputStyle = {
 const placeholderStyle = {
   color: "black",
   padding: "5px",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: "1rem",
   fontWeight: 400,
 };
@@ -369,48 +372,47 @@ const labelStyle = {
   display: "block",
   marginBottom: "0.2rem",
   color: "#16181B",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.75rem" },
   fontWeight: 400,
 };
 
-const styles={
-  titleFont:{
-    fontFamily: 'var(--main-font-family)',
+const styles = {
+  titleFont: {
+    fontFamily: "var(--main-font-family)",
     fontWeight: 500,
-    fontSize: { md: "16px",sm:"16px", xs: "14px" },
-    mb: 3, 
-    color: "#4C8AB1"
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    mb: 3,
+    color: "#4C8AB1",
   },
-  SubtitleFont:{
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "36px",sm:"36px", xs: "18px" },
-      fontWeight:500,
-      marginBottom: 2,
+  SubtitleFont: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "36px", sm: "36px", xs: "18px" },
+    fontWeight: 500,
+    marginBottom: 2,
   },
-  DecsFont:{
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "16px",sm:"16px", xs: "14px" },
-      fontWeight:400,
-      color:"#454245",
-      mb:3
+  DecsFont: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    fontWeight: 400,
+    color: "#454245",
+    mb: 3,
   },
-  TouchFont:{
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "20px",sm:"20px", xs: "18px" },
-    fontWeight:500,
+  TouchFont: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "20px", sm: "20px", xs: "18px" },
+    fontWeight: 500,
   },
-  CardDesc:{
-    fontFamily: "GT Walsheim Trial !important",
-    fontSize: { md: "18px",sm:"18px", xs: "16px" },
-    fontWeight:400,
-    color:"#454245"
+  CardDesc: {
+    fontFamily: "var(--main-font-family) !important",
+    fontSize: { md: "18px", sm: "18px", xs: "16px" },
+    fontWeight: 400,
+    color: "#454245",
   },
   container: {
     padding: "32px",
   },
- 
-  }
+};
 
 const customPhoneStyles = {
   borderRadius: "12px",
