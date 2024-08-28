@@ -38,7 +38,10 @@ import GenerateInvoiceTable from "../../dialogues/GenerateInvoice/GenerateInvoic
 import GenerateInvoicePopup from "../../dialogues/GenerateInvoice/GenerateInvoicePopup";
 import ShareModal from "../../dialogues/ShareModal/ShareModal";
 import GenerateInvoiceDone from "../../dialogues/GenerateInvoice/GenerateInvoiceDone";
-import { selectWorkOrderDeclineRecall, toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
+import {
+  selectWorkOrderDeclineRecall,
+  toggleWorkOrderDeclineRecall,
+} from "../../../redux/slices/Notifications/notificationSlice";
 // import { BuilderProNavbarLogo } from "./assets/svgs/builder-pro-logo-navbar.svg";
 import BuilderProNavbarLogo from "../../Navbar/assets/svgs/builder-pro-logo-navbar.svg";
 import GenerateInvoice from "../../dialogues/GenerateInvoice/GenerateInvoice";
@@ -49,6 +52,7 @@ import { socket } from "../../../socket";
 //import "react-toastify/dist/ReactToastify.css";
 
 function AddPhaseView({
+  lineItemsData,
   adminProjectView,
   view,
   projectId,
@@ -57,6 +61,7 @@ function AddPhaseView({
   refetchChangeOrder,
   changeOrder,
   changeOrderView,
+  InitialProposalAndChange,
   // canGenerate
 }) {
   const [cardPhase, setCardPhase] = useState([]);
@@ -77,10 +82,11 @@ function AddPhaseView({
   const initialPhases = useSelector(
     (state) => state.projectInitialProposal.initialPhases
   );
-
   const [showUpdatePhaseDialogue, setShowUpdatePhaseDialogue] = useState(false);
   const [showAddPhaseDialogue, setShowAddPhaseDialogue] = useState(false);
   const [rowCheckboxes, setRowCheckboxes] = useState({}); // State to track the checked state of each checkbox in the table rows
+
+  console.log("Selected Checked Data", lineItemsData);
 
   const dispatch = useDispatch();
 
@@ -190,7 +196,7 @@ function AddPhaseView({
             ? "toast-error"
             : "toast-default",
       });
-      dispatch(toggleWorkOrderDeclineRecall())
+      dispatch(toggleWorkOrderDeclineRecall());
     });
   };
 
@@ -365,6 +371,8 @@ function AddPhaseView({
         <Stack
           direction={"row"}
           justifyContent={view ? "space-between" : "center"}
+          sx={{ borderBottom: "2px solid rgba(0, 0, 0, 0.2)", borderRadius: 1 }}
+
           // sx={{ width: "100%" }}
         >
           <Stack sx={{ justifyContent: "center" }}>
@@ -390,10 +398,12 @@ function AddPhaseView({
           {view === "Initial Proposal" ? (
             <>
               <>
-                {initialPhases?.[0]?.[0]?.status === "unapproved" ||
+                {initialPhases?.[0]?.[0]?.status === "not approved" ||
+                initialPhases?.[0]?.[0]?.status === "declined" ||
                 initialPhases?.[0]?.[0]?.status === "pending" ? (
                   <Stack direction={"row"} sx={buttonBox}>
-                    {initialPhases?.[0]?.[0]?.status === "unapproved" && (
+                    {(initialPhases?.[0]?.[0]?.status === "not approved" ||
+                      initialPhases?.[0]?.[0]?.status === "declined") && (
                       <>
                         <Button
                           sx={{
@@ -415,7 +425,7 @@ function AddPhaseView({
                                 ? "300px"
                                 : downView
                                 ? "40px"
-                                : "130px",
+                                : "150px",
                             height:
                               initialPhases[0]?.length < 1 || isLoading
                                 ? "50px"
@@ -552,7 +562,7 @@ function AddPhaseView({
                         phases[0]?.length < 1 || isLoading
                           ? downView
                             ? "300px"
-                            : "400px"
+                            : "450px"
                           : downView
                           ? "40px"
                           : "130px",
@@ -782,9 +792,28 @@ function AddPhaseView({
                 phases[0].length !== 0 &&
                 !isLoading ? (
                   phases[0]?.map((phase, index) => {
-                    console.log("PHASE",phase.status)
-                    if(view === 'Work Order' && (phase.status === 'pending' || phase.status === 'unapproved')){
-                    return <></>;
+                    console.log("PHASE", phase.status);
+                    if (
+                      view === "Work Order" &&
+                      (phase.status === "pending" ||
+                        phase.status === "not approved" ||
+                        phase.status === "declined")
+                    ) {
+                      return <></>;
+                    }
+                    console.log(
+                      "a",
+                      phase.phase_name,
+                      InitialProposalAndChange
+                    );
+                    console.log("a", phase.phase_name, phase.initial);
+                    console.log(
+                      "a",
+                      phase.phase_name,
+                      InitialProposalAndChange && !phase.initial
+                    );
+                    if (InitialProposalAndChange && phase.initial) {
+                      return <></>;
                     }
                     return (
                       <Stack
@@ -819,6 +848,7 @@ function AddPhaseView({
                           setRowCheckboxes={setRowCheckboxes}
                           handleAddRow={handleAddRow}
                           rowCheckboxes={rowCheckboxes}
+                          changeOrderView={changeOrderView}
                         />
                       </Stack>
                     );
@@ -839,6 +869,7 @@ function AddPhaseView({
             )}
           </>
         )}
+
         {showUpdatePhaseDialogue && (
           <UpdatePhaseDialogue
             handleUpdateOpen={handleUpdateOpen}

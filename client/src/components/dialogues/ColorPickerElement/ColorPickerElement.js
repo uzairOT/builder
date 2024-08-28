@@ -252,7 +252,7 @@ function ColorPickerElement({
           </DialogContent>
           <DialogActions sx={generalBox}>
             <Button
-              sx={{ ...actionButton, ...addPhaseButton }}
+              sx={{ ...actionButton, ...addPhaseButton, minWidth:"10rem !important" }}
               type="submit"
               onClick={handleSubmit}
               disabled={PhaseHeading === "Update Phase" ? updateLoading : isLoading}

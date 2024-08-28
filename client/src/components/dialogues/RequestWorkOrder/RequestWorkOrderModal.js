@@ -54,6 +54,7 @@ import UpdateLineDialogue from "../UpdateLineDialogue/UpdateLineDialogue";
 import { io } from "socket.io-client";
 import CloseIcon from "@mui/icons-material/Close";
 import { socket } from "../../../socket";
+import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
 
 const local = localStorage.getItem("userInfo");
 const currentUser = JSON.parse(local);
@@ -111,6 +112,11 @@ const RequestWorkOrderModal = ({
   const [lineItemIndex, setLineItemIndex] = useState();
   const [lineItem, setLineItem] = useState();
   const [loading, setLoading] = useState(false);
+
+  const lineItemsData = useSelector(
+    (state) => state.projectInitialProposal.changeOrderLineItems
+  );
+
 
   let counter = 0;
   let lineItemIds = [];
@@ -385,7 +391,9 @@ const RequestWorkOrderModal = ({
               // console.log("work order",response);
               setDone(true);
               toast.success("Work Order request sent!");
-              await refetchChangeOrder({ projectId, userId: userId });
+              if (refetchChangeOrder) {
+                await refetchChangeOrder({ projectId, userId: userId });
+              }
               await fetchData();
               return response;
             } else {
@@ -465,6 +473,7 @@ const RequestWorkOrderModal = ({
             ...style,
             ...themeStyle.scrollable,
             height: { xl: "90%", lg: "90%", md: "90%", sm: "90%", xs: "90%" },
+            width: "80%",
           }}
           overflow={"scroll"}
         >
@@ -546,7 +555,7 @@ const RequestWorkOrderModal = ({
                 spacing={1}
                 p={1}
               >
-                <Stack>
+                {/* <Stack>
                   <Typography sx={themeStyle.headingText}>
                     Phases
                     <Typography
@@ -602,10 +611,10 @@ const RequestWorkOrderModal = ({
                           );
                         })}
                   </FormControl>
-                </Stack>
-                <Stack>
+                </Stack> */}
+                <Stack maxWidth={"80%"} maxHeight={"30%"}>
                   <Typography sx={themeStyle.headingText}>
-                    Line Item
+                    Phases
                     <Typography
                       sx={{
                         ...themeStyle.headingText,
@@ -613,18 +622,18 @@ const RequestWorkOrderModal = ({
                         marginTop: "0rem",
                       }}
                     >
-                      {lineItemCounter}
+                      {/* {lineItemCounter} */}
                     </Typography>
                   </Typography>
-                  <List
+                  {/* <List
                     sx={{
                       ...themeStyle.scrollable,
                       maxHeight: "150px",
                       overflow: "auto",
                       padding: 0,
                     }}
-                  >
-                    {/* {changeOrder
+                  > */}
+                  {/* {changeOrder
                       ? phaseItems?.map((phase, phaseIndex) => {
                           return phase.lineItems?.map((lineItem, index) => {
                             counter++;
@@ -799,7 +808,7 @@ const RequestWorkOrderModal = ({
                             }
                           });
                         })} */}
-                    {Object?.keys(
+                  {/* {Object?.keys(
                       changeOrderView ? updateRow : rowCheckboxes
                     )?.map((phase) => {
                       const phaseData = changeOrderView
@@ -898,7 +907,16 @@ const RequestWorkOrderModal = ({
                         </Button>
                       </ListItem>
                     )}
-                  </List>
+                  </List> */}
+                  <Stack maxHeight={"50%"}>
+                      <AddPhaseView
+                        lineItemsData={lineItemsData}
+                        refetchChangeOrder={refetch}
+                        adminProjectView={true}
+                        view="Change Order Request"
+                        changeOrderView={true}
+                      />
+                  </Stack>
                 </Stack>
               </Stack>
               <Divider />
@@ -989,6 +1007,13 @@ const RequestWorkOrderModal = ({
                     </LocalizationProvider>
                   </Box>
                 </Typography>
+
+                {/* <Stack>
+                  <AddPhaseView
+                    setRowCheckboxes={setRowCheckboxes}
+                    rowCheckboxes={rowCheckboxes}
+                  />
+                </Stack> */}
                 <Stack
                   width={"80%"}
                   pt={4}

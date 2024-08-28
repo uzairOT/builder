@@ -377,7 +377,7 @@ function ProfileView() {
                 buttonText="Update Profile"
                 color="#ffffff"
                 backgroundColor="#4C8AB1"
-                width="120px"
+                width="140px"
                 height="38px"
                 borderRadius="50px"
                 onClick={handleSubmit}
@@ -455,7 +455,7 @@ function ProfileView() {
                 buttonText="Change Profile"
                 color="#ffffff"
                 backgroundColor="#4C8AB1"
-                width="120px"
+                width="140px"
                 height="38px"
                 borderRadius="50px"
                 onClick={handleProfileImage}

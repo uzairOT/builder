@@ -572,7 +572,7 @@ const NotificationDetailModal = ({
                 {isEvent && (
                   <Stack pr={1} sx={{ paddingBottom:{md:0, lg:0, sm:2, xs:2}}}>
                   <BuilderProButton
-                    sx={{fontSize:{md:16,lg:16,sm:14,xs:14},}}
+                    sx={{fontSize:{md:16,lg:16,sm:14,xs:14}, minWidth:"5rem"}}
                     backgroundColor={"#4C8AB1"}
                     variant={"contained"}
                     fontFamily={'var(--main-font-family)'}

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import { useLocation } from "react-router-dom";
 
 const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
   const [activeButton, setActiveButton] = useState("day");
@@ -45,18 +46,21 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
     });
   };
 
+  const location = useLocation();
+  const pathCheck = location.pathname;
+
   // Styles
   const themeStyle = {
     toolbarTitle: {
       color: bgColorClient ? "black" : "white",
-      fontFamily: 'var(--main-font-family)',
+      fontFamily: "var(--main-font-family)",
       fontSize: { xl: "20px", lg: "16px", md: "20px", xs: "16px" },
       fontStyle: "normal",
       fontWeight: 500,
     },
     toolbarButton: {
       textAlign: "center",
-      fontFamily: 'var(--main-font-family)',
+      fontFamily: "var(--main-font-family)",
       fontSize: { xl: "12px", lg: "12px", md: "12px", xs: "11px" },
       fontStyle: "normal",
       fontWeight: 500,
@@ -69,7 +73,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
       padding: "5px",
     },
     toolbarLabel: {
-      fontFamily: 'var(--main-font-family)',
+      fontFamily: "var(--main-font-family)",
       color: "#484848",
       fontWeight: "500",
     },
@@ -83,7 +87,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
       lineHeight: "32px",
     },
     button: {
-      fontFamily: 'var(--main-font-family)',
+      fontFamily: "var(--main-font-family)",
       fontSize: "12px",
       fontStyle: "normal",
       fontWeight: 500,
@@ -113,12 +117,18 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
         >
           {" "}
           <Stack direction={"row"} alignItems={"center"}>
-            <Typography sx={themeStyle.toolbarTitle} pl={2}>
-              Work Order
-            </Typography>
+            {pathCheck.includes("/change-order") ? (
+              <Typography sx={themeStyle.toolbarTitle} pl={2}>
+                Change Order
+              </Typography>
+            ) : (
+              <Typography sx={themeStyle.toolbarTitle} pl={2}>
+                Work Order
+              </Typography>
+            )}
             {toolbar.view === "month" && (
               <Stack
-                direction={{sm:"row", xs:"column"}}
+                direction={{ sm: "row", xs: "column" }}
                 spacing={2}
                 pr={0.5}
                 pl={5}
@@ -126,15 +136,11 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                 alignItems={"center"}
               >
                 <Button
-                 sx={{
-                  fontSize: {
-                    xl: "12px !important",
-                    lg: "10px !important",
-                    md: "12px !important",
-                    xs: "11px !important",
-                  },
-                }}
+                  sx={{
+                    fontSize: "0.7rem",
+                  }}
                   style={{
+                    textTransform:"capitalize",
                     ...themeStyle.toolbarButton,
                     backgroundColor:
                       activeHeader === "Work Order" ? "white" : "",
@@ -153,19 +159,14 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                   Work Order
                 </Button>
                 <Button
-                 sx={{
-                  fontSize: {
-                    xl: "12px !important",
-                    lg: "10px !important",
-                    md: "12px !important",
-                    xs: "11px !important",
-                  },
-                }}
+                  sx={{
+                    fontSize: "0.7rem",
+                  }}
                   style={{
+                    textTransform: "capitalize",
                     ...themeStyle.toolbarButton,
                     backgroundColor: activeHeader === "Notes" ? "white" : "",
                     color: activeHeader === "Notes" ? "#4C8AB1" : "white",
-
                   }}
                   onClick={() => {
                     handleActiveHeader("Notes");
@@ -177,23 +178,19 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
             )}
             {toolbar.view === "day" && (
               <Stack
-              direction={{sm:"row", xs:"column"}}
-              spacing={2}
+                direction={{ sm: "row", xs: "column" }}
+                spacing={2}
                 pr={0.5}
                 pl={5}
                 justifyContent={"center"}
                 alignItems={"center"}
               >
                 <Button
-                 sx={{
-                  fontSize: {
-                    xl: "12px !important",
-                    lg: "10px !important",
-                    md: "12px !important",
-                    xs: "11px !important",
-                  },
-                }}
+                  sx={{
+                    fontSize: "0.7rem"
+                  }}
                   style={{
+                    textTransform:"capitalize",
                     ...themeStyle.toolbarButton,
                     backgroundColor:
                       activeHeader === "Work Order" ? "white" : "",
@@ -207,18 +204,13 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                 </Button>
                 <Button
                   sx={{
-                    fontSize: {
-                      xl: "12px !important",
-                      lg: "10px !important",
-                      md: "12px !important",
-                      xs: "11px !important",
-                    },
+                    fontSize: "0.7rem",
                   }}
                   style={{
+                    textTransform:"capitalize",
                     ...themeStyle.toolbarButton,
                     backgroundColor: activeHeader === "Notes" ? "white" : "",
                     color: activeHeader === "Notes" ? "#4C8AB1" : "white",
-
                   }}
                   onClick={() => {
                     handleActiveHeader("Notes");
@@ -232,14 +224,9 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
           <Box element="div" style={themeStyle.toolbarButtonGroup}>
             <Button
               sx={{
-                fontSize: {
-                  xl: "12px !important",
-                  lg: "10px !important",
-                  md: "12px !important",
-                  xs: "11px !important",
-                },
-              }}
+                fontSize:"0.7rem"}}
               style={{
+                textTransform: "capitalize",
                 ...themeStyle.toolbarButton,
                 backgroundColor: activeButton === "day" ? "#FFF" : "",
                 color: activeButton === "day" ? "black" : "#FFF",
@@ -250,14 +237,10 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
             </Button>
             <Button
               sx={{
-                fontSize: {
-                  xl: "12px !important",
-                  lg: "10px !important",
-                  md: "12px !important",
-                  xs: "11px !important",
-                },
+                fontSize: "0.7rem",
               }}
               style={{
+                textTransform: "capitalize",
                 ...themeStyle.toolbarButton,
                 backgroundColor: activeButton === "week" ? "#FFF" : "",
                 color: activeButton === "week" ? "#000000" : "#FFF",
@@ -271,14 +254,10 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
             </Button>
             <Button
               sx={{
-                fontSize: {
-                  xl: "12px !important",
-                  lg: "10px !important",
-                  md: "12px !important",
-                  xs: "11px !important",
-                },
+                fontSize: "0.7rem",
               }}
               style={{
+                textTransform: "capitalize",
                 ...themeStyle.toolbarButton,
                 backgroundColor: activeButton === "month" ? "#FFF" : "",
                 color: activeButton === "month" ? "#000000" : "#FFF",

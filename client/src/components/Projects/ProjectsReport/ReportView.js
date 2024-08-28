@@ -15,7 +15,7 @@ const ReportView = () => {
       }}
       overflow={"hidden"}
       spacing={1}
-     
+      
     >
       <Grid
         item
@@ -26,18 +26,28 @@ const ReportView = () => {
         xs={12}
         pt={1}
         overflow={"hidden"}
+        
       >
         <Paper
           sx={{
             ...themeStyle.scrollable,
-             height: {xl:'calc(93vh + 175px)', lg:`calc(93vh + 175px)`, md:`calc(93vh + 175px)`, sm:`calc(93vh + 175px)`, xs:`calc(93vh + 175px))`},
+            height: {
+              xl: "calc(93vh + 175px)",
+              lg: `calc(93vh + 175px)`,
+              md: `calc(93vh + 175px)`,
+              sm: `calc(93vh + 175px)`,
+              xs: `calc(93vh + 175px))`,
+            },
             borderRadius: "14px",
-            marginBottom:'1px'
-            // overflowY: { xl: "hidden", lg: "auto", md: "hidden", xs: "hidden" },
+            marginBottom: "1px",
+            border:"2px solid rgba(0, 0, 0, 0.2)"
 
+
+            // overflowY: { xl: "hidden", lg: "auto", md: "hidden", xs: "hidden" },
           }}
+          
         >
-          <Reports />
+          <Reports  />
         </Paper>
       </Grid>
       <Grid

@@ -34,6 +34,7 @@ function ApprovalNotification({
   const [open, setOpen] = useState(false);
   const [data1, setData1] = useState(null);
   const [declineReason, setDeclineReason] = useState("");
+  const [showError, setShowError] = useState(false);
   const [showReasonField, setShowReasonField] = useState(false);
   const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation();
 
@@ -70,11 +71,16 @@ function ApprovalNotification({
   // };
 
   const handleDecline = async () => {
-    handleAccordionChange(notification.id); 
+    handleAccordionChange(notification.id);
     setShowReasonField(true);
   };
 
   const handleSubmitReason = async () => {
+    if (!declineReason) {
+      setShowError(true); // Show error if reason is empty
+      return;
+    }
+  
     try {
       if (notification?.phaseId == null) {
         await declineInitialPhases({
@@ -94,16 +100,16 @@ function ApprovalNotification({
       }
       setShowReasonField(false);
       setDeclineReason("");
+      setShowError(false); // Reset error state
     } catch (err) {
       console.error("Failed to submit reason:", err);
     }
   };
-
   const handleAccept = async () => {
-    setExpanded(false); 
+    setExpanded(false);
     try {
-      setExpanded(false); 
-      setShowReasonField(false); 
+      setExpanded(false);
+      setShowReasonField(false);
       if (notification?.phaseId == null) {
         await approveInitialPhases({
           projectId: notification?.projectId,
@@ -117,19 +123,16 @@ function ApprovalNotification({
         }).unwrap();
       }
       approvalRefetchCall();
-   
     } catch (err) {
       console.error("Failed to accept:", err);
     }
   };
-  
 
   return (
     <Accordion
       disableGutters
       // expanded={isExpanded}
       // onChange={handleAccordionChange(index)}
-    
     >
       <AccordionSummary>
         <Stack>
@@ -163,7 +166,9 @@ function ApprovalNotification({
               fontSize={"12px"}
             >
               Sent you Approval Request of project:
-              <span style={{fontWeight:700}}>{notification?.Project?.projectName}</span>
+              <span style={{ fontWeight: 700 }}>
+                {notification?.Project?.projectName}
+              </span>
             </Typography>
           </Stack>
 
@@ -199,6 +204,7 @@ function ApprovalNotification({
           {showReasonField && (
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <TextField
+                required
                 fullWidth
                 label="Reason for Disapproval"
                 value={declineReason}
@@ -207,6 +213,12 @@ function ApprovalNotification({
                 rows={4}
                 variant="outlined"
                 margin="normal"
+                error={!declineReason && showError} // Adds error state
+                helperText={
+                  !declineReason && showError
+                    ? "Reason for disapproval is required"
+                    : ""
+                } // Shows error message
               />
               <BuilderProButton
                 variant={"contained"}
@@ -216,7 +228,7 @@ function ApprovalNotification({
                 handleOnClick={handleSubmitReason}
               >
                 Submit
-              </BuilderProButton>{" "}
+              </BuilderProButton>
             </Box>
           )}
         </div>

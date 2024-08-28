@@ -23,6 +23,7 @@ import {
   AccordionDetails,
   Snackbar,
   Alert,
+  ClickAwayListener,
 } from "@mui/material";
 import { ReactComponent as BuilderProNavbarLogo } from "./assets/svgs/builder-pro-logo-navbar.svg";
 // import { ReactComponent as BuilderProNavbarShare } from "./assets/svgs/builder-pro-navbar-share.svg";
@@ -105,6 +106,7 @@ const Navbar = () => {
 
   console.log("JOHN NOTIFICATION TEST", invoiceNotification);
   const handleClick = async (event) => {
+    console.log("run bell")
     if (anchorEl) {
       setAnchorEl(null);
       // setInvoiceNotification(null);
@@ -248,6 +250,17 @@ const Navbar = () => {
   const handleClose = () => {
     setOpen(null);
   };
+
+
+  const handlePopperClose =  async () => {
+    console.log("run lisnter")
+    // setAnchorEl(null); 
+    if (anchorEl) {
+      setAnchorEl(null);
+      // setInvoiceNotification(null);
+    } 
+  };
+
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
@@ -284,7 +297,7 @@ const Navbar = () => {
     navbar: {
       background: "#FFF",
       boxShadow: "0px 1px 1.3px 0px rgba(0, 0, 0, 0.05)",
-      padding: "4px 16px 4px 16px",
+      padding: "4px 2px 4px 2px",
       height: "92px",
       fontFamily: "var(--main-font-family)",
     },
@@ -313,8 +326,10 @@ const Navbar = () => {
     toolbar: {
       justifyContent: "space-between",
       height: "inherit",
+      boxShadow: "0 3px 6px rgba(0, 0, 0, 0.3)",
     },
   };
+  
 
   return (
     <>
@@ -369,12 +384,17 @@ const Navbar = () => {
               onClick={(e) => handleTabChange(e, 5)}
             />
           </Tabs>
+          
           <Box
             display={"flex"}
             justifyContent={"center"}
             alignItems={"center"}
             gap={1}
           >
+            <ClickAwayListener onClickAway={handlePopperClose}>
+              <Box sx={{ position: 'relative' }}>
+
+              
             <IconButton aria-label="bell-notifications" onClick={handleClick}>
               <Badge
                 badgeContent={
@@ -384,11 +404,12 @@ const Navbar = () => {
                   (invoiceNotification ? 1 : 0) +
                   (approvalData?.data?.length ? approvalData?.data?.length : 0)
                 }
-                color="error"
+                color="success"
               >
                 <NotificationsIcon sx={{ color: "#4C8AB1" }} />
               </Badge>
             </IconButton>
+
             <Popper
               style={{
                 zIndex: "100",
@@ -396,6 +417,7 @@ const Navbar = () => {
                 borderRadius: "14px",
               }}
               sx={{
+                boxShadow: "0 3px 6px rgba(0, 0, 0, 0.9)",
                 width: { sm: "400px", xs: "300px" },
                 maxHeight: "350px",
                 overflowY: "auto",
@@ -409,111 +431,114 @@ const Navbar = () => {
               anchorEl={anchorEl}
               placement="bottom-end"
             >
-              {Array.isArray(approvalData?.data) ? (
-                approvalData?.data.map((notification, index) => (
-                  <ApprovalNotification
-                    approvalRefetchCall={approvalRefetchCall}
-                    userId={userId}
-                    index={index}
-                    setExpanded={setExpanded}
-                    notification={notification}
-                    expanded={expanded}
-                  ></ApprovalNotification>
-                ))
-              ) : (
-                <></>
-              )}
-              {invoiceNotification && (
-                <InvoiceNotification
-                  data={invoiceNotification}
-                  setInvoiceNotification={setInvoiceNotification}
-                />
-              )}
-              {Array.isArray(teamNotifications) ? (
-                teamNotifications.map((teamNotification, index) => {
-                  if (index < 3) {
-                    return (
-                      <div key={index}>
-                        <TeamNotifications
-                          teamNotification={teamNotification}
-                          index={index}
-                          userId={userId}
-                          refetch={handleTeamNotificationsRefetch}
-                        />
-                      </div>
-                    );
-                  } else {
-                    return index === 3 ? (
-                      <Stack textAlign={"right"}>
-                        <Typography
-                          fontFamily={"var(--main-font-family)"}
-                          fontSize={"12px"}
-                          sx={{
-                            textDecoration: "underline",
-                            fontWeight: "600",
-                          }}
-                        >
-                          +{teamNotifications?.length - 3} more team
-                          notifications
-                        </Typography>
-                      </Stack>
-                    ) : (
-                      <> </>
-                    );
-                  }
-                })
-              ) : (
-                <></>
-              )}
-              {Array.isArray(teamNotifications) && <Divider />}
-              {Array.isArray(notificationsArr) ? (
-                notificationsArr?.map((notification, index) => {
-                  if (index < 3) {
-                    return (
-                      <Notification
-                        key={notification.workOrder_id}
-                        notification={notification}
-                        refetch={refetch}
+              
+      <>
+                  {Array.isArray(approvalData?.data) ? (
+                    approvalData?.data.map((notification, index) => (
+                      <ApprovalNotification
+                        approvalRefetchCall={approvalRefetchCall}
                         userId={userId}
                         index={index}
                         setExpanded={setExpanded}
+                        notification={notification}
                         expanded={expanded}
-                      ></Notification>
-                    );
-                  } else {
-                    return index === 3 ? (
-                      <Stack textAlign={"right"}>
-                        <Typography
-                          fontFamily={"var(--main-font-family)"}
-                          fontSize={"12px"}
-                          sx={{
-                            textDecoration: "underline",
-                            fontWeight: "600",
-                          }}
-                        >
-                          +{notificationsArr.length - 3} more work order
-                          notifications
-                        </Typography>
-                      </Stack>
-                    ) : (
-                      <> </>
-                    );
-                  }
-                })
-              ) : (
-                <div
-                  style={{
-                    backgroundColor: "#F2F2F2",
-                    padding: 15,
-                    borderRadius: "14px",
-                    textAlign: "center",
-                  }}
-                >
-                  No new notifications
-                </div>
-              )}
-            </Popper>
+                      ></ApprovalNotification>
+                    ))
+                  ) : (
+                    <></>
+                  )}
+                  {invoiceNotification && (
+                    <InvoiceNotification
+                      data={invoiceNotification}
+                      setInvoiceNotification={setInvoiceNotification}
+                    />
+                  )}
+                  {Array.isArray(teamNotifications) ? (
+                    teamNotifications.map((teamNotification, index) => {
+                      if (index < 3) {
+                        return (
+                          <div key={index}>
+                            <TeamNotifications
+                              teamNotification={teamNotification}
+                              index={index}
+                              userId={userId}
+                              refetch={handleTeamNotificationsRefetch}
+                            />
+                          </div>
+                        );
+                      } else {
+                        return index === 0 ? (
+                          <Stack textAlign={"right"}>
+                            <Typography
+                              fontFamily={"var(--main-font-family)"}
+                              fontSize={"12px"}
+                              sx={{
+                                textDecoration: "underline",
+                                fontWeight: "600",
+                              }}
+                            >
+                              No Unread Notifications
+                            </Typography>
+                          </Stack>
+                        ) : (
+                          <> </>
+                        );
+                      }
+                    })
+                  ) : (
+                    <></>
+                  )}
+                  {Array.isArray(teamNotifications) && <Divider />}
+                  {Array.isArray(notificationsArr) ? (
+                    notificationsArr?.map((notification, index) => {
+                      if (index < 3) {
+                        return (
+                          <Notification
+                            key={notification.workOrder_id}
+                            notification={notification}
+                            refetch={refetch}
+                            userId={userId}
+                            index={index}
+                            setExpanded={setExpanded}
+                            expanded={expanded}
+                          ></Notification>
+                        );
+                      } else {
+                        return index === 0 ? (
+                          <Stack textAlign={"right"}>
+                            <Typography
+                              fontFamily={"var(--main-font-family)"}
+                              fontSize={"12px"}
+                              sx={{
+                                textDecoration: "underline",
+                                fontWeight: "600",
+                              }}
+                            >
+                              No Unread Notifications
+                            </Typography>
+                          </Stack>
+                        ) : (
+                          <> </>
+                        );
+                      }
+                    })
+                  ) : (
+                    <div
+                      style={{
+                        backgroundColor: "#F2F2F2",
+                        padding: 15,
+                        borderRadius: "14px",
+                        textAlign: "center",
+                      }}
+                    >
+                      No new notifications
+                    </div>
+                  )}
+                </>
 
+            </Popper>
+</Box>
+              </ClickAwayListener>
             <BuilderProButton
               backgroundColor={"#4C8AB1"}
               variant={"outlined"}

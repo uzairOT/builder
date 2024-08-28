@@ -1,6 +1,6 @@
 const actionButton = {
   fontFamily: "var(--main-font-family)",
-  fontSize: 18,
+  fontSize:"1rem",
   display: "flex",
   height: "2.375rem",
   padding: { lg: "0.75rem 1.5rem", },

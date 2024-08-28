@@ -19,7 +19,8 @@ const Reports = () => {
 
   return (
     <>
-    <Stack p={2} spacing={1}>
+    <Stack p={2} spacing={1}  
+ >
       <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} p={1} >
         <Typography fontSize={{xl:'22px', lg:"18px",md:'22px',xs:'22px',}} fontFamily={'var(--main-font-family)'} fontWeight={'600'} color={'#4C8AB1'}>Reports</Typography>
         <Stack direction={'row'} alignItems={'center'}>

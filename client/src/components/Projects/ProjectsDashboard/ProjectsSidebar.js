@@ -102,7 +102,7 @@ const ProjectsSidebar = ({ reports }) => {
             }}
           >
             <Typography
-              fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
+              fontSize={"0.6rem"}
               fontWeight={"500"}
               color={"black"}
               fontFamily={"var(--main-font-family)"}
@@ -121,7 +121,7 @@ const ProjectsSidebar = ({ reports }) => {
             }}
           >
             <Typography
-              fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
+              fontSize={"0.6rem"}
               fontWeight={"500"}
               color={"black"}
               fontFamily={"var(--main-font-family)"}
@@ -140,7 +140,7 @@ const ProjectsSidebar = ({ reports }) => {
             }}
           >
             <Typography
-              fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
+              fontSize={"0.6rem"}
               fontWeight={"500"}
               color={"black"}
               fontFamily={"var(--main-font-family)"}

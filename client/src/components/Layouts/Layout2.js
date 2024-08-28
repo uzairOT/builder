@@ -60,11 +60,19 @@ useEffect(()=>{
   };
 
   // Listen for the socket event
-  socket.on("project-permissions-updated", handleSocketUpdate);
+  socket.on("project-permissions-updated",(data)=>{
+    if(data?.projectId===currentProjectId)
+    {
+      handleSocketUpdate();
+    }
+    console.log("Socket Check data", data)
+  });
 
   // Cleanup on component unmount
   return () => {
-    socket.off("project-permissions-updated", handleSocketUpdate);
+    socket.off("project-permissions-updated", (data)=>{
+      console.log("Socket Check data", data)
+    });
   };
 }, [socket]);
 

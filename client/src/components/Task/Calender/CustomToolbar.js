@@ -61,14 +61,14 @@ const CustomToolbar = ({
   const themeStyle = {
     toolbarTitle: {
       color: "#707070",
-      fontFamily: 'var(--main-font-family)',
-      fontSize: { xl:18,md: 13, lg:13,xs:13,sm:13 } ,
+      fontFamily: "var(--main-font-family)",
+      fontSize: { xl: 18, md: 13, lg: 13, xs: 13, sm: 13 },
       fontStyle: "normal",
       fontWeight: 500,
     },
     toolbarButton: {
       textAlign: "center",
-      fontFamily: 'var(--main-font-family)',
+      fontFamily: "var(--main-font-family)",
       fontSize: "12px",
       fontStyle: "normal",
       fontWeight: 500,
@@ -83,10 +83,10 @@ const CustomToolbar = ({
       padding: "5px",
     },
     toolbarLabel: {
-      fontFamily: 'var(--main-font-family)',
+      fontFamily: "var(--main-font-family)",
       color: "#484848",
       fontWeight: "500",
-      fontSize:'14px'
+      fontSize: "14px",
     },
     toolbarIcon: {
       padding: 3,
@@ -98,7 +98,7 @@ const CustomToolbar = ({
       lineHeight: "32px",
     },
     button: {
-      fontFamily: 'var(--main-font-family)',
+      fontFamily: "var(--main-font-family)",
       fontSize: "12px",
       fontStyle: "normal",
       fontWeight: 500,
@@ -139,15 +139,11 @@ const CustomToolbar = ({
           <Box element="div" style={themeStyle.toolbarButtonGroup}>
             <Button
               sx={{
-                fontSize: {
-                  xl: "12px !important",
-                  lg: "8px !important",
-                  md: "12px !important",
-                  sm: "12px !important",
-                  xs: "12px !important",
-                },
+                fontSize: "0.7rem",
+
               }}
               style={{
+                textTransform: "capitalize",
                 ...themeStyle.toolbarButton,
                 backgroundColor: activeButton === "day" ? "#4C8AB1" : "",
                 color: activeButton === "day" ? "#FFF" : "",
@@ -158,15 +154,11 @@ const CustomToolbar = ({
             </Button>
             <Button
               sx={{
-                fontSize: {
-                  xl: "12px !important",
-                  lg: "8px !important",
-                  md: "12px !important",
-                  sm: "12px !important",
-                  xs: "12px !important",
-                },
+                fontSize: "0.7rem",
+
               }}
               style={{
+                textTransform: "capitalize",
                 ...themeStyle.toolbarButton,
                 backgroundColor: activeButton === "week" ? "#4C8AB1" : "",
                 color: activeButton === "week" ? "#FFF" : "",
@@ -177,15 +169,11 @@ const CustomToolbar = ({
             </Button>
             <Button
               sx={{
-                fontSize: {
-                  xl: "12px !important",
-                  lg: "8px !important",
-                  md: "12px !important",
-                  sm: "12px !important",
-                  xs: "12px !important",
-                },
+                fontSize: "0.7rem",
+
               }}
               style={{
+                textTransform: "capitalize",
                 ...themeStyle.toolbarButton,
                 backgroundColor: activeButton === "month" ? "#4C8AB1" : "",
                 color: activeButton === "month" ? "#FFF" : "",
@@ -228,16 +216,13 @@ const CustomToolbar = ({
             >
               <Button
                 sx={{
-                  fontSize: {
-                    xl: "11px !important",
-                    lg: "10px !important",
-                    md: "12px !important",
-                    xs: "11px !important",
-                  },
+                  fontSize: "0.7rem",
+
                 }}
                 style={{
+                  textTransform: "capitalize",
                   ...themeStyle.toolbarButton,
-                  padding: '7px',
+                  padding: "7px",
                   backgroundColor:
                     activeHeader === "Work Order" ? "#4C8AB1" : "",
                   color: activeHeader === "Work Order" ? "#FFF" : "",
@@ -250,16 +235,13 @@ const CustomToolbar = ({
               </Button>
               <Button
                 sx={{
-                  fontSize: {
-                    xl: "11px !important",
-                    lg: "10px !important",
-                    md: "12px !important",
-                    xs: "11px !important",
-                  },
+                  fontSize: "0.7rem",
+
                 }}
                 style={{
+                  textTransform: "capitalize",
                   ...themeStyle.toolbarButton,
-                  padding: '7px',
+                  padding: "7px",
                   backgroundColor: activeHeader === "Notes" ? "#4C8AB1" : "",
                   color: activeHeader === "Notes" ? "#FFF" : "",
                 }}
@@ -281,16 +263,12 @@ const CustomToolbar = ({
             >
               <Button
                 sx={{
-                  fontSize: {
-                    xl: "11px !important",
-                    lg: "10px !important",
-                    md: "12px !important",
-                    xs: "11px !important",
-                  },
+                  fontSize: "0.7rem",
                 }}
                 style={{
+                  textTransform: "capitalize",
                   ...themeStyle.toolbarButton,
-                  padding: '7px',
+                  padding: "7px",
                   backgroundColor:
                     activeHeader === "Work Order" ? "#4C8AB1" : "",
                   color: activeHeader === "Work Order" ? "#FFF" : "",
@@ -303,16 +281,13 @@ const CustomToolbar = ({
               </Button>
               <Button
                 sx={{
-                  fontSize: {
-                    xl: "11px !important",
-                    lg: "10px !important",
-                    md: "12px !important",
-                    xs: "11px !important",
-                  },
+                  fontSize: "0.7rem",
+
                 }}
                 style={{
+                  textTransform: "capitalize",
                   ...themeStyle.toolbarButton,
-                  padding: '7px',
+                  padding: "7px",
                   backgroundColor: activeHeader === "Notes" ? "#4C8AB1" : "",
                   color: activeHeader === "Notes" ? "#FFF" : "",
                 }}

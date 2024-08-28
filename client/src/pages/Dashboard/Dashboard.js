@@ -91,6 +91,8 @@ const Dashboard = () => {
             {/*  height:{xl:'67vh', lg:'65vh', md:'43vh', sm:'45vh', xs: '45vh'} */}
             <Grid
               container
+              borderTop={ '2px solid rgba(0, 0, 0, 0.1)'}
+              borderRadius={2}
               sx={{ ...themeStyle.scrollable }}
               overflow={"hidden"}
               height={{xl:"calc(92vh - 240px)", lg:'calc(92vh -  240px)',  md:'calc(92vh - 100px)', xs:'calc(100vh + 100px)'}}
