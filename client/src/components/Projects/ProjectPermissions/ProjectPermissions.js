@@ -15,14 +15,17 @@ import {
   Typography,
   Snackbar,
   Alert,
+  Tooltip,
 } from "@mui/material";
 import loader from "./assets/loader.gif";
 import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../../../socket";
 import Header from "../../Settings/Header/Header";
-import { useGetProjectPermssionsListMutation } from "../../../redux/apis/Permissions/permissionsApiSlice";
+import { useGetProjectPermissionsListMutation } from "../../../redux/apis/Permissions/permissionsApiSlice";
 import { useGetProjectDataQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { useParams } from "react-router-dom";
+import { setPermissionsListState } from "../../../redux/slices/LoginPermissions/PermissionsSlice";
+import { setPermissionsState } from "../../../redux/slices/Permissions/permissionsSlice";
 
 const formatRoleName = (role) => {
   return role
@@ -42,9 +45,10 @@ const ProjectsPermissionAccess = () => {
   const { id: currentProjectId } = params;
   const { data } = useGetProjectDataQuery({ projectId: currentProjectId });
   const [permissionList, setPermissionsList] = useState([]);
-  const [GetPermissionsList] = useGetProjectPermssionsListMutation();
+  const [GetPermissionsList] = useGetProjectPermissionsListMutation();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const currentUser = userInfo?.user;
+  const dispatch = useDispatch();
   const roles = [
     "admin",
     "projectManager",
@@ -63,6 +67,8 @@ const ProjectsPermissionAccess = () => {
           projectId: currentProjectId,
         }).unwrap();
         setPermissionsList(response);
+
+        
       } catch (error) {
         console.error("Failed to fetch permissions:", error);
       } finally {
@@ -86,6 +92,7 @@ const ProjectsPermissionAccess = () => {
       role,
       value: updatedValue,
     });
+    dispatch(setPermissionsState(permissionList)); 
 
     setTimeout(() => {
       setPermissionsList((prevList) => {
@@ -101,8 +108,8 @@ const ProjectsPermissionAccess = () => {
       setLoading(false);
       setSnackbarMessage(
         updatedValue
-          ? "Permission enabled successfully!"
-          : "Permission disabled successfully!"
+        ? "Permission enabled successfully!"
+        : "Permission disabled successfully!"
       );
       setSnackbarOpen(true);
       setModalOpen(false);
@@ -110,16 +117,15 @@ const ProjectsPermissionAccess = () => {
   };
 
   useEffect(() => {
-    const handlePermissionsUpdate = (data) => {
-      // Handle socket event for permissions update
+    const handlePermissionsUpdate = () => {
     };
 
-    socket.on("organization-permissions-updated", handlePermissionsUpdate);
+    socket.on("project-permissions-updated", handlePermissionsUpdate);
 
     return () => {
-      socket.off("organization-permissions-updated", handlePermissionsUpdate);
+      socket.off("project-permissions-updated", handlePermissionsUpdate);
     };
-  }, []);
+  }, [permissionList]);
 
   const filteredPermissions = permissionList.filter((permission) => {
     const matchesPermissionName = permission.permission.name
@@ -158,7 +164,7 @@ const ProjectsPermissionAccess = () => {
           <TableHead>
             <TableRow>
               <TableCell
-              fontFamily={"var(--main-font-family)"}
+                fontFamily={"var(--main-font-family)"}
                 sx={{
                   borderBottom: "1px solid #DCDCDC",
                   margin: 5,
@@ -167,7 +173,7 @@ const ProjectsPermissionAccess = () => {
               ></TableCell>
               {roles.map((role) => (
                 <TableCell
-                fontFamily={"var(--main-font-family)"}
+                  fontFamily={"var(--main-font-family)"}
                   key={`header-${role}`}
                   align="center"
                   sx={{
@@ -185,7 +191,11 @@ const ProjectsPermissionAccess = () => {
           <TableBody>
             {dataLoading ? (
               <TableRow>
-                <TableCell fontFamily={"var(--main-font-family)"} colSpan={roles.length + 1} align="center">
+                <TableCell
+                  fontFamily={"var(--main-font-family)"}
+                  colSpan={roles.length + 1}
+                  align="center"
+                >
                   <CircularProgress />
                 </TableCell>
               </TableRow>
@@ -204,22 +214,29 @@ const ProjectsPermissionAccess = () => {
                       "&:last-child td, &:last-child th": { borderBottom: 0 },
                     }}
                   >
-                    <TableCell
-                    fontFamily={"var(--main-font-family)"}
-                      sx={{
-                        borderBottom: "1px solid #DCDCDC",
-                        borderRight: "1px solid #DCDCDC",
-                        fontWeight: "bold",
-                        color: "#8C8C8C",
-                        padding: "16px 0 16px 16px",
-                        width: 250,
-                      }}
+                    <Tooltip
+                      title={perm.description ? perm.description : ""}
+                      arrow
+                      sx={{cursor:"pointer"}}
                     >
-                      {perm.name}
-                    </TableCell>
+                        <TableCell
+                          fontFamily={"var(--main-font-family)"}
+                          sx={{
+                            cursor:"pointer",
+                            borderBottom: "1px solid #DCDCDC",
+                            borderRight: "1px solid #DCDCDC",
+                            fontWeight: "bold",
+                            color: "#8C8C8C",
+                            padding: "16px 0 16px 16px",
+                            width: 250,
+                          }}
+                        >
+                          {perm.name}
+                        </TableCell>
+                    </Tooltip>
                     {roles.map((role) => (
                       <TableCell
-                      fontFamily={"var(--main-font-family)"}
+                        fontFamily={"var(--main-font-family)"}
                         key={`${permissionId}-${role}`}
                         align="center"
                         sx={{

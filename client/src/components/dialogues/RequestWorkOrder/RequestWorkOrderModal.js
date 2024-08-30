@@ -114,6 +114,7 @@ const RequestWorkOrderModal = ({
   const [lineItem, setLineItem] = useState();
   const [addPhaseId, setAddPhaseId] = useState();
   const [loading, setLoading] = useState(false);
+  const pathCheck = location.pathname;
 
   // const changeOrderSelected = useSelector(
   //   (state) => state.projectInitialProposal.changeOrderLineItems
@@ -510,25 +511,29 @@ console.log(updateRow);
 
   return (
     <>
-      <Stack
-        alignItems={"flex-end"}
-        justifyContent={{ xs: "flex-end" }}
-        pr={2}
-        ml={0}
-      >
-        <BuilderProButton
-          backgroundColor={"#FFAC00"}
-          variant={"contained"}
-          fontFamily={"var(--main-font-family)"}
-          fontSize={{ lg: "16px", xs: "11px" }}
-          fontWeight={"600"}
-          padding={{ sm: "6px 32px 6px 32px", xs: "5px 20px 5px 20px" }}
-          handleOnClick={isButtonDisabled ? showToast : handleOpen}
-          // disabled={isButtonDisabled}
+      {pathCheck.includes("initial-proposal") ? (
+        <></>
+      ) : (
+        <Stack
+          alignItems={"flex-end"}
+          justifyContent={{ xs: "flex-end" }}
+          pr={2}
+          ml={0}
         >
-          {changeOrderView ? "Submit Change Order" : "Submit Work Order"}
-        </BuilderProButton>
-      </Stack>
+          <BuilderProButton
+            backgroundColor={"#FFAC00"}
+            variant={"contained"}
+            fontFamily={"var(--main-font-family)"}
+            fontSize={{ lg: "16px", xs: "11px" }}
+            fontWeight={"600"}
+            padding={{ sm: "6px 32px 6px 32px", xs: "5px 20px 5px 20px" }}
+            handleOnClick={isButtonDisabled ? showToast : handleOpen}
+            // disabled={isButtonDisabled}
+          >
+            {changeOrderView ? "Submit Change Order" : "Submit Work Order"}
+          </BuilderProButton>
+        </Stack>
+      )}
       <Modal open={open} onClose={handleClose}>
         <Stack
           sx={{

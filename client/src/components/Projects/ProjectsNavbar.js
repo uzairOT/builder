@@ -23,6 +23,12 @@ const ProjectsNavbar = ({ project }) => {
   const showHamburger = useMediaQuery(theme.breakpoints.down("lg"));
   const navigate = useNavigate();
   const userRole = useSelector(getUserRoleFromRedux);
+  const userOrganization = useSelector((state) => state?.auth?.userInfo?.user?.userOrganization);
+  const userId = useSelector((state) => state?.auth?.userInfo?.user?.id);
+
+
+  console.log("User Check",userId)
+
   console.log(userRole)
   const navLinks = [
     {
@@ -65,10 +71,15 @@ const ProjectsNavbar = ({ project }) => {
       title: "Invoices",
       path: "invoices",
     },
-    {
-      title: "Project Permissions",
-      path: "project-permissions",
-    },
+    ...(userOrganization?.isOwner === true && userId===project?.userId
+      ? [
+          {
+            title: "Project Permissions",
+            path: "project-permissions",
+          },
+        ]
+      : []),
+         
   ];
   const [selectedNav, setSelectedNav] = useState(navLinks.path);
   const handleNavClick = (path) => {

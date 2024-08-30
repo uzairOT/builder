@@ -11,7 +11,7 @@ const permissionsApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    getProjectPermssionsList: builder.mutation({
+    getProjectPermissionsList: builder.mutation({
         query: (data) => ({
           url: `${PERMISSIONS_URL}/projectPermissionsList`,
           method: "POST",
@@ -22,4 +22,4 @@ const permissionsApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { usePermissionsMutation, useGetProjectPermssionsListMutation} = permissionsApiSlice;
+export const { usePermissionsMutation, useGetProjectPermissionsListMutation} = permissionsApiSlice;
