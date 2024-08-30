@@ -21,6 +21,7 @@ import {
   useDeclineInitialPhasesMutation,
   useDeclinePhaseMutation,
 } from "../../redux/apis/NotificationsApproval/NotificationApprovalApiSlice";
+import { toast } from "react-toastify";
 
 function ApprovalNotification({
   index,
@@ -75,10 +76,9 @@ function ApprovalNotification({
     setShowReasonField(true);
   };
 
-  console.log("SentBy",notification?.sentBy,)
   const handleSubmitReason = async () => {
     if (!declineReason) {
-      setShowError(true); // Show error if reason is empty
+      setShowError(true); 
       return;
     }
   
@@ -103,9 +103,13 @@ function ApprovalNotification({
       }
       setShowReasonField(false);
       setDeclineReason("");
-      setShowError(false); // Reset error state
-    } catch (err) {
-      console.error("Failed to submit reason:", err);
+      setShowError(false); 
+    } catch (res) {
+      console.error("Failed to accept:", res);
+      if (res?.data?.message === "This phase has already been acted upon by another user.") {
+        toast.warn(res?.data?.message)
+        approvalRefetchCall(); 
+      }
     }
   };
   const handleAccept = async () => {
@@ -115,23 +119,28 @@ function ApprovalNotification({
       setShowReasonField(false);
       if (notification?.phaseId == null) {
         await approveInitialPhases({
-          sentBy:notification?.sentBy,
+          sentBy: notification?.sentBy,
           projectId: notification?.projectId,
           sendApprovalNotificationId: notification?.id,
         }).unwrap();
       } else {
         await approvePhases({
-          sentBy:notification?.sentBy,
+          sentBy: notification?.sentBy,
           phaseId: notification?.phaseId,
           projectId: notification?.projectId,
           sendApprovalNotificationId: notification?.id,
         }).unwrap();
       }
       approvalRefetchCall();
-    } catch (err) {
-      console.error("Failed to accept:", err);
+    } catch (res) {
+      console.error("Failed to accept:", res);
+      if (res?.data?.message === "This phase has already been acted upon by another user.") {
+        toast.warn(res?.data?.message)
+        approvalRefetchCall(); 
+      }
     }
   };
+  
 
   return (
     <Accordion
