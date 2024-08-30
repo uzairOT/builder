@@ -15,6 +15,7 @@ import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import ProjectNavbarDrawer from "./ProjectNavbarDrawer";
 import { useSelector } from "react-redux";
 import { getUserRoleFromRedux } from "../../redux/slices/auth/userRoleSlice";
+import { useProjectPermissionCheck } from "./ProjectPermissions/ProjectsPermissionCheck";
 
 const ProjectsNavbar = ({ project }) => {
   const location = useLocation();
@@ -26,10 +27,6 @@ const ProjectsNavbar = ({ project }) => {
   const userOrganization = useSelector((state) => state?.auth?.userInfo?.user?.userOrganization);
   const userId = useSelector((state) => state?.auth?.userInfo?.user?.id);
 
-
-  console.log("User Check",userId)
-
-  console.log(userRole)
   const navLinks = [
     {
       title: "Initial Proposal",
@@ -59,10 +56,12 @@ const ProjectsNavbar = ({ project }) => {
       title: "Notes",
       path: "notes",
     },
+
     {
       title: "Project Report",
       path: "project-report",
     },
+
     {
       title: "Change Order",
       path: "change-order",
