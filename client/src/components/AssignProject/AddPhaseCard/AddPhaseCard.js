@@ -384,7 +384,7 @@ const AddPhaseCard = ({
   );
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", display:'flex' }}>
       <Grid
         item
         lg={12}
@@ -749,7 +749,10 @@ const AddPhaseCard = ({
                                   background: "#4C8AB1",
                                   marginTop: "0.7rem",
                                   marginBottom: "1rem",
-                                  marginRight: { sm: "8rem", xs: "2rem" },
+                                  // marginRight: { sm: "7rem", xs: "2rem" },
+                                  width: "80%",
+                                  whiteSpace:'nowrap',
+                                  // width: "2.5rem",
                                   "@media (max-width: 600px)": {
                                     minWidth: 0,
                                     width: "2.5rem",
@@ -1316,7 +1319,7 @@ const headingsBox = {
   display: "flex",
   flexDirection: { lg: "row", md: "row", sm: "row", xs: "row" },
   justifyContent: "space-between",
-  width: "100%",
+  width: "90%",
 };
 
 const headingInnerBox = {
@@ -1324,7 +1327,7 @@ const headingInnerBox = {
   flexDirection: "row",
   whiteSpace: "nowrap",
   gap: { xl: "9rem", lg: "6rem", md: "2rem", sm: "auto", xs: "auto" },
-  width: "100%",
+  width: "90%",
 };
 const phaseBox = {
   display: "flex",

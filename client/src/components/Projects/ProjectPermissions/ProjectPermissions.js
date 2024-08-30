@@ -67,7 +67,7 @@ const ProjectsPermissionAccess = () => {
           projectId: currentProjectId,
         }).unwrap();
         setPermissionsList(response);
-        setPermissionsState(response)
+        setPermissionsState(response);
       } catch (error) {
         console.error("Failed to fetch permissions:", error);
       } finally {
@@ -91,7 +91,7 @@ const ProjectsPermissionAccess = () => {
       role,
       value: updatedValue,
     });
-    dispatch(setPermissionsState(permissionList)); 
+    dispatch(setPermissionsState(permissionList));
 
     setTimeout(() => {
       setPermissionsList((prevList) => {
@@ -107,8 +107,8 @@ const ProjectsPermissionAccess = () => {
       setLoading(false);
       setSnackbarMessage(
         updatedValue
-        ? "Permission enabled successfully!"
-        : "Permission disabled successfully!"
+          ? "Permission enabled successfully!"
+          : "Permission disabled successfully!"
       );
       setSnackbarOpen(true);
       setModalOpen(false);
@@ -116,8 +116,7 @@ const ProjectsPermissionAccess = () => {
   };
 
   useEffect(() => {
-    const handlePermissionsUpdate = () => {
-    };
+    const handlePermissionsUpdate = () => {};
 
     socket.on("project-permissions-updated", handlePermissionsUpdate);
 
@@ -214,22 +213,22 @@ const ProjectsPermissionAccess = () => {
                     <Tooltip
                       title={perm.description ? perm.description : ""}
                       arrow
-                      sx={{cursor:"pointer"}}
+                      sx={{ cursor: "pointer" }}
                     >
-                        <TableCell
-                          fontFamily={"var(--main-font-family)"}
-                          sx={{
-                            cursor:"pointer",
-                            borderBottom: "1px solid #DCDCDC",
-                            borderRight: "1px solid #DCDCDC",
-                            fontWeight: "bold",
-                            color: "#8C8C8C",
-                            padding: "16px 0 16px 16px",
-                            width: 250,
-                          }}
-                        >
-                          {perm.name}
-                        </TableCell>
+                      <TableCell
+                        fontFamily={"var(--main-font-family)"}
+                        sx={{
+                          cursor: "pointer",
+                          borderBottom: "1px solid #DCDCDC",
+                          borderRight: "1px solid #DCDCDC",
+                          fontWeight: "bold",
+                          color: "#8C8C8C",
+                          padding: "16px 0 16px 16px",
+                          width: 250,
+                        }}
+                      >
+                        {perm.name}
+                      </TableCell>
                     </Tooltip>
                     {roles.map((role) => (
                       <TableCell
