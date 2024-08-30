@@ -1290,15 +1290,16 @@ const AddPhaseCard = ({
                               arrow
                             >
                               <span>
-                                <EditIcon
-                                  onClick={
-                                    changeOrderSelectedView
-                                      ? () =>
-                                          hanldeEditChangeLineItem(row, index)
-                                      : () => handleUpdateLine(row)
-                                  }
-                                  disabled={!projectManagementPermission}
-                                />
+                                <Button disabled={!projectManagementPermission}>
+                                  <EditIcon
+                                    onClick={
+                                      changeOrderSelectedView
+                                        ? () =>
+                                            hanldeEditChangeLineItem(row, index)
+                                        : () => handleUpdateLine(row)
+                                    }
+                                  />
+                                </Button>
                               </span>
                             </Tooltip>
 
@@ -1315,21 +1316,22 @@ const AddPhaseCard = ({
                                 arrow
                               >
                                 <span>
-                                  <DeleteIcon
-                                    onClick={
-                                      changeOrderSelectedView
-                                        ? () =>
-                                            handleDeleteChangeLineItem(
-                                              row,
-                                              index
-                                            )
-                                        : () => handleDeleteLineItem(row.id)
-                                    }
-                                    disabled={
-                                      selectedRows.length === 0 ||
-                                      !projectManagementPermission
-                                    }
-                                  />
+                                  <Button
+                                    disabled={!projectManagementPermission}
+                                  >
+                                    <DeleteIcon
+                                      onClick={
+                                        changeOrderSelectedView
+                                          ? () =>
+                                              handleDeleteChangeLineItem(
+                                                row,
+                                                index
+                                              )
+                                          : () => handleDeleteLineItem(row.id)
+                                      }
+                                      disabled={selectedRows.length === 0}
+                                    />
+                                  </Button>
                                 </span>
                               </Tooltip>
                             )}
