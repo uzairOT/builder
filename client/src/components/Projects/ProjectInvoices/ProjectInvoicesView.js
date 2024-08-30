@@ -18,7 +18,7 @@ const ProjectInvoicesView = () => {
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
   const userRole = useSelector(getUserRoleFromRedux);
-  const role = useSelector(state => state.userRole.userRole);
+  const role = useSelector((state) => state.userRole.userRole);
   const events = allEvent.events;
   const params = useParams();
   const userRoleAuth = useSelector(getUserRoleFromRedux);
@@ -37,8 +37,8 @@ const ProjectInvoicesView = () => {
   const handleChangeView = () => {
     setChangeView(!changeView);
   };
-  console.log(userRole)
-  // const [projectName, projectLocation, SuperAdminId] = useOutletContext(); 
+  console.log(userRole);
+  // const [projectName, projectLocation, SuperAdminId] = useOutletContext();
   // const canGenerate = usePermissionCheck("generate-invoices", role, SuperAdminId)
   return (
     <Paper
@@ -53,32 +53,57 @@ const ProjectInvoicesView = () => {
     >
       {userRole.userRole === "client" ? (
         <>
-          <Stack>
-            <ProjectsInvoices
-              // workOrder={true}
-              // view={"Work Order Logs"}
-              // setChangeView={setChangeView}
-              // data={data}
-              // refetch={refetch}
-              // userRole={userRole}
-              userRole={userRole}
-                    workOrder={true}
-                    view={"Work Order Logs"}
-                    setChangeView={setChangeView}
-                    data={data}
-                    refetch={refetch}
-            />
-          </Stack>
+             <Box pt={1} pl={1} pb={0}>
+            <BuilderProButton
+              backgroundColor={"#FFAC00"}
+              variant={"contained"}
+              fontFamily={"var(--main-font-family)"}
+              fontSize={{ xl: "16px", lg: "14px", md: "16px", xs: "16px" }}
+              fontWeight={"600"}
+              padding={{ md: "6px 32px 6px 32px" }}
+              marginLeft={"4px"}
+              handleOnClick={handleChangeView}
+            >
+              {changeView ? "View Invoice History" : "Generate Invoice "}
+            </BuilderProButton>
+          </Box>{" "}
+          <Stack pt={1} width={"inherit"}>
+            <Stack justifyContent={"flex-start"} height={"95%"}>
+              {changeView ? (
+                <Stack p={1} borderRadius={"14px"} width={"99%"}>
+                  <AddPhaseView
+                    // canGenerate={canGenerate}
+                    refetchChangeOrder={refetch}
+                    projectId={id}
+                    adminProjectView={true}
+                    view={"Generate Invoice"}
+                  />
+                </Stack>
+              ) : (
+                <>
+                  <Stack>
+                    <ProjectsInvoices
+                      userRole={userRole}
+                      workOrder={true}
+                      view={"Work Order Logs"}
+                      setChangeView={setChangeView}
+                      data={data}
+                      refetch={refetch}
+                    />
+                  </Stack>
+                </>
+              )}
+            </Stack>
+          </Stack>{" "}
         </>
       ) : (
         <>
-          {" "}
           <Box pt={1} pl={1} pb={0}>
             <BuilderProButton
               backgroundColor={"#FFAC00"}
               variant={"contained"}
-              fontFamily={'var(--main-font-family)'}
-              fontSize={{xl:"16px", lg:"14px",md:"16px",xs:"16px",}}
+              fontFamily={"var(--main-font-family)"}
+              fontSize={{ xl: "16px", lg: "14px", md: "16px", xs: "16px" }}
               fontWeight={"600"}
               padding={{ md: "6px 32px 6px 32px" }}
               marginLeft={"4px"}
@@ -86,29 +111,29 @@ const ProjectInvoicesView = () => {
             >
               {changeView ? "Generate Invoice" : "View Invoice History"}
             </BuilderProButton>
-          </Box>
+          </Box>{" "}
           <Stack pt={1} width={"inherit"}>
             <Stack justifyContent={"flex-start"} height={"95%"}>
               {changeView ? (
-                <Stack>
-                  <ProjectsInvoices
-                  userRole={userRole}
-                    workOrder={true}
-                    view={"Work Order Logs"}
-                    setChangeView={setChangeView}
-                    data={data}
-                    refetch={refetch}
+                <Stack p={1} borderRadius={"14px"} width={"99%"}>
+                  <AddPhaseView
+                    // canGenerate={canGenerate}
+                    refetchChangeOrder={refetch}
+                    projectId={id}
+                    adminProjectView={true}
+                    view={"Generate Invoice"}
                   />
                 </Stack>
               ) : (
                 <>
-                  <Stack p={1} borderRadius={"14px"} width={"99%"}>
-                    <AddPhaseView
-                    // canGenerate={canGenerate}
-                      refetchChangeOrder={refetch}
-                      projectId={id}
-                      adminProjectView={true}
-                      view={"Generate Invoice"}
+                  <Stack>
+                    <ProjectsInvoices
+                      userRole={userRole}
+                      workOrder={true}
+                      view={"Work Order Logs"}
+                      setChangeView={setChangeView}
+                      data={data}
+                      refetch={refetch}
                     />
                   </Stack>
                 </>

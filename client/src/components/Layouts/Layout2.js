@@ -11,6 +11,7 @@ import { authUserRole, getUserRoleFromRedux, setUserRoleError, setUserRoleIsLoad
 import { useGetProjectPermssionsListMutation, usePermissionsMutation } from '../../redux/apis/Permissions/permissionsApiSlice'
 import { setPermissionsState } from '../../redux/slices/Permissions/permissionsSlice'
 import { socket } from '../../socket'
+import { setPermissionsListState } from '../../redux/slices/LoginPermissions/PermissionsSlice'
 
 
 const Layout2 = () => {
@@ -23,7 +24,6 @@ useEffect(()=>{
     const isAuthenticated = useSelector((state) => state.auth.userInfo);
     const userId = isAuthenticated ? isAuthenticated.user.id : null;
     const [getUserRole, {isLoading}] = useGetProjectUserRoleMutation();
-    const [getPermissions, {isLoading:isPermissionsLoading}] = usePermissionsMutation();
     const userRole = useSelector(getUserRoleFromRedux);
     const dispatch = useDispatch();
     // projects.find(project => project.id === parseInt(currentProjectId));
@@ -35,48 +35,43 @@ useEffect(()=>{
     // console.log('APP.JS: ',id)
 
 
- const [GetPermissions] = usePermissionsMutation();
+    const [GetPermissionsList] = usePermissionsMutation();
 
-  const handleUpdatePermission = async () => {
-    try {
-      const response = await GetPermissions({projectId:currentProjectId}).unwrap();
-
-      if (response && Array.isArray(response)) {
-        dispatch(setPermissionsState(response)); 
+    const handleUpdatePermission = async () => {
+      try {
+        const response = await GetPermissionsList({ projectId: currentProjectId }).unwrap();
+  
+        if (response && Array.isArray(response)) {
+          dispatch(setPermissionsState(response));
+        }
+      } catch (error) {
+        console.error('Failed to update permission:', error);
       }
-
-    } catch (error) {
-      console.error("Failed to update permission:", error);
-    }
-  };
-
- useEffect(() => {
-  const handleSocketUpdate = async () => {
-    try {
-      await handleUpdatePermission();
-    } catch (error) {
-      console.error("Failed to update permissions from socket:", error);
-    }
-  };
-
-  // Listen for the socket event
-  socket.on("project-permissions-updated",(data)=>{
-    if(data?.projectId===currentProjectId)
-    {
-      handleSocketUpdate();
-    }
-    console.log("Socket Check data", data)
-  });
-
-  // Cleanup on component unmount
-  return () => {
-    socket.off("project-permissions-updated", (data)=>{
-      console.log("Socket Check data", data)
-    });
-  };
-}, [socket]);
-
-
+    };
+  
+    useEffect(() => {
+      handleUpdatePermission();
+  
+      const handleSocketUpdate = async () => {
+        try {
+          await handleUpdatePermission();
+        } catch (error) {
+          console.error('Failed to update permissions from socket:', error);
+        }
+      };
+  
+      socket.on('project-permissions-updated', (data) => {
+        console.log("Run")
+        if (data?.projectId === currentProjectId) {
+          handleSocketUpdate();
+        }
+      });
+  
+      return () => {
+        socket.off('project-permissions-updated');
+      };
+    }, [socket, currentProjectId]);
+  
 
 
     const getUserRoleAuth = async () => {
@@ -84,7 +79,7 @@ useEffect(()=>{
         try{
           dispatch(setUserRoleIsLoading(true));
           const res = await getUserRole({projectId: currentProjectId, userId: userId});
-          const permissions = await getPermissions({projectId: currentProjectId})
+          const permissions = await GetPermissionsList({projectId: currentProjectId})
           dispatch(setPermissionsState(permissions))
           dispatch(authUserRole(res.data.role));
         } catch(error){
