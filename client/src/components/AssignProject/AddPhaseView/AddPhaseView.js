@@ -65,9 +65,9 @@ function AddPhaseView({
   changeOrderView,
   InitialProposalAndChange,
   changeOrderSelectedView,
-  handleUpdateOpen : hanldeEditChangeLineItem,
+  handleUpdateOpen: hanldeEditChangeLineItem,
   handleAddOpen: handleAddChangeLineItem,
-  handleDeleteOpen: handleDeleteChangeLineItem
+  handleDeleteOpen: handleDeleteChangeLineItem,
   // canGenerate
 }) {
   const [cardPhase, setCardPhase] = useState([]);
@@ -104,13 +104,14 @@ function AddPhaseView({
     selectWorkOrderDeclineRecall
   );
 
-  const [isLoading, setIsLoading] = useState(changeOrderSelected ? false : true);
+  const [isLoading, setIsLoading] = useState(
+    changeOrderSelected ? false : true
+  );
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false);
   const [generateInvoice, setGenerateInvoice] = useState(false);
   const [shareToClient, setShareToClient] = useState(false);
   const [done, setDone] = useState(false);
-
 
   const handleOpen = () => {
     setOpen(true);
@@ -124,7 +125,7 @@ function AddPhaseView({
     //console.log("Invoice Generated Successfully");
   };
   const fetchData = async () => {
-    if(changeOrderSelectedView){
+    if (changeOrderSelectedView) {
       return;
     }
     setIsLoading(true);
@@ -383,11 +384,24 @@ function AddPhaseView({
   // const permissionsState = useSelector((state) => state?.permissions?.permissions);
   // console.log("Permissions Test", permissionsState)
 
+  const permissionsState = useSelector(
+    (state) => state?.permissions?.permissions
+  );
+  const ProjectApprovalSendPermission = useProjectPermissionCheck(
+    "project-approval",
+    permissionsState
+  );
 
-  const permissionsState = useSelector((state) => state?.permissions?.permissions);
-  const ProjectApprovalSendPermission =
-    useProjectPermissionCheck("project-approval", permissionsState);
-  
+  const projectManagementPermission = useProjectPermissionCheck(
+    "project-management",
+    permissionsState
+  );
+
+  const GenerateInvoicePermission = useProjectPermissionCheck(
+    "generate-invoice",
+    permissionsState
+  );
+
   return (
     <>
       <Grid container sx={{ ...firstGrid, width: "100%" }}>
@@ -878,8 +892,8 @@ function AddPhaseView({
                           key={phase?.id}
                           phaseData={phase}
                           length={phase.length}
-                          onGridToggle={() =>{}}
-                          handleSelectCard={() =>{}}
+                          onGridToggle={() => {}}
+                          handleSelectCard={() => {}}
                           adminProjectView={adminProjectView}
                           setRowCheckboxes={setRowCheckboxes}
                           handleAddRow={handleAddRow}
@@ -887,7 +901,9 @@ function AddPhaseView({
                           authUserRole={authUserRole}
                           rowCheckboxes={rowCheckboxes}
                           handleAddChangeLineItem={handleAddChangeLineItem}
-                          handleDeleteChangeLineItem={handleDeleteChangeLineItem}
+                          handleDeleteChangeLineItem={
+                            handleDeleteChangeLineItem
+                          }
                         />
                       </Stack>
                     );
@@ -905,7 +921,7 @@ function AddPhaseView({
                   </div>
                 )}
               </Box>
-            ): (
+            ) : (
               <Box
                 sx={{
                   height: adminProjectView
@@ -937,7 +953,7 @@ function AddPhaseView({
                     ) {
                       return <></>;
                     }
-                   
+
                     if (InitialProposalAndChange && phase.initial) {
                       return <></>;
                     }

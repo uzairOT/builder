@@ -511,7 +511,6 @@ console.log(updateRow);
   }, [open]);
   console.log(rowCheckboxes);
 
-
   const permissionsState = useSelector(
     (state) => state?.permissions?.permissions
   );
@@ -521,19 +520,15 @@ console.log(updateRow);
     permissionsState
   );
 
-  const   changeOrderPermission
-  = useProjectPermissionCheck(
+  const changeOrderPermission = useProjectPermissionCheck(
     "change-order",
     permissionsState
   );
 
-  const   workOrderPermission
-  = useProjectPermissionCheck(
+  const workOrderPermission = useProjectPermissionCheck(
     "work-order",
     permissionsState
   );
-
-
 
   return (
     <>
@@ -541,50 +536,47 @@ console.log(updateRow);
         <></>
       ) : (
         <>
-    <Tooltip
-  title={
-    !projectManagementPermission
-      ? "You Currently don't have permission to access this feature"
-      : changeOrderView
-      ? !changeOrderPermission
-        ? "You currently don't have permission to submit a change order"
-        : ""
-      : !workOrderPermission
-      ? "You currently don't have permission to submit a work order"
-      : ""
-  }
-  arrow
->
-  <span>
-    <Stack
-      alignItems={"flex-end"}
-      justifyContent={{ xs: "flex-end" }}
-      pr={2}
-      ml={0}
-    >
-      <BuilderProButton
-        disabled={
-          // !projectManagementPermission ||
-          (changeOrderView && !changeOrderPermission) ||
-          (!changeOrderView && !workOrderPermission)
-        }
-        backgroundColor={"#FFAC00"}
-        variant={"contained"}
-        fontFamily={"var(--main-font-family)"}
-        fontSize={{ lg: "16px", xs: "11px" }}
-        fontWeight={"600"}
-        padding={{ sm: "6px 32px 6px 32px", xs: "5px 20px 5px 20px" }}
-        handleOnClick={isButtonDisabled ? showToast : handleOpen}
-      >
-        {changeOrderView ? "Submit Change Order" : "Submit Work Order"}
-      </BuilderProButton>
-    </Stack>
-  </span>
-</Tooltip>
-
+          <Tooltip
+            title={
+              changeOrderView
+                ? !changeOrderPermission
+                  ? "You currently don't have permission to submit a change order"
+                  : ""
+                : !workOrderPermission
+                ? "You currently don't have permission to submit a work order"
+                : ""
+            }
+            arrow
+          >
+            <span>
+              <Stack
+                alignItems={"flex-end"}
+                justifyContent={{ xs: "flex-end" }}
+                pr={2}
+                ml={0}
+              >
+                <BuilderProButton
+                  disabled={
+                    // !projectManagementPermission ||
+                    (changeOrderView && !changeOrderPermission) ||
+                    (!changeOrderView && !workOrderPermission)
+                  }
+                  backgroundColor={"#FFAC00"}
+                  variant={"contained"}
+                  fontFamily={"var(--main-font-family)"}
+                  fontSize={{ lg: "16px", xs: "11px" }}
+                  fontWeight={"600"}
+                  padding={{ sm: "6px 32px 6px 32px", xs: "5px 20px 5px 20px" }}
+                  handleOnClick={isButtonDisabled ? showToast : handleOpen}
+                >
+                  {changeOrderView
+                    ? "Submit Change Order"
+                    : "Submit Work Order"}
+                </BuilderProButton>
+              </Stack>
+            </span>
+          </Tooltip>
         </>
-
-      
       )}
       <Modal open={open} onClose={handleClose}>
         <Stack
@@ -1147,19 +1139,36 @@ console.log(updateRow);
                   pt={4}
                   display={{ md: "flex", xs: "none" }}
                 >
-                  <BuilderProButton
-                    backgroundColor={"#4C8AB1"}
-                    variant={"contained"}
-                    fontFamily={"var(--main-font-family)"}
-                    fontSize={"16px"}
-                    fontWeight={"600"}
-                    padding={"6px 32px 6px 32px"}
-                    handleOnClick={handleRequest}
-                    marginLeft={"0px"}
-                    disabled={loading}
+                  <Tooltip
+                    title={
+                      changeOrderView
+                        ? !changeOrderPermission
+                          ? "You currently don't have permission to submit a change order"
+                          : ""
+                        : !workOrderPermission
+                        ? "You currently don't have permission to submit a work order"
+                        : ""
+                    }
+                    arrow
                   >
-                    {changeOrder ? "Submit Change Order" : "Submit Work Order"}
-                  </BuilderProButton>
+                    <span>
+                      <BuilderProButton
+                        backgroundColor={"#4C8AB1"}
+                        variant={"contained"}
+                        fontFamily={"var(--main-font-family)"}
+                        fontSize={"16px"}
+                        fontWeight={"600"}
+                        padding={"6px 32px 6px 32px"}
+                        handleOnClick={handleRequest}
+                        marginLeft={"0px"}
+                        disabled={loading}
+                      >
+                        {changeOrder
+                          ? "Submit Change Order"
+                          : "Submit Work Order"}
+                      </BuilderProButton>
+                    </span>
+                  </Tooltip>
                 </Stack>
               </Stack>
             </Stack>
@@ -1397,19 +1406,36 @@ console.log(updateRow);
                 justifyContent={"center"}
                 alignItems={"center"}
               >
-                <BuilderProButton
-                  backgroundColor={"#4C8AB1"}
-                  variant={"contained"}
-                  fontFamily={"var(--main-font-family)"}
-                  fontSize={"16px"}
-                  fontWeight={"600"}
-                  padding={"6px 32px 6px 32px"}
-                  handleOnClick={handleRequest}
-                  marginLeft={"0px"}
-                  disabled={loading}
+                <Tooltip
+                  title={
+                    changeOrderView
+                      ? !changeOrderPermission
+                        ? "You currently don't have permission to submit a change order"
+                        : ""
+                      : !workOrderPermission
+                      ? "You currently don't have permission to submit a work order"
+                      : ""
+                  }
+                  arrow
                 >
-                  {changeOrder ? "Submit Change Order" : "Submit Work Order"}
-                </BuilderProButton>
+                  <span>
+                    <BuilderProButton
+                      backgroundColor={"#4C8AB1"}
+                      variant={"contained"}
+                      fontFamily={"var(--main-font-family)"}
+                      fontSize={"16px"}
+                      fontWeight={"600"}
+                      padding={"6px 32px 6px 32px"}
+                      handleOnClick={handleRequest}
+                      marginLeft={"0px"}
+                      disabled={loading}
+                    >
+                      {changeOrder
+                        ? "Submit Change Order"
+                        : "Submit Work Order"}
+                    </BuilderProButton>
+                  </span>
+                </Tooltip>
               </Stack>
             </Stack>
           </Stack>
