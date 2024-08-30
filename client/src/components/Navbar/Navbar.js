@@ -190,7 +190,7 @@ const Navbar = () => {
     }
   };
 
-  console.log("data", approvalData);
+  console.log("Approved data", approvalData);
   useEffect(() => {
     //listen for notifications
     // console.log('=-------------------> notifications on')

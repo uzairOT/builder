@@ -80,7 +80,7 @@ function AddLineElement({
   updateRow,
   setUpdateRow,
   lineItemIndex,
-  addPhaseId
+  addPhaseId,
 }) {
   // const { data, isLoading, isSuccess } = useGetLineItemQuery({
   //   lineItemId: LineItem,
@@ -151,8 +151,8 @@ function AddLineElement({
     unitPrice,
     total,
     longDescription,
-    margin,
-    percentage,
+    margin: margin || 0,        
+    percentage: percentage || 0,
   };
 
   useEffect(() => {
@@ -210,75 +210,84 @@ function AddLineElement({
       setAutoCompleteEvent(null);
     }
   }, [quantity, unitPrice]);
-  const updateLineItem = useCallback((phaseId, lineItemIndex, formData) => {
-    setUpdateRow(prevState => {
-      if (lineItemIndex !== -1) {
-        const updatedRows = [...prevState[phaseId].rows];
-        updatedRows[lineItemIndex] = {
-          ...prevState[phaseId].rows[lineItemIndex],
-          title: formData.phaseName,
-          unit_price: formData.unitPrice,
-          ...formData, // Add other fields from formData
+  const updateLineItem = useCallback(
+    (phaseId, lineItemIndex, formData) => {
+      setUpdateRow((prevState) => {
+        if (lineItemIndex !== -1) {
+          const updatedRows = [...prevState[phaseId].rows];
+          updatedRows[lineItemIndex] = {
+            ...prevState[phaseId].rows[lineItemIndex],
+            title: formData.phaseName,
+            unit_price: formData.unitPrice,
+            ...formData, // Add other fields from formData
+          };
+
+          // Dispatch to Redux
+          dispatch(
+            updateCheckedItems({
+              phaseId,
+              phaseName: formData.phaseName, // Or use existing phaseName if unchanged
+              lineItems: updatedRows, // Assuming you want to update the entire list of lineItems
+            })
+          );
+
+          return {
+            ...prevState,
+            [phaseId]: {
+              ...prevState[phaseId],
+              rows: updatedRows,
+            },
+          };
+        }
+        return prevState;
+      });
+    },
+    [setUpdateRow, dispatch]
+  );
+  const addLineItem = useCallback(
+    (phaseId, formData, margin, percentage) => {
+      const newLineItem = {
+        phase_id: phaseId,
+        title: formData.phaseName, // Using phaseName as title
+        description: formData.description,
+        unit: formData.unit,
+        quantity: formData.quantity,
+        unit_price: formData.unitPrice,
+        total: formData.total,
+        notes: formData.longDescription,
+        margin: margin || 0,       
+        percentage: percentage || 0, 
+        status: "Not Requested",
+        shouldAdd: true, // Flag to indicate this is a new item to be added
+        // Add other default fields as needed
+      };
+      setUpdateRow((prevState) => {
+        const updatedPhase = prevState[phaseId] || {
+          rows: [],
+          phaseName: "New Phase",
         };
-  
+        const updatedRows = [...updatedPhase.rows, newLineItem];
+
         // Dispatch to Redux
         dispatch(
           updateCheckedItems({
             phaseId,
-            phaseName: formData.phaseName, // Or use existing phaseName if unchanged
-            lineItems: updatedRows, // Assuming you want to update the entire list of lineItems
+            phaseName: updatedPhase.phaseName,
+            lineItems: updatedRows,
           })
         );
-  
+
         return {
           ...prevState,
           [phaseId]: {
-            ...prevState[phaseId],
+            ...updatedPhase,
             rows: updatedRows,
           },
         };
-      }
-      return prevState;
-    });
-  }, [setUpdateRow, dispatch]);
-  const addLineItem = useCallback((phaseId, formData, margin, percentage) => {
-    const newLineItem = {
-      phase_id: phaseId,
-      title: formData.phaseName, // Using phaseName as title
-      description: formData.description,
-      unit: formData.unit,
-      quantity: formData.quantity,
-      unit_price: formData.unitPrice,
-      total: formData.total,
-      notes: formData.longDescription,
-      margin:margin,
-      percentage:percentage,
-      status: "Not Requested",
-      shouldAdd: true, // Flag to indicate this is a new item to be added
-      // Add other default fields as needed
-    };
-    setUpdateRow(prevState => {
-      const updatedPhase = prevState[phaseId] || { rows: [], phaseName: 'New Phase' };
-      const updatedRows = [...updatedPhase.rows, newLineItem];
-      
-      // Dispatch to Redux
-      dispatch(
-        updateCheckedItems({
-          phaseId,
-          phaseName: updatedPhase.phaseName,
-          lineItems: updatedRows,
-        })
-      );
-  
-      return {
-        ...prevState,
-        [phaseId]: {
-          ...updatedPhase,
-          rows: updatedRows,
-        },
-      };
-    });
-  }, [dispatch]);
+      });
+    },
+    [dispatch]
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -299,13 +308,13 @@ function AddLineElement({
     //   return;
     // }
     if (reqWorkOrderModal) {
-      if(LineItem){
+      if (LineItem) {
         const phaseId = LineItem.phase_id;
         // const lineItemId = LineItem.id;
-        
+
         updateLineItem(phaseId, lineItemIndex, formData);
-      }else{
-          addLineItem(addPhaseId, formData, margin, percentage)
+      } else {
+        addLineItem(addPhaseId, formData, margin, percentage);
       }
       handleClickClose();
       return;
@@ -374,8 +383,8 @@ function AddLineElement({
         total,
         longDescription,
         userId: userInfo.user.id,
-        margin,
-        percentage,
+        margin: margin || 0,
+        percentage: percentage || 0, 
       };
       if (!newLineItem.unit) {
         toast.warning("Please enter unit");
@@ -1083,7 +1092,7 @@ function AddLineElement({
 }
 
 const typoTitle = {
-   fontFamily: "var(--main-font-family)",
+  fontFamily: "var(--main-font-family)",
   fontSize: "1.5rem",
   color: "#4C8AB1",
 };
@@ -1097,7 +1106,7 @@ const inputStyle = {
   border: "1px solid #ccc",
   borderRadius: "12px",
   color: "#202227",
-   fontFamily: "var(--main-font-family)",
+  fontFamily: "var(--main-font-family)",
   paddingLeft: "-1.5rem",
   backgroundColor: "#EDF2F6",
   outline: "none !important",
@@ -1119,7 +1128,7 @@ const paperPropsStyle = {
 };
 
 const typoText = {
-   fontFamily: "var(--main-font-family)",
+  fontFamily: "var(--main-font-family)",
   fontSize: "0.8rem",
   color: "#202227",
 };

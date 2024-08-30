@@ -53,7 +53,7 @@ const ProjectInvoicesView = () => {
     >
       {userRole.userRole === "client" ? (
         <>
-             <Box pt={1} pl={1} pb={0}>
+          <Box pt={1} pl={1} pb={0}>
             <BuilderProButton
               backgroundColor={"#FFAC00"}
               variant={"contained"}
@@ -64,7 +64,7 @@ const ProjectInvoicesView = () => {
               marginLeft={"4px"}
               handleOnClick={handleChangeView}
             >
-              {changeView ? "View Invoice History" : "Generate Invoice "}
+              {changeView ? "   View Invoice History" : "Generate Invoice"}
             </BuilderProButton>
           </Box>{" "}
           <Stack pt={1} width={"inherit"}>
@@ -109,7 +109,7 @@ const ProjectInvoicesView = () => {
               marginLeft={"4px"}
               handleOnClick={handleChangeView}
             >
-              {changeView ? "Generate Invoice" : "View Invoice History"}
+              {changeView ? "View Invoice History" : " Generate Invoice"}
             </BuilderProButton>
           </Box>{" "}
           <Stack pt={1} width={"inherit"}>

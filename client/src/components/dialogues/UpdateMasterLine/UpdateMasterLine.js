@@ -131,8 +131,8 @@ function UpdateMasterLine({
     quantity,
     unitPrice,
     total,
-    margin,
-    percentage,
+    margin: margin || 0,
+    percentage: percentage || 0,
     start: dayjs(start),
     end: dayjs(end),
     longDescription,
@@ -375,7 +375,7 @@ function UpdateMasterLine({
   //     setLongDescription(data.MasterLineItem.notes);
   //   }
   // }, [isSuccess, data]);
-  
+
   // useEffect(() => {
   //   handleTotalCostChange();
   // }, [margin]);
@@ -387,33 +387,32 @@ function UpdateMasterLine({
   // }, [quantity, unitPrice]);
   const handleTotalCostChange = (margin, total) => {
     setTotalCost((prev) => {
-      const numberMargin = Number(margin) 
-      const numberTotal = Number(total)
+      const numberMargin = Number(margin);
+      const numberTotal = Number(total);
       return numberMargin + numberTotal;
     });
   };
 
-  const handleMarginAndPercentageChange = () =>{
-      const margin = parseFloat(totalCost - total);
-      const percentage = parseFloat((margin/total) * 100)
-      console.log(total)
-      setMargin(margin);  
-      setPercentage(percentage);
-  }
+  const handleMarginAndPercentageChange = () => {
+    const margin = parseFloat(totalCost - total);
+    const percentage = parseFloat((margin / total) * 100);
+    console.log(total);
+    setMargin(margin);
+    setPercentage(percentage);
+  };
   // useEffect(()=>{
-  //   if(total){    
+  //   if(total){
   //     handleMarginAndPercentageChange();
   //     }
   // }, [totalCost])
 
-  useEffect(()=>{
-  
-    if(MasterLineItem){    
+  useEffect(() => {
+    if (MasterLineItem) {
       const margin = MasterLineItem.margin;
       const total = MasterLineItem.total;
       handleTotalCostChange(margin, total);
-      }
-  }, [MasterLineItem])
+    }
+  }, [MasterLineItem]);
 
   console.log(formData);
   return (
@@ -441,7 +440,7 @@ function UpdateMasterLine({
               <Close />
             </IconButton>
           </Stack>
-          <DialogContent sx={{ padding: "3rem", paddingTop: '1rem' }}>
+          <DialogContent sx={{ padding: "3rem", paddingTop: "1rem" }}>
             <Typography sx={typoText}>Master Line Item</Typography>
             <>
               {/* <Autocomplete
@@ -600,7 +599,7 @@ function UpdateMasterLine({
                 variant="standard"
                 value={formData.total}
               />
-               <Typography sx={typoText}>Client Cost</Typography>
+              <Typography sx={typoText}>Client Cost</Typography>
               <TextField
                 sx={inputStyle}
                 placeholder="200"
@@ -712,7 +711,7 @@ function UpdateMasterLine({
                   </Box>
                 </Box>
               </Box> */}
-             
+
               <Typography sx={typoText}>Notes</Typography>
               <TextField
                 inputProps={{ maxLength: 50 }}
@@ -742,7 +741,7 @@ function UpdateMasterLine({
 }
 
 const typoTitle = {
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: "1.5rem",
   color: "#4C8AB1",
 };
@@ -756,7 +755,7 @@ const inputStyle = {
   border: "1px solid #ccc",
   borderRadius: "12px",
   color: "#202227",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   paddingLeft: "-1.5rem",
   backgroundColor: "#EDF2F6",
   outline: "none !important",
@@ -778,7 +777,7 @@ const paperPropsStyle = {
 };
 
 const typoText = {
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: "0.8rem",
   color: "#202227",
 };

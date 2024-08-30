@@ -5,7 +5,6 @@
  */
 export const useProjectPermissionCheck = (permissionSlug, permissionsState) => {
   if (!Array.isArray(permissionsState)) {
-    console.error('permissionsState should be an array');
     return false;
   }
 

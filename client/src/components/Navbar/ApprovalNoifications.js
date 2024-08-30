@@ -75,6 +75,7 @@ function ApprovalNotification({
     setShowReasonField(true);
   };
 
+  console.log("SentBy",notification?.sentBy,)
   const handleSubmitReason = async () => {
     if (!declineReason) {
       setShowError(true); // Show error if reason is empty
@@ -84,6 +85,7 @@ function ApprovalNotification({
     try {
       if (notification?.phaseId == null) {
         await declineInitialPhases({
+          sentBy:notification?.sentBy,
           projectId: notification?.Project?.id,
           notes: declineReason,
           sendApprovalNotificationId: notification?.id,
@@ -91,6 +93,7 @@ function ApprovalNotification({
         approvalRefetchCall();
       } else {
         await declinePhases({
+          sentBy:notification?.sentBy,
           phaseId: notification?.phaseId,
           projectId: notification?.Project?.id,
           notes: declineReason,
@@ -112,11 +115,13 @@ function ApprovalNotification({
       setShowReasonField(false);
       if (notification?.phaseId == null) {
         await approveInitialPhases({
+          sentBy:notification?.sentBy,
           projectId: notification?.projectId,
           sendApprovalNotificationId: notification?.id,
         }).unwrap();
       } else {
         await approvePhases({
+          sentBy:notification?.sentBy,
           phaseId: notification?.phaseId,
           projectId: notification?.projectId,
           sendApprovalNotificationId: notification?.id,

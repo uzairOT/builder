@@ -26,7 +26,13 @@ const ProjectsNavbar = ({ project }) => {
   const userRole = useSelector(getUserRoleFromRedux);
   const userOrganization = useSelector((state) => state?.auth?.userInfo?.user?.userOrganization);
   const userId = useSelector((state) => state?.auth?.userInfo?.user?.id);
-
+  const permissionsState = useSelector(
+    (state) => state?.permissions?.permissions
+  );
+  const ProjectReportPermission = useProjectPermissionCheck(
+    "project-report",
+    permissionsState
+  );
   const navLinks = [
     {
       title: "Initial Proposal",
@@ -56,12 +62,15 @@ const ProjectsNavbar = ({ project }) => {
       title: "Notes",
       path: "notes",
     },
-
-    {
-      title: "Project Report",
-      path: "project-report",
-    },
-
+    ...(ProjectReportPermission
+      ? [
+        {
+          title: "Project Report",
+          path: "project-report",
+        },
+        ]
+      : []),
+  
     {
       title: "Change Order",
       path: "change-order",
