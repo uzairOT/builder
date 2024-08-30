@@ -52,7 +52,7 @@ import { socket } from "../../../socket";
 //import "react-toastify/dist/ReactToastify.css";
 
 function AddPhaseView({
-  lineItemsData,
+  // changeOrderSelected,
   adminProjectView,
   view,
   projectId,
@@ -62,6 +62,10 @@ function AddPhaseView({
   changeOrder,
   changeOrderView,
   InitialProposalAndChange,
+  changeOrderSelectedView,
+  handleUpdateOpen : hanldeEditChangeLineItem,
+  handleAddOpen: handleAddChangeLineItem,
+  handleDeleteOpen: handleDeleteChangeLineItem
   // canGenerate
 }) {
   const [cardPhase, setCardPhase] = useState([]);
@@ -85,8 +89,10 @@ function AddPhaseView({
   const [showUpdatePhaseDialogue, setShowUpdatePhaseDialogue] = useState(false);
   const [showAddPhaseDialogue, setShowAddPhaseDialogue] = useState(false);
   const [rowCheckboxes, setRowCheckboxes] = useState({}); // State to track the checked state of each checkbox in the table rows
-
-  console.log("Selected Checked Data", lineItemsData);
+  const changeOrderSelected = useSelector(
+    (state) => state.projectInitialProposal.changeOrderLineItems
+  );
+  //console.log("Selected Checked Data", changeOrderSelected);
 
   const dispatch = useDispatch();
 
@@ -94,12 +100,14 @@ function AddPhaseView({
     selectWorkOrderDeclineRecall
   );
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(changeOrderSelected ? false : true);
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false);
   const [generateInvoice, setGenerateInvoice] = useState(false);
   const [shareToClient, setShareToClient] = useState(false);
   const [done, setDone] = useState(false);
+
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -109,9 +117,12 @@ function AddPhaseView({
 
   const handleInvoicePrint = () => {
     generatePDF(targetRef, { filename: "page.pdf" });
-    console.log("Invoice Generated Successfully");
+    //console.log("Invoice Generated Successfully");
   };
   const fetchData = async () => {
+    if(changeOrderSelectedView){
+      return;
+    }
     setIsLoading(true);
     setSelectedPhaseId(null);
     if (projectId === null) {
@@ -172,7 +183,7 @@ function AddPhaseView({
   };
 
   useEffect(() => {
-    console.log("UserEffect run");
+    //console.log("UserEffect run");
     fetchData();
 
     // Cleanup function
@@ -267,7 +278,7 @@ function AddPhaseView({
       toast.warn("Please select a line item.", { toastId: "Inovice toast" });
       return;
     }
-    console.log("InvoiceGenerated");
+    //console.log("InvoiceGenerated");
     setDone(false);
     setGenerateInvoice(true);
     handleOpen();
@@ -354,11 +365,11 @@ function AddPhaseView({
     setShowUpdatePhaseDialogue(false);
     fetchData();
   };
-  console.log(
-    "This is rowCheckboxes lenght",
-    Object.keys(rowCheckboxes).length < 1
-  );
-  console.log("rows", rowCheckboxes);
+  // console.log(
+  //   "This is rowCheckboxes lenght",
+  //   Object.keys(rowCheckboxes).length < 1
+  // );
+  // console.log("rows", rowCheckboxes);
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -769,7 +780,80 @@ function AddPhaseView({
                   </div>
                 )}
               </Box>
-            ) : (
+            ) : changeOrderSelectedView ? (
+              <Box
+                sx={{
+                  height: "calc(93vh - 400px)",
+                  ...themeStyle.scrollable,
+                  width: {
+                    xl: "100%",
+                    lg: "100%",
+                    md: "100%",
+                    sm: "100%",
+                    xs: "95vw",
+                  },
+                }}
+              >
+                {changeOrderSelected !== null &&
+                changeOrderSelected !== undefined &&
+                changeOrderSelected.length !== 0 &&
+                !isLoading ? (
+                  changeOrderSelected?.map((phase, index) => {
+                    // console.log("inital",view)
+                    return (
+                      <Stack
+                        key={phase.id}
+                        style={{
+                          ...slectedCardStyle,
+                          width: "100%",
+                          cursor: "pointer", // Add cursor pointer to indicate clickable
+                          borderRadius: "8px", // Rounded corners
+                          boxShadow:
+                            selectedPhaseId === phase.id
+                              ? `0 0 0 2px #1B1B1B, 0 5px 20px ${phase.color}`
+                              : "none", // Border and glow effect
+                          transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
+                          marginTop: "1rem",
+                          // padding:5,
+                          marginRight: "1rem",
+                          marginLeft: "1rem",
+                          marginBottom: "1rem",
+                        }}
+                      >
+                        <PhaseCard
+                          hanldeEditChangeLineItem={hanldeEditChangeLineItem}
+                          projectId={adminProjectView ? id : projectId}
+                          key={phase?.id}
+                          phaseData={phase}
+                          length={phase.length}
+                          onGridToggle={() =>{}}
+                          handleSelectCard={() =>{}}
+                          adminProjectView={adminProjectView}
+                          setRowCheckboxes={setRowCheckboxes}
+                          handleAddRow={handleAddRow}
+                          changeOrderSelectedView={changeOrderSelectedView}
+                          authUserRole={authUserRole}
+                          rowCheckboxes={rowCheckboxes}
+                          handleAddChangeLineItem={handleAddChangeLineItem}
+                          handleDeleteChangeLineItem={handleDeleteChangeLineItem}
+                        />
+                      </Stack>
+                    );
+                  })
+                ) : (
+                  <div
+                    style={{
+                      height: "44vh",
+                      alignItems: "center",
+                      display: "grid",
+                      textAlign: "center",
+                    }}
+                  >
+                    No Phases Available
+                  </div>
+                )}
+              </Box>
+            ): (
               <Box
                 sx={{
                   height: adminProjectView
@@ -792,7 +876,7 @@ function AddPhaseView({
                 phases[0].length !== 0 &&
                 !isLoading ? (
                   phases[0]?.map((phase, index) => {
-                    console.log("PHASE", phase.status);
+                    //console.log("PHASE", phase.status);
                     if (
                       view === "Work Order" &&
                       (phase.status === "pending" ||
@@ -801,17 +885,7 @@ function AddPhaseView({
                     ) {
                       return <></>;
                     }
-                    console.log(
-                      "a",
-                      phase.phase_name,
-                      InitialProposalAndChange
-                    );
-                    console.log("a", phase.phase_name, phase.initial);
-                    console.log(
-                      "a",
-                      phase.phase_name,
-                      InitialProposalAndChange && !phase.initial
-                    );
+                   
                     if (InitialProposalAndChange && phase.initial) {
                       return <></>;
                     }

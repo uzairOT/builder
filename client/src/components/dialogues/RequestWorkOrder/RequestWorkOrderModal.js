@@ -15,7 +15,7 @@ import {
   List,
   IconButton,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -55,6 +55,7 @@ import { io } from "socket.io-client";
 import CloseIcon from "@mui/icons-material/Close";
 import { socket } from "../../../socket";
 import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
+import { removeLineItems, updateCheckedItems } from "../../../redux/slices/Project/projectInitialProposal";
 
 const local = localStorage.getItem("userInfo");
 const currentUser = JSON.parse(local);
@@ -111,19 +112,20 @@ const RequestWorkOrderModal = ({
   const [getPhasesAndLineItems] = useGetPhasesAndLineItemsByIdMutation();
   const [lineItemIndex, setLineItemIndex] = useState();
   const [lineItem, setLineItem] = useState();
+  const [addPhaseId, setAddPhaseId] = useState();
   const [loading, setLoading] = useState(false);
 
-  const lineItemsData = useSelector(
-    (state) => state.projectInitialProposal.changeOrderLineItems
-  );
-
+  // const changeOrderSelected = useSelector(
+  //   (state) => state.projectInitialProposal.changeOrderLineItems
+  // );
+console.log(updateRow);
 
   let counter = 0;
   let lineItemIds = [];
   let lineItemCounter = 0;
   let totalWorkOrder = 0;
 
-  console.log("sokect: ", socket);
+  //console.log("sokect: ", socket);
   // console.log("START DATE", endDate);
   // const fetchPhasesAndLineItems = async (data) => {
   //   try{
@@ -279,25 +281,85 @@ const RequestWorkOrderModal = ({
 
   const handleUpdateOpen = (lineItem, index) => {
     // setUpdateRow(() => rowCheckboxes);
+    console.log("RUN",index , lineItem)
     setLineItemIndex(index);
     setLineItem(lineItem);
     setShowUpdateLine(true);
   };
+  const handleDeleteOpen = (lineItem, index) => {
+    const lineItemId = lineItem.id
+    if(lineItemId){
+      markLineItemForDeletion(lineItem.phase_id, index);
+    } else{
+      console.log("I RAN!", index)
+      setUpdateRow(prevState => {
+        if (index !== -1 && prevState[lineItem.phase_id] && prevState[lineItem.phase_id].rows) {
+          const updatedRows = [...prevState[lineItem.phase_id].rows].filter((_,i) => i !== index);
+        dispatch(removeLineItems({phaseId: lineItem.phase_id, index}));
+        return {
+          ...prevState,
+          [lineItem.phase_id]:{
+            ...prevState[lineItem.phase_id],
+            rows: updatedRows
+          }
+        }
+      }
+      return prevState;
+      })
+    }
+  };
+
+  const markLineItemForDeletion = useCallback((phaseId, lineItemIndex) => {
+    setUpdateRow(prevState => {
+      if (lineItemIndex !== -1 && prevState[phaseId] && prevState[phaseId].rows) {
+        const updatedRows = [...prevState[phaseId].rows];
+        updatedRows[lineItemIndex] = {
+          ...updatedRows[lineItemIndex],
+          shouldDelete: updatedRows[lineItemIndex].shouldDelete ?  false : true, // Flag to indicate this item should be deleted
+        };
+
+        // Dispatch to Redux
+        dispatch(
+          updateCheckedItems({
+            phaseId,
+            phaseName: prevState[phaseId].phaseName, // Use existing phase name
+            lineItems: updatedRows, // Update the entire list of lineItems
+          })
+        );
+
+        return {
+          ...prevState,
+          [phaseId]: {
+            ...prevState[phaseId],
+            rows: updatedRows,
+          },
+        };
+      }
+      return prevState;
+    });
+  }, [setUpdateRow, dispatch]);
+  
+  const handleAddOpen = (phaseId) => {
+    setAddPhaseId(phaseId);
+    setShowUpdateLine(true);
+  }
 
   const handleUpdateClose = () => {
+    setLineItemIndex(null);
+    setLineItem(null);
     setShowUpdateLine(false);
   };
   const handleLineItemClick = (e, row) => {
     e.preventDefault();
-    console.log(row);
+    // console.log(row);
   };
   useEffect(() => {
     const fetchData = async () => {
-      console.log("in useEffect changerOrder: ", changeOrder);
-      console.log("in useEffect checkRow.phaseItems: ", checkedRow?.phaseItems);
+      //console.log("in useEffect changerOrder: ", changeOrder);
+      //console.log("in useEffect checkRow.phaseItems: ", checkedRow?.phaseItems);
       if (changeOrder && checkedRow?.phaseItems && phaseItems === null) {
         try {
-          console.log(phaseItems, " in useEffect rerender");
+          //console.log(phaseItems, " in useEffect rerender");
           const res = await getPhasesAndLineItems(
             checkedRow?.phaseItems
           ).unwrap();
@@ -351,7 +413,7 @@ const RequestWorkOrderModal = ({
       changeOrder: changeOrderView ? true : false,
       changeOrderItems: updateRow,
     };
-    console.log(requestForm);
+    //console.log(requestForm);
     if (requestForm.teamIds.length === 0) {
       toast.error("Team member must be assigned");
     } else {
@@ -363,10 +425,10 @@ const RequestWorkOrderModal = ({
           setLoading(false);
           return;
         }
-        console.log("update");
+        //console.log("update");
         //Changes implemented
         await socket.emit("updateWorkOrder", requestForm, (response) => {
-          console.log("update", response);
+          //console.log("update", response);
           if (response.success) {
             setDone(true);
             toast.success("Change Order request sent!");
@@ -382,7 +444,7 @@ const RequestWorkOrderModal = ({
           }
         });
       } else {
-        console.log("work");
+        //console.log("work");
         const socketRes = await socket.emit(
           "notification",
           requestForm,
@@ -397,7 +459,7 @@ const RequestWorkOrderModal = ({
               await fetchData();
               return response;
             } else {
-              console.log(response);
+              //console.log(response);
               toast.error(
                 response?.data?.message ||
                   response.error ||
@@ -444,7 +506,7 @@ const RequestWorkOrderModal = ({
       refetchTeam();
     }
   }, [open]);
-  console.log(rowCheckboxes);
+  //console.log(rowCheckboxes);
 
   return (
     <>
@@ -473,7 +535,7 @@ const RequestWorkOrderModal = ({
             ...style,
             ...themeStyle.scrollable,
             height: { xl: "90%", lg: "90%", md: "90%", sm: "90%", xs: "90%" },
-            width: "80%",
+            width: "100%",
           }}
           overflow={"scroll"}
         >
@@ -506,7 +568,7 @@ const RequestWorkOrderModal = ({
             }}
             height={"100%"}
           >
-            <Stack p={3} spacing={1} width={"calc(100% - 48px)"}>
+            <Stack p={3} flex={changeOrderView ? 2 : 1} spacing={1} width={"calc(100% - 48px)"}>
               <Typography fontFamily={"var(--main-font-family)"}>
                 <strong>Subject: </strong>{" "}
                 <input
@@ -554,6 +616,7 @@ const RequestWorkOrderModal = ({
                 justifyContent={"space-around"}
                 spacing={1}
                 p={1}
+         
               >
                 {/* <Stack>
                   <Typography sx={themeStyle.headingText}>
@@ -612,7 +675,10 @@ const RequestWorkOrderModal = ({
                         })}
                   </FormControl>
                 </Stack> */}
-                <Stack maxWidth={"80%"} maxHeight={"30%"}>
+                <Stack 
+                // maxWidth={"80%"}
+                width={'100%'}
+                 maxHeight={"30%"}>
                   <Typography sx={themeStyle.headingText}>
                     Phases
                     <Typography
@@ -625,15 +691,16 @@ const RequestWorkOrderModal = ({
                       {/* {lineItemCounter} */}
                     </Typography>
                   </Typography>
-                  {/* <List
+                  {(!changeOrderView) && <>
+                  <List
                     sx={{
                       ...themeStyle.scrollable,
                       maxHeight: "150px",
                       overflow: "auto",
                       padding: 0,
                     }}
-                  > */}
-                  {/* {changeOrder
+                  >
+                  {changeOrder
                       ? phaseItems?.map((phase, phaseIndex) => {
                           return phase.lineItems?.map((lineItem, index) => {
                             counter++;
@@ -807,8 +874,8 @@ const RequestWorkOrderModal = ({
                               return <></>;
                             }
                           });
-                        })} */}
-                  {/* {Object?.keys(
+                        })}
+                  {Object?.keys(
                       changeOrderView ? updateRow : rowCheckboxes
                     )?.map((phase) => {
                       const phaseData = changeOrderView
@@ -907,16 +974,20 @@ const RequestWorkOrderModal = ({
                         </Button>
                       </ListItem>
                     )}
-                  </List> */}
-                  <Stack maxHeight={"50%"}>
+                  </List>
+                  </>}
+                  {changeOrderView && <Stack maxHeight={"50%"}>
                       <AddPhaseView
-                        lineItemsData={lineItemsData}
+                        // changeOrderSelected={changeOrderSelected}
                         refetchChangeOrder={refetch}
                         adminProjectView={true}
-                        view="Change Order Request"
-                        changeOrderView={true}
+                        view="Selected Phases"
+                        changeOrderSelectedView={true}
+                        handleUpdateOpen={handleUpdateOpen}
+                        handleAddOpen={handleAddOpen}
+                        handleDeleteOpen={handleDeleteOpen}
                       />
-                  </Stack>
+                  </Stack>}
                 </Stack>
               </Stack>
               <Divider />
@@ -1035,7 +1106,7 @@ const RequestWorkOrderModal = ({
                 </Stack>
               </Stack>
             </Stack>
-            <Stack backgroundColor={"#EFF5FF"} width={"100%"}>
+            <Stack flex={1} backgroundColor={"#EFF5FF"} width={"100%"}>
               <Box>
                 <Typography
                   sx={{
@@ -1293,6 +1364,7 @@ const RequestWorkOrderModal = ({
           setPhaseItems={setPhaseItems}
           handleUpdateClose={handleUpdateClose}
           LineItem={lineItem}
+          addPhaseId={addPhaseId}
           lineItemIndex={lineItemIndex}
           reqWorkOrderModal={true}
           updateRow={updateRow}

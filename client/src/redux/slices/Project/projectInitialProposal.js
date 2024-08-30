@@ -72,29 +72,50 @@ const projectInitialProposalSlice = createSlice({
       }
     },
     updateCheckedItems: (state, action) => {
-      const { phaseId, phaseName, lineItems } = action.payload;
-
+      const { phaseId,phaseName,lineItems, ...otherProps } = action.payload;
+    
       const existingPhaseIndex = state.changeOrderLineItems.findIndex(
         (phase) => phase.id === phaseId
       );
-
+    
       if (existingPhaseIndex !== -1) {
         if (lineItems.length === 0) {
           // Remove the phase if no line items are left
           state.changeOrderLineItems.splice(existingPhaseIndex, 1);
         } else {
-          // Update the existing phase's line items
-          state.changeOrderLineItems[existingPhaseIndex].LineItems = lineItems;
+          // Update the existing phase's line items and other properties immutably
+          state.changeOrderLineItems[existingPhaseIndex] = {
+            ...state.changeOrderLineItems[existingPhaseIndex],
+            ...otherProps,
+            LineItems: [...lineItems],
+          };
         }
       } else if (lineItems.length > 0) {
         // Add new phase with line items if it does not exist
         state.changeOrderLineItems.push({
           id: phaseId,
           phase_name: phaseName,
-          LineItems: lineItems,
+          LineItems: [...lineItems], // Ensure a new array is pushed
+          ...otherProps, // Include other properties from phaseData
         });
       }
     },
+    removeLineItems: (state, action) => {
+      const { phaseId, index } = action.payload;
+        console.log(index)
+      return {
+        ...state,
+        changeOrderLineItems: state.changeOrderLineItems.map(phase => 
+          phase.id === phaseId
+            ? {
+                ...phase,
+                LineItems: phase.LineItems.filter((_, i) => i !== index)
+              }
+            : phase
+        )
+      };
+    },
+    
 
     // Clear all phases
     clearPhases: (state) => {
@@ -115,6 +136,7 @@ export const {
   updateLineItem,
   addInitialPhase,
   updateCheckedItems,
+  removeLineItems
 } = projectInitialProposalSlice.actions;
 
 // Export reducer

@@ -113,6 +113,10 @@ const AddPhaseCard = ({
   view,
   isLineItems,
   changeOrderView,
+  changeOrderSelectedView,
+  hanldeEditChangeLineItem,
+  handleAddChangeLineItem,
+  handleDeleteChangeLineItem
 }) => {
   const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
   const [showAddLine, setShowAddLine] = useState(false);
@@ -126,20 +130,20 @@ const AddPhaseCard = ({
   const user = useSelector((state) => state.auth.userInfo);
   const userId = user.user.id;
   const userRoleAuth = useSelector(getUserRoleFromRedux);
-  console.log(userRoleAuth);
+  //console.log(userRoleAuth);
   const [deletePhaseLine, { isLoading }] = useDeletePhaseLineMutation();
-  console.log(adminProjectView);
+  //console.log(adminProjectView);
   const dispatch = useDispatch();
   const { rowCheckbox } = useSelector(selectAddPhase);
   let totalCost = 0;
   let minStartDay = moment(phaseData?.LineItems[0]?.start_day);
   let maxEndDay = moment(phaseData?.LineItems[0]?.end_day);
   let totalHours = 0;
-  console.log("changeOrder ", changeOrder);
+  //console.log("changeOrder ", changeOrder);
   const location = useLocation();
   const path = location.pathname.split("/")[1];
 
-  console.log("", phaseData);
+  //console.log("", phaseData);
 
   phaseData.LineItems.forEach((row) => {
     totalCost += parseFloat(row.total) + parseFloat(row.margin); // Accumulate the total cost
@@ -271,7 +275,7 @@ const AddPhaseCard = ({
   };
 
   const handleSendApprove = () => {
-    console.log("run");
+    //console.log("run");
     socket.emit(
       "sendPhaseApprovalNotification",
       {
@@ -308,49 +312,58 @@ const AddPhaseCard = ({
   const [checkedRow, setCheckedRow] = useState(null);
 
   const handleCheckboxChange = (row) => {
-    const phaseName = phaseData.phase_name;
-    const phaseId = phaseData.id;
+    const { id: phaseId, phase_name: phaseName,LineItems ,...otherProps } = phaseData;
     setRowCheckboxes((prevSelectedRows) => {
       const updatedRows = { ...prevSelectedRows };
-
+  
       if (!updatedRows[phaseId]) {
-        // If phaseName doesn't exist in selectedRows, initialize it
-        updatedRows[phaseId] = { phaseName: phaseName, rows: [] };
+        // Initialize the phase with an empty array if it doesn't exist
+        updatedRows[phaseId] = { phaseName, rows: [] };
+      } else {
+        // Create a shallow copy of the existing rows array to avoid mutating the state directly
+        updatedRows[phaseId] = { 
+          ...updatedRows[phaseId], 
+          rows: [...updatedRows[phaseId].rows]
+        };
       }
-
-      const rowExistsIndex = updatedRows[phaseId].rows.findIndex(
-        (item) => item === row
-      );
+  
+      const rowExistsIndex = updatedRows[phaseId].rows.indexOf(row);
       if (rowExistsIndex !== -1) {
-        // Row already exists, remove it
+        // Remove the row if it already exists
         updatedRows[phaseId].rows.splice(rowExistsIndex, 1);
       } else {
-        // Row doesn't exist, add it
+        // Add the row if it doesn't exist
         updatedRows[phaseId].rows.push(row);
       }
+  
       if (updatedRows[phaseId].rows.length === 0) {
+        // Remove the phase if there are no rows left
         delete updatedRows[phaseId];
       }
-
+  
       const updatedLineItems = updatedRows[phaseId]?.rows || [];
+  
       dispatch(
         updateCheckedItems({
           phaseId,
           phaseName,
           lineItems: updatedLineItems,
+          ...otherProps, // Include other properties from phaseData
         })
       );
-
-      return { ...updatedRows };
+  
+      return updatedRows;
     });
   };
+  
+  
 
   // Function to check if a row is selected
   const isRowSelected = (row, phaseId) => {
-    console.log("Check run phaseId ", rowCheckboxes);
+    //console.log("Check run phaseId ", rowCheckboxes);
     const isSelected =
       rowCheckboxes[phaseId]?.rows.some((r) => r.id === row.id) || false;
-    console.log("Check boolean phaseId ", isSelected);
+    //console.log("Check boolean phaseId ", isSelected);
     return isSelected;
   };
   // console.log('PHASE :', phaseData)
@@ -363,7 +376,7 @@ const AddPhaseCard = ({
         sx={{
           ...firstGrid,
           backgroundColor: `${phaseData?.color}`,
-          width: "100%",
+          width: "95%",
           padding: "16px",
         }}
       >
@@ -515,20 +528,20 @@ const AddPhaseCard = ({
                           )}
 
                         {(phaseData?.status === "not approved" ||
-                          phaseData?.status === "declined") && (
+                          phaseData?.status === "declined" ) && (
                           <Button
                             sx={{
                               ...actionButton,
                               background: "#4C8AB1",
                               marginTop: "0.7rem",
                               marginBottom: "1rem",
-                              marginRight: "1.2rem",
+                              marginRight: "1.8rem",
                               "@media (max-width: 600px)": {
                                 minWidth: 0,
                                 width: "2.5rem",
                                 height: "2.5rem",
                                 borderRadius: "50%",
-                                padding: 0,
+                                padding: 0, 
                                 fontSize: "0.75rem",
                                 display: "flex",
                                 alignItems: "center",
@@ -566,7 +579,48 @@ const AddPhaseCard = ({
                     )}
                   </>
                 )
-              : (userRoleAuth.userRole === "admin" ||
+              : changeOrderSelectedView ? (
+                <>
+                  <Button
+                      sx={{
+                        ...actionButton,
+                        background: "#4C8AB1",
+                        marginTop: "0.7rem",
+                        marginBottom: "1rem",
+                        marginRight: "1.2rem",
+                        marginLeft: "1rem",
+                        "@media (max-width: 600px)": {
+                          fontFamily: "var(--main-font-family)",
+                          minWidth: 0,
+                          width: "2.5rem",
+                          height: "2.5rem",
+                          borderRadius: "50%",
+                          padding: 0,
+                          fontSize: "0.75rem",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        },
+                      }}
+                      onClick={() => handleAddChangeLineItem(phaseData.id)}
+                    >
+                      <AddIcon
+                        sx={{
+                          "@media (min-width: 601px)": { display: "none" },
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          fontFamily: "var(--main-font-family)",
+                          "@media (min-width: 601px)": { display: "inline" },
+                          "@media (max-width: 600px)": { display: "none" },
+                        }}
+                      >
+                        Add Line Item
+                      </Typography>
+                    </Button>
+                </>
+              ) : (userRoleAuth.userRole === "admin" ||
                   userRoleAuth.userRole === "superadmin" ||
                   userRoleAuth.userRole === "projectManager" ||
                   userRoleAuth.userRole === "") && (
@@ -727,6 +781,7 @@ const AddPhaseCard = ({
                         maxWidth: "",
                         minWidth: "",
                         width: "10px",
+                         display: changeOrderSelectedView ? 'none': ''
                       }}
                     ></TableCell>
                   </>
@@ -734,7 +789,7 @@ const AddPhaseCard = ({
                   <TableCell sx={{ ...tableHeadings }}>Line Item</TableCell>
 
                   {/* <TableCell sx={tableHeadings}>Description</TableCell> */}
-                  <TableCell sx={tableHeadings}>Unit</TableCell>
+                  <TableCell sx={{...tableHeadings, display: changeOrderSelectedView ? 'none' : ''}}>Unit</TableCell>
                   {/* {!(
                     userRoleAuth.userRole === "client" ||
                     userRoleAuth.userRole === "employee" ||
@@ -748,7 +803,7 @@ const AddPhaseCard = ({
                     userRoleAuth.userRole === "supplier"
                   ) && <TableCell sx={tableHeadings}>Cost</TableCell>}
                   <TableCell sx={tableHeadings}>Quantity</TableCell> */}
-                  {!(path === "assignproject") && (
+                  {!(path === "assignproject" || changeOrderSelectedView) && (
                     <TableCell
                       sx={{
                         ...tableHeadings,
@@ -760,7 +815,7 @@ const AddPhaseCard = ({
                       Start
                     </TableCell>
                   )}
-                  {!(path === "assignproject") && (
+                  {!(path === "assignproject" || changeOrderSelectedView) && (
                     <TableCell
                       sx={{
                         ...tableHeadings,
@@ -777,14 +832,14 @@ const AddPhaseCard = ({
                     userRoleAuth.userRole === "employee" ||
                     userRoleAuth.userRole === "subcontractor" ||
                     userRoleAuth.userRole === "supplier"
-                  ) && <TableCell sx={tableHeadings}>Profit</TableCell>}
-                  <TableCell sx={tableHeadings}>Total Cost</TableCell>
+                  ) && <TableCell sx={{...tableHeadings, display: changeOrderSelectedView ? 'none' : ''}}>Profit</TableCell>}
+                  <TableCell  sx={{...tableHeadings, display: changeOrderSelectedView ? 'none' : ''}}>Total Cost</TableCell>
                   {/* {(userRoleAuth.userRole === "superadmin" ||
                     userRoleAuth.userRole === "admin" ||
                     userRoleAuth.userRole === "projectManager") && (
                     <TableCell sx={tableHeadings}>Arrears</TableCell>
                   )} */}
-                  <TableCell sx={tableHeadings}>Notes</TableCell>
+                  <TableCell  sx={{...tableHeadings, display: changeOrderSelectedView ? 'none' : ''}}>Notes</TableCell>
                   {adminProjectView && (
                     <>
                       <TableCell sx={tableHeadings}>
@@ -846,6 +901,7 @@ const AddPhaseCard = ({
                           row.status === "Change Order declined"
                             ? "#F4F4F4"
                             : "",
+                          textDecoration: row.shouldDelete ? 'line-through' : ''
                       }}
                     >
                       <TableCell
@@ -854,6 +910,7 @@ const AddPhaseCard = ({
                           maxWidth: "",
                           minWidth: "",
                           width: "10px",
+                          display: changeOrderSelectedView ? 'none': ''
                         }}
                       >
                         {(row.status === "Change Order Requested" ||
@@ -930,7 +987,7 @@ const AddPhaseCard = ({
                         {row.title}
                       </TableCell>
                       {/* <TableCell>{row.description}</TableCell> */}
-                      <TableCell sx={tableCell}>{row.unit}</TableCell>
+                      <TableCell sx={{...tableCell, display: changeOrderSelectedView ? 'none' : ''}}>{row.unit}</TableCell>
                       {/* {!(
                         userRoleAuth.userRole === "client" ||
                         userRoleAuth.userRole === "employee" ||
@@ -953,7 +1010,7 @@ const AddPhaseCard = ({
                       )}
 
                       <TableCell sx={tableCell}>{row.quantity}</TableCell> */}
-                      {!(path === "assignproject") && (
+                      {!(path === "assignproject" || changeOrderSelectedView) && (
                         <TableCell
                           sx={{
                             ...tableCell,
@@ -969,7 +1026,7 @@ const AddPhaseCard = ({
                             : "-"}
                         </TableCell>
                       )}
-                      {!(path === "assignproject") && (
+                      {!(path === "assignproject" || changeOrderSelectedView) && (
                         <TableCell
                           sx={{
                             ...tableCell,
@@ -990,11 +1047,11 @@ const AddPhaseCard = ({
                         userRoleAuth.userRole === "subcontractor" ||
                         userRoleAuth.userRole === "supplier"
                       ) && (
-                        <TableCell sx={tableCell}>
+                        <TableCell sx={{...tableCell, display: changeOrderSelectedView ? 'none' : ''}}>
                           ${formatMoney(row?.margin)}
                         </TableCell>
                       )}
-                      <TableCell sx={tableCell}>
+                      <TableCell sx={{...tableCell, display: changeOrderSelectedView ? 'none' : ''}}>
                         ${formatMoney(Number(row.total) + Number(row.margin))}
                       </TableCell>
                       {/* {(userRoleAuth.userRole === "superadmin" ||
@@ -1004,7 +1061,7 @@ const AddPhaseCard = ({
                           ${formatMoney(row.paymentPending)}
                         </TableCell>
                       )} */}
-                      <TableCell sx={{ ...tableCell }}>
+                      <TableCell sx={{ ...tableCell, display: changeOrderSelectedView ? 'none' : '' }}>
                         <Typography
                           maxHeight={"90px"}
                           sx={{
@@ -1012,6 +1069,7 @@ const AddPhaseCard = ({
                             fontSize: "0.9rem",
                             overflowY: "auto",
                             textAlign: "left",
+                            
                           }}
                         >
                           {row.notes}
@@ -1026,7 +1084,7 @@ const AddPhaseCard = ({
                                 : "not generated"}
                             </TableCell>
                           ) : (
-                            <TableCell sx={tableCell}>{row.status}</TableCell>
+                            <TableCell sx={{...tableCell, textTransform:'capitalize'}}>{row.status}</TableCell>
                           )}
                           {/* {(userRoleAuth.userRole === "superadmin" ||
                             userRoleAuth.userRole === "admin" ||
@@ -1085,12 +1143,13 @@ const AddPhaseCard = ({
                         phaseData?.status === "not approved" &&
                         !InitialProposalView && (
                           <TableCell sx={tableCell}>
-                            <EditIcon onClick={() => handleUpdateLine(row)} />
+                            <EditIcon onClick={changeOrderSelectedView ? () => hanldeEditChangeLineItem(row,index) : () => handleUpdateLine(row)} />
                             {(row.status === "Work Order Not requested" ||
                               row.status === "Work Order declined" ||
-                              row.status === "Change Order declined") && (
+                              row.status === "Change Order declined" || 
+                              row.status === "Not Requested") && (
                               <DeleteIcon
-                                onClick={() => handleDeleteLineItem(row.id)}
+                                onClick={changeOrderSelectedView ? ()=> handleDeleteChangeLineItem(row,index) : () => handleDeleteLineItem(row.id)}
                                 disabled={selectedRows.length === 0}
                               />
                             )}
