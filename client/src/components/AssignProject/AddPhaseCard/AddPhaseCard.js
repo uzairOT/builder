@@ -386,6 +386,9 @@ const AddPhaseCard = ({
     permissionsState
   );
 
+
+  
+
   return (
     <div style={{ width: "100%", display: "flex" }}>
       <Grid
@@ -1276,9 +1279,8 @@ const AddPhaseCard = ({
                         userRoleAuth.userRole === "admin" ||
                         userRoleAuth.userRole === "projectManager" ||
                         userRoleAuth.userRole === "") &&
-                        phaseData?.status === "not approved" &&
                         !InitialProposalView &&
-                        view === "Change Order" &&
+                        (view === "Change Order" || changeOrderSelectedView) &&
                         !pathCheck.includes("initial-proposal") && (
                           <TableCell sx={tableCell}>
                             <Tooltip
@@ -1289,17 +1291,24 @@ const AddPhaseCard = ({
                               }
                               arrow
                             >
-                              <span>
-                                <EditIcon
-                                  onClick={
-                                    changeOrderSelectedView
-                                      ? () =>
-                                          hanldeEditChangeLineItem(row, index)
-                                      : () => handleUpdateLine(row)
-                                  }
-                                  disabled={!projectManagementPermission}
-                                />
-                              </span>
+                              {changeOrderSelectedView && (
+                                <span>
+                                  <EditIcon
+                                    onClick={() =>
+                                      hanldeEditChangeLineItem(row, index)
+                                    }
+                                    disabled={!projectManagementPermission}
+                                  />
+                                </span>
+                              )}
+                              {phaseData.status === "not approved" && (
+                                <span>
+                                  <EditIcon
+                                    onClick={() => handleUpdateLine(row)}
+                                    disabled={!projectManagementPermission}
+                                  />
+                                </span>
+                              )}
                             </Tooltip>
 
                             {(row.status === "Work Order Not requested" ||
@@ -1314,23 +1323,32 @@ const AddPhaseCard = ({
                                 }
                                 arrow
                               >
-                                <span>
-                                  <DeleteIcon
-                                    onClick={
-                                      changeOrderSelectedView
-                                        ? () =>
-                                            handleDeleteChangeLineItem(
-                                              row,
-                                              index
-                                            )
-                                        : () => handleDeleteLineItem(row.id)
-                                    }
-                                    disabled={
-                                      selectedRows.length === 0 ||
-                                      !projectManagementPermission
-                                    }
-                                  />
-                                </span>
+                                {changeOrderSelectedView && (
+                                  <span>
+                                    <DeleteIcon
+                                      onClick={() =>
+                                        handleDeleteChangeLineItem(row, index)
+                                      }
+                                      disabled={
+                                        selectedRows.length === 0 ||
+                                        !projectManagementPermission
+                                      }
+                                    />
+                                  </span>
+                                )}
+                                {phaseData.status === "not approved" && (
+                                  <span>
+                                    <DeleteIcon
+                                      onClick={() =>
+                                        handleDeleteLineItem(row.id)
+                                      }
+                                      disabled={
+                                        selectedRows.length === 0 ||
+                                        !projectManagementPermission
+                                      }
+                                    />
+                                  </span>
+                                )}
                               </Tooltip>
                             )}
                           </TableCell>
