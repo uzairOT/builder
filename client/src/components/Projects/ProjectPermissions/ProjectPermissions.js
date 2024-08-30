@@ -67,8 +67,7 @@ const ProjectsPermissionAccess = () => {
           projectId: currentProjectId,
         }).unwrap();
         setPermissionsList(response);
-
-        
+        setPermissionsState(response)
       } catch (error) {
         console.error("Failed to fetch permissions:", error);
       } finally {
@@ -156,8 +155,6 @@ const ProjectsPermissionAccess = () => {
         <Table
           sx={{
             minWidth: 650,
-            borderCollapse: "separate",
-            borderSpacing: "0px 0px",
             padding: 2,
           }}
         >

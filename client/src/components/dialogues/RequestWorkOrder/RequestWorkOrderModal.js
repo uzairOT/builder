@@ -14,6 +14,7 @@ import {
   ListItemText,
   List,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
@@ -56,6 +57,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { socket } from "../../../socket";
 import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
 import { removeLineItems, updateCheckedItems } from "../../../redux/slices/Project/projectInitialProposal";
+import { useProjectPermissionCheck } from "../../Projects/ProjectPermissions/ProjectsPermissionCheck";
 
 const local = localStorage.getItem("userInfo");
 const currentUser = JSON.parse(local);
@@ -507,32 +509,82 @@ console.log(updateRow);
       refetchTeam();
     }
   }, [open]);
-  //console.log(rowCheckboxes);
+  console.log(rowCheckboxes);
+
+
+  const permissionsState = useSelector(
+    (state) => state?.permissions?.permissions
+  );
+
+  const projectManagementPermission = useProjectPermissionCheck(
+    "project-management",
+    permissionsState
+  );
+
+  const   changeOrderPermission
+  = useProjectPermissionCheck(
+    "change-order",
+    permissionsState
+  );
+
+  const   workOrderPermission
+  = useProjectPermissionCheck(
+    "work-order",
+    permissionsState
+  );
+
+
 
   return (
     <>
       {pathCheck.includes("initial-proposal") ? (
         <></>
       ) : (
-        <Stack
-          alignItems={"flex-end"}
-          justifyContent={{ xs: "flex-end" }}
-          pr={2}
-          ml={0}
-        >
-          <BuilderProButton
-            backgroundColor={"#FFAC00"}
-            variant={"contained"}
-            fontFamily={"var(--main-font-family)"}
-            fontSize={{ lg: "16px", xs: "11px" }}
-            fontWeight={"600"}
-            padding={{ sm: "6px 32px 6px 32px", xs: "5px 20px 5px 20px" }}
-            handleOnClick={isButtonDisabled ? showToast : handleOpen}
-            // disabled={isButtonDisabled}
-          >
-            {changeOrderView ? "Submit Change Order" : "Submit Work Order"}
-          </BuilderProButton>
-        </Stack>
+        <>
+    <Tooltip
+  title={
+    !projectManagementPermission
+      ? "You Currently don't have permission to access this feature"
+      : changeOrderView
+      ? !changeOrderPermission
+        ? "You currently don't have permission to submit a change order"
+        : ""
+      : !workOrderPermission
+      ? "You currently don't have permission to submit a work order"
+      : ""
+  }
+  arrow
+>
+  <span>
+    <Stack
+      alignItems={"flex-end"}
+      justifyContent={{ xs: "flex-end" }}
+      pr={2}
+      ml={0}
+    >
+      <BuilderProButton
+        disabled={
+          // !projectManagementPermission ||
+          (changeOrderView && !changeOrderPermission) ||
+          (!changeOrderView && !workOrderPermission)
+        }
+        backgroundColor={"#FFAC00"}
+        variant={"contained"}
+        fontFamily={"var(--main-font-family)"}
+        fontSize={{ lg: "16px", xs: "11px" }}
+        fontWeight={"600"}
+        padding={{ sm: "6px 32px 6px 32px", xs: "5px 20px 5px 20px" }}
+        handleOnClick={isButtonDisabled ? showToast : handleOpen}
+      >
+        {changeOrderView ? "Submit Change Order" : "Submit Work Order"}
+      </BuilderProButton>
+    </Stack>
+  </span>
+</Tooltip>
+
+        </>
+
+      
       )}
       <Modal open={open} onClose={handleClose}>
         <Stack

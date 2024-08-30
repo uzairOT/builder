@@ -370,11 +370,17 @@ const AddPhaseCard = ({
   };
   // console.log('PHASE :', phaseData)
 
-  const ProjectApprovalSendPermission =
-    useProjectPermissionCheck("project-approval");
+  const permissionsState = useSelector(
+    (state) => state?.permissions?.permissions
+  );
+  const ProjectApprovalSendPermission = useProjectPermissionCheck(
+    "project-approval",
+    permissionsState
+  );
 
-  const ProjectManagementPermission = useProjectPermissionCheck(
-    "project-manangement"
+  const projectManagementPermission = useProjectPermissionCheck(
+    "project-management",
+    permissionsState
   );
 
   return (
@@ -536,65 +542,62 @@ const AddPhaseCard = ({
                             </>
                           )}
 
-<Tooltip
-                      title={
-                        ProjectApprovalSendPermission
-                          ? ""
-                          : "You don't have permission to access this feature"
-                      }
-                      arrow
-                    >
-                      <span>
-                        
                         {(phaseData?.status === "not approved" ||
-                          phaseData?.status === "declined" ) && (
-                          <Button
-                            sx={{
-                              ...actionButton,
-                              background: "#4C8AB1",
-                              marginTop: "0.7rem",
-                              marginBottom: "1rem",
-                              marginRight: "1.8rem",
-                              "@media (max-width: 600px)": {
-                                minWidth: 0,
-                                width: "2.5rem",
-                                height: "2.5rem",
-                                borderRadius: "50%",
-                                padding: 0, 
-                                fontSize: "0.75rem",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontFamily: "var(--main-font-family)",
-                              },
-                            }}
-                            onClick={handleAddLine}
-                            
+                          phaseData?.status === "declined") && (
+                          <Tooltip
+                            title={
+                              projectManagementPermission
+                                ? ""
+                                : "You Currently don't have permission to access this feature"
+                            }
+                            arrow
                           >
-                            <AddIcon
+                            <Button
+                              disabled={!projectManagementPermission}
                               sx={{
-                                "@media (min-width: 601px)": {
-                                  display: "none",
-                                },
-                              }}
-                            />
-                            <Typography
-                              sx={{
-                                fontFamily: "var(--main-font-family)",
-                                "@media (min-width: 601px)": {
-                                  display: "inline",
-                                },
+                                ...actionButton,
+                                background: "#4C8AB1",
+                                marginTop: "0.7rem",
+                                marginBottom: "1rem",
+                                marginRight: "1.2rem",
                                 "@media (max-width: 600px)": {
-                                  display: "none",
+                                  minWidth: 0,
+                                  width: "2.5rem",
+                                  height: "2.5rem",
+                                  borderRadius: "50%",
+                                  padding: 0,
+                                  fontSize: "0.75rem",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  fontFamily: "var(--main-font-family)",
                                 },
                               }}
+                              onClick={handleAddLine}
                             >
-                              Add Line Item
-                            </Typography>
-                          </Button>
+                              <AddIcon
+                                sx={{
+                                  "@media (min-width: 601px)": {
+                                    display: "none",
+                                  },
+                                }}
+                              />
+                              <Typography
+                                sx={{
+                                  fontFamily: "var(--main-font-family)",
+                                  "@media (min-width: 601px)": {
+                                    display: "inline",
+                                  },
+                                  "@media (max-width: 600px)": {
+                                    display: "none",
+                                  },
+                                }}
+                              >
+                                Add Line Item
+                              </Typography>
+                            </Button>
+                          </Tooltip>
                         )}
-                        
-                        </span></Tooltip>
                       </>
                     ) : (
                       <></>
@@ -670,46 +673,60 @@ const AddPhaseCard = ({
                     pathCheck?.includes("initial-proposal") ? (
                       <></>
                     ) : (
-                      <Button
-                        sx={{
-                          ...actionButton,
-                          background: "#4C8AB1",
-                          marginTop: "0.7rem",
-                          marginBottom: "1rem",
-                          marginRight: "1.2rem",
-                          marginLeft: "1rem",
-                          "@media (max-width: 600px)": {
-                            fontFamily: "var(--main-font-family)",
-                            minWidth: 0,
-                            width: "2.5rem",
-                            height: "2.5rem",
-                            borderRadius: "50%",
-                            padding: 0,
-                            fontSize: "0.75rem",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          },
-                        }}
-                        onClick={handleAddLine}
+                      <Tooltip
+                        title={
+                          projectManagementPermission
+                            ? ""
+                            : "You Currently don't have permission to access this feature"
+                        }
+                        arrow
                       >
-                        <AddIcon
+                        <Button
+                          disabled={!projectManagementPermission}
                           sx={{
-                            "@media (min-width: 601px)": { display: "none" },
-                          }}
-                        />
-                        <Typography
-                          sx={{
-                            fontFamily: "var(--main-font-family)",
-                            "@media (min-width: 601px)": {
-                              display: "inline",
+                            ...actionButton,
+                            background: "#4C8AB1",
+                            marginTop: "0.7rem",
+                            marginBottom: "1rem",
+                            marginRight: "1.2rem",
+                            marginLeft: "1rem",
+                            "@media (max-width: 600px)": {
+                              fontFamily: "var(--main-font-family)",
+                              minWidth: 0,
+                              width: "2.5rem",
+                              height: "2.5rem",
+                              borderRadius: "50%",
+                              padding: 0,
+                              fontSize: "0.75rem",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
                             },
-                            "@media (max-width: 600px)": { display: "none" },
                           }}
+                          onClick={handleAddLine}
                         >
-                          Add Line Item
-                        </Typography>
-                      </Button>
+                          <AddIcon
+                            sx={{
+                              "@media (min-width: 601px)": {
+                                display: "none",
+                              },
+                            }}
+                          />
+                          <Typography
+                            sx={{
+                              fontFamily: "var(--main-font-family)",
+                              "@media (min-width: 601px)": {
+                                display: "inline",
+                              },
+                              "@media (max-width: 600px)": {
+                                display: "none",
+                              },
+                            }}
+                          >
+                            Add Line Item
+                          </Typography>
+                        </Button>
+                      </Tooltip>
                     )}
 
                     <Tooltip
