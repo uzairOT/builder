@@ -1,12 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   permissions: {},
-  access: false, 
+  access: false,
 };
 
 const permissionsSlice = createSlice({
-  name: 'permissions',
+  name: "permissions",
   initialState,
   reducers: {
     setPermissionsState: (state, action) => {
@@ -23,5 +23,6 @@ const permissionsSlice = createSlice({
   },
 });
 
-export const { setPermissionsState, updatePermission } = permissionsSlice.actions;
+export const { setPermissionsState, updatePermission } =
+  permissionsSlice.actions;
 export default permissionsSlice.reducer;
