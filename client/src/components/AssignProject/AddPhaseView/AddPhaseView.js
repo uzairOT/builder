@@ -27,6 +27,7 @@ import generatePDF from "react-to-pdf";
 import {
   addInitialPhase,
   addPhase,
+  clearPhases,
 } from "../../../redux/slices/Project/projectInitialProposal";
 import RequestWorkOrderModal from "../../dialogues/RequestWorkOrder/RequestWorkOrderModal";
 import { selectAddPhase } from "../../../redux/slices/addPhaseSlice";
@@ -381,6 +382,11 @@ function AddPhaseView({
     return date.toLocaleDateString(undefined, options);
   };
 
+  useEffect(()=>{
+    if(pathCheck.includes('change-order') && !changeOrderSelectedView){
+      dispatch(clearPhases())
+    }
+  },[pathCheck])
   // const permissionsState = useSelector((state) => state?.permissions?.permissions);
   // console.log("Permissions Test", permissionsState)
 
@@ -948,7 +954,7 @@ function AddPhaseView({
                         key={phase.id}
                         style={{
                           ...slectedCardStyle,
-                          width: "100%",
+                          width: "95%",
                           cursor: "pointer", // Add cursor pointer to indicate clickable
                           borderRadius: "8px", // Rounded corners
                           boxShadow:

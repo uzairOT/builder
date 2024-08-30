@@ -270,7 +270,7 @@ const AddPhaseCard = ({
   };
 
   const tableContainerStyle = {
-    width: "100%", // Allow the table to take up the entire available width
+    width: changeOrderSelectedView ? "80%" : "100%", // Allow the table to take up the entire available width
     overflowY: "auto",
     height: "245px",
     // Add horizontal scrollbar when needed

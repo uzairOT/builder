@@ -119,7 +119,7 @@ const projectInitialProposalSlice = createSlice({
 
     // Clear all phases
     clearPhases: (state) => {
-      state.phases = [];
+      state.changeOrderLineItems = [];
     },
     // You can define other reducers as needed
   },
