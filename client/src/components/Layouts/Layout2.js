@@ -80,7 +80,7 @@ useEffect(()=>{
           dispatch(setUserRoleIsLoading(true));
           const res = await getUserRole({projectId: currentProjectId, userId: userId});
           const permissions = await GetPermissionsList({projectId: currentProjectId})
-          dispatch(setPermissionsState(permissions))
+          dispatch(setPermissionsState(permissions?.data))
           dispatch(authUserRole(res.data.role));
         } catch(error){
           console.log(error)

@@ -369,14 +369,24 @@ function AddPhaseView({
     return date.toLocaleDateString(undefined, options);
   };
 
-  // const permissionsState = useSelector((state) => state?.permissions?.permissions);
-  // console.log("Permissions Test", permissionsState)
+  const permissionsState = useSelector(
+    (state) => state?.permissions?.permissions
+  );
+  const ProjectApprovalSendPermission = useProjectPermissionCheck(
+    "project-approval",
+    permissionsState
+  );
 
+  const projectManagementPermission = useProjectPermissionCheck(
+    "project-management",
+    permissionsState
+  );
 
-  const permissionsState = useSelector((state) => state?.permissions?.permissions);
-  const ProjectApprovalSendPermission =
-    useProjectPermissionCheck("project-approval", permissionsState);
-  
+  const GenerateInvoicePermission = useProjectPermissionCheck(
+    "generate-invoice",
+    permissionsState
+  );
+
   return (
     <>
       <Grid container sx={{ ...firstGrid, width: "100%" }}>
@@ -417,89 +427,131 @@ function AddPhaseView({
                     {(initialPhases?.[0]?.[0]?.status === "not approved" ||
                       initialPhases?.[0]?.[0]?.status === "declined") && (
                       <>
-                        <Button
-                          sx={{
-                            ...actionButton,
-                            padding: { lg: "0.75rem 1.5rem" },
-                            background: "#FFAC00",
-                            whiteSpace: "nowrap",
-                            height:
-                              initialPhases[0]?.length < 1 || isLoading
-                                ? "4rem"
-                                : "2.375rem",
-                            display: isLoading ? "none" : "flex",
-                            fontSize:
-                              initialPhases[0]?.length < 1 || isLoading
-                                ? "24px"
-                                : "18px",
-                            width:
-                              initialPhases[0]?.length < 1 || isLoading
-                                ? "300px"
-                                : downView
-                                ? "40px"
-                                : "150px",
-                            height:
-                              initialPhases[0]?.length < 1 || isLoading
-                                ? "50px"
-                                : "40px",
-                          }}
-                          onClick={handleAddPhase}
-                        >
-                          {downView && <AddIcon />}
-                          {downView ? (mobileView ? "" : "Add") : "Add Phase"}
-                        </Button>
-                        <Button
-                          sx={{
-                            ...actionButton,
-                            display:
-                              initialPhases[0]?.length < 1 || isLoading
-                                ? "none"
-                                : "flex",
-                            fontSize: { lg: "18px", xs: "11px" },
-                          }}
-                          startIcon={
-                            <ModeEditOutlinedIcon
-                              sx={{ marginLeft: { md: "0px", xs: "12px" } }}
-                            />
+                        <Tooltip
+                          title={
+                            projectManagementPermission
+                              ? ""
+                              : "You Currently don't have permission to access this feature"
                           }
-                          onClick={handleEditPhase}
+                          arrow
                         >
-                          <Typography
-                            sx={{
-                              fontFamily: "var(--main-font-family)",
-                              fontSize: { lg: "18px", xs: "11px" },
-                              display: { md: "block", xs: "none" },
-                            }}
-                          >
-                            Edit
-                          </Typography>
-                        </Button>
-                        <Button
-                          sx={{
-                            ...actionButton,
-                            display:
-                              initialPhases[0]?.length < 1 || isLoading
-                                ? "none"
-                                : "flex",
-                            fontSize: { lg: "18px", xs: "11px" },
-                          }}
-                          startIcon={
-                            <DeleteOutlinedIcon
-                              sx={{ marginLeft: { md: "0px", xs: "12px" } }}
-                            />
+                          <span>
+                            <Button
+                              disabled={!projectManagementPermission}
+                              sx={{
+                                ...actionButton,
+                                padding: { lg: "0.75rem 1.5rem" },
+                                background: "#FFAC00",
+                                whiteSpace: "nowrap",
+                                height:
+                                  initialPhases[0]?.length < 1 || isLoading
+                                    ? "4rem"
+                                    : "2.375rem",
+                                display: isLoading ? "none" : "flex",
+                                fontSize:
+                                  initialPhases[0]?.length < 1 || isLoading
+                                    ? "24px"
+                                    : "18px",
+                                width:
+                                  initialPhases[0]?.length < 1 || isLoading
+                                    ? "300px"
+                                    : downView
+                                    ? "40px"
+                                    : "150px",
+                                height:
+                                  initialPhases[0]?.length < 1 || isLoading
+                                    ? "50px"
+                                    : "40px",
+                              }}
+                              onClick={handleAddPhase}
+                            >
+                              {downView && <AddIcon />}
+                              {downView
+                                ? mobileView
+                                  ? ""
+                                  : "Add"
+                                : "Add Phase"}
+                            </Button>
+                          </span>
+                        </Tooltip>
+
+                        <Tooltip
+                          title={
+                            projectManagementPermission
+                              ? ""
+                              : "You Currently don't have permission to access this feature"
                           }
-                          onClick={handleOpenModal}
+                          arrow
                         >
-                          <Typography
-                            sx={{
-                              fontFamily: "var(--main-font-family)",
-                              fontSize: { lg: "18px", xs: "11px" },
-                              display: { md: "block", xs: "none" },
-                            }}
-                          >
-                            Delete
-                          </Typography>
-                        </Button>
+                          <span>
+                            <Button
+                              disabled={!projectManagementPermission}
+                              sx={{
+                                ...actionButton,
+                                display:
+                                  initialPhases[0]?.length < 1 || isLoading
+                                    ? "none"
+                                    : "flex",
+                                fontSize: { lg: "18px", xs: "11px" },
+                              }}
+                              startIcon={
+                                <ModeEditOutlinedIcon
+                                  sx={{ marginLeft: { md: "0px", xs: "12px" } }}
+                                />
+                              }
+                              onClick={handleEditPhase}
+                            >
+                              <Typography
+                                sx={{
+                                  fontFamily: "var(--main-font-family)",
+                                  fontSize: { lg: "18px", xs: "11px" },
+                                  display: { md: "block", xs: "none" },
+                                }}
+                              >
+                                Edit
+                              </Typography>
+                            </Button>
+                          </span>
+                        </Tooltip>
+
+                        <Tooltip
+                          title={
+                            projectManagementPermission
+                              ? ""
+                              : "You Currently don't have permission to access this feature"
+                          }
+                          arrow
+                        >
+                          <span>
+                            <Button
+                              disabled={!projectManagementPermission}
+                              sx={{
+                                ...actionButton,
+                                display:
+                                  initialPhases[0]?.length < 1 || isLoading
+                                    ? "none"
+                                    : "flex",
+                                fontSize: { lg: "18px", xs: "11px" },
+                              }}
+                              startIcon={
+                                <DeleteOutlinedIcon
+                                  sx={{ marginLeft: { md: "0px", xs: "12px" } }}
+                                />
+                              }
+                              onClick={handleOpenModal}
+                            >
+                              <Typography
+                                sx={{
+                                  fontFamily: "var(--main-font-family)",
+                                  fontSize: { lg: "18px", xs: "11px" },
+                                  display: { md: "block", xs: "none" },
+                                }}
+                              >
+                                Delete
+                              </Typography>
+                            </Button>
+                          </span>
+                        </Tooltip>
                       </>
                     )}
 
@@ -557,7 +609,7 @@ function AddPhaseView({
               <Stack direction={"row"} sx={buttonBox}>
                 <Tooltip
                   title={
-                    ProjectApprovalSendPermission
+                    GenerateInvoicePermission
                       ? ""
                       : "You don't have permission to access this feature"
                   }
@@ -565,6 +617,7 @@ function AddPhaseView({
                 >
                   <span>
                     <Button
+                      disabled={!GenerateInvoicePermission}
                       sx={{ ...actionButton }}
                       style={{
                         color:
@@ -593,91 +646,131 @@ function AddPhaseView({
                     <></>
                   ) : (
                     <>
-                      <Button
-                        sx={{
-                          ...actionButton,
-                          whiteSpace: "nowrap",
-                          background: "#FFAC00",
-                          fontSize:
-                            phases[0]?.length < 1 || isLoading
-                              ? "40px"
-                              : { lg: "18px", xs: "12px" },
-                          width:
-                            phases[0]?.length < 1 || isLoading
-                              ? downView
-                                ? "300px"
-                                : "450px"
-                              : downView
-                              ? "40px"
-                              : "130px",
-                          height:
-                            phases[0]?.length < 1 || isLoading
-                              ? "90px"
-                              : "40px",
-                          display: isLoading ? "none" : "flex",
-                        }}
-                        onClick={handleAddPhase}
-                      >
-                        {downView && !(phases[0]?.length < 1) && <AddIcon />}
-                        {downView
-                          ? phases[0]?.length < 1
-                            ? "Add Phase"
-                            : mobileView
+                      <Tooltip
+                        title={
+                          projectManagementPermission
                             ? ""
-                            : "Add"
-                          : "Add Phase"}
-                      </Button>
-                      <Button
-                        sx={{
-                          ...actionButton,
-                          display:
-                            phases[0]?.length < 1 || isLoading
-                              ? "none"
-                              : "flex",
-                          fontSize: { lg: "18px", xs: "11px" },
-                        }}
-                        startIcon={
-                          <ModeEditOutlinedIcon
-                            sx={{ marginLeft: { md: "0px", xs: "12px" } }}
-                          />
+                            : "You Currently don't have permission to access this feature"
                         }
-                        onClick={handleEditPhase}
+                        arrow
                       >
-                        <Typography
-                          sx={{
-                            fontFamily: "var(--main-font-family)",
-                            fontSize: { lg: "18px", xs: "11px" },
-                            display: { md: "block", xs: "none" },
-                          }}
-                        >
-                          Edit
-                        </Typography>
-                      </Button>
-                      <Button
-                        sx={{
-                          ...actionButton,
-                          display:
-                            phases[0]?.length < 1 || isLoading
-                              ? "none"
-                              : "flex",
-                        }}
-                        startIcon={
-                          <DeleteOutlinedIcon
-                            sx={{ marginLeft: { md: "0px", xs: "12px" } }}
-                          />
+                        <span>
+                          <Button
+                            disabled={!projectManagementPermission}
+                            sx={{
+                              ...actionButton,
+                              whiteSpace: "nowrap",
+                              background: "#FFAC00",
+                              fontSize:
+                                phases[0]?.length < 1 || isLoading
+                                  ? "40px"
+                                  : { lg: "18px", xs: "12px" },
+                              width:
+                                phases[0]?.length < 1 || isLoading
+                                  ? downView
+                                    ? "300px"
+                                    : "450px"
+                                  : downView
+                                  ? "40px"
+                                  : "130px",
+                              height:
+                                phases[0]?.length < 1 || isLoading
+                                  ? "90px"
+                                  : "40px",
+                              display: isLoading ? "none" : "flex",
+                            }}
+                            onClick={handleAddPhase}
+                          >
+                            {downView && !(phases[0]?.length < 1) && (
+                              <AddIcon />
+                            )}
+                            {downView
+                              ? phases[0]?.length < 1
+                                ? "Add Phase"
+                                : mobileView
+                                ? ""
+                                : "Add"
+                              : "Add Phase"}
+                          </Button>
+                        </span>
+                      </Tooltip>
+
+                      <Tooltip
+                        title={
+                          projectManagementPermission
+                            ? ""
+                            : "You Currently don't have permission to access this feature"
                         }
-                        onClick={handleOpenModal}
+                        arrow
                       >
-                        <Typography
-                          sx={{
-                            fontFamily: "var(--main-font-family)",
-                            fontSize: { lg: "18px", xs: "11px" },
-                            display: { md: "block", xs: "none" },
-                          }}
-                        >
-                          Delete
-                        </Typography>
-                      </Button>
+                        <span>
+                          <Button
+                            disabled={!projectManagementPermission}
+                            sx={{
+                              ...actionButton,
+                              display:
+                                phases[0]?.length < 1 || isLoading
+                                  ? "none"
+                                  : "flex",
+                              fontSize: { lg: "18px", xs: "11px" },
+                            }}
+                            startIcon={
+                              <ModeEditOutlinedIcon
+                                sx={{ marginLeft: { md: "0px", xs: "12px" } }}
+                              />
+                            }
+                            onClick={handleEditPhase}
+                          >
+                            <Typography
+                              sx={{
+                                fontFamily: "var(--main-font-family)",
+                                fontSize: { lg: "18px", xs: "11px" },
+                                display: { md: "block", xs: "none" },
+                              }}
+                            >
+                              Edit
+                            </Typography>
+                          </Button>
+                        </span>
+                      </Tooltip>
+
+                      <Tooltip
+                        title={
+                          projectManagementPermission
+                            ? ""
+                            : "You Currently don't have permission to access this feature"
+                        }
+                        arrow
+                      >
+                        <span>
+                          <Button
+                            disabled={!projectManagementPermission}
+                            sx={{
+                              ...actionButton,
+                              display:
+                                phases[0]?.length < 1 || isLoading
+                                  ? "none"
+                                  : "flex",
+                            }}
+                            startIcon={
+                              <DeleteOutlinedIcon
+                                sx={{ marginLeft: { md: "0px", xs: "12px" } }}
+                              />
+                            }
+                            onClick={handleOpenModal}
+                          >
+                            <Typography
+                              sx={{
+                                fontFamily: "var(--main-font-family)",
+                                fontSize: { lg: "18px", xs: "11px" },
+                                display: { md: "block", xs: "none" },
+                              }}
+                            >
+                              Delete
+                            </Typography>
+                          </Button>
+                        </span>
+                      </Tooltip>
                     </>
                   )}
                   {/* <Button
