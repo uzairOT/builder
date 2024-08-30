@@ -17,7 +17,8 @@ function UpdateLineDialogue({
   setRowCheckboxes,
   updateRow,
   setUpdateRow,
-  lineItemIndex
+  lineItemIndex,
+  addPhaseId
 }) {
   return (
     <div>
@@ -40,6 +41,7 @@ function UpdateLineDialogue({
         MasterLineItem={MasterLineItem}
         InitialProposalView={InitialProposalView}
         showUpdateLine={showUpdateLine}
+        addPhaseId={addPhaseId}
       />
     </div>
   );

@@ -35,6 +35,7 @@ import "./LineItemElement.css";
 import {
   addInitialPhase,
   addPhase,
+  updateCheckedItems,
   updateLineItem,
 } from "../../../redux/slices/Project/projectInitialProposal";
 import { useParams } from "react-router-dom";
@@ -78,7 +79,8 @@ function AddLineElement({
   showAddLine,
   updateRow,
   setUpdateRow,
-  lineItemIndex
+  lineItemIndex,
+  addPhaseId
 }) {
   // const { data, isLoading, isSuccess } = useGetLineItemQuery({
   //   lineItemId: LineItem,
@@ -210,22 +212,74 @@ function AddLineElement({
   }, [quantity, unitPrice]);
   const updateLineItem = useCallback((phaseId, lineItemIndex, formData) => {
     setUpdateRow(prevState => {
-      // const index = prevState[phaseId].rows.findIndex(row => row.id === lineItemId);
       if (lineItemIndex !== -1) {
         const updatedRows = [...prevState[phaseId].rows];
-        updatedRows[lineItemIndex] = {...prevState[phaseId].rows[lineItemIndex],title:formData.phaseName, unit_price:formData.unitPrice, ...formData};
-        console.log(updatedRows)
+        updatedRows[lineItemIndex] = {
+          ...prevState[phaseId].rows[lineItemIndex],
+          title: formData.phaseName,
+          unit_price: formData.unitPrice,
+          ...formData, // Add other fields from formData
+        };
+  
+        // Dispatch to Redux
+        dispatch(
+          updateCheckedItems({
+            phaseId,
+            phaseName: formData.phaseName, // Or use existing phaseName if unchanged
+            lineItems: updatedRows, // Assuming you want to update the entire list of lineItems
+          })
+        );
+  
         return {
           ...prevState,
           [phaseId]: {
             ...prevState[phaseId],
-            rows: updatedRows
-          }
+            rows: updatedRows,
+          },
         };
       }
       return prevState;
     });
-  }, [setUpdateRow]);
+  }, [setUpdateRow, dispatch]);
+  const addLineItem = useCallback((phaseId, formData, margin, percentage) => {
+    const newLineItem = {
+      phase_id: phaseId,
+      title: formData.phaseName, // Using phaseName as title
+      description: formData.description,
+      unit: formData.unit,
+      quantity: formData.quantity,
+      unit_price: formData.unitPrice,
+      total: formData.total,
+      notes: formData.longDescription,
+      margin:margin,
+      percentage:percentage,
+      status: "Not Requested",
+      shouldAdd: true, // Flag to indicate this is a new item to be added
+      // Add other default fields as needed
+    };
+    setUpdateRow(prevState => {
+      const updatedPhase = prevState[phaseId] || { rows: [], phaseName: 'New Phase' };
+      const updatedRows = [...updatedPhase.rows, newLineItem];
+      
+      // Dispatch to Redux
+      dispatch(
+        updateCheckedItems({
+          phaseId,
+          phaseName: updatedPhase.phaseName,
+          lineItems: updatedRows,
+        })
+      );
+  
+      return {
+        ...prevState,
+        [phaseId]: {
+          ...updatedPhase,
+          rows: updatedRows,
+        },
+      };
+    });
+  }, [dispatch]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // if (start === null) {
@@ -245,10 +299,14 @@ function AddLineElement({
     //   return;
     // }
     if (reqWorkOrderModal) {
-      const phaseId = LineItem.phase_id;
-      // const lineItemId = LineItem.id;
-
-      updateLineItem(phaseId, lineItemIndex, formData);
+      if(LineItem){
+        const phaseId = LineItem.phase_id;
+        // const lineItemId = LineItem.id;
+        
+        updateLineItem(phaseId, lineItemIndex, formData);
+      }else{
+          addLineItem(addPhaseId, formData, margin, percentage)
+      }
       handleClickClose();
       return;
     }

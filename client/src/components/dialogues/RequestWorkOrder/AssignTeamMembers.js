@@ -53,11 +53,11 @@ const AssignTeamMembers = ({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  console.log(workOrderTeam);
-  console.log(data);
+  //console.log(workOrderTeam);
+  //console.log(data);
 
   const team = data?.team;
-  console.log(team);
+  //console.log(team);
 
   const handleEmailCheckBoxes = (event, row) => {
     const { checked } = event.target;
