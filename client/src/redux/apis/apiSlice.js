@@ -14,7 +14,7 @@ export const getTokenFromLocalStorage = () => {
   console.log(pathnameArr);
   const token = userInfo?.token;
   // Allow access to specific pages without requiring a token
-  const allowedPaths = ["/", "/login", "/terms", "/privacypolicy"];
+  const allowedPaths = ["/", "/login", "/terms", "/privacypolicy", "/verify-code"];
   const notAllowedPaths = ["/login", "/signup"];
   const currentPath = window.location.pathname;
 
