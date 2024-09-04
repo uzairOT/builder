@@ -22,6 +22,7 @@ import {
   useDeclinePhaseMutation,
 } from "../../redux/apis/NotificationsApproval/NotificationApprovalApiSlice";
 import { toast } from "react-toastify";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function ApprovalNotification({
   index,
@@ -43,10 +44,14 @@ function ApprovalNotification({
   const [declinePhases] = useDeclinePhaseMutation();
   const [approveInitialPhases] = useApproveInitialPhasesMutation();
   const [declineInitialPhases] = useDeclineInitialPhasesMutation();
-
+const navigate=useNavigate()
   const forecast = useSelector(getForecast);
   const dailyForecast = forecast.dailyForecast || [];
   const dispatch = useDispatch();
+  const location = useLocation();
+  const path = location.pathname.split('/');
+  const projectId = path[2]; // Adjust the index based on your actual path structure
+  const newPath = `/projects/${projectId}/initialProposal`;
 
   // const handleOnClick = async () => {
   //   const res = await getWorkOrder({ workOrderId: notification.WorkOrderReq.id });
@@ -140,6 +145,10 @@ function ApprovalNotification({
       }
     }
   };
+  const handleDetails = async () => {
+    setExpanded(false);
+    navigate("/")
+  };
   
 
   return (
@@ -206,6 +215,16 @@ function ApprovalNotification({
                 handleOnClick={handleAccept}
               >
                 Accept
+              </BuilderProButton>
+              <BuilderProButton
+                variant={"contained"}
+                backgroundColor={"#4C8AB1"}
+                fontSize={"11px"}
+                fontFamily={"var(--main-font-family)"}
+                marginLeft={"5px"}
+                handleOnClick={handleDetails}
+              >
+                Details
               </BuilderProButton>
             </Stack>
           </Stack>

@@ -414,7 +414,7 @@ function AddLineElement({
         }
 
         //   handleUpdateClose();
-        toast.success("Line Item Edited successfully");
+        toast.success("Line item updated successfully!");
         handleUpdateClose();
       } catch (error) {
         toast.error(

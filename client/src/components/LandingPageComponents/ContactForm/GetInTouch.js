@@ -54,6 +54,10 @@ const GetInTouch = () => {
     return Object.keys(newErrors).length === 0 && isValid;
   };
 
+  const openInNewTab = (url) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   const validationSchema = yup.object({
     firstName: yup.string().required("First Name is required"),
     lastName: yup.string().required("Last Name is required"),
@@ -101,6 +105,7 @@ const GetInTouch = () => {
         maxWidth: "900px",
         margin: "auto",
         textAlign: "center",
+        
       }}
     >
       <Typography sx={styles.titleFont}>Contact Us</Typography>
@@ -115,7 +120,7 @@ const GetInTouch = () => {
         <Grid item xs={12} md={6}>
           <iframe
             width={isMobile ? "100%" : "100%"}
-            height={isMobile ? "100%" : "100%"}
+            height={isMobile ? "100%" : "97%"}
             borderRadius="13px"
             frameBorder="0"
             style={{ border: 0, borderRadius: "10px", marginTop: "1rem" }}
@@ -317,12 +322,15 @@ const GetInTouch = () => {
                 label={
                   <Typography variant="body2">
                     You agree to our friendly{" "}
-                    <a
+                    <span
                       style={{ textDecoration: "none", color: "#4C8AB1" }}
-                      href="/privacypolicy"
+                      // href="/privacypolicy"
+                      onClick={() => {
+                        openInNewTab("/privacypolicy");
+                      }}
                     >
                       privacy policy
-                    </a>
+                    </span>
                     .
                   </Typography>
                 }

@@ -31,6 +31,8 @@ const Navbar = () => {
     setDrawerOpen(open);
   };
 
+  const userInfo = localStorage.getItem("userInfo");
+
   const drawer = (
     <Box
       role="presentation"
@@ -63,26 +65,28 @@ const Navbar = () => {
           </Button>
         </ListItem> */}
         <ListItem button>
-          <Button
-            onClick={() => navigate("/login")}
-            fullWidth
-            sx={{
-              fontFamily: "var(--main-font-family)",
-              fontWeight: 500,
-              fontSize: "16px",
+          {!userInfo && (
+            <Button
+              onClick={() => navigate("/login")}
+              fullWidth
+              sx={{
+                fontFamily: "var(--main-font-family)",
+                fontWeight: 500,
+                fontSize: "16px",
 
-              borderRadius: 8,
-              padding: "10px 16px 10px 16px",
-              backgroundColor: "#2E728E",
-              "&:hover": {
-                backgroundColor: "grey",
+                borderRadius: 8,
+                padding: "10px 16px 10px 16px",
+                backgroundColor: "#2E728E",
+                "&:hover": {
+                  backgroundColor: "grey",
+                  color: "white",
+                },
                 color: "white",
-              },
-              color: "white",
-            }}
-          >
-            Login
-          </Button>
+              }}
+            >
+              Login
+            </Button>
+          )}
         </ListItem>
       </List>
     </Box>
@@ -164,9 +168,11 @@ const Navbar = () => {
           <Button variant="outlined" sx={styles.navBtns}>
             Video Demo • See now
           </Button> */}
-          <Button sx={styles.navLoginBtn} onClick={() => navigate("/login")}>
-            Login
-          </Button>
+          {!userInfo && (
+            <Button sx={styles.navLoginBtn} onClick={() => navigate("/login")}>
+              Login
+            </Button>
+          )}
         </Box>
 
         {/* Mobile Menu */}

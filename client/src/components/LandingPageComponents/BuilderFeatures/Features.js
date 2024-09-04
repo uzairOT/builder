@@ -99,7 +99,7 @@ const BuilderFeatures = () => {
         </Container>
       </Container>
       {/* Dashboard Feature Section */}
-      <Grid container alignItems="center" justifyContent="center" padding={2}>
+      <Grid container  justifyContent="center" padding={2}>
         <Grid item xs={12} md={4}>
           <Box>
             <img
@@ -143,7 +143,6 @@ const BuilderFeatures = () => {
       {/* Subscription Feature Section */}
       <Grid
         container
-        alignItems="center"
         justifyContent="center"
         padding={2}
         mt={5}
@@ -191,7 +190,6 @@ const BuilderFeatures = () => {
       {/* Invitation Feature Section */}
       <Grid
         container
-        alignItems="center"
         justifyContent="center"
         padding={2}
         mt={5}

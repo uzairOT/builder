@@ -194,6 +194,7 @@ const AddPhaseCard = ({
     if (confirm) {
       await handleDeleteSelectedRows(lineItemId);
       handleOpenModalClose();
+      toast.error("Line item deleted sucessfully!")
     } else {
       setLineItemId(null);
       handleOpenModalClose();

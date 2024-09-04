@@ -103,15 +103,15 @@ const ProjectTeam = ({SuperAdminId}) => {
     };
     try {
       if (userRole === "") {
-        toast.warning("Please Select Role.");
+        toast.warning("Please select role.");
         return false;
       }
       if (email === "") {
-        toast.warning("Please Enter An Email.");
+        toast.warning("Please enter en email.");
         return false;
       }
       if (!emailRegex.test(email)) {
-        toast.error("Please Enter A Valid Email.");
+        toast.error("Please enter a valid email.");
         return false;
       }
       const res = await assignRolePost(userInviteBody).unwrap();
@@ -340,7 +340,7 @@ const ProjectTeam = ({SuperAdminId}) => {
               onChange={(e) => {
                 handleEmailChange(e);
               }}
-              placeholder="Enter an Email to invite"
+              placeholder="Enter an email"
               aria-describedby="my-helper-text"
               sx={{
                 "&::after": {
@@ -373,7 +373,7 @@ const ProjectTeam = ({SuperAdminId}) => {
                   }}
                   sx={{
                     "&.Mui-focused": {
-                      transform: "translate(14px, -6px) scale(0.75)",
+                      display: "none", 
                     },
                   }}
                 >

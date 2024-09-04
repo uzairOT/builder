@@ -22,26 +22,6 @@ const fadeInUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 1, ease: "easeInOut" } },
 };
 
-const fadeInDown = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 1, ease: "easeInOut" } },
-};
-
-const fadeInLeft = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 1, ease: "easeInOut" } },
-};
-
-const fadeInRight = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 1, ease: "easeInOut" } },
-};
-
-const zoomIn = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 1, ease: "easeInOut" } },
-};
-
 const Section = ({ id, Component, animation, delay }) => {
   const controls = useAnimation();
   const [ref, inView] = useInView({ triggerOnce: false });
@@ -61,6 +41,7 @@ const Section = ({ id, Component, animation, delay }) => {
       animate={controls}
       variants={animation}
       transition={{ delay }}
+      
     >
       <Grid id={id}>
         <Component />
@@ -97,7 +78,7 @@ const MainHome = () => {
         <Section
           id="about"
           Component={AboutUs}
-          animation={fadeInDown}
+          animation={fadeInUp}
           delay={0.5}
         />
       </Grid>
@@ -105,7 +86,7 @@ const MainHome = () => {
         <Section
           id="why-choose"
           Component={WhyChooseBuilder}
-          animation={fadeInLeft}
+          animation={fadeInUp}
           delay={0.5}
         />
       </Grid>
@@ -113,7 +94,7 @@ const MainHome = () => {
         <Section
           id="what-we-do"
           Component={WhatWeDo}
-          animation={fadeInRight}
+          animation={fadeInUp}
           delay={0.5}
         />
       </Grid>
@@ -121,26 +102,27 @@ const MainHome = () => {
         <Section
           id="features"
           Component={BuilderFeatures}
-          animation={zoomIn}
+          animation={fadeInUp}
           delay={0.5}
         />
       </Grid>
-      <Grid >
+      <Grid>
         <Section
           id="contact"
           Component={GetInTouch}
           animation={fadeInUp}
           delay={0.5}
+          
         />
       </Grid>
-      <Grid >
+      <Grid>
         <Section id="faqs" Component={FAQ} animation={fadeInUp} delay={0.5} />
       </Grid>
       <Grid>
         <Section
           id="testimonials"
           Component={Testimonials}
-          animation={fadeInDown}
+          animation={fadeInUp}
           delay={0.5}
         />
       </Grid>
@@ -149,7 +131,7 @@ const MainHome = () => {
         <Section
           id="stats"
           Component={StatsAndDownload}
-          animation={fadeInDown}
+          animation={fadeInUp}
           delay={0.5}
         />
       </Grid>

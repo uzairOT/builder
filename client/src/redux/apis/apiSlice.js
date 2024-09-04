@@ -15,10 +15,14 @@ export const getTokenFromLocalStorage = () => {
   const token = userInfo?.token;
   // Allow access to specific pages without requiring a token
   const allowedPaths = ["/", "/login", "/terms", "/privacypolicy"];
+  const notAllowedPaths = ["/login", "/signup"];
   const currentPath = window.location.pathname;
 
   if (token) {
     console.log("Test", userInfo);
+    if (notAllowedPaths.includes(currentPath)) {
+      window.location.href = "/dashboard";
+    }
     return token;
   } else {
     if (pathnameArr[1] === "invitation") {

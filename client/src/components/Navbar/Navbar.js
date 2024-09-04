@@ -593,7 +593,7 @@ const Navbar = () => {
             pl={2}
           >
             <Input
-              placeholder="Enter an Email to invite"
+              placeholder="Enter an email to invite"
               aria-describedby="my-helper-text"
               sx={{
                 "&::after": {

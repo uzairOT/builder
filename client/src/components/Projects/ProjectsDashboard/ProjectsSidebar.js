@@ -184,7 +184,16 @@ const ProjectsSidebar = ({ reports }) => {
                           selected={selected}
                         />
                       </Link>
-                      {/* <Stack justifyContent={"center"}>
+                     
+                    </React.Fragment>
+                  );
+                } else {
+                  return <></>;
+                }
+              })}
+            </>
+          </Stack>
+           {/* <Stack justifyContent={"center"}>
                         <Stack
                           pt={0.5}
                           pb={0.5}
@@ -206,14 +215,6 @@ const ProjectsSidebar = ({ reports }) => {
                           </BuilderProButton>
                         </Stack>
                       </Stack> */}
-                    </React.Fragment>
-                  );
-                } else {
-                  return <></>;
-                }
-              })}
-            </>
-          </Stack>
         </Box>
       </Stack>
     </>

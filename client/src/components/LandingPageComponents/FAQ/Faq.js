@@ -21,59 +21,65 @@ const FAQ = () => {
   };
 
   return (
-    <Container style={styles.container}>
-      <Typography sx={styles.titleFont}>FAQ's</Typography>
+    <Box>
+      <Container style={styles.container}>
+        <Typography sx={styles.titleFont}>FAQ's</Typography>
 
-      <Typography sx={styles.SubtitleFont} align="center" gutterBottom>
-        Frequently Asked Questions
-      </Typography>
-      <Typography sx={styles.SubtitleFont} align="center" paragraph>
-        Everything you need to know about the product and billing.
-      </Typography>
-      {faqData.map((item, index) => (
-        <Accordion
-          key={index}
-          expanded={expanded === `panel${index}`}
-          onChange={handleChange(`panel${index}`)}
-          style={styles.accordion}
-        >
-          <AccordionSummary
-            expandIcon={
-              expanded === `panel${index}` ? (
-                <FaqCloseIcn style={styles.expandIcon} />
-              ) : (
-                <FaqExtendIcn style={styles.expandIcon} />
-              )
-            }
-            aria-controls={`panel${index}-content`}
-            id={`panel${index}-header`}
+        <Typography sx={styles.SubtitleFont} align="center" gutterBottom>
+          Frequently Asked Questions
+        </Typography>
+        <Typography sx={styles.SubtitleFont} align="center" paragraph>
+          Everything you need to know about the product and billing.
+        </Typography>
+        {faqData.map((item, index) => (
+          <Accordion
+            key={index}
+            expanded={expanded === `panel${index}`}
+            onChange={handleChange(`panel${index}`)}
+            style={styles.accordion}
           >
-            <Typography style={styles.question}>{item.question}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography style={styles.answer}>{item.answer}</Typography>
-          </AccordionDetails>
-        </Accordion>
-      ))}
-      <Box style={styles.contactSection}>
-        <AvatarGroup max={4} style={styles.avatarGroup}>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-          <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-          <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-        </AvatarGroup>
-        <Typography sx={styles.contactFirstHeading} align="center" gutterBottom>
-          Still have questions?
-        </Typography>
-        <Typography sx={styles.Contactsecondheading} align="center">
-          Can't find the answer you're looking for? Please chat to our friendly
-          team.
-        </Typography>
+            <AccordionSummary
+              expandIcon={
+                expanded === `panel${index}` ? (
+                  <FaqCloseIcn style={styles.expandIcon} />
+                ) : (
+                  <FaqExtendIcn style={styles.expandIcon} />
+                )
+              }
+              aria-controls={`panel${index}-content`}
+              id={`panel${index}-header`}
+            >
+              <Typography style={styles.question}>{item.question}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography style={styles.answer}>{item.answer}</Typography>
+            </AccordionDetails>
+          </Accordion>
+        ))}
+        <Box style={styles.contactSection}>
+          <AvatarGroup max={4} style={styles.avatarGroup}>
+            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+            <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+          </AvatarGroup>
+          <Typography
+            sx={styles.contactFirstHeading}
+            align="center"
+            gutterBottom
+          >
+            Still have questions?
+          </Typography>
+          <Typography sx={styles.Contactsecondheading} align="center">
+            Can't find the answer you're looking for? Please chat to our
+            friendly team.
+          </Typography>
 
-        <Button style={styles.button} href="/#contact">
-          Get in touch
-        </Button>
-      </Box>
-    </Container>
+          <Button style={styles.button} href="/#contact">
+            Get in touch
+          </Button>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

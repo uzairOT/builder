@@ -60,14 +60,13 @@ const Footer = () => {
     const navigate = useNavigate();
 
     const handleClick = (event) => {
-      event.preventDefault(); // Prevent the default link behavior
-
+      event.preventDefault(); 
       const userInfo = localStorage.getItem("userInfo");
       if (!userInfo) {
         toast.error("Please login to access this page");
-        navigate("/login"); // Redirect to login page
+        navigate("/login"); 
       } else {
-        navigate(href); // Navigate to the intended path
+        navigate(href); 
       }
     };
 

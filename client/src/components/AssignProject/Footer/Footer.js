@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useAssignProjectMutation,} from "../../../redux/apis/usersApiSlice";
+import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
 
 import { Box, Grid, Typography, Button, Stack } from "@mui/material";
-import { resetUserAndRoleEmail, selectProjectForm } from "../../../redux/slices/projectFormSlice";
+import {
+  resetUserAndRoleEmail,
+  selectProjectForm,
+} from "../../../redux/slices/projectFormSlice";
 import YellowBtn from "../../UI/button";
 import FooterCircles from "../FooterCircles/FooterCircles";
 import "../../../App.css";
@@ -13,7 +16,10 @@ import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
 import { useSetProjectToIncompleteMutation } from "../../../redux/apis/Project/userProjectApiSlice";
 import { toast } from "react-toastify";
 import { setCredentials } from "../../../redux/slices/authSlice";
-import { setBackButtonProjectId, setIsSaveAs } from "../../../redux/slices/Project/handlingProjectFlowSlice";
+import {
+  setBackButtonProjectId,
+  setIsSaveAs,
+} from "../../../redux/slices/Project/handlingProjectFlowSlice";
 
 function Footer({ onNextStep, projectId }) {
   const phases = useSelector((state) => state.projectInitialProposal.phases);
@@ -22,8 +28,8 @@ function Footer({ onNextStep, projectId }) {
   const dispatch = useDispatch();
 
   const handleSaveAs = () => {
-    if(phases[0]?.length < 1){
-      toast.error('Please add atleast one phase');
+    if (phases[0]?.length < 1) {
+      toast.error("Please add atleast one phase");
       return;
     }
     dispatch(setIsSaveAs(true));
@@ -45,8 +51,8 @@ function Footer({ onNextStep, projectId }) {
     //console.log(res);
   };
   const handleDone = async () => {
-    if(phases[0]?.length < 1){
-      toast.error('Please add atleast one phase');
+    if (phases[0]?.length < 1) {
+      toast.error("Please add atleast one phase");
       return;
     }
     try {
@@ -55,11 +61,14 @@ function Footer({ onNextStep, projectId }) {
         projectId: projectId,
         update: true,
       });
-      dispatch(setCredentials({...userdata, incompleteProject: res?.data.data}));
+      dispatch(
+        setCredentials({ ...userdata, incompleteProject: res?.data.data })
+      );
       dispatch(addPhase([]));
       dispatch(setIsSaveAs(false));
       dispatch(setBackButtonProjectId(null));
       dispatch(resetUserAndRoleEmail());
+      toast.success("Project added successfully!");
       navigate("/dashboard");
     } catch (error) {
       console.log(error);
@@ -72,7 +81,9 @@ function Footer({ onNextStep, projectId }) {
         userId: userId,
         projectId: projectId,
       });
-      dispatch(setCredentials({...userdata, incompleteProject: res?.data.data}));
+      dispatch(
+        setCredentials({ ...userdata, incompleteProject: res?.data.data })
+      );
       toast.info(
         "Your project has been saved. You will return back here after you log in again."
       );
@@ -84,7 +95,6 @@ function Footer({ onNextStep, projectId }) {
     <div>
       <Grid item lg={12} sx={firstGrid}>
         <Box sx={buttonBox}>
-          
           <Button
             sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}
             onClick={handleDone}
@@ -113,15 +123,14 @@ function Footer({ onNextStep, projectId }) {
             Save as
           </Button>
         </Box>
-        <Stack mt={1} justifyContent={'center'} alignItems={'center'}>
-
-        <Typography sx={{ ...redText }}>
-          Save to return back to edit your project.
-        </Typography>
-        <Typography sx={{ ...redText }}>
-          Save as to start a duplicate project with the same line items and
-          phases.
-        </Typography>
+        <Stack mt={1} justifyContent={"center"} alignItems={"center"}>
+          <Typography sx={{ ...redText }}>
+            Save to return back to edit your project.
+          </Typography>
+          <Typography sx={{ ...redText }}>
+            Save as to start a duplicate project with the same line items and
+            phases.
+          </Typography>
         </Stack>
         <div>
           <FooterCircles width3="4rem" background3="#4C8AB1" />
@@ -140,14 +149,14 @@ const firstGrid = {
 };
 const buttonBox = {
   display: "flex",
-  flexDirection:{xl:"row",lg:"row",md:"row",sm:"row",xs:"column"},
+  flexDirection: { xl: "row", lg: "row", md: "row", sm: "row", xs: "column" },
   justifyContent: "space-between",
   gap: "2.3rem",
 };
 const redText = {
   color: "#BE1D1D",
   marginTop: "0rem",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: "0.875rem",
   fontStyle: "normal",
   fontWeight: 400,
