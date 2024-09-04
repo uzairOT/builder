@@ -19,8 +19,9 @@ const StatsAndDownload = () => {
               Numbers are telling our story
             </Typography>
             <Typography sx={styles.subHeading}>
-              Amet minim mollit non deserunt ullamco est sit aliqua dolor do
-              amet sint. Velit officia consequat duis enim velit mollit.
+              Our platform is designed by construction professionals for
+              construction professionals, offering unmatched functionality, ease
+              of use, and mobile accessibility.
             </Typography>
           </Container>
         </Grid>
@@ -48,7 +49,7 @@ const StatsAndDownload = () => {
         </Grid>
       </Grid>
       <Container
-        maxWidth={"lg"}
+        maxWidth={"xl"}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -56,7 +57,7 @@ const StatsAndDownload = () => {
           marginTop: 5,
         }}
       >
-        <Box sx={styles.logoContainer}>
+        {/* <Box sx={styles.logoContainer}>
           <BuilderLgIcn />
         </Box>
         <Box sx={styles.downloadSection}>
@@ -86,7 +87,7 @@ const StatsAndDownload = () => {
               </a>
             </Button>
           </Box>
-        </Box>
+        </Box> */}
       </Container>
     </Box>
   );
@@ -96,22 +97,23 @@ export default StatsAndDownload;
 
 const styles = {
   section: {
-    mb:10,
+    mb: 10,
     padding: "50px 0",
     textAlign: "left",
     // backgroundColor: "#f5f5f5",
   },
   heading: {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontWeight: 500,
-    textAlign:{md:"left", xs:"center"},
-    fontSize: { md: "60px",sm:"60px", xs: "40px" },
+    textAlign: { md: "left", xs: "center" },
+    fontSize: { md: "60px", sm: "60px", xs: "40px" },
     color: "#1D1C1D",
     marginBottom: "20px",
+    lineHeight: 1,
   },
   subHeading: {
-    textAlign:{md:"left", xs:"center"},
-    fontFamily: 'var(--main-font-family)',
+    textAlign: { md: "left", xs: "center" },
+    fontFamily: "var(--main-font-family)",
     marginBottom: "20px",
     color: "gray",
   },
@@ -135,18 +137,18 @@ const styles = {
     padding: "30px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     width: { lg: "30rem", md: "20rem", xs: "80%" },
-    backgroundColor: "rgba(76, 138, 177, 0.17)", 
+    backgroundColor: "rgba(76, 138, 177, 0.17)",
   },
   statValue: {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontWeight: 500,
-    fontSize: { md: "60px",sm:"60px", xs: "40px" },
+    fontSize: { md: "60px", sm: "60px", xs: "40px" },
     color: "#2E2E2E",
   },
   statLabel: {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontWeight: 500,
-    fontSize: { md: "18px",sm:"18px", xs: "16px" },
+    fontSize: { md: "18px", sm: "18px", xs: "16px" },
     color: "#2E2E2E",
   },
   logoContainer: {

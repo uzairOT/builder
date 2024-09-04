@@ -245,7 +245,7 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
 
         {(isAuthenticated && currentUser) ? (
           <Route path="/" element={<Layout1 />}>
-            <Route index element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route
               path="/projects"
               element={<ProjectsTable />}

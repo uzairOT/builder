@@ -41,6 +41,7 @@ const Layout2 = () => {
   const dispatch = useDispatch();
   // projects.find(project => project.id === parseInt(currentProjectId));
   const selectedProjectId = data?.data;
+  const selectedProjectData = data?.data;
   const projectName = selectedProjectId?.projectName;
   const projectLocation = selectedProjectId?.location;
   const SuperAdminId = selectedProjectId?.userId;
@@ -118,6 +119,8 @@ const Layout2 = () => {
     getUserRoleAuth();
   }, [currentProjectId]);
 
+  
+
   return (
     <>
       <Grid
@@ -184,7 +187,7 @@ const Layout2 = () => {
               <CircularProgress />
             </Stack>
           ) : (
-            <Outlet context={[projectName, projectLocation, SuperAdminId]} />
+            <Outlet context={[projectName, projectLocation, SuperAdminId, selectedProjectData]} />
           )}
         </Grid>
       </Grid>

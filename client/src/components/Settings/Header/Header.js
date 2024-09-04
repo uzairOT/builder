@@ -78,7 +78,7 @@ function Header({ title, OpenAddModal, searchInput, setSearchInput }) {
           buttonText="Add"
           color="#ffffff"
           backgroundColor="#FFAC00"
-          width="112px"
+          // width="112px"
           height="38px"
           borderRadius="50px"
         />}

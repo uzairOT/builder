@@ -1,7 +1,7 @@
 import { Box, Paper, Stack } from "@mui/material";
 import React, { useState } from "react";
 import ProjectsChangeOrder from "../../components/Projects/ProjectsChangeOrder/ProjectsChangeOrder";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { useGetProjectChangeOrderQuery } from "../../redux/apis/Project/projectApiSlice";
 import BuilderProButton from "../../components/UI/Button/BuilderProButton";
 import TaskCalender from "../../components/Task/Calender/TaskCalender";
@@ -22,11 +22,13 @@ const ChangeOrder = () => {
   const forecast = useSelector(getForecast);
   const events = allEvent.events;
   const dailyForecast = forecast.dailyForecast;
+  // const { project } = useGetProjectDataQuery({ projectId: currentProjectId });
   const { data, refetch } = useGetProjectChangeOrderQuery({
     projectId: currentProjectId,
     userId: user.user.id,
     changeOrder: true,
   });
+  const [projectName, projectLocation, SuperAdminId, selectedProjectData] = useOutletContext()
   const handleChangeView = () => {
     setChangeView(!changeView);
   };
@@ -59,7 +61,7 @@ const ChangeOrder = () => {
         <Stack justifyContent={"flex-start"} height={"95%"}>
 
       {changeView ? (<ProjectsChangeOrder data={data} refetch={refetch} />) : (<>
-              <Box
+              {/* <Box
                 height= '600px'
                 bgcolor={"white"}
               >
@@ -69,9 +71,10 @@ const ChangeOrder = () => {
                   isProjectPage={true}
                   isDrawerOpen={true}
                 />
-              </Box>
+              </Box> */}
               <Stack p={1} borderRadius={"14px"} width={'99%'}>
                 <AddPhaseView
+                  selectedProjectData={selectedProjectData}
                   refetchChangeOrder={refetch}
                   projectId={currentProjectId}
                   adminProjectView={true}

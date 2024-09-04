@@ -10,6 +10,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  capitalize,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -44,12 +45,7 @@ const Navbar = () => {
           { text: "Contact", path: "/#contact" },
           { text: "FAQs", path: "/#faqs" },
         ].map(({ text, path }) => (
-          <ListItem
-            button
-            key={text}
-            component="a"
-            href={path}
-          >
+          <ListItem button key={text} component="a" href={path}>
             <ListItemText primary={text} />
           </ListItem>
         ))}
@@ -70,11 +66,20 @@ const Navbar = () => {
           <Button
             onClick={() => navigate("/login")}
             fullWidth
-            sx={{ backgroundColor: "#2E728E", 
+            sx={{
+              fontFamily: "var(--main-font-family)",
+              fontWeight: 500,
+              fontSize: "16px",
+
+              borderRadius: 8,
+              padding: "10px 16px 10px 16px",
+              backgroundColor: "#2E728E",
               "&:hover": {
-      backgroundColor: 'grey',
-      color:"white"
-    }, color: "white" }}
+                backgroundColor: "grey",
+                color: "white",
+              },
+              color: "white",
+            }}
           >
             Login
           </Button>
@@ -82,7 +87,6 @@ const Navbar = () => {
       </List>
     </Box>
   );
-  
 
   return (
     <AppBar
@@ -191,7 +195,7 @@ const styles = {
   navItemFont: {
     color: "#454245",
     textDecoration: "none",
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontWeight: 400,
     fontSize: "16px",
   },
@@ -199,7 +203,7 @@ const styles = {
   navBtns: {
     borderColor: "#2E728E",
     color: "#2E728E",
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontWeight: 500,
     fontSize: "16px",
   },
@@ -208,11 +212,15 @@ const styles = {
     backgroundColor: "#2E728E",
     color: "white",
     "&:hover": {
-      backgroundColor: 'grey',
-      color:"white"
+      backgroundColor: "grey",
+      color: "white",
     },
-    fontFamily: 'var(--main-font-family)',
-    fontWeight: 400,
+    fontFamily: "var(--main-font-family)",
+    fontWeight: 500,
     fontSize: "16px",
+    width: "72px",
+    height: "44px",
+    borderRadius: "8px",
+    textTransform: "capitalize",
   },
 };

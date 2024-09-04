@@ -11,6 +11,7 @@ function CustomInput({ value, onChange, onKeyPress, placeholder,backgroundColor 
         },
         backgroundColor: backgroundColor,
         height: "40px",
+        width:"17rem",
         borderRadius: 25,
         margin: "10px",
         display: "flex",

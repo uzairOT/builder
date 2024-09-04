@@ -40,11 +40,20 @@ const SetNewPassword = () => {
         password: password,
         confirmPassword: confirmPassword,
       }).unwrap();
-      handleOpen();
-      toast.success("Password changed successfully");
-      navigate("/login");
-    } catch(err) {
-      toast.error(err?.data?.error || err.error || err?.data?.message || 'Something went wrong!');
+      if (password.length < 8 || confirmPassword.length < 8) {
+        toast.error("Password must be at least 8 characters long");
+      } else {
+        handleOpen();
+        toast.success("Password changed successfully");
+        navigate("/login");
+      }
+    } catch (err) {
+      toast.error(
+        err?.data?.error ||
+          err.error ||
+          err?.data?.message ||
+          "Something went wrong!"
+      );
     }
 
     // navigate("/verifycode");
@@ -120,7 +129,7 @@ const SetNewPassword = () => {
                   sx={{
                     color: "#000000",
                     fontSize: "20px",
-                    fontFamily: 'var(--main-font-family)',
+                    fontFamily: "var(--main-font-family)",
                     fontWeight: 550,
                   }}
                 >
@@ -209,14 +218,14 @@ const SetNewPassword = () => {
                 </Box>
               </Box>
               {/* Confirm Password 👆 */}
-              <CardActions sx={{display:'flex', justifyContent:'center'}}>
+              <CardActions sx={{ display: "flex", justifyContent: "center" }}>
                 <Button
                   sx={{
                     ...YellowBtn,
                   }}
                   onClick={submitHandler}
                 >
-                  {"Password Updated"}
+                  {"Update Password"}
                 </Button>
               </CardActions>
             </Container>
@@ -252,7 +261,7 @@ const SetNewPassword = () => {
                 sx={{
                   mt: 2,
                   color: "#A9A9A9",
-                  fontFamily: 'var(--main-font-family)',
+                  fontFamily: "var(--main-font-family)",
                   fontWeight: 400,
                   fontSize: "14px",
                   lineHeight: "24px",
@@ -284,14 +293,14 @@ const labelStyle = {
   display: "block",
   marginBottom: "1rem",
   color: "#202227",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.75rem" },
   fontWeight: 400,
 };
 const placeholderStyle = {
-  color: "#B8B8B8",
+  // color: "#B8B8B8",
   padding: "8px",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: "1rem",
   fontWeight: 400,
 };

@@ -204,7 +204,7 @@ function Notification({
                     secondary={notification.WorkOrderReq.priority}
                   />
                 </ListItem>
-                <ListItem sx={listItemStyle}>
+                {/* <ListItem sx={listItemStyle}>
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
@@ -214,7 +214,7 @@ function Notification({
                     secondaryTypographyProps={{sx:textSecondaryStyle}}
                     secondary={notification.WorkOrderReq.total}
                   />
-                </ListItem>
+                </ListItem> */}
               </List>
             </Grid>
             <Grid item xs={6}>

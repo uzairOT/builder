@@ -115,7 +115,7 @@ const Login = () => {
             }, 1000);
           } else {
             setTimeout(() => {
-              window.location.href = "/";
+              window.location.href = "/dashboard";
             }, 1000);
           }
         } else if (res.message === "notFound!") {
@@ -162,7 +162,7 @@ const Login = () => {
         }, 1000);
       } else {
         setTimeout(() => {
-          window.location.href = "/";
+          window.location.href = "/dashboard";
         }, 1000);
       }
     } catch (err) {
@@ -197,7 +197,7 @@ const Login = () => {
         <img
           style={{ height: "236px", width: "435px", paddingLeft: "8px" }}
           src={builderproicon}
-          alt="BuilderBuilder Pro"
+          alt="BuilderBUILDER Pro"
         />
         <Box
           sx={{
@@ -206,7 +206,7 @@ const Login = () => {
             marginTop: { xl: "0rem", lg: "0rem", md: "0rem", sm: "0rem" },
           }}
         >
-          {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
+          {/* <Typography sx={firstHeading}>BuilderBUILDER Pro</Typography> */}
           <Box>
             <Typography component="p" sx={secondHeading}>
               On schedule.

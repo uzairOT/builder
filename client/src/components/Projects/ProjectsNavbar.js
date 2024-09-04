@@ -24,15 +24,23 @@ const ProjectsNavbar = ({ project }) => {
   const showHamburger = useMediaQuery(theme.breakpoints.down("lg"));
   const navigate = useNavigate();
   const userRole = useSelector(getUserRoleFromRedux);
-  const userOrganization = useSelector((state) => state?.auth?.userInfo?.user?.userOrganization);
+  const userOrganization = useSelector(
+    (state) => state?.auth?.userInfo?.user?.userOrganization
+  );
   const userId = useSelector((state) => state?.auth?.userInfo?.user?.id);
+
   const permissionsState = useSelector(
     (state) => state?.permissions?.permissions
   );
-  const ProjectReportPermission = useProjectPermissionCheck(
+  // const changeOrderCheck = useSelector(
+  //   (state) => state?.projectInitialProposal?.initialPhases
+  // );
+
+  const projectReportPermission = useProjectPermissionCheck(
     "project-report",
     permissionsState
   );
+
   const navLinks = [
     {
       title: "Initial Proposal",
@@ -62,24 +70,25 @@ const ProjectsNavbar = ({ project }) => {
       title: "Notes",
       path: "notes",
     },
-    ...(ProjectReportPermission
+    ...(projectReportPermission
       ? [
-        {
-          title: "Project Report",
-          path: "project-report",
-        },
+          {
+            title: "Project Report",
+            path: "project-report",
+          },
         ]
       : []),
-  
+
     {
       title: "Change Order",
       path: "change-order",
     },
+
     {
       title: "Invoices",
       path: "invoices",
     },
-    ...(userOrganization?.isOwner === true && userId===project?.userId
+    ...(userId === project?.userId
       ? [
           {
             title: "Project Permissions",
@@ -87,12 +96,10 @@ const ProjectsNavbar = ({ project }) => {
           },
         ]
       : []),
-         
   ];
   const [selectedNav, setSelectedNav] = useState(navLinks.path);
   const handleNavClick = (path) => {
-    if(userRole.userRole === 'client'){
-      
+    if (userRole.userRole === "client") {
     }
     // setSelectedNav(path);
   };
@@ -100,9 +107,9 @@ const ProjectsNavbar = ({ project }) => {
     navigate(-1);
     // handleNavClick("");
   };
-  useEffect(()=>{
-   setSelectedNav(page)
-  },[page])
+  useEffect(() => {
+    setSelectedNav(page);
+  }, [page]);
 
   return (
     <Stack
@@ -120,21 +127,21 @@ const ProjectsNavbar = ({ project }) => {
         </IconButton>
         {/* <img src={project?.image} alt='Project' width={'60px'} height={'35px'} style={{borderRadius: '12px'}}></img> */}
         <Link
-          to={ ``}
+          to={``}
           // onClick={() => handleNavClick("")}
           style={{ textDecoration: "none" }}
         >
           <Typography
             sx={{
               color: "#494A4A",
-              fontSize: {xl:"20px",lg:"17px",md:"20px",xs:"20px"},
+              fontSize: { xl: "20px", lg: "17px", md: "20px", xs: "20px" },
               fontWeight: 600,
-              fontFamily: 'var(--main-font-family)',
+              fontFamily: "var(--main-font-family)",
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
               maxWidth: {
-                xl:"19vw",
+                xl: "19vw",
                 lg: "19vw",
                 md: "50vw",
                 sm: "80vw",
@@ -157,8 +164,10 @@ const ProjectsNavbar = ({ project }) => {
         display={{ xl: "flex", lg: "flex", md: "none", sm: "none", xs: "none" }}
       >
         {navLinks.map((navlink, index) => {
-          if(userRole.userRole 
-              === 'client' && (navlink.title === 'Notes' || navlink.title === 'Project Report' )){
+          if (
+            userRole.userRole === "client" &&
+            (navlink.title === "Notes" || navlink.title === "Project Report")
+          ) {
             return <></>;
           }
           return (
@@ -170,9 +179,9 @@ const ProjectsNavbar = ({ project }) => {
               >
                 <Typography
                   color={selectedNav === navlink.path ? "#ffac00" : "#494A4A"}
-                  fontSize={{xl:"15px", lg:'11px'}}
+                  fontSize={{ xl: "15px", lg: "11px" }}
                   fontWeight={"400"}
-                  fontFamily={'var(--main-font-family)'}
+                  fontFamily={"var(--main-font-family)"}
                   pr={1}
                 >
                   {navlink.title}

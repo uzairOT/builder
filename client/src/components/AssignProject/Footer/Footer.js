@@ -60,7 +60,7 @@ function Footer({ onNextStep, projectId }) {
       dispatch(setIsSaveAs(false));
       dispatch(setBackButtonProjectId(null));
       dispatch(resetUserAndRoleEmail());
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
       console.log(error);
     }

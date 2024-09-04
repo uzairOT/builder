@@ -8,19 +8,32 @@ import {
   CardMedia,
   Box,
 } from "@mui/material";
-import { DashboardCardIcn, InvoiceCardIcn,  ReportCardIcn, SubCardIcn, TeamCardIcn, WorkOrderCardIcn } from "../assets/svg";
+import {
+  DashboardCardIcn,
+  InvoiceCardIcn,
+  ReportCardIcn,
+  SubCardIcn,
+  TeamCardIcn,
+  WorkOrderCardIcn,
+} from "../assets/svg";
 
 const WhatWeDo = () => {
   return (
     <Grid container style={styles.section}>
-      <Container sx={{ justifyContent: "center", textAlign: "center" }}>
+      <Container
+        sx={{
+          justifyContent: "center",
+          textAlign: "center",
+          mt:6,
+        }}
+      >
         <Typography sx={styles.titleFont}>What We Do?</Typography>
         <Typography sx={styles.SubtitleFont}>
           Unlock the Full Potential of Your Construction Projects
         </Typography>
         <Typography variant="body1" sx={styles.DecsFont}>
-          BuilderBuilder Pro offers a comprehensive suite of features designed to
-          streamline and optimize every aspect of construction management.
+          BuilderBUILDER Pro offers a comprehensive suite of features designed
+          to streamline and optimize every aspect of construction management.
           Discover how our powerful tools can help you achieve success from
           planning to completion.
         </Typography>
@@ -103,32 +116,32 @@ const styles = {
     backgroundColor: "#F7FAFC",
   },
   titleFont: {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontWeight: 500,
-    fontSize: { md: "16px",sm:"16px", xs: "14px" },
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
     mb: 3,
     color: "#4C8AB1",
   },
   SubtitleFont: {
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "36px",sm:"36px", xs: "18px" },
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "36px", sm: "36px", xs: "18px" },
     fontWeight: 500,
     marginBottom: 2,
   },
   DecsFont: {
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "16px",sm:"16px", xs: "14px" },
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
     fontWeight: 400,
     color: "#454245",
   },
   CardTitleFont: {
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "18px",sm:"18px", xs: "16px" },
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "18px", sm: "18px", xs: "16px" },
     fontWeight: 500,
   },
   CardDesc: {
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "16px",sm:"16px", xs: "14px" },
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
     fontWeight: 400,
     color: "#454245",
   },
@@ -151,5 +164,4 @@ const styles = {
     fontSize: "3rem",
     color: "#2E728E",
   },
- 
 };

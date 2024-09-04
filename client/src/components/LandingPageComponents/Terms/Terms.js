@@ -40,10 +40,10 @@ const TermsAndConditions = () => {
             color: "#00000099",
           }}
         >
-          Welcome to BuilderBuilder Pro. These Terms and Conditions ("Terms") govern
+          Welcome to BuilderBUILDER Pro. These Terms and Conditions ("Terms") govern
           your use of our construction management software, available on both
           web and mobile platforms (iOS and Android). By accessing or using
-          BuilderBuilder Pro, you agree to be bound by these Terms. If you do not
+          BuilderBUILDER Pro, you agree to be bound by these Terms. If you do not
           agree with these Terms, you should not use our services.
         </Typography>
         {termsData.map((section, index) => (

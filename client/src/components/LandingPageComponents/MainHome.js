@@ -23,27 +23,23 @@ const fadeInUp = {
 };
 
 const fadeInDown = {
-  hidden: { opacity: 0, y: -50 },
+  hidden: { opacity: 0, y: 50 },
   visible: { opacity: 1, y: 0, transition: { duration: 1, ease: "easeInOut" } },
 };
 
 const fadeInLeft = {
-  hidden: { opacity: 0, x: -50 },
-  visible: { opacity: 1, x: 0, transition: { duration: 1, ease: "easeInOut" } },
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 1, ease: "easeInOut" } },
 };
 
 const fadeInRight = {
-  hidden: { opacity: 0, x: 50 },
-  visible: { opacity: 1, x: 0, transition: { duration: 1, ease: "easeInOut" } },
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 1, ease: "easeInOut" } },
 };
 
 const zoomIn = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 1, ease: "easeInOut" },
-  },
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 1, ease: "easeInOut" } },
 };
 
 const Section = ({ id, Component, animation, delay }) => {
@@ -75,18 +71,17 @@ const Section = ({ id, Component, animation, delay }) => {
 
 const styles = {
   container: {
-    overflow: 'hidden',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    overflow: "hidden",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
     backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.40), rgba(255, 255, 255, 0.70)), url(${BG})`,
   },
 };
 
-
 const MainHome = () => {
   return (
-    <Grid  sx={{overflow:"hidden"}}>
+    <Grid sx={{ overflow: "hidden" }}>
       <Grid sx={styles.container}>
         <Grid>
           <Navbar />
@@ -98,45 +93,67 @@ const MainHome = () => {
           delay={0}
         />
       </Grid>
-      <Section
-        id="about"
-        Component={AboutUs}
-        animation={fadeInDown}
-        delay={0.5}
-      />
-      <Section
-        id="why-choose"
-        Component={WhyChooseBuilder}
-        animation={fadeInLeft}
-        delay={1}
-      />
-      <Section
-        id="what-we-do"
-        Component={WhatWeDo}
-        animation={fadeInRight}
-        delay={1.5}
-      />
-      <Section
-        id="features"
-        Component={BuilderFeatures}
-        animation={zoomIn}
-        delay={2}
-      />
-      <Section
-        id="contact"
-        Component={GetInTouch}
-        animation={fadeInUp}
-        delay={2.5}
-      />
-      <Section id="faqs" Component={FAQ} animation={fadeInUp} delay={3} />
-      <Section id="testimonials" Component={Testimonials} animation={fadeInDown} delay={3} />
+      <Grid>
+        <Section
+          id="about"
+          Component={AboutUs}
+          animation={fadeInDown}
+          delay={0.5}
+        />
+      </Grid>
+      <Grid>
+        <Section
+          id="why-choose"
+          Component={WhyChooseBuilder}
+          animation={fadeInLeft}
+          delay={0.5}
+        />
+      </Grid>
+      <Grid>
+        <Section
+          id="what-we-do"
+          Component={WhatWeDo}
+          animation={fadeInRight}
+          delay={0.5}
+        />
+      </Grid>
+      <Grid>
+        <Section
+          id="features"
+          Component={BuilderFeatures}
+          animation={zoomIn}
+          delay={0.5}
+        />
+      </Grid>
+      <Grid >
+        <Section
+          id="contact"
+          Component={GetInTouch}
+          animation={fadeInUp}
+          delay={0.5}
+        />
+      </Grid>
+      <Grid >
+        <Section id="faqs" Component={FAQ} animation={fadeInUp} delay={0.5} />
+      </Grid>
+      <Grid>
+        <Section
+          id="testimonials"
+          Component={Testimonials}
+          animation={fadeInDown}
+          delay={0.5}
+        />
+      </Grid>
 
-      <Section
-        id="stats"
-        Component={StatsAndDownload}
-        animation={fadeInDown}
-        delay={3.5}
-      />
+      <Grid>
+        <Section
+          id="stats"
+          Component={StatsAndDownload}
+          animation={fadeInDown}
+          delay={0.5}
+        />
+      </Grid>
+
       <Grid sx={{ zIndex: 1 }}>
         <Footer />
       </Grid>

@@ -99,7 +99,7 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
                   ${formatMoney(TotalProfit)}
                 </Typography> */}
                 <Typography
-                  fontSize={"9px"}
+                  fontSize={"0.6rem"}
                   fontFamily={'var(--main-font-family)'}
                  
                 >
@@ -171,7 +171,7 @@ const themeStyle = {
     textAlign: "left",
     fontFamily: 'var(--main-font-family)',
     color: "#202227",
-    fontSize: "10px",
+    fontSize: "0.6rem",
     paddingRight: "32px",
   },
   innerSubtitle: {

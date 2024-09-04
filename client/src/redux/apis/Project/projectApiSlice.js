@@ -18,7 +18,7 @@ const projectApiSlice = apiSlice.injectEndpoints({
 
     // Phase ApiSlices ................. //
     addProjectPhase: builder.mutation({
-      query: (data) => ({
+      query: (data, formattedView) => ({
         url: `${PROJECTS_URL}/addPhase/${data.projectId}`,
         method: "POST",
         body: data,

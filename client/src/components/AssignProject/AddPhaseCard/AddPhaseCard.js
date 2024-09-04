@@ -56,6 +56,7 @@ import { toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notification
 import { CoEditChip } from "../../LandingPageComponents/assets/svg";
 import { ChipDelete } from "@mui/joy";
 import { useProjectPermissionCheck } from "../../Projects/ProjectPermissions/ProjectsPermissionCheck";
+import WarningIcon from "@mui/icons-material/Warning"; // Import an exclamation icon from Material-UI
 
 const initialRows = [
   {
@@ -371,7 +372,9 @@ const AddPhaseCard = ({
     //console.log("Check boolean phaseId ", isSelected);
     return isSelected;
   };
+
   // console.log('PHASE :', phaseData)
+  const currentRoute = location.pathname;
 
   const permissionsState = useSelector(
     (state) => state?.permissions?.permissions
@@ -383,7 +386,8 @@ const AddPhaseCard = ({
 
   const projectManagementPermission = useProjectPermissionCheck(
     "project-management",
-    permissionsState
+    permissionsState,
+    currentRoute
   );
 
   return (
@@ -421,6 +425,36 @@ const AddPhaseCard = ({
                 flexDirection: { sm: "row", xs: "column" },
               }}
             >
+              {phaseData?.initial === false && (
+                <>
+                  <IconButton
+                  // onClick={() => handleCheckboxChange(row)}
+                  >
+                    <>
+                      <Chip
+                        // style={{
+                        //   border: isRowSelected(phaseData, phaseData.phase_id)
+                        //     ? "1px solid black"
+                        //     : "none",
+                        //   marginTop: 1.5,
+                        // }}
+                        color={"warning"}
+                        label={
+                          <span
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            CO
+                            <ModeEditIcon sx={{ fontSize: "0.980rem" }} />
+                          </span>
+                        }
+                      />
+                    </>
+                  </IconButton>
+                </>
+              )}
               <Typography
                 sx={{
                   ...blackHeading,
@@ -446,6 +480,7 @@ const AddPhaseCard = ({
                   fontWeight: "600",
                   marginTop: 1.5,
                   marginRight: 2,
+                  marginLeft: 2,
                 }}
                 label={phaseData?.status}
                 color={
@@ -551,7 +586,7 @@ const AddPhaseCard = ({
                           title={
                             projectManagementPermission
                               ? ""
-                              : "You Currently don't have permission to access this feature"
+                              : "You are not authorized!"
                           }
                           arrow
                         >
@@ -562,7 +597,7 @@ const AddPhaseCard = ({
                               background: "#4C8AB1",
                               marginTop: "0.7rem",
                               marginBottom: "1rem",
-                              marginRight: "1.2rem",
+                              marginRight: { xl: "-8rem", xs: "-3rem" },
                               "@media (max-width: 600px)": {
                                 minWidth: 0,
                                 width: "2.5rem",
@@ -615,7 +650,7 @@ const AddPhaseCard = ({
                     background: "#4C8AB1",
                     marginTop: "0.7rem",
                     marginBottom: "1rem",
-                    marginRight: "1.2rem",
+                    marginRight: { xl: "-7.5rem", xs: "8rem" },
                     marginLeft: "1rem",
                     "@media (max-width: 600px)": {
                       fontFamily: "var(--main-font-family)",
@@ -673,67 +708,72 @@ const AddPhaseCard = ({
                       </>
                     )}
 
-                  {view === "Change Order" &&
-                  pathCheck?.includes("initial-proposal") ? (
-                    <></>
-                  ) : (
-                    <Tooltip
-                      title={
-                        projectManagementPermission
-                          ? ""
-                          : "You Currently don't have permission to access this feature"
-                      }
-                      arrow
-                    >
-                      <Button
-                        disabled={!projectManagementPermission}
-                        sx={{
-                          ...actionButton,
-                          background: "#4C8AB1",
-                          marginTop: "0.7rem",
-                          marginBottom: "1rem",
-                          marginRight: "1.2rem",
-                          marginLeft: "1rem",
-                          "@media (max-width: 600px)": {
-                            fontFamily: "var(--main-font-family)",
-                            minWidth: 0,
-                            width: "2.5rem",
-                            height: "2.5rem",
-                            borderRadius: "50%",
-                            padding: 0,
-                            fontSize: "0.75rem",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          },
-                        }}
-                        onClick={handleAddLine}
-                      >
-                        <AddIcon
-                          sx={{
-                            "@media (min-width: 601px)": {
-                              display: "none",
-                            },
-                          }}
-                        />
-                        <Typography
-                          sx={{
-                            fontFamily: "var(--main-font-family)",
-                            "@media (min-width: 601px)": {
-                              display: "inline",
-                            },
-                            "@media (max-width: 600px)": {
-                              display: "none",
-                            },
-                          }}
+                  {view === "Change Order" ||
+                  pathCheck.includes("/assignproject") ? (
+                    <>
+                      {(phaseData?.status === "not approved" ||
+                        phaseData?.status === "declined") && (
+                        <Tooltip
+                          title={
+                            projectManagementPermission
+                              ? ""
+                              : "You are not authorized!"
+                          }
+                          arrow
                         >
-                          Add Line Item
-                        </Typography>
-                      </Button>
-                    </Tooltip>
+                          <Button
+                            disabled={!projectManagementPermission}
+                            sx={{
+                              ...actionButton,
+                              background: "#4C8AB1",
+                              marginTop: "0.7rem",
+                              marginBottom: "1rem",
+                              marginRight: { xl: "-8rem", xs: "-4rem" },
+                              marginLeft: "1rem",
+                              "@media (max-width: 600px)": {
+                                fontFamily: "var(--main-font-family)",
+                                minWidth: 0,
+                                width: "2.5rem",
+                                height: "2.5rem",
+                                borderRadius: "50%",
+                                padding: 0,
+                                fontSize: "0.75rem",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              },
+                            }}
+                            onClick={handleAddLine}
+                          >
+                            <AddIcon
+                              sx={{
+                                "@media (min-width: 601px)": {
+                                  display: "none",
+                                },
+                              }}
+                            />
+                            <Typography
+                              sx={{
+                                fontFamily: "var(--main-font-family)",
+                                "@media (min-width: 601px)": {
+                                  display: "inline",
+                                },
+                                "@media (max-width: 600px)": {
+                                  display: "none",
+                                },
+                              }}
+                            >
+                              Add Line Item
+                            </Typography>
+                          </Button>
+                        </Tooltip>
+                      )}
+                    </>
+                  ) : (
+                    <></>
                   )}
 
-                  <Tooltip
+                  {/* <Tooltip
                     title={
                       ProjectApprovalSendPermission
                         ? ""
@@ -754,7 +794,7 @@ const AddPhaseCard = ({
                                 marginTop: "0.7rem",
                                 marginBottom: "1rem",
                                 // marginRight: { sm: "7rem", xs: "2rem" },
-                                width: "80%",
+                                width: "100%",
                                 whiteSpace: "nowrap",
                                 // width: "2.5rem",
                                 "@media (max-width: 600px)": {
@@ -770,7 +810,10 @@ const AddPhaseCard = ({
                                   fontFamily: "var(--main-font-family)",
                                 },
                               }}
-                              disabled={phaseData?.status === "pending"}
+                              disabled={
+                                !ProjectApprovalSendPermission ||
+                                phaseData?.status === "pending"
+                              }
                             >
                               <SendIcon
                                 sx={{
@@ -801,7 +844,7 @@ const AddPhaseCard = ({
                         )}
                       </>
                     </span>
-                  </Tooltip>
+                  </Tooltip> */}
 
                   <></>
                 </Box>
@@ -965,10 +1008,10 @@ const AddPhaseCard = ({
                     userRoleAuth.userRole === "admin" ||
                     userRoleAuth.userRole === "projectManager" ||
                     userRoleAuth.userRole === "") &&
-                    phaseData?.status === "not approved" &&
-                    !InitialProposalView &&
-                    view === "Change Order" &&
-                    !pathCheck.includes("initial-proposal") && (
+                    (changeOrderSelectedView ||
+                      pathCheck.includes("/assignproject") ||
+                      phaseData.status === "not approved" ||
+                      phaseData.status === "declined") && (
                       <TableCell sx={tableHeadings}>Action</TableCell>
                     )}
                 </TableRow>
@@ -978,6 +1021,35 @@ const AddPhaseCard = ({
 
               <TableBody>
                 {phaseData.LineItems.map((row, index) => {
+                  // Conditions for rendering EditIcon and DeleteIcon
+                  const showEditIcon =
+                    (phaseData.status === "not approved" ||
+                      phaseData.status === "declined" ||
+                      changeOrderSelectedView) &&
+                    projectManagementPermission;
+
+                  const showDeleteIcon =
+                    (row.status === "Work Order Not requested" ||
+                      row.status === "Work Order declined" ||
+                      row.status === "Change Order Not requested" ||
+                      row.status === "Change Order declined" ||
+                      row.status === "Not Requested") &&
+                    (phaseData.status === "not approved" ||
+                      phaseData.status === "declined" ||
+                      changeOrderSelectedView) &&
+                    projectManagementPermission;
+
+                  // Main condition for rendering TableCell
+                  const showTableCell =
+                    (userRoleAuth.userRole === "superadmin" ||
+                      userRoleAuth.userRole === "admin" ||
+                      userRoleAuth.userRole === "projectManager" ||
+                      userRoleAuth.userRole === "") &&
+                    (view === "Change Order" ||
+                      changeOrderSelectedView ||
+                      InitialProposalView ||
+                      pathCheck.includes("/assignproject")) &&
+                    (showEditIcon || showDeleteIcon);
                   if (
                     userRoleAuth.userRole === "employee" ||
                     userRoleAuth.userRole === "subcontractor" ||
@@ -1015,6 +1087,7 @@ const AddPhaseCard = ({
                           maxWidth: "",
                           minWidth: "",
                           width: "10px",
+                          alignItems: "center",
                           display: changeOrderSelectedView ? "none" : "",
                         }}
                       >
@@ -1055,23 +1128,50 @@ const AddPhaseCard = ({
                           <>
                             {!(path === "assignproject") &&
                               !(view === "Generate Invoice") &&
-                              (row.status === "Work Order Not requested" ||
-                                row.status === "Work Order declined" ||
-                                row.status === "Change Order declined") &&
-                              view === "Change Order" &&
+                              // (row.status === "Work Order Not requested" ||
+                              //   row.status === "Work Order declined" ||
+                              //   row.status === "Change Order Not requested" ||
+                              //   row.status === "Change Order declined")
+                              //   &&
+                              (view === "Change Order" ||
+                                view === "Work Order") &&
                               !pathCheck.includes("initial-proposal") && (
-                                <Checkbox
-                                  // checked={checkedRow === row}
-                                  sx={{
-                                    "& .MuiSvgIcon-root": { fontSize: 20 },
-                                  }}
-                                  checked={
-                                    isRowSelected(row, row.phase_id)
-                                      ? isRowSelected(row, row.phase_id)
-                                      : false
-                                  }
-                                  onChange={() => handleCheckboxChange(row)}
-                                />
+                                <>
+                                  {phaseData?.status === "change pending" ||
+                                  phaseData?.status === "pending" ||
+                                  row?.status === "Work Order Requested" ||
+                                  row?.status === "Change Order Requested" ? (
+                                    <Tooltip
+                                      title={`Line Item is ${
+                                        row?.status ===
+                                          "Work Order Requested" ||
+                                        row?.status === "Change Order Requested"
+                                          ? row?.status
+                                          : phaseData?.status
+                                      }`}
+                                      arrow
+                                    >
+                                      <span>
+                                        <WarningIcon
+                                          color="error"
+                                          sx={{ marginRight: 1 }}
+                                        />
+                                      </span>
+                                    </Tooltip>
+                                  ) : (
+                                    <Checkbox
+                                      sx={{
+                                        "& .MuiSvgIcon-root": { fontSize: 20 },
+                                      }}
+                                      checked={
+                                        isRowSelected(row, row.phase_id)
+                                          ? isRowSelected(row, row.phase_id)
+                                          : false
+                                      }
+                                      onChange={() => handleCheckboxChange(row)}
+                                    />
+                                  )}
+                                </>
                               )}
                           </>
                         )}
@@ -1272,71 +1372,58 @@ const AddPhaseCard = ({
                           )}
                         </>
                       )}
-                      {(userRoleAuth.userRole === "superadmin" ||
-                        userRoleAuth.userRole === "admin" ||
-                        userRoleAuth.userRole === "projectManager" ||
-                        userRoleAuth.userRole === "") &&
-                        phaseData?.status === "not approved" &&
-                        !InitialProposalView &&
-                        view === "Change Order" &&
-                        !pathCheck.includes("initial-proposal") && (
-                          <TableCell sx={tableCell}>
+                      {showTableCell && (
+                        <TableCell sx={tableCell}>
+                          {showEditIcon && (
                             <Tooltip
                               title={
                                 projectManagementPermission
                                   ? ""
-                                  : "You Currently don't have permission to access this feature"
+                                  : "You are not authorized!"
                               }
                               arrow
                             >
                               <span>
-                                <Button disabled={!projectManagementPermission}>
-                                  <EditIcon
-                                    onClick={
-                                      changeOrderSelectedView
-                                        ? () =>
-                                            hanldeEditChangeLineItem(row, index)
-                                        : () => handleUpdateLine(row)
-                                    }
-                                  />
-                                </Button>
+                                <EditIcon
+                                  onClick={
+                                    changeOrderSelectedView
+                                      ? () =>
+                                          hanldeEditChangeLineItem(row, index)
+                                      : () => handleUpdateLine(row)
+                                  }
+                                  disabled={!projectManagementPermission}
+                                />
                               </span>
                             </Tooltip>
+                          )}
 
-                            {(row.status === "Work Order Not requested" ||
-                              row.status === "Work Order declined" ||
-                              row.status === "Change Order declined" ||
-                              row.status === "Not Requested") && (
-                              <Tooltip
-                                title={
-                                  projectManagementPermission
-                                    ? ""
-                                    : "You Currently don't have permission to access this feature"
-                                }
-                                arrow
-                              >
-                                <span>
-                                  <Button
-                                    disabled={!projectManagementPermission}
-                                  >
-                                    <DeleteIcon
-                                      onClick={
-                                        changeOrderSelectedView
-                                          ? () =>
-                                              handleDeleteChangeLineItem(
-                                                row,
-                                                index
-                                              )
-                                          : () => handleDeleteLineItem(row.id)
-                                      }
-                                      disabled={selectedRows.length === 0}
-                                    />
-                                  </Button>
-                                </span>
-                              </Tooltip>
-                            )}
-                          </TableCell>
-                        )}
+                          {showDeleteIcon && (
+                            <Tooltip
+                              title={
+                                projectManagementPermission
+                                  ? ""
+                                  : "You are not authorized!"
+                              }
+                              arrow
+                            >
+                              <span>
+                                <DeleteIcon
+                                  onClick={
+                                    changeOrderSelectedView
+                                      ? () =>
+                                          handleDeleteChangeLineItem(row, index)
+                                      : () => handleDeleteLineItem(row.id)
+                                  }
+                                  disabled={
+                                    selectedRows.length === 0 ||
+                                    !projectManagementPermission
+                                  }
+                                />
+                              </span>
+                            </Tooltip>
+                          )}
+                        </TableCell>
+                      )}
                     </TableRow>
                   );
                 })}
@@ -1373,6 +1460,7 @@ const AddPhaseCard = ({
             InitialProposalView={InitialProposalView}
             setRowCheckboxes={setRowCheckboxes}
             showAddLine={showAddLine}
+            changeOrderView={changeOrderView}
           />
         )}
         {showUpdateLine && (

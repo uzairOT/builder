@@ -134,7 +134,7 @@ function ApprovalNotification({
       approvalRefetchCall();
     } catch (res) {
       console.error("Failed to accept:", res);
-      if (res?.data?.message === "This phase has already been acted upon by another user.") {
+      if (res?.data?.message === "This has already been acted upon by another user.") {
         toast.warn(res?.data?.message)
         approvalRefetchCall(); 
       }

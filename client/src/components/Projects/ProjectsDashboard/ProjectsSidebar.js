@@ -33,18 +33,22 @@ const ProjectsSidebar = ({ reports }) => {
   const handleListedProjectsButton = (btn) => {
     setActiveBtn(btn);
   };
+
   const navigate = useNavigate();
 
-  const handleClick = async (projectId, path, e) => {
-    console.log(path);
-    dispatch(addInitialPhase([]));
+  const handleClick = async (projectId, pathTo, e) => {
+    // console.log(path);
+    // console.log(pathTo);
+    if (path !== pathTo) {
+      dispatch(addInitialPhase([]));
+    }
     // const res = await getUserRole({projectId, userId: currentUserId});
     // // console.log(res)
     // dispatch(authUserRole(res.data.role));
     if (userRole.userRole === "client") {
       navigate(`/projects/${projectId}/client`);
     } else {
-      navigate(`/projects/${projectId}/${path}`);
+      navigate(`/projects/${projectId}/${pathTo}`);
     }
   };
   const { id } = useParams();
@@ -180,6 +184,28 @@ const ProjectsSidebar = ({ reports }) => {
                           selected={selected}
                         />
                       </Link>
+                      {/* <Stack justifyContent={"center"}>
+                        <Stack
+                          pt={0.5}
+                          pb={0.5}
+                          width={"90%"}
+                          alignSelf={"center"}
+                        >
+                          <BuilderProButton
+                            variant={"contained"}
+                            backgroundColor={"#FFAC00"}
+                            fontFamily={"var(--main-font-family)"}
+                            fontSize={"16px"}
+                            marginLeft={0}
+                            fontWeight={600}
+                            handleOnClick={() => {
+                              navigate("/assignproject");
+                            }}
+                          >
+                            Add New Project
+                          </BuilderProButton>
+                        </Stack>
+                      </Stack> */}
                     </React.Fragment>
                   );
                 } else {

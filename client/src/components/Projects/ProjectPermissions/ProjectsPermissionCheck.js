@@ -1,9 +1,16 @@
 /**
  * @param {string} permissionSlug -
  * @param {Array} permissionsState
+ * @param {string} currentRoute
  * @returns {boolean}
  */
-export const useProjectPermissionCheck = (permissionSlug, permissionsState) => {
+export const useProjectPermissionCheck = (permissionSlug, permissionsState, currentRoute) => {
+ 
+ 
+  if (currentRoute ==="/assignproject") {
+    return true;
+  }
+ 
   if (!Array.isArray(permissionsState)) {
     return false;
   }
@@ -15,3 +22,4 @@ export const useProjectPermissionCheck = (permissionSlug, permissionsState) => {
 
   return hasAccess;
 };
+

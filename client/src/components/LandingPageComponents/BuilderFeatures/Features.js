@@ -16,12 +16,12 @@ import {
 } from "@mui/material";
 import { features } from "./FeaturesData";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import DashboardFeature from "../assets/PNG/DashboardFeature.png";
-import EventFeature from "../assets/PNG/EventFeature.png";
-import SubscriptionFeature from "../assets/PNG/SubscriptionFeature.png";
-import ReportsFeature from "../assets/PNG/ReportsFeature.png";
-import InvitationFeature from "../assets/PNG/InvitationFeature.png";
-import InvoiceFeature from "../assets/PNG/InvoiceFeature.png";
+import DashboardFeature from "../assets/Card/dashboardCard.png";
+import EventFeature from "../assets/Card/workEventsCard.png";
+import SubscriptionFeature from "../assets/Card/subsciptionCard.png";
+import ReportsFeature from "../assets/Card/reportsCard.png";
+import InvitationFeature from "../assets/Card/invitationCard.png";
+import InvoiceFeature from "../assets/Card/invoiceCard.png";
 import {
   CheckIcn,
   DashboardCardIcn,
@@ -72,7 +72,7 @@ const BuilderFeatures = () => {
   const xsView = useMediaQuery(theme.breakpoints.down("xs"));
   return (
     <Grid style={styles.container}>
-      <Container maxWidth={"xl"} sx={{ textAlign: "center" }}>
+      <Container maxWidth={"xl"} sx={{ textAlign: "center", mt: 4 }}>
         <Typography sx={styles.titleFont}>Features</Typography>
         <Typography
           variant="h4"
@@ -81,7 +81,7 @@ const BuilderFeatures = () => {
           style={styles.title}
         >
           Here's how{" "}
-          <strong style={{ color: "#2E728F" }}>BuilderBuilder Pro</strong> sets
+          <strong style={{ color: "#2E728F" }}>BuilderBUILDER Pro</strong> sets
           you up for the best Management
         </Typography>
         <Container maxWidth={"lg"}>
@@ -272,6 +272,7 @@ const styles = {
     color: "#454245",
   },
   container: {
+    mt: { xl: 20, lg: 45, md: 20, xs: 2 },
     padding: "32px",
   },
   title: {

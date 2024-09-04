@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Container,
   Grid,
@@ -18,8 +18,71 @@ import {
   FooterBotomRibbon,
   FooterTopRibbon,
 } from "../assets/svg";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { toast } from "react-toastify";
+import { useSendContactFormMutation } from "../../../redux/apis/usersApiSlice";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const [sendContactForm] = useSendContactFormMutation();
+  const navigate = useNavigate();
+
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      message: "subscribe",
+      privacyPolicy: false,
+    },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email("Invalid email address")
+        .required("Email is required"),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        await sendContactForm({
+          email: values.email,
+          message: "subscribe",
+        }).unwrap();
+        toast.success("You have subscribed to our newsletter!");
+        resetForm();
+      } catch (error) {
+        toast.error("Something went wrong. Please try again.");
+      }
+    },
+  });
+
+  const ProtectedLink = ({ href, children }) => {
+    const navigate = useNavigate();
+
+    const handleClick = (event) => {
+      event.preventDefault(); // Prevent the default link behavior
+
+      const userInfo = localStorage.getItem("userInfo");
+      if (!userInfo) {
+        toast.error("Please login to access this page");
+        navigate("/login"); // Redirect to login page
+      } else {
+        navigate(href); // Navigate to the intended path
+      }
+    };
+
+    return (
+      <Link
+        href={href}
+        onClick={handleClick}
+        style={{ color: "#fff" }}
+        variant="body2"
+      >
+        {children}
+      </Link>
+    );
+  };
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -40,57 +103,68 @@ const Footer = () => {
                 >
                   Subscribe to our newsletter
                 </Typography>
-                <TextField
-                  sx={{
-                    border: "1px solid silver",
-                    borderRadius: "5px",
-                    backgroundColor: "#EEEEEE",
-                    "& .MuiOutlinedInput-root": {
-                      "&::placeholder": {
-                        color: "#4C8AB1",
-                        fontWeight: "bold",
-                        fontFamily: "var(--main-font-family)",
+                <form onSubmit={formik.handleSubmit}>
+                  <TextField
+                    sx={{
+                      border: "1px solid silver",
+                      borderRadius: "5px",
+                      backgroundColor: "#EEEEEE",
+                      "& .MuiOutlinedInput-root": {
+                        "&::placeholder": {
+                          color: "#4C8AB1",
+                          fontWeight: "bold",
+                          fontFamily: "var(--main-font-family)",
+                        },
                       },
-                    },
-                  }}
-                  variant="outlined"
-                  placeholder="Enter your email"
-                  style={styles.subscribeInput}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <EmailIcon />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <Button
-                          sx={{
-                            borderRadius: 2,
-                            backgroundColor: "#2E728F",
-                            color: "white",
-                            "&:hover": {
-                              backgroundColor: 'grey',
-                              color:"white"
-                            },
-                            fontWeight: 600,
-                          }}
-                        >
-                          Submit
-                        </Button>
-                      </InputAdornment>
-                    ),
-                  }}
-                  inputProps={{
-                    sx: {
-                      "&::placeholder": {
-                        color: "#4C8AB1",
-                        fontWeight: "bold",
-                        fontFamily: "var(--main-font-family)",
+                    }}
+                    variant="outlined"
+                    placeholder="Enter your email"
+                    style={styles.subscribeInput}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <EmailIcon />
+                        </InputAdornment>
+                      ),
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Button
+                            type="submit"
+                            sx={{
+                              backgroundColor: "#2E728F",
+                              color: "white",
+                              "&:hover": {
+                                backgroundColor: "grey",
+                                color: "white",
+                              },
+                              fontWeight: 500,
+                              fontFamily: "var(--main-font-family)",
+                              borderRadius: "8px",
+                              textTransform: "none",
+                            }}
+                          >
+                            Submit
+                          </Button>
+                        </InputAdornment>
+                      ),
+                    }}
+                    inputProps={{
+                      sx: {
+                        "&::placeholder": {
+                          color: "#4C8AB1",
+                          fontWeight: "bold",
+                          fontFamily: "var(--main-font-family)",
+                        },
                       },
-                    },
-                  }}
-                />
+                    }}
+                    name="email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                  />
+                </form>
               </Box>
             </Box>
           </Grid>
@@ -101,12 +175,13 @@ const Footer = () => {
             mt={{ lg: -10, xs: 0 }}
             justifyContent={{ lg: "left", xs: "center" }}
             textAlign={{ lg: "left", xs: "center" }}
+            // ml={{ lg: 20, xs: 0 }}
           >
             <Typography variant="h6" gutterBottom>
               <BuilderIcnSm />
             </Typography>
             <Typography variant="body2" style={styles.footerDesc}>
-              BuilderBuilder Pro is the leading construction management
+              BuilderBUILDER Pro is the leading construction management
               solution, designed to help you streamline your projects from start
               to finish. With our powerful tools and features, you can manage
               every aspect of your construction projects with ease and
@@ -124,53 +199,15 @@ const Footer = () => {
               Product
             </Typography>
             <Typography style={styles.footerLinks}>
-              <Link href="/login" style={{ color: "#fff" }} variant="body2">
-                Dashboard
-              </Link>
+              <ProtectedLink href="/dashboard">Dashboard</ProtectedLink>
               <br />
-              <Link href="/login" style={{ color: "#fff" }} variant="body2">
-                Chats
-              </Link>
-              {/* <br />
-            <Link href="/login" style={{ color: "#fff" }} variant="body2">
-              Knowledge Base
-            </Link> */}
+              <ProtectedLink href="/projects">Projects</ProtectedLink>
               <br />
-              <Link href="/login" style={{ color: "#fff" }} variant="body2">
-                Tasks
-              </Link>
+              <ProtectedLink href="/reports">Reports</ProtectedLink>
               <br />
-              <Link href="/login" style={{ color: "#fff" }} variant="body2">
-                Admin
-              </Link>
+              <ProtectedLink href="/subscription">Subscription</ProtectedLink>
               <br />
-              <Link href="/login" style={{ color: "#fff" }} variant="body2">
-                Profile Management
-              </Link>
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            md={2}
-            justifyContent={{ lg: "left", xs: "center" }}
-            textAlign={{ lg: "left", xs: "center" }}
-          >
-            <Typography variant="h6" gutterBottom style={styles.footerLinks}>
-              Support
-            </Typography>
-            {/* <Link href="#" style={{ color: "#fff" }} variant="body2">
-              Blog
-            </Link> */}
-            {/* <br /> */}
-            <Typography style={styles.footerLinks}>
-              <Link href="/#contact" style={{ color: "#fff" }} variant="body2">
-                Contact Us
-              </Link>
-              <br />
-              <Link href="/#about" style={{ color: "#fff" }} variant="body2">
-                About Us
-              </Link>
+              <ProtectedLink href="/settings">Settings</ProtectedLink>
             </Typography>
           </Grid>
           <Grid
@@ -228,7 +265,7 @@ const Footer = () => {
         <Box style={styles.footerBottom}>
           <Box>
             <Typography variant="body2" styles={styles.footerCopyright}>
-              © Copyright 2024, All Rights Reserved by BuilderBuilder Pro
+              © Copyright 2024, All Rights Reserved by BuilderBUILDER Pro
             </Typography>
           </Box>
           <Box>
@@ -268,10 +305,10 @@ const styles = {
     backgroundColor: "#fff",
     borderRadius: "20px",
     border: "1px solid silver",
-    padding: "50px",
+    padding: "30px",
     display: "flex",
     alignItems: "center",
-    marginBottom: "40px",
+    marginBottom: "60px",
     gap: { md: 5, xs: 2 },
     flexDirection: { md: "row", xs: "column" },
   },

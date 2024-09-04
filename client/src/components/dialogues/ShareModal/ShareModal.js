@@ -301,11 +301,16 @@ const ShareModal = ({
       if (userRoleAuth.userRole === "supplier") {
         return (
           user.role === "Superadmin" ||
-          user.role === "admin" ||
-          user.role === "projectManager"
+          user.role === "Admin" ||
+          user.role === "Project Manager"
         );
       } else {
-        return user.role === "Client";
+        return (
+          user.role === "Client" ||
+          user.role === "Admin" ||
+          user.role === "Project Manager" ||
+          user.role === "Subcontractor"
+        );
       }
     });
   }, [data, userRoleAuth.userRole]);

@@ -9,6 +9,7 @@ function AddLineDialogue({
   InitialProposalView,
   setRowCheckboxes,
   showAddLine,
+  changeOrderView
 }) {
   return (
     <div>
@@ -22,6 +23,7 @@ function AddLineDialogue({
         handleAddClose={handleAddClose}
         handleAddRow={handleAddRow}
         showAddLine={showAddLine}
+        changeOrderView={changeOrderView}
       />
     </div>
   );

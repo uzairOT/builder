@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import builder1 from "../../Signup/Assets/pngs/builderPro2.png";
 import {
   Box,
@@ -33,6 +33,16 @@ const VerifyCode = () => {
   );
   const [code, setCode] = useState(["", "", "", "", ""]);
   const inputRefs = useRef([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("userInfo")
+      ? JSON.parse(localStorage.getItem("userInfo")).token
+      : null;
+    if (token) {
+      navigate("/assignproject");
+    }
+  }, [navigate]);
+
   const submitHandler = async (e) => {
     e.preventDefault();
     console.log("forgetPasswordEmail", forgetPasswordEmail);
@@ -54,13 +64,18 @@ const VerifyCode = () => {
         dispatch(setCredentials({ ...res.data }));
         // navigate("/assignproject");
         setTimeout(() => {
-          window.location.href = '/assignproject';
-        }, 1000); 
+          window.location.href = "/assignproject";
+        }, 1000);
       } else {
         navigate("/setnewpassword");
       }
     } catch (err) {
-      toast.error(err?.data?.error || err.data.message || err.error || 'Something went wrong!');
+      toast.error(
+        err?.data?.error ||
+          err.data.message ||
+          err.error ||
+          "Something went wrong!"
+      );
     }
   };
   const handleInputChange = (index, value) => {
@@ -89,7 +104,7 @@ const VerifyCode = () => {
       const res = await resendOTP({ email: forgetPasswordEmail }).unwrap();
       toast.success("OTP resend successfully");
     } catch (err) {
-      toast.error(err?.data?.error || err.error || 'Something went wrong!');
+      toast.error(err?.data?.error || err.error || "Something went wrong!");
     }
   };
   return (
@@ -156,7 +171,7 @@ const VerifyCode = () => {
                   sx={{
                     color: "#000000",
                     fontSize: "20px",
-                    fontFamily: 'var(--main-font-family)',
+                    fontFamily: "var(--main-font-family)",
                     fontWeight: 550,
                   }}
                 >
@@ -175,7 +190,7 @@ const VerifyCode = () => {
                     color: "#202227",
                     fontWeight: 500,
                     fontSize: "16px",
-                    fontFamily: 'var(--main-font-family)',
+                    fontFamily: "var(--main-font-family)",
                   }}
                 >
                   Enter Code
@@ -183,11 +198,11 @@ const VerifyCode = () => {
                 <Box sx={{ display: "flex", gap: "10px", marginTop: "10px" }}>
                   {code.map((value, index) => (
                     <TextField
-                    sx={{
-                      ".MuiOutlinedInput-notchedOutline ":{
-                        borderColor:'white'
-                      }
-                    }}
+                      sx={{
+                        ".MuiOutlinedInput-notchedOutline ": {
+                          borderColor: "white",
+                        },
+                      }}
                       key={index}
                       inputRef={(el) => (inputRefs.current[index] = el)}
                       type="text"
@@ -214,9 +229,9 @@ const VerifyCode = () => {
                     color: "#202227",
                     fontWeight: 500,
                     fontSize: "16px",
-                    fontFamily: 'var(--main-font-family)',
+                    fontFamily: "var(--main-font-family)",
                     marginTop: "15px",
-                    textAlign:'center'
+                    textAlign: "center",
                   }}
                 >
                   Didn’t receive a code?{" "}
@@ -229,11 +244,11 @@ const VerifyCode = () => {
                 </Typography>
               </Box>
 
-              <CardActions sx={{display:'flex', justifyContent:'center'}}>
+              <CardActions sx={{ display: "flex", justifyContent: "center" }}>
                 <Button
                   sx={{
                     ...YellowBtn,
-                    alignSelf:'center'
+                    alignSelf: "center",
                   }}
                   onClick={submitHandler}
                   type="submit"

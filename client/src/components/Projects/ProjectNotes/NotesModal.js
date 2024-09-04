@@ -349,6 +349,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
               fontSize={"11px"}
               fontFamily={'var(--main-font-family)'}
               handleOnClick={handleSubmit}
+              disabled={isLoading}
             >
               {isLoading ? <CircularProgress size={"18px"} /> : showEditModal ? "Edit Notes" : "Add Notes"}
             </BuilderProButton>

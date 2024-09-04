@@ -1,7 +1,7 @@
 import { Box, Paper, Stack } from "@mui/material";
 import React, { useState } from "react";
 import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import ProjectsChangeOrder from "../ProjectsChangeOrder/ProjectsChangeOrder";
 import TaskCalender from "../../Task/Calender/TaskCalender";
 import { useSelector } from "react-redux";
@@ -29,7 +29,7 @@ const WorkOrderView = () => {
   });
   const dailyForecast = forecast.dailyForecast;
   const { id } = useParams();
-
+  const [projectName, projectLocation, SuperAdminId, selectedProjectData] = useOutletContext()
   const handleChangeView = () => {
     setChangeView(!changeView);
   };
@@ -92,6 +92,7 @@ const WorkOrderView = () => {
                   adminProjectView={true}
                   view={"Work Order"}
                   authUserRole={authUserRole.userRole}
+                  selectedProjectData={selectedProjectData}
                 />
               </Stack>
             </>

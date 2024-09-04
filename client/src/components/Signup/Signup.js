@@ -158,7 +158,7 @@ const SignupComp = () => {
         if (res.message === "Login Successful!") {
           dispatch(setCredentials({ ...res.data }));
           setTimeout(() => {
-            window.location.href = "/";
+            window.location.href = "/dashboard";
           }, 1000);
         } else if (res.message === "notFound!") {
           toast.warning("User not found");
@@ -289,7 +289,7 @@ const SignupComp = () => {
             marginTop: { xl: "0rem", lg: "0rem", md: "0rem", sm: "0rem" },
           }}
         >
-          {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
+          {/* <Typography sx={firstHeading}>BuilderBUILDER Pro</Typography> */}
           <Box>
             <Typography component="p" sx={secondHeading}>
               On schedule.
@@ -305,7 +305,7 @@ const SignupComp = () => {
             </Typography>
           </Box>
         </Box>
-        {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
+        {/* <Typography sx={firstHeading}>BuilderBUILDER Pro</Typography> */}
 
         {/* Button */}
 
@@ -515,7 +515,7 @@ const SignupComp = () => {
               <input
                 type="text"
                 name="company"
-                placeholder="BuilderBuilder Pro"
+                placeholder="BuilderBUILDER Pro"
                 style={{
                   ...inputStyle,
                   border:

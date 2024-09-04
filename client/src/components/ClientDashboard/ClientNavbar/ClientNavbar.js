@@ -143,7 +143,7 @@ const ClientNavbar = () => {
             <AppBar position='static' sx={themeStyle.navbar}>
                 <Toolbar sx={themeStyle.toolbar}>
                     {showHamburger && <ClientNavbarDrawer />}
-                    <BuilderProNavbarLogo aria-label="BuilderBuilder Pro Logo" style={themeStyle.logo} />
+                    <BuilderProNavbarLogo aria-label="BuilderBUILDER Pro Logo" style={themeStyle.logo} />
                     <Box sx={themeStyle.tabs}>
                         <List sx={themeStyle.tabs}>
                             <ListItemButton

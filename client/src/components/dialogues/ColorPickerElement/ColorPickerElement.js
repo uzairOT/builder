@@ -61,14 +61,14 @@ function ColorPickerElement({
   PhaseHeading,
   onSubmit,
   adminProjectView,
-  InitialProposalView
+  InitialProposalView,
+  formattedView
 }) {
   const dispatch = useDispatch();
   const localUser = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(localUser);
   const local = localStorage.getItem('projectId');
   const projectId = currentUser?.incompleteProject?.incomplete ? currentUser?.incompleteProject?.projectId : parseInt(local);
-  
   const {id} = useParams();
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState(phaseData ? phaseData.color : "#FFF");
@@ -119,7 +119,9 @@ function ColorPickerElement({
       //console.log(phaseData);
       onSubmit(phaseName, color);
       setPhaseName(phaseName);
+      toast.success("Phase updated sucessfully!")
       handleUpdateClose();
+      
     } else {
       // onSubmit(phaseName, color);
       const data = {
@@ -129,9 +131,10 @@ function ColorPickerElement({
         projectId: adminProjectView ? id : projectId,
         initial: InitialProposalView ? true : adminProjectView ? false : true,
       };
-      //console.log(data)
-      const res = await addProjectPhase(data).unwrap().then((res)=>{
+      console.log("View formattedView",formattedView)
+      const res = await addProjectPhase(data, formattedView).unwrap().then((res)=>{
         console.log(res)
+        toast.success("Phase added sucessfully!")
         if(InitialProposalView){
 
           dispatch(addInitialPhase(res.phase))

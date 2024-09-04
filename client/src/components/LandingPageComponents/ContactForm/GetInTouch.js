@@ -16,6 +16,7 @@ import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { PhoneInput } from "react-international-phone";
 import { useFormik } from "formik";
 import { PhoneNumberUtil } from "google-libphonenumber";
+import { toast } from "react-toastify";
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
@@ -77,35 +78,21 @@ const GetInTouch = () => {
     onSubmit: async (values, { resetForm }) => {
       try {
         if (!isPhoneValid(values.phoneNumber)) {
-          setSnackbarMessage("Phone number is not valid");
-          setSnackbarSeverity("error");
-          setSnackbarOpen(true);
+          toast.error("Phone number is not valid");
           return;
         }
         if (!values.privacyPolicy) {
-          setSnackbarMessage("You must agree to the privacy policy");
-          setSnackbarSeverity("error");
-          setSnackbarOpen(true);
+          toast.error("You must agree to the privacy policy");
           return;
         }
         await sendContactForm(values).unwrap();
-        setSnackbarMessage("Your message has been sent successfully!");
-        setSnackbarSeverity("success");
-        setSnackbarOpen(true);
+        toast.success("Your message has been sent successfully!");
         resetForm();
       } catch (err) {
-        setSnackbarMessage(
-          `There was an error sending your message: ${err.message}`
-        );
-        setSnackbarSeverity("error");
-        setSnackbarOpen(true);
+        toast.error(`There was an error sending your message: ${err.message}`);
       }
     },
   });
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
 
   return (
     <Box
@@ -164,7 +151,13 @@ const GetInTouch = () => {
                   placeholder="First Name"
                 />
                 {formik.touched.firstName && formik.errors.firstName && (
-                  <Typography sx={{ color: "#d32f2f", fontSize: "12px" }}>
+                  <Typography
+                    sx={{
+                      color: "#d32f2f",
+                      fontSize: "12px",
+                      textAlign: "left",
+                    }}
+                  >
                     {formik.errors.firstName}
                   </Typography>
                 )}
@@ -188,7 +181,13 @@ const GetInTouch = () => {
                   placeholder="Last Name"
                 />
                 {formik.touched.lastName && formik.errors.lastName && (
-                  <Typography sx={{ color: "#d32f2f", fontSize: "12px" }}>
+                  <Typography
+                    sx={{
+                      color: "#d32f2f",
+                      fontSize: "12px",
+                      textAlign: "left",
+                    }}
+                  >
                     {formik.errors.lastName}
                   </Typography>
                 )}
@@ -212,7 +211,13 @@ const GetInTouch = () => {
                   placeholder="JohnDoe@gmail.com"
                 />
                 {formik.touched.email && formik.errors.email && (
-                  <Typography sx={{ color: "#d32f2f", fontSize: "12px" }}>
+                  <Typography
+                    sx={{
+                      color: "#d32f2f",
+                      fontSize: "12px",
+                      textAlign: "left",
+                    }}
+                  >
                     {formik.errors.email}
                   </Typography>
                 )}
@@ -260,6 +265,7 @@ const GetInTouch = () => {
                       fontSize: "12px",
                       marginLeft: "14px",
                       marginTop: "3px",
+                      textAlign: "left",
                     }}
                   >
                     Phone number is not valid
@@ -285,46 +291,64 @@ const GetInTouch = () => {
                   placeholder="Your message here"
                 />
                 {formik.touched.message && formik.errors.message && (
-                  <Typography sx={{ color: "#d32f2f", fontSize: "12px" }}>
+                  <Typography
+                    sx={{
+                      color: "#d32f2f",
+                      fontSize: "12px",
+                      textAlign: "left",
+                    }}
+                  >
                     {formik.errors.message}
                   </Typography>
                 )}
               </Grid>
             </Grid>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="privacyPolicy"
-                  checked={formik.values.privacyPolicy}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              }
-              label={
-                <Typography variant="body2">
-                  You agree to our friendly{" "}
-                  <a
-                    style={{ textDecoration: "none", color: "#4C8AB1" }}
-                    href="/privacypolicy"
-                  >
-                    privacy policy
-                  </a>
-                  .
+            <Box justifyContent={"left"} mr={{sm:15, xs:"0"}}>
+              <FormControlLabel
+                sx={{ justifyContent: "left", textAlign: "left" }}
+                control={
+                  <Checkbox
+                    name="privacyPolicy"
+                    checked={formik.values.privacyPolicy}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                }
+                label={
+                  <Typography variant="body2">
+                    You agree to our friendly{" "}
+                    <a
+                      style={{ textDecoration: "none", color: "#4C8AB1" }}
+                      href="/privacypolicy"
+                    >
+                      privacy policy
+                    </a>
+                    .
+                  </Typography>
+                }
+              />
+              {formik.touched.privacyPolicy && formik.errors.privacyPolicy && (
+                <Typography
+                  sx={{ color: "#d32f2f", fontSize: "12px", textAlign: "left" }}
+                >
+                  {formik.errors.privacyPolicy}
                 </Typography>
-              }
-            />
-            {formik.touched.privacyPolicy && formik.errors.privacyPolicy && (
-              <Typography sx={{ color: "#d32f2f", fontSize: "12px" }}>
-                {formik.errors.privacyPolicy}
-              </Typography>
-            )}
+              )}
+            </Box>
             <Button
               type="submit"
               fullWidth
               sx={{
                 backgroundColor: "#2E728F",
                 color: "white",
-                borderRadius: 1,
+                "&:hover": {
+                  backgroundColor: "grey",
+                  color: "white",
+                },
+                fontWeight: 500,
+                fontFamily: "var(--main-font-family)",
+                borderRadius: "8px",
+                textTransform: "none",
               }}
               disabled={isLoading}
             >
@@ -333,16 +357,6 @@ const GetInTouch = () => {
           </form>
         </Grid>
       </Grid>
-
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-      >
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 };

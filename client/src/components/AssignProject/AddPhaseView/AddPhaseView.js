@@ -69,6 +69,8 @@ function AddPhaseView({
   handleUpdateOpen: hanldeEditChangeLineItem,
   handleAddOpen: handleAddChangeLineItem,
   handleDeleteOpen: handleDeleteChangeLineItem,
+  selectedProjectId,
+  selectedProjectData
   // canGenerate
 }) {
   const [cardPhase, setCardPhase] = useState([]);
@@ -97,7 +99,17 @@ function AddPhaseView({
   const changeOrderSelected = useSelector(
     (state) => state.projectInitialProposal.changeOrderLineItems
   );
+
+  // const projects = useSelector(
+  //   (state) => state.userProjects.projects
+  // );
+
   //console.log("Selected Checked Data", changeOrderSelected);
+  let formattedView = view ? view.toLowerCase().replace(/\s+/g, "") : view;
+
+  if (InitialProposalAndChange === true) {
+    formattedView = "initialchange";
+  }
 
   const dispatch = useDispatch();
 
@@ -125,6 +137,7 @@ function AddPhaseView({
     generatePDF(targetRef, { filename: "page.pdf" });
     //console.log("Invoice Generated Successfully");
   };
+
   const fetchData = async () => {
     if (changeOrderSelectedView) {
       return;
@@ -153,7 +166,7 @@ function AddPhaseView({
         try {
           //console.log("fetching data...");
           const response = await axios.get(
-            `http://3.135.107.71/project/getPhases/${id}`,
+            `http://3.135.107.71/project/getPhases/${id}?query=${formattedView}`,
             {
               headers: {
                 Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -205,14 +218,8 @@ function AddPhaseView({
   const handleSendApproval = () => {
     const sentBy = userId;
     socket.emit("sendApprovalNotification", { projectId, sentBy }, (data) => {
-      toast(data?.message, {
-        className:
-          data?.success === true
-            ? "toast-success"
-            : data?.success === false
-            ? "toast-error"
-            : "toast-default",
-      });
+      const toastType = data?.success === true ? "success" : "error";
+      toast[toastType](data?.message);
       dispatch(toggleWorkOrderDeclineRecall());
     });
   };
@@ -264,7 +271,7 @@ function AddPhaseView({
     if (selectedPhaseId) {
       setShowUpdatePhaseDialogue(true);
     } else {
-      toast.info("Please Select a Phase");
+      toast.info("Please select a phase");
     }
   };
 
@@ -322,7 +329,7 @@ function AddPhaseView({
     if (selectedPhaseId) {
       setOpenModal(true);
     } else {
-      toast.info("Please Select a Phase");
+      toast.info("Please select a phase");
     }
   };
   const handlePhaseDelete = (isDelete) => {
@@ -382,13 +389,15 @@ function AddPhaseView({
     return date.toLocaleDateString(undefined, options);
   };
 
-  useEffect(()=>{
-    if(pathCheck.includes('change-order') && !changeOrderSelectedView){
-      dispatch(clearPhases())
+  useEffect(() => {
+    if (pathCheck.includes("change-order") && !changeOrderSelectedView) {
+      dispatch(clearPhases());
     }
-  },[pathCheck])
+  }, [pathCheck]);
   // const permissionsState = useSelector((state) => state?.permissions?.permissions);
   // console.log("Permissions Test", permissionsState)
+
+  const currentRoute = location.pathname;
 
   const permissionsState = useSelector(
     (state) => state?.permissions?.permissions
@@ -400,7 +409,8 @@ function AddPhaseView({
 
   const projectManagementPermission = useProjectPermissionCheck(
     "project-management",
-    permissionsState
+    permissionsState,
+    currentRoute
   );
 
   const GenerateInvoicePermission = useProjectPermissionCheck(
@@ -458,6 +468,7 @@ function AddPhaseView({
                         >
                           <span>
                             <Button
+                              disabled={!projectManagementPermission}
                               sx={{
                                 ...actionButton,
                                 padding: { lg: "0.75rem 1.5rem" },
@@ -504,6 +515,7 @@ function AddPhaseView({
                         >
                           <span>
                             <Button
+                              disabled={!projectManagementPermission}
                               sx={{
                                 ...actionButton,
                                 display:
@@ -542,6 +554,7 @@ function AddPhaseView({
                         >
                           <span>
                             <Button
+                              disabled={!projectManagementPermission}
                               sx={{
                                 ...actionButton,
                                 display:
@@ -651,6 +664,24 @@ function AddPhaseView({
               </Stack>
               {/* } */}
             </>
+          ) : view === "Work Order" ? (
+            <>
+              <Stack direction={"row"} sx={buttonBox}>
+                {adminProjectView && !mobileView ? (
+                  <RequestWorkOrderModal
+                    rowCheckboxes={rowCheckboxes}
+                    setRowCheckboxes={setRowCheckboxes}
+                    phases={phases}
+                    fetchData={fetchData}
+                    refetchChangeOrder={refetchChangeOrder}
+                    changeOrderView={changeOrderView}
+                    selectedProjectData={selectedProjectData}
+                  />
+                ) : (
+                  <></>
+                )}
+              </Stack>
+            </>
           ) : (
             <>
               {(authUserRole === "superadmin" ||
@@ -667,7 +698,7 @@ function AddPhaseView({
                         title={
                           projectManagementPermission
                             ? ""
-                            : "You Currently don't have permission to access this feature"
+                            : "You are not authorized!"
                         }
                         arrow
                       >
@@ -715,7 +746,7 @@ function AddPhaseView({
                         title={
                           projectManagementPermission
                             ? ""
-                            : "You Currently don't have permission to access this feature"
+                            : "You are not authorized!"
                         }
                         arrow
                       >
@@ -753,7 +784,7 @@ function AddPhaseView({
                         title={
                           projectManagementPermission
                             ? ""
-                            : "You Currently don't have permission to access this feature"
+                            : "You are not authorized!"
                         }
                         arrow
                       >
@@ -819,6 +850,7 @@ function AddPhaseView({
                       fetchData={fetchData}
                       refetchChangeOrder={refetchChangeOrder}
                       changeOrderView={changeOrderView}
+                      selectedProjectData={selectedProjectData}
                     />
                   ) : (
                     <></>
@@ -1010,7 +1042,8 @@ function AddPhaseView({
                   height: adminProjectView
                     ? view === "Generate Invoice"
                       ? "calc(93vh - 140px)"
-                      : "calc(92vh - 300px)"
+                      :  ((changeOrderView || InitialProposalAndChange) && !(changeOrderView && InitialProposalAndChange))?
+                      "calc(93vh)": "calc(92vh - 300px)"
                     : "",
                   ...themeStyle.scrollable,
                   width: {
@@ -1027,18 +1060,12 @@ function AddPhaseView({
                 phases[0].length !== 0 &&
                 !isLoading ? (
                   phases[0]?.map((phase, index) => {
-                    console.log("PHASE", phase.status);
-                    if (
-                      view === "Work Order" &&
-                      !["approved", "change approved"].includes(phase?.status)
-                    ) {
-                      return <></>;
-                    }
+                    // if (InitialProposalAndChange && phase.initial) {
+                    //   return (
+                    //    <></>
+                    //   );
+                    // }
 
-                    if (InitialProposalAndChange && phase.initial) {
-                      return <></>;
-                    }
-                    
                     return (
                       <Stack
                         key={phase.id}
@@ -1109,6 +1136,7 @@ function AddPhaseView({
         )}
         {showAddPhaseDialogue && (
           <AddPhaseDialogue
+            formattedView={formattedView}
             handleAddOpen={handleAddOpen}
             handleAddClose={handleAddClose}
             setPhaseData={setSelectedPhaseData}

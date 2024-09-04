@@ -22,7 +22,7 @@ function NewProject({step3}) {
     const currentUser = JSON.parse(local);
 
 const dispatch=useDispatch()
-console.log(currentUser)
+// console.log(step3)
 
     
  
@@ -43,6 +43,11 @@ console.log(currentUser)
         const step1 = parseInt(localStorage.getItem('step'), 10); // Convert to number
         setStep(step1);
     }, [step]);
+      useEffect(() => {
+    if (currentUser?.incompleteProject?.incomplete) {
+        setStep(1);
+    }
+  }, [currentUser]);
 
     const renderStep = () => {
         switch (step) {

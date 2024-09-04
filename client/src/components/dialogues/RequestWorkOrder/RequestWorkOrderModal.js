@@ -56,7 +56,11 @@ import { io } from "socket.io-client";
 import CloseIcon from "@mui/icons-material/Close";
 import { socket } from "../../../socket";
 import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
-import { removeLineItems, updateCheckedItems } from "../../../redux/slices/Project/projectInitialProposal";
+import {
+  clearPhases,
+  removeLineItems,
+  updateCheckedItems,
+} from "../../../redux/slices/Project/projectInitialProposal";
 import { useProjectPermissionCheck } from "../../Projects/ProjectPermissions/ProjectsPermissionCheck";
 
 const local = localStorage.getItem("userInfo");
@@ -76,6 +80,7 @@ const RequestWorkOrderModal = ({
   refetchChangeOrder,
   setRowCheckboxes,
   changeOrderView,
+  selectedProjectData,
 }) => {
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
@@ -121,7 +126,10 @@ const RequestWorkOrderModal = ({
   // const changeOrderSelected = useSelector(
   //   (state) => state.projectInitialProposal.changeOrderLineItems
   // );
-console.log(updateRow);
+  console.log(updateRow);
+  const hasMoreThanTwoItems = Object.values(rowCheckboxes).some(
+    (phaseData) => phaseData.rows.length > 2
+  );
 
   let counter = 0;
   let lineItemIds = [];
@@ -177,7 +185,7 @@ console.log(updateRow);
 
   const isButtonDisabled = changeOrder
     ? checkedRow === null
-    : Object?.keys(rowCheckboxes)?.length === 0;
+    : (Object?.keys(rowCheckboxes)?.length === 0 || selectedProjectData.initialProposalApproved === false);
   const handleNotesChange = (e) => {
     setNotes(e.target.value);
   };
@@ -284,70 +292,86 @@ console.log(updateRow);
 
   const handleUpdateOpen = (lineItem, index) => {
     // setUpdateRow(() => rowCheckboxes);
-    console.log("RUN",index , lineItem)
+    console.log("RUN", index, lineItem);
     setLineItemIndex(index);
     setLineItem(lineItem);
     setShowUpdateLine(true);
   };
   const handleDeleteOpen = (lineItem, index) => {
-    const lineItemId = lineItem.id
-    if(lineItemId){
+    const lineItemId = lineItem.id;
+    if (lineItemId) {
       markLineItemForDeletion(lineItem.phase_id, index);
-    } else{
-      console.log("I RAN!", index)
-      setUpdateRow(prevState => {
-        if (index !== -1 && prevState[lineItem.phase_id] && prevState[lineItem.phase_id].rows) {
-          const updatedRows = [...prevState[lineItem.phase_id].rows].filter((_,i) => i !== index);
-        dispatch(removeLineItems({phaseId: lineItem.phase_id, index}));
-        return {
-          ...prevState,
-          [lineItem.phase_id]:{
-            ...prevState[lineItem.phase_id],
-            rows: updatedRows
-          }
+    } else {
+      console.log("I RAN!", index);
+      setUpdateRow((prevState) => {
+        if (
+          index !== -1 &&
+          prevState[lineItem.phase_id] &&
+          prevState[lineItem.phase_id].rows
+        ) {
+          const updatedRows = [...prevState[lineItem.phase_id].rows].filter(
+            (_, i) => i !== index
+          );
+          dispatch(removeLineItems({ phaseId: lineItem.phase_id, index }));
+          return {
+            ...prevState,
+            [lineItem.phase_id]: {
+              ...prevState[lineItem.phase_id],
+              rows: updatedRows,
+            },
+          };
         }
-      }
-      return prevState;
-      })
+        return prevState;
+      });
     }
   };
 
-  const markLineItemForDeletion = useCallback((phaseId, lineItemIndex) => {
-    setUpdateRow(prevState => {
-      if (lineItemIndex !== -1 && prevState[phaseId] && prevState[phaseId].rows) {
-        const updatedRows = [...prevState[phaseId].rows];
-        updatedRows[lineItemIndex] = {
-          ...updatedRows[lineItemIndex],
-          shouldDelete: updatedRows[lineItemIndex].shouldDelete ?  false : true, // Flag to indicate this item should be deleted
-        };
+  const markLineItemForDeletion = useCallback(
+    (phaseId, lineItemIndex) => {
+      setUpdateRow((prevState) => {
+        if (
+          lineItemIndex !== -1 &&
+          prevState[phaseId] &&
+          prevState[phaseId].rows
+        ) {
+          const updatedRows = [...prevState[phaseId].rows];
+          updatedRows[lineItemIndex] = {
+            ...updatedRows[lineItemIndex],
+            shouldDelete: updatedRows[lineItemIndex].shouldDelete
+              ? false
+              : true, // Flag to indicate this item should be deleted
+          };
 
-        // Dispatch to Redux
-        dispatch(
-          updateCheckedItems({
-            phaseId,
-            phaseName: prevState[phaseId].phaseName, // Use existing phase name
-            lineItems: updatedRows, // Update the entire list of lineItems
-          })
-        );
+          // Dispatch to Redux
+          dispatch(
+            updateCheckedItems({
+              phaseId,
+              phaseName: prevState[phaseId].phaseName, // Use existing phase name
+              lineItems: updatedRows, // Update the entire list of lineItems
+            })
+          );
 
-        return {
-          ...prevState,
-          [phaseId]: {
-            ...prevState[phaseId],
-            rows: updatedRows,
-          },
-        };
-      }
-      return prevState;
-    });
-  }, [setUpdateRow, dispatch]);
-  
+          return {
+            ...prevState,
+            [phaseId]: {
+              ...prevState[phaseId],
+              rows: updatedRows,
+            },
+          };
+        }
+        return prevState;
+      });
+    },
+    [setUpdateRow, dispatch]
+  );
+
   const handleAddOpen = (phaseId) => {
     setAddPhaseId(phaseId);
     setShowUpdateLine(true);
-  }
+  };
 
   const handleUpdateClose = () => {
+    setAddPhaseId(null);
     setLineItemIndex(null);
     setLineItem(null);
     setShowUpdateLine(false);
@@ -435,6 +459,7 @@ console.log(updateRow);
           if (response.success) {
             setDone(true);
             toast.success("Change Order request sent!");
+
             refetch({ projectId, userId: userId });
           } else {
             toast.error(
@@ -455,6 +480,7 @@ console.log(updateRow);
             if (response.success) {
               // console.log("work order",response);
               setDone(true);
+              dispatch(clearPhases());
               toast.success("Work Order request sent!");
               if (refetchChangeOrder) {
                 await refetchChangeOrder({ projectId, userId: userId });
@@ -495,6 +521,12 @@ console.log(updateRow);
     const res = await refetchProjectTeam();
   };
   const showToast = () => {
+    if (selectedProjectData.initialProposalApproved === false) {
+      toast.warning(
+        "Please approve initial line items to request a work order."
+      );
+      return;
+    }
     toast.warning("Please select a line item to request a work order.");
   };
 
@@ -529,7 +561,7 @@ console.log(updateRow);
     "work-order",
     permissionsState
   );
-
+  console.log("selectedProjectData", selectedProjectData);
   return (
     <>
       {pathCheck.includes("initial-proposal") ? (
@@ -617,7 +649,12 @@ console.log(updateRow);
             }}
             height={"100%"}
           >
-            <Stack p={3} flex={changeOrderView ? 2 : 1} spacing={1} width={"calc(100% - 48px)"}>
+            <Stack
+              p={3}
+              flex={changeOrderView ? 2 : 1}
+              spacing={1}
+              width={"calc(100% - 48px)"}
+            >
               <Typography fontFamily={"var(--main-font-family)"}>
                 <strong>Subject: </strong>{" "}
                 <input
@@ -665,367 +702,170 @@ console.log(updateRow);
                 justifyContent={"space-around"}
                 spacing={1}
                 p={1}
-         
               >
-                {/* <Stack>
-                  <Typography sx={themeStyle.headingText}>
-                    Phases
-                    <Typography
-                      sx={{
-                        ...themeStyle.headingText,
-                        color: "#9E9E9E",
-                        marginTop: "0rem",
-                      }}
-                    >
-                      {changeOrder
-                        ? checkedRow?.phaseItems?.length
-                        : Object?.keys(rowCheckboxes)?.length}
+                {!changeOrderView && (
+                  <Stack flex={1}>
+                    <Typography sx={themeStyle.headingText}>
+                      Phases
+                      <Typography
+                        sx={{
+                          ...themeStyle.headingText,
+                          color: "#9E9E9E",
+                          marginTop: "0rem",
+                        }}
+                      >
+                        {Object?.keys(rowCheckboxes)?.length}
+                      </Typography>
                     </Typography>
-                  </Typography>
 
-                  <FormControl>
-                    {checkedRow
-                      ? phaseItems?.map((phase) => (
-                          <ListItem sx={{ padding: 0 }} key={phase.phaseId}>
-                            <Checkbox
-                              checked={selectedItems.some(
-                                (item) => item.phaseId === phase.phaseId
-                              )}
-                              onChange={() => handlePhaseChange(phase.phaseId)}
-                            />
+                    <FormControl>
+                      {Object.keys(rowCheckboxes).map((key) => {
+                        const phaseId = rowCheckboxes[key]?.rows[0]?.phase_id; // Get phaseId from the first row
+                        return (
+                          <ListItem sx={{ padding: 0 }} key={phaseId}>
                             <ListItemText
                               secondaryTypographyProps={{
                                 sx: {
-                                  width: "11ch",
+                                  width: "22ch",
                                   overflow: "hidden",
                                   textOverflow: "ellipsis",
                                 },
                               }}
-                              secondary={phase.phase_name}
+                              secondary={rowCheckboxes[key].phaseName} // Use the phase name from rowCheckboxes
                             />
                           </ListItem>
-                        ))
-                      : Object.keys(rowCheckboxes).map((key, index) => {
-                          const phaseId = rowCheckboxes[key]?.rows[0]?.phase_id;
-                          return (
-                            <ListItem sx={{ padding: 0 }} key={phaseId}>
-                              <ListItemText
-                                secondaryTypographyProps={{
-                                  sx: {
-                                    width: "11ch",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                  },
-                                }}
-                                secondary={rowCheckboxes[key].phaseName}
-                              />
-                            </ListItem>
-                          );
-                        })}
-                  </FormControl>
-                </Stack> */}
-                <Stack 
-                // maxWidth={"80%"}
-                width={'100%'}
-                 maxHeight={"30%"}>
-                  <Typography sx={themeStyle.headingText}>
-                    Phases
-                    <Typography
-                      sx={{
-                        ...themeStyle.headingText,
-                        color: "#9E9E9E",
-                        marginTop: "0rem",
-                      }}
-                    >
-                      {/* {lineItemCounter} */}
+                        );
+                      })}
+                    </FormControl>
+                  </Stack>
+                )}
+                <Stack
+                  // maxWidth={"80%"}
+                  width={"100%"}
+                  //  maxHeight={"30%"}
+                  flex={1}
+                >
+                  {!changeOrderView && (
+                    <Typography sx={themeStyle.headingText}>
+                      Line Items
+                      <Typography
+                        sx={{
+                          ...themeStyle.headingText,
+                          color: "#9E9E9E",
+                          marginTop: "0rem",
+                        }}
+                      >
+                        {/* {lineItemCounter} */}
+                      </Typography>
                     </Typography>
-                  </Typography>
-                  {(!changeOrderView) && <>
-                  <List
-                    sx={{
-                      ...themeStyle.scrollable,
-                      maxHeight: "150px",
-                      overflow: "auto",
-                      padding: 0,
-                    }}
-                  >
-                  {changeOrder
-                      ? phaseItems?.map((phase, phaseIndex) => {
-                          return phase.lineItems?.map((lineItem, index) => {
-                            counter++;
-                            if (counter <= 2) {
-                              return (
-                                <>
-                                  <ListItem
-                                    sx={{ padding: 0 }}
-                                    key={counter}
-                                    alignItems="center"
-                                    justifyContent="center"
-                                  >
-                                    <Checkbox
-                                      checked={selectedItems.some(
-                                        (item) =>
-                                          item.phaseId === phase.phaseId &&
-                                          item.lineItemId.includes(
-                                            phase.lineItems[index].id
-                                          )
-                                      )}
-                                      onChange={() =>
-                                        handleLineItemChange(
-                                          phase.phaseId,
-                                          phase.lineItems[index].id
-                                        )
-                                      }
-                                    />
-                                    <ListItemText
-                                      secondaryTypographyProps={{
-                                        sx: {
-                                          width: "11ch",
-                                          overflow: "hidden",
-                                          textOverflow: "ellipsis",
-                                        },
-                                      }}
-                                      sx={{ padding: 0 }}
-                                      secondary={lineItem.title}
-                                    />
-                                    <Typography
-                                      color={"#4C8AB1"}
-                                      fontSize={"11px"}
-                                      textAlign={"right"}
-                                      pl={0.5}
-                                      onClick={() =>
-                                        handleUpdateOpen(phase.lineItems[index])
-                                      }
-                                    >
-                                      edit
-                                    </Typography>
-                                  </ListItem>
-                                </>
-                              );
-                            }
-                            if (counter > 2 && showLineItems) {
-                              return (
-                                <>
-                                  <ListItem sx={{ padding: 0 }} key={counter}>
-                                    <Checkbox
-                                      checked={selectedItems.some(
-                                        (item) =>
-                                          item.phaseId === phase.phaseId &&
-                                          item.lineItemId.includes(
-                                            phase.lineItems[index].id
-                                          )
-                                      )}
-                                      onChange={() =>
-                                        handleLineItemChange(
-                                          phase.phaseId,
-                                          phase.lineItems[index].id
-                                        )
-                                      }
-                                    />
-                                    <ListItemText
-                                      secondaryTypographyProps={{
-                                        sx: {
-                                          width: "11ch",
-                                          overflow: "hidden",
-                                          textOverflow: "ellipsis",
-                                        },
-                                      }}
-                                      sx={{ padding: 0 }}
-                                      secondary={lineItem.title}
-                                    />
-                                    <Typography
-                                      color={"#4C8AB1"}
-                                      fontSize={"11px"}
-                                      pl={0.5}
-                                      onClick={() =>
-                                        handleUpdateOpen(phase.lineItems[index])
-                                      }
-                                    >
-                                      edit
-                                    </Typography>
-                                  </ListItem>
-                                </>
-                              );
-                            }
-                            return null;
-                          });
-                        })
-                      : Object?.keys(rowCheckboxes)?.map((phase) => {
-                          const phaseData = rowCheckboxes[phase];
-                          return phaseData.rows.map((row, index) => {
-                            counter++;
-                            if (counter <= 2) {
-                              return (
-                                <ListItem
-                                  sx={{ padding: 0 }}
-                                  key={counter}
-                                  onClick={(e) => {
-                                    handleLineItemClick(e, row);
-                                  }}
-                                >
-                                  <ListItemText
-                                    secondaryTypographyProps={{
-                                      sx: {
-                                        width: "11ch",
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                      },
-                                    }}
-                                    sx={{ padding: 0 }}
-                                    secondary={row.title}
-                                  />
-                                  {changeOrderView && <Typography
-                                      color={"#4C8AB1"}
-                                      fontSize={"11px"}
-                                      pl={0.5}
-                                      onClick={() =>
-                                        handleUpdateOpen(row.id)
-                                      }
-                                    >
-                                      edit
-                                    </Typography>}
-                                </ListItem>
-                              );
-                            }
-                            if (counter > 2 && showLineItems) {
-                              return (
-                                <ListItem
-                                  sx={{ padding: 0 }}
-                                  key={counter}
-                                  onClick={(e) => {
-                                    handleLineItemClick(e, row);
-                                  }}
-                                >
-                                  <ListItemText
-                                    secondaryTypographyProps={{
-                                      sx: {
-                                        width: "11ch",
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                      },
-                                    }}
-                                    sx={{ padding: 0 }}
-                                    secondary={row.title}
-                                  />
-                                  {changeOrderView && <Typography
-                                      color={"#4C8AB1"}
-                                      fontSize={"11px"}
-                                      pl={0.5}
-                                      onClick={() =>
-                                        handleUpdateOpen(row.id)
-                                      }
-                                    >
-                                      edit
-                                    </Typography>}
-                                </ListItem>
-                              );
-                            } else {
-                              return <></>;
-                            }
-                          });
-                        })}
-                  {Object?.keys(
-                      changeOrderView ? updateRow : rowCheckboxes
-                    )?.map((phase) => {
-                      const phaseData = changeOrderView
-                        ? updateRow[phase]
-                        : rowCheckboxes[phase];
-                      return phaseData.rows.map((row, index) => {
-                        counter++;
-                        if (counter <= 2) {
-                          return (
-                            <ListItem
-                              sx={{ padding: 0 }}
-                              key={counter}
-                              onClick={(e) => {
-                                handleLineItemClick(e, row);
-                              }}
-                            >
-                              <ListItemText
-                                secondaryTypographyProps={{
-                                  sx: {
-                                    width: "11ch",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                  },
-                                }}
-                                sx={{ padding: 0 }}
-                                secondary={row.title}
-                              />
-                              {changeOrderView && (
-                                <Typography
-                                  color={"#4C8AB1"}
-                                  fontSize={"11px"}
-                                  pl={0.5}
-                                  onClick={() => handleUpdateOpen(row, index)}
-                                  sx={{
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  edit
-                                </Typography>
-                              )}
-                            </ListItem>
-                          );
-                        }
-                        if (counter > 2 && showLineItems) {
-                          return (
-                            <ListItem
-                              sx={{ padding: 0 }}
-                              key={counter}
-                              onClick={(e) => {
-                                handleLineItemClick(e, row);
-                              }}
-                            >
-                              <ListItemText
-                                secondaryTypographyProps={{
-                                  sx: {
-                                    width: "11ch",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                  },
-                                }}
-                                sx={{ padding: 0 }}
-                                secondary={row.title}
-                              />
-                              {changeOrderView && (
-                                <Typography
-                                  color={"#4C8AB1"}
-                                  fontSize={"11px"}
-                                  pl={0.5}
-                                  onClick={() => handleUpdateOpen(row, index)}
-                                  sx={{
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  edit
-                                </Typography>
-                              )}
-                            </ListItem>
-                          );
-                        } else {
-                          return <></>;
-                        }
-                      });
-                    })}
+                  )}
+                  {!changeOrderView && (
+                    <React.Fragment>
+                      <List
+                        sx={{
+                          maxHeight: "300px",
+                          overflowY: "scroll",
+                          padding: 0,
+                          "&::-webkit-scrollbar": {
+                            width: "8px", // Width of the scrollbar
+                          },
+                          "&::-webkit-scrollbar-track": {
+                            backgroundColor: "#f0f0f0", // Track color
+                          },
+                          "&::-webkit-scrollbar-thumb": {
+                            backgroundColor: "#888", // Thumb color
+                            borderRadius: "4px", // Round the corners of the scrollbar
+                          },
+                          "&::-webkit-scrollbar-thumb:hover": {
+                            backgroundColor: "#555", // Thumb color on hover
+                          },
+                        }}
+                      >
+                        {Object.values(rowCheckboxes).flatMap(
+                          (phaseData, index) => {
+                            return phaseData.rows.map((row, index) => {
+                              counter++; // Increment the counter for each row rendere
 
-                    {counter > 2 && (
-                      <ListItem sx={{ padding: 0 }} style={{ padding: 0 }}>
-                        <Button
-                          style={{ padding: 0, textTransform: "lowercase" }}
-                          variant="text"
-                          color="primary"
-                          onClick={() => {
-                            setShowLineItems(!showLineItems);
-                          }}
-                        >
-                          {showLineItems ? "Hide" : "View more"}
-                        </Button>
-                      </ListItem>
-                    )}
-                  </List>
-                  </>}
-                  {changeOrderView && <Stack maxHeight={"50%"}>
+                              // // Render line items based on the counter and showLineItems state
+                              // if (counter > 6 && showLineItems) {
+                              //   return (
+                              //     <ListItem
+                              //       sx={{ padding: 0 }}
+                              //       key={row.id}
+                              //       onClick={(e) =>
+                              //         handleLineItemClick(e, row)
+                              //       }
+                              //     >
+                              //       <ListItemText
+                              //         secondaryTypographyProps={{
+                              //           sx: {
+                              //             width: "22ch",
+                              //             overflow: "hidden",
+                              //             textOverflow: "ellipsis",
+                              //           },
+                              //         }}
+                              //         sx={{ padding: 0 }}
+                              //         secondary={row.title}
+                              //       />
+                              //     </ListItem>
+                              //   );
+                              // }
+                              // if (counter <= 6 ) {
+                              return (
+                                <ListItem
+                                  sx={{ padding: 0 }}
+                                  key={row.id}
+                                  onClick={(e) => handleLineItemClick(e, row)}
+                                >
+                                  <ListItemText
+                                    secondaryTypographyProps={{
+                                      sx: {
+                                        width: "22ch",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                      },
+                                    }}
+                                    sx={{ padding: 0 }}
+                                    secondary={row.title}
+                                  />
+                                </ListItem>
+                              );
+                              // }
+                              // return null;
+                            });
+                            // After mapping through rows, render the "View More" button if needed
+                            // .concat(
+                            //   (index === 6 & showLineItems===false) || (showLineItems === true && counter === lineItemCounter) ? (
+                            //     <ListItem
+                            //       sx={{ padding: 0 }}
+                            //       key={`view-more-${phaseData.phase}`}
+                            //     >
+                            //       <Button
+                            //         sx={{
+                            //           padding: 0,
+                            //           textTransform: "lowercase",
+                            //         }}
+                            //         variant="text"
+                            //         color="primary"
+                            //         onClick={() =>
+                            //           setShowLineItems(!showLineItems)
+                            //         }
+                            //       >
+                            //         {showLineItems ? "Hide" : "View more"}
+                            //       </Button>
+                            //     </ListItem>
+                            //   ) : (
+                            //     []
+                            //   )
+                            // )
+                          }
+                        )}
+                      </List>
+                    </React.Fragment>
+                  )}
+
+                  {changeOrderView && (
+                    <Stack maxHeight={"50%"}>
                       <AddPhaseView
                         // changeOrderSelected={changeOrderSelected}
                         refetchChangeOrder={refetch}
@@ -1036,141 +876,11 @@ console.log(updateRow);
                         handleAddOpen={handleAddOpen}
                         handleDeleteOpen={handleDeleteOpen}
                       />
-                  </Stack>}
+                    </Stack>
+                  )}
                 </Stack>
               </Stack>
-              <Divider />
-              <Stack spacing={1}>
-                <Typography pt={1} sx={themeStyle.headingText}>
-                  Date Started
-                </Typography>
-                <Typography
-                  sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
-                >
-                  <Box sx={themeStyle.dateBox}>
-                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                      <DemoContainer components={["DateTimePicker"]}>
-                        <MobileDateTimePicker
-                          value={startDate}
-                          onChange={(newValue) => setStartDate(newValue)}
-                          format="MMM D, YYYY,h:mm a"
-                          viewRenderers={{
-                            hours: renderTimeViewClock,
-                            minutes: renderTimeViewClock,
-                            seconds: renderTimeViewClock,
-                          }}
-                          minDate={moment()}
-                          defaultValue={moment("2024-04-17T15:30")}
-                          slotProps={{
-                            // Targets the `IconButton` component.
-                            openPickerButton: {
-                              color: "#5B5B5B",
-                            },
-                            // Targets the `InputAdornment` component.
-                            inputAdornment: {
-                              position: "start",
-                            },
-                          }}
-                          sx={{
-                            input: {
-                              fontFamily: "var(--main-font-family)",
-                            },
-                          }}
-                        />
-                      </DemoContainer>
-                    </LocalizationProvider>
-                  </Box>
-                </Typography>
-              </Stack>
-              <Stack spacing={1} pt={2}>
-                <Typography pt={1} sx={themeStyle.headingText}>
-                  Date Ended
-                </Typography>
-                <Typography
-                  sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
-                >
-                  <Box sx={themeStyle.dateBox}>
-                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                      <DemoContainer components={["DateTimePicker"]}>
-                        <MobileDateTimePicker
-                          minDate={
-                            startDate
-                              ? moment(startDate).add(1, "day")
-                              : moment().add(1, "day")
-                          }
-                          value={endDate}
-                          onChange={(newValue) => setEndDate(newValue)}
-                          format="MMM D, YYYY,h:mm a"
-                          viewRenderers={{
-                            hours: renderTimeViewClock,
-                            minutes: renderTimeViewClock,
-                            seconds: renderTimeViewClock,
-                          }}
-                          defaultValue={moment(startDate).add(1, "day")}
-                          slotProps={{
-                            // Targets the `IconButton` component.
-                            openPickerButton: {
-                              color: "#5B5B5B",
-                            },
-                            // Targets the `InputAdornment` component.
-                            inputAdornment: {
-                              position: "start",
-                            },
-                          }}
-                          sx={{
-                            input: {
-                              fontFamily: "var(--main-font-family)",
-                            },
-                          }}
-                        />
-                      </DemoContainer>
-                    </LocalizationProvider>
-                  </Box>
-                </Typography>
-
-                {/* <Stack>
-                  <AddPhaseView
-                    setRowCheckboxes={setRowCheckboxes}
-                    rowCheckboxes={rowCheckboxes}
-                  />
-                </Stack> */}
-                <Stack
-                  width={"80%"}
-                  pt={4}
-                  display={{ md: "flex", xs: "none" }}
-                >
-                  <Tooltip
-                    title={
-                      changeOrderView
-                        ? !changeOrderPermission
-                          ? "You currently don't have permission to submit a change order"
-                          : ""
-                        : !workOrderPermission
-                        ? "You currently don't have permission to submit a work order"
-                        : ""
-                    }
-                    arrow
-                  >
-                    <span>
-                      <BuilderProButton
-                        backgroundColor={"#4C8AB1"}
-                        variant={"contained"}
-                        fontFamily={"var(--main-font-family)"}
-                        fontSize={"16px"}
-                        fontWeight={"600"}
-                        padding={"6px 32px 6px 32px"}
-                        handleOnClick={handleRequest}
-                        marginLeft={"0px"}
-                        disabled={loading}
-                      >
-                        {changeOrder
-                          ? "Submit Change Order"
-                          : "Submit Work Order"}
-                      </BuilderProButton>
-                    </span>
-                  </Tooltip>
-                </Stack>
-              </Stack>
+              {/* <Divider /> */}
             </Stack>
             <Stack flex={1} backgroundColor={"#EFF5FF"} width={"100%"}>
               <Box>
@@ -1352,7 +1062,139 @@ console.log(updateRow);
                 </Select>
                 <hr style={themeStyle.hrLine} />
               </Box>
-              <Stack spacing={0.5} p={1} px={3}>
+
+              <Stack spacing={1} ml={2}>
+                <Typography pt={1} sx={themeStyle.headingText}>
+                  Date Started
+                </Typography>
+                <Typography
+                  sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
+                >
+                  <Box sx={themeStyle.dateBox}>
+                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                      <DemoContainer components={["DateTimePicker"]}>
+                        <MobileDateTimePicker
+                          value={startDate}
+                          onChange={(newValue) => setStartDate(newValue)}
+                          format="MMM D, YYYY,h:mm a"
+                          viewRenderers={{
+                            hours: renderTimeViewClock,
+                            minutes: renderTimeViewClock,
+                            seconds: renderTimeViewClock,
+                          }}
+                          minDate={moment()}
+                          defaultValue={moment("2024-04-17T15:30")}
+                          slotProps={{
+                            // Targets the `IconButton` component.
+                            openPickerButton: {
+                              color: "#5B5B5B",
+                            },
+                            // Targets the `InputAdornment` component.
+                            inputAdornment: {
+                              position: "start",
+                            },
+                          }}
+                          sx={{
+                            input: {
+                              fontFamily: "var(--main-font-family)",
+                            },
+                          }}
+                        />
+                      </DemoContainer>
+                    </LocalizationProvider>
+                  </Box>
+                </Typography>
+              </Stack>
+              <Stack spacing={1} pt={2} ml={2}>
+                <Typography pt={1} sx={themeStyle.headingText}>
+                  Date Ended
+                </Typography>
+                <Typography
+                  sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
+                >
+                  <Box sx={themeStyle.dateBox}>
+                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                      <DemoContainer components={["DateTimePicker"]}>
+                        <MobileDateTimePicker
+                          minDate={
+                            startDate
+                              ? moment(startDate).add(1, "day")
+                              : moment().add(1, "day")
+                          }
+                          value={endDate}
+                          onChange={(newValue) => setEndDate(newValue)}
+                          format="MMM D, YYYY,h:mm a"
+                          viewRenderers={{
+                            hours: renderTimeViewClock,
+                            minutes: renderTimeViewClock,
+                            seconds: renderTimeViewClock,
+                          }}
+                          defaultValue={moment(startDate).add(1, "day")}
+                          slotProps={{
+                            // Targets the `IconButton` component.
+                            openPickerButton: {
+                              color: "#5B5B5B",
+                            },
+                            // Targets the `InputAdornment` component.
+                            inputAdornment: {
+                              position: "start",
+                            },
+                          }}
+                          sx={{
+                            input: {
+                              fontFamily: "var(--main-font-family)",
+                            },
+                          }}
+                        />
+                      </DemoContainer>
+                    </LocalizationProvider>
+                  </Box>
+                </Typography>
+
+                {/* <Stack>
+                  <AddPhaseView
+                    setRowCheckboxes={setRowCheckboxes}
+                    rowCheckboxes={rowCheckboxes}
+                  />
+                </Stack> */}
+                <Stack
+                  width={"80%"}
+                  pt={4}
+                  display={{ md: "flex", xs: "none" }}
+                >
+                  <Tooltip
+                    title={
+                      changeOrderView
+                        ? !changeOrderPermission
+                          ? "You currently don't have permission to submit a change order"
+                          : ""
+                        : !workOrderPermission
+                        ? "You currently don't have permission to submit a work order"
+                        : ""
+                    }
+                    arrow
+                  >
+                    <span>
+                      <BuilderProButton
+                        backgroundColor={"#4C8AB1"}
+                        variant={"contained"}
+                        fontFamily={"var(--main-font-family)"}
+                        fontSize={"16px"}
+                        fontWeight={"600"}
+                        padding={"6px 32px 6px 32px"}
+                        handleOnClick={handleRequest}
+                        marginLeft={"0px"}
+                        disabled={loading}
+                      >
+                        {changeOrder
+                          ? "Submit Change Order"
+                          : "Submit Work Order"}
+                      </BuilderProButton>
+                    </span>
+                  </Tooltip>
+                </Stack>
+              </Stack>
+              {/* <Stack spacing={0.5} p={1} px={3}>
                 <Typography
                   fontSize={"13px"}
                   style={{
@@ -1397,7 +1239,7 @@ console.log(updateRow);
                       )
                     : ""}
                 </Typography>
-              </Stack>
+              </Stack> */}
               <Stack
                 width={"100%"}
                 pt={4}
@@ -1624,7 +1466,7 @@ const themeStyle = {
   },
   dateBox: {
     display: "flex",
-    paddingLeft: "1.5rem",
+    paddingLeft: "0.8rem",
     marginTop: "-1rem",
   },
 

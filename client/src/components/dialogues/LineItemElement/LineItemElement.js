@@ -81,6 +81,7 @@ function AddLineElement({
   setUpdateRow,
   lineItemIndex,
   addPhaseId,
+  changeOrderView,
 }) {
   // const { data, isLoading, isSuccess } = useGetLineItemQuery({
   //   lineItemId: LineItem,
@@ -141,7 +142,13 @@ function AddLineElement({
     q: "",
   });
   const [addUnit] = useAddUnitMutation();
-  //console.log(userInfo)
+  const existingPhases = useSelector(
+    (state) => state.projectInitialProposal.phases[0]
+  );
+  const changeOrderSelected = useSelector(
+    (state) => state.projectInitialProposal.changeOrderLineItems
+  );
+  console.log("Change Order Selected", changeOrderSelected);
 
   const formData = {
     phaseName,
@@ -151,7 +158,7 @@ function AddLineElement({
     unitPrice,
     total,
     longDescription,
-    margin: margin || 0,        
+    margin: margin || 0,
     percentage: percentage || 0,
   };
 
@@ -221,6 +228,35 @@ function AddLineElement({
             unit_price: formData.unitPrice,
             ...formData, // Add other fields from formData
           };
+          // Check for existing line items with the same name but different id
+          const phase = existingPhases.find((phase) => phase.id === phaseId);
+          if (phase) {
+            const itemExists = phase.LineItems.some(
+              (item) =>
+                item.title === formData.phaseName && // Same name
+                item.id !== formData.id // Different id
+            );
+            if (itemExists) {
+              // Show a toast if the line item with the same name already exists
+              toast.error("Line item with the same name already exists!");
+              return prevState; // Exit without setting the state
+            }
+          }
+
+          // Check for existing line items with the same name but different id
+          const selectedPhase = changeOrderSelected.find(
+            (phase) => phase.id === phaseId
+          );
+          if (selectedPhase) {
+            const itemExists = selectedPhase.LineItems.some(
+              (item) => item.title === formData.phaseName
+            );
+            if (itemExists) {
+              // Show a toast if the line item with the same name already exists
+              toast.error("Line item with the same name already exists!");
+              return prevState; // Exit without setting the state
+            }
+          }
 
           // Dispatch to Redux
           dispatch(
@@ -255,12 +291,41 @@ function AddLineElement({
         unit_price: formData.unitPrice,
         total: formData.total,
         notes: formData.longDescription,
-        margin: margin || 0,       
-        percentage: percentage || 0, 
+        margin: margin || 0,
+        percentage: percentage || 0,
         status: "Not Requested",
         shouldAdd: true, // Flag to indicate this is a new item to be added
         // Add other default fields as needed
       };
+
+      // Check if a line item with the same name already exists for the given phase
+      const phase = existingPhases.find((phase) => phase.id === phaseId);
+      if (phase) {
+        const itemExists = phase.LineItems.some(
+          (item) => item.title === formData.phaseName
+        );
+        if (itemExists) {
+          // Show a toast if the line item already exists
+          toast.error("Line item with the same name already exists!");
+          return; // Exit without setting the state
+        }
+      }
+
+      // Check if a line item with the same name already exists for the given phase
+      const selectedPhase = changeOrderSelected.find(
+        (phase) => phase.id === phaseId
+      );
+      if (selectedPhase) {
+        const itemExists = selectedPhase.LineItems.some(
+          (item) => item.title === formData.phaseName
+        );
+        if (itemExists) {
+          // Show a toast if the line item already exists
+          toast.error("Line item with the same name already exists!");
+          return; // Exit without setting the state
+        }
+      }
+
       setUpdateRow((prevState) => {
         const updatedPhase = prevState[phaseId] || {
           rows: [],
@@ -384,7 +449,8 @@ function AddLineElement({
         longDescription,
         userId: userInfo.user.id,
         margin: margin || 0,
-        percentage: percentage || 0, 
+        percentage: percentage || 0,
+        changeFlag: changeOrderView ? true : false,
       };
       if (!newLineItem.unit) {
         toast.warning("Please enter unit");
@@ -424,6 +490,10 @@ function AddLineElement({
   };
   const handleTotalCostChange1 = (e) => {
     const value = e.target.value;
+    if (value < 0) {
+      toast.error("Negative values are not allowed.", { toastId: "no" });
+      return;
+    }
     setTotalCost(() => {
       if (total) {
         handleMarginAndPercentageChange(value);
@@ -700,7 +770,13 @@ function AddLineElement({
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <DialogTitle sx={typoTitle}>{LineHeading}</DialogTitle>
+            <DialogTitle sx={typoTitle}>
+              {reqWorkOrderModal
+                ? addPhaseId
+                  ? "Add Line Item"
+                  : LineHeading
+                : LineHeading}
+            </DialogTitle>
             <IconButton
               style={{ width: "40px", height: "40px" }}
               onClick={handleClickClose}
@@ -861,12 +937,17 @@ function AddLineElement({
                     type="number"
                     variant="standard"
                     value={formData.quantity}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value < 0) {
+                        toast.error("Negative values are not allowed.");
+                        return;
+                      }
                       setQuantity((prev) => {
-                        setTotal(e.target.value * unitPrice);
-                        return e.target.value;
-                      })
-                    }
+                        setTotal(value * unitPrice);
+                        return value;
+                      });
+                    }}
                   />
                 </Box>
               </Box>
@@ -890,12 +971,17 @@ function AddLineElement({
                     <InputAdornment position="start">$</InputAdornment>
                   ),
                 }}
-                onChange={(e) =>
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value < 0) {
+                    toast.error("Negative values are not allowed.");
+                    return;
+                  }
                   setUnitPrice((prev) => {
-                    setTotal(e.target.value * quantity);
-                    return e.target.value;
-                  })
-                }
+                    setTotal(value * quantity);
+                    return value;
+                  });
+                }}
               />
 
               <Typography sx={typoText}>Actual Cost</Typography>

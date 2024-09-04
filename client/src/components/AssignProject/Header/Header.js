@@ -41,7 +41,7 @@ function Header({ step, gap, handlePreviousStep, step2, step3 }) {
       return;
     }
     dispatch(resetUserAndRoleEmail());
-    navigate("/");
+    navigate("/dashboard");
   };
   return (
     <div>

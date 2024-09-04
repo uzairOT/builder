@@ -45,7 +45,7 @@ const ProjectsPermissionAccess = () => {
   const { id: currentProjectId } = params;
   const { data } = useGetProjectDataQuery({ projectId: currentProjectId });
   const [permissionList, setPermissionsList] = useState([]);
-  const [GetPermissionsList] = useGetProjectPermissionsListMutation();
+  const [GetPermissionsList, {refetch}] = useGetProjectPermissionsListMutation();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const currentUser = userInfo?.user;
   const dispatch = useDispatch();
@@ -116,14 +116,24 @@ const ProjectsPermissionAccess = () => {
   };
 
   useEffect(() => {
-    const handlePermissionsUpdate = () => {};
+    const handlePermissionsUpdate = async () => {
+      try {
+        const response = await GetPermissionsList({
+          projectId: currentProjectId,
+        }).unwrap();
+        setPermissionsList(response);
+        setPermissionsState(response);
+      } catch (error) {
+        console.error("Failed to fetch permissions:", error);
+      }
+    };
 
     socket.on("project-permissions-updated", handlePermissionsUpdate);
 
     return () => {
       socket.off("project-permissions-updated", handlePermissionsUpdate);
     };
-  }, [permissionList]);
+  }, [currentProjectId]);
 
   const filteredPermissions = permissionList.filter((permission) => {
     const matchesPermissionName = permission.permission.name

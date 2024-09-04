@@ -24,7 +24,7 @@ const InnerLayout2 = () => {
   const userInfo = useSelector(state => state.auth.userInfo);
   const userId = userInfo.user.id
   const [open, setOpen] = useState(false);
-  const [projectName, projectLocation, SuperAdminId] = useOutletContext(); // Extracting the context values
+  const [projectName, projectLocation, SuperAdminId,selectedProjectData] = useOutletContext(); // Extracting the context values
   const handleOpen = () => {
       navigate(`/projects/${id}/change-order`);
     //This component is depreciated

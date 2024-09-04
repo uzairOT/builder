@@ -72,8 +72,8 @@ function AssignNewProjectStep2({
   };
 
   const handleSkip = () => {
-    dispatch(setSkipInvite());
     setShowSkipInvite(true);
+    dispatch(setSkipInvite());
   };
 
   const handleOpen = () => {
@@ -92,12 +92,21 @@ function AssignNewProjectStep2({
   };
   const Data = useSelector(selectProjectForm);
   const handleNextStep = () => {
-    if (Data.users[0].email === "") {
-      toast.warning("Please add your team's email");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+    if (Data.users.some((user) => user.email === "" || !emailRegex.test(user.email))) {
+      toast.warning("Please add a valid email address for team members");
       return;
     }
+  
+    if (Data.users.some((user) => user.role === "none" || user.role === "")) {
+      toast.warning("Please select a role for team members");
+      return;
+    }
+  
     handleCreateNewProject();
   };
+  
 
   console.log(Data);
 
@@ -116,7 +125,7 @@ function AssignNewProjectStep2({
         projectId: backButtonProjectId ? backButtonProjectId : projectId,
         organizationId: organizationId,
       };
-
+ 
       // Call the assignProject function and wait for the result
       console.log(backButtonProjectId)
       if (backButtonProjectId) {
@@ -131,6 +140,7 @@ function AssignNewProjectStep2({
       } else {
         const res = await assignProject(FormData).unwrap();
         console.log(res)
+        // localStorage.setItem("userInfo", JSON.stringify({...userInfo, incompleteProject: res?.incompleteProject}));
         if(res.message === "Existing User is not part of the organization."){
           toast.error(
        "Existing User is not part of the organization."
@@ -177,7 +187,7 @@ function AssignNewProjectStep2({
         stepHeading={"Step 2 of 3"}
         Heading={"Invite your team to"}
         projectName={projectName}
-        stepDiscription={`Accepting the invitation grants access to a secure project workspace in BuilderBuilder Pro`}
+        stepDiscription={`Accepting the invitation grants access to a secure project workspace in BuilderBUILDER Pro`}
       />
 
       {users.map((user, index) => (

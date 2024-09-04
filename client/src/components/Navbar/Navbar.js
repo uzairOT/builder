@@ -237,7 +237,7 @@ const Navbar = () => {
     setSelectedTab(newValue);
     console.log(newValue, " navbar click");
     const lowercasedValue = `${event.target.textContent}`.toLowerCase();
-    navigate(lowercasedValue === "dashboard" ? "/" : lowercasedValue);
+    navigate(lowercasedValue === "dashboard" ? "/dashboard" : lowercasedValue);
   };
   const handleLogout = () => {
     localStorage.setItem("logout", Date.now());

@@ -40,7 +40,16 @@ const Dashboard = () => {
   const dailyForecast = forecast.dailyForecast;
   const forecastIsLoading = forecast.isLoading;
   const forecastError = forecast.error;
+  // const phaseCheck= useSelector((state)=>state?.projectForm?.projectName)
 
+  // console.log("State Check", phaseCheck)
+  // useEffect(() => {
+  //   if (phaseCheck!=="" && window.location.pathname !== "/assignproject") {
+  //     window.location = "/assignproject";
+  //   }
+  // }, []);
+  
+  
   useEffect(() => {
     console.log("undefined", UserId);
     socket.emit("userJoin", {
@@ -48,6 +57,8 @@ const Dashboard = () => {
     });
     return () => {};
   }, []);
+
+
 
   return (
     <>

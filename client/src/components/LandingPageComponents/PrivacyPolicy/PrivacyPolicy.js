@@ -26,7 +26,7 @@ const PrivacyPolicy = () => {
             fontSize: "16px",
             color: "#00000099",
           }}>
-            At BuilderBuilder Pro, we are committed to protecting your privacy and ensuring that your personal information is handled responsibly. This Privacy Statement outlines the types of information we collect, how we use it, and the measures we take to safeguard it.
+            At BuilderBUILDER Pro, we are committed to protecting your privacy and ensuring that your personal information is handled responsibly. This Privacy Statement outlines the types of information we collect, how we use it, and the measures we take to safeguard it.
             </Typography>
           {policyData.map((section, index) => (
             <Box key={index} mt={2} textAlign={{xs:"center", lg:"left"}}>

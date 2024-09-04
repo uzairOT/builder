@@ -22,11 +22,7 @@ const FAQ = () => {
 
   return (
     <Container style={styles.container}>
-      <Typography
-        sx={styles.titleFont}
-      >
-        FAQ's
-      </Typography>
+      <Typography sx={styles.titleFont}>FAQ's</Typography>
 
       <Typography sx={styles.SubtitleFont} align="center" gutterBottom>
         Frequently Asked Questions
@@ -73,7 +69,9 @@ const FAQ = () => {
           team.
         </Typography>
 
-        <Button style={styles.button}>Get in touch</Button>
+        <Button style={styles.button} href="/#contact">
+          Get in touch
+        </Button>
       </Box>
     </Container>
   );
@@ -82,27 +80,28 @@ const FAQ = () => {
 export default FAQ;
 
 const styles = {
-    titleFont:{
-      marginBottom: "20px",
-          fontFamily: 'var(--main-font-family)',
-          fontWeight: 600,
-          fontSize: { md: "16px",sm:"16px", xs: "14px" },
-          color: "#2E728F",
-          textAlign: "center",
-    },
-    SubtitleFont:{
-      fontFamily: 'var(--main-font-family)',
-      fontSize: { md: "36px",sm:"36px", xs: "18px" },
-        fontWeight:500,
-        marginBottom: 2,
-    },
-    DecsFont:{
-      fontFamily: 'var(--main-font-family)',
-      fontSize: { md: "16px",sm:"16px", xs: "14px" },
-        fontWeight:400,
-        color:"#454245"
-    },
+  titleFont: {
+    marginBottom: "20px",
+    fontFamily: "var(--main-font-family)",
+    fontWeight: 600,
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    color: "#2E728F",
+    textAlign: "center",
+  },
+  SubtitleFont: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "36px", sm: "36px", xs: "18px" },
+    fontWeight: 500,
+    marginBottom: 2,
+  },
+  DecsFont: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    fontWeight: 400,
+    color: "#454245",
+  },
   container: {
+    marginTop: 40,
     padding: "32px 16px",
   },
   accordion: {
@@ -113,15 +112,15 @@ const styles = {
     color: "#1976D2",
   },
   question: {
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "16px",sm:"16px", xs: "14px" },
-      fontWeight:700,
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    fontWeight: 700,
   },
   answer: {
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "16px",sm:"16px", xs: "14px" },
-      fontWeight:400,
-      color:"#454245"
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    fontWeight: 400,
+    color: "#454245",
   },
   contactSection: {
     marginTop: "32px",
@@ -131,12 +130,12 @@ const styles = {
     textAlign: "center",
   },
   contactFirstHeading: {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontWeight: 900,
     fontSize: "20px",
   },
   Contactsecondheading: {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontWeight: 400,
     fontSize: "18px",
   },
@@ -149,7 +148,13 @@ const styles = {
     backgroundColor: "#2E728F",
     color: "white",
     fontSize: "14px",
-    fontFamily: 'var(--main-font-family)',
-    fontWeight: 600,
+    fontFamily: "var(--main-font-family)",
+    fontWeight: 500,
+    "&:hover": {
+      backgroundColor: "grey",
+      color: "white",
+    },
+    borderRadius: "8px",
+    textTransform: "none",
   },
 };
