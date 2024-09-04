@@ -23,6 +23,8 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { useSendContactFormMutation } from "../../../redux/apis/usersApiSlice";
 import { useNavigate } from "react-router-dom";
+import googlePlay from "../../../assets/FileSvg/googlePlay.svg";
+import appStore from "../../../assets/FileSvg/appStore.svg";
 
 const Footer = () => {
   const [sendContactForm] = useSendContactFormMutation();
@@ -57,21 +59,20 @@ const Footer = () => {
   });
 
   const openInNewTab = (url) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
-  };    
-
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   const ProtectedLink = ({ href, children }) => {
     const navigate = useNavigate();
 
     const handleClick = (event) => {
-      event.preventDefault(); 
+      event.preventDefault();
       const userInfo = localStorage.getItem("userInfo");
       if (!userInfo) {
         toast.error("Please login to access this page");
-        navigate("/login"); 
+        navigate("/login");
       } else {
-        navigate(href); 
+        navigate(href);
       }
     };
 
@@ -230,29 +231,25 @@ const Footer = () => {
               justifyContent={{ lg: "left", xs: "center" }}
               textAlign={{ lg: "left", xs: "center" }}
             >
-              <a
-                href="https://testflight.apple.com/join/Fejy1iQ6"
-                target="blank"
-              >
-                <Button
-                  startIcon={<DownloadAppStore />}
-                  style={styles.appButton}
+              <Button>
+                <a
+                  href="https://testflight.apple.com/join/Fejy1iQ6"
+                  target="blank"
                 >
-                  {" "}
-                </Button>
-              </a>
+                  <img alt="App Store" src={appStore} />
+                  {/* <DownloadAppStore /> */}
+                </a>
+              </Button>
+              <Button>
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
+                  target="blank"
+                >
+                  <img alt="Play Store" src={googlePlay} />
 
-              <a
-                href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
-                target="blank"
-              >
-                <Button
-                  startIcon={<DownloadGooglePlay />}
-                  style={styles.appButton}
-                >
-                  {" "}
-                </Button>
-              </a>
+                  {/* <DownloadGooglePlay /> */}
+                </a>
+              </Button>
             </Container>
           </Grid>
           <Grid
@@ -275,15 +272,21 @@ const Footer = () => {
           </Box>
           <Box>
             <Typography variant="body2" style={styles.footerLinks}>
-              <Link  onClick={() => {
-                openInNewTab("/privacypolicy");
-              }} style={{ color: "#fff", cursor:"pointer"  }}>
+              <Link
+                onClick={() => {
+                  openInNewTab("/privacypolicy");
+                }}
+                style={{ color: "#fff", cursor: "pointer" }}
+              >
                 Privacy Policy
               </Link>
               {" | "}
-              <Link  onClick={() => {
-                openInNewTab("/terms");
-              }} style={{ color: "#fff", cursor:"pointer"  }}>
+              <Link
+                onClick={() => {
+                  openInNewTab("/terms");
+                }}
+                style={{ color: "#fff", cursor: "pointer" }}
+              >
                 Terms & Conditions
               </Link>
               {" | "}

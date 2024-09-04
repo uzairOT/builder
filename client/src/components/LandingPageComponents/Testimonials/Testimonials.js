@@ -1,6 +1,15 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
 import React from "react";
 import { TestimonialColIcns } from "../assets/svg";
+import { motion } from "framer-motion";
+
+
+
+// Define the hover effect animation variants
+const popEffect = {
+  hidden: { scale: 1 },
+  hover: { scale: 1.05, transition: { type: "spring", stiffness: 300, damping: 15 } },
+};
 
 const InfoCard = ({ icon, title, description }) => {
   return (
@@ -36,21 +45,37 @@ export default function Testimonials() {
       </Typography>
       <Container>
         <Grid container sx={styles.gridContainer} p={2} spacing={1}>
+
+          
           <Grid item xs={12} md={6}>
+          <motion.div
+          initial="hidden"
+          whileHover="hover"
+          variants={popEffect}
+        >
+
             <InfoCard
               icon={<TestimonialColIcns />}
               description='"BuilderBUILDER Pro has transformed the way we manage our construction projects. The intuitive interface and robust features have saved us time and money while improving our overall project quality."'
               title="John D., Construction Manager"
               position="topLeft"
             />
+</motion.div>
           </Grid>
           <Grid item xs={12} md={6}>
+          <motion.div
+          initial="hidden"
+          whileHover="hover"
+          variants={popEffect}
+        >
+
             <InfoCard
               icon={<TestimonialColIcns />}
               description='"With BuilderBUILDER Pro, our team can collaborate seamlessly, whether we’re in the office or on-site. It’s a game-changer for our workflow and project success."'
               title="Sarah L., Project Coordinator"
               position="bottomRight"
             />
+</motion.div>
           </Grid>
 
           <Grid></Grid>

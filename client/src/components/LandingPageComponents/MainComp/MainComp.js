@@ -12,6 +12,8 @@ import { DownloadAppStore, DownloadGooglePlay } from "../assets/svg";
 import devicesimg from "../assets/PNG/devices.png";
 import { motion, AnimatePresence } from "framer-motion";
 import { LineWeight } from "@mui/icons-material";
+import googlePlay from "../../../assets/FileSvg/googlePlay.svg";
+import appStore from "../../../assets/FileSvg/appStore.svg";
 
 const texts = [
   { text: "PROFITABLE!", color: "green" },
@@ -90,26 +92,41 @@ const MainContent = () => {
             </Button>
           </Grid>
 
-          <Grid item md={2} xs={12} >
+          <Grid item md={2} xs={12}>
             <Typography component="div" sx={styles.downloadText}>
               DOWNLOAD NOW!
             </Typography>
-            <Button>
-              <a
-                href="https://testflight.apple.com/join/Fejy1iQ6"
-                target="blank"
-              >
-                <DownloadAppStore />
-              </a>
-            </Button>
-            <Button>
-              <a
-                href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
-                target="blank"
-              >
-                <DownloadGooglePlay />
-              </a>
-            </Button>
+            <Box sx={{ gap: { sm: 0, xs: 2 } }}>
+              <Box>
+                <a
+                  href="https://testflight.apple.com/join/Fejy1iQ6"
+                  target="blank"
+                  style={{ height: 60, width: 150 }}
+                >
+                  <img
+                    alt="App Store"
+                    src={appStore}
+                    style={{ height: 60, width: 150 }}
+                  />
+                  {/* <DownloadAppStore /> */}
+                </a>
+              </Box>
+              <Box>
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
+                  target="blank"
+                  style={{ height: 60, width: 150 }}
+                >
+                  <img
+                    alt="Play Store"
+                    src={googlePlay}
+                    style={{ height: 60, width: 150 }}
+                  />
+
+                  {/* <DownloadGooglePlay /> */}
+                </a>
+              </Box>
+            </Box>
           </Grid>
         </Grid>
       </Grid>
@@ -132,7 +149,7 @@ const styles = {
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     backgroundPosition: "center",
-    padding: { xl: 15, lg: 10, md: 10, xs: 0 },
+    padding: { xl: 15, lg: 10, md: 5, xs: 0 },
     width: "100%",
     height: "100vh",
     overflowX: "hidden",
@@ -153,7 +170,7 @@ const styles = {
     color: "black",
     fontFamily: "var(--main-font-family)",
     fontWeight: 700,
-    fontSize: { md: "40px", sm: "40px", xs: "20px" },
+    fontSize: { lg: "40px", md: "36px", sm: "40px", xs: "20px" },
     margin: { xs: "20px 0", md: "20px 0" },
     lineHeight: 1.2,
   },
@@ -196,22 +213,21 @@ const styles = {
     // border: "3px solid white",
     fontFamily: "var(--main-font-family)",
     fontWeight: 500,
-    fontSize:"16px",
+    fontSize: "16px",
     borderRadius: 2,
     marginTop: 4,
-    textTransform:"none"
+    textTransform: "none",
   },
   downloadText: {
-    ml:1,
+    mt:2,
     fontSize: "13px",
     fontWeight: 700,
     fontFamily: "var(--main-font-family)",
     color: "#4C8AB1",
-    marginBottom: 1,
   },
   imageBox: {
     position: "absolute",
-    top: { xl: "42%", lg: "70%", md: "50%" },
+    top: { xl: "47%", lg: "70%", md: "50%" },
     left: { xl: "45%", lg: "30%", md: "40%" },
     display: { xs: "none", md: "flex" },
     justifyContent: "center",

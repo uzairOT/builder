@@ -69,7 +69,7 @@ const PAsswordReset = () => {
                 <ArrowBackIosIcon sx={{ fontSize: 16 }} />
               </div>
               <Typography sx={{ fontSize: 14 }} color="#4C8AB1" gutterBottom>
-                Back To Login
+                Back to login
               </Typography>
             </Box>
             <Container

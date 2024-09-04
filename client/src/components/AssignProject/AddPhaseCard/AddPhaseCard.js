@@ -598,7 +598,7 @@ const AddPhaseCard = ({
                               background: "#4C8AB1",
                               marginTop: "0.7rem",
                               marginBottom: "1rem",
-                              marginRight: { xl: "-8rem", xs: "-3rem" },
+                              marginRight: { xl: "-8rem", xs: "0rem" },
                               "@media (max-width: 600px)": {
                                 minWidth: 0,
                                 width: "2.5rem",
@@ -651,7 +651,7 @@ const AddPhaseCard = ({
                     background: "#4C8AB1",
                     marginTop: "0.7rem",
                     marginBottom: "1rem",
-                    marginRight: { xl: "-7.5rem", xs: "8rem" },
+                    marginRight: { xl: "-8rem", xs: "0rem" },
                     marginLeft: "1rem",
                     "@media (max-width: 600px)": {
                       fontFamily: "var(--main-font-family)",
@@ -729,7 +729,7 @@ const AddPhaseCard = ({
                               background: "#4C8AB1",
                               marginTop: "0.7rem",
                               marginBottom: "1rem",
-                              marginRight: { xl: "-8rem", xs: "-4rem" },
+                              marginRight: { xl: "-8rem", xs: "0rem" },
                               marginLeft: "1rem",
                               "@media (max-width: 600px)": {
                                 fontFamily: "var(--main-font-family)",

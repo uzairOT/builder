@@ -109,7 +109,7 @@ const Login = () => {
         if (res.message === "Login Successful!") {
           localStorage.setItem("login", Date.now()); // Use this key to trigger the storage event
           dispatch(setCredentials({ ...res.data }));
-          if (res?.incompleteProject?.incomplete) {
+          if (res?.data?.incompleteProject?.incomplete) {
             setTimeout(() => {
               window.location.href = "/assignproject";
             }, 1000);
@@ -152,12 +152,12 @@ const Login = () => {
         password: values.password,
       }).unwrap();
       // console.log("login :", res);
-      // localStorage.setItem('userInfo', JSON.stringify({...res}));
+      localStorage.setItem('userInfo', JSON.stringify({...res}));
       localStorage.setItem("login", Date.now()); // Use this key to trigger the storage event
       
       dispatch(setCredentials({ ...res.data }));
       // navigate("/");
-      if (res?.incompleteProject?.incomplete) {
+      if (res?.data?.incompleteProject?.incomplete) {
         setTimeout(() => {
           window.location.href = "/assignproject";
         }, 1000);

@@ -50,6 +50,8 @@ import { ToastContainer } from "react-toastify";
 //import "react-toastify/dist/ReactToastify.css";
 import { getFormattedFiveDayWeather } from "./services/WeatherService.js";
 import { addEvents, fetchEvents } from "./redux/slices/Events/eventsSlice.js";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import ProjectsChangeOrder from "./components/Projects/ProjectsChangeOrder/ProjectsChangeOrder";
 import { useGetUserEventsMutation } from "./redux/apis/usersApiSlice.js";

@@ -57,7 +57,7 @@ function SaveAsProject({ onSaveStep, onNextStep, currentUserId }) {
 
   return (
     <div>
-      <StepTitles Heading={"Save as Project with New Name"} />
+      <StepTitles Heading={"Save as project with new name"} />
       <Box sx={typoBox}>
         <Typography sx={typoText}>Select your type.</Typography>
       </Box>

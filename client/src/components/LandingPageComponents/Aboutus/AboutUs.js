@@ -10,14 +10,13 @@ import {
 } from "../assets/svg";
 import { motion } from "framer-motion";
 
-
-
-
-
 // Define the hover effect animation variants
 const popEffect = {
   hidden: { scale: 1 },
-  hover: { scale: 1.05, transition: { type: "spring", stiffness: 300, damping: 15 } },
+  hover: {
+    scale: 1.05,
+    transition: { type: "spring", stiffness: 300, damping: 15 },
+  },
 };
 
 const SectionTitle = ({ subtitle, title, description }) => {
@@ -101,35 +100,35 @@ const AboutSection = () => {
            "
         />
         <Grid container spacing={4} sx={styles.gridContainer}>
-      <Grid item xs={12} md={6}>
-        <motion.div
-          initial="hidden"
-          whileHover="hover"
-          variants={popEffect}
-        >
-          <InfoCard
-            icon={<VisionSvg />}
-            title="Vision"
-            description="To revolutionize the construction industry by providing seamless, innovative management solutions that empower professionals to build smarter, faster, and more efficiently."
-            position="topLeft"
-          />
-        </motion.div>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <motion.div
-          initial="hidden"
-          whileHover="hover"
-          variants={popEffect}
-        >
-          <InfoCard
-            icon={<MissionSvg />}
-            title="Mission"
-            description="Our mission is to simplify construction management through cutting-edge technology, ensuring projects are completed on time, within budget, and to the highest standards of quality."
-            position="bottomRight"
-          />
-        </motion.div>
-      </Grid>
-    </Grid>
+          <Grid item xs={12} md={6}>
+            <motion.div
+              initial="hidden"
+              whileHover="hover"
+              variants={popEffect}
+            >
+              <InfoCard
+                icon={<VisionSvg />}
+                title="Vision"
+                description="To revolutionize the construction industry by providing seamless, innovative management solutions that empower professionals to build smarter, faster, and more efficiently."
+                position="topLeft"
+              />
+            </motion.div>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <motion.div
+              initial="hidden"
+              whileHover="hover"
+              variants={popEffect}
+            >
+              <InfoCard
+                icon={<MissionSvg />}
+                title="Mission"
+                description="Our mission is to simplify construction management through cutting-edge technology, ensuring projects are completed on time, within budget, and to the highest standards of quality."
+                position="bottomRight"
+              />
+            </motion.div>
+          </Grid>
+        </Grid>
       </Container>
       <Grid
         container
@@ -142,19 +141,27 @@ const AboutSection = () => {
         }}
       >
         {features.map((feature, index) => (
-<> 
-          <Grid item xs={12} md={4} key={index}>    
-            <Box sx={{display:"flex"}}>
-            <Box>{feature.icon} </Box>
-            <Box>
-               <Typography sx={styles.featureTitle} gutterBottom>
-                {feature.title}
-              </Typography>
-              <Typography sx={styles.featureDesc}>{feature.description}</Typography>
-            </Box>
-            </Box>
-          </Grid></>
-
+          <>
+            <Grid item xs={12} md={4} key={index}>
+              <Box sx={{ display: "flex" }}>
+                <motion.div
+                  initial="hidden"
+                  whileHover="hover"
+                  variants={popEffect}
+                >
+                  <Box>{feature.icon} </Box>
+                  <Box>
+                    <Typography sx={styles.featureTitle} gutterBottom>
+                      {feature.title}
+                    </Typography>
+                    <Typography sx={styles.featureDesc}>
+                      {feature.description}
+                    </Typography>
+                  </Box>
+                </motion.div>
+              </Box>
+            </Grid>
+          </>
         ))}
       </Grid>
     </Box>
@@ -167,7 +174,7 @@ const styles = {
   container: {
     padding: { lg: 8, md: 10, xs: 4 },
     backgroundColor: "#ffffff",
-    mt: { xl: 5, lg: 40, md: 20, xs: 2 },
+    mt: { xl: 20, lg: 40, md: 2, xs: 2 },
   },
   sectionTitleContainer: {
     textAlign: "center",
@@ -175,36 +182,36 @@ const styles = {
     width: "100%",
   },
   sectionSubtitle: {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontWeight: 500,
-    fontSize: { md: "16px",sm:"16px", xs: "14px" },
-    mb: 3, 
-    color: "#4C8AB1"
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    mb: 3,
+    color: "#4C8AB1",
   },
-  featureTitle:{
-    textAlign: {md:"left", xs:"center"},
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "24px",sm:"24px", xs: "22px" },
-    fontWeight:500,
+  featureTitle: {
+    textAlign: { md: "left", xs: "center" },
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "24px", sm: "24px", xs: "22px" },
+    fontWeight: 500,
   },
-  featureDesc:{
-    textAlign: {md:"left", xs:"center"},
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "16px",sm:"16px", xs: "14px" },
-    fontWeight:400,
-    color:"#454245"
+  featureDesc: {
+    textAlign: { md: "left", xs: "center" },
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    fontWeight: 400,
+    color: "#454245",
   },
   sectionTitle: {
-    fontFamily: 'var(--main-font-family)',
-    fontSize: { md: "36px",sm:"36px", xs: "18px" },
-    fontWeight:500,
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "36px", sm: "36px", xs: "18px" },
+    fontWeight: 500,
     marginBottom: 2,
   },
   sectionDescription: {
     maxWidth: "100%",
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontWeight: 400,
-    fontSize: { md: "16px",sm:"16px", xs: "14px" },
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
     margin: "0 auto",
     color: "#666666",
   },
@@ -225,18 +232,18 @@ const styles = {
     color: "#2E728E",
   },
   cardTitle: {
-    textAlign: {md:"left", xs:"center"},
-    fontSize: { md: "36px",sm:"36px", xs: "20px" },
-    fontWeight:500,
-    fontFamily: 'var(--main-font-family)',
+    textAlign: { md: "left", xs: "center" },
+    fontSize: { md: "36px", sm: "36px", xs: "20px" },
+    fontWeight: 500,
+    fontFamily: "var(--main-font-family)",
     marginTop: 2,
   },
   cardDescription: {
-    textAlign: {md:"left", xs:"center"},
+    textAlign: { md: "left", xs: "center" },
     marginTop: 1,
-    fontSize: { md: "16px",sm:"16px", xs: "14px" },
-    fontWeight:400,
-    fontFamily: 'var(--main-font-family)',
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    fontWeight: 400,
+    fontFamily: "var(--main-font-family)",
     color: "#666666",
   },
   decorationTopLeft: {

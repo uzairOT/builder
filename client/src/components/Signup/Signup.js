@@ -224,7 +224,7 @@ const SignupComp = () => {
         toast.error(err?.data?.error || err.error || "Something went wrong!");
       }
     } else {
-      toast("Please agree to our Terms of use");
+      toast("Please agree to our terms of use and privacy policy to continue");
     }
   };
 

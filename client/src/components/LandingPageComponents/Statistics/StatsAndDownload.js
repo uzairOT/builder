@@ -6,6 +6,15 @@ import {
   DownloadGooglePlay,
 } from "../assets/svg";
 import Elipse from "../assets/PNG/Elipse.png";
+import { motion } from "framer-motion";
+
+const popEffect = {
+  hidden: { scale: 1 },
+  hover: {
+    scale: 1.05,
+    transition: { type: "spring", stiffness: 300, damping: 15 },
+  },
+};
 
 const backgroundImage = `url(${Elipse})`;
 
@@ -27,24 +36,42 @@ const StatsAndDownload = () => {
         </Grid>
         <Grid item xs={12} md={6} sx={{ justifyContent: "center" }}>
           <Container sx={styles.statsGrid} maxWidth={"sm"}>
-            <Box maxWidth={"sm"} sx={styles.statItem}>
-              <Typography sx={styles.statValue}>2M+</Typography>
-              <Typography sx={styles.statLabel}>
-                Tickets Delivered This Month
-              </Typography>
-            </Box>
-            <Box maxWidth={"sm"} sx={styles.statItem}>
-              <Typography sx={styles.statValue}>46K+</Typography>
-              <Typography sx={styles.statLabel}>
-                Active Customers Rate
-              </Typography>
-            </Box>
-            <Box maxWidth={"sm"} sx={styles.statItem}>
-              <Typography sx={styles.statValue}>99%</Typography>
-              <Typography sx={styles.statLabel}>
-                Customer Satisfaction Rate
-              </Typography>
-            </Box>
+            <motion.div
+              initial="hidden"
+              whileHover="hover"
+              variants={popEffect}
+            >
+              <Box maxWidth={"sm"} sx={styles.statItem}>
+                <Typography sx={styles.statValue}>2M+</Typography>
+                <Typography sx={styles.statLabel}>
+                  Tickets Delivered This Month
+                </Typography>
+              </Box>
+            </motion.div>
+            <motion.div
+              initial="hidden"
+              whileHover="hover"
+              variants={popEffect}
+            >
+              <Box maxWidth={"sm"} sx={styles.statItem}>
+                <Typography sx={styles.statValue}>46K+</Typography>
+                <Typography sx={styles.statLabel}>
+                  Active Customers Rate
+                </Typography>
+              </Box>
+            </motion.div>
+            <motion.div
+              initial="hidden"
+              whileHover="hover"
+              variants={popEffect}
+            >
+              <Box maxWidth={"sm"} sx={styles.statItem}>
+                <Typography sx={styles.statValue}>99%</Typography>
+                <Typography sx={styles.statLabel}>
+                  Customer Satisfaction Rate
+                </Typography>
+              </Box>
+            </motion.div>
           </Container>
         </Grid>
       </Grid>
