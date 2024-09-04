@@ -6,6 +6,17 @@ import {
   ScaleIcn,
   InnovateIcn,
 } from "../assets/svg";
+import { motion } from "framer-motion";
+
+
+
+
+
+// Define the hover effect animation variants
+const popEffect = {
+  hidden: { scale: 1 },
+  hover: { scale: 1.05, transition: { type: "spring", stiffness: 300, damping: 15 } },
+};
 
 const features = [
   {
@@ -61,6 +72,12 @@ const WhyChooseBuilder = () => {
         >
           {features.map((feature, index) => (
             <Grid item xs={12} md={3} key={index} alignItems={"center"}>
+               <motion.div
+          initial="hidden"
+          whileHover="hover"
+          variants={popEffect}
+        >
+
               <Box textAlign="center">
                 <Typography>{feature.icon}</Typography>
                 <Typography sx={styles.featureTitle} gutterBottom>
@@ -70,6 +87,7 @@ const WhyChooseBuilder = () => {
                   {feature.description}
                 </Typography>
               </Box>
+</motion.div>
             </Grid>
           ))}
         </Grid>

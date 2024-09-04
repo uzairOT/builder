@@ -8,6 +8,17 @@ import {
   SolutionIcn,
   VisionSvg,
 } from "../assets/svg";
+import { motion } from "framer-motion";
+
+
+
+
+
+// Define the hover effect animation variants
+const popEffect = {
+  hidden: { scale: 1 },
+  hover: { scale: 1.05, transition: { type: "spring", stiffness: 300, damping: 15 } },
+};
 
 const SectionTitle = ({ subtitle, title, description }) => {
   return (
@@ -90,23 +101,35 @@ const AboutSection = () => {
            "
         />
         <Grid container spacing={4} sx={styles.gridContainer}>
-          <Grid item xs={12} md={6}>
-            <InfoCard
-              icon={<VisionSvg />}
-              title="Vision"
-              description="To revolutionize the construction industry by providing seamless, innovative management solutions that empower professionals to build smarter, faster, and more efficiently."
-              position="topLeft"
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <InfoCard
-              icon={<MissionSvg />}
-              title="Mission"
-              description="Our mission is to simplify construction management through cutting-edge technology, ensuring projects are completed on time, within budget, and to the highest standards of quality."
-              position="bottomRight"
-            />
-          </Grid>
-        </Grid>
+      <Grid item xs={12} md={6}>
+        <motion.div
+          initial="hidden"
+          whileHover="hover"
+          variants={popEffect}
+        >
+          <InfoCard
+            icon={<VisionSvg />}
+            title="Vision"
+            description="To revolutionize the construction industry by providing seamless, innovative management solutions that empower professionals to build smarter, faster, and more efficiently."
+            position="topLeft"
+          />
+        </motion.div>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <motion.div
+          initial="hidden"
+          whileHover="hover"
+          variants={popEffect}
+        >
+          <InfoCard
+            icon={<MissionSvg />}
+            title="Mission"
+            description="Our mission is to simplify construction management through cutting-edge technology, ensuring projects are completed on time, within budget, and to the highest standards of quality."
+            position="bottomRight"
+          />
+        </motion.div>
+      </Grid>
+    </Grid>
       </Container>
       <Grid
         container

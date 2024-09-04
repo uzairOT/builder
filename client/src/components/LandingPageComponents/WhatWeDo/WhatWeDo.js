@@ -16,6 +16,15 @@ import {
   TeamCardIcn,
   WorkOrderCardIcn,
 } from "../assets/svg";
+import { motion } from "framer-motion";
+
+const popEffect = {
+  hidden: { scale: 1 },
+  hover: {
+    scale: 1.05,
+    transition: { type: "spring", stiffness: 300, damping: 15 },
+  },
+};
 
 const WhatWeDo = () => {
   return (
@@ -24,7 +33,7 @@ const WhatWeDo = () => {
         sx={{
           justifyContent: "center",
           textAlign: "center",
-          mt:6,
+          mt: 6,
         }}
       >
         <Typography sx={styles.titleFont}>What We Do?</Typography>
@@ -46,48 +55,60 @@ const WhatWeDo = () => {
         sx={styles.gridContainer}
       >
         <Grid item xs={12} md={4}>
-          <CardItem
-            icon={<DashboardCardIcn />}
-            title="Dashboard"
-            description="Access detailed project insights, track progress and costs, manage tasks efficiently, and receive personalized updates with real-time analytics and weather integration."
-            decorationPosition="topLeft"
-          />
+          <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
+            <CardItem
+              icon={<DashboardCardIcn />}
+              title="Dashboard"
+              description="Access detailed project insights, track progress and costs, manage tasks efficiently, and receive personalized updates with real-time analytics and weather integration."
+              decorationPosition="topLeft"
+            />
+          </motion.div>
         </Grid>
         <Grid item xs={12} md={4}>
-          <CardItem
-            icon={<WorkOrderCardIcn />}
-            title="Work Order Events"
-            description="Detailed project overviews, including line items and costs, get real-time weather updates, and organize daily notes for comprehensive information management."
-          />
+          <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
+            <CardItem
+              icon={<WorkOrderCardIcn />}
+              title="Work Order Events"
+              description="Detailed project overviews, including line items and costs, get real-time weather updates, and organize daily notes for comprehensive information management."
+            />
+          </motion.div>
         </Grid>
         <Grid item xs={12} md={4}>
-          <CardItem
-            icon={<SubCardIcn />}
-            title="Subscription"
-            description="Display current plan details and renewal dates, provide transparent billing records, highlight plan benefits and features, and offer clear upgrade options."
-            decorationPosition="bottomRight"
-          />
+          <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
+            <CardItem
+              icon={<SubCardIcn />}
+              title="Subscription"
+              description="Display current plan details and renewal dates, provide transparent billing records, highlight plan benefits and features, and offer clear upgrade options."
+              decorationPosition="bottomRight"
+            />
+          </motion.div>
         </Grid>
         <Grid item xs={12} md={4}>
-          <CardItem
-            icon={<ReportCardIcn />}
-            title="Reports"
-            description="Track project costs, invoices, and profit margins with intuitive visuals, monitor workdays to keep timelines on track, and receive automatic deadline alerts for timely project completion."
-          />
+          <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
+            <CardItem
+              icon={<ReportCardIcn />}
+              title="Reports"
+              description="Track project costs, invoices, and profit margins with intuitive visuals, monitor workdays to keep timelines on track, and receive automatic deadline alerts for timely project completion."
+            />
+          </motion.div>
         </Grid>
         <Grid item xs={12} md={4}>
-          <CardItem
-            icon={<TeamCardIcn />}
-            title="Team Invitations"
-            description="Effortlessly create new projects and invite team members to join your secure workspace, streamlining project initiation and collaboration."
-          />
+          <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
+            <CardItem
+              icon={<TeamCardIcn />}
+              title="Team Invitations"
+              description="Effortlessly create new projects and invite team members to join your secure workspace, streamlining project initiation and collaboration."
+            />
+          </motion.div>
         </Grid>
         <Grid item xs={12} md={4}>
-          <CardItem
-            icon={<InvoiceCardIcn />}
-            title="Invoice Management"
-            description="Easily generate detailed invoices with itemized lists, download PDFs for convenient sharing, access invoice history for each project, and customize line items to fit project-specific needs."
-          />
+          <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
+            <CardItem
+              icon={<InvoiceCardIcn />}
+              title="Invoice Management"
+              description="Easily generate detailed invoices with itemized lists, download PDFs for convenient sharing, access invoice history for each project, and customize line items to fit project-specific needs."
+            />
+          </motion.div>
         </Grid>
       </Grid>
     </Grid>

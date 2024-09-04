@@ -31,6 +31,15 @@ import {
   TeamCardIcn,
   WorkOrderCardIcn,
 } from "../assets/svg";
+import { motion } from "framer-motion";
+
+const popEffect = {
+  hidden: { scale: 1 },
+  hover: {
+    scale: 1.05,
+    transition: { type: "spring", stiffness: 300, damping: 15 },
+  },
+};
 
 const FeatureCard = ({ title, features, image, icon }) => {
   return (
@@ -99,15 +108,17 @@ const BuilderFeatures = () => {
         </Container>
       </Container>
       {/* Dashboard Feature Section */}
-      <Grid container  justifyContent="center" padding={2}>
+      <Grid container justifyContent="center" padding={2}>
         <Grid item xs={12} md={4}>
-          <Box>
-            <img
-              src={DashboardFeature}
-              style={{ width: xsView ? "20%" : "100%" }}
-              alt="Dashboard Features"
-            />
-          </Box>
+          <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
+            <Box>
+              <img
+                src={DashboardFeature}
+                style={{ width: xsView ? "20%" : "100%" }}
+                alt="Dashboard Features"
+              />
+            </Box>
+          </motion.div>
         </Grid>
         <Grid item xs={12} md={6}>
           <FeatureCard
@@ -130,31 +141,30 @@ const BuilderFeatures = () => {
           />
         </Grid>
         <Grid item xs={12} md={4}>
-          <Box>
-            <img
-              src={EventFeature}
-              style={{ width: xsView ? "20%" : "100%" }}
-              alt="Event Features"
-            />
-          </Box>
+          <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
+            <Box>
+              <img
+                src={EventFeature}
+                style={{ width: xsView ? "20%" : "100%" }}
+                alt="Event Features"
+              />
+            </Box>
+          </motion.div>
         </Grid>
       </Grid>
 
       {/* Subscription Feature Section */}
-      <Grid
-        container
-        justifyContent="center"
-        padding={2}
-        mt={5}
-      >
+      <Grid container justifyContent="center" padding={2} mt={5}>
         <Grid item xs={12} md={4}>
-          <Box>
-            <img
-              src={SubscriptionFeature}
-              style={{ width: xsView ? "20%" : "100%" }}
-              alt="Subscription Features"
-            />
-          </Box>
+          <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
+            <Box>
+              <img
+                src={SubscriptionFeature}
+                style={{ width: xsView ? "20%" : "100%" }}
+                alt="Subscription Features"
+              />
+            </Box>
+          </motion.div>
         </Grid>
         <Grid item xs={12} md={6} sx={{ justifyContent: "left" }}>
           <FeatureCard
@@ -177,31 +187,30 @@ const BuilderFeatures = () => {
           />
         </Grid>
         <Grid item xs={12} md={4}>
-          <Box>
-            <img
-              src={ReportsFeature}
-              style={{ width: xsView ? "20%" : "100%" }}
-              alt="Reports Features"
-            />
-          </Box>
+          <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
+            <Box>
+              <img
+                src={ReportsFeature}
+                style={{ width: xsView ? "20%" : "100%" }}
+                alt="Reports Features"
+              />
+            </Box>
+          </motion.div>
         </Grid>
       </Grid>
 
       {/* Invitation Feature Section */}
-      <Grid
-        container
-        justifyContent="center"
-        padding={2}
-        mt={5}
-      >
+      <Grid container justifyContent="center" padding={2} mt={5}>
         <Grid item xs={12} md={4}>
-          <Box>
-            <img
-              src={InvitationFeature}
-              style={{ width: xsView ? "20%" : "100%" }}
-              alt="Invitation Features"
-            />
-          </Box>
+          <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
+            <Box>
+              <img
+                src={InvitationFeature}
+                style={{ width: xsView ? "20%" : "100%" }}
+                alt="Invitation Features"
+              />
+            </Box>
+          </motion.div>
         </Grid>
         <Grid item xs={12} md={6} sx={{ justifyContent: "left" }}>
           <FeatureCard
@@ -224,13 +233,15 @@ const BuilderFeatures = () => {
           />
         </Grid>
         <Grid item xs={12} md={4}>
-          <Box>
-            <img
-              src={InvoiceFeature}
-              style={{ width: xsView ? "20%" : "100%" }}
-              alt="Invoice Features"
-            />
-          </Box>
+          <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
+            <Box>
+              <img
+                src={InvoiceFeature}
+                style={{ width: xsView ? "20%" : "100%" }}
+                alt="Invoice Features"
+              />
+            </Box>
+          </motion.div>
         </Grid>
       </Grid>
     </Grid>
