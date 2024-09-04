@@ -10,40 +10,28 @@ import GetInTouch from "./ContactForm/GetInTouch";
 import FAQ from "./FAQ/Faq";
 import StatsAndDownload from "./Statistics/StatsAndDownload";
 import Footer from "./Footer/Footer";
-import { motion, useAnimation } from "framer-motion";
-import { useInView } from "react-intersection-observer";
+import { motion } from "framer-motion";
 import BG from "./assets/PNG/BG.png";
 import Testimonials from "./Testimonials/Testimonials";
 
 const backgroundImage = `url(${BG})`;
 
+// Define animations
 const fadeInUp = {
   hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 1, ease: "easeInOut" } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
-const Section = ({ id, Component, animation, delay }) => {
-  const controls = useAnimation();
-  const [ref, inView] = useInView({ triggerOnce: false });
-
-  React.useEffect(() => {
-    if (inView) {
-      controls.start("visible");
-    } else {
-      controls.start("hidden");
-    }
-  }, [controls, inView]);
-
+const Section = ({ id, Component, animation }) => {
   return (
     <motion.div
-      ref={ref}
+      id={id}
       initial="hidden"
-      animate={controls}
+      whileInView="visible"
+      viewport={{ once: false, amount: 0.2 }} // Adjust the viewport trigger point
       variants={animation}
-      transition={{ delay }}
-      
     >
-      <Grid id={id}>
+      <Grid>
         <Component />
       </Grid>
     </motion.div>
@@ -64,79 +52,18 @@ const MainHome = () => {
   return (
     <Grid sx={{ overflow: "hidden" }}>
       <Grid sx={styles.container}>
-        <Grid>
-          <Navbar />
-        </Grid>
-        <Section
-          id="main-content"
-          Component={MainContent}
-          animation={fadeInUp}
-          delay={0}
-        />
+        <Navbar />
+        <Section id="main-content" Component={MainContent} animation={fadeInUp} />
       </Grid>
-      <Grid>
-        <Section
-          id="about"
-          Component={AboutUs}
-          animation={fadeInUp}
-          delay={0.5}
-        />
-      </Grid>
-      <Grid>
-        <Section
-          id="why-choose"
-          Component={WhyChooseBuilder}
-          animation={fadeInUp}
-          delay={0.5}
-        />
-      </Grid>
-      <Grid>
-        <Section
-          id="what-we-do"
-          Component={WhatWeDo}
-          animation={fadeInUp}
-          delay={0.5}
-        />
-      </Grid>
-      <Grid>
-        <Section
-          id="features"
-          Component={BuilderFeatures}
-          animation={fadeInUp}
-          delay={0.5}
-        />
-      </Grid>
-      <Grid>
-        <Section
-          id="contact"
-          Component={GetInTouch}
-          // animation={fadeInUp}
-          delay={0.5}
-          
-        />
-      </Grid>
-      <Grid>
-        <Section id="faqs" Component={FAQ} 
-        // animation={fadeInUp} 
-        delay={0.5} />
-      </Grid>
-      <Grid>
-        <Section
-          id="testimonials"
-          Component={Testimonials}
-          animation={fadeInUp}
-          delay={0.5}
-        />
-      </Grid>
-
-      <Grid>
-        <Section
-          id="stats"
-          Component={StatsAndDownload}
-          animation={fadeInUp}
-          delay={0.5}
-        />
-      </Grid>
+      
+      <Section id="about" Component={AboutUs} animation={fadeInUp} />
+      <Section id="why-choose" Component={WhyChooseBuilder} animation={fadeInUp} />
+      <Section id="what-we-do" Component={WhatWeDo} animation={fadeInUp} />
+      <Section id="features" Component={BuilderFeatures} animation={fadeInUp} />
+      <Section id="contact" Component={GetInTouch}  />
+      <Section id="faqs" Component={FAQ}  />
+      <Section id="testimonials" Component={Testimonials} animation={fadeInUp} />
+      <Section id="stats" Component={StatsAndDownload} animation={fadeInUp} />
 
       <Grid sx={{ zIndex: 1 }}>
         <Footer />

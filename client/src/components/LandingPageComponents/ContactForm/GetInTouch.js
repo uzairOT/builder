@@ -22,6 +22,9 @@ const phoneUtil = PhoneNumberUtil.getInstance();
 
 const isPhoneValid = (phone) => {
   try {
+    if(phone ===''){
+      return true;
+    }
     return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone));
   } catch (error) {
     return false;

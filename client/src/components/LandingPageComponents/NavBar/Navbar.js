@@ -123,7 +123,7 @@ const Navbar = () => {
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         {/* Logo */}
-        <Box sx={{ display: "flex", alignItems: "center", ml:{sm:5, xs:0} }}>
+        <Box sx={{ display: "flex", alignItems: "center", ml:{sm:12, xs:0} }}>
           <Buildericn />
         </Box>
 
@@ -182,7 +182,7 @@ const Navbar = () => {
             display: { xs: "none", lg: "flex" },
             alignItems: "center",
             gap: 2,
-            mr:{sm:5, xs:0}
+            mr:{sm:12, xs:0}
           }}
         >
           {/* <IconButton color="inherit">

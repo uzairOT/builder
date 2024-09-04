@@ -5,7 +5,7 @@ import {
   useGoogleLoginMutation,
   useLoginMutation,
 } from "../../redux/apis/usersApiSlice";
-import { setCredentials } from "../../redux/slices/authSlice";
+import { setCredentials, setForgetPasswordEmail } from "../../redux/slices/authSlice";
 import { toast } from "react-toastify";
 import { gapi } from "gapi-script";
 import GoogleLogin from "react-google-login";
@@ -154,6 +154,7 @@ const Login = () => {
       // console.log("login :", res);
       // localStorage.setItem('userInfo', JSON.stringify({...res}));
       localStorage.setItem("login", Date.now()); // Use this key to trigger the storage event
+      
       dispatch(setCredentials({ ...res.data }));
       // navigate("/");
       if (res?.incompleteProject?.incomplete) {
@@ -177,8 +178,10 @@ const Login = () => {
           err?.data?.message ||
           "Something went wrong!"
       );
-      if (err?.data?.isVerified===false){
-        navigate("/verifycode")
+      
+      if (err?.data?.user?.isVerified===false){
+        dispatch(setForgetPasswordEmail(values.email)); 
+        navigate("/verifycode", { state: { data: "signup" } });
       }
     }
   };
