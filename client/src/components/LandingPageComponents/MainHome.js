@@ -110,13 +110,15 @@ const MainHome = () => {
         <Section
           id="contact"
           Component={GetInTouch}
-          animation={fadeInUp}
+          // animation={fadeInUp}
           delay={0.5}
           
         />
       </Grid>
       <Grid>
-        <Section id="faqs" Component={FAQ} animation={fadeInUp} delay={0.5} />
+        <Section id="faqs" Component={FAQ} 
+        // animation={fadeInUp} 
+        delay={0.5} />
       </Grid>
       <Grid>
         <Section

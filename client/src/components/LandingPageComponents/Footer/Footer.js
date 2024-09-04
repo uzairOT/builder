@@ -56,6 +56,11 @@ const Footer = () => {
     },
   });
 
+  const openInNewTab = (url) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };    
+
+
   const ProtectedLink = ({ href, children }) => {
     const navigate = useNavigate();
 
@@ -88,6 +93,7 @@ const Footer = () => {
       behavior: "smooth",
     });
   };
+
   return (
     <Box component="footer" style={styles.footer}>
       <Container maxWidth={"xl"}>
@@ -269,11 +275,15 @@ const Footer = () => {
           </Box>
           <Box>
             <Typography variant="body2" style={styles.footerLinks}>
-              <Link href="/privacypolicy" style={{ color: "#fff" }}>
+              <Link  onClick={() => {
+                openInNewTab("/privacypolicy");
+              }} style={{ color: "#fff", cursor:"pointer"  }}>
                 Privacy Policy
               </Link>
               {" | "}
-              <Link href="/terms" style={{ color: "#fff" }}>
+              <Link  onClick={() => {
+                openInNewTab("/terms");
+              }} style={{ color: "#fff", cursor:"pointer"  }}>
                 Terms & Conditions
               </Link>
               {" | "}

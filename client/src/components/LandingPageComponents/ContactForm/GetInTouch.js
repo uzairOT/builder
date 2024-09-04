@@ -323,7 +323,7 @@ const GetInTouch = () => {
                   <Typography variant="body2">
                     You agree to our friendly{" "}
                     <span
-                      style={{ textDecoration: "none", color: "#4C8AB1" }}
+                      style={{ textDecoration: "none", color: "#4C8AB1", cursor:"pointer" }}
                       // href="/privacypolicy"
                       onClick={() => {
                         openInNewTab("/privacypolicy");

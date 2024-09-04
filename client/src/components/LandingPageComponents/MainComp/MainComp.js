@@ -85,7 +85,7 @@ const MainContent = () => {
               aspect of your project management.
             </Typography>
 
-            <Button variant="outlined" sx={styles.demoButton}>
+            <Button variant="outlined" sx={styles.demoButton} href="/#contact">
               Schedule a Demo
             </Button>
           </Grid>
