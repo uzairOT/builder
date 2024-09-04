@@ -90,7 +90,7 @@ const MainContent = () => {
             </Button>
           </Grid>
 
-          <Grid item md={2} xs={12} sx={{ textAlign: "center" }}>
+          <Grid item md={2} xs={12} >
             <Typography component="div" sx={styles.downloadText}>
               DOWNLOAD NOW!
             </Typography>
@@ -202,6 +202,7 @@ const styles = {
     textTransform:"none"
   },
   downloadText: {
+    ml:1,
     fontSize: "13px",
     fontWeight: 700,
     fontFamily: "var(--main-font-family)",
