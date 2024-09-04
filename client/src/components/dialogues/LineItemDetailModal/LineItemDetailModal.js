@@ -58,6 +58,7 @@ const LineItemDetailModal = ({
  
   return (
     <Modal
+    
       open={modalOpen}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
@@ -173,7 +174,7 @@ const style = {
   wordWrap: 'break-word',
   wordBreak: 'break-all',
   overflowY:'auto',
-  height:'80vh'
+  maxHeight:'80vh'
 };
 
 

@@ -193,7 +193,7 @@ const ProjectsSidebar = ({ reports }) => {
               })}
             </>
           </Stack>
-           {/* <Stack justifyContent={"center"}>
+           <Stack justifyContent={"center"}>
                         <Stack
                           pt={0.5}
                           pb={0.5}
@@ -214,7 +214,7 @@ const ProjectsSidebar = ({ reports }) => {
                             Add New Project
                           </BuilderProButton>
                         </Stack>
-                      </Stack> */}
+                      </Stack>
         </Box>
       </Stack>
     </>
