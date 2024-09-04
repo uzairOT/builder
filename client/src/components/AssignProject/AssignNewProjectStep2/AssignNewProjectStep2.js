@@ -73,7 +73,7 @@ function AssignNewProjectStep2({
 
   const handleSkip = () => {
     setShowSkipInvite(true);
-    dispatch(setSkipInvite());
+   
   };
 
   const handleOpen = () => {
@@ -94,8 +94,31 @@ function AssignNewProjectStep2({
   const handleNextStep = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   
-    if (Data.users.some((user) => user.email === "" || !emailRegex.test(user.email))) {
-      toast.warning("Please add a valid email address for team members");
+    const emailSet = new Set();
+    let hasInvalidEmail = false;
+    let hasDuplicateEmail = false;
+  
+    Data.users.forEach((user) => {
+      const isEmailInvalid = user.email === "" || !emailRegex.test(user.email);
+      const isEmailDuplicate = emailSet.has(user.email.toLowerCase());
+      
+      if (isEmailInvalid) {
+        hasInvalidEmail = true;
+      }
+      if (isEmailDuplicate) {
+        hasDuplicateEmail = true;
+      }
+      
+      emailSet.add(user.email.toLowerCase());
+    });
+  
+    if (hasDuplicateEmail) {
+      toast.warning("Same email is entered again");
+      return;
+    }
+  
+    if (hasInvalidEmail) {
+      toast.warning("Please add valid email addresses for team members");
       return;
     }
   
@@ -106,6 +129,7 @@ function AssignNewProjectStep2({
   
     handleCreateNewProject();
   };
+  
   
 
   console.log(Data);

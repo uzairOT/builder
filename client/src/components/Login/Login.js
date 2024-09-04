@@ -165,6 +165,9 @@ const Login = () => {
           window.location.href = "/dashboard";
         }, 1000);
       }
+      if (res?.data?.isVerified===false){
+        navigate("/verifycode")
+      }
     } catch (err) {
       console.log(err);
       if (err.status === "FETCH_ERROR") {

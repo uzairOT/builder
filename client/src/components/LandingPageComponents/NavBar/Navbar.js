@@ -87,6 +87,28 @@ const Navbar = () => {
               Login
             </Button>
           )}
+           {userInfo && (
+            <Button
+              onClick={() => navigate("/dashboard")}
+              fullWidth
+              sx={{
+                fontFamily: "var(--main-font-family)",
+                fontWeight: 500,
+                fontSize: "16px",
+
+                borderRadius: 8,
+                padding: "10px 16px 10px 16px",
+                backgroundColor: "#2E728E",
+                "&:hover": {
+                  backgroundColor: "grey",
+                  color: "white",
+                },
+                color: "white",
+              }}
+            >
+              Dashboard
+            </Button>
+          )}
         </ListItem>
       </List>
     </Box>
@@ -101,7 +123,7 @@ const Navbar = () => {
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         {/* Logo */}
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ display: "flex", alignItems: "center", ml:{sm:5, xs:0} }}>
           <Buildericn />
         </Box>
 
@@ -160,6 +182,7 @@ const Navbar = () => {
             display: { xs: "none", lg: "flex" },
             alignItems: "center",
             gap: 2,
+            mr:{sm:5, xs:0}
           }}
         >
           {/* <IconButton color="inherit">
@@ -171,6 +194,11 @@ const Navbar = () => {
           {!userInfo && (
             <Button sx={styles.navLoginBtn} onClick={() => navigate("/login")}>
               Login
+            </Button>
+          )}
+          {userInfo && (
+            <Button sx={styles.navLoginBtn} onClick={() => navigate("/dashboard")}>
+              Dashboard
             </Button>
           )}
         </Box>
@@ -224,7 +252,6 @@ const styles = {
     fontFamily: "var(--main-font-family)",
     fontWeight: 500,
     fontSize: "16px",
-    width: "72px",
     height: "44px",
     borderRadius: "8px",
     textTransform: "capitalize",

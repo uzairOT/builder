@@ -50,8 +50,8 @@ const navigate=useNavigate()
   const dispatch = useDispatch();
   const location = useLocation();
   const path = location.pathname.split('/');
-  const projectId = path[2]; // Adjust the index based on your actual path structure
-  const newPath = `/projects/${projectId}/initialProposal`;
+  const projectId = notification?.projectId; 
+  const newPath = `/projects/${projectId}/initial-proposal`;
 
   // const handleOnClick = async () => {
   //   const res = await getWorkOrder({ workOrderId: notification.WorkOrderReq.id });
@@ -147,7 +147,7 @@ const navigate=useNavigate()
   };
   const handleDetails = async () => {
     setExpanded(false);
-    navigate("/")
+    navigate(newPath)
   };
   
 

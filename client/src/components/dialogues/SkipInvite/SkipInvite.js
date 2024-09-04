@@ -18,7 +18,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import YellowBtn from "../../UI/button";
 import { useDispatch } from "react-redux";
-import { resetUserAndRoleEmail } from "../../../redux/slices/projectFormSlice";
+import { resetUserAndRoleEmail, setSkipInvite } from "../../../redux/slices/projectFormSlice";
 
 function SkipInvite({
   handleOpen,
@@ -30,6 +30,7 @@ function SkipInvite({
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const handleSkip = () => {
+     dispatch(setSkipInvite());
     handleNextStep();
     // handleClose();
   };
