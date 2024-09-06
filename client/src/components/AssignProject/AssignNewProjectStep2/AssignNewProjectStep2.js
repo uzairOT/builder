@@ -211,7 +211,7 @@ function AssignNewProjectStep2({
         stepHeading={"Step 2 of 3"}
         Heading={"Invite your team to"}
         projectName={projectName}
-        stepDiscription={`Accepting the invitation grants access to a secure project workspace in BuilderBUILDER Pro`}
+        stepDiscription={`Accepting the invitation grants access to a secure project workspace in BuilderBUILDER PRO`}
       />
 
       {users.map((user, index) => (

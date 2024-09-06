@@ -70,7 +70,7 @@ function AddPhaseView({
   handleAddOpen: handleAddChangeLineItem,
   handleDeleteOpen: handleDeleteChangeLineItem,
   selectedProjectId,
-  selectedProjectData
+  selectedProjectData,
   // canGenerate
 }) {
   const [cardPhase, setCardPhase] = useState([]);
@@ -892,7 +892,7 @@ function AddPhaseView({
             {InitialProposalView ? (
               <Box
                 sx={{
-                  height: "calc(60vh - 140px)",
+                  height: "calc(78vh - 140px)",
                   ...themeStyle.scrollable,
                   width: {
                     xl: "100%",
@@ -1042,8 +1042,10 @@ function AddPhaseView({
                   height: adminProjectView
                     ? view === "Generate Invoice"
                       ? "calc(93vh - 140px)"
-                      :  ((changeOrderView || InitialProposalAndChange) && !(changeOrderView && InitialProposalAndChange))?
-                      "calc(93vh)": "calc(92vh - 300px)"
+                      : (changeOrderView || InitialProposalAndChange) &&
+                        !(changeOrderView && InitialProposalAndChange)
+                      ? "calc(93vh)"
+                      : "calc(98vh - 300px)"
                     : "",
                   ...themeStyle.scrollable,
                   width: {
@@ -1113,7 +1115,17 @@ function AddPhaseView({
                       textAlign: "center",
                     }}
                   >
-                    No Phases Available
+                    <Typography>
+                      No{" "}
+                      <span>
+                        {changeOrderView
+                          ? " Change"
+                          : pathCheck.includes("assignproject")
+                          ? " "
+                          : " Approved"}
+                      </span>{" "}
+                      Phases Available
+                    </Typography>
                   </div>
                 )}
               </Box>

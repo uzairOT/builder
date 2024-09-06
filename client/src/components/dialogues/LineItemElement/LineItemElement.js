@@ -228,35 +228,35 @@ function AddLineElement({
             unit_price: formData.unitPrice,
             ...formData, // Add other fields from formData
           };
-          // Check for existing line items with the same name but different id
-          const phase = existingPhases.find((phase) => phase.id === phaseId);
-          if (phase) {
-            const itemExists = phase.LineItems.some(
-              (item) =>
-                item.title === formData.phaseName && // Same name
-                item.id !== formData.id // Different id
-            );
-            if (itemExists) {
-              // Show a toast if the line item with the same name already exists
-              toast.error("Line item with the same name already exists!");
-              return prevState; // Exit without setting the state
-            }
-          }
+          // // Check for existing line items with the same name but different id
+          // const phase = existingPhases.find((phase) => phase.id === phaseId);
+          // if (phase) {
+          //   const itemExists = phase.LineItems.some(
+          //     (item) =>
+          //       item.title === formData.phaseName && // Same name
+          //       item.id !== formData.id // Different id
+          //   );
+          // if (itemExists) {
+          //   // Show a toast if the line item with the same name already exists
+          //   toast.error("Line item with the same name already exists!");
+          //   return prevState; // Exit without setting the state
+          // }
+          // }
 
-          // Check for existing line items with the same name but different id
-          const selectedPhase = changeOrderSelected.find(
-            (phase) => phase.id === phaseId
-          );
-          if (selectedPhase) {
-            const itemExists = selectedPhase.LineItems.some(
-              (item) => item.title === formData.phaseName
-            );
-            if (itemExists) {
-              // Show a toast if the line item with the same name already exists
-              toast.error("Line item with the same name already exists!");
-              return prevState; // Exit without setting the state
-            }
-          }
+          // // Check for existing line items with the same name but different id
+          // const selectedPhase = changeOrderSelected.find(
+          //   (phase) => phase.id === phaseId
+          // );
+          // if (selectedPhase) {
+          //   const itemExists = selectedPhase.LineItems.some(
+          //     (item) => item.title === formData.phaseName
+          //   );
+          //   if (itemExists) {
+          //     // Show a toast if the line item with the same name already exists
+          //     toast.error("Line item with the same name already exists!");
+          //     return prevState; // Exit without setting the state
+          //   }
+          // }
 
           // Dispatch to Redux
           dispatch(
@@ -298,33 +298,33 @@ function AddLineElement({
         // Add other default fields as needed
       };
 
-      // Check if a line item with the same name already exists for the given phase
-      const phase = existingPhases.find((phase) => phase.id === phaseId);
-      if (phase) {
-        const itemExists = phase.LineItems.some(
-          (item) => item.title === formData.phaseName
-        );
-        if (itemExists) {
-          // Show a toast if the line item already exists
-          toast.error("Line item with the same name already exists!");
-          return; // Exit without setting the state
-        }
-      }
+      // // Check if a line item with the same name already exists for the given phase
+      // const phase = existingPhases.find((phase) => phase.id === phaseId);
+      // if (phase) {
+      //   const itemExists = phase.LineItems.some(
+      //     (item) => item.title === formData.phaseName
+      //   );
+      //   if (itemExists) {
+      //     // Show a toast if the line item already exists
+      //     toast.error("Line item with the same name already exists!");
+      //     return; // Exit without setting the state
+      //   }
+      // }
 
-      // Check if a line item with the same name already exists for the given phase
-      const selectedPhase = changeOrderSelected.find(
-        (phase) => phase.id === phaseId
-      );
-      if (selectedPhase) {
-        const itemExists = selectedPhase.LineItems.some(
-          (item) => item.title === formData.phaseName
-        );
-        if (itemExists) {
-          // Show a toast if the line item already exists
-          toast.error("Line item with the same name already exists!");
-          return; // Exit without setting the state
-        }
-      }
+      // // Check if a line item with the same name already exists for the given phase
+      // const selectedPhase = changeOrderSelected.find(
+      //   (phase) => phase.id === phaseId
+      // );
+      // if (selectedPhase) {
+      //   const itemExists = selectedPhase.LineItems.some(
+      //     (item) => item.title === formData.phaseName
+      //   );
+      //   if (itemExists) {
+      //     // Show a toast if the line item already exists
+      //     toast.error("Line item with the same name already exists!");
+      //     return; // Exit without setting the state
+      //   }
+      // }
 
       setUpdateRow((prevState) => {
         const updatedPhase = prevState[phaseId] || {
@@ -1141,14 +1141,14 @@ function AddLineElement({
               <Typography sx={typoText}>Notes</Typography>
               <TextField
                 inputProps={{ maxLength: 1000 }}
-                sx={{ ...inputStyle, height: "5rem" }}
+                sx={{ ...inputStyle, height: "3.5rem" }}
                 placeholder="Enter your Notes"
                 margin="dense"
                 id="longDescription"
                 name="longDescription"
                 type="text"
                 multiline
-                rows={3}
+                rows={2}
                 variant="standard"
                 value={formData.longDescription}
                 onChange={(e) => setLongDescription(e.target.value)}

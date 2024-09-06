@@ -215,7 +215,7 @@ const Invitation = () => {
             marginTop: { xl: "0rem", lg: "0rem", md: "0rem", sm: "0rem" },
           }}
         >
-          {/* <Typography sx={firstHeading}>BuilderBUILDER Pro</Typography> */}
+          {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
           <Box>
             <Typography component="p" sx={secondHeading}>
               On schedule.
@@ -232,7 +232,7 @@ const Invitation = () => {
           </Box>
         </Box>
         {/* <img height="55px" src={builderproicon} alt="Builder Pro" /> */}
-        {/* <Typography sx={firstHeading}>BuilderBUILDER Pro</Typography> */}
+        {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
 
         {/* Button */}
 

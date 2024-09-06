@@ -1,4 +1,4 @@
-import { Box, Paper, Stack } from "@mui/material";
+import { Box, Paper, Stack, Tab, Tabs } from "@mui/material";
 import React, { useState } from "react";
 import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
 import { useOutletContext, useParams } from "react-router-dom";
@@ -14,7 +14,7 @@ import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
 
 const WorkOrderView = () => {
   const [changeView, setChangeView] = useState(false);
-  const authUserRole= useSelector(getUserRoleFromRedux);
+  const authUserRole = useSelector(getUserRoleFromRedux);
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
   const events = allEvent.events;
@@ -25,13 +25,19 @@ const WorkOrderView = () => {
   const { data, refetch } = useGetProjectChangeOrderQuery({
     projectId: currentProjectId,
     userId: user.user.id,
-    changeOrder: false
+    changeOrder: false,
   });
   const dailyForecast = forecast.dailyForecast;
   const { id } = useParams();
-  const [projectName, projectLocation, SuperAdminId, selectedProjectData] = useOutletContext()
+  const [projectName, projectLocation, SuperAdminId, selectedProjectData] =
+    useOutletContext();
+  const [selectedTab, setSelectedTab] = useState(0);
   const handleChangeView = () => {
     setChangeView(!changeView);
+  };
+
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
   };
 
   return (
@@ -40,13 +46,60 @@ const WorkOrderView = () => {
         ...themeStyle.borders,
         width: "99%",
         marginBottom: "4px",
-        marginTop: '8px',
-        height: !changeView ? "" : "100%",
+        marginTop: "8px",
+        height: !changeView ? "100%" : "100%",
         ...themeStyle.scrollable,
       }}
     >
-      <Box pt={1} pl={1} pb={0}>
-        <BuilderProButton
+       <Box padding={0}>
+          <Tabs
+            value={selectedTab}
+            onChange={handleTabChange}
+            sx={{
+              fontFamily: "var(--main-font-family)",
+              color: "black",
+              borderBottom: "0.2px solid #FFB300",
+              "& .MuiTabs-indicator": {
+                backgroundColor: "#FFB300",
+              },
+            }}
+          >
+            <Tab
+              label="New Work Order"
+              sx={{
+                textTransform: "capitalize",
+                fontFamily: "var(--main-font-family)",
+                backgroundColor: selectedTab === 0 ? "#FFAC00" : "#F2F2F2",
+                color: selectedTab === 0 ? "white !important" : "black !important",
+                border:
+                  selectedTab === 0 ? "1px solid #FFAC00" : "1px solid #FFAC00",
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                padding: 0.5,
+                fontWeight: "600",
+              }}
+            />
+            <Tab
+              label="Work Order Logs"
+              sx={{
+                textTransform: "capitalize",
+                fontFamily: "var(--main-font-family)",
+                ml: 0.5,
+                backgroundColor: selectedTab === 1 ? "#FFAC00" : "#F2F2F2",
+                color: selectedTab === 1 ? "white !important" : "black !importants",
+                border:
+                  selectedTab === 1 ? "1px solid #FFAC00" : "1px solid #FFAC00",
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                padding: 0.5,
+                fontWeight: "600",
+              }}
+            />
+          </Tabs>
+        </Box>
+
+      {/* <Box pt={1} pl={1} pb={0}>
+        <BuilderProButtonA
           backgroundColor={"#FFAC00"}
           variant={"contained"}
           fontFamily={'var(--main-font-family)'}
@@ -58,26 +111,14 @@ const WorkOrderView = () => {
           handleOnClick={handleChangeView}
         >
           {changeView ? "Submit New Work Order" : "View Work Order Logs"}
-        </BuilderProButton>
-      </Box>
-      <Stack pt={1} width={'inherit'}>
+        </BuilderProButtonA>
+      </Box> */}
+
+      <Stack pt={1} width={"inherit"}>
         <Stack justifyContent={"flex-start"} height={"95%"}>
-          {changeView ? (
-            <Stack>
-              <ProjectsChangeOrder
-                workOrder={true}
-                view={"Work Order Logs"}
-                setChangeView={setChangeView}
-                data={data}
-                refetch={refetch}
-              />
-            </Stack>
-          ) : (
+          {selectedTab === 0 && (
             <>
-              <Box
-                height= '600px'
-                bgcolor={"white"}
-              >
+              <Box height="600px" bgcolor={"white"}>
                 <TaskCalender
                   dailyForecast={dailyForecast}
                   eventsArr={events}
@@ -85,7 +126,7 @@ const WorkOrderView = () => {
                   isDrawerOpen={true}
                 />
               </Box>
-              <Stack p={1} borderRadius={"14px"} width={'99%'}>
+              <Stack p={1} borderRadius={"14px"} width={"99%"}>
                 <AddPhaseView
                   refetchChangeOrder={refetch}
                   projectId={id}
@@ -98,6 +139,18 @@ const WorkOrderView = () => {
             </>
           )}
         </Stack>
+
+        {selectedTab === 1 && (
+          <Stack justifyContent={"flex-start"}>
+            <ProjectsChangeOrder
+              workOrder={true}
+              view={"Work Order Logs"}
+              setChangeView={() => setSelectedTab(0)}
+              data={data}
+              refetch={refetch}
+            />
+          </Stack>
+        )}
       </Stack>
     </Paper>
   );
@@ -110,19 +163,19 @@ const themeStyle = {
     borderRadius: "14px",
   },
   scrollable: {
-    scrollbarWidth: 'none',  // For Firefox
-    '-ms-overflow-style': 'none',  // For IE and Edge
-    '&::-webkit-scrollbar': {
-      width: '6px'
+    scrollbarWidth: "none", // For Firefox
+    "-ms-overflow-style": "none", // For IE and Edge
+    "&::-webkit-scrollbar": {
+      width: "6px",
     },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'transparent',
-      transition: 'background-color 0.3s',
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "transparent",
+      transition: "background-color 0.3s",
     },
-    '&:hover::-webkit-scrollbar-thumb': {
-      backgroundColor: '#ddd',
+    "&:hover::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ddd",
     },
-    overflowY: 'scroll'
+    overflowY: "scroll",
   },
   border: {
     borderRadius: "14px",

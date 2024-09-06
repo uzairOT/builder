@@ -21,6 +21,7 @@ import {
 } from "../../../utils/Validation/settingsPageSchema";
 import { useEditUnitMutation } from "../../../redux/apis/Project/userProjectApiSlice";
 import { Close } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 const EditUnitModal = ({ open, onClose, unit, refetch, userId }) => {
   console.log(unit);
@@ -36,6 +37,7 @@ const EditUnitModal = ({ open, onClose, unit, refetch, userId }) => {
     const res = await editUnit(put);
     await refetch({ userId: userId });
     console.log(res);
+    toast.success("Unit updated successfully!");
   };
   const {
     values,
@@ -146,7 +148,7 @@ const EditUnitModal = ({ open, onClose, unit, refetch, userId }) => {
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   border: "1px solid #E0E4EC",
   padding: "10px",
   width: { xl: "250px", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
@@ -161,7 +163,7 @@ const headingStyle = {
   marginTop: "20px",
   // marginBottom: "10px",
   marginLeft: "25px",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontWeight: "500",
   fontSize: "22px",
   color: "#4C8AB1",

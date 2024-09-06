@@ -90,7 +90,7 @@ const BuilderFeatures = () => {
           style={styles.title}
         >
           Here's how{" "}
-          <strong style={{ color: "#2E728F" }}>BuilderBUILDER Pro</strong> sets
+          <strong style={{ color: "#2E728F" }}>BuilderBUILDER PRO</strong> sets
           you up for the best Management
         </Typography>
         <Container maxWidth={"lg"}>

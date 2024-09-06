@@ -25,7 +25,10 @@ const NavbarDrawer = () => {
         onClose={() => setOpenMenu(false)}
       >
         <List sx={{ width: "40vw" }}>
-          <Link to="/" style={{ textDecoration: "none", color: "gray" }}>
+          <Link
+            to="/dashboard"
+            style={{ textDecoration: "none", color: "gray" }}
+          >
             <ListItemButton onClick={() => setOpenMenu(false)}>
               <ListItemText>Dashboard</ListItemText>
             </ListItemButton>

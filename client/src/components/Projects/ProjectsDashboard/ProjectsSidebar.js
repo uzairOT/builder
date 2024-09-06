@@ -161,7 +161,7 @@ const ProjectsSidebar = ({ reports }) => {
         <Box
           sx={{
             ...themeStyle.scrollable,
-            height: reports ? "calc(92vh - 278px)" : "calc(92vh - 225px)",
+            height: reports ? "calc(85vh - 278px)" : "calc(85vh - 225px)",
           }}
         >
           <Stack spacing={1} pl={2} pr={2} pt={1}>
@@ -193,6 +193,7 @@ const ProjectsSidebar = ({ reports }) => {
               })}
             </>
           </Stack>
+        </Box>
            <Stack justifyContent={"center"}>
                         <Stack
                           pt={0.5}
@@ -215,7 +216,6 @@ const ProjectsSidebar = ({ reports }) => {
                           </BuilderProButton>
                         </Stack>
                       </Stack>
-        </Box>
       </Stack>
     </>
   );

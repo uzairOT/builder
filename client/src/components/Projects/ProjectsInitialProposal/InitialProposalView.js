@@ -1,5 +1,5 @@
-import { Divider, Paper, Stack } from "@mui/material";
-import React from "react";
+import { Box, Divider, Paper, Stack, Tab, Tabs } from "@mui/material";
+import React, { useState } from "react";
 import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
 import { useGetProjectUserRoleMutation } from "../../../redux/apis/Project/projectApiSlice";
 import { useLoaderData, useParams } from "react-router-dom";
@@ -12,28 +12,87 @@ const InitialProposalView = () => {
   const authUserRole = useSelector(getUserRoleFromRedux);
   const { id } = useParams();
   const projectId = id;
+
+  const [selectedTab, setSelectedTab] = useState(0);
+
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
+
   return (
     <>
       <Paper
         style={{
-          ...themeStyle.borders,
-          ...themeStyle.scrollable,
           width: "100%",
           marginBottom: "4px",
           marginTop: "8px",
+          ...themeStyle.borders,
+          ...themeStyle.scrollable,
         }}
       >
-        <Stack p={1} borderRadius={"14px"} width={"99%"}>
-          <AddPhaseView
-            projectId={projectId}
-            InitialProposalView={true}
-            adminProjectView={true}
-            view={"Initial Proposal"}
-            authUserRole={authUserRole.userRole}
-          />
-        </Stack>
-        <Divider variant='middle'/>
-        <Stack p={1} borderRadius={"14px"} width={'99%'}>
+        <Box padding={0}>
+          <Tabs
+            value={selectedTab}
+            onChange={handleTabChange}
+            sx={{
+              fontFamily: "var(--main-font-family)",
+              color: "black",
+              borderBottom: "0.2px solid #FFB300",
+              "& .MuiTabs-indicator": {
+                backgroundColor: "#FFB300",
+              },
+            }}
+          >
+            <Tab
+              label="Initial Proposal"
+              sx={{
+                textTransform: "capitalize",
+                fontFamily: "var(--main-font-family)",
+                backgroundColor: selectedTab === 0 ? "#FFAC00" : "#F2F2F2",
+                color: selectedTab === 0 ? "white !important" : "black !important",
+                border:
+                  selectedTab === 0 ? "1px solid #FFAC00" : "1px solid #FFAC00",
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                padding: 0.5,
+                fontWeight: "600",
+              }}
+            />
+            <Tab
+              label="Change Order"
+              sx={{
+                textTransform: "capitalize",
+                fontFamily: "var(--main-font-family)",
+                ml: 0.5,
+                backgroundColor: selectedTab === 1 ? "#FFAC00" : "#F2F2F2",
+                color: selectedTab === 1 ? "white !important" : "black !importants",
+                border:
+                  selectedTab === 1 ? "1px solid #FFAC00" : "1px solid #FFAC00",
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                padding: 0.5,
+                fontWeight: "600",
+              }}
+            />
+          </Tabs>
+        </Box>
+
+        <Box sx={{ p: 1 }}>
+          {selectedTab === 0 && (
+            <Stack p={1} borderRadius={"14px"} width={"99%"}>
+              <AddPhaseView
+                projectId={projectId}
+                InitialProposalView={true}
+                adminProjectView={true}
+                view={"Initial Proposal"}
+                authUserRole={authUserRole.userRole}
+              />
+            </Stack>
+          )}
+
+          {selectedTab === 1 && (
+            <>
+              <Stack p={1} borderRadius={"14px"} width={"99%"}>
                 <AddPhaseView
                   // refetchChangeOrder={refetch}
                   InitialProposalAndChange={true}
@@ -44,6 +103,9 @@ const InitialProposalView = () => {
                   changeOrderView={true}
                 />
               </Stack>
+            </>
+          )}
+        </Box>
       </Paper>
     </>
   );

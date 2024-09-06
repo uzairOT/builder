@@ -194,7 +194,7 @@ const AddPhaseCard = ({
     if (confirm) {
       await handleDeleteSelectedRows(lineItemId);
       handleOpenModalClose();
-      toast.error("Line item deleted sucessfully!")
+      toast.error("Line item deleted sucessfully!");
     } else {
       setLineItemId(null);
       handleOpenModalClose();
@@ -461,6 +461,7 @@ const AddPhaseCard = ({
                   ...blackHeading,
                   overflow: "hidden",
                   textOverflow: "ellipsis",
+                  textTransform: "capitalize",
                   maxWidth: { lg: "50ch", xs: "8ch" },
                   cursor: "pointer",
                   paddingLeft: "1rem",
@@ -651,7 +652,7 @@ const AddPhaseCard = ({
                     background: "#4C8AB1",
                     marginTop: "0.7rem",
                     marginBottom: "1rem",
-                    marginRight: { xl: "-8rem", xs: "0rem" },
+                    marginRight: { xl: "-6rem", xs: "0rem" },
                     marginLeft: "1rem",
                     "@media (max-width: 600px)": {
                       fontFamily: "var(--main-font-family)",
@@ -712,63 +713,60 @@ const AddPhaseCard = ({
                   {view === "Change Order" ||
                   pathCheck.includes("/assignproject") ? (
                     <>
-                      {(phaseData?.status === "not approved" ||
-                        phaseData?.status === "declined") && (
-                        <Tooltip
-                          title={
-                            projectManagementPermission
-                              ? ""
-                              : "You are not authorized!"
-                          }
-                          arrow
+                      <Tooltip
+                        title={
+                          projectManagementPermission
+                            ? ""
+                            : "You are not authorized!"
+                        }
+                        arrow
+                      >
+                        <Button
+                          disabled={!projectManagementPermission}
+                          sx={{
+                            ...actionButton,
+                            background: "#4C8AB1",
+                            marginTop: "0.7rem",
+                            marginBottom: "1rem",
+                            marginRight: { xl: "-8rem", xs: "0rem" },
+                            marginLeft: "1rem",
+                            "@media (max-width: 600px)": {
+                              fontFamily: "var(--main-font-family)",
+                              minWidth: 0,
+                              width: "2.5rem",
+                              height: "2.5rem",
+                              borderRadius: "50%",
+                              padding: 0,
+                              fontSize: "0.75rem",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            },
+                          }}
+                          onClick={handleAddLine}
                         >
-                          <Button
-                            disabled={!projectManagementPermission}
+                          <AddIcon
                             sx={{
-                              ...actionButton,
-                              background: "#4C8AB1",
-                              marginTop: "0.7rem",
-                              marginBottom: "1rem",
-                              marginRight: { xl: "-8rem", xs: "0rem" },
-                              marginLeft: "1rem",
-                              "@media (max-width: 600px)": {
-                                fontFamily: "var(--main-font-family)",
-                                minWidth: 0,
-                                width: "2.5rem",
-                                height: "2.5rem",
-                                borderRadius: "50%",
-                                padding: 0,
-                                fontSize: "0.75rem",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
+                              "@media (min-width: 601px)": {
+                                display: "none",
                               },
                             }}
-                            onClick={handleAddLine}
+                          />
+                          <Typography
+                            sx={{
+                              fontFamily: "var(--main-font-family)",
+                              "@media (min-width: 601px)": {
+                                display: "inline",
+                              },
+                              "@media (max-width: 600px)": {
+                                display: "none",
+                              },
+                            }}
                           >
-                            <AddIcon
-                              sx={{
-                                "@media (min-width: 601px)": {
-                                  display: "none",
-                                },
-                              }}
-                            />
-                            <Typography
-                              sx={{
-                                fontFamily: "var(--main-font-family)",
-                                "@media (min-width: 601px)": {
-                                  display: "inline",
-                                },
-                                "@media (max-width: 600px)": {
-                                  display: "none",
-                                },
-                              }}
-                            >
-                              Add Line Item
-                            </Typography>
-                          </Button>
-                        </Tooltip>
-                      )}
+                            Add Line Item
+                          </Typography>
+                        </Button>
+                      </Tooltip>
                     </>
                   ) : (
                     <></>
@@ -990,7 +988,11 @@ const AddPhaseCard = ({
                   {adminProjectView && (
                     <>
                       <TableCell sx={tableHeadings}>
-                        {view === "Generate Invoice" ? "Invoice" : "Status"}
+                        {view === "Generate Invoice"
+                          ? "Invoice"
+                          : pathCheck.includes("/initial-proposal")
+                          ? ""
+                          : "Status"}
                       </TableCell>
 
                       {(userRoleAuth.userRole === "employee" ||
@@ -1012,7 +1014,8 @@ const AddPhaseCard = ({
                     (changeOrderSelectedView ||
                       pathCheck.includes("/assignproject") ||
                       phaseData.status === "not approved" ||
-                      phaseData.status === "declined") && (
+                      phaseData.status === "declined") &&
+                    !pathCheck.includes("/invoices") && (
                       <TableCell sx={tableHeadings}>Action</TableCell>
                     )}
                 </TableRow>
@@ -1094,7 +1097,8 @@ const AddPhaseCard = ({
                       >
                         {(row.status === "Change Order Requested" ||
                           row.status === "Change Order approved" ||
-                          row.status === "Change Order declined") && (
+                          row.status === "Change Order declined" ||
+                          row.status === "Change Order Not requested") && (
                           <>
                             <IconButton
                             // onClick={() => handleCheckboxChange(row)}
@@ -1316,6 +1320,10 @@ const AddPhaseCard = ({
                                 ? "generated"
                                 : "not generated"}
                             </TableCell>
+                          ) : pathCheck.includes("/initial-proposal") ? (
+                            <TableCell
+                              sx={{ ...tableCell, textTransform: "capitalize" }}
+                            ></TableCell>
                           ) : (
                             <TableCell
                               sx={{ ...tableCell, textTransform: "capitalize" }}

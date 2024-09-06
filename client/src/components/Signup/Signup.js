@@ -289,7 +289,7 @@ const SignupComp = () => {
             marginTop: { xl: "0rem", lg: "0rem", md: "0rem", sm: "0rem" },
           }}
         >
-          {/* <Typography sx={firstHeading}>BuilderBUILDER Pro</Typography> */}
+          {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
           <Box>
             <Typography component="p" sx={secondHeading}>
               On schedule.
@@ -305,7 +305,7 @@ const SignupComp = () => {
             </Typography>
           </Box>
         </Box>
-        {/* <Typography sx={firstHeading}>BuilderBUILDER Pro</Typography> */}
+        {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
 
         {/* Button */}
 
@@ -515,7 +515,7 @@ const SignupComp = () => {
               <input
                 type="text"
                 name="company"
-                placeholder="BuilderBUILDER Pro"
+                placeholder="BuilderBUILDER PRO"
                 style={{
                   ...inputStyle,
                   border:

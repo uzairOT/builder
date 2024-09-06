@@ -70,8 +70,7 @@ const MainHome = () => {
         <Section
           id="main-content"
           Component={MainContent}
-          animation={fadeInUp}
-          delay={0.5}
+      
         />
       </Grid>
       <Grid>

@@ -422,7 +422,7 @@ const Navbar = () => {
                   sx={{
                     boxShadow: "0 3px 6px rgba(0, 0, 0, 0.9)",
                     width: { sm: "400px", xs: "300px" },
-                    maxHeight: "350px",
+                    maxHeight: "600px",
                     overflowY: "auto",
                     overflowX: "hidden",
                     scrollbarWidth: "thin", // For Firefox
@@ -554,7 +554,7 @@ const Navbar = () => {
               Icon={BuilderProNavbarLogout}
               handleOnClick={handleLogout}
             >
-              {responsiveButton ? "Logout" : ""}
+              {responsiveButton ? "Log out" : ""}
             </BuilderProButton>
           </Box>
         </Toolbar>

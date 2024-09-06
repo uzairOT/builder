@@ -25,6 +25,15 @@ import { useSendContactFormMutation } from "../../../redux/apis/usersApiSlice";
 import { useNavigate } from "react-router-dom";
 import googlePlay from "../../../assets/FileSvg/googlePlay.svg";
 import appStore from "../../../assets/FileSvg/appStore.svg";
+import { motion } from "framer-motion";
+
+const popEffect = {
+  hidden: { scale: 1 },
+  hover: {
+    scale: 1.05,
+    transition: { type: "spring", stiffness: 300, damping: 15 },
+  },
+};
 
 const Footer = () => {
   const [sendContactForm] = useSendContactFormMutation();
@@ -98,7 +107,12 @@ const Footer = () => {
   return (
     <Box component="footer" style={styles.footer}>
       <Container maxWidth={"xl"}>
-        <Grid container spacing={4} justifyContent={"center"}>
+        <Grid
+          container
+          spacing={4}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
           <Grid item xs={12}>
             <Box sx={{ justifyContent: "center", display: "flex" }}>
               <Box sx={styles.newsletter}>
@@ -187,7 +201,7 @@ const Footer = () => {
               <BuilderIcnSm />
             </Typography>
             <Typography variant="body2" style={styles.footerDesc}>
-              BuilderBUILDER Pro is the leading construction management
+              BuilderBUILDER PRO is the leading construction management
               solution, designed to help you streamline your projects from start
               to finish. With our powerful tools and features, you can manage
               every aspect of your construction projects with ease and
@@ -231,25 +245,38 @@ const Footer = () => {
               justifyContent={{ lg: "left", xs: "center" }}
               textAlign={{ lg: "left", xs: "center" }}
             >
-              <Button>
-                <a
-                  href="https://testflight.apple.com/join/Fejy1iQ6"
-                  target="blank"
-                >
-                  <img alt="App Store" src={appStore} />
-                  {/* <DownloadAppStore /> */}
-                </a>
-              </Button>
-              <Button>
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
-                  target="blank"
-                >
-                  <img alt="Play Store" src={googlePlay} />
+              <motion.div
+                initial="hidden"
+                whileHover="hover"
+                variants={popEffect}
+              >
+                <Box>
+                  <a
+                    href="https://testflight.apple.com/join/Fejy1iQ6"
+                    target="blank"
+                  >
+                    <img alt="App Store" src={appStore} />
+                    {/* <DownloadAppStore /> */}
+                  </a>
+                </Box>
+              </motion.div>
 
-                  {/* <DownloadGooglePlay /> */}
-                </a>
-              </Button>
+              <motion.div
+                initial="hidden"
+                whileHover="hover"
+                variants={popEffect}
+              >
+                <Box>
+                  <a
+                    href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
+                    target="blank"
+                  >
+                    <img alt="Play Store" src={googlePlay} />
+
+                    {/* <DownloadGooglePlay /> */}
+                  </a>
+                </Box>
+              </motion.div>
             </Container>
           </Grid>
           <Grid
@@ -258,6 +285,7 @@ const Footer = () => {
             md={2}
             justifyContent={{ lg: "right", xs: "center" }}
             textAlign={{ lg: "left", xs: "center" }}
+            ml={{ md: 10, xs: 0 }}
           >
             <Button onClick={scrollToTop}>
               <ArrowUp />
@@ -267,7 +295,7 @@ const Footer = () => {
         <Box style={styles.footerBottom}>
           <Box>
             <Typography variant="body2" styles={styles.footerCopyright}>
-              © Copyright 2024, All Rights Reserved by BuilderBUILDER Pro
+              © Copyright 2024, All Rights Reserved by BuilderBUILDER PRO
             </Typography>
           </Box>
           <Box>
@@ -340,12 +368,14 @@ const styles = {
     alignItems: "center",
     justifyContent: "space-between",
     display: "flex",
+    flexDirection: { sm: "column", xs: "row" },
     textAlign: "center",
     borderTop: "1px solid #fff",
     paddingTop: "10px",
     marginTop: "20px",
   },
   footerIntallText: {
+    ml: 2,
     fontFamily: "var(--main-font-family)",
   },
   footerDesc: {

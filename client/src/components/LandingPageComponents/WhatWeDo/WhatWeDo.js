@@ -41,7 +41,7 @@ const WhatWeDo = () => {
           Unlock the Full Potential of Your Construction Projects
         </Typography>
         <Typography variant="body1" sx={styles.DecsFont}>
-          BuilderBUILDER Pro offers a comprehensive suite of features designed
+          BuilderBUILDER PRO offers a comprehensive suite of features designed
           to streamline and optimize every aspect of construction management.
           Discover how our powerful tools can help you achieve success from
           planning to completion.

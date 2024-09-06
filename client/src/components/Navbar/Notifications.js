@@ -22,6 +22,7 @@ import { fetchEvents } from "../../redux/slices/Events/eventsSlice";
 import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice";
 import { toggleWorkOrderDeclineRecall } from "../../redux/slices/Notifications/notificationSlice";
 import {socket} from "../../socket"
+import { toast } from "react-toastify";
 
 function Notification({
   notification,
@@ -61,6 +62,7 @@ function Notification({
       });
       await refetch(userId);
       dispatch(fetchEvents({userId: userId, dailyForecast: dailyForecast}));
+      toast.success("Work order approved sucessfully!")
       // socket.emit('statusDoneNotification', {
       //   userId: userId,
       //   client:true,
@@ -99,6 +101,8 @@ function Notification({
       //   // dispatch(toggleWorkOrderDeclineRecall());
       // })
       dispatch(toggleWorkOrderDeclineRecall());
+      toast.info("Work order declined sucessfully!")
+
       // window.location.reload();
     } catch (err) {
       // console.log(err);

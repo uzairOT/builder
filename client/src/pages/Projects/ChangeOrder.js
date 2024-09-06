@@ -1,4 +1,4 @@
-import { Box, Paper, Stack } from "@mui/material";
+import { Box, Paper, Stack, Tab, Tabs } from "@mui/material";
 import React, { useState } from "react";
 import ProjectsChangeOrder from "../../components/Projects/ProjectsChangeOrder/ProjectsChangeOrder";
 import { useOutletContext, useParams } from "react-router-dom";
@@ -17,7 +17,7 @@ const ChangeOrder = () => {
   const [changeView, setChangeView] = useState(false);
   const currentUser = localStorage.getItem("userInfo");
   const user = JSON.parse(currentUser);
-  const authUserRole= useSelector(getUserRoleFromRedux);
+  const authUserRole = useSelector(getUserRoleFromRedux);
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
   const events = allEvent.events;
@@ -28,9 +28,14 @@ const ChangeOrder = () => {
     userId: user.user.id,
     changeOrder: true,
   });
-  const [projectName, projectLocation, SuperAdminId, selectedProjectData] = useOutletContext()
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [projectName, projectLocation, SuperAdminId, selectedProjectData] =
+    useOutletContext();
   const handleChangeView = () => {
     setChangeView(!changeView);
+  };
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
   };
   return (
     <Paper
@@ -43,7 +48,7 @@ const ChangeOrder = () => {
         ...themeStyle.scrollable,
       }}
     >
-      <Box pt={1} pl={1} pb={0}>
+      {/* <Box pt={1} pl={1} pb={0}>
         <BuilderProButton
           backgroundColor={"#FFAC00"}
           variant={"contained"}
@@ -56,11 +61,64 @@ const ChangeOrder = () => {
         >
           {changeView ? "Submit Change Order" : "View Change Order Logs"}
         </BuilderProButton>
-      </Box>
-      <Stack pt={1} width={'inherit'}>
-        <Stack justifyContent={"flex-start"} height={"95%"}>
+      </Box> */}
 
-      {changeView ? (<ProjectsChangeOrder data={data} refetch={refetch} />) : (<>
+<Box padding={0}>
+          <Tabs
+            value={selectedTab}
+            onChange={handleTabChange}
+            sx={{
+              fontFamily: "var(--main-font-family)",
+              color: "black",
+              borderBottom: "0.2px solid #FFB300",
+              "& .MuiTabs-indicator": {
+                backgroundColor: "#FFB300",
+              },
+            }}
+          >
+            <Tab
+              label="Submit Change Order"
+              sx={{
+                textTransform: "capitalize",
+                fontFamily: "var(--main-font-family)",
+                backgroundColor: selectedTab === 0 ? "#FFAC00" : "#F2F2F2",
+                color: selectedTab === 0 ? "white !important" : "black !important",
+                border:
+                  selectedTab === 0 ? "1px solid #FFAC00" : "1px solid #FFAC00",
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                padding: 0.5,
+                fontWeight: "600",
+              }}
+            />
+            <Tab
+              label="Change Order Logs"
+              sx={{
+                textTransform: "capitalize",
+                fontFamily: "var(--main-font-family)",
+                ml: 0.5,
+                backgroundColor: selectedTab === 1 ? "#FFAC00" : "#F2F2F2",
+                color: selectedTab === 1 ? "white !important" : "black !importants",
+                border:
+                  selectedTab === 1 ? "1px solid #FFAC00" : "1px solid #FFAC00",
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                padding: 0.5,
+                fontWeight: "600",
+              }}
+            />
+          </Tabs>
+        </Box>
+      <Stack pt={1} width={"inherit"}>
+        <Stack justifyContent={"flex-start"} height={"95%"}>
+          {/* {changeView ? ( */}
+            <>
+              {selectedTab === 1 && (
+                <ProjectsChangeOrder data={data} refetch={refetch} />
+              )}
+            </>
+          {/* ) : ( */}
+            <>
               {/* <Box
                 height= '600px'
                 bgcolor={"white"}
@@ -72,20 +130,23 @@ const ChangeOrder = () => {
                   isDrawerOpen={true}
                 />
               </Box> */}
-              <Stack p={1} borderRadius={"14px"} width={'99%'}>
-                <AddPhaseView
-                  selectedProjectData={selectedProjectData}
-                  refetchChangeOrder={refetch}
-                  projectId={currentProjectId}
-                  adminProjectView={true}
-                  view={"Change Order"}
-                  authUserRole={authUserRole.userRole}
-                  changeOrderView={true}
-                />
+              <Stack p={1} borderRadius={"14px"} width={"99%"}>
+                {selectedTab === 0 && (
+                  <AddPhaseView
+                    selectedProjectData={selectedProjectData}
+                    refetchChangeOrder={refetch}
+                    projectId={currentProjectId}
+                    adminProjectView={true}
+                    view={"Change Order"}
+                    authUserRole={authUserRole.userRole}
+                    changeOrderView={true}
+                  />
+                )}
               </Stack>
-            </>)}
+            </>
+          {/* )} */}
         </Stack>
-          </Stack>
+      </Stack>
     </Paper>
   );
 };
@@ -97,19 +158,19 @@ const themeStyle = {
     borderRadius: "14px",
   },
   scrollable: {
-    scrollbarWidth: 'none',  // For Firefox
-    '-ms-overflow-style': 'none',  // For IE and Edge
-    '&::-webkit-scrollbar': {
-      width: '6px'
+    scrollbarWidth: "none", // For Firefox
+    "-ms-overflow-style": "none", // For IE and Edge
+    "&::-webkit-scrollbar": {
+      width: "6px",
     },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'transparent',
-      transition: 'background-color 0.3s',
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "transparent",
+      transition: "background-color 0.3s",
     },
-    '&:hover::-webkit-scrollbar-thumb': {
-      backgroundColor: '#ddd',
+    "&:hover::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ddd",
     },
-    overflowY: 'scroll'
+    overflowY: "scroll",
   },
   border: {
     borderRadius: "14px",

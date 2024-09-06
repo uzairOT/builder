@@ -26,6 +26,7 @@ import { useGetProjectDataQuery } from "../../../redux/apis/Project/projectApiSl
 import { useParams } from "react-router-dom";
 import { setPermissionsListState } from "../../../redux/slices/LoginPermissions/PermissionsSlice";
 import { setPermissionsState } from "../../../redux/slices/Permissions/permissionsSlice";
+import { toast } from "react-toastify";
 
 const formatRoleName = (role) => {
   return role
@@ -45,7 +46,8 @@ const ProjectsPermissionAccess = () => {
   const { id: currentProjectId } = params;
   const { data } = useGetProjectDataQuery({ projectId: currentProjectId });
   const [permissionList, setPermissionsList] = useState([]);
-  const [GetPermissionsList, {refetch}] = useGetProjectPermissionsListMutation();
+  const [GetPermissionsList, { refetch }] =
+    useGetProjectPermissionsListMutation();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const currentUser = userInfo?.user;
   const dispatch = useDispatch();
@@ -105,12 +107,14 @@ const ProjectsPermissionAccess = () => {
         return updatedList;
       });
       setLoading(false);
-      setSnackbarMessage(
+      toast(
         updatedValue
           ? "Permission enabled successfully!"
-          : "Permission disabled successfully!"
+          : "Permission disabled successfully!",
+        {
+          type: updatedValue ? "success" : "info",
+        }
       );
-      setSnackbarOpen(true);
       setModalOpen(false);
     }, 2000);
   };

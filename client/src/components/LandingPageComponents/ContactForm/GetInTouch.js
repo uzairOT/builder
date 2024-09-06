@@ -17,6 +17,16 @@ import { PhoneInput } from "react-international-phone";
 import { useFormik } from "formik";
 import { PhoneNumberUtil } from "google-libphonenumber";
 import { toast } from "react-toastify";
+import { motion} from "framer-motion";
+
+
+const popEffect = {
+  hidden: { scale: 1 },
+  hover: {
+    scale: 1.05,
+    transition: { type: "spring", stiffness: 300, damping: 15 },
+  },
+};
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
@@ -102,6 +112,12 @@ const GetInTouch = () => {
   });
 
   return (
+    <motion.div
+              initial="hidden"
+              whileHover="hover"
+              variants={popEffect}
+            >
+
     <Box
       sx={{
         padding: "20px",
@@ -369,6 +385,8 @@ const GetInTouch = () => {
         </Grid>
       </Grid>
     </Box>
+</motion.div>
+
   );
 };
 

@@ -185,7 +185,8 @@ const RequestWorkOrderModal = ({
 
   const isButtonDisabled = changeOrder
     ? checkedRow === null
-    : (Object?.keys(rowCheckboxes)?.length === 0 || selectedProjectData.initialProposalApproved === false);
+    : Object?.keys(rowCheckboxes)?.length === 0 ||
+      selectedProjectData?.initialProposalApproved === false;
   const handleNotesChange = (e) => {
     setNotes(e.target.value);
   };
@@ -521,7 +522,7 @@ const RequestWorkOrderModal = ({
     const res = await refetchProjectTeam();
   };
   const showToast = () => {
-    if (selectedProjectData.initialProposalApproved === false) {
+    if (selectedProjectData?.initialProposalApproved === false) {
       toast.warning(
         "Please approve initial line items to request a work order."
       );
@@ -616,7 +617,7 @@ const RequestWorkOrderModal = ({
             ...style,
             ...themeStyle.scrollable,
             height: { xl: "90%", lg: "90%", md: "90%", sm: "90%", xs: "90%" },
-            width: "100%",
+            width: changeOrderView ? "100%" : "80%",
           }}
           overflow={"scroll"}
         >
@@ -700,7 +701,7 @@ const RequestWorkOrderModal = ({
               <Stack
                 direction={{ xl: "row", lg: "row", md: "row", xs: "row" }}
                 justifyContent={"space-around"}
-                spacing={1}
+                spacing={0.2}
                 p={1}
               >
                 {!changeOrderView && (
@@ -726,7 +727,7 @@ const RequestWorkOrderModal = ({
                             <ListItemText
                               secondaryTypographyProps={{
                                 sx: {
-                                  width: "22ch",
+                                  width: "13ch",
                                   overflow: "hidden",
                                   textOverflow: "ellipsis",
                                 },
@@ -820,7 +821,7 @@ const RequestWorkOrderModal = ({
                                   <ListItemText
                                     secondaryTypographyProps={{
                                       sx: {
-                                        width: "22ch",
+                                        width: "13ch",
                                         overflow: "hidden",
                                         textOverflow: "ellipsis",
                                       },
@@ -1048,6 +1049,22 @@ const RequestWorkOrderModal = ({
                   sx={{
                     ...themeStyle.linkButton,
                     ...themeStyle.priorityButton,
+                    input: {
+                      fontFamily: "var(--main-font-family)",
+                      "&::after": {
+                        borderBottom: "none",
+                        outline: "none",
+                      },
+                      "&:before": {
+                        borderBottom: "none",
+                        outline: "none",
+                      },
+                      "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before":
+                        {
+                          borderBottom: "none",
+                          outline: "none",
+                        },
+                    },
                   }}
                   startIcon={
                     <FlagOutlinedIcon
@@ -1070,39 +1087,52 @@ const RequestWorkOrderModal = ({
                 <Typography
                   sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
                 >
-                  <Box sx={themeStyle.dateBox}>
-                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                      <DemoContainer components={["DateTimePicker"]}>
-                        <MobileDateTimePicker
-                          value={startDate}
-                          onChange={(newValue) => setStartDate(newValue)}
-                          format="MMM D, YYYY,h:mm a"
-                          viewRenderers={{
-                            hours: renderTimeViewClock,
-                            minutes: renderTimeViewClock,
-                            seconds: renderTimeViewClock,
-                          }}
-                          minDate={moment()}
-                          defaultValue={moment("2024-04-17T15:30")}
-                          slotProps={{
-                            // Targets the `IconButton` component.
-                            openPickerButton: {
-                              color: "#5B5B5B",
+                  {/* <Box sx={themeStyle.dateBox}> */}
+                  <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <DemoContainer components={["DateTimePicker"]}>
+                      <MobileDateTimePicker
+                        value={startDate}
+                        onChange={(newValue) => setStartDate(newValue)}
+                        format="MMM D, YYYY,h:mm a"
+                        viewRenderers={{
+                          hours: renderTimeViewClock,
+                          minutes: renderTimeViewClock,
+                          seconds: renderTimeViewClock,
+                        }}
+                        minDate={moment()}
+                        defaultValue={moment("2024-04-17T15:30")}
+                        slotProps={{
+                          // Targets the `IconButton` component.
+                          openPickerButton: {
+                            color: "#5B5B5B",
+                          },
+                          // Targets the `InputAdornment` component.
+                          inputAdornment: {
+                            position: "start",
+                          },
+                        }}
+                        sx={{
+                          input: {
+                            fontFamily: "var(--main-font-family)",
+                            "&::after": {
+                              borderBottom: "none",
+                              outline: "none",
                             },
-                            // Targets the `InputAdornment` component.
-                            inputAdornment: {
-                              position: "start",
+                            "&:before": {
+                              borderBottom: "none",
+                              outline: "none",
                             },
-                          }}
-                          sx={{
-                            input: {
-                              fontFamily: "var(--main-font-family)",
-                            },
-                          }}
-                        />
-                      </DemoContainer>
-                    </LocalizationProvider>
-                  </Box>
+                            "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before":
+                              {
+                                borderBottom: "none",
+                                outline: "none",
+                              },
+                          },
+                        }}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                  {/* </Box> */}
                 </Typography>
               </Stack>
               <Stack spacing={1} pt={2} ml={2}>
@@ -1112,43 +1142,56 @@ const RequestWorkOrderModal = ({
                 <Typography
                   sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
                 >
-                  <Box sx={themeStyle.dateBox}>
-                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                      <DemoContainer components={["DateTimePicker"]}>
-                        <MobileDateTimePicker
-                          minDate={
-                            startDate
-                              ? moment(startDate).add(1, "day")
-                              : moment().add(1, "day")
-                          }
-                          value={endDate}
-                          onChange={(newValue) => setEndDate(newValue)}
-                          format="MMM D, YYYY,h:mm a"
-                          viewRenderers={{
-                            hours: renderTimeViewClock,
-                            minutes: renderTimeViewClock,
-                            seconds: renderTimeViewClock,
-                          }}
-                          defaultValue={moment(startDate).add(1, "day")}
-                          slotProps={{
-                            // Targets the `IconButton` component.
-                            openPickerButton: {
-                              color: "#5B5B5B",
+                  {/* <Box sx={themeStyle.dateBox}> */}
+                  <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <DemoContainer components={["DateTimePicker"]}>
+                      <MobileDateTimePicker
+                        minDate={
+                          startDate
+                            ? moment(startDate).add(1, "day")
+                            : moment().add(1, "day")
+                        }
+                        value={endDate}
+                        onChange={(newValue) => setEndDate(newValue)}
+                        format="MMM D, YYYY,h:mm a"
+                        viewRenderers={{
+                          hours: renderTimeViewClock,
+                          minutes: renderTimeViewClock,
+                          seconds: renderTimeViewClock,
+                        }}
+                        defaultValue={moment(startDate).add(1, "day")}
+                        slotProps={{
+                          // Targets the `IconButton` component.
+                          openPickerButton: {
+                            color: "#5B5B5B",
+                          },
+                          // Targets the `InputAdornment` component.
+                          inputAdornment: {
+                            position: "start",
+                          },
+                        }}
+                        sx={{
+                          input: {
+                            fontFamily: "var(--main-font-family)",
+                            "&::after": {
+                              borderBottom: "none",
+                              outline: "none",
                             },
-                            // Targets the `InputAdornment` component.
-                            inputAdornment: {
-                              position: "start",
+                            "&:before": {
+                              borderBottom: "none",
+                              outline: "none",
                             },
-                          }}
-                          sx={{
-                            input: {
-                              fontFamily: "var(--main-font-family)",
-                            },
-                          }}
-                        />
-                      </DemoContainer>
-                    </LocalizationProvider>
-                  </Box>
+                            "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before":
+                              {
+                                borderBottom: "none",
+                                outline: "none",
+                              },
+                          },
+                        }}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                  {/* </Box> */}
                 </Typography>
 
                 {/* <Stack>
