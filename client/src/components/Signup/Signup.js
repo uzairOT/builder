@@ -113,11 +113,9 @@ const SignupComp = () => {
   const [register, { isLoading }] = useRegisterMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
-
   const openInNewTab = (url) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(url, "_blank", "noopener,noreferrer");
   };
-
 
   // const handleChange = (e) => {
   //   const { name, value } = e.target || e;
@@ -663,7 +661,7 @@ const SignupComp = () => {
                       textDecoration: "none",
                     }}
                   >
-                    Terms of use
+                    Terms of Use
                   </Link>{" "}
                   and{" "}
                   <Link
@@ -903,6 +901,7 @@ const linkBox = {
   fontStyle: "normal",
   fontWeight: 400,
   lineHeight: "normal",
+  alignItems: "center",
 };
 const linkStyle = {
   color: "#4C8AB1",
@@ -920,7 +919,6 @@ const checkBox = {
 const checkBoxText = {
   gap: 3,
   display: "flex",
-  marginTop: "0.8rem",
   fontSize: { lg: "11px", md: "11px", sm: "0.8rem", xs: "0.75rem" },
 };
 const alreadyHaveAccountTypo = {

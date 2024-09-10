@@ -414,6 +414,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
               {/* Email input */}
               <Typography variant="body1">Email</Typography>
               <TextField
+                sx={{ mr: 3 }}
                 error={errors.email ? true : false}
                 placeholder="Email"
                 name={"email"}

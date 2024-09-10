@@ -51,52 +51,54 @@ const WorkOrderView = () => {
         ...themeStyle.scrollable,
       }}
     >
-       <Box padding={0}>
-          <Tabs
-            value={selectedTab}
-            onChange={handleTabChange}
+      <Box padding={0}>
+        <Tabs
+          value={selectedTab}
+          onChange={handleTabChange}
+          sx={{
+            fontFamily: "var(--main-font-family)",
+            color: "black",
+            borderBottom: "0.2px solid #FFB300",
+            "& .MuiTabs-indicator": {
+              backgroundColor: "#FFB300",
+            },
+          }}
+        >
+          <Tab
+            label="New Work Order"
             sx={{
+              textTransform: "capitalize",
               fontFamily: "var(--main-font-family)",
-              color: "black",
-              borderBottom: "0.2px solid #FFB300",
-              "& .MuiTabs-indicator": {
-                backgroundColor: "#FFB300",
-              },
+              backgroundColor: selectedTab === 0 ? "#FFAC00" : "#F2F2F2",
+              color:
+                selectedTab === 0 ? "white !important" : "black !important",
+              border:
+                selectedTab === 0 ? "1px solid #FFAC00" : "1px solid #FFAC00",
+              borderTopLeftRadius: 15,
+              borderTopRightRadius: 15,
+              padding: 0.5,
+              fontWeight: "600",
             }}
-          >
-            <Tab
-              label="New Work Order"
-              sx={{
-                textTransform: "capitalize",
-                fontFamily: "var(--main-font-family)",
-                backgroundColor: selectedTab === 0 ? "#FFAC00" : "#F2F2F2",
-                color: selectedTab === 0 ? "white !important" : "black !important",
-                border:
-                  selectedTab === 0 ? "1px solid #FFAC00" : "1px solid #FFAC00",
-                borderTopLeftRadius: 15,
-                borderTopRightRadius: 15,
-                padding: 0.5,
-                fontWeight: "600",
-              }}
-            />
-            <Tab
-              label="Work Order Logs"
-              sx={{
-                textTransform: "capitalize",
-                fontFamily: "var(--main-font-family)",
-                ml: 0.5,
-                backgroundColor: selectedTab === 1 ? "#FFAC00" : "#F2F2F2",
-                color: selectedTab === 1 ? "white !important" : "black !importants",
-                border:
-                  selectedTab === 1 ? "1px solid #FFAC00" : "1px solid #FFAC00",
-                borderTopLeftRadius: 15,
-                borderTopRightRadius: 15,
-                padding: 0.5,
-                fontWeight: "600",
-              }}
-            />
-          </Tabs>
-        </Box>
+          />
+          <Tab
+            label="Work Order Logs"
+            sx={{
+              textTransform: "capitalize",
+              fontFamily: "var(--main-font-family)",
+              ml: 0.5,
+              backgroundColor: selectedTab === 1 ? "#FFAC00" : "#F2F2F2",
+              color:
+                selectedTab === 1 ? "white !important" : "black !importants",
+              border:
+                selectedTab === 1 ? "1px solid #FFAC00" : "1px solid #FFAC00",
+              borderTopLeftRadius: 15,
+              borderTopRightRadius: 15,
+              padding: 0.5,
+              fontWeight: "600",
+            }}
+          />
+        </Tabs>
+      </Box>
 
       {/* <Box pt={1} pl={1} pb={0}>
         <BuilderProButtonA

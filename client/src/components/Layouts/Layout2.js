@@ -119,8 +119,6 @@ const Layout2 = () => {
     getUserRoleAuth();
   }, [currentProjectId]);
 
-  
-
   return (
     <>
       <Grid
@@ -179,6 +177,7 @@ const Layout2 = () => {
           </Stack>
           {userRole.isLoading ? (
             <Stack
+              sx={{ marginTop: 5 }}
               m={"auto"}
               width={"100%"}
               justifyContent={"center"}
@@ -187,7 +186,14 @@ const Layout2 = () => {
               <CircularProgress />
             </Stack>
           ) : (
-            <Outlet context={[projectName, projectLocation, SuperAdminId, selectedProjectData]} />
+            <Outlet
+              context={[
+                projectName,
+                projectLocation,
+                SuperAdminId,
+                selectedProjectData,
+              ]}
+            />
           )}
         </Grid>
       </Grid>

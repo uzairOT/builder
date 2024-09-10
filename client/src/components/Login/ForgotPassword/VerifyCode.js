@@ -41,6 +41,9 @@ const VerifyCode = () => {
     if (token) {
       navigate("/assignproject");
     }
+    if (forgetPasswordEmail === "") {
+      navigate("/login");
+    }
   }, [navigate]);
 
   const submitHandler = async (e) => {

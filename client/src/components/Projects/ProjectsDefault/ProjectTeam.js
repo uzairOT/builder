@@ -558,7 +558,7 @@ const ProjectTeam = ({ SuperAdminId }) => {
                     secondary={
                       <>
                         <Typography variant="body2" component="span">
-                          Project Manager ({pending.userRole})
+                          ({pending.userRole})
                         </Typography>
                         <Typography variant="body2" component="span">
                           {pending.userCompany}

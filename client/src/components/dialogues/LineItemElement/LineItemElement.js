@@ -1140,7 +1140,7 @@ function AddLineElement({
 
               <Typography sx={typoText}>Notes</Typography>
               <TextField
-                inputProps={{ maxLength: 1000 }}
+                inputProps={{ maxLength: 150 }}
                 sx={{ ...inputStyle, height: "3.5rem" }}
                 placeholder="Enter your Notes"
                 margin="dense"

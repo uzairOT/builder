@@ -4,7 +4,14 @@ import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
 
-import { Box, Grid, Typography, Button, Stack } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  Button,
+  Stack,
+  LinearProgress,
+} from "@mui/material";
 import {
   resetUserAndRoleEmail,
   selectProjectForm,
@@ -24,20 +31,24 @@ import {
 function Footer({ onNextStep, projectId }) {
   const phases = useSelector((state) => state.projectInitialProposal.phases);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
   const handleSaveAs = () => {
     if (phases[0]?.length < 1) {
-      toast.error("Please add atleast one phase");
+      toast.error("Please add at least one phase");
       return;
     }
-    dispatch(setIsSaveAs(true));
-    dispatch(setBackButtonProjectId(null));
-    dispatch(resetUserAndRoleEmail());
-    onNextStep();
+    setLoading(true);
+    setTimeout(() => {
+      dispatch(setIsSaveAs(true));
+      dispatch(setBackButtonProjectId(null));
+      dispatch(resetUserAndRoleEmail());
+      onNextStep();
+      setLoading(false);
+    }, 300);
   };
-
   const [assignProject, { isLoading }] = useAssignProjectMutation();
   const [setProjectToIncomplete] = useSetProjectToIncompleteMutation();
   const Data = useSelector(selectProjectForm);
@@ -94,6 +105,7 @@ function Footer({ onNextStep, projectId }) {
   return (
     <div>
       <Grid item lg={12} sx={firstGrid}>
+        {loading && <LinearProgress />}
         <Box sx={buttonBox}>
           <Button
             sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}

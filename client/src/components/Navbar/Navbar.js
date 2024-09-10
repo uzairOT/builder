@@ -412,7 +412,6 @@ const Navbar = () => {
                     <NotificationsIcon sx={{ color: "#4C8AB1" }} />
                   </Badge>
                 </IconButton>
-
                 <Popper
                   style={{
                     zIndex: "100",
@@ -422,7 +421,7 @@ const Navbar = () => {
                   sx={{
                     boxShadow: "0 3px 6px rgba(0, 0, 0, 0.9)",
                     width: { sm: "400px", xs: "300px" },
-                    maxHeight: "600px",
+                    maxHeight: "610px",
                     overflowY: "auto",
                     overflowX: "hidden",
                     scrollbarWidth: "thin", // For Firefox
@@ -443,66 +442,48 @@ const Navbar = () => {
                   placement="bottom-end"
                 >
                   <>
-                    {Array.isArray(approvalData?.data) ? (
-                      approvalData?.data.map((notification, index) => (
-                        <ApprovalNotification
-                          approvalRefetchCall={approvalRefetchCall}
-                          userId={userId}
-                          index={index}
-                          setExpanded={setExpanded}
-                          notification={notification}
-                          expanded={expanded}
-                        ></ApprovalNotification>
-                      ))
-                    ) : (
-                      <></>
-                    )}
+                    {Array.isArray(approvalData?.data) &&
+                    approvalData.data.length > 0
+                      ? approvalData.data.map((notification, index) => (
+                          <ApprovalNotification
+                            key={index}
+                            approvalRefetchCall={approvalRefetchCall}
+                            userId={userId}
+                            index={index}
+                            setExpanded={setExpanded}
+                            notification={notification}
+                            expanded={expanded}
+                          />
+                        ))
+                      : null}
+
                     {invoiceNotification && (
                       <InvoiceNotification
                         data={invoiceNotification}
                         setInvoiceNotification={setInvoiceNotification}
                       />
                     )}
-                    {Array.isArray(teamNotifications) ? (
-                      teamNotifications.map((teamNotification, index) => {
-                        if (index < 3) {
-                          return (
-                            <div key={index}>
-                              <TeamNotifications
-                                teamNotification={teamNotification}
-                                index={index}
-                                userId={userId}
-                                refetch={handleTeamNotificationsRefetch}
-                              />
-                            </div>
-                          );
-                        } else {
-                          return index === 0 ? (
-                            <Stack textAlign={"right"}>
-                              <Typography
-                                fontFamily={"var(--main-font-family)"}
-                                fontSize={"12px"}
-                                sx={{
-                                  textDecoration: "underline",
-                                  fontWeight: "600",
-                                }}
-                              >
-                                No Unread Notifications
-                              </Typography>
-                            </Stack>
-                          ) : (
-                            <> </>
-                          );
-                        }
-                      })
-                    ) : (
-                      <></>
-                    )}
-                    {Array.isArray(teamNotifications) && <Divider />}
-                    {Array.isArray(notificationsArr) ? (
-                      notificationsArr?.map((notification, index) => {
-                        if (index < 3) {
-                          return (
+
+                    {Array.isArray(teamNotifications) &&
+                    teamNotifications.length > 0
+                      ? teamNotifications
+                          .slice(0, 3)
+                          .map((teamNotification, index) => (
+                            <TeamNotifications
+                              key={index}
+                              teamNotification={teamNotification}
+                              index={index}
+                              userId={userId}
+                              refetch={handleTeamNotificationsRefetch}
+                            />
+                          ))
+                      : null}
+
+                    {Array.isArray(notificationsArr) &&
+                    notificationsArr.length > 0
+                      ? notificationsArr
+                          .slice(0, 3)
+                          .map((notification, index) => (
                             <Notification
                               key={notification.workOrder_id}
                               notification={notification}
@@ -511,28 +492,17 @@ const Navbar = () => {
                               index={index}
                               setExpanded={setExpanded}
                               expanded={expanded}
-                            ></Notification>
-                          );
-                        } else {
-                          return index === 0 ? (
-                            <Stack textAlign={"right"}>
-                              <Typography
-                                fontFamily={"var(--main-font-family)"}
-                                fontSize={"12px"}
-                                sx={{
-                                  textDecoration: "underline",
-                                  fontWeight: "600",
-                                }}
-                              >
-                                No Unread Notifications
-                              </Typography>
-                            </Stack>
-                          ) : (
-                            <> </>
-                          );
-                        }
-                      })
-                    ) : (
+                            />
+                          ))
+                      : null}
+
+                    {/* Check if all notification arrays are empty and display "No Unread Notifications" */}
+                    {(!Array.isArray(approvalData?.data) ||
+                      approvalData.data.length === 0) &&
+                    (!Array.isArray(teamNotifications) ||
+                      teamNotifications.length === 0) &&
+                    (!Array.isArray(notificationsArr) ||
+                      notificationsArr.length === 0) ? (
                       <div
                         style={{
                           backgroundColor: "#F2F2F2",
@@ -543,7 +513,7 @@ const Navbar = () => {
                       >
                         No new notifications
                       </div>
-                    )}
+                    ) : null}
                   </>
                 </Popper>
               </Box>

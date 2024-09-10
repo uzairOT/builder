@@ -33,7 +33,7 @@ const ProjectNavbarDrawer = ({ navLinks, userRole }) => {
           {navLinks.map((navlink) => {
             if (
               navlink.disabled || // Disable item if it should be disabled
-              (userRole.userRole === "client" &&
+              (userRole?.userRole === "client" &&
                 (navlink.title === "Notes" ||
                   navlink.title === "Project Report"))
             ) {

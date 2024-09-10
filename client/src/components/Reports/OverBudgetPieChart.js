@@ -38,11 +38,11 @@ const OverBudgetPieChart = () => {
     <Paper sx={{ height: "100%", borderRadius: "14px" }}>
       <Stack p={2}>
         <Typography
-          fontFamily={'var(--main-font-family)'}
+          fontFamily={"var(--main-font-family)"}
           fontWeight={"500"}
           fontSize={{ xl: "18px", lg: "15px", md: "18px", xs: "18px" }}
         >
-          Upcoming DeadLines
+          Upcoming Deadlines
         </Typography>
         {/* <Typography
           fontFamily={'var(--main-font-family)'}
@@ -85,7 +85,7 @@ const OverBudgetPieChart = () => {
           />
           <Stack direction={"column"}>
             <Typography
-              fontFamily={'var(--main-font-family)'}
+              fontFamily={"var(--main-font-family)"}
               fontSize={{ xl: "14px", lg: "12px", md: "14px", xs: "14px" }}
               fontWeight="bold"
             >
@@ -94,12 +94,12 @@ const OverBudgetPieChart = () => {
             {projects.map((project, index) => (
               <Typography
                 key={index}
-                fontFamily={'var(--main-font-family)'}
+                fontFamily={"var(--main-font-family)"}
                 fontSize={"14px"}
                 width={"25ch"}
-                overflow={'hidden'}
-                whiteSpace={'nowrap'}
-                textOverflow={'ellipsis'}
+                overflow={"hidden"}
+                whiteSpace={"nowrap"}
+                textOverflow={"ellipsis"}
               >
                 {project.projectName}
               </Typography>
@@ -116,16 +116,16 @@ const OverBudgetPieChart = () => {
           />
           <Stack direction={"column"}>
             <Typography
-              fontFamily={'var(--main-font-family)'}
+              fontFamily={"var(--main-font-family)"}
               fontSize={{ xl: "14px", lg: "12px", md: "14px", xs: "14px" }}
               fontWeight="bold"
             >
-              DeadLine
+              Deadline
             </Typography>
             {projects.map((project, index) => (
               <Typography
                 key={index}
-                fontFamily={'var(--main-font-family)'}
+                fontFamily={"var(--main-font-family)"}
                 fontSize={{ xl: "13px", lg: "11px", md: "13px", xs: "13px" }}
               >
                 {moment(project.end_time).format("YYYY-MM-DD")}

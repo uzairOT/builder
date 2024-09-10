@@ -58,14 +58,13 @@ const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [login, { isLoading, error }] = useLoginMutation();
   const [googleLogin] = useGoogleLoginMutation();
-
   const { userInfo } = useSelector((state) => state.auth);
+  const projectsCount = useSelector((state) => state.userProjects.totalCount);
 
   // useEffect(() => {
   //   if (userInfo) {
@@ -160,7 +159,12 @@ const Login = () => {
 
       dispatch(setCredentials({ ...res.data }));
       // navigate("/");
-      if (res?.data?.incompleteProject?.incomplete) {
+
+      if (
+        res?.data?.incompleteProject?.incomplete ||
+        projectsCount === 0 ||
+        projectsCount < 0
+      ) {
         setTimeout(() => {
           window.location.href = "/assignproject";
         }, 1000);
@@ -349,7 +353,7 @@ const Login = () => {
             </Box>
 
             <Box sx={linkBox}>
-              <Box sx={{ display: "flex" }}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Checkbox
                   id="agreeTerms"
                   sx={{
@@ -363,7 +367,7 @@ const Login = () => {
                   style={{
                     ...checkBox,
                     ...lableResponsiveFont,
-                    marginTop: "12px",
+                    marginTop: "3px",
                   }}
                 >
                   Remember Me

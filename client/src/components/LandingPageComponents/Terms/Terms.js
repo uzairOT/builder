@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Grid, Typography, Button, Box } from "@mui/material";
 import { termsData } from "./TermsData";
 import { useNavigate } from "react-router-dom";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 const TermsAndConditions = () => {
   //   const [agree, setAgree] = useState(false);
@@ -19,8 +20,28 @@ const TermsAndConditions = () => {
   //     navigate(-1);
   //   };
 
+  const navigate = useNavigate();
   return (
     <Grid container spacing={{ xs: 0, lg: 2 }} mt={2}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          color: "#4C8AB1",
+          cursor: "pointer",
+          ml: 5,
+        }}
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        <div>
+          <ArrowBackIosIcon sx={{ fontSize: 16 }} />
+        </div>
+        <Typography sx={{ fontSize: 14 }} color="#4C8AB1" gutterBottom>
+          Back
+        </Typography>
+      </Box>
       <Grid item xs={12} textAlign="center">
         <Typography sx={styles.font1} gutterBottom>
           Terms and Conditions

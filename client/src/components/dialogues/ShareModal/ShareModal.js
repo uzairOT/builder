@@ -19,6 +19,8 @@ import {
   TableRow,
   Paper,
   CircularProgress,
+  Tooltip,
+  Container,
 } from "@mui/material";
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
@@ -393,64 +395,77 @@ const ShareModal = ({
               // }
               return (
                 <Stack p={0.5} width={"100%"}>
-                  <Stack
-                    id={user.img}
-                    direction={"row"}
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                    pb={1}
-                    onClick={() =>
-                      handleUserSelect(() => {
-                        if (selectedUser.userId === user.userId) {
-                          return "";
-                        } else {
-                          return user;
-                        }
-                      })
-                    }
-                  >
+                  <Container justifyContent="center" display="flex">
                     <Stack
-                      direction={"row"}
-                      justifyContent={"space-between"}
-                      alignItems={"center"}
-                      p={2}
-                      sx={{ cursor: "pointer" }}
-                      gap={1}
-                      border={
-                        selectedUser.userId === user.userId
-                          ? "2px solid black"
-                          : ""
+                      sx={{ ml: { xl: 25, lg: 20, md: 18, xs: 0 } }}
+                      id={user.img}
+                      direction="row"
+                      alignItems="center"
+                      pb={1}
+                      onClick={() =>
+                        handleUserSelect(() => {
+                          if (selectedUser.userId === user.userId) {
+                            return "";
+                          } else {
+                            return user;
+                          }
+                        })
                       }
                     >
-                      <Avatar
-                        src={user.img}
-                        alt="User Profile Pic"
-                        width={"32px"}
-                        height={"32px"}
-                        style={{ borderRadius: "50px" }}
-                      ></Avatar>
-                      <Typography
-                        color={"#202227"}
-                        fontSize={"14px"}
-                        pl={2}
-                        fontFamily={"var(--main-font-family)"}
+                      <Stack
+                        direction="row"
+                        justifyContent="flex-start"
+                        alignItems="center"
+                        p={2}
+                        gap={1}
+                        border={
+                          selectedUser.userId === user.userId
+                            ? "2px solid black"
+                            : ""
+                        }
+                        sx={{ cursor: "pointer" }}
                       >
-                        {user?.firstName}
-                      </Typography>
-                      <Typography
-                        fontFamily={"var(--main-font-family)"}
-                        fontSize={"14px"}
-                      >
-                        {user.role}
-                      </Typography>
-                      <Typography
-                        fontFamily={"var(--main-font-family)"}
-                        fontSize={"14px"}
-                      >
-                        {user.email}
-                      </Typography>
+                        <Avatar
+                          src={user.img}
+                          alt="User Profile Pic"
+                          sx={{
+                            width: "32px",
+                            height: "32px",
+                            borderRadius: "50px",
+                          }}
+                        />
+                        <Typography
+                          color="#202227"
+                          fontSize="14px"
+                          fontFamily="var(--main-font-family)"
+                        >
+                          {user?.firstName}
+                        </Typography>
+                        <Typography
+                          fontFamily="var(--main-font-family)"
+                          fontSize="14px"
+                        >
+                          {user.role}
+                        </Typography>
+                        <Tooltip title={user.email} arrow>
+                          <Typography
+                            maxWidth="20ch"
+                            fontFamily="var(--main-font-family)"
+                            fontSize="14px"
+                            noWrap
+                            sx={{
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {user.email}
+                          </Typography>
+                        </Tooltip>
+                      </Stack>
                     </Stack>
-                  </Stack>
+                  </Container>
+
                   {users.length - 1 === index ? <></> : <Divider />}
                 </Stack>
               );
@@ -617,18 +632,26 @@ const ShareModal = ({
                                 variant="standard"
                                 value={
                                   isValidIndex(percentage, outerIndex, index)
-                                    ? percentage[outerIndex][index]
+                                    ? Number(
+                                        percentage[outerIndex][index]
+                                      ).toFixed(2)
                                     : ""
                                 }
-                                onChange={(e) =>
+                                onChange={(e) => {
+                                  let value = e.target.value;
+
+                                  if (!isNaN(value) && value !== "") {
+                                    value = parseFloat(value).toFixed(2);
+                                  }
+
                                   handlePercentage(
                                     index,
-                                    e.target.value,
+                                    value,
                                     outerIndex,
                                     row.paymentPending,
                                     true
-                                  )
-                                }
+                                  );
+                                }}
                                 InputProps={{
                                   startAdornment: (
                                     <InputAdornment position="start">

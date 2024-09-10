@@ -110,6 +110,7 @@ function ApprovalNotification({
       setDeclineReason("");
       setShowError(false);
       toast.info("Phase declined sucessfully!");
+      window.location.reload();
     } catch (res) {
       console.error("Failed to accept:", res);
       if (
@@ -142,6 +143,7 @@ function ApprovalNotification({
       }
       approvalRefetchCall();
       toast.success("Phase approved sucessfully!");
+      window.location.reload();
     } catch (res) {
       console.error("Failed to accept:", res);
       if (
@@ -221,7 +223,7 @@ function ApprovalNotification({
                 marginLeft={"5px"}
                 handleOnClick={handleAccept}
               >
-                Accept
+                Approve
               </BuilderProButton>
               <BuilderProButton
                 variant={"contained"}

@@ -1,10 +1,33 @@
 import React from "react";
 import { Grid, Typography, Box } from "@mui/material";
 import { policyData } from "./PolicyData";
+import { useNavigate } from "react-router-dom";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 const PrivacyPolicy = () => {
+  const navigate = useNavigate();
+
   return (
     <Grid container spacing={{ xs: 0, lg: 2 }} mt={2}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          color: "#4C8AB1",
+          cursor: "pointer",
+          ml: 5,
+        }}
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        <div>
+          <ArrowBackIosIcon sx={{ fontSize: 16 }} />
+        </div>
+        <Typography sx={{ fontSize: 14 }} color="#4C8AB1" gutterBottom>
+          Back
+        </Typography>
+      </Box>
       <Grid item xs={12} textAlign="center">
         <Typography sx={styles.font1} gutterBottom>
           Privacy Statement

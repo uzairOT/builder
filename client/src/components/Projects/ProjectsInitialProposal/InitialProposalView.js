@@ -30,7 +30,7 @@ const InitialProposalView = () => {
           ...themeStyle.scrollable,
         }}
       >
-        <Box padding={0}>
+        {/* <Box padding={0}>
           <Tabs
             value={selectedTab}
             onChange={handleTabChange}
@@ -75,36 +75,46 @@ const InitialProposalView = () => {
               }}
             />
           </Tabs>
-        </Box>
+        </Box> */}
 
         <Box sx={{ p: 1 }}>
-          {selectedTab === 0 && (
-            <Stack p={1} borderRadius={"14px"} width={"99%"}>
+          {/* {selectedTab === 0 && ( */}
+          <Stack
+            p={1}
+            borderRadius={"14px"}
+            width={"99%"}
+            borderBottom={"1px solid silver"}
+          >
+            <AddPhaseView
+              projectId={projectId}
+              InitialProposalView={true}
+              adminProjectView={true}
+              view={"Initial Proposal"}
+              authUserRole={authUserRole.userRole}
+            />
+          </Stack>
+          {/* )} */}
+          {/* <Divider /> */}
+          {/* {selectedTab === 1 && ( */}
+          <>
+            <Stack
+              p={1}
+              borderRadius={"14px"}
+              width={"99%"}
+              borderBottom={"1px solid silver"}
+            >
               <AddPhaseView
+                // refetchChangeOrder={refetch}
+                InitialProposalAndChange={true}
                 projectId={projectId}
-                InitialProposalView={true}
                 adminProjectView={true}
-                view={"Initial Proposal"}
+                view={"Change Order"}
                 authUserRole={authUserRole.userRole}
+                changeOrderView={true}
               />
             </Stack>
-          )}
-
-          {selectedTab === 1 && (
-            <>
-              <Stack p={1} borderRadius={"14px"} width={"99%"}>
-                <AddPhaseView
-                  // refetchChangeOrder={refetch}
-                  InitialProposalAndChange={true}
-                  projectId={projectId}
-                  adminProjectView={true}
-                  view={"Change Order"}
-                  authUserRole={authUserRole.userRole}
-                  changeOrderView={true}
-                />
-              </Stack>
-            </>
-          )}
+          </>
+          {/* )} */}
         </Box>
       </Paper>
     </>

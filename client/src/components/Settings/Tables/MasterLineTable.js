@@ -14,6 +14,7 @@ import {
   Input,
   Stack,
   Grid,
+  Typography,
 } from "@mui/material";
 import EditIcon from "../../../assets/settings/edit.png";
 import DeleteIcon from "../../../assets/settings/delete.png";
@@ -210,7 +211,9 @@ function MasterLineTable({
                       fontFamily: "var(--main-font-family)",
                     }}
                   >
-                    No Records
+                    <Typography paddingTop={30} paddingBottom={30}>
+                      No Records
+                    </Typography>
                   </TableCell>
                 </TableRow>
               ) : (
@@ -236,7 +239,7 @@ function MasterLineTable({
                     <TableCell sx={tableCellValueStyle}>
                       ${Number(row?.total) + Number(row?.margin)}
                     </TableCell>
-                    <TableCell sx={tableCellValueStyle}>{row.notes}</TableCell>
+                    <TableCell sx={tableCellNotesStyle}>{row.notes}</TableCell>
                     <TableCell sx={tableCellValueStyle}>
                       <IconButton
                         aria-label="edit"
@@ -286,6 +289,16 @@ const tableCellValueStyle = {
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
   textOverflow: "ellipsis",
   overflow: "hidden",
+  fontWeight: 400,
+  borderBottom: "none",
+  fontFamily: "var(--main-font-family)",
+  color: "#000000",
+};
+
+const tableCellNotesStyle = {
+  maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
+  minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
+  overflow: "auto",
   fontWeight: 400,
   borderBottom: "none",
   fontFamily: "var(--main-font-family)",

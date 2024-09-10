@@ -33,7 +33,7 @@ const ProjectsNavbar = ({ project }) => {
   const userId = useSelector((state) => state?.auth?.userInfo?.user?.id);
   const { id: currentProjectId } = params;
   const { data } = useGetProjectDataQuery({ projectId: currentProjectId });
-  console.log("Data Test ", data?.data?.initialProposalApproved);
+  // console.log("Data Test ", data?.data?.initialProposalApproved);
   const permissionsState = useSelector(
     (state) => state?.permissions?.permissions
   );
@@ -190,7 +190,7 @@ const ProjectsNavbar = ({ project }) => {
       >
         {navLinks.map((navlink, index) => {
           if (
-            userRole.userRole === "client" &&
+            userRole?.userRole === "client" &&
             (navlink.title === "Notes" || navlink.title === "Project Report")
           ) {
             return <></>;

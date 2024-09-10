@@ -46,10 +46,10 @@ const ProgressCardHeader = ({ project }) => {
   //   }
   // }
   useEffect(() => {
-    // console.log("`````", project.Invoices.length);
+    console.log("Uread Message", project?.unreadMessages);
     // markMessagesAsRead(id, userId);
     setUnreadMsg(project?.unreadMessages);
-  }, []);
+  }, [project?.unreadMessages]);
 
   // Listen for unread message count updates
   const unreadMessageCountListener = (data) => {
@@ -80,7 +80,8 @@ const ProgressCardHeader = ({ project }) => {
             {project.projectName}
           </Typography>
           <Typography p={1} sx={{ fontSize: "15px", ...themeStyle.colorGray }}>
-            Client Name: {project.clientName ? project.clientName : "No Client Name" }
+            Client Name:{" "}
+            {project.clientName ? project.clientName : "No Client Name"}
           </Typography>
         </Box>
         <Box width={"40%"} pr={1}>
@@ -111,7 +112,7 @@ const ProgressCardHeader = ({ project }) => {
             direction={"row"}
             justifyContent={"right"}
             onClick={navigateToChat}
-            sx={{position:'relative',  cursor: "pointer" }}
+            sx={{ position: "relative", cursor: "pointer" }}
           >
             <Typography
               p={1}
@@ -145,15 +146,15 @@ export default ProgressCardHeader;
 const themeStyle = {
   colorBlue: {
     color: "#4C8AB1",
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
   },
   colorGray: {
     color: "#535353C9",
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
   },
   badge: {
     display: "flex",
     color: "#FFF",
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
   },
 };
