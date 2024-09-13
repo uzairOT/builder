@@ -10,6 +10,7 @@ import {
   IconButton,
   Avatar,
   Stack,
+  Typography,
 } from "@mui/material";
 // import EditIcon from "../../../../assets/settings/edit.png";
 // import DeleteIcon from "../../../assets/settings/delete.png";
@@ -185,7 +186,9 @@ function CustomTable({
                     fontFamily: "var(--main-font-family)",
                   }}
                 >
-                  No Records
+                  <Typography paddingTop={30} paddingBottom={30}>
+                    No Records
+                  </Typography>
                 </TableCell>
               </TableRow>
             ) : (

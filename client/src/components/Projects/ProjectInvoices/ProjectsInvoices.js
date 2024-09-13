@@ -73,7 +73,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
 
   return (
     <>
-      <Stack>
+      <Stack width="80x%">
         <Stack
           direction={"row"}
           justifyContent={"space-between"}
@@ -83,7 +83,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
             p={3}
             pb={2}
             color={"#4C8AB1"}
-            fontFamily={'var(--main-font-family)'}
+            fontFamily={"var(--main-font-family)"}
             fontSize={"22px"}
             fontWeight={"600"}
           >
@@ -118,7 +118,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
             >
               <Tab
                 sx={{
-                  fontFamily: 'var(--main-font-family)',
+                  fontFamily: "var(--main-font-family)",
                   fontSize: "15px",
                 }}
               >
@@ -126,7 +126,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
               </Tab>
               <Tab
                 sx={{
-                  fontFamily: 'var(--main-font-family)',
+                  fontFamily: "var(--main-font-family)",
                   fontSize: "15px",
                 }}
               >
@@ -135,7 +135,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
 
               <Tab
                 sx={{
-                  fontFamily: 'var(--main-font-family)',
+                  fontFamily: "var(--main-font-family)",
                   fontSize: "15px",
                 }}
               >

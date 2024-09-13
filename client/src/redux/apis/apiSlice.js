@@ -2,6 +2,7 @@ import { fetchBaseQuery, createApi } from "@reduxjs/toolkit/query/react";
 
 export const getTokenFromLocalStorage = () => {
   let userInfo = localStorage.getItem("userInfo");
+
   try {
     console.log(userInfo);
     userInfo =
@@ -14,14 +15,29 @@ export const getTokenFromLocalStorage = () => {
   console.log(pathnameArr);
   const token = userInfo?.token;
   // Allow access to specific pages without requiring a token
-  const allowedPaths = ["/", "/login", "/terms", "/privacypolicy", "/verifycode"];
+  const allowedPaths = [
+    "/",
+    "/login",
+    "/terms",
+    "/privacypolicy",
+    "/verifycode",
+  ];
   const notAllowedPaths = ["/login", "/signup"];
   const currentPath = window.location.pathname;
 
   if (token) {
-    console.log("Test", userInfo);
-    if (notAllowedPaths.includes(currentPath)) {
-      window.location.href = "/dashboard";
+    console.log("Test", currentPath);
+    if (
+      userInfo?.user?.hasValidSubscription === false &&
+      currentPath !== "/subscription" &&
+      currentPath !== "/"
+    ) {
+      window.location.href = "/subscription";
+      // return;
+    } else {
+      if (notAllowedPaths.includes(currentPath)) {
+        window.location.href = "/dashboard";
+      }
     }
     return token;
   } else {

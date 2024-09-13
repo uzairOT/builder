@@ -3,10 +3,10 @@ export const policyData = [
     title: "Information We Collect",
     content: [
       "We collect information to provide better services to our users. This information includes:",
-      "• Personal Information: When you sign up for BuilderBUILDER Pro, we may collect personal details such as your name, email address, phone number, and company information.",
+      "• Personal Information: When you sign up for BuilderBUILDER PRO, we may collect personal details such as your name, email address, phone number, and company information.",
       "• Project Data: Information related to your construction projects, including project plans, documents, schedules, and communications.",
       "• Usage Data: Data on how you use our platform, including interactions with features, pages visited, and other usage statistics.",
-      "• Device Information: Information about the devices you use to access BuilderBUILDER Pro, such as IP address, browser type, and operating system.",
+      "• Device Information: Information about the devices you use to access BuilderBUILDER PRO, such as IP address, browser type, and operating system.",
     ],
   },
   {
@@ -51,15 +51,15 @@ export const policyData = [
   {
     title: "Third-Party Services",
     content: [
-      "BuilderBUILDER Pro may contain links to third-party websites and services. We are not responsible for the privacy practices or content of these third parties. We encourage you to review their privacy policies before providing any personal information.",
+      "BuilderBUILDER PRO may contain links to third-party websites and services. We are not responsible for the privacy practices or content of these third parties. We encourage you to review their privacy policies before providing any personal information.",
       "Changes to This Privacy Statement",
-      "We may update this Privacy Statement from time to time. We will notify you of any significant changes by posting the new Privacy Statement on our website and indicating the date of the latest revision. Your continued use of BuilderBUILDER Pro after any changes indicates your acceptance of the updated Privacy Statement.",
+      "We may update this Privacy Statement from time to time. We will notify you of any significant changes by posting the new Privacy Statement on our website and indicating the date of the latest revision. Your continued use of BuilderBUILDER PRO after any changes indicates your acceptance of the updated Privacy Statement.",
     ],
   },
   {
     title: "Changes to This Privacy Statement",
     content: [
-      "We may update this Privacy Statement from time to time. We will notify you of any significant changes by posting the new Privacy Statement on our website and indicating the date of the latest revision. Your continued use of BuilderBUILDER Pro after any changes indicates your acceptance of the updated Privacy Statement.",
+      "We may update this Privacy Statement from time to time. We will notify you of any significant changes by posting the new Privacy Statement on our website and indicating the date of the latest revision. Your continued use of BuilderBUILDER PRO after any changes indicates your acceptance of the updated Privacy Statement.",
     ],
   },
   {

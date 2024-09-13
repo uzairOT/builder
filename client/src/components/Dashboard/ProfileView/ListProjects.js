@@ -56,7 +56,7 @@ const ListProjects = () => {
           fontSize: "16px",
           fontWeight: "400",
           padding: 1,
-          fontFamily: 'var(--main-font-family)',
+          fontFamily: "var(--main-font-family)",
         }}
       >
         User Projects
@@ -67,7 +67,7 @@ const ListProjects = () => {
           fontSize: "12px",
           color: "var(--textField, rgba(83, 83, 83, 0.79))",
           padding: 2,
-          fontFamily: 'var(--main-font-family)',
+          fontFamily: "var(--main-font-family)",
           fontWeight: "400",
         }}
       >
@@ -90,10 +90,10 @@ const ListProjects = () => {
           }}
         >
           <Typography
-              fontSize={"0.7rem"}
-              fontWeight={"600"}
+            fontSize={"0.7rem"}
+            fontWeight={"600"}
             color={"black"}
-            fontFamily={'var(--main-font-family)'}
+            fontFamily={"var(--main-font-family)"}
             width={"100%"}
           >
             Remodel
@@ -109,10 +109,10 @@ const ListProjects = () => {
           }}
         >
           <Typography
-              fontSize={"0.7rem"}
-              fontWeight={"600"}
+            fontSize={"0.7rem"}
+            fontWeight={"600"}
             color={"black"}
-            fontFamily={'var(--main-font-family)'}
+            fontFamily={"var(--main-font-family)"}
             width={"100%"}
           >
             New Build
@@ -128,10 +128,10 @@ const ListProjects = () => {
           }}
         >
           <Typography
-              fontSize={"0.7rem"}
-              fontWeight={"600"}
+            fontSize={"0.7rem"}
+            fontWeight={"600"}
             color={"black"}
-            fontFamily={'var(--main-font-family)'}
+            fontFamily={"var(--main-font-family)"}
           >
             Commercial
           </Typography>
@@ -187,13 +187,13 @@ const ListProjects = () => {
           </Stack>
         )}
       </Box>
-      <Stack justifyContent={'center'}>
+      <Stack justifyContent={"center"}>
         <Stack pt={0.5} pb={0.5} width={"90%"} alignSelf={"center"}>
           <BuilderProButton
             variant={"contained"}
             backgroundColor={"#FFAC00"}
-            fontFamily={'var(--main-font-family)'}
-            fontSize={"16px"}
+            fontFamily={"var(--main-font-family)"}
+            fontSize={"0.8rem"}
             marginLeft={0}
             fontWeight={600}
             handleOnClick={() => {

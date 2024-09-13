@@ -44,13 +44,13 @@ function ApprovalNotification({
   const [declinePhases] = useDeclinePhaseMutation();
   const [approveInitialPhases] = useApproveInitialPhasesMutation();
   const [declineInitialPhases] = useDeclineInitialPhasesMutation();
-const navigate=useNavigate()
+  const navigate = useNavigate();
   const forecast = useSelector(getForecast);
   const dailyForecast = forecast.dailyForecast || [];
   const dispatch = useDispatch();
   const location = useLocation();
-  const path = location.pathname.split('/');
-  const projectId = notification?.projectId; 
+  const path = location.pathname.split("/");
+  const projectId = notification?.projectId;
   const newPath = `/projects/${projectId}/initial-proposal`;
 
   // const handleOnClick = async () => {
@@ -83,14 +83,14 @@ const navigate=useNavigate()
 
   const handleSubmitReason = async () => {
     if (!declineReason) {
-      setShowError(true); 
+      setShowError(true);
       return;
     }
-  
+
     try {
       if (notification?.phaseId == null) {
         await declineInitialPhases({
-          sentBy:notification?.sentBy,
+          sentBy: notification?.sentBy,
           projectId: notification?.Project?.id,
           notes: declineReason,
           sendApprovalNotificationId: notification?.id,
@@ -98,7 +98,7 @@ const navigate=useNavigate()
         approvalRefetchCall();
       } else {
         await declinePhases({
-          sentBy:notification?.sentBy,
+          sentBy: notification?.sentBy,
           phaseId: notification?.phaseId,
           projectId: notification?.Project?.id,
           notes: declineReason,
@@ -108,12 +108,17 @@ const navigate=useNavigate()
       }
       setShowReasonField(false);
       setDeclineReason("");
-      setShowError(false); 
+      setShowError(false);
+      toast.info("Phase declined sucessfully!");
+      window.location.reload();
     } catch (res) {
       console.error("Failed to accept:", res);
-      if (res?.data?.message === "This phase has already been acted upon by another user.") {
-        toast.warn(res?.data?.message)
-        approvalRefetchCall(); 
+      if (
+        res?.data?.message ===
+        "This phase has already been acted upon by another user."
+      ) {
+        toast.warn(res?.data?.message);
+        approvalRefetchCall();
       }
     }
   };
@@ -137,19 +142,23 @@ const navigate=useNavigate()
         }).unwrap();
       }
       approvalRefetchCall();
+      toast.success("Phase approved sucessfully!");
+      window.location.reload();
     } catch (res) {
       console.error("Failed to accept:", res);
-      if (res?.data?.message === "This has already been acted upon by another user.") {
-        toast.warn(res?.data?.message)
-        approvalRefetchCall(); 
+      if (
+        res?.data?.message ===
+        "This has already been acted upon by another user."
+      ) {
+        toast.warn(res?.data?.message);
+        approvalRefetchCall();
       }
     }
   };
   const handleDetails = async () => {
     setExpanded(false);
-    navigate(newPath)
+    navigate(newPath);
   };
-  
 
   return (
     <Accordion
@@ -173,7 +182,7 @@ const navigate=useNavigate()
             direction={"row"}
             justifyContent={"center"}
             alignItems={"center"}
-            sx={{ gap: 1 }}
+            sx={{ gap: 0.2 }}
           >
             <Avatar src={notification.sentByUser.image} alt="User Avatar" />
             <Typography
@@ -188,7 +197,7 @@ const navigate=useNavigate()
               fontFamily={"var(--main-font-family)"}
               fontSize={"12px"}
             >
-              Sent you Approval Request of project:
+              Sent you approval request of project:{" "}
               <span style={{ fontWeight: 700 }}>
                 {notification?.Project?.projectName}
               </span>
@@ -214,7 +223,7 @@ const navigate=useNavigate()
                 marginLeft={"5px"}
                 handleOnClick={handleAccept}
               >
-                Accept
+                Approve
               </BuilderProButton>
               <BuilderProButton
                 variant={"contained"}
@@ -239,7 +248,7 @@ const navigate=useNavigate()
               <TextField
                 required
                 fullWidth
-                label="Reason for Disapproval"
+                label="Reason for disapproval"
                 value={declineReason}
                 onChange={(e) => setDeclineReason(e.target.value)}
                 multiline

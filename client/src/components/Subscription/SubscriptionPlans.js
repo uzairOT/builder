@@ -2,6 +2,7 @@ import { Divider, Grid, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import SubscriptionCard from "../UI/Card/SubscriptionCard";
 import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
+import EnterpriseCard from "../UI/Card/EnterpriseCard";
 
 const SubscriptionPlans = ({
   setCurrentPlan,
@@ -57,15 +58,7 @@ const SubscriptionPlans = ({
       <Typography sx={themeStyle.title} pb={2}>
         {currentPayment ? "Update Plan" : "Choose plan"}
       </Typography>
-      <Grid container spacing={4} p={1} >
-        <Grid item xl={6} lg={6}>
-          <SubscriptionCard
-            currentPlan={currentPlan}
-            setCurrentPlan={setCurrentPlan}
-            setCurrentPakage={setCurrentPakage}
-            planType={"Pro"}
-          />
-        </Grid>
+      <Grid container spacing={4} p={1}>
         <Grid item xl={6} lg={6}>
           <SubscriptionCard
             currentPlan={currentPlan}
@@ -76,6 +69,15 @@ const SubscriptionPlans = ({
         </Grid>
         <Grid item xl={6} lg={6}>
           <SubscriptionCard
+            currentPlan={currentPlan}
+            setCurrentPlan={setCurrentPlan}
+            setCurrentPakage={setCurrentPakage}
+            planType={"Pro"}
+          />
+        </Grid>
+
+        <Grid item xl={6} lg={6}>
+          <EnterpriseCard
             currentPlan={currentPlan}
             setCurrentPlan={setCurrentPlan}
             setCurrentPakage={setCurrentPakage}
@@ -93,7 +95,7 @@ const themeStyle = {
   title: {
     fontSize: { xl: "28px", lg: "25px", md: "28px", xs: "28px" },
     fontWeight: "500",
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     color: "#000000",
   },
 };

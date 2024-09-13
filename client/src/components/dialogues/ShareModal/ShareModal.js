@@ -19,6 +19,8 @@ import {
   TableRow,
   Paper,
   CircularProgress,
+  Tooltip,
+  Container,
 } from "@mui/material";
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
@@ -234,16 +236,18 @@ const ShareModal = ({
   };
 
   const handleSend = async () => {
-    if (filterTeam?.length < 1) {
-      toast.warning("No User found");
-      return;
-    } else if (!selectedUser) {
-      toast.warning("Please select a user");
+    if (!formik.values.email && !selectedUser) {
+      toast.error("Please enter an email or select a team member.");
       return;
     }
+
+    // if (filterTeam.length < 1) {
+    //   toast.warning("No User found");
+    //   return;
+    // }
     setIsLoading(true);
-    console.log(lineItemData)
-    console.log(currentPayment)
+    console.log(lineItemData);
+    console.log(currentPayment);
     try {
       await handleSetAllPayments();
       const result = await invoiceDataCall();
@@ -261,7 +265,7 @@ const ShareModal = ({
   const handleSetAllPayments = async () => {
     for (let i = 0; i < lineItemData.length; i++) {
       const { outerIndex, index, id, pendingPayment } = lineItemData[i];
-      if(!currentPayment[outerIndex][index]) {
+      if (!currentPayment[outerIndex][index]) {
         // toast.error("Please enter all fields");
         return;
       }
@@ -396,64 +400,77 @@ const ShareModal = ({
               // }
               return (
                 <Stack p={0.5} width={"100%"}>
-                  <Stack
-                    id={user.img}
-                    direction={"row"}
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                    pb={1}
-                    onClick={() =>
-                      handleUserSelect(() => {
-                        if (selectedUser.userId === user.userId) {
-                          return "";
-                        } else {
-                          return user;
-                        }
-                      })
-                    }
-                  >
+                  <Container justifyContent="center" display="flex">
                     <Stack
-                      direction={"row"}
-                      justifyContent={"space-between"}
-                      alignItems={"center"}
-                      p={2}
-                      sx={{ cursor: "pointer" }}
-                      gap={1}
-                      border={
-                        selectedUser.userId === user.userId
-                          ? "2px solid black"
-                          : ""
+                      sx={{ ml: { xl: 25, lg: 20, md: 18, xs: 0 } }}
+                      id={user.img}
+                      direction="row"
+                      alignItems="center"
+                      pb={1}
+                      onClick={() =>
+                        handleUserSelect(() => {
+                          if (selectedUser.userId === user.userId) {
+                            return "";
+                          } else {
+                            return user;
+                          }
+                        })
                       }
                     >
-                      <Avatar
-                        src={user.img}
-                        alt="User Profile Pic"
-                        width={"32px"}
-                        height={"32px"}
-                        style={{ borderRadius: "50px" }}
-                      ></Avatar>
-                      <Typography
-                        color={"#202227"}
-                        fontSize={"14px"}
-                        pl={2}
-                        fontFamily={'var(--main-font-family)'}
+                      <Stack
+                        direction="row"
+                        justifyContent="flex-start"
+                        alignItems="center"
+                        p={2}
+                        gap={1}
+                        border={
+                          selectedUser.userId === user.userId
+                            ? "2px solid black"
+                            : ""
+                        }
+                        sx={{ cursor: "pointer" }}
                       >
-                        {user?.firstName}
-                      </Typography>
-                      <Typography
-                        fontFamily={'var(--main-font-family)'}
-                        fontSize={"14px"}
-                      >
-                        {user.role}
-                      </Typography>
-                      <Typography
-                        fontFamily={'var(--main-font-family)'}
-                        fontSize={"14px"}
-                      >
-                        {user.email}
-                      </Typography>
+                        <Avatar
+                          src={user.img}
+                          alt="User Profile Pic"
+                          sx={{
+                            width: "32px",
+                            height: "32px",
+                            borderRadius: "50px",
+                          }}
+                        />
+                        <Typography
+                          color="#202227"
+                          fontSize="14px"
+                          fontFamily="var(--main-font-family)"
+                        >
+                          {user?.firstName}
+                        </Typography>
+                        <Typography
+                          fontFamily="var(--main-font-family)"
+                          fontSize="14px"
+                        >
+                          {user.role}
+                        </Typography>
+                        <Tooltip title={user.email} arrow>
+                          <Typography
+                            maxWidth="20ch"
+                            fontFamily="var(--main-font-family)"
+                            fontSize="14px"
+                            noWrap
+                            sx={{
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {user.email}
+                          </Typography>
+                        </Tooltip>
+                      </Stack>
                     </Stack>
-                  </Stack>
+                  </Container>
+
                   {users.length - 1 === index ? <></> : <Divider />}
                 </Stack>
               );
@@ -620,18 +637,26 @@ const ShareModal = ({
                                 variant="standard"
                                 value={
                                   isValidIndex(percentage, outerIndex, index)
-                                    ? percentage[outerIndex][index]
+                                    ? Number(
+                                        percentage[outerIndex][index]
+                                      ).toFixed(2)
                                     : ""
                                 }
-                                onChange={(e) =>
+                                onChange={(e) => {
+                                  let value = e.target.value;
+
+                                  if (!isNaN(value) && value !== "") {
+                                    value = parseFloat(value).toFixed(2);
+                                  }
+
                                   handlePercentage(
                                     index,
-                                    e.target.value,
+                                    value,
                                     outerIndex,
                                     row.paymentPending,
                                     true
-                                  )
-                                }
+                                  );
+                                }}
                                 InputProps={{
                                   startAdornment: (
                                     <InputAdornment position="start">
@@ -791,7 +816,7 @@ export default ShareModal;
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   border: "1px solid #E0E4EC",
   padding: "0px",
   width: { xl: "100%", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
@@ -816,7 +841,7 @@ const style = {
 };
 const label = {
   fontSize: "12px",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   maxWidth: { xl: "60px", lg: "60px", md: "70px", xs: "100%" },
   minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
   // overflow:'hidden',

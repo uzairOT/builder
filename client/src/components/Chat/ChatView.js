@@ -478,7 +478,7 @@ function ChatView({
             ></Avatar>
             <Typography
               sx={{
-                  fontFamily: 'var(--main-font-family)',
+                fontFamily: "var(--main-font-family)",
                 fontSize: { xl: "15px", lg: "12px", md: "15px", xs: "15px" },
                 fontWeight: 600,
               }}
@@ -585,7 +585,7 @@ function ChatView({
                   >
                     <Typography
                       sx={{
-                          fontFamily: 'var(--main-font-family)',
+                        fontFamily: "var(--main-font-family)",
                         fontSize: {
                           xl: "15px",
                           lg: "12px",
@@ -614,7 +614,7 @@ function ChatView({
               {!messages || !Array?.isArray(messages) ? (
                 <div
                   style={{
-                      fontFamily: 'var(--main-font-family)',
+                    fontFamily: "var(--main-font-family)",
                     marginLeft: "1rem",
                     justifyContent: "center",
                     display: "flex",
@@ -685,7 +685,8 @@ function ChatView({
                               ".bmp",
                               ".tiff",
                             ].some((ext) => {
-                              const lowercaseFileUrl = msg?.fileUrl?.toLowerCase();
+                              const lowercaseFileUrl =
+                                msg?.fileUrl?.toLowerCase();
                               return lowercaseFileUrl?.endsWith(ext);
                             }) ? (
                               <>
@@ -695,7 +696,7 @@ function ChatView({
                                   download="image"
                                   alt="file"
                                   style={{
-                                    width: '100%',
+                                    width: "100%",
                                     objectFit: "contain",
                                     wordWrap: "break-word",
                                   }}
@@ -833,7 +834,7 @@ function ChatView({
                     recipientType === "team" ? "#4C8AB1" : "#FFFFFF",
                   color: recipientType === "team" ? "#FFF" : "#4C8AB1",
                   margin: 0,
-                  textTransform:"capitalize"
+                  textTransform: "capitalize",
                 }}
                 sx={{
                   paddingY: { sm: "12px", xs: "4px" },
@@ -852,7 +853,7 @@ function ChatView({
                     recipientType === "team+client" ? "#4C8AB1" : "#FFFFFF",
                   color: recipientType === "team+client" ? "#FFF" : "#4C8AB1",
                   margin: 0,
-                  textTransform:"capitalize"
+                  textTransform: "capitalize",
                 }}
                 sx={{
                   paddingY: { sm: "12px", xs: "4px" },
@@ -860,7 +861,7 @@ function ChatView({
                   paddingX: { sm: "18px", xs: "10px" },
                 }}
               >
-                Team + Client
+                All
               </Button>
             </Box>
           )}
@@ -913,13 +914,13 @@ function ChatView({
 export default ChatView;
 
 const InputStyle = {
-  '& .MuiInputBase-input::placeholder': {
-    fontFamily: 'var(--main-font-family)',
+  "& .MuiInputBase-input::placeholder": {
+    fontFamily: "var(--main-font-family)",
   },
   width: "60%",
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   "& input": {
     border: "1px solid #E0E4EC",
     borderRadius: "8px",
@@ -939,7 +940,7 @@ const headerStyle = {
   alignItems: "center",
 };
 const buttonStyle = {
-    fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   border: "1px solid #4C8AB1",
   borderRadius: "10px",
   whiteSpace: "nowrap",

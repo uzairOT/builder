@@ -45,6 +45,7 @@ function AssignProject() {
   const [checkProjectDuplication, { isLoading }] =
     useCheckProjectDuplicationMutation();
   dispatch(authUserRole(""));
+
   const handleProjectChange = async (value) => {
     if (value === "Existing") {
       const data = {

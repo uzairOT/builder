@@ -5,7 +5,10 @@ import {
   useGoogleLoginMutation,
   useLoginMutation,
 } from "../../redux/apis/usersApiSlice";
-import { setCredentials, setForgetPasswordEmail } from "../../redux/slices/authSlice";
+import {
+  setCredentials,
+  setForgetPasswordEmail,
+} from "../../redux/slices/authSlice";
 import { toast } from "react-toastify";
 import { gapi } from "gapi-script";
 import GoogleLogin from "react-google-login";
@@ -55,14 +58,13 @@ const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [login, { isLoading, error }] = useLoginMutation();
   const [googleLogin] = useGoogleLoginMutation();
-
   const { userInfo } = useSelector((state) => state.auth);
+  const projectsCount = useSelector((state) => state.userProjects.totalCount);
 
   // useEffect(() => {
   //   if (userInfo) {
@@ -83,7 +85,7 @@ const Login = () => {
     });
   }, []);
   const openInNewTab = (url) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(url, "_blank", "noopener,noreferrer");
   };
   const responseGoogle = async (response) => {
     // const auth2 = gapi.auth2.getAuthInstance();
@@ -152,12 +154,17 @@ const Login = () => {
         password: values.password,
       }).unwrap();
       // console.log("login :", res);
-      localStorage.setItem('userInfo', JSON.stringify({...res}));
+      localStorage.setItem("userInfo", JSON.stringify({ ...res }));
       localStorage.setItem("login", Date.now()); // Use this key to trigger the storage event
-      
+
       dispatch(setCredentials({ ...res.data }));
       // navigate("/");
-      if (res?.data?.incompleteProject?.incomplete) {
+
+      if (
+        res?.data?.incompleteProject?.incomplete ||
+        projectsCount === 0 ||
+        projectsCount < 0
+      ) {
         setTimeout(() => {
           window.location.href = "/assignproject";
         }, 1000);
@@ -178,9 +185,9 @@ const Login = () => {
           err?.data?.message ||
           "Something went wrong!"
       );
-      
-      if (err?.data?.user?.isVerified===false){
-        dispatch(setForgetPasswordEmail(values.email)); 
+
+      if (err?.data?.user?.isVerified === false) {
+        dispatch(setForgetPasswordEmail(values.email));
         navigate("/verifycode", { state: { data: "signup" } });
       }
     }
@@ -203,7 +210,7 @@ const Login = () => {
         <img
           style={{ height: "236px", width: "435px", paddingLeft: "8px" }}
           src={builderproicon}
-          alt="BuilderBUILDER Pro"
+          alt="BuilderBUILDER PRO"
         />
         <Box
           sx={{
@@ -212,7 +219,7 @@ const Login = () => {
             marginTop: { xl: "0rem", lg: "0rem", md: "0rem", sm: "0rem" },
           }}
         >
-          {/* <Typography sx={firstHeading}>BuilderBUILDER Pro</Typography> */}
+          {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
           <Box>
             <Typography component="p" sx={secondHeading}>
               On schedule.
@@ -346,7 +353,7 @@ const Login = () => {
             </Box>
 
             <Box sx={linkBox}>
-              <Box sx={{ display: "flex" }}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Checkbox
                   id="agreeTerms"
                   sx={{
@@ -360,7 +367,7 @@ const Login = () => {
                   style={{
                     ...checkBox,
                     ...lableResponsiveFont,
-                    marginTop: "12px",
+                    marginTop: "3px",
                   }}
                 >
                   Remember Me
@@ -381,7 +388,7 @@ const Login = () => {
                     ...signupLink,
                     ...lableResponsiveFont,
                     ...linkResponsiveColor,
-                    textDecoration: 'none'
+                    textDecoration: "none",
                   }}
                 >
                   Forgot Password?
@@ -402,7 +409,7 @@ const Login = () => {
                 ) : isMobile ? (
                   "Log in"
                 ) : (
-                  "Log in with Email"
+                  "Log in"
                 )}
               </Button>
 
@@ -414,7 +421,7 @@ const Login = () => {
                     ...signupLink,
                     ...lableResponsiveFont,
                     ...linkResponsiveColor,
-                    textDecoration: 'none'
+                    textDecoration: "none",
                   }}
                 >
                   Sign up
@@ -609,12 +616,12 @@ const linkBox = {
 };
 const checkBox = {
   whiteSpace: "nowrap",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   marginTop: "1rem",
 };
 const forgetPassTypo = {
   whiteSpace: "nowrap",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontWeight: 600,
   paddingTop: "1rem",
 };
@@ -627,7 +634,7 @@ const accountLinkText = {
     sm: "1rem",
     xs: "2rem",
   },
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: {
     lg: "1rem",
     md: "1rem",
@@ -646,7 +653,7 @@ const accountLinkText = {
   marginTop: "1.5rem",
 };
 const signupLink = {
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontWeight: 600,
 };
 
@@ -702,7 +709,7 @@ const selectStyle = {
   ".MuiOutlinedInput-notchedOutline": { border: 0 },
   color: "white",
   border: "none",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: "1rem",
   fontStyle: "normal",
   fontWeight: "400",
@@ -719,7 +726,7 @@ const hptLinksBox = {
 };
 const firstHeading = {
   color: "#FFF",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   mt: 2,
   ml: 2,
   // marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
@@ -734,7 +741,7 @@ const secondHeading = {
   color: "rgba(255, 255, 255, 0.80)",
   // width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: { xl: "1.5rem", lg: "1.5rem", md: "1.5rem", sm: "1rem" },
   fontWeight: 400,
 };
@@ -742,7 +749,7 @@ const secondHeading = {
 const thirdHeading = {
   color: "#FFF",
   marginTop: "2rem",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: { xl: "2rem", lg: "1.5rem", md: "1rem", sm: "1rem" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontWeight: 400,
@@ -751,7 +758,7 @@ const thirdHeading = {
 const formHeadingStyle = {
   color: "#4C8AB1",
   textAlign: "center",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: "2.1875rem",
   fontWeight: 700,
 };
@@ -769,7 +776,7 @@ const inputStyle = {
 const placeholderStyle = {
   color: "black",
   padding: "8px",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: "1rem",
   fontWeight: 400,
 };
@@ -778,7 +785,7 @@ const labelStyle = {
   display: "block",
   marginBottom: "1rem",
   color: "#16181B",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.75rem" },
   fontWeight: 400,
 };
@@ -786,7 +793,7 @@ const labelStyle = {
 const hptLinksStyle = {
   color: "#FFF",
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem" },
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontWeight: 400,
   lineHeight: "normal",
   cursor: "pointer", // Ensure cursor changes on hover
@@ -813,7 +820,7 @@ const googleBtnStyle = {
   border: "1px solid rgba(6, 32, 72, 0.11)",
   background: "#FFF",
   color: "#333",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: { lg: "1rem", md: "1rem", sm: "0.85rem", xs: "0.85rem" },
   fontWeight: 400,
   cursor: "pointer",
@@ -833,7 +840,7 @@ const googleBtnStyle = {
 
 const ContinuewithTextStyle = {
   color: "#202227",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
   fontWeight: 400,
   display: "flex",

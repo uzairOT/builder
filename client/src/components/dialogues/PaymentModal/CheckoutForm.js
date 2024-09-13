@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { toast } from "react-toastify";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setCredentials } from "../../../redux/slices/authSlice";
 
 export default function CheckoutForm({
   address,
@@ -10,12 +12,18 @@ export default function CheckoutForm({
   currentPakage,
   orgName,
   userId,
+  orgId,
+  selectedPlan,
   isInvoicePayment = false,
   invoiceId,
+  paymentType,
+  setPaymentType,
 }) {
   const stripe = useStripe();
   const elements = useElements();
   const status = "success";
+  const userInfo = useSelector((state) => state.auth.userInfo);
+  const dispatch = useDispatch();
   const [message, setMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const payload = {
@@ -25,6 +33,9 @@ export default function CheckoutForm({
     orgName: orgName,
     userId: userId,
     status,
+    organizationId: orgId,
+    paymentType,
+
     // Add other form values here as needed
   };
   const handleSubmit = async (e) => {
@@ -35,7 +46,9 @@ export default function CheckoutForm({
       currentPlan,
       currentPakage,
       orgName,
-      userId
+      userId,
+      orgId,
+      selectedPlan
     );
     if (!stripe || !elements) {
       // Stripe.js has not yet loaded.
@@ -84,6 +97,14 @@ export default function CheckoutForm({
         if (response.ok) {
           setMessage("Your payment was " + paymentIntent.status);
           const responseData = await response.json();
+          const data = {
+            ...userInfo,
+            user: {
+              ...userInfo.user,
+              hasValidSubscription: responseData?.hasValidSubscription,
+            },
+          };
+          dispatch(setCredentials(data));
           console.log("API Response:", responseData);
           window.location.href = `${window.location.origin}/completion`;
         } else {

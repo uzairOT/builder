@@ -55,6 +55,9 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
   const { data, isLoading, error } = useGetFilteredUserProjectsQuery({
     userId: currentUserId,
   });
+  const organizationId = useSelector(
+    (state) => state.auth.userInfo.user.organization.organizationId
+  );
 
   console.log(data);
   const projectNames = data
@@ -104,6 +107,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
         userRole: userRole,
         userId: currentUserId,
         companyName: currentUser.user.companyName,
+        organizationId: organizationId,
       };
       //console.log(post);
       const res = await assignRolePost(post).unwrap();
@@ -115,10 +119,11 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
     } catch (err) {
       console.log(err);
       toast.error(
-        err?.data?.message ||
-        error.error ||
-        error?.data?.error ||
-        err?.message ||
+        err?.data?.error ||
+          err?.data?.message ||
+          error.error ||
+          error?.data?.error ||
+          err?.message ||
           "Something went wrong!"
       );
     }
@@ -409,6 +414,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
               {/* Email input */}
               <Typography variant="body1">Email</Typography>
               <TextField
+                sx={{ mr: 3 }}
                 error={errors.email ? true : false}
                 placeholder="Email"
                 name={"email"}
@@ -520,7 +526,7 @@ export default AddModal;
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   border: "1px solid #E0E4EC",
   padding: "10px",
   width: { xl: "250px", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
@@ -535,14 +541,14 @@ const headingStyle = {
   marginTop: "20px",
   // marginBottom: "10px",
   marginLeft: "25px",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontWeight: "500",
   fontSize: "22px",
   color: "#4C8AB1",
 };
 const labelStyle = {
   marginTop: "10px",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontWeight: "400",
   fontSize: "13px",
   color: "#535353C9",

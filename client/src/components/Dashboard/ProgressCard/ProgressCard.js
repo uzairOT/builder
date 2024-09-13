@@ -7,6 +7,7 @@ import ProfitDetails from "./ProfitDetails";
 import { Link } from "react-router-dom";
 
 const ProgressCard = ({ project }) => {
+  // console.log("Project data", project);
   const completedLineItems = project?.completedLineItems;
   const totalLineItems = project?.totalLineItems;
   const totalProjectCost = project?.totalProjectCost
@@ -25,17 +26,17 @@ const ProgressCard = ({ project }) => {
       : project.totalProfit;
 
   const totalProfitFromPaidInvoices =
-      project.totalProfitFromPaidInvoices == null ||
-      isNaN(project.totalProfitFromPaidInvoices) ||
-      project.totalProfitFromPaidInvoices === 0
-        ? 0
-        : project.totalProfitFromPaidInvoices;
+    project.totalProfitFromPaidInvoices == null ||
+    isNaN(project.totalProfitFromPaidInvoices) ||
+    project.totalProfitFromPaidInvoices === 0
+      ? 0
+      : project.totalProfitFromPaidInvoices;
 
   return (
     <Box style={{ textDecoration: "none" }}>
       <Link to={`/projects/${project.id}`} style={{ textDecoration: "none" }}>
-      <ProgressCardHeader project={project} />
-      <Divider variant="fullWidth"></Divider>
+        <ProgressCardHeader project={project} />
+        <Divider variant="fullWidth"></Divider>
         <Stack direction={"row"} pt={2}>
           <ProjectProgress progress={progress} />
           <Divider
@@ -46,7 +47,11 @@ const ProgressCard = ({ project }) => {
           <PaymentDetails totalProjectCost={totalProjectCost} />
         </Stack>
         <Divider variant="fullWidth"></Divider>
-        <ProfitDetails TotalProfit={TotalProfit} totalProjectCost={totalProjectCost} totalProfitFromPaidInvoices={totalProfitFromPaidInvoices} />
+        <ProfitDetails
+          TotalProfit={TotalProfit}
+          totalProjectCost={totalProjectCost}
+          totalProfitFromPaidInvoices={totalProfitFromPaidInvoices}
+        />
       </Link>
     </Box>
   );

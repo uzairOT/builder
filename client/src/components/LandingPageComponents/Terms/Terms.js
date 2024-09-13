@@ -2,31 +2,52 @@ import React, { useState } from "react";
 import { Grid, Typography, Button, Box } from "@mui/material";
 import { termsData } from "./TermsData";
 import { useNavigate } from "react-router-dom";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 const TermsAndConditions = () => {
-//   const [agree, setAgree] = useState(false);
-//   const navigate = useNavigate();
+  //   const [agree, setAgree] = useState(false);
+  //   const navigate = useNavigate();
 
-//   const handleAgree = () => {
-//      setAgree(true)
-//       navigate("/signup");
-//       console.log("Agreed to the terms and conditions");
-    
-//   };
+  //   const handleAgree = () => {
+  //      setAgree(true)
+  //       navigate("/signup");
+  //       console.log("Agreed to the terms and conditions");
 
-//   const handleCancel = () => {
-//     console.log("Are you sure you want to cancel?");
-//     navigate(-1); 
-//   };
+  //   };
 
+  //   const handleCancel = () => {
+  //     console.log("Are you sure you want to cancel?");
+  //     navigate(-1);
+  //   };
+
+  const navigate = useNavigate();
   return (
     <Grid container spacing={{ xs: 0, lg: 2 }} mt={2}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          color: "#4C8AB1",
+          cursor: "pointer",
+          ml: 5,
+        }}
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        <div>
+          <ArrowBackIosIcon sx={{ fontSize: 16 }} />
+        </div>
+        <Typography sx={{ fontSize: 14 }} color="#4C8AB1" gutterBottom>
+          Back
+        </Typography>
+      </Box>
       <Grid item xs={12} textAlign="center">
         <Typography sx={styles.font1} gutterBottom>
           Terms and Conditions
         </Typography>
         <Typography sx={styles.font2}>
-          Important Information You Need to Know
+          Important information you need to know
         </Typography>
       </Grid>
 
@@ -34,17 +55,17 @@ const TermsAndConditions = () => {
         <Typography
           textAlign={{ xs: "center", lg: "left" }}
           sx={{
-            fontFamily: 'var(--main-font-family)',
+            fontFamily: "var(--main-font-family)",
             fontWeight: 400,
             fontSize: "16px",
             color: "#00000099",
           }}
         >
-          Welcome to BuilderBUILDER Pro. These Terms and Conditions ("Terms") govern
-          your use of our construction management software, available on both
-          web and mobile platforms (iOS and Android). By accessing or using
-          BuilderBUILDER Pro, you agree to be bound by these Terms. If you do not
-          agree with these Terms, you should not use our services.
+          Welcome to BuilderBUILDER PRO. These Terms and Conditions ("Terms")
+          govern your use of our construction management software, available on
+          both web and mobile platforms (iOS and Android). By accessing or using
+          BuilderBUILDER PRO, you agree to be bound by these Terms. If you do
+          not agree with these Terms, you should not use our services.
         </Typography>
         {termsData.map((section, index) => (
           <Box key={index} mt={2} textAlign={{ xs: "center", lg: "left" }}>
@@ -78,25 +99,25 @@ export default TermsAndConditions;
 
 const styles = {
   font1: {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     color: "#2E728F",
     fontWeight: 500,
     fontSize: "16px",
   },
   font2: {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontWeight: 500,
     fontSize: "36px",
   },
   font3: {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontWeight: 400,
     mt: 2,
     fontSize: "16px",
     color: "#00000099",
   },
   font4: {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontWeight: 700,
     fontSize: "17px",
   },

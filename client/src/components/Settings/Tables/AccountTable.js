@@ -10,6 +10,7 @@ import {
   IconButton,
   Stack,
   Grid,
+  Typography,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import EditIcon from "../../../assets/settings/edit.png";
@@ -135,7 +136,9 @@ function AmountTable({
                       fontFamily: "var(--main-font-family)",
                     }}
                   >
-                    No Records
+                    <Typography paddingTop={30} paddingBottom={30}>
+                      No Records
+                    </Typography>
                   </TableCell>
                 </TableRow>
               ) : (

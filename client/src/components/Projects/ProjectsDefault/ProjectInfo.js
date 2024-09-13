@@ -72,7 +72,7 @@ const ProjectInfo = ({ data }) => {
                   />
                 </Stack>
                 <Typography sx={themeStyle.text}>
-                  {workOrder.description}
+                  {workOrder.subject}
                 </Typography>
               </Stack>
             </>

@@ -132,7 +132,7 @@ const CustomToolbar = ({
         >
           <Typography
             sx={themeStyle.toolbarTitle}
-            pl={{ xl: 1, lg: 3, md: 3, xs: 3 }}
+            pl={{ xl: 1, lg: 2, md: 2, xs: 1 }}
           >
             Work Order
           </Typography>
@@ -140,7 +140,6 @@ const CustomToolbar = ({
             <Button
               sx={{
                 fontSize: "0.7rem",
-
               }}
               style={{
                 textTransform: "capitalize",
@@ -155,7 +154,6 @@ const CustomToolbar = ({
             <Button
               sx={{
                 fontSize: "0.7rem",
-
               }}
               style={{
                 textTransform: "capitalize",
@@ -170,7 +168,6 @@ const CustomToolbar = ({
             <Button
               sx={{
                 fontSize: "0.7rem",
-
               }}
               style={{
                 textTransform: "capitalize",
@@ -217,7 +214,6 @@ const CustomToolbar = ({
               <Button
                 sx={{
                   fontSize: "0.7rem",
-
                 }}
                 style={{
                   textTransform: "capitalize",
@@ -236,7 +232,6 @@ const CustomToolbar = ({
               <Button
                 sx={{
                   fontSize: "0.7rem",
-
                 }}
                 style={{
                   textTransform: "capitalize",
@@ -282,7 +277,6 @@ const CustomToolbar = ({
               <Button
                 sx={{
                   fontSize: "0.7rem",
-
                 }}
                 style={{
                   textTransform: "capitalize",

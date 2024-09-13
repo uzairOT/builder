@@ -56,7 +56,7 @@ export default function Testimonials() {
 
             <InfoCard
               icon={<TestimonialColIcns />}
-              description='"BuilderBUILDER Pro has transformed the way we manage our construction projects. The intuitive interface and robust features have saved us time and money while improving our overall project quality."'
+              description='"BuilderBUILDER PRO has transformed the way we manage our construction projects. The intuitive interface and robust features have saved us time and money while improving our overall project quality."'
               title="John D., Construction Manager"
               position="topLeft"
             />
@@ -71,7 +71,7 @@ export default function Testimonials() {
 
             <InfoCard
               icon={<TestimonialColIcns />}
-              description='"With BuilderBUILDER Pro, our team can collaborate seamlessly, whether we’re in the office or on-site. It’s a game-changer for our workflow and project success."'
+              description='"With BuilderBUILDER PRO, our team can collaborate seamlessly, whether we’re in the office or on-site. It’s a game-changer for our workflow and project success."'
               title="Sarah L., Project Coordinator"
               position="bottomRight"
             />

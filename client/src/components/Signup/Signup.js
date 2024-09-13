@@ -57,7 +57,6 @@ const SignupComp = () => {
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
   const [phoneIsValid, setPhoneIsValid] = useState(true);
-
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
 
@@ -112,12 +111,11 @@ const SignupComp = () => {
   const navigate = useNavigate();
   const [register, { isLoading }] = useRegisterMutation();
   const { userInfo } = useSelector((state) => state.auth);
-
+  let IsValidSub = userInfo?.user?.hasValidSubscription;
 
   const openInNewTab = (url) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(url, "_blank", "noopener,noreferrer");
   };
-
 
   // const handleChange = (e) => {
   //   const { name, value } = e.target || e;
@@ -155,6 +153,7 @@ const SignupComp = () => {
       //
       try {
         const res = await googleLogin({ email }).unwrap();
+
         if (res.message === "Login Successful!") {
           dispatch(setCredentials({ ...res.data }));
           setTimeout(() => {
@@ -163,7 +162,13 @@ const SignupComp = () => {
         } else if (res.message === "notFound!") {
           toast.warning("User not found");
           navigate("/signup");
-        } else {
+        }
+        // else if (IsValidSub === false) {
+        //   setTimeout(() => {
+        //     window.location.href = "/settings/subscription";
+        //   }, 1000);
+        // }
+        else {
           toast.warning("Something went wrong");
           navigate("/signup");
         }
@@ -289,7 +294,7 @@ const SignupComp = () => {
             marginTop: { xl: "0rem", lg: "0rem", md: "0rem", sm: "0rem" },
           }}
         >
-          {/* <Typography sx={firstHeading}>BuilderBUILDER Pro</Typography> */}
+          {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
           <Box>
             <Typography component="p" sx={secondHeading}>
               On schedule.
@@ -305,7 +310,7 @@ const SignupComp = () => {
             </Typography>
           </Box>
         </Box>
-        {/* <Typography sx={firstHeading}>BuilderBUILDER Pro</Typography> */}
+        {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
 
         {/* Button */}
 
@@ -515,7 +520,7 @@ const SignupComp = () => {
               <input
                 type="text"
                 name="company"
-                placeholder="BuilderBUILDER Pro"
+                placeholder="BuilderBUILDER PRO"
                 style={{
                   ...inputStyle,
                   border:
@@ -663,7 +668,7 @@ const SignupComp = () => {
                       textDecoration: "none",
                     }}
                   >
-                    Terms of use
+                    Terms of Use
                   </Link>{" "}
                   and{" "}
                   <Link
@@ -903,6 +908,7 @@ const linkBox = {
   fontStyle: "normal",
   fontWeight: 400,
   lineHeight: "normal",
+  alignItems: "center",
 };
 const linkStyle = {
   color: "#4C8AB1",
@@ -920,7 +926,6 @@ const checkBox = {
 const checkBoxText = {
   gap: 3,
   display: "flex",
-  marginTop: "0.8rem",
   fontSize: { lg: "11px", md: "11px", sm: "0.8rem", xs: "0.75rem" },
 };
 const alreadyHaveAccountTypo = {

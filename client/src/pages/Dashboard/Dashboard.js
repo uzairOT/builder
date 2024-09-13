@@ -15,17 +15,16 @@ import {
   allEvents,
 } from "../../redux/slices/Events/eventsSlice.js";
 import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice.js";
-import { addProjects,allUserProjects } from "../../redux/slices/Project/userProjectsSlice.js";
+import {
+  addProjects,
+  allUserProjects,
+} from "../../redux/slices/Project/userProjectsSlice.js";
 import { socket } from "../../socket.js";
 import { useGetUserProjectsQuery } from "../../redux/apis/Project/userProjectApiSlice.js";
 import TaskCalenderLoader from "../../components/Task/Calender/TaskCalenderLoader.js";
 import ProgressCardLoader from "../../components/Dashboard/ProgressCard/ProgressCardLoader.js";
 
 const Dashboard = () => {
-
-
-
-
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
   const userProjects = useSelector(allUserProjects);
@@ -44,12 +43,11 @@ const Dashboard = () => {
 
   // console.log("State Check", phaseCheck)
   // useEffect(() => {
-  //   if (phaseCheck!=="" && window.location.pathname !== "/assignproject") {
-  //     window.location = "/assignproject";
+  //   if (local?.user?.hasValidSubscription === false) {
+  //     window.location = "subscription";
   //   }
   // }, []);
-  
-  
+
   useEffect(() => {
     console.log("undefined", UserId);
     socket.emit("userJoin", {
@@ -58,14 +56,12 @@ const Dashboard = () => {
     return () => {};
   }, []);
 
-
-
   return (
     <>
       <main>
         <Grid sx={themeStyle.dashboard} container pt={1}>
           {/* Profile View */}
-          <Grid item xs={12} sm={4} md={3.5} lg={2} xl={2} mt={'7px'}>
+          <Grid item xs={12} sm={4} md={3.5} lg={2} xl={2} mt={"7px"}>
             <Paper
               sx={{
                 borderRadius: "0 14px 14px 0",
@@ -89,7 +85,7 @@ const Dashboard = () => {
           >
             <Grid item margin={1} ml={2} mr={2}>
               <Paper
-                sx={{ ...themeStyle.dashboardViews, borderRadius: "14px"}}
+                sx={{ ...themeStyle.dashboardViews, borderRadius: "14px" }}
               >
                 <WeatherView
                   dailyForecast={dailyForecast}
@@ -102,33 +98,45 @@ const Dashboard = () => {
             {/*  height:{xl:'67vh', lg:'65vh', md:'43vh', sm:'45vh', xs: '45vh'} */}
             <Grid
               container
-              borderTop={ '2px solid rgba(0, 0, 0, 0.1)'}
+              borderTop={"2px solid rgba(0, 0, 0, 0.1)"}
               borderRadius={2}
               sx={{ ...themeStyle.scrollable }}
               overflow={"hidden"}
-              height={{xl:"calc(92vh - 240px)", lg:'calc(92vh -  240px)',  md:'calc(92vh - 100px)', xs:'calc(100vh + 100px)'}}
+              height={{
+                xl: "calc(92vh - 240px)",
+                lg: "calc(92vh -  240px)",
+                md: "calc(92vh - 100px)",
+                xs: "calc(100vh + 100px)",
+              }}
               width={"98%"}
               pt={1}
               margin={"auto"}
             >
-              {Array.isArray(userProjects[0]) ? userProjects[0]?.map((project) => (<Grid
-                item
-                xs={12}
-                sm={12}
-                md={6}
-                lg={6}
-                mb={1}
-                style={{
-                  paddingTop: "0px",
-                  paddingLeft: "0px ",
-                  overflow: "hidden",
-                }}
-                
-              >
-                <Paper sx={themeStyle.progressCard} margin={1}>
-                  <ProgressCard project={project} />
-                </Paper>
-              </Grid>) ) : <><ProgressCardLoader /></>}
+              {Array.isArray(userProjects[0]) ? (
+                userProjects[0]?.map((project) => (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={6}
+                    lg={6}
+                    mb={1}
+                    style={{
+                      paddingTop: "0px",
+                      paddingLeft: "0px ",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Paper sx={themeStyle.progressCard} margin={1}>
+                      <ProgressCard project={project} />
+                    </Paper>
+                  </Grid>
+                ))
+              ) : (
+                <>
+                  <ProgressCardLoader />
+                </>
+              )}
               {/* <Grid
                 item
                 xs={12}
@@ -196,7 +204,16 @@ const Dashboard = () => {
             </Grid>
           </Grid>
           {/* Calender Tracker View */}
-          <Grid item xs={12} sm={12} md={12} lg={3} xl={3} pb={1} height={"91vh"}>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            lg={3}
+            xl={3}
+            pb={1}
+            height={"91vh"}
+          >
             <Paper
               sx={{
                 borderRadius: " 14px 0 0 14px",
@@ -206,8 +223,8 @@ const Dashboard = () => {
               }}
             >
               {loading ? (
-                <Stack >
-                <TaskCalenderLoader />
+                <Stack>
+                  <TaskCalenderLoader />
                 </Stack>
               ) : (
                 <TaskCalenderView
@@ -228,7 +245,7 @@ export default Dashboard;
 const themeStyle = {
   dashboard: {
     backgroundColor: "#eff5ff",
-    height: { xl: "93vh", lg: "100%", md: "100%" },
+    height: { xl: "100%", lg: "100%", md: "100%" },
   },
   dashboardViews: {
     height: "100%",

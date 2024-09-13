@@ -716,7 +716,7 @@ function UpdateMasterLine({
               <TextField
                 inputProps={{ maxLength: 50 }}
                 sx={{ ...inputStyle, height: "5rem" }}
-                required
+                // required
                 margin="dense"
                 id="longDescription"
                 name="longDescription"

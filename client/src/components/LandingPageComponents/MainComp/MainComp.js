@@ -15,6 +15,14 @@ import { LineWeight } from "@mui/icons-material";
 import googlePlay from "../../../assets/FileSvg/googlePlay.svg";
 import appStore from "../../../assets/FileSvg/appStore.svg";
 
+const popEffect = {
+  hidden: { scale: 1 },
+  hover: {
+    scale: 1.05,
+    transition: { type: "spring", stiffness: 300, damping: 15 },
+  },
+};
+
 const texts = [
   { text: "PROFITABLE!", color: "green" },
   { text: "ORGANIZED!", color: "blue" },
@@ -27,6 +35,18 @@ const texts = [
 const fadeUpVariants = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 2 },
+};
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+    },
+  },
 };
 
 const MainContent = () => {
@@ -59,7 +79,7 @@ const MainContent = () => {
               Your Trusted Construction Management
             </Typography>
             <Typography component="div" sx={styles.heading2}>
-              Using BuilderBUILDER Pro will make you
+              Using BuilderBUILDER PRO will make you
               <br /> more{" "}
               <AnimatePresence>
                 <motion.div
@@ -80,10 +100,10 @@ const MainContent = () => {
             </Typography>
 
             <Typography component="div" sx={styles.bodyText}>
-              BuilderBUILDER Pro is your all-in-one solution to efficiently
+              BuilderBUILDER PRO is your all-in-one solution to efficiently
               manage construction projects from start to finish. Designed for
               professionals who demand precision, organization, and results,
-              BuilderBUILDER Pro offers robust features to streamline every
+              BuilderBUILDER PRO offers robust features to streamline every
               aspect of your project management.
             </Typography>
 
@@ -97,6 +117,11 @@ const MainContent = () => {
               DOWNLOAD NOW!
             </Typography>
             <Box sx={{ gap: { sm: 0, xs: 2 } }}>
+            <motion.div
+              initial="hidden"
+              whileHover="hover"
+              variants={popEffect}
+            >
               <Box>
                 <a
                   href="https://testflight.apple.com/join/Fejy1iQ6"
@@ -111,6 +136,12 @@ const MainContent = () => {
                   {/* <DownloadAppStore /> */}
                 </a>
               </Box>
+              </motion.div>
+              <motion.div
+              initial="hidden"
+              whileHover="hover"
+              variants={popEffect}
+            >
               <Box>
                 <a
                   href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
@@ -126,17 +157,20 @@ const MainContent = () => {
                   {/* <DownloadGooglePlay /> */}
                 </a>
               </Box>
+              </motion.div>
             </Box>
           </Grid>
         </Grid>
       </Grid>
 
       <Box sx={styles.imageBox}>
-        <img
-          src={devicesimg}
-          alt="Dashboard Screenshot"
-          style={{ width: downView ? "100%" : "100%" }}
-        />
+        <motion.div variants={fadeInUp}>
+          <img
+            src={devicesimg}
+            alt="Dashboard Screenshot"
+            style={{ width: downView ? "100%" : "100%" }}
+          />
+        </motion.div>
       </Box>
     </Grid>
   );
@@ -219,7 +253,7 @@ const styles = {
     textTransform: "none",
   },
   downloadText: {
-    mt:2,
+    mt: 2,
     fontSize: "13px",
     fontWeight: 700,
     fontFamily: "var(--main-font-family)",

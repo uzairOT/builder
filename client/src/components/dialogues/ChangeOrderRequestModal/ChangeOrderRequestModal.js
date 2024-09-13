@@ -31,7 +31,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectAddPhase } from "../../../redux/slices/addPhaseSlice";
 import GenerateInvoiceDone from "../GenerateInvoice/GenerateInvoiceDone";
 import { useRequestWorkOrderMutation } from "../../../redux/apis/Project/workOrderApiSlice";
-import AssignTeamMembers from "./AssignTeamMembers";
 import { toast } from "react-toastify";
 //import "react-toastify/dist/ReactToastify.css";
 import { useGetUserEventsMutation } from "../../../redux/apis/usersApiSlice";
@@ -69,7 +68,7 @@ const currentUser = JSON.parse(local);
 //   query: { userId: currentUser?.user?.id },
 // });
 
-const RequestWorkOrderModal = ({
+const ChangeOrderRequestModal = ({
   rowCheckboxes,
   checkedRow,
   changeOrder,
@@ -122,7 +121,6 @@ const RequestWorkOrderModal = ({
   const [addPhaseId, setAddPhaseId] = useState();
   const [loading, setLoading] = useState(false);
   const pathCheck = location.pathname;
-
   // const changeOrderSelected = useSelector(
   //   (state) => state.projectInitialProposal.changeOrderLineItems
   // );
@@ -170,23 +168,13 @@ const RequestWorkOrderModal = ({
 
   // });
   const ENDPOINT = "http://3.135.107.71/";
-  //test new workd order
 
-  // Object?.values(rowCheckboxes)?.forEach((phaseData) => {
-  //   const lineItemGroup = {
-  //     phaseId: phaseData.id,
-  //     lineItemId: phaseData.rows.map((row) => row.id),
-  //   };
-  //   lineItemIds.push(lineItemGroup);
-  // });
-  //tes end..
-  //console.log(assignedCheckboxes);
   const [requestWorkOrderPut] = useRequestWorkOrderMutation();
 
   const isButtonDisabled = changeOrder
     ? checkedRow === null
     : Object?.keys(rowCheckboxes)?.length === 0 ||
-    selectedProjectData?.initialProposalApproved === false;
+      selectedProjectData?.initialProposalApproved === false;
   const handleNotesChange = (e) => {
     setNotes(e.target.value);
   };
@@ -409,24 +397,25 @@ const RequestWorkOrderModal = ({
 
   const handleRequest = async () => {
     if (subject === "") {
-      toast.warning("Please complete the Request work order form");
+      toast.warning("Please complete the Request Change order form");
       return;
     }
-    if (!startDate || !endDate) {
-      toast.warning("Please enter a date");
-      return;
-    }
+    // if (!startDate || !endDate) {
+    //   toast.warning("Please enter a date");
+    //   return;
+    // }
     setLoading(true);
-    const formattedStartDate = startDate?.utc()?.format("MMM D, YYYY, h:mm a");
-    const formattedEndDate = endDate?.utc()?.format("MMM D, YYYY, h:mm a");
-    //added superadmin id to the workorder
-    let teamIds = [...assignedCheckboxes];
+    const fixedStartDate = "Sep 1, 2024, 10:00 am";
+    const fixedEndDate = "Sep 2, 2024, 10:00 am";
 
-    if (userId === superAdminId) {
-      teamIds.push(userId);
-    } else {
-      teamIds.push(userId, superAdminId);
-    }
+    const formattedStartDate = moment(fixedStartDate, "MMM D, YYYY, h:mm a")
+      .utc()
+      .format("MMM D, YYYY, h:mm a");
+    const formattedEndDate = moment(fixedEndDate, "MMM D, YYYY, h:mm a")
+      .utc()
+      .format("MMM D, YYYY, h:mm a");
+
+    //added superadmin id to the workorder
     const requestForm = {
       workOrder_id: changeOrder ? checkedRow.id : "",
       subject: subject,
@@ -441,7 +430,7 @@ const RequestWorkOrderModal = ({
         : lineItemIds[0].lineItemId[0],
       phaseItems: changeOrder ? selectedItems : lineItemIds,
       createdby: userId,
-      teamIds: teamIds,
+      teamIds: [...assignedCheckboxes, userId, superAdminId],
       notes: notes,
       projectId: projectId,
       total: changeOrder ? checkedRow?.total : totalWorkOrder,
@@ -472,10 +461,10 @@ const RequestWorkOrderModal = ({
           } else {
             toast.error(
               response?.data?.message ||
-              response.error ||
-              response?.data?.error ||
-              response.message ||
-              "Something went wrong!"
+                response.error ||
+                response?.data?.error ||
+                response.message ||
+                "Something went wrong!"
             );
           }
         });
@@ -489,7 +478,7 @@ const RequestWorkOrderModal = ({
               // console.log("work order",response);
               setDone(true);
               dispatch(clearPhases());
-              toast.success("Work Order request sent!");
+              toast.success("Change Order request sent!");
               if (refetchChangeOrder) {
                 await refetchChangeOrder({ projectId, userId: userId });
               }
@@ -499,10 +488,10 @@ const RequestWorkOrderModal = ({
               //console.log(response);
               toast.error(
                 response?.data?.message ||
-                response.error ||
-                response?.data?.error ||
-                response.message ||
-                "Something went wrong!"
+                  response.error ||
+                  response?.data?.error ||
+                  response.message ||
+                  "Something went wrong!"
               );
               return response;
             }
@@ -555,18 +544,8 @@ const RequestWorkOrderModal = ({
     (state) => state?.permissions?.permissions
   );
 
-  const projectManagementPermission = useProjectPermissionCheck(
-    "project-management",
-    permissionsState
-  );
-
   const changeOrderPermission = useProjectPermissionCheck(
     "change-order",
-    permissionsState
-  );
-
-  const workOrderPermission = useProjectPermissionCheck(
-    "work-order",
     permissionsState
   );
   console.log("selectedProjectData", selectedProjectData);
@@ -578,13 +557,9 @@ const RequestWorkOrderModal = ({
         <>
           <Tooltip
             title={
-              changeOrderView
-                ? !changeOrderPermission
-                  ? "You currently don't have permission to submit a change order"
-                  : ""
-                : !workOrderPermission
-                  ? "You currently don't have permission to submit a work order"
-                  : ""
+              !changeOrderPermission
+                ? "You currently don't have permission to submit a change order"
+                : ""
             }
             arrow
           >
@@ -593,14 +568,10 @@ const RequestWorkOrderModal = ({
                 alignItems={"flex-end"}
                 justifyContent={{ xs: "flex-end" }}
                 pr={2}
-                ml={0}
+                ml={-1.8}
               >
                 <BuilderProButton
-                  disabled={
-                    // !projectManagementPermission ||
-                    (changeOrderView && !changeOrderPermission) ||
-                    (!changeOrderView && !workOrderPermission)
-                  }
+                  disabled={!changeOrderPermission}
                   backgroundColor={"#FFAC00"}
                   variant={"contained"}
                   fontFamily={"var(--main-font-family)"}
@@ -609,9 +580,7 @@ const RequestWorkOrderModal = ({
                   padding={{ sm: "6px 32px 6px 32px", xs: "5px 20px 5px 20px" }}
                   handleOnClick={isButtonDisabled ? showToast : handleOpen}
                 >
-                  {changeOrderView
-                    ? "Submit Change Order"
-                    : "Submit Work Order"}
+                  Submit Change Order
                 </BuilderProButton>
               </Stack>
             </span>
@@ -624,7 +593,7 @@ const RequestWorkOrderModal = ({
             ...style,
             ...themeStyle.scrollable,
             height: { xl: "90%", lg: "90%", md: "90%", sm: "90%", xs: "90%" },
-            width: changeOrderView ? "100%" : "80%",
+            width: "80%",
           }}
           overflow={"scroll"}
         >
@@ -640,7 +609,7 @@ const RequestWorkOrderModal = ({
               fontSize={"22px"}
               fontWeight={"600"}
             >
-              {changeOrderView ? "Submit Change Order" : "Submit Work Order"}
+              {"Submit Change Order"}
             </Typography>
             <IconButton onClick={handleClose}>
               <CloseIcon />
@@ -663,215 +632,18 @@ const RequestWorkOrderModal = ({
               spacing={1}
               width={"calc(100% - 48px)"}
             >
-              <Typography fontFamily={"var(--main-font-family)"}>
-                <strong>Subject: </strong>{" "}
-                <input
-                  maxlength="50"
-                  required
-                  value={subject}
-                  placeholder="Type your subject..."
-                  type="text"
-                  style={themeStyle.inputFields}
-                  onChange={handleSubjectChange}
-                ></input>
-              </Typography>
-              <Typography
-                pb={1}
-                fontFamily={"var(--main-font-family)"}
-                fontWeight={"200"}
-              >
-                <strong>Description: </strong>{" "}
-                <input
-                  maxlength="50"
-                  value={description}
-                  placeholder="Type your description..."
-                  type="text"
-                  multiple
-                  style={themeStyle.inputFields}
-                  onChange={handleDescriptionChange}
-                ></input>
-              </Typography>
-              {/* <Divider />
-
-              <Typography pt={1} sx={themeStyle.headingText}>
-                Total
-              </Typography>
-              <Stack pb={1} direction={"row"} justifyContent={"space-between"}>
-                <Typography
-                  sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
-                >
-                  ${changeOrder ? checkedRow?.total : totalWorkOrder}
-                </Typography>
-             
-              </Stack> */}
-              <Divider />
               <Stack
                 direction={{ xl: "row", lg: "row", md: "row", xs: "row" }}
                 justifyContent={"space-around"}
                 spacing={0.2}
                 p={1}
               >
-                {!changeOrderView && (
-                  <Stack flex={1}>
-                    <Typography sx={themeStyle.headingText}>
-                      Phases
-                      <Typography
-                        sx={{
-                          ...themeStyle.headingText,
-                          color: "#9E9E9E",
-                          marginTop: "0rem",
-                        }}
-                      >
-                        {Object?.keys(rowCheckboxes)?.length}
-                      </Typography>
-                    </Typography>
-
-                    <FormControl>
-                      {Object.keys(rowCheckboxes).map((key) => {
-                        const phaseId = rowCheckboxes[key]?.rows[0]?.phase_id; // Get phaseId from the first row
-                        return (
-                          <ListItem sx={{ padding: 0 }} key={phaseId}>
-                            <ListItemText
-                              secondaryTypographyProps={{
-                                sx: {
-                                  width: "13ch",
-                                  overflow: "hidden",
-                                  textOverflow: "ellipsis",
-                                },
-                              }}
-                              secondary={rowCheckboxes[key].phaseName} // Use the phase name from rowCheckboxes
-                            />
-                          </ListItem>
-                        );
-                      })}
-                    </FormControl>
-                  </Stack>
-                )}
                 <Stack
                   // maxWidth={"80%"}
                   width={"100%"}
                   //  maxHeight={"30%"}
                   flex={1}
                 >
-                  {!changeOrderView && (
-                    <Typography sx={themeStyle.headingText}>
-                      Line Items
-                      <Typography
-                        sx={{
-                          ...themeStyle.headingText,
-                          color: "#9E9E9E",
-                          marginTop: "0rem",
-                        }}
-                      >
-                        {/* {lineItemCounter} */}
-                      </Typography>
-                    </Typography>
-                  )}
-                  {!changeOrderView && (
-                    <React.Fragment>
-                      <List
-                        sx={{
-                          maxHeight: "300px",
-                          overflowY: "scroll",
-                          padding: 0,
-                          "&::-webkit-scrollbar": {
-                            width: "8px", // Width of the scrollbar
-                          },
-                          "&::-webkit-scrollbar-track": {
-                            backgroundColor: "#f0f0f0", // Track color
-                          },
-                          "&::-webkit-scrollbar-thumb": {
-                            backgroundColor: "#888", // Thumb color
-                            borderRadius: "4px", // Round the corners of the scrollbar
-                          },
-                          "&::-webkit-scrollbar-thumb:hover": {
-                            backgroundColor: "#555", // Thumb color on hover
-                          },
-                        }}
-                      >
-                        {Object.values(rowCheckboxes).flatMap(
-                          (phaseData, index) => {
-                            return phaseData.rows.map((row, index) => {
-                              counter++; // Increment the counter for each row rendere
-
-                              // // Render line items based on the counter and showLineItems state
-                              // if (counter > 6 && showLineItems) {
-                              //   return (
-                              //     <ListItem
-                              //       sx={{ padding: 0 }}
-                              //       key={row.id}
-                              //       onClick={(e) =>
-                              //         handleLineItemClick(e, row)
-                              //       }
-                              //     >
-                              //       <ListItemText
-                              //         secondaryTypographyProps={{
-                              //           sx: {
-                              //             width: "22ch",
-                              //             overflow: "hidden",
-                              //             textOverflow: "ellipsis",
-                              //           },
-                              //         }}
-                              //         sx={{ padding: 0 }}
-                              //         secondary={row.title}
-                              //       />
-                              //     </ListItem>
-                              //   );
-                              // }
-                              // if (counter <= 6 ) {
-                              return (
-                                <ListItem
-                                  sx={{ padding: 0 }}
-                                  key={row.id}
-                                  onClick={(e) => handleLineItemClick(e, row)}
-                                >
-                                  <ListItemText
-                                    secondaryTypographyProps={{
-                                      sx: {
-                                        width: "13ch",
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                      },
-                                    }}
-                                    sx={{ padding: 0 }}
-                                    secondary={row.title}
-                                  />
-                                </ListItem>
-                              );
-                              // }
-                              // return null;
-                            });
-                            // After mapping through rows, render the "View More" button if needed
-                            // .concat(
-                            //   (index === 6 & showLineItems===false) || (showLineItems === true && counter === lineItemCounter) ? (
-                            //     <ListItem
-                            //       sx={{ padding: 0 }}
-                            //       key={`view-more-${phaseData.phase}`}
-                            //     >
-                            //       <Button
-                            //         sx={{
-                            //           padding: 0,
-                            //           textTransform: "lowercase",
-                            //         }}
-                            //         variant="text"
-                            //         color="primary"
-                            //         onClick={() =>
-                            //           setShowLineItems(!showLineItems)
-                            //         }
-                            //       >
-                            //         {showLineItems ? "Hide" : "View more"}
-                            //       </Button>
-                            //     </ListItem>
-                            //   ) : (
-                            //     []
-                            //   )
-                            // )
-                          }
-                        )}
-                      </List>
-                    </React.Fragment>
-                  )}
-
                   {changeOrderView && (
                     <Stack maxHeight={"50%"}>
                       <AddPhaseView
@@ -892,6 +664,60 @@ const RequestWorkOrderModal = ({
             </Stack>
             <Stack flex={1} backgroundColor={"#EFF5FF"} width={"100%"}>
               <Box>
+                <Box style={{ padding: "5px 5px 0px 5px" }}>
+                  <Typography fontFamily={"var(--main-font-family)"}>
+                    <Typography
+                      sx={{
+                        textAlign: "left !important",
+                        ...themeStyle.headingText,
+                        ...themeStyle.rightheadings,
+                      }}
+                    >
+                      Subject:{" "}
+                    </Typography>{" "}
+                    <input
+                      maxlength="50"
+                      required
+                      value={subject}
+                      placeholder="Type your subject..."
+                      type="text"
+                      style={{
+                        ...themeStyle.inputFields,
+                        backgroundColor: "#EFF5FF",
+                      }}
+                      onChange={handleSubjectChange}
+                    ></input>
+                  </Typography>
+                </Box>
+                <Box style={{ padding: "5px 5px 0px 5px" }}>
+                  <Typography
+                    pb={1}
+                    fontFamily={"var(--main-font-family)"}
+                    fontWeight={"200"}
+                  >
+                    <Typography
+                      sx={{
+                        ...themeStyle.headingText,
+                        ...themeStyle.rightheadings,
+                      }}
+                    >
+                      Description:{" "}
+                    </Typography>{" "}
+                    <input
+                      maxlength="50"
+                      value={description}
+                      placeholder="Type your description..."
+                      type="text"
+                      multiple
+                      style={{
+                        ...themeStyle.inputFields,
+                        backgroundColor: "#EFF5FF",
+                      }}
+                      onChange={handleDescriptionChange}
+                    ></input>
+                  </Typography>
+                </Box>
+
                 <Typography
                   sx={{
                     ...themeStyle.headingText,
@@ -925,66 +751,14 @@ const RequestWorkOrderModal = ({
                   >
                     {changeOrder
                       ? checkedRow?.team.map((user) => {
-                        if (checkedRow?.createdby == user?.userId) {
-                          return <>{user?.firstName}</>;
-                        }
-                        return null; // Return null for users that don't match
-                      })
+                          if (checkedRow?.createdby == user?.userId) {
+                            return <>{user?.firstName}</>;
+                          }
+                          return null; // Return null for users that don't match
+                        })
                       : user?.user?.firstName}
                   </Typography>
                 </Box>
-                {/* Divider  */}
-                <hr style={themeStyle.hrLine} />
-
-                <Typography
-                  sx={{
-                    ...themeStyle.headingText,
-                    ...themeStyle.rightheadings,
-                  }}
-                >
-                  Assigned
-                </Typography>
-                <Box sx={themeStyle.avatarBox}>
-                  <Stack direction={"row"} pr={1}>
-                    {assignedCheckboxes.length === 0
-                      ? checkedRow?.team?.map((user) => {
-                        if (checkedRow?.createdby != user?.userId) {
-                          return (
-                            <Avatar
-                              sx={themeStyle.AvatarStyle}
-                              src={user.image}
-                            />
-                          );
-                        }
-                      })
-                      : assignedCheckboxes?.map((id) => {
-                        return (
-                          <>
-                            {data?.team?.map((user, idx) => {
-                              if (user.userId === id) {
-                                return (
-                                  <Avatar
-                                    key={idx}
-                                    sx={themeStyle.AvatarStyle}
-                                    src={user.image}
-                                  />
-                                );
-                              }
-                              return null; // or <></>
-                            })}
-                          </>
-                        );
-                      })}
-                  </Stack>
-                  <AssignTeamMembers
-                    setSuperAdminId={setSuperAdminId}
-                    assignedCheckboxes={assignedCheckboxes}
-                    setAssignedCheckboxes={setAssignedCheckboxes}
-                    data={data}
-                  />
-                </Box>
-                {/* Divider  */}
-                <hr style={themeStyle.hrLine} />
 
                 <Typography
                   sx={{
@@ -1067,10 +841,10 @@ const RequestWorkOrderModal = ({
                         outline: "none",
                       },
                       "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before":
-                      {
-                        borderBottom: "none",
-                        outline: "none",
-                      },
+                        {
+                          borderBottom: "none",
+                          outline: "none",
+                        },
                     },
                   }}
                   startIcon={
@@ -1087,86 +861,24 @@ const RequestWorkOrderModal = ({
                 <hr style={themeStyle.hrLine} />
               </Box>
 
-              <Stack spacing={1} ml={2}>
-                <Typography pt={1} sx={themeStyle.headingText}>
-                  Date Started
-                </Typography>
-                <Typography
-                  sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
-                >
-                  {/* <Box sx={themeStyle.dateBox}> */}
-                  <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DemoContainer components={["DateTimePicker"]}>
-                      <MobileDateTimePicker
-                        value={startDate}
-                        onChange={(newValue) => setStartDate(newValue)}
-                        format="MM/DD/YYYY h:mm a"
-                        viewRenderers={{
-                          hours: renderTimeViewClock,
-                          minutes: renderTimeViewClock,
-                          seconds: renderTimeViewClock,
-                        }}
-                        minDate={moment()}
-                        defaultValue={moment("2024-04-17T15:30")}
-                        slotProps={{
-                          // Targets the `IconButton` component.
-                          openPickerButton: {
-                            color: "#5B5B5B",
-                          },
-                          // Targets the `InputAdornment` component.
-                          inputAdornment: {
-                            position: "start",
-                          },
-                        }}
-                        sx={{
-                          input: {
-                            fontFamily: "var(--main-font-family)",
-                            "&::after": {
-                              borderBottom: "none",
-                              outline: "none",
-                            },
-                            "&:before": {
-                              borderBottom: "none",
-                              outline: "none",
-                            },
-                            "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before":
-                            {
-                              borderBottom: "none",
-                              outline: "none",
-                            },
-                          },
-                        }}
-                      />
-                    </DemoContainer>
-                  </LocalizationProvider>
-                  {/* </Box> */}
-                </Typography>
-              </Stack>
               <Stack spacing={1} pt={2} ml={2}>
                 <Typography pt={1} sx={themeStyle.headingText}>
-                  Date Ended
+                  Created Date
                 </Typography>
                 <Typography
                   sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
                 >
-                  {/* <Box sx={themeStyle.dateBox}> */}
                   <LocalizationProvider dateAdapter={AdapterMoment}>
                     <DemoContainer components={["DateTimePicker"]}>
                       <MobileDateTimePicker
-                        minDate={
-                          startDate
-                            ? moment(startDate).add(1, "day")
-                            : moment().add(1, "day")
-                        }
-                        value={endDate}
-                        onChange={(newValue) => setEndDate(newValue)}
-                        format="MM/DD/YYYY h:mm a"
+                        disabled
+                        value={moment()} // Sets current date and time
+                        format="MMM D, YYYY, h:mm a"
                         viewRenderers={{
                           hours: renderTimeViewClock,
                           minutes: renderTimeViewClock,
                           seconds: renderTimeViewClock,
                         }}
-                        defaultValue={moment(startDate).add(1, "day")}
                         slotProps={{
                           // Targets the `IconButton` component.
                           openPickerButton: {
@@ -1189,24 +901,17 @@ const RequestWorkOrderModal = ({
                               outline: "none",
                             },
                             "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before":
-                            {
-                              borderBottom: "none",
-                              outline: "none",
-                            },
+                              {
+                                borderBottom: "none",
+                                outline: "none",
+                              },
                           },
                         }}
                       />
                     </DemoContainer>
                   </LocalizationProvider>
-                  {/* </Box> */}
                 </Typography>
 
-                {/* <Stack>
-                  <AddPhaseView
-                    setRowCheckboxes={setRowCheckboxes}
-                    rowCheckboxes={rowCheckboxes}
-                  />
-                </Stack> */}
                 <Stack
                   width={"80%"}
                   pt={4}
@@ -1214,82 +919,31 @@ const RequestWorkOrderModal = ({
                 >
                   <Tooltip
                     title={
-                      changeOrderView
-                        ? !changeOrderPermission
-                          ? "You currently don't have permission to submit a change order"
-                          : ""
-                        : !workOrderPermission
-                          ? "You currently don't have permission to submit a work order"
-                          : ""
+                      !changeOrderPermission
+                        ? "You currently don't have permission to submit a change order"
+                        : ""
                     }
                     arrow
                   >
                     <span>
                       <BuilderProButton
+                        disabled={loading || !changeOrderPermission}
                         backgroundColor={"#4C8AB1"}
                         variant={"contained"}
                         fontFamily={"var(--main-font-family)"}
-                        fontSize={"16px"}
+                        fontSize={"0.9rem"}
                         fontWeight={"600"}
                         padding={"6px 32px 6px 32px"}
                         handleOnClick={handleRequest}
                         marginLeft={"0px"}
-                        disabled={loading}
                       >
-                        {changeOrderView
-                          ? "Submit Change Order"
-                          : "Submit Work Order"}
+                        Submit Change Order
                       </BuilderProButton>
                     </span>
                   </Tooltip>
                 </Stack>
               </Stack>
-              {/* <Stack spacing={0.5} p={1} px={3}>
-                <Typography
-                  fontSize={"13px"}
-                  style={{
-                    fontFamily: "var(--main-font-family)",
-                  }}
-                >
-                  Created
-                </Typography>
-                <Typography
-                  fontSize={"14px"}
-                  color={"black"}
-                  fontWeight={"600"}
-                  style={{
-                    fontFamily: "var(--main-font-family)",
-                  }}
-                >
-                  {changeOrder
-                    ? moment(checkedRow?.createdAt).format(
-                        "MMM D,YYYY, HH:MM a"
-                      )
-                    : "Feb 6,2023,10:30 AM"}
-                </Typography>
-                <Typography
-                  fontSize={"13px"}
-                  style={{
-                    fontFamily: "var(--main-font-family)",
-                  }}
-                >
-                  Updated
-                </Typography>
-                <Typography
-                  fontSize={"14px"}
-                  color={"black"}
-                  fontWeight={"600"}
-                  style={{
-                    fontFamily: "var(--main-font-family)",
-                  }}
-                >
-                  {changeOrder
-                    ? moment(checkedRow?.updatedAt).format(
-                        "MMM D,YYYY, HH:MM a"
-                      )
-                    : ""}
-                </Typography>
-              </Stack> */}
+
               <Stack
                 width={"100%"}
                 pt={4}
@@ -1300,13 +954,9 @@ const RequestWorkOrderModal = ({
               >
                 <Tooltip
                   title={
-                    changeOrderView
-                      ? !changeOrderPermission
-                        ? "You currently don't have permission to submit a change order"
-                        : ""
-                      : !workOrderPermission
-                        ? "You currently don't have permission to submit a work order"
-                        : ""
+                    !changeOrderPermission
+                      ? "You currently don't have permission to submit a change order"
+                      : ""
                   }
                   arrow
                 >
@@ -1315,16 +965,14 @@ const RequestWorkOrderModal = ({
                       backgroundColor={"#4C8AB1"}
                       variant={"contained"}
                       fontFamily={"var(--main-font-family)"}
-                      fontSize={"16px"}
+                      fontSize={"0.9rem"}
                       fontWeight={"600"}
                       padding={"6px 32px 6px 32px"}
                       handleOnClick={handleRequest}
                       marginLeft={"0px"}
                       disabled={loading}
                     >
-                      {changeOrder
-                        ? "Submit Change Order"
-                        : "Submit Work Order"}
+                      Submit Change Order
                     </BuilderProButton>
                   </span>
                 </Tooltip>
@@ -1351,7 +999,7 @@ const RequestWorkOrderModal = ({
   );
 };
 
-export default RequestWorkOrderModal;
+export default ChangeOrderRequestModal;
 
 const style = {
   position: "absolute",

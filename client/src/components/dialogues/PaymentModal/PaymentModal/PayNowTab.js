@@ -2,7 +2,7 @@ import { FormControl, FormHelperText, FormLabel, Stack } from "@mui/material";
 import React from "react";
 import Input from "@mui/joy/Input";
 import Images from "./Images";
-import CVC from './assets/images/cvc.png'
+import CVC from "./assets/images/cvc.png";
 
 const PayNowTab = () => {
   return (
@@ -27,7 +27,17 @@ const PayNowTab = () => {
         </FormControl>
         <FormControl>
           <FormLabel style={themeStyle.inputLabels}>CVC</FormLabel>
-          <Input id="cvc" placeholder="CVC" endDecorator={<img src={CVC} alt="CVC icon" style={{ width: '35px', height: '28px' }}></img>} />
+          <Input
+            id="cvc"
+            placeholder="CVC"
+            endDecorator={
+              <img
+                src={CVC}
+                alt="CVC icon"
+                style={{ width: "35px", height: "28px" }}
+              ></img>
+            }
+          />
         </FormControl>
       </Stack>
     </Stack>

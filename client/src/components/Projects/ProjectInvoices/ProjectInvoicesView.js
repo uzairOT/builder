@@ -1,4 +1,4 @@
-import { Box, Paper, Stack } from "@mui/material";
+import { Box, Paper, Stack, Tab, Tabs } from "@mui/material";
 import React, { useState } from "react";
 import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
 import { useOutletContext, useParams } from "react-router-dom";
@@ -37,6 +37,11 @@ const ProjectInvoicesView = () => {
   const handleChangeView = () => {
     setChangeView(!changeView);
   };
+
+  const [selectedTab, setSelectedTab] = useState(0);
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
   console.log(userRole);
   // const [projectName, projectLocation, SuperAdminId] = useOutletContext();
   // const canGenerate = usePermissionCheck("generate-invoices", role, SuperAdminId)
@@ -53,7 +58,7 @@ const ProjectInvoicesView = () => {
     >
       {userRole.userRole === "client" ? (
         <>
-          <Box pt={1} pl={1} pb={0}>
+          {/* <Box pt={1} pl={1} pb={0}>
             <BuilderProButton
               backgroundColor={"#FFAC00"}
               variant={"contained"}
@@ -66,11 +71,66 @@ const ProjectInvoicesView = () => {
             >
               {changeView ? "   View Invoice History" : "Generate Invoice"}
             </BuilderProButton>
-          </Box>{" "}
+          </Box>{" "} */}
+          <Box padding={0}>
+            <Tabs
+              value={selectedTab}
+              onChange={handleTabChange}
+              sx={{
+                fontFamily: "var(--main-font-family)",
+                color: "black",
+                borderBottom: "0.2px solid #FFB300",
+                "& .MuiTabs-indicator": {
+                  backgroundColor: "#FFB300",
+                },
+              }}
+            >
+              <Tab
+                label="Generate Invoice"
+                sx={{
+                  textTransform: "capitalize",
+                  fontFamily: "var(--main-font-family)",
+                  backgroundColor: selectedTab === 0 ? "#FFAC00" : "#F2F2F2",
+                  color:
+                    selectedTab === 0 ? "white !important" : "black !important",
+                  border:
+                    selectedTab === 0
+                      ? "1px solid #FFAC00"
+                      : "1px solid #FFAC00",
+                  borderTopLeftRadius: 15,
+                  borderTopRightRadius: 15,
+                  padding: 0.5,
+                  fontWeight: "600",
+                }}
+              />
+              <Tab
+                label="View Invoice History"
+                sx={{
+                  textTransform: "capitalize",
+                  fontFamily: "var(--main-font-family)",
+                  ml: 0.5,
+                  backgroundColor: selectedTab === 1 ? "#FFAC00" : "#F2F2F2",
+                  color:
+                    selectedTab === 1
+                      ? "white !important"
+                      : "black !importants",
+                  border:
+                    selectedTab === 1
+                      ? "1px solid #FFAC00"
+                      : "1px solid #FFAC00",
+                  borderTopLeftRadius: 15,
+                  borderTopRightRadius: 15,
+                  padding: 0.5,
+                  fontWeight: "600",
+                }}
+              />
+            </Tabs>
+          </Box>
           <Stack pt={1} width={"inherit"}>
             <Stack justifyContent={"flex-start"} height={"95%"}>
-              {changeView ? (
-                <Stack p={1} borderRadius={"14px"} width={"99%"}>
+              {/* {changeView ? ( */}
+              <Stack p={1} borderRadius={"14px"} width={"99%"}>
+                {selectedTab === 0 && (
                   <AddPhaseView
                     // canGenerate={canGenerate}
                     refetchChangeOrder={refetch}
@@ -78,10 +138,12 @@ const ProjectInvoicesView = () => {
                     adminProjectView={true}
                     view={"Generate Invoice"}
                   />
-                </Stack>
-              ) : (
-                <>
-                  <Stack>
+                )}
+              </Stack>
+              {/* ) : ( */}
+              <>
+                <Stack>
+                  {selectedTab === 1 && (
                     <ProjectsInvoices
                       userRole={userRole}
                       workOrder={true}
@@ -90,15 +152,16 @@ const ProjectInvoicesView = () => {
                       data={data}
                       refetch={refetch}
                     />
-                  </Stack>
-                </>
-              )}
+                  )}
+                </Stack>
+              </>
+              {/* )} */}
             </Stack>
           </Stack>{" "}
         </>
       ) : (
         <>
-          <Box pt={1} pl={1} pb={0}>
+          {/* <Box pt={1} pl={1} pb={0}>
             <BuilderProButton
               backgroundColor={"#FFAC00"}
               variant={"contained"}
@@ -111,11 +174,66 @@ const ProjectInvoicesView = () => {
             >
               {changeView ? "View Invoice History" : " Generate Invoice"}
             </BuilderProButton>
-          </Box>{" "}
+          </Box>{" "} */}
+          <Box padding={0}>
+            <Tabs
+              value={selectedTab}
+              onChange={handleTabChange}
+              sx={{
+                fontFamily: "var(--main-font-family)",
+                color: "black",
+                borderBottom: "0.2px solid #FFB300",
+                "& .MuiTabs-indicator": {
+                  backgroundColor: "#FFB300",
+                },
+              }}
+            >
+              <Tab
+                label="Generate Invoice"
+                sx={{
+                  textTransform: "capitalize",
+                  fontFamily: "var(--main-font-family)",
+                  backgroundColor: selectedTab === 0 ? "#FFAC00" : "#F2F2F2",
+                  color:
+                    selectedTab === 0 ? "white !important" : "black !important",
+                  border:
+                    selectedTab === 0
+                      ? "1px solid #FFAC00"
+                      : "1px solid #FFAC00",
+                  borderTopLeftRadius: 15,
+                  borderTopRightRadius: 15,
+                  padding: 0.5,
+                  fontWeight: "600",
+                }}
+              />
+              <Tab
+                label="View Invoice History"
+                sx={{
+                  textTransform: "capitalize",
+                  fontFamily: "var(--main-font-family)",
+                  ml: 0.5,
+                  backgroundColor: selectedTab === 1 ? "#FFAC00" : "#F2F2F2",
+                  color:
+                    selectedTab === 1
+                      ? "white !important"
+                      : "black !importants",
+                  border:
+                    selectedTab === 1
+                      ? "1px solid #FFAC00"
+                      : "1px solid #FFAC00",
+                  borderTopLeftRadius: 15,
+                  borderTopRightRadius: 15,
+                  padding: 0.5,
+                  fontWeight: "600",
+                }}
+              />
+            </Tabs>
+          </Box>
           <Stack pt={1} width={"inherit"}>
             <Stack justifyContent={"flex-start"} height={"95%"}>
-              {changeView ? (
-                <Stack p={1} borderRadius={"14px"} width={"99%"}>
+              {/* {changeView ? ( */}
+              <Stack p={1} borderRadius={"14px"} width={"99%"}>
+                {selectedTab === 0 && (
                   <AddPhaseView
                     // canGenerate={canGenerate}
                     refetchChangeOrder={refetch}
@@ -123,10 +241,12 @@ const ProjectInvoicesView = () => {
                     adminProjectView={true}
                     view={"Generate Invoice"}
                   />
-                </Stack>
-              ) : (
-                <>
-                  <Stack>
+                )}
+              </Stack>
+              {/* ) : ( */}
+              <>
+                <Stack>
+                  {selectedTab === 1 && (
                     <ProjectsInvoices
                       userRole={userRole}
                       workOrder={true}
@@ -135,9 +255,10 @@ const ProjectInvoicesView = () => {
                       data={data}
                       refetch={refetch}
                     />
-                  </Stack>
-                </>
-              )}
+                  )}
+                </Stack>
+              </>
+              {/* )} */}
             </Stack>
           </Stack>{" "}
         </>

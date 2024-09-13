@@ -23,7 +23,7 @@ const features = [
     icon: <ComprehensiveIcn />,
     title: "Comprehensive Solution",
     description:
-      "Manage all aspects of your projects seamlessly with BuilderBUILDER Pro’s complete toolkit.",
+      "Manage all aspects of your projects seamlessly with BuilderBUILDER PRO’s complete toolkit.",
   },
   {
     icon: <ColabIcn />,
@@ -41,7 +41,7 @@ const features = [
     icon: <InnovateIcn />,
     title: "Innovative & Reliability",
     description:
-      "Trust BuilderBUILDER Pro’s cutting-edge technology for reliable project management innovations.",
+      "Trust BuilderBUILDER PRO’s cutting-edge technology for reliable project management innovations.",
   },
 ];
 
@@ -50,7 +50,7 @@ const WhyChooseBuilder = () => {
     <Box mb={5}>
       <Container>
         <Typography align="center" sx={styles.titleFont}>
-          Why Choose BuilderBUILDER Pro?
+          Why Choose BuilderBUILDER PRO?
         </Typography>
         <Typography sx={styles.SubtitleFont} align="center">
           We understand the unique challenges of the construction industry.
@@ -59,7 +59,7 @@ const WhyChooseBuilder = () => {
         <Typography sx={styles.DecsFont}>
           Our platform is designed by construction professionals for
           construction professionals, offering unmatched functionality, ease of
-          use, and mobile accessibility. With BuilderBUILDER Pro, you gain a
+          use, and mobile accessibility. With BuilderBUILDER PRO, you gain a
           partner committed to your success, providing the tools you need to
           manage your projects with confidence and precision.
         </Typography>

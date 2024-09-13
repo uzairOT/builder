@@ -6,8 +6,16 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import builder1 from "../../Signup/Assets/pngs/builderProYellowLogo.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { resetUserAndRoleEmail, setProjectIdOnBackBtn } from "../../../redux/slices/projectFormSlice";
+import {
+  resetUserAndRoleEmail,
+  setProjectIdOnBackBtn,
+} from "../../../redux/slices/projectFormSlice";
 import { toast } from "react-toastify";
+import {
+  setBackButtonProjectId,
+  setIsSaveAs,
+} from "../../../redux/slices/Project/handlingProjectFlowSlice";
+import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
 
 function Header({ step, gap, handlePreviousStep, step2, step3 }) {
   //console.log("Header step: ", step);
@@ -40,6 +48,10 @@ function Header({ step, gap, handlePreviousStep, step2, step3 }) {
       toast.error("Please add atleast one phase");
       return;
     }
+    dispatch(addPhase([]));
+    dispatch(setIsSaveAs(false));
+    dispatch(setBackButtonProjectId(null));
+    // dispatch(resetUserAndRoleEmail());
     dispatch(resetUserAndRoleEmail());
     navigate("/dashboard");
   };
@@ -73,7 +85,7 @@ function Header({ step, gap, handlePreviousStep, step2, step3 }) {
               alt=""
               onClick={handleLogoClcik}
             />
-            { (step2 || step3) &&  (
+            {(step2 || step3) && (
               <Button
                 sx={buttonStyle}
                 startIcon={<ArrowBackIosIcon />}

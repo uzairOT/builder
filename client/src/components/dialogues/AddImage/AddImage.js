@@ -29,7 +29,15 @@ import CloseIcon from "@mui/icons-material/Close";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import CheckIcon from "@mui/icons-material/Check";
 
-function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelete, setShowDelete }) {
+function AddImage({
+  handleOpen,
+  handleClose,
+  heading,
+  type,
+  fetchData,
+  showDelete,
+  setShowDelete,
+}) {
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState(null);
   const [primary, setPrimary] = useState(null);
@@ -41,6 +49,10 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
   const [selectedFile, setSelectedFile] = useState("");
   const { id } = useParams();
   const [notes, setNotes] = useState("");
+  let data = localStorage.getItem("userInfo");
+  let userInfo = JSON.parse(data);
+  const currentUser = userInfo?.user;
+
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
@@ -78,7 +90,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     const fileSizeLimit = 25 * 1024 * 1024;
-    if(!file)return
+    if (!file) return;
     if (file?.size > fileSizeLimit) {
       toast.warning("Please upload file size less than 25mb.");
       return;
@@ -115,7 +127,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    if(!file)return
+    if (!file) return;
     const fileSizeLimit = 25 * 1024 * 1024;
     if (file.size > fileSizeLimit) {
       toast.warning("Please upload file size less than 25mb.");
@@ -155,14 +167,15 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if(showDelete){
-      setShowDelete(false)
+    if (showDelete) {
+      setShowDelete(false);
     }
     if (!selectedFile) {
       toast.warning("Please select a file");
       return false;
     }
     try {
+      debugger;
       setLoading(true);
       const formData = new FormData(event.currentTarget);
       const formJson = Object.fromEntries(formData.entries());
@@ -178,8 +191,10 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
       const requestBody = {
         fileUrl: uploadedFileUrl,
         fileType: fileType,
+        fileName: fileName,
         notes: notes,
         primary: primary,
+        organizationId: currentUser?.organization?.organizationId,
       };
       const response = await axios
         .post(apiUrl, requestBody, {
@@ -194,12 +209,15 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
           handleClickClose();
           fetchData();
         });
-        console.log(response);
+      console.log(response);
       if (response.status !== 201) {
         throw new Error("Failed to save file URL");
       }
     } catch (error) {
-      toast.error(error?.response?.data?.error)
+      // console.log("Error Check",error);
+      toast.error(
+        error?.response?.data?.message || error?.response?.data?.error
+      );
       // console.error("Error:", error.response.data.error);
     }
   };
@@ -234,7 +252,9 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
           justifyContent={"space-between"}
           alignItems={"center"}
         >
-          <DialogTitle sx={themeStyle.typoTitle}><span style={{textTransform:'capitalize'}}>Add {heading}</span></DialogTitle>
+          <DialogTitle sx={themeStyle.typoTitle}>
+            <span style={{ textTransform: "capitalize" }}>Add {heading}</span>
+          </DialogTitle>
           <IconButton onClick={handleClickClose}>
             <CloseIcon />
           </IconButton>
@@ -309,42 +329,42 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
           </Box>
           {heading === "image" && (
             <>
-            <Stack
-              direction={"row"}
-              justifyContent={"start"}
-              alignItems={"center"}
-              gap={4}
-            >
               <Stack
                 direction={"row"}
                 justifyContent={"start"}
                 alignItems={"center"}
+                gap={4}
               >
-                <Typography
-                  textAlign={"left"}
-                  fontFamily={'var(--main-font-family)'}
-                  fontSize={"12px"}
-                  pl={primary ? "" : "13px"}
+                <Stack
+                  direction={"row"}
+                  justifyContent={"start"}
+                  alignItems={"center"}
                 >
-                  {primary ? "Unset" : "Set"} Primary
-                </Typography>
+                  <Typography
+                    textAlign={"left"}
+                    fontFamily={"var(--main-font-family)"}
+                    fontSize={"12px"}
+                    pl={primary ? "" : "13px"}
+                  >
+                    {primary ? "Unset" : "Set"} Primary
+                  </Typography>
 
-                <Switch
-                  value="primary"
-                  selected={primary}
-                  onChange={() => {
-                    setPrimary((prev) => !prev);
-                  }}
-                ></Switch>
+                  <Switch
+                    value="primary"
+                    selected={primary}
+                    onChange={() => {
+                      setPrimary((prev) => !prev);
+                    }}
+                  ></Switch>
+                </Stack>
+                <Stack>
+                  {primary ? (
+                    <CheckIcon sx={{ color: "green" }} />
+                  ) : (
+                    <CloseIcon sx={{ color: "red" }} />
+                  )}
+                </Stack>
               </Stack>
-              <Stack>
-                {primary ? (
-                  <CheckIcon sx={{ color: "green" }} />
-                ) : (
-                  <CloseIcon sx={{ color: "red" }} />
-                )}
-              </Stack>
-            </Stack>
             </>
           )}
         </DialogContent>
@@ -368,7 +388,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
 
 const themeStyle = {
   typoTitle: {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontSize: "1.5rem",
     color: "#4C8AB1",
     marginLeft: "-1rem",
@@ -381,7 +401,7 @@ const themeStyle = {
     border: "1px solid #D8D8D8",
     borderRadius: "0.5rem",
     color: "#202227",
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     backgroundColor: "#FAFAFA",
   },
   generalBox: {
@@ -395,7 +415,7 @@ const themeStyle = {
     padding: "1rem 2rem",
   },
   typoText: {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontSize: "1rem",
     color: "#202227",
   },
@@ -424,7 +444,7 @@ const themeStyle = {
     position: "relative",
   },
   avatarText: {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     fontWeight: 600,
     fontSize: "0.8rem",
     color: "#121212",

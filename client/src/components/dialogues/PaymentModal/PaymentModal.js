@@ -2,8 +2,13 @@ import {
   Autocomplete,
   Button,
   CircularProgress,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
   OutlinedInput,
   Paper,
+  Radio,
+  RadioGroup,
   Stack,
   TextField,
   Typography,
@@ -42,7 +47,12 @@ let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
 const currentUser = userInfo?.user;
 
-const PaymentModal = ({ currentPlan, currentPakage }) => {
+const PaymentModal = ({
+  currentPlan,
+  currentPakage,
+  selectedPlan,
+  setSelectedPlan,
+}) => {
   const [values, setValues] = useState(initialValues);
   const [countries, setCountries] = useState([]);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -52,7 +62,12 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
   const [discounted, setDiscounted] = useState("");
   const [newAmount, setNewAmount] = useState(0);
   const [percentageOff, setPercentageOff] = useState(0);
+  const [paymentType, setPaymentType] = useState("Monthly");
   const [verifyCoupon, { isLoading }] = useVerifyCouponMutation();
+  const [amount, setAmount] = useState();
+  const handlePaymentTypeChange = (event) => {
+    setPaymentType(event.target.value);
+  };
 
   const handlePromoCodeChange = (e) => {
     setPromoCode(e.target.value);
@@ -74,7 +89,6 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
       console.error(error);
     }
   };
-  const amount = currentPlan;
   useEffect(() => {
     console.log("==============1111111111 ", currentUser);
     fetch("http://3.135.107.71/payment/config", {
@@ -99,7 +113,7 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getTokenFromLocalStorage()}`,
       }),
-      body: JSON.stringify({ amount: amount }),
+      body: JSON.stringify({ amount }),
     })
       .then(async (result) => {
         // console.log("-=-=-=-result ", result);
@@ -134,6 +148,18 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (currentPakage === "Business Pro") {
+      setAmount(
+        paymentType === "Yearly" ? 2799 : paymentType === "Monthly" ? 319 : ""
+      );
+    } else if (currentPakage === "Business +") {
+      setAmount(
+        paymentType === "Yearly" ? 400 : paymentType === "Monthly" ? 39.99 : ""
+      );
+    }
+  }, [currentPakage, paymentType]);
 
   useEffect(() => {
     console.log(promoCode);
@@ -302,6 +328,7 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
             direction={"row"}
             alignItems={"center"}
             py={0.1}
+            sx={{ gap: 2 }}
           >
             <Typography fontFamily={"var(--main-font-family)"}>
               <b
@@ -314,8 +341,31 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
               {currentPakage}
             </Typography>
             <Typography>{amount}$</Typography>
+
             {/* <Typography fontSize={'14px'} color={'tomato'}>{discounted ? ` -${((discounted/amount) *100)}% off` : ''}</Typography> */}
+
+            <FormControl>
+              <RadioGroup
+                row
+                aria-labelledby="payment-type-group-label"
+                name="payment-type-group"
+                value={paymentType}
+                onChange={handlePaymentTypeChange}
+              >
+                <FormControlLabel
+                  value="Monthly"
+                  control={<Radio size="small" />}
+                  label="Monthly"
+                />
+                <FormControlLabel
+                  value="Yearly"
+                  control={<Radio size="small" />}
+                  label="Yearly"
+                />
+              </RadioGroup>
+            </FormControl>
           </Stack>
+
           {discounted && (
             <Stack direction={"row"} justifyContent={"space-between"}>
               <Stack direction={"row"} gap={1}>
@@ -332,10 +382,12 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
           {clientSecret && stripePromise && (
             <Elements stripe={stripePromise} options={{ clientSecret }}>
               <CheckoutForm
+                selectedPlan={selectedPlan}
                 address={values.address}
                 currentPlan={discounted ? newAmount : amount}
                 currentPakage={currentPakage}
                 orgName={currentUser.companyName}
+                orgId={currentUser?.organization?.organizationId}
                 userId={currentUser.id}
               />
             </Elements>

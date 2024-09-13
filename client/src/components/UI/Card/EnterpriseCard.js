@@ -1,17 +1,22 @@
 import Stack from "@mui/joy/Stack";
 import {
+  Box,
+  Button,
+  Container,
   Divider,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  Modal,
   Paper,
   Typography,
 } from "@mui/material";
 import React, { cloneElement, useState } from "react";
 import CheckSharpIcon from "@mui/icons-material/CheckSharp";
+import EnterpriseUs from "./EnterpriseUs";
 
-const SubscriptionCard = ({
+const EnterpriseCard = ({
   planType,
   current,
   setCurrentPlan,
@@ -20,61 +25,46 @@ const SubscriptionCard = ({
 }) => {
   const plan = (() => {
     switch (planType) {
-      case "Business +":
-        return {
-          name: "Business +",
-          color: "#22506C",
-          cost: 10,
-          planPackage: ["Enabled", "50", "40", "1", true],
-        };
-      case "Pro":
-        return {
-          name: "Business Pro",
-          color: "#226C6C",
-          cost: 15,
-          planPackage: ["Enabled", "500", "440", "2 to 10", true],
-        };
       default:
         return {
-          name: "Free Plan",
+          name: "Enterprise",
           color: "#3E226C",
-          cost: 5,
-          planPackage: ["10mb", "10", "5", false],
+          yearCost: 5,
+          monthCost: 1,
+          planPackage: ["10+", "10", "5", false],
         };
     }
   })();
-  const generateList = (renderItem) => {
-    return [
-      "Promo code",
-      "Amount of pics",
-      "Amount of files",
-      "Amount of users",
-      // "Yearly plan option",
-      // "Monthly plan option",
-    ].map((value, index) =>
-      cloneElement(renderItem(value, index), { key: value, value: value })
-    );
+
+  const [paymentType, setPaymentType] = useState("");
+  const [modalOpen, setModalOpen] = useState(false); // State to manage modal visibility
+
+  const handlePaymentTypeChange = (event) => {
+    setPaymentType(event.target.value);
   };
+
   const handleClick = () => {
-    console.log("Cost:", plan.cost);
-    setCurrentPlan(plan?.cost);
+    console.log(
+      "Cost:",
+      paymentType === "Monthly" ? plan.monthCost : plan.yearCost
+    );
+    setCurrentPlan(paymentType === "Monthly" ? plan.monthCost : plan.yearCost);
     setCurrentPakage(plan.name);
   };
+
   const handlePrevious = () => {
     console.log("first");
   };
-  // console.log("plan",plan)
+
+  const generateList = (renderItem) => {
+    return [" Users"].map((value, index) =>
+      cloneElement(renderItem(value, index), { key: value, value: value })
+    );
+  };
+
   return (
-    <Paper
-      style={{ width: "100%", borderRadius: "14px", cursor: "pointer" }}
-      onClick={current ? handlePrevious : handleClick}
-    >
-      <Stack
-        backgroundColor={plan.color}
-        // p={2}
-        // px={4}
-        borderRadius={"14px 14px 0 0"}
-      >
+    <Paper style={{ width: "100%", borderRadius: "14px", cursor: "pointer" }}>
+      <Stack backgroundColor={plan.color} borderRadius={"14px 14px 0 0"}>
         <Stack>
           <Typography p={2} sx={themeStyle.title} pl={3}>
             {plan.name}
@@ -85,8 +75,8 @@ const SubscriptionCard = ({
             sx={{ backgroundColor: "white" }}
           />
           <Typography p={1} pl={3} sx={themeStyle.subtitle}>
-            Scale your business, increase productivity, and keep your teams
-            connected
+            A Enterprise Plan for users who want to maximize the app potential
+            contact us and we will get back to you!
           </Typography>
         </Stack>
         <Stack px={2}>
@@ -120,28 +110,65 @@ const SubscriptionCard = ({
                         ? ""
                         : `- ${plan.planPackage[index]}`
                     }`}
-                    // secondary={secondary ? `Secondary text: ${value}` : null}
                   />
                 </ListItem>
               );
             })}
           </List>
+          <Button
+            variant="contained" // Use 'contained' variant for a more solid button
+            sx={{
+              backgroundColor: "white",
+              color: "#3E226C",
+              marginBottom: 2,
+              borderRadius: "8px", // Round corners for a modern look
+              fontSize: "16px", // Adjust font size
+              fontWeight: "bold", // Make text bold
+              padding: "8px 16px", // Increase padding for a more prominent button
+              textTransform: "uppercase", // Transform text to uppercase
+              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Add shadow for depth
+              "&:hover": {
+                backgroundColor: "grey", // Darker shade on hover
+                color: "white",
+                boxShadow: "0px 6px 8px rgba(0, 0, 0, 0.2)", // Darker shadow on hover
+              },
+            }}
+            onClick={() => setModalOpen(true)}
+          >
+            Contact Us
+          </Button>
+
+          <Modal
+            open={modalOpen}
+            onClose={() => setModalOpen(false)}
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description"
+          >
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: { xs: "90%", sm: "80%", md: "60%" },
+                maxWidth: "1000px",
+                bgcolor: "background.paper",
+                borderRadius: "8px",
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <EnterpriseUs />
+            </Box>
+          </Modal>
         </Stack>
       </Stack>
-      <Stack p={1} px={4} direction={"row"} gap={2}>
-        {/* <Typography sx={themeStyle.bodyTitle} color={plan.color}>
-          <span>Monthly Cost:</span>${plan.cost}
-        </Typography>
-        <Typography sx={themeStyle.bodyTitle} color={plan.color}>
-          <span>Yaerly Cost:</span>${plan.cost}
-        </Typography> */}
-        {/* { current ? <Typography sx={themeStyle.bodyText} >Last Paid: 12/12/2024</Typography> : <Typography sx={themeStyle.bodyText} >per person/month, when billed monthly</Typography>} */}
-      </Stack>
+      <Stack p={1} px={4} direction={"row"} gap={2}></Stack>
     </Paper>
   );
 };
 
-export default SubscriptionCard;
+export default EnterpriseCard;
 
 const themeStyle = {
   title: {

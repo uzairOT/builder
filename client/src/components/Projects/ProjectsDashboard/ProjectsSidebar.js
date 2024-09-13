@@ -161,7 +161,7 @@ const ProjectsSidebar = ({ reports }) => {
         <Box
           sx={{
             ...themeStyle.scrollable,
-            height: reports ? "calc(92vh - 278px)" : "calc(92vh - 225px)",
+            height: reports ? "calc(85vh - 278px)" : "calc(85vh - 225px)",
           }}
         >
           <Stack spacing={1} pl={2} pr={2} pt={1}>
@@ -184,7 +184,6 @@ const ProjectsSidebar = ({ reports }) => {
                           selected={selected}
                         />
                       </Link>
-                     
                     </React.Fragment>
                   );
                 } else {
@@ -193,29 +192,24 @@ const ProjectsSidebar = ({ reports }) => {
               })}
             </>
           </Stack>
-           <Stack justifyContent={"center"}>
-                        <Stack
-                          pt={0.5}
-                          pb={0.5}
-                          width={"90%"}
-                          alignSelf={"center"}
-                        >
-                          <BuilderProButton
-                            variant={"contained"}
-                            backgroundColor={"#FFAC00"}
-                            fontFamily={"var(--main-font-family)"}
-                            fontSize={"16px"}
-                            marginLeft={0}
-                            fontWeight={600}
-                            handleOnClick={() => {
-                              navigate("/assignproject");
-                            }}
-                          >
-                            Add New Project
-                          </BuilderProButton>
-                        </Stack>
-                      </Stack>
         </Box>
+        <Stack justifyContent={"center"}>
+          <Stack pt={0.5} pb={0.5} width={"90%"} alignSelf={"center"}>
+            <BuilderProButton
+              variant={"contained"}
+              backgroundColor={"#FFAC00"}
+              fontFamily={"var(--main-font-family)"}
+              fontSize={"0.8rem"}
+              marginLeft={0}
+              fontWeight={600}
+              handleOnClick={() => {
+                navigate("/assignproject");
+              }}
+            >
+              Add New Project
+            </BuilderProButton>
+          </Stack>
+        </Stack>
       </Stack>
     </>
   );

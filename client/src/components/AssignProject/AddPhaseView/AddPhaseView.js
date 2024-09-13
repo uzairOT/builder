@@ -32,7 +32,12 @@ import {
 import RequestWorkOrderModal from "../../dialogues/RequestWorkOrder/RequestWorkOrderModal";
 import { selectAddPhase } from "../../../redux/slices/addPhaseSlice";
 import axios from "axios";
-import { useLocation, useOutletContext, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
@@ -52,6 +57,8 @@ import AddIcon from "@mui/icons-material/Add";
 import { usePermissionCheck } from "../../Settings/PermissionAccess/PermissionCheck";
 import { socket } from "../../../socket";
 import { useProjectPermissionCheck } from "../../Projects/ProjectPermissions/ProjectsPermissionCheck";
+import ChangeOrderRequestModal from "../../dialogues/ChangeOrderRequestModal/ChangeOrderRequestModal";
+import WorkOrder from "../../Projects/ProjectsWorkOrder/WorkOrder";
 //import "react-toastify/dist/ReactToastify.css";
 
 function AddPhaseView({
@@ -70,7 +77,7 @@ function AddPhaseView({
   handleAddOpen: handleAddChangeLineItem,
   handleDeleteOpen: handleDeleteChangeLineItem,
   selectedProjectId,
-  selectedProjectData
+  selectedProjectData,
   // canGenerate
 }) {
   const [cardPhase, setCardPhase] = useState([]);
@@ -99,6 +106,9 @@ function AddPhaseView({
   const changeOrderSelected = useSelector(
     (state) => state.projectInitialProposal.changeOrderLineItems
   );
+  const newChangePath = `/projects/${projectId}/change-order`;
+  const newWorkPath = `/projects/${projectId}/work-order`;
+  const navigate = useNavigate();
 
   // const projects = useSelector(
   //   (state) => state.userProjects.projects
@@ -221,6 +231,9 @@ function AddPhaseView({
       const toastType = data?.success === true ? "success" : "error";
       toast[toastType](data?.message);
       dispatch(toggleWorkOrderDeclineRecall());
+      if (data?.success) {
+        window.location.reload();
+      }
     });
   };
 
@@ -397,6 +410,14 @@ function AddPhaseView({
   // const permissionsState = useSelector((state) => state?.permissions?.permissions);
   // console.log("Permissions Test", permissionsState)
 
+  const handleChangeOpen = () => {
+    navigate(newChangePath);
+  };
+
+  const handleWorkOpen = () => {
+    navigate(newWorkPath);
+  };
+
   const currentRoute = location.pathname;
 
   const permissionsState = useSelector(
@@ -415,6 +436,16 @@ function AddPhaseView({
 
   const GenerateInvoicePermission = useProjectPermissionCheck(
     "generate-invoice",
+    permissionsState
+  );
+
+  const changeOrderPermission = useProjectPermissionCheck(
+    "change-order",
+    permissionsState
+  );
+
+  const workOrderPermission = useProjectPermissionCheck(
+    "work-order",
     permissionsState
   );
 
@@ -451,6 +482,66 @@ function AddPhaseView({
           {view === "Initial Proposal" ? (
             <>
               <>
+                {initialPhases?.[0]?.[0]?.status === "approved" && (
+                  <>
+                    <Stack direction={"row"} sx={buttonBox}>
+                      <Tooltip
+                        title={
+                          changeOrderPermission
+                            ? ""
+                            : "You don't have permission to access this feature"
+                        }
+                        arrow
+                      >
+                        <span>
+                          <BuilderProButton
+                            disabled={!changeOrderPermission}
+                            backgroundColor={"#FFAC00"}
+                            variant={"contained"}
+                            fontFamily={"var(--main-font-family)"}
+                            fontSize={{ lg: "16px", xs: "11px" }}
+                            fontWeight={"600"}
+                            padding={{
+                              sm: "6px 32px 6px 32px",
+                              xs: "5px 20px 5px 20px",
+                            }}
+                            handleOnClick={handleChangeOpen}
+                          >
+                            Change Order
+                          </BuilderProButton>
+                        </span>
+                      </Tooltip>
+
+                      <Tooltip
+                        title={
+                          workOrderPermission
+                            ? ""
+                            : "You don't have permission to access this feature"
+                        }
+                        arrow
+                      >
+                        <span>
+                          <BuilderProButton
+                            disabled={!workOrderPermission}
+                            backgroundColor={"#FFAC00"}
+                            variant={"contained"}
+                            fontFamily={"var(--main-font-family)"}
+                            fontSize={{ lg: "16px", xs: "11px" }}
+                            fontWeight={"600"}
+                            padding={{
+                              sm: "6px 32px 6px 32px",
+                              xs: "5px 20px 5px 20px",
+                            }}
+                            handleOnClick={handleWorkOpen}
+                          >
+                            Work Order
+                          </BuilderProButton>
+                        </span>
+                      </Tooltip>
+                    </Stack>
+                  </>
+                )}
+
                 {initialPhases?.[0]?.[0]?.status === "not approved" ||
                 initialPhases?.[0]?.[0]?.status === "declined" ||
                 initialPhases?.[0]?.[0]?.status === "pending" ? (
@@ -780,43 +871,45 @@ function AddPhaseView({
                           </Button>
                         </span>
                       </Tooltip>
-                      <Tooltip
-                        title={
-                          projectManagementPermission
-                            ? ""
-                            : "You are not authorized!"
-                        }
-                        arrow
-                      >
-                        <span>
-                          <Button
-                            disabled={!projectManagementPermission}
-                            sx={{
-                              ...actionButton,
-                              display:
-                                phases[0]?.length < 1 || isLoading
-                                  ? "none"
-                                  : "flex",
-                            }}
-                            startIcon={
-                              <DeleteOutlinedIcon
-                                sx={{ marginLeft: { md: "0px", xs: "12px" } }}
-                              />
-                            }
-                            onClick={handleOpenModal}
-                          >
-                            <Typography
+                      {view !== "Change Order" && (
+                        <Tooltip
+                          title={
+                            projectManagementPermission
+                              ? ""
+                              : "You are not authorized!"
+                          }
+                          arrow
+                        >
+                          <span>
+                            <Button
+                              disabled={!projectManagementPermission}
                               sx={{
-                                fontFamily: "var(--main-font-family)",
-                                fontSize: { lg: "18px", xs: "11px" },
-                                display: { md: "block", xs: "none" },
+                                ...actionButton,
+                                display:
+                                  phases[0]?.length < 1 || isLoading
+                                    ? "none"
+                                    : "flex",
                               }}
+                              startIcon={
+                                <DeleteOutlinedIcon
+                                  sx={{ marginLeft: { md: "0px", xs: "12px" } }}
+                                />
+                              }
+                              onClick={handleOpenModal}
                             >
-                              Delete
-                            </Typography>
-                          </Button>
-                        </span>
-                      </Tooltip>
+                              <Typography
+                                sx={{
+                                  fontFamily: "var(--main-font-family)",
+                                  fontSize: { lg: "18px", xs: "11px" },
+                                  display: { md: "block", xs: "none" },
+                                }}
+                              >
+                                Delete
+                              </Typography>
+                            </Button>
+                          </span>
+                        </Tooltip>
+                      )}
                     </>
                   )}
                   {/* <Button
@@ -843,7 +936,7 @@ function AddPhaseView({
                   </Button> */}
 
                   {adminProjectView && !mobileView ? (
-                    <RequestWorkOrderModal
+                    <ChangeOrderRequestModal
                       rowCheckboxes={rowCheckboxes}
                       setRowCheckboxes={setRowCheckboxes}
                       phases={phases}
@@ -892,7 +985,7 @@ function AddPhaseView({
             {InitialProposalView ? (
               <Box
                 sx={{
-                  height: "calc(60vh - 140px)",
+                  height: "calc(78vh - 140px)",
                   ...themeStyle.scrollable,
                   width: {
                     xl: "100%",
@@ -964,7 +1057,7 @@ function AddPhaseView({
             ) : changeOrderSelectedView ? (
               <Box
                 sx={{
-                  height: "calc(93vh - 400px)",
+                  height: "calc(95vh - 100px)",
                   ...themeStyle.scrollable,
                   width: {
                     xl: "100%",
@@ -1042,8 +1135,10 @@ function AddPhaseView({
                   height: adminProjectView
                     ? view === "Generate Invoice"
                       ? "calc(93vh - 140px)"
-                      :  ((changeOrderView || InitialProposalAndChange) && !(changeOrderView && InitialProposalAndChange))?
-                      "calc(93vh)": "calc(92vh - 300px)"
+                      : (changeOrderView || InitialProposalAndChange) &&
+                        !(changeOrderView && InitialProposalAndChange)
+                      ? "calc(93vh)"
+                      : "calc(98vh - 300px)"
                     : "",
                   ...themeStyle.scrollable,
                   width: {
@@ -1113,7 +1208,17 @@ function AddPhaseView({
                       textAlign: "center",
                     }}
                   >
-                    No Phases Available
+                    <Typography>
+                      No{" "}
+                      <span>
+                        {changeOrderView
+                          ? " Change"
+                          : pathCheck.includes("assignproject")
+                          ? " "
+                          : " Approved"}
+                      </span>{" "}
+                      Phases Available
+                    </Typography>
                   </div>
                 )}
               </Box>

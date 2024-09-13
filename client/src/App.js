@@ -102,8 +102,12 @@ import PolicyPage from "./components/LandingPageComponents/PrivacyPolicy/index.j
 import TermsPage from "./components/LandingPageComponents/Terms/index.js";
 import PermissionAccess from "./components/Settings/PermissionAccess/Permissions.js";
 import { usePermissionsMutation } from "./redux/apis/Permissions/permissionsApiSlice.js";
-import { setPermissionsState, updatePermission } from "./redux/slices/LoginPermissions/PermissionsSlice.js";
+import {
+  setPermissionsState,
+  updatePermission,
+} from "./redux/slices/LoginPermissions/PermissionsSlice.js";
 import { socket } from "./socket.js";
+import NewSubscription from "./pages/Subscription/NewSubscription.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -128,9 +132,9 @@ function App() {
   const isAuthenticated = useSelector((state) => state.auth.userInfo);
   const userId = isAuthenticated ? isAuthenticated?.user?.id : null;
   let data = localStorage.getItem("userInfo");
-let userInfo = JSON.parse(data);
-const isInLocalStorage = userInfo?.user
-const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
+  let userInfo = JSON.parse(data);
+  const isInLocalStorage = userInfo?.user;
+  const currentUser = isInLocalStorage ? userInfo?.user?.id : null;
   const [getUserRole] = useGetProjectUserRoleMutation();
   const userRole = useSelector(getUserRoleFromRedux);
   // const [loading, setLoading] = useState(true);
@@ -140,7 +144,7 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
   const [events, setEvents] = useState();
   const [getEvents] = useGetUserEventsMutation();
   const allEvent = useSelector(allEvents);
-  const query = useSelector(state => state.dailyForecast.query);
+  const query = useSelector((state) => state.dailyForecast.query);
   const forecast = useSelector(getForecast);
   const dailyForecast = forecast.dailyForecast || [];
   const dispatch = useDispatch();
@@ -152,7 +156,7 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
   //     const response = await GetPermissions().unwrap();
 
   //     if (response && Array.isArray(response)) {
-  //       dispatch(setPermissionsState(response)); 
+  //       dispatch(setPermissionsState(response));
   //     }
 
   //   } catch (error) {
@@ -163,7 +167,6 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
   // React.useEffect(() => {
   //   handleUpdatePermission();
   // }, [GetPermissions]);
-
 
   // useEffect(()=>{
   //   socket.on("organization-permissions-updated", ()=>{
@@ -177,19 +180,16 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
   //   }
   // },[])
 
-
-
-  useEffect(()=>{
-    if(navigator.geolocation){
-      navigator.geolocation.getCurrentPosition((position) =>{
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
         let lat = position.coords.latitude;
         let lon = position.coords.longitude;
 
-        dispatch(setLatLon({lat,lon}));
-      })
+        dispatch(setLatLon({ lat, lon }));
+      });
     }
-
-  })
+  });
 
   const fetchWeather = async () => {
     // setLoading(true);
@@ -197,8 +197,11 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
     dispatch(setForecastLoading(true));
 
     try {
- 
-      const data = await getFormattedFiveDayWeather({lat: '34.0549', lon: '118.2426', units: query.temperatureUnit});
+      const data = await getFormattedFiveDayWeather({
+        lat: "34.0549",
+        lon: "118.2426",
+        units: query.temperatureUnit,
+      });
       dispatch(setDailyForecast(data));
       dispatch(setForecastLoading(false));
     } catch (error) {
@@ -213,24 +216,30 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
       fetchWeather();
     }
   }, [dailyForecast, query.temperatureUnit, query.lat]); // Run this effect whenever dailyForecast changes or on initial mount
+  // useEffect(() => {
+  //   if (
+  //     userInfo?.user?.hasValidSubscription === false &&
+  //     window.location !== "subscription"
+  //   ) {
+  //     window.location = "subscription";
+  //   }
+  // }, [userInfo]);
 
   useEffect(() => {
     // getFormattedEvents();
     if (dailyForecast.length > 1) {
       dispatch(fetchEvents({ userId: userId, dailyForecast: dailyForecast }));
-    } 
+    }
   }, [userId, dailyForecast]); // Run this effect whenever userId or dailyForecast changes
-
-
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-      <Route path="/" element={<MainHome/>}/>
-      <Route path="/terms" element={<TermsPage/>}/>
-      <Route path="/privacypolicy" element={<PolicyPage/>}/>
+        <Route path="/" element={<MainHome />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacypolicy" element={<PolicyPage />} />
 
-        <Route  path="/signup" element={<Signup />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/userinfo" element={<GoogleLogin />} />
         <Route path="/assignproject" element={<AssignProject />} />
@@ -244,8 +253,9 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
           path="/invoicePayment/:invoiceId/:adminId/:totalAmount"
           element={<InvoicePayment />}
         />
+        {/* <Route path="/subscribe" element={<NewSubscription />} /> */}
 
-        {(isAuthenticated && currentUser) ? (
+        {isAuthenticated && currentUser ? (
           <Route path="/" element={<Layout1 />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route
@@ -308,9 +318,9 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
                   <Route path="change-order" element={<ChangeOrder />}></Route>
                   <Route path="invoices" element={<ProjectInvoicesView />} />
                   <Route
-                      path="project-permissions"
-                      element={<ProjectPermissionsView />}
-                    />
+                    path="project-permissions"
+                    element={<ProjectPermissionsView />}
+                  />
                 </>
               )}
             </Route>
@@ -333,13 +343,12 @@ const currentUser = isInLocalStorage ?  userInfo?.user?.id : null;
               <Route path="coupon" element={<Coupon />} />
               {/* -- */}
               <Route path="materline" element={<MasterLineItem />} />
-              <Route path="permissions" element={<PermissionAccess/>}/>
+              <Route path="permissions" element={<PermissionAccess />} />
               <Route path="units" element={<Units />} />
             </Route>
           </Route>
         ) : (
           <Route path="/login" element={<Login />} />
-          
         )}
         <Route
           path="/invitation/:invitationId/:email/:companyName"
