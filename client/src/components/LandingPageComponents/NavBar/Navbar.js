@@ -32,7 +32,16 @@ const Navbar = () => {
   };
 
   const userInfo = localStorage.getItem("userInfo");
-
+  const userParsedInfo = JSON.parse(userInfo);
+  // Define the function separately
+  const handleNavigateToDashboard = () => {
+    console.log("navigate", userInfo);
+    if (userParsedInfo?.user?.hasValidSubscription) {
+      navigate("/dashboard");
+    } else {
+      navigate("/subscription");
+    }
+  };
   const drawer = (
     <Box
       role="presentation"
@@ -89,7 +98,7 @@ const Navbar = () => {
           )}
           {userInfo && (
             <Button
-              onClick={() => navigate("/dashboard")}
+              onClick={handleNavigateToDashboard}
               fullWidth
               sx={{
                 fontFamily: "var(--main-font-family)",
@@ -203,10 +212,7 @@ const Navbar = () => {
             </Button>
           )}
           {userInfo && (
-            <Button
-              sx={styles.navLoginBtn}
-              onClick={() => navigate("/dashboard")}
-            >
+            <Button sx={styles.navLoginBtn} onClick={handleNavigateToDashboard}>
               Dashboard
             </Button>
           )}

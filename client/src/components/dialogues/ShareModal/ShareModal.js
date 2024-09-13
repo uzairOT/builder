@@ -236,10 +236,15 @@ const ShareModal = ({
   };
 
   const handleSend = async () => {
-    if (filterTeam?.length < 1) {
-      toast.warning("No User found");
+    if (!formik.values.email && !selectedUser) {
+      toast.error("Please enter an email or select a team member.");
       return;
     }
+
+    // if (filterTeam.length < 1) {
+    //   toast.warning("No User found");
+    //   return;
+    // }
     setIsLoading(true);
     console.log(lineItemData);
     console.log(currentPayment);

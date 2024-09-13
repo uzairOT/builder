@@ -167,15 +167,13 @@ function Notification({
               src={`${notification.WorkOrderReq.User.image}`}
               alt="User Avatar"
             />
-
             <Typography
               fontFamily={"var(--main-font-family)"}
               fontSize={"12px"}
               fontWeight={700}
             >
-              {notification.WorkOrderReq.User.firstName} &nbsp;
+              {notification.WorkOrderReq.User.firstName} &nbsp; &nbsp; &nbsp;
             </Typography>
-
             <Typography
               fontFamily={"var(--main-font-family)"}
               fontSize={"12px"}

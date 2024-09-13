@@ -372,7 +372,7 @@ const ProjectTeam = ({ SuperAdminId }) => {
               disableUnderline={true}
             />
             <FormControl
-              style={{ marginLeft: "5px", width: "120px" }}
+              style={{ marginLeft: "5px", width: "145px" }}
               size="small"
             >
               {userType ? null : (
@@ -405,6 +405,7 @@ const ProjectTeam = ({ SuperAdminId }) => {
                   "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                     borderWidth: "0px !important",
                   },
+                  fontSize: "0.8rem",
                 }}
               >
                 <MenuItem value={"admin"}>Admin</MenuItem>

@@ -584,59 +584,61 @@ const AddPhaseCard = ({
 
                       {(phaseData?.status === "not approved" ||
                         phaseData?.status === "declined") && (
-                        <Tooltip
-                          title={
-                            projectManagementPermission
-                              ? ""
-                              : "You are not authorized!"
-                          }
-                          arrow
-                        >
-                          <Button
-                            disabled={!projectManagementPermission}
-                            sx={{
-                              ...actionButton,
-                              background: "#4C8AB1",
-                              marginTop: "0.7rem",
-                              marginBottom: "1rem",
-                              marginRight: { xl: "-8rem", xs: "0rem" },
-                              "@media (max-width: 600px)": {
-                                minWidth: 0,
-                                width: "2.5rem",
-                                height: "2.5rem",
-                                borderRadius: "50%",
-                                padding: 0,
-                                fontSize: "0.75rem",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontFamily: "var(--main-font-family)",
-                              },
-                            }}
-                            onClick={handleAddLine}
+                        <>
+                          <Tooltip
+                            title={
+                              projectManagementPermission
+                                ? ""
+                                : "You are not authorized!"
+                            }
+                            arrow
                           >
-                            <AddIcon
+                            <Button
+                              disabled={!projectManagementPermission}
                               sx={{
-                                "@media (min-width: 601px)": {
-                                  display: "none",
-                                },
-                              }}
-                            />
-                            <Typography
-                              sx={{
-                                fontFamily: "var(--main-font-family)",
-                                "@media (min-width: 601px)": {
-                                  display: "inline",
-                                },
+                                ...actionButton,
+                                background: "#4C8AB1",
+                                marginTop: "0.7rem",
+                                marginBottom: "1rem",
+                                marginRight: { xl: "-8rem", xs: "0rem" },
                                 "@media (max-width: 600px)": {
-                                  display: "none",
+                                  minWidth: 0,
+                                  width: "2.5rem",
+                                  height: "2.5rem",
+                                  borderRadius: "50%",
+                                  padding: 0,
+                                  fontSize: "0.75rem",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  fontFamily: "var(--main-font-family)",
                                 },
                               }}
+                              onClick={handleAddLine}
                             >
-                              Add Line Item
-                            </Typography>
-                          </Button>
-                        </Tooltip>
+                              <AddIcon
+                                sx={{
+                                  "@media (min-width: 601px)": {
+                                    display: "none",
+                                  },
+                                }}
+                              />
+                              <Typography
+                                sx={{
+                                  fontFamily: "var(--main-font-family)",
+                                  "@media (min-width: 601px)": {
+                                    display: "inline",
+                                  },
+                                  "@media (max-width: 600px)": {
+                                    display: "none",
+                                  },
+                                }}
+                              >
+                                Add Line Item
+                              </Typography>
+                            </Button>
+                          </Tooltip>
+                        </>
                       )}
                     </>
                   ) : (
@@ -652,7 +654,7 @@ const AddPhaseCard = ({
                     background: "#4C8AB1",
                     marginTop: "0.7rem",
                     marginBottom: "1rem",
-                    marginRight: { xl: "-6rem", xs: "0rem" },
+                    marginRight: { xl: "-5rem", xs: "0rem" },
                     marginLeft: "1rem",
                     "@media (max-width: 600px)": {
                       fontFamily: "var(--main-font-family)",
@@ -714,6 +716,14 @@ const AddPhaseCard = ({
                     pathCheck.includes("/assignproject")) &&
                   !pathCheck.includes("/initial-proposal") ? (
                     <>
+                      {/* {(phaseData?.status === "not approved" ||
+                        phaseData?.status === "declined") && (
+                      <Box>
+                        <IconButton>
+                          <DeleteIcon />
+                        </IconButton>
+                      </Box>
+                        )} */}
                       <Tooltip
                         title={
                           projectManagementPermission

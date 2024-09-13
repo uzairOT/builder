@@ -56,7 +56,7 @@ const ProgressCardHeader = ({ project }) => {
     // Update the dashboard or UI with the unread message count
     // updateUnreadMessageCountUI(data.projectId, data.unreadMessageCount);
     setUnreadMsg(data?.unreadCount);
-    console.log("data.unreadMessageCount data.unreadMessageCount", data);
+    console.log("Message Check", data?.unreadCount);
   };
 
   socket.emit(`${userId}-${id}`);

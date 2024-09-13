@@ -41,7 +41,6 @@ const Section = ({ id, Component, animation, delay }) => {
       animate={controls}
       variants={animation}
       transition={{ delay }}
-      
     >
       <Grid id={id}>
         <Component />
@@ -67,59 +66,32 @@ const MainHome = () => {
         <Grid>
           <Navbar />
         </Grid>
-        <Section
-          id="main-content"
-          Component={MainContent}
-      
-        />
+        <Section id="main-content" Component={MainContent} />
       </Grid>
       <Grid>
-        <Section
-          id="about"
-          Component={AboutUs}
-        />
+        <Section id="about" Component={AboutUs} />
       </Grid>
       <Grid>
-        <Section
-          id="why-choose"
-          Component={WhyChooseBuilder}
-        />
+        <Section id="why-choose" Component={WhyChooseBuilder} />
       </Grid>
       <Grid>
-        <Section
-          id="what-we-do"
-          Component={WhatWeDo}
-        />
+        <Section id="what-we-do" Component={WhatWeDo} />
       </Grid>
       <Grid>
-        <Section
-          id="features"
-          Component={BuilderFeatures}
-        />
+        <Section id="features" Component={BuilderFeatures} />
       </Grid>
       <Grid>
-        <Section
-          id="contact"
-          Component={GetInTouch}
-          
-        />
+        <Section id="contact" Component={GetInTouch} />
       </Grid>
       <Grid>
-        <Section id="faqs" Component={FAQ} 
-        />
+        <Section id="faqs" Component={FAQ} />
       </Grid>
       <Grid>
-        <Section
-          id="testimonials"
-          Component={Testimonials}
-        />
+        <Section id="testimonials" Component={Testimonials} />
       </Grid>
 
       <Grid>
-        <Section
-          id="stats"
-          Component={StatsAndDownload}
-        />
+        <Section id="stats" Component={StatsAndDownload} />
       </Grid>
 
       <Grid sx={{ zIndex: 1 }}>

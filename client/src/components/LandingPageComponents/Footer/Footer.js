@@ -58,6 +58,7 @@ const Footer = () => {
         await sendContactForm({
           email: values.email,
           message: "subscribe",
+          contactUsType: "newsletter",
         }).unwrap();
         toast.success("You have subscribed to our newsletter!");
         resetForm();

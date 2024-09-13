@@ -397,7 +397,7 @@ const ChangeOrderRequestModal = ({
 
   const handleRequest = async () => {
     if (subject === "") {
-      toast.warning("Please complete the Request work order form");
+      toast.warning("Please complete the Request Change order form");
       return;
     }
     // if (!startDate || !endDate) {
@@ -478,7 +478,7 @@ const ChangeOrderRequestModal = ({
               // console.log("work order",response);
               setDone(true);
               dispatch(clearPhases());
-              toast.success("Work Order request sent!");
+              toast.success("Change Order request sent!");
               if (refetchChangeOrder) {
                 await refetchChangeOrder({ projectId, userId: userId });
               }
@@ -609,7 +609,7 @@ const ChangeOrderRequestModal = ({
               fontSize={"22px"}
               fontWeight={"600"}
             >
-              {changeOrderView ? "Submit Change Order" : "Submit Work Order"}
+              {"Submit Change Order"}
             </Typography>
             <IconButton onClick={handleClose}>
               <CloseIcon />
@@ -931,7 +931,7 @@ const ChangeOrderRequestModal = ({
                         backgroundColor={"#4C8AB1"}
                         variant={"contained"}
                         fontFamily={"var(--main-font-family)"}
-                        fontSize={"16px"}
+                        fontSize={"0.9rem"}
                         fontWeight={"600"}
                         padding={"6px 32px 6px 32px"}
                         handleOnClick={handleRequest}
@@ -965,7 +965,7 @@ const ChangeOrderRequestModal = ({
                       backgroundColor={"#4C8AB1"}
                       variant={"contained"}
                       fontFamily={"var(--main-font-family)"}
-                      fontSize={"16px"}
+                      fontSize={"0.9rem"}
                       fontWeight={"600"}
                       padding={"6px 32px 6px 32px"}
                       handleOnClick={handleRequest}

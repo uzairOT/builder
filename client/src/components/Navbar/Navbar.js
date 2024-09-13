@@ -117,6 +117,8 @@ const Navbar = () => {
       dispatch(setNotifications([]));
     }
   };
+  const { userInfo } = useSelector((state) => state.auth);
+  let IsValidSub = userInfo?.user?.hasValidSubscription;
 
   const openNotification = Boolean(anchorEl);
   const noti_id = open ? "simple-popper" : undefined;
@@ -331,357 +333,365 @@ const Navbar = () => {
 
   return (
     <>
-      <AppBar position="static" sx={themeStyle.navbar}>
-        <Toolbar
-          sx={themeStyle.toolbar}
-          style={{ maxHeight: "64px !important" }}
-        >
-          {showHamburger && <NavbarDrawer />}
-          <Link to="/">
-            <BuilderProNavbarLogo
-              aria-label="Builder Pro Logo"
-              style={themeStyle.logo}
-              onClick={() => {
-                setSelectedTab(0);
-              }}
-            />
-          </Link>
-          <Tabs
-            sx={themeStyle.tabs}
-            value={selectedTab}
-            // onClick={handleTabChange}
-            indicatorColor="#FFF"
-            centered
-          >
-            <Tab
-              label="Dashboard"
-              style={themeStyle.getTabColor(0)}
-              onClick={(e) => handleTabChange(e, 0)}
-            />
-            <Tab
-              label="Projects"
-              style={themeStyle.getTabColor(1)}
-              onClick={(e) => handleTabChange(e, 1)}
-            />
-            <Tab
-              label="Reports"
-              style={themeStyle.getTabColor(2)}
-              onClick={(e) => handleTabChange(e, 2)}
-            />
-            <Box sx={themeStyle.search}>
-              <SearchBar selectedTab={selectedTab} />
-            </Box>
-            <Tab
-              label="Subscription"
-              style={themeStyle.getTabColor(4)}
-              onClick={(e) => handleTabChange(e, 4)}
-            />
-            <Tab
-              label="Settings"
-              style={themeStyle.getTabColor(5)}
-              onClick={(e) => handleTabChange(e, 5)}
-            />
-          </Tabs>
-
-          <Box
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            gap={1}
-          >
-            <ClickAwayListener onClickAway={handlePopperClose}>
-              <Box sx={{ position: "relative" }}>
-                <IconButton
-                  aria-label="bell-notifications"
-                  onClick={handleClick}
-                >
-                  <Badge
-                    badgeContent={
-                      (data1?.count ? data1.count : 0) +
-                      notifications?.length +
-                      (teamNotifications?.length
-                        ? teamNotifications?.length
-                        : 0) +
-                      (invoiceNotification ? 1 : 0) +
-                      (approvalData?.data?.length
-                        ? approvalData?.data?.length
-                        : 0)
-                    }
-                    color="success"
-                  >
-                    <NotificationsIcon sx={{ color: "#4C8AB1" }} />
-                  </Badge>
-                </IconButton>
-                <Popper
-                  style={{
-                    zIndex: "100",
-                    backgroundColor: "white",
-                    borderRadius: "14px",
+      {IsValidSub === true && (
+        <>
+          <AppBar position="static" sx={themeStyle.navbar}>
+            <Toolbar
+              sx={themeStyle.toolbar}
+              style={{ maxHeight: "64px !important" }}
+            >
+              {showHamburger && <NavbarDrawer />}
+              <Link to="/">
+                <BuilderProNavbarLogo
+                  aria-label="Builder Pro Logo"
+                  style={themeStyle.logo}
+                  onClick={() => {
+                    setSelectedTab(0);
                   }}
-                  sx={{
-                    boxShadow: "0 3px 6px rgba(0, 0, 0, 0.9)",
-                    width: { sm: "400px", xs: "300px" },
-                    maxHeight: "610px",
-                    overflowY: "auto",
-                    overflowX: "hidden",
-                    scrollbarWidth: "thin", // For Firefox
-                    "&::-webkit-scrollbar": {
-                      width: "5px", // Width of the scrollbar
-                    },
-                    "&::-webkit-scrollbar-thumb": {
-                      backgroundColor: "rgba(0, 0, 0, 0.5)", // Color of the scrollbar thumb
-                      borderRadius: "10px", // Rounded corners for the scrollbar thumb
-                    },
-                    "&::-webkit-scrollbar-track": {
-                      backgroundColor: "transparent", // Background of the scrollbar track
-                    },
-                  }}
-                  id={noti_id}
-                  open={openNotification}
-                  anchorEl={anchorEl}
-                  placement="bottom-end"
-                >
-                  <>
-                    {Array.isArray(approvalData?.data) &&
-                    approvalData.data.length > 0
-                      ? approvalData.data.map((notification, index) => (
-                          <ApprovalNotification
-                            key={index}
-                            approvalRefetchCall={approvalRefetchCall}
-                            userId={userId}
-                            index={index}
-                            setExpanded={setExpanded}
-                            notification={notification}
-                            expanded={expanded}
-                          />
-                        ))
-                      : null}
+                />
+              </Link>
+              <Tabs
+                sx={themeStyle.tabs}
+                value={selectedTab}
+                // onClick={handleTabChange}
+                indicatorColor="#FFF"
+                centered
+              >
+                <Tab
+                  label="Dashboard"
+                  style={themeStyle.getTabColor(0)}
+                  onClick={(e) => handleTabChange(e, 0)}
+                />
+                <Tab
+                  label="Projects"
+                  style={themeStyle.getTabColor(1)}
+                  onClick={(e) => handleTabChange(e, 1)}
+                />
+                <Tab
+                  label="Reports"
+                  style={themeStyle.getTabColor(2)}
+                  onClick={(e) => handleTabChange(e, 2)}
+                />
+                <Box sx={themeStyle.search}>
+                  <SearchBar selectedTab={selectedTab} />
+                </Box>
+                <Tab
+                  label="Subscription"
+                  style={themeStyle.getTabColor(4)}
+                  onClick={(e) => handleTabChange(e, 4)}
+                />
+                <Tab
+                  label="Settings"
+                  style={themeStyle.getTabColor(5)}
+                  onClick={(e) => handleTabChange(e, 5)}
+                />
+              </Tabs>
 
-                    {invoiceNotification && (
-                      <InvoiceNotification
-                        data={invoiceNotification}
-                        setInvoiceNotification={setInvoiceNotification}
-                      />
-                    )}
-
-                    {Array.isArray(teamNotifications) &&
-                    teamNotifications.length > 0
-                      ? teamNotifications
-                          .slice(0, 3)
-                          .map((teamNotification, index) => (
-                            <TeamNotifications
-                              key={index}
-                              teamNotification={teamNotification}
-                              index={index}
-                              userId={userId}
-                              refetch={handleTeamNotificationsRefetch}
-                            />
-                          ))
-                      : null}
-
-                    {Array.isArray(notificationsArr) &&
-                    notificationsArr.length > 0
-                      ? notificationsArr
-                          .slice(0, 3)
-                          .map((notification, index) => (
-                            <Notification
-                              key={notification.workOrder_id}
-                              notification={notification}
-                              refetch={refetch}
-                              userId={userId}
-                              index={index}
-                              setExpanded={setExpanded}
-                              expanded={expanded}
-                            />
-                          ))
-                      : null}
-
-                    {/* Check if all notification arrays are empty and display "No Unread Notifications" */}
-                    {(!Array.isArray(approvalData?.data) ||
-                      approvalData.data.length === 0) &&
-                    (!Array.isArray(teamNotifications) ||
-                      teamNotifications.length === 0) &&
-                    (!Array.isArray(notificationsArr) ||
-                      notificationsArr.length === 0) ? (
-                      <div
-                        style={{
-                          backgroundColor: "#F2F2F2",
-                          padding: 15,
-                          borderRadius: "14px",
-                          textAlign: "center",
-                        }}
+              <Box
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                gap={1}
+              >
+                <ClickAwayListener onClickAway={handlePopperClose}>
+                  <Box sx={{ position: "relative" }}>
+                    <IconButton
+                      aria-label="bell-notifications"
+                      onClick={handleClick}
+                    >
+                      <Badge
+                        badgeContent={
+                          (data1?.count ? data1.count : 0) +
+                          notifications?.length +
+                          (teamNotifications?.length
+                            ? teamNotifications?.length
+                            : 0) +
+                          (invoiceNotification ? 1 : 0) +
+                          (approvalData?.data?.length
+                            ? approvalData?.data?.length
+                            : 0)
+                        }
+                        color="success"
                       >
-                        No new notifications
-                      </div>
-                    ) : null}
-                  </>
-                </Popper>
-              </Box>
-            </ClickAwayListener>
-            <BuilderProButton
-              backgroundColor={"#4C8AB1"}
-              variant={"outlined"}
-              Icon={BuilderProNavbarLogout}
-              handleOnClick={handleLogout}
-            >
-              {responsiveButton ? "Log out" : ""}
-            </BuilderProButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <Popover
-        id={id}
-        open={openShare}
-        anchorEl={open}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "center",
-          horizontal: "right",
-        }}
-        slotProps={{
-          paper: {
-            sx: {
-              marginTop: "30px",
-              borderRadius: "15px",
-            },
-          },
-        }}
-      >
-        <Stack
-          direction={"row"}
-          justifyContent={"space-between"}
-          alignItems={"center"}
-        >
-          <Typography sx={{ p: 2 }} color={"#4C8AB1"}>
-            Invite
-          </Typography>
-          <IconButton onClick={handleClose}>
-            <CloseIcon sx={{ p: 2, color: "#535353", fontSize: "19px" }} />
-          </IconButton>
-        </Stack>
-        <Divider />
-        <Stack direction={"row"} pl={4} pr={4} pt={2} pb={2} spacing={3}>
-          <Stack
-            direction={"row"}
-            border={"2px solid #FFAC00"}
-            borderRadius={"30px"}
-            pl={2}
-          >
-            <Input
-              placeholder="Enter an email to invite"
-              aria-describedby="my-helper-text"
-              sx={{
-                "&::after": {
-                  borderBottom: "none",
-                },
-                "&:before": {
-                  borderBottom: "none",
-                },
-                "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before": {
-                  borderBottom: "none",
-                },
-              }}
-            />
-            <FormControl
-              style={{ marginLeft: "5px", width: "120px" }}
-              size="small"
-            >
-              <InputLabel
-                id="demo-simple-select-label"
-                style={{
-                  fontSize: "12px",
-                  top: "3px",
-                  fontFamily: "var(--main-font-family)",
-                  color: "#202227",
-                }}
-                sx={{
-                  "&.Mui-focused": {
-                    transform: "translate(14px, -1px) scale(0.75)",
-                  },
-                }}
-              >
-                Select Role
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={userType}
-                label="Age"
-                onChange={handleUserTypeChange}
-                placeholder="Select Role"
-                sx={{
-                  "& .notchedOutline": {
-                    border: "none",
-                  },
-                }}
-              >
-                <MenuItem value={"user"}>User</MenuItem>
-                <MenuItem value={"admin"}>Admin</MenuItem>
-                <MenuItem value={"super admin"}>Super admin</MenuItem>
-              </Select>
-            </FormControl>
-          </Stack>
-          <BuilderProButton backgroundColor={"#FFAC00"} variant={"contained"}>
-            <Typography>Invite</Typography>
-          </BuilderProButton>
-        </Stack>
+                        <NotificationsIcon sx={{ color: "#4C8AB1" }} />
+                      </Badge>
+                    </IconButton>
+                    <Popper
+                      style={{
+                        zIndex: "100",
+                        backgroundColor: "white",
+                        borderRadius: "14px",
+                      }}
+                      sx={{
+                        boxShadow: "0 3px 6px rgba(0, 0, 0, 0.9)",
+                        width: { sm: "400px", xs: "300px" },
+                        maxHeight: "610px",
+                        overflowY: "auto",
+                        overflowX: "hidden",
+                        scrollbarWidth: "thin", // For Firefox
+                        "&::-webkit-scrollbar": {
+                          width: "5px", // Width of the scrollbar
+                        },
+                        "&::-webkit-scrollbar-thumb": {
+                          backgroundColor: "rgba(0, 0, 0, 0.5)", // Color of the scrollbar thumb
+                          borderRadius: "10px", // Rounded corners for the scrollbar thumb
+                        },
+                        "&::-webkit-scrollbar-track": {
+                          backgroundColor: "transparent", // Background of the scrollbar track
+                        },
+                      }}
+                      id={noti_id}
+                      open={openNotification}
+                      anchorEl={anchorEl}
+                      placement="bottom-end"
+                    >
+                      <>
+                        {Array.isArray(approvalData?.data) &&
+                        approvalData.data.length > 0
+                          ? approvalData.data.map((notification, index) => (
+                              <ApprovalNotification
+                                key={index}
+                                approvalRefetchCall={approvalRefetchCall}
+                                userId={userId}
+                                index={index}
+                                setExpanded={setExpanded}
+                                notification={notification}
+                                expanded={expanded}
+                              />
+                            ))
+                          : null}
 
-        {users.map((user, index) => (
-          <Stack key={index} p={0.5} pl={2.5} pr={2.5}>
+                        {invoiceNotification && (
+                          <InvoiceNotification
+                            data={invoiceNotification}
+                            setInvoiceNotification={setInvoiceNotification}
+                          />
+                        )}
+
+                        {Array.isArray(teamNotifications) &&
+                        teamNotifications.length > 0
+                          ? teamNotifications
+                              .slice(0, 3)
+                              .map((teamNotification, index) => (
+                                <TeamNotifications
+                                  key={index}
+                                  teamNotification={teamNotification}
+                                  index={index}
+                                  userId={userId}
+                                  refetch={handleTeamNotificationsRefetch}
+                                />
+                              ))
+                          : null}
+
+                        {Array.isArray(notificationsArr) &&
+                        notificationsArr.length > 0
+                          ? notificationsArr
+                              .slice(0, 3)
+                              .map((notification, index) => (
+                                <Notification
+                                  key={notification.workOrder_id}
+                                  notification={notification}
+                                  refetch={refetch}
+                                  userId={userId}
+                                  index={index}
+                                  setExpanded={setExpanded}
+                                  expanded={expanded}
+                                />
+                              ))
+                          : null}
+
+                        {/* Check if all notification arrays are empty and display "No Unread Notifications" */}
+                        {(!Array.isArray(approvalData?.data) ||
+                          approvalData.data.length === 0) &&
+                        (!Array.isArray(teamNotifications) ||
+                          teamNotifications.length === 0) &&
+                        (!Array.isArray(notificationsArr) ||
+                          notificationsArr.length === 0) ? (
+                          <div
+                            style={{
+                              backgroundColor: "#F2F2F2",
+                              padding: 15,
+                              borderRadius: "14px",
+                              textAlign: "center",
+                            }}
+                          >
+                            No new notifications
+                          </div>
+                        ) : null}
+                      </>
+                    </Popper>
+                  </Box>
+                </ClickAwayListener>
+                <BuilderProButton
+                  backgroundColor={"#4C8AB1"}
+                  variant={"outlined"}
+                  Icon={BuilderProNavbarLogout}
+                  handleOnClick={handleLogout}
+                >
+                  {responsiveButton ? "Log out" : ""}
+                </BuilderProButton>
+              </Box>
+            </Toolbar>
+          </AppBar>
+          <Popover
+            id={id}
+            open={openShare}
+            anchorEl={open}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "center",
+              horizontal: "right",
+            }}
+            slotProps={{
+              paper: {
+                sx: {
+                  marginTop: "30px",
+                  borderRadius: "15px",
+                },
+              },
+            }}
+          >
             <Stack
-              id={user.img}
               direction={"row"}
               justifyContent={"space-between"}
               alignItems={"center"}
-              pb={1}
             >
+              <Typography sx={{ p: 2 }} color={"#4C8AB1"}>
+                Invite
+              </Typography>
+              <IconButton onClick={handleClose}>
+                <CloseIcon sx={{ p: 2, color: "#535353", fontSize: "19px" }} />
+              </IconButton>
+            </Stack>
+            <Divider />
+            <Stack direction={"row"} pl={4} pr={4} pt={2} pb={2} spacing={3}>
               <Stack
                 direction={"row"}
-                justifyContent={"space-between"}
-                alignItems={"center"}
+                border={"2px solid #FFAC00"}
+                borderRadius={"30px"}
                 pl={2}
               >
-                <img
-                  src={user.img}
-                  alt="User Profile Pic"
-                  width={"32px"}
-                  height={"32px"}
-                  style={{ borderRadius: "50px" }}
-                ></img>
-                <Typography
-                  color={"#202227"}
-                  fontSize={"14px"}
-                  pl={2}
-                  fontFamily={"var(--main-font-family)"}
+                <Input
+                  placeholder="Enter an email to invite"
+                  aria-describedby="my-helper-text"
+                  sx={{
+                    "&::after": {
+                      borderBottom: "none",
+                    },
+                    "&:before": {
+                      borderBottom: "none",
+                    },
+                    "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before":
+                      {
+                        borderBottom: "none",
+                      },
+                  }}
+                />
+                <FormControl
+                  style={{ marginLeft: "5px", width: "120px" }}
+                  size="small"
                 >
-                  {user.name}
-                </Typography>
+                  <InputLabel
+                    id="demo-simple-select-label"
+                    style={{
+                      fontSize: "12px",
+                      top: "3px",
+                      fontFamily: "var(--main-font-family)",
+                      color: "#202227",
+                    }}
+                    sx={{
+                      "&.Mui-focused": {
+                        transform: "translate(14px, -1px) scale(0.75)",
+                      },
+                    }}
+                  >
+                    Select Role
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={userType}
+                    label="Age"
+                    onChange={handleUserTypeChange}
+                    placeholder="Select Role"
+                    sx={{
+                      "& .notchedOutline": {
+                        border: "none",
+                      },
+                    }}
+                  >
+                    <MenuItem value={"user"}>User</MenuItem>
+                    <MenuItem value={"admin"}>Admin</MenuItem>
+                    <MenuItem value={"super admin"}>Super admin</MenuItem>
+                  </Select>
+                </FormControl>
               </Stack>
-              <Typography
-                fontFamily={"var(--main-font-family)"}
-                fontSize={"14px"}
+              <BuilderProButton
+                backgroundColor={"#FFAC00"}
+                variant={"contained"}
               >
-                {user.userType}
-              </Typography>
+                <Typography>Invite</Typography>
+              </BuilderProButton>
             </Stack>
-            {users.length - 1 === index ? <></> : <Divider />}
-          </Stack>
-        ))}
-        <Divider />
-        <Stack direction={"row"} p={2} pl={3}>
-          <BuilderProButton
-            Icon={LinkIcon}
-            iconProps={{ transform: "rotate(135deg)" }}
-            variant={"text"}
-          >
-            Copy Link
-          </BuilderProButton>
-        </Stack>
-      </Popover>
+
+            {users.map((user, index) => (
+              <Stack key={index} p={0.5} pl={2.5} pr={2.5}>
+                <Stack
+                  id={user.img}
+                  direction={"row"}
+                  justifyContent={"space-between"}
+                  alignItems={"center"}
+                  pb={1}
+                >
+                  <Stack
+                    direction={"row"}
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                    pl={2}
+                  >
+                    <img
+                      src={user.img}
+                      alt="User Profile Pic"
+                      width={"32px"}
+                      height={"32px"}
+                      style={{ borderRadius: "50px" }}
+                    ></img>
+                    <Typography
+                      color={"#202227"}
+                      fontSize={"14px"}
+                      pl={2}
+                      fontFamily={"var(--main-font-family)"}
+                    >
+                      {user.name}
+                    </Typography>
+                  </Stack>
+                  <Typography
+                    fontFamily={"var(--main-font-family)"}
+                    fontSize={"14px"}
+                  >
+                    {user.userType}
+                  </Typography>
+                </Stack>
+                {users.length - 1 === index ? <></> : <Divider />}
+              </Stack>
+            ))}
+            <Divider />
+            <Stack direction={"row"} p={2} pl={3}>
+              <BuilderProButton
+                Icon={LinkIcon}
+                iconProps={{ transform: "rotate(135deg)" }}
+                variant={"text"}
+              >
+                Copy Link
+              </BuilderProButton>
+            </Stack>
+          </Popover>
+        </>
+      )}
     </>
   );
 };

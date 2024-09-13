@@ -57,7 +57,6 @@ const SignupComp = () => {
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
   const [phoneIsValid, setPhoneIsValid] = useState(true);
-
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
 
@@ -112,6 +111,7 @@ const SignupComp = () => {
   const navigate = useNavigate();
   const [register, { isLoading }] = useRegisterMutation();
   const { userInfo } = useSelector((state) => state.auth);
+  let IsValidSub = userInfo?.user?.hasValidSubscription;
 
   const openInNewTab = (url) => {
     window.open(url, "_blank", "noopener,noreferrer");
@@ -153,6 +153,7 @@ const SignupComp = () => {
       //
       try {
         const res = await googleLogin({ email }).unwrap();
+
         if (res.message === "Login Successful!") {
           dispatch(setCredentials({ ...res.data }));
           setTimeout(() => {
@@ -161,7 +162,13 @@ const SignupComp = () => {
         } else if (res.message === "notFound!") {
           toast.warning("User not found");
           navigate("/signup");
-        } else {
+        }
+        // else if (IsValidSub === false) {
+        //   setTimeout(() => {
+        //     window.location.href = "/settings/subscription";
+        //   }, 1000);
+        // }
+        else {
           toast.warning("Something went wrong");
           navigate("/signup");
         }

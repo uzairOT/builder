@@ -203,7 +203,7 @@ const VerifyCode = () => {
                     <TextField
                       sx={{
                         ".MuiOutlinedInput-notchedOutline ": {
-                          borderColor: "white",
+                          borderColor: "grey",
                         },
                       }}
                       key={index}
@@ -216,7 +216,7 @@ const VerifyCode = () => {
                           height: "80px",
                           fontSize: "20px",
                           textAlign: "center",
-                          border: "2px solid #E1E1E1",
+                          border: "2px solid grey",
                           borderRadius: "12px",
                         },
                       }}

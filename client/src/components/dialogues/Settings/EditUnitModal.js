@@ -31,8 +31,8 @@ const EditUnitModal = ({ open, onClose, unit, refetch, userId }) => {
     console.log(unit);
     const put = {
       ...unit,
-      label: values.label,
-      value: values.label,
+      label: values.label ? values.label.toLowerCase() : "",
+      value: values.label ? values.label.toLowerCase() : "",
     };
     const res = await editUnit(put);
     await refetch({ userId: userId });

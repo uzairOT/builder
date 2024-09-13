@@ -17,8 +17,12 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import YellowBtn from "../../UI/button";
-import { useDispatch } from "react-redux";
-import { resetUserAndRoleEmail, setSkipInvite } from "../../../redux/slices/projectFormSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  resetUserAndRoleEmail,
+  setSkipInvite,
+} from "../../../redux/slices/projectFormSlice";
+import { toast } from "react-toastify";
 
 function SkipInvite({
   handleOpen,
@@ -29,9 +33,18 @@ function SkipInvite({
 }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const emailCheck = useSelector(
+    (state) => state?.projectForm?.users[0]?.email
+  );
   const handleSkip = () => {
-     dispatch(setSkipInvite());
-    handleNextStep();
+    if (emailCheck !== "") {
+      toast.info("Please empty the email field to proceed");
+    } else {
+      dispatch(setSkipInvite());
+      handleNextStep();
+    }
+
+    // resetUserAndRoleEmail();
     // handleClose();
   };
 
@@ -106,11 +119,7 @@ function SkipInvite({
                 sx={{ ...YellowBtn, padding: "1rem 1rem" }}
                 onClick={handleSkip}
               >
-                {isLoading ? (
-                  <CircularProgress size={"1.25rem"} />
-                ) : (
-                  "Yes"
-                )}
+                {isLoading ? <CircularProgress size={"1.25rem"} /> : "Yes"}
               </Button>
             </DialogActions>
           </Dialog>
@@ -210,7 +219,7 @@ const crossIcon = {
   top: 8,
 };
 const typoTitle = {
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontWeight: 600,
   fontSize: "1.5rem",
   color: "#202227",
@@ -218,7 +227,7 @@ const typoTitle = {
 };
 
 const typoTect = {
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontWeight: 500,
   fontSize: "1rem",
   color: "#575757",

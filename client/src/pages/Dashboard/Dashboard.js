@@ -43,8 +43,8 @@ const Dashboard = () => {
 
   // console.log("State Check", phaseCheck)
   // useEffect(() => {
-  //   if (phaseCheck!=="" && window.location.pathname !== "/assignproject") {
-  //     window.location = "/assignproject";
+  //   if (local?.user?.hasValidSubscription === false) {
+  //     window.location = "subscription";
   //   }
   // }, []);
 

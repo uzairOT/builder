@@ -7,18 +7,33 @@ import SubscriptionForm from "../../components/Subscription/SubscriptionForm";
 const Subscription = () => {
   const [currentPlan, setCurrentPlan] = useState("");
   const [currentPakage, setCurrentPakage] = useState("");
+  const [selectedPlan, setSelectedPlan] = useState("");
+  let userInfo = localStorage.getItem("userInfo");
+  let IsValidSub = userInfo?.user?.hasValidSubscription;
+  const subHeight = !IsValidSub ? "100vh" : "93vh";
+  console.log("Plan Type", IsValidSub);
   return (
     <>
       <Grid
         container
-        height={"93vh"}
-        mt={'0.0000001px'}
+        height={subHeight}
+        mt={"0.0000001px"}
         backgroundColor={"#eff5ff"}
         spacing={1}
         overflow={"hidden"}
         sx={themeStyle.scrollable}
       >
-        <Grid item xl={2} lg={2} md={4} sm={12} xs={12} height={"93vh"} overflow={'hidden'} mb={4}>
+        <Grid
+          item
+          xl={2}
+          lg={2}
+          md={4}
+          sm={12}
+          xs={12}
+          height={subHeight}
+          overflow={"hidden"}
+          mb={4}
+        >
           <SubscriptionSidebar />
         </Grid>
         <Grid
@@ -30,11 +45,13 @@ const Subscription = () => {
           sm={12}
           xs={12}
           spacing={2}
-          height={"93vh"}
+          height={subHeight}
           style={{ overflow: "hidden", ...themeStyle.scrollable }}
         >
           <Grid item xl={7} lg={7} md={12} sm={12} xs={12}>
             <SubscriptionPlans
+              selectedPlan={selectedPlan}
+              setSelectedPlan={setSelectedPlan}
               setCurrentPlan={setCurrentPlan}
               currentPlan={currentPlan}
               setCurrentPakage={setCurrentPakage}
@@ -42,6 +59,8 @@ const Subscription = () => {
           </Grid>
           <Grid item xl={5} lg={5} md={12} sm={12} xs={12}>
             <SubscriptionForm
+              selectedPlan={selectedPlan}
+              setSelectedPlan={setSelectedPlan}
               currentPlan={currentPlan}
               currentPakage={currentPakage}
             />
