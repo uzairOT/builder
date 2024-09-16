@@ -12,23 +12,30 @@ import {CustomEventDayNotes, CustomEventDayTasks, CustomEventMonthTasks, CustomE
 import TimeGutterHeader from "./TimeGutterHeader";
 import MonthCellWapper from "./MonthCellWapper";
 import CustomToolbarProjects from "./CustomToolbarProjects";
+import { useParams } from "react-router-dom";
 
 
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
-
-const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClient, events }) => {
+const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClient, eventsArr }) => {
+  const {id}= useParams();
   const [monthEventView, setMonthEventView] = useState(true);
   const [eventView, setEventView] = useState('Work Order')
   const eventViewRef = useRef(eventView);
   eventViewRef.current = eventView;
-
   const currentDate = moment();
   const startTime = moment(currentDate).set({ hour: 9, minute: 0, second: 0, millisecond: 0 });
   const endTime = moment(currentDate).set({ hour: 23, minute: 0, second: 0, millisecond: 0 });
-
+    const events = eventsArr?.map((item)=>{
+    return{
+      ...item,
+      start: moment(item.start).toDate(),
+      end: moment(item.end).toDate(),
+    }
+  })
+  console.log("In Task Calender View: ", eventsArr);
 
   // const [events, setEvents] = useState([
   //   {
@@ -130,10 +137,10 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
   //     }
   //   },
   // ]);
-  console.log(events)
-  console.log("Inside Task Calender: ", monthEventView);
+  //console.log(events)
+  //console.log("Inside Task Calender: ", monthEventView);
   const toolbarKey = dailyForecast ? 'withForecast' : 'withoutForecast';
-  console.log("Inside Task Calender dailyForecast: ", dailyForecast, " toolbar key: ", toolbarKey);
+  //console.log("Inside Task Calender dailyForecast: ", dailyForecast, " toolbar key: ", toolbarKey);
 
   const components = useCallback(() => ({
 
@@ -141,21 +148,21 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
     <CustomToolbarProjects bgColor={bgColorClient} toolbar={props} setEventView={setEventView} setMonthEventView={setMonthEventView} monthEventView={monthEventView} key={toolbarKey} /> : 
     <CustomToolbar dailyForecast={dailyForecast} toolbar={props} setEventView={setEventView} setMonthEventView={setMonthEventView} monthEventView={monthEventView} key={toolbarKey} />),
     day: {
-      event: (props) => (eventViewRef.current === 'Work Order' ? <CustomEventDayTasks {...props} /> : <CustomEventDayNotes {...props} />)
+      event: (props) => (eventViewRef.current === 'Work Order' ? <CustomEventDayTasks {...props} projectId={id} isProjectPage={isProjectPage} /> : <CustomEventDayNotes {...props} projectId={id} isProjectPage={isProjectPage}  />)
     },
     week: {
       timeGutterHeader: TimeGutterHeader,
-      event: (props) => (isDrawerOpen ? <CustomEventWeekOnModal {...props} /> : <CustomEventWeek {...props} />)
+      event: (props) => (isDrawerOpen ? <CustomEventWeekOnModal projectId={id} isProjectPage={isProjectPage}  {...props} /> : <CustomEventWeek {...props} projectId={id} isProjectPage={isProjectPage}  />)
       // isDrawerOpen ? (props) => <CustomEventWeekOnModal {...props}/> :(props) => <CustomEventWeek {...props} />
     },
     month: {
       dateCellWrapper: (props) => (eventViewRef.current === 'Work Order' ? <MonthCellWapper props={props} isDrawerOpen={isDrawerOpen} monthView={'tasks'} isProjectPage={isProjectPage} /> : <MonthCellWapper props={props} isDrawerOpen={isDrawerOpen} monthView={'weather/notes'} isProjectPage={isProjectPage} />),
       event: (props) => {
-        console.log("Month Event View current Function rerendered: ", eventViewRef.current);
+        //console.log("Month Event View current Function rerendered: ", eventViewRef.current);
         if (eventViewRef.current === 'Work Order') {
-          return <CustomEventMonthTasks {...props} monthEventView={monthEventView.current} />
+          return <CustomEventMonthTasks {...props} projectId={id} monthEventView={monthEventView.current} isProjectPage={isProjectPage}  />
         } else {
-          return <CustomEventMonthWeatherNotes {...props} isDrawerOpen={isDrawerOpen} />
+          return <CustomEventMonthWeatherNotes {...props} projectId={id} isDrawerOpen={isDrawerOpen} isProjectPage={isProjectPage} />
         }
       }
 
@@ -191,4 +198,4 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
       );
 }
 
-export default TaskCalender
+export default TaskCalender;

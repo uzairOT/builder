@@ -1,4 +1,4 @@
-  import { Box, Divider, Typography, Stack } from "@mui/material";
+  import { Box, Divider, Typography, Stack, CircularProgress } from "@mui/material";
   import React, { useEffect } from "react";
   import ProjectCard from "../../UI/Card/ProjectCard";
   import projects from "./assets/data/projects.json";
@@ -12,14 +12,14 @@ import {addProjects} from '../../../redux/slices/Project/userProjectsSlice'
     const local = localStorage.getItem('userInfo');
     const currentUser = JSON.parse(local);
     const currentUserId = currentUser.user.id
-    console.log('LIST PROJECTS:', currentUserId)
+    //console.log('LIST PROJECTS:', currentUserId)
     const {data, isLoading, error} = useGetUserProjectsQuery({userId: currentUserId});
-    console.log(data);
+    //console.log(data);
     dispatch(addProjects(data?.projects))
  
 
     return (
-      <Box sx={{ padding: 1}} >
+      <Box sx={{ padding: "0 8px"}} >
         <Typography
           sx={{
             color: "#4C8AB1",
@@ -43,20 +43,20 @@ import {addProjects} from '../../../redux/slices/Project/userProjectsSlice'
         >
           All Listed Projects
         </Typography>
-        <Box sx={{...themeStyle.scrollable }}  style={{height:'50vh',}}>
-        <Stack spacing={1} pl={2} pr={2} >
-          <>
+        <Box sx={{...themeStyle.scrollable,height:{xl:'47vh',lg:'59vh',md:"57vh",sm:"75vh",xs:"48vh"} }} pb={2}>
+       {error ? <>{error?.data?.message}</> : <Stack spacing={1} pl={'14px'} pr={'14px'} >
+          {isLoading ? <Stack justifyContent={'center'} alignItems={'center'}><CircularProgress/></Stack>: <>
           {data?.projects?.map((projectProfileCard) => {
             return (
-              <Link key={projectProfileCard.id} to={`projects/${projectProfileCard.id}`} style={{textDecoration:'none'}}>
+              <Link key={projectProfileCard.id} to={`projects/${projectProfileCard.id}`} style={{textDecoration:'none', }}>
               <ProjectCard
               projectProfileCard={projectProfileCard}
               />
               </Link>
               );
             })}
-            </>
-        </Stack>
+            </>}
+        </Stack>}
             </Box>
       </Box>
     );

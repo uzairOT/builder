@@ -1,13 +1,28 @@
-import { Stack, Typography, Popover, IconButton, Divider,Input, FormControl, Select, InputLabel, MenuItem } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import data1 from './assests/data/data.json'
-import BuilderProButton from '../../UI/Button/BuilderProButton';
+import {
+  Stack,
+  Typography,
+  Popover,
+  IconButton,
+  Divider,
+  Input,
+  FormControl,
+  Select,
+  InputLabel,
+  MenuItem,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import data1 from "./assests/data/data.json";
+import BuilderProButton from "../../UI/Button/BuilderProButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { ReactComponent as BuilderProNavbarShare } from "./assests/svgs/builder-pro-navbar-share.svg";
-import users from './assests/data/users.json'
+import users from "./assests/data/users.json";
 import LinkIcon from "@mui/icons-material/Link";
 import { useGetProjectTeamQuery } from '../../../redux/apis/Project/projectApiSlice';
 import {useLocation} from 'react-router-dom'
+import { useCheckUserOnInvitationMutation } from '../../../redux/apis/usersApiSlice';
+import { useAddAssignRoleMutation } from '../../../redux/apis/Admin/assignRoleApiSlice';
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 
 
@@ -18,8 +33,12 @@ import {useLocation} from 'react-router-dom'
         const [email, setEmail] = useState('');
         const location = useLocation();
         const pathSegments = location.pathname.split('/')
+        const local = localStorage.getItem("userInfo");
         const projectId = pathSegments[2];
-        console.log(pathSegments)
+        const currentUser = JSON.parse(local);
+        const currentUserId = currentUser.user.id;
+        const [assignRolePost] = useAddAssignRoleMutation();
+        //console.log(pathSegments)
         const {data, isLoading} = useGetProjectTeamQuery(projectId)
         const team = data?.team
         const id = openShare ? "simple-popover" : undefined;
@@ -29,7 +48,7 @@ import {useLocation} from 'react-router-dom'
           return acc;
         }, {});
         
-        console.log("team: ", team, "groupedData :", groupedData)
+        //console.log("team: ", team, "groupedData :", groupedData)
         const handleShare = (e) => {
             setOpen(e.currentTarget);
           };
@@ -42,55 +61,132 @@ import {useLocation} from 'react-router-dom'
          const  handleEmailChange = (e) =>{
             setEmail(e.target.value)
           }
-  return (
-    <Stack pl={{xl:5,lg:5,md:0}} >
-        <Typography sx={themeStyle.title}>Project Team</Typography>
-        <Stack direction={'row'} justifyContent={{xl:'space-between',lg:'space-between',md:'center'}}>
-            <Stack  width={'100%'} >
-            {isLoading ? <>Loading...</>  : Object.keys(groupedData).map((role)=>{
-                let acc =0;
-                return(
-                <Stack direction={'row'} justifyContent={{xl:'space-between', lg:'space-between', md:'flex-start', sm:'flex-start', xs:'flex-start'}} >
-                <Stack direction={'row'}  width={{xl:'100%', lg:'100%', md:'50%', sm:'50%', xs:'70%'}} justifyContent={'space-between'}>
-                <Typography sx={themeStyle.subTitle}>{role}</Typography>
-                <Stack direction={'row'} width={'190px'}>
-
-                {groupedData[role].map((person, index)=>{
-                    if (index > 1){
-                        acc++;
-                        return(
-                            <Typography sx={{...themeStyle.subTitle}} style={{color: '#636363'}} position={'relative'} top={'-2px'} pl={0.5}>+{acc}</Typography>
-                      )
-                    }else{
-                        return(
-                      <Typography sx={themeStyle.subTitle}>{person.firstName} {person.lastName}{groupedData[role].length > 1 && index === 0 ? ',' :''}</Typography>
-                    )}
-                })}
-                </Stack>
-                </Stack>
-                <Stack direction={'row'} width={'100px'}>
-                {groupedData[role].map((person, index)=>{
-                    return( <></>
-                        // <img key={index} src={person.profilePic} alt='profile' width={'35px'} height={'35px'} style={{borderRadius:'50px', marginLeft: '-10px'}} ></img>
-                        )
-                    })}
-                </Stack>
-                </Stack>
-                )})
+          const handleInviteUser = async () => {
+            const userRole = userType;
+            const userId = currentUserId;
+            const companyName = currentUser.user.companyName;
+            const userInviteBody = { project: projectId, userRole, email, userId, companyName }
+            try {
+              if(userRole === ""){
+                toast.warning('Please Select Role.')
+                return false;
+              }
+              if(email === ""){
+                toast.warning('Please Enter An Email.')
+                return false;
+              }
+              const res = await assignRolePost(userInviteBody).unwrap();
+              console.log(res);
+              toast.info(res?.data?.message || res?.message);
+            } catch (error) {
+              toast.error(error?.data?.message)
             }
-            </Stack>
-            <Stack mt={'-16px'}>
-            <BuilderProButton
-              backgroundColor={"#FFAC00"}
-              variant={"contained"}
-              Icon={BuilderProNavbarShare}
-              handleOnClick={handleShare}
-              >
-              {true ? "Share" : ""}
-            </BuilderProButton>
+          }
+  return (
+    <Stack pl={{ xl: 5, lg: 5, md: 1 }}>
+      <Stack direction={"row"} sx={{ justifyContent: "space-between" }}>
+        <Typography sx={themeStyle.title}>Project Team</Typography>
+        <BuilderProButton
+          backgroundColor={"#FFAC00"}
+          variant={"contained"}
+          Icon={BuilderProNavbarShare}
+          handleOnClick={handleShare}
+        >
+          {true ? "Share" : ""}
+        </BuilderProButton>
+      </Stack>
+      <Stack
+        direction={"row"}
+        justifyContent={{
+          xl: "space-between",
+          lg: "space-between",
+          md: "center",
+        }}
+        mt={"14px"}
+      >
+        <Stack width={"100%"}>
+          {isLoading ? (
+            <>Loading...</>
+          ) : (
+            Object?.keys(groupedData)?.map((role) => {
+              let acc = 0;
+              return (
+                <Stack
+                  direction={"row"}
+                  justifyContent={{
+                    xl: "space-between",
+                    lg: "space-between",
+                    md: "flex-start",
+                    sm: "flex-start",
+                    xs: "flex-start",
+                  }}
+                >
+                  <Stack
+                    direction={"row"}
+                    width={{
+                      xl: "100%",
+                      lg: "100%",
+                      md: "50%",
+                      sm: "50%",
+                      xs: "70%",
+                    }}
+                    justifyContent={"space-between"}
+                  >
+                    <Typography sx={themeStyle.subTitle}>{role}</Typography>
+                    <Stack direction={"row"}>
+                      {groupedData[role].map((person, index) => {
+                        if (index > 1) {
+                          acc++;
+                          return (
+                            <Typography
+                              sx={{ ...themeStyle.subTitle }}
+                              style={{ color: "#636363" }}
+                              position={"relative"}
+                              top={"-2px"}
+                              pl={0.5}
+                            >
+                              +{acc}
+                            </Typography>
+                          );
+                        } else {
+                          return (
+                            <Typography sx={themeStyle.subTitle}>
+                              {person.firstName} {person.lastName}
+                              {groupedData[role].length > 1 && index === 0
+                                ? ","
+                                : ""}
+                            </Typography>
+                          );
+                        }
+                      })}
+                    </Stack>
+                    <Stack direction={"row"} width={"100px"}>
+                      {groupedData[role].map((person, index) => {
+                        return (
+                          <>
+                            <img
+                              key={index}
+                              src={person.image}
+                              alt="profile"
+                              width={"35px"}
+                              height={"35px"}
+                              style={{
+                                borderRadius: "50px",
+                                marginLeft: "-10px",
+                              }}
+                            ></img>
+                          </>
+                        );
+                      })}
+                    </Stack>
+                  </Stack>
                 </Stack>
+              );
+            })
+          )}
         </Stack>
-        <Popover
+      </Stack>
+      <Popover
         id={id}
         open={openShare}
         anchorEl={open}
@@ -133,8 +229,10 @@ import {useLocation} from 'react-router-dom'
             pl={2}
           >
             <Input
-            value={email}
-            onChange={(e)=>{handleEmailChange(e)}}
+              value={email}
+              onChange={(e) => {
+                handleEmailChange(e);
+              }}
               placeholder="Enter an Email to invite"
               aria-describedby="my-helper-text"
               sx={{
@@ -182,21 +280,21 @@ import {useLocation} from 'react-router-dom'
                   },
                 }}
               >
-                <MenuItem value={"user"}>User</MenuItem>
                 <MenuItem value={"admin"}>Admin</MenuItem>
-                <MenuItem value={"super admin"}>Super admin</MenuItem>
+                <MenuItem value={"client"}>Client</MenuItem>
+                <MenuItem value={"projectManager"}>Project Manager</MenuItem>
               </Select>
             </FormControl>
           </Stack>
-          <BuilderProButton backgroundColor={"#FFAC00"} variant={"contained"}>
+          <BuilderProButton backgroundColor={"#FFAC00"} variant={"contained"} handleOnClick={handleInviteUser}>
             <Typography>Invite</Typography>
           </BuilderProButton>
         </Stack>
 
-        {users.map((user, index) => (
+        {team?.map((user, index) => (
           <Stack key={index} p={0.5} pl={2.5} pr={2.5}>
             <Stack
-              id={user.img}
+              id={user.userId}
               direction={"row"}
               justifyContent={"space-between"}
               alignItems={"center"}
@@ -209,7 +307,7 @@ import {useLocation} from 'react-router-dom'
                 pl={2}
               >
                 <img
-                  src={user.img}
+                  src={user.image}
                   alt="User Profile Pic"
                   width={"32px"}
                   height={"32px"}
@@ -221,47 +319,46 @@ import {useLocation} from 'react-router-dom'
                   pl={2}
                   fontFamily={"GT-Walsheim-Regular-Trial, sans-serif"}
                 >
-                  {user.name}
+                  {user.firstName}
                 </Typography>
               </Stack>
               <Typography
                 fontFamily={"GT-Walsheim-Regular-Trial, sans-serif"}
                 fontSize={"14px"}
               >
-                {user.userType}
+                {user.role}
               </Typography>
             </Stack>
-            {users.length - 1 === index ? <></> : <Divider />}
+            {team?.length - 1 === index ? <></> : <Divider />}
           </Stack>
         ))}
         <Divider />
         <Stack direction={"row"} p={2} pl={3}>
-          <BuilderProButton
+          {/* <BuilderProButton
             Icon={LinkIcon}
             iconProps={{ transform: "rotate(135deg)" }}
             variant={"text"}
           >
             Copy Link
-          </BuilderProButton>
+          </BuilderProButton> */}
         </Stack>
       </Popover>
     </Stack>
-  )
-}
+  );
+};
 
 export default ProjectTeam;
 
-const themeStyle ={
-    title: {
-        fontSize: '16px',
-        color: '#4C8AB1',
-        fontFamily:'GT-Walsheim-Regular-Trial, sans-serif',
-        
-    },
-    subTitle: {
-        fontSize: '13px',
-        color: '#202227',
-        fontFamily:'GT-Walsheim-Regular-Trial, sans-serif',
-        textAlign: 'left'
-    }
-}
+const themeStyle = {
+  title: {
+    fontSize: "16px",
+    color: "#4C8AB1",
+    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+  },
+  subTitle: {
+    fontSize: "13px",
+    color: "#202227",
+    fontFamily: "GT-Walsheim-Regular-Trial, sans-serif",
+    textAlign: "left",
+  },
+};

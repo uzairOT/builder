@@ -23,8 +23,8 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColor }) => {
   };
   //   const handleMonthEventTasks =() => {
   //     setMonthEventView(prevState => {
-  //       console.log('Tasks Clicked');
-  //       console.log("Inside handleMonthEventTasks: ", prevState);
+  //       //console.log('Tasks Clicked');
+  //       //console.log("Inside handleMonthEventTasks: ", prevState);
   //       setActiveMonthHeader('tasks');
   //       return true;  // or any new state based on prevState
   //     });
@@ -32,8 +32,8 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColor }) => {
 
   // const handleMonthEventWeatherNotes = () => {
   //   setMonthEventView(prevState => {
-  //     console.log('Weather/Notes Clicked');
-  //     console.log("Inside handleMonthEventWeatherNotes: ",prevState);
+  //     //console.log('Weather/Notes Clicked');
+  //     //console.log("Inside handleMonthEventWeatherNotes: ",prevState);
   //     setActiveMonthHeader('weather/notes');
   //     return false;
   //   });
@@ -114,7 +114,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColor }) => {
           {" "}
           <Stack direction={"row"}>
             <Typography sx={themeStyle.toolbarTitle} pl={2}>
-              Daily Log
+              Work Order
             </Typography>
             {toolbar.view === "month" && (
               <Stack

@@ -4,70 +4,125 @@ import {
   Button,
   Divider,
   FormControl,
-  FormControlLabel,
   Modal,
-  Radio,
-  RadioGroup,
   Stack,
   Typography,
   Select,
   MenuItem,
-  TextField,
+  Checkbox,
+  ListItem,
+  ListItemText,
+  List,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-import AddIcon from "@mui/icons-material/Add";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Avatarimg from "../Assets/pngs/woman.png";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import moment from "moment";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectAddPhase } from "../../../redux/slices/addPhaseSlice";
 import GenerateInvoiceDone from "../GenerateInvoice/GenerateInvoiceDone";
 import { useRequestWorkOrderMutation } from "../../../redux/apis/Project/workOrderApiSlice";
 import AssignTeamMembers from "./AssignTeamMembers";
-import {toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useGetUserEventsMutation } from "../../../redux/apis/usersApiSlice";
+import { getForecast } from "../../../redux/slices/DailyForecast/dailyForecastSlice";
+import {
+  addEvents,
+  setIsLoading,
+} from "../../../redux/slices/Events/eventsSlice";
+import { useGetTeamMembersQuery } from "../../../redux/apis/Project/projectApiSlice";
+import { useLocation } from "react-router-dom";
+import useSocket from "../../../utils/useSocket";
 
-
-const RequestWorkOrderModal = ({ rowCheckboxes }) => {
+const RequestWorkOrderModal = ({ rowCheckboxes, checkedRow, changeOrder }) => {
+  const location = useLocation();
+  const projectId = location.pathname.split("/")[2];
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
+  const [showLineItems, setShowLineItems] = useState(false);
   const { addPhase } = useSelector(selectAddPhase);
   const [priority, setPriority] = useState("urgent");
   const [status, setStatus] = useState("pending");
-  const [subject, setSubject] = useState("");
-  const [startDate, setStartDate] = useState(moment())
-  const [endDate, setEndDate] = useState(moment())
-  const [description, setDescription] = useState("");
-  const [phase, setPhase] = useState('');
-  const [lineItems, setLineItems] = useState('');
-  const [assignedCheckboxes,setAssignedCheckboxes] = useState([])
-  const userInfo = localStorage.getItem('userInfo');
+  const [subject, setSubject] = useState(
+    changeOrder ? checkedRow?.subject : ""
+  );
+  const [startDate, setStartDate] = useState(moment());
+  const [endDate, setEndDate] = useState(moment());
+  const [description, setDescription] = useState(
+    changeOrder ? checkedRow?.description : ""
+  );
+  const { data } = useGetTeamMembersQuery(projectId);
+  const [assignedCheckboxes, setAssignedCheckboxes] = useState([]);
+  const userInfo = localStorage.getItem("userInfo");
   const user = JSON.parse(userInfo);
   const userId = user?.user.id;
-  const [notes,setNotes] = useState()
+  const [notes, setNotes] = useState();
+  const forecast = useSelector(getForecast);
+  const dailyForecast = forecast.dailyForecast || [];
+  const [getEvents] = useGetUserEventsMutation();
+  const dispatch = useDispatch();
+  const { emit } = useSocket();
+  const [selectedItems, setSelectedItems] = useState([]);
+  const phaseId = rowCheckboxes[0]?.rows[0]?.phase_id;
+  let counter = 0;
+  let lineItemIds = [];
   let lineItemCounter = 0;
-  Object.values(rowCheckboxes).forEach(phaseData => {
-    lineItemCounter += phaseData.rows.length;
-  })
+  let totalWorkOrder = 0;
+  console.log("START DATE", startDate);
+  console.log("START DATE", endDate);
 
-  console.log(userId)
+  if (changeOrder) {
+    checkedRow?.phaseItems?.forEach((phase) => {
+      lineItemCounter += phase.lineItemId.length;
+      // console.log('lineItemCounter: ',lineItemCounter);
+      // console.log('phase.lineItemId.length: ',phase.lineItemId.length);
+    });
+  } else {
+    Object?.keys(rowCheckboxes)?.forEach((phaseData) => {
+      lineItemCounter += rowCheckboxes[phaseData].rows.length;
+      const lineItemGroup = {
+        phaseId: phaseData,
+        lineItemId: rowCheckboxes[phaseData].rows.map((row) => row.id),
+      };
+      lineItemIds.push(lineItemGroup);
+      rowCheckboxes[phaseData].rows.forEach((lineItem) => {
+        totalWorkOrder += parseInt(lineItem.total);
+      });
+    });
+  }
+
+  // });
+  const ENDPOINT = "http://3.135.107.71/";
+  //test new workd order
+
+  // Object?.values(rowCheckboxes)?.forEach((phaseData) => {
+  //   const lineItemGroup = {
+  //     phaseId: phaseData.id,
+  //     lineItemId: phaseData.rows.map((row) => row.id),
+  //   };
+  //   lineItemIds.push(lineItemGroup);
+  // });
+  //tes end..
+  //console.log(assignedCheckboxes);
   const [requestWorkOrderPut] = useRequestWorkOrderMutation();
 
-  const isButtonDisabled = Object.keys(rowCheckboxes).length === 0;
+  const isButtonDisabled = changeOrder
+    ? checkedRow === null
+    : Object?.keys(rowCheckboxes)?.length === 0;
   const handleNotesChange = (e) => {
-    setNotes(e.target.value)
-  }
+    setNotes(e.target.value);
+  };
   const handleClose = () => {
     setOpen(false);
+    setShowLineItems(false);
   };
   const handleOpen = () => {
     setOpen(true);
@@ -75,46 +130,154 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
   const handlePriorityChange = (event) => {
     setPriority(event.target.value);
   };
-  const handleStatusChange = (event) => {
-    setStatus(event.target.value);
-  };
+  // const handleStatusChange = (event) => {
+  //   setStatus(event.target.value);
+  // };
   const handleSubjectChange = (event) => {
     setSubject(event.target.value);
   };
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
   };
-  const handlePhaseRadioChange = (event) =>{
-    setPhase(event.target.value);
-  }
-  const handleLineItemRadioChange = (event) =>{
-    setLineItems(event.target.value);
-  }
+  // const handlePhaseRadioChange = (event) => {
+  //   setPhase(event.target.value);
+  // };
+  // const handleLineItemRadioChange = (event) => {
+  //   setLineItems(event.target.value);
+  // };
 
-  const handleRequest = () =>{
-    
-    const formattedStartDate = startDate.format('MMM D, YYYY, h:mm a')
-    const formattedEndDate = endDate.format('MMM D, YYYY, h:mm a')
+  const handlePhaseChange = (phaseId) => {
+    const existingPhase = selectedItems.find(
+      (item) => item.phaseId === phaseId
+    );
+
+    if (existingPhase) {
+      const updatedItems = selectedItems.filter(
+        (item) => item.phaseId !== phaseId
+      );
+      setSelectedItems(updatedItems);
+    } else {
+      const phaseItems = checkedRow.phaseItems.find(
+        (item) => item.phaseId === phaseId
+      );
+      const updatedItems = [
+        ...selectedItems,
+        { phaseId, lineItemId: phaseItems.lineItemId },
+      ];
+      setSelectedItems(updatedItems);
+    }
+  };
+
+  const handleLineItemChange = (phaseId, lineItemId) => {
+    const existingPhaseIndex = selectedItems.findIndex(
+      (item) => item.phaseId === phaseId
+    );
+
+    if (existingPhaseIndex !== -1) {
+      const existingLineItemIndex =
+        selectedItems[existingPhaseIndex].lineItemId.indexOf(lineItemId);
+
+      if (existingLineItemIndex !== -1) {
+        // Remove the line item
+        const updatedItems = [...selectedItems];
+        updatedItems[existingPhaseIndex] = {
+          ...updatedItems[existingPhaseIndex],
+          lineItemId: updatedItems[existingPhaseIndex].lineItemId.filter(
+            (id) => id !== lineItemId
+          ),
+        };
+
+        // If no line items are selected for the phase, remove the phase
+        if (updatedItems[existingPhaseIndex].lineItemId.length === 0) {
+          updatedItems.splice(existingPhaseIndex, 1);
+        }
+
+        setSelectedItems(updatedItems);
+      } else {
+        // Add the line item
+        const updatedItems = [...selectedItems];
+        updatedItems[existingPhaseIndex] = {
+          ...updatedItems[existingPhaseIndex],
+          lineItemId: [
+            ...updatedItems[existingPhaseIndex].lineItemId,
+            lineItemId,
+          ],
+        };
+
+        setSelectedItems(updatedItems);
+      }
+    } else {
+      // Add new phase and line item
+      const updatedItems = [
+        ...selectedItems,
+        {
+          phaseId,
+          lineItemId: [lineItemId],
+        },
+      ];
+
+      setSelectedItems(updatedItems);
+    }
+  };
+
+  useEffect(() => {
+    setSubject(checkedRow?.subject);
+    setDescription(checkedRow?.description);
+    setStartDate(moment(checkedRow?.start_day));
+    setEndDate(moment(checkedRow?.end_day));
+  }, [checkedRow]);
+
+  const handleRequest = async () => {
+    const formattedStartDate = startDate.format("MMM D, YYYY, h:mm a");
+    const formattedEndDate = endDate.format("MMM D, YYYY, h:mm a");
+
     const requestForm = {
+      workOrder_id: changeOrder ? checkedRow.id : "",
       subject: subject,
       description: description,
       startDate: formattedStartDate,
       endDate: formattedEndDate,
       priority: priority,
       status: status,
-      phase: phase,
-      lineItem: lineItems,
+      phase: phaseId,
+      lineItem: changeOrder
+        ? checkedRow.LineItem_id
+        : lineItemIds[0].lineItemId[0],
+      phaseItems: changeOrder ? selectedItems : lineItemIds,
       createdby: userId,
-      teamIds: [...assignedCheckboxes, userId], 
-      notes: notes
-    }
-    if(requestForm.teamIds.length === 0){
-      toast.error('Team member must be assigned')
-    }else{
-      requestWorkOrderPut(requestForm)
+      teamIds: [...assignedCheckboxes, userId],
+      notes: notes,
+      projectId: projectId,
+      total: changeOrder ? checkedRow?.total : totalWorkOrder,
+    };
+    if (requestForm.teamIds.length === 0) {
+      toast.error("Team member must be assigned");
+    } else {
+      //await requestWorkOrderPut(requestForm);
+      emit("join", userId);
+      if (changeOrder) {
+        await emit("updateWorkOrder", requestForm);
+      } else {
+        await emit("notification", requestForm);
+      }
+      dispatch(setIsLoading(true));
+      //emit('getNotifications', userId);
+      const res = await getEvents({ userId, dailyForecast });
+      const data = res?.data?.formattedWorkOrders;
+      // const eventArr = data.map((item)=>{
+      //     return{
+      //       ...item,
+      //       start: moment(item.start).toDate(),
+      //       end: moment(item.end).toDate(),
+      //     }
+      // })
+      //console.log("EVENT ARR", data);
+      // setEvents(eventArr);
+      dispatch(addEvents(data));
+      dispatch(setIsLoading(false));
       setDone(true);
     }
-  }
+  };
 
   return (
     <>
@@ -129,11 +292,18 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
           handleOnClick={handleOpen}
           disabled={isButtonDisabled}
         >
-          Next
+          {changeOrder ? "Request Change Order" : "Request Work Order"}
         </BuilderProButton>
       </Stack>
       <Modal open={open} onClose={handleClose}>
-        <Stack sx={{...style, ...themeStyle.scrollable}} height={"90%"} overflow={"scroll"} >
+        <Stack
+          sx={{
+            ...style,
+            ...themeStyle.scrollable,
+            height: { xl: "100%", lg: "95%", md: "90%", sm: "90%", xs: "90%" },
+          }}
+          overflow={"scroll"}
+        >
           <Typography
             p={2}
             color={"#4C8AB1"}
@@ -141,20 +311,20 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
             fontSize={"22px"}
             fontWeight={"600"}
           >
-            Request Work Order
+            {changeOrder ? "Request Change Order" : "Request Work Order"}
           </Typography>
           <Divider />
           <Stack
             direction={{
               xl: "row",
               lg: "row",
-              md: "column",
+              md: "row",
               sm: "column",
               xs: "column",
             }}
             height={"100%"}
           >
-            <Stack p={3} spacing={1}>
+            <Stack p={3} spacing={1} width={"100%"}>
               <Typography fontFamily={"inherit"}>
                 <strong>Subject: </strong>{" "}
                 <input
@@ -185,9 +355,9 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
                 <Typography
                   sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
                 >
-                  $545.66 US
+                  ${changeOrder ? checkedRow?.total : totalWorkOrder}
                 </Typography>
-                <BorderColorIcon style={{ color: "#484848" }} />
+                {/* <BorderColorIcon style={{ color: "#484848" }} /> */}
               </Stack>
               <Divider />
               <Stack
@@ -206,35 +376,36 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
                         marginTop: "0rem",
                       }}
                     >
-                      1/{Object.keys(rowCheckboxes).length}
+                      {changeOrder
+                        ? checkedRow?.phaseItems?.length
+                        : Object?.keys(rowCheckboxes)?.length}
                     </Typography>
                   </Typography>
+
                   <FormControl>
-                    <RadioGroup
-                      aria-labelledby="demo-radio-buttons-group-label"
-                      defaultValue="Furniture repairing"
-                      name="radio-buttons-group"
-                      onChange={handlePhaseRadioChange}
-                    >
-                      {Object.keys(rowCheckboxes).map((key, index) => {
-                        const phaseId= rowCheckboxes[key]?.rows[0]?.phase_id;
-                        return(
-                        <FormControlLabel
-                          
-                          sx={themeStyle.radioText}
-                          value={phaseId}
-                          control={<Radio sx={themeStyle.radioChecked} />}
-                          label={key}
-                        />
-                      )}) }
-                    </RadioGroup>
+                    {checkedRow
+                      ? checkedRow.phaseItems.map((phase) => (
+                          <ListItem key={phase.phaseId}>
+                            <Checkbox
+                              checked={selectedItems.some(
+                                (item) => item.phaseId === phase.phaseId
+                              )}
+                              onChange={() => handlePhaseChange(phase.phaseId)}
+                            />
+                            <ListItemText secondary={phase.phase_name} />
+                          </ListItem>
+                        ))
+                      : Object.keys(rowCheckboxes).map((key, index) => {
+                          const phaseId = rowCheckboxes[key]?.rows[0]?.phase_id;
+                          return (
+                            <ListItem key={phaseId}>
+                              <ListItemText
+                                secondary={rowCheckboxes[key].phaseName}
+                              />
+                            </ListItem>
+                          );
+                        })}
                   </FormControl>
-                  {/* <Button
-                    sx={themeStyle.linkButton}
-                    startIcon={<AddIcon sx={{ color: "#000" }} />}
-                  >
-                    Add Phase
-                  </Button> */}
                 </Stack>
                 <Stack>
                   <Typography sx={themeStyle.headingText}>
@@ -246,40 +417,102 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
                         marginTop: "0rem",
                       }}
                     >
-                      1/{lineItemCounter}
+                      {lineItemCounter}
                     </Typography>
                   </Typography>
-                  <FormControl>
-                    <RadioGroup
-                      aria-labelledby="demo-radio-buttons-group-label"
-                      defaultValue="Furniture repairing"
-                      name="radio-buttons-group"
-                      onChange={handleLineItemRadioChange}
-                    >
-                      {Object.keys(rowCheckboxes).map((phase, index) => {
-                        const phaseData = rowCheckboxes[phase];
-                        return (
-                          <>
-                            {phaseData.rows.map((row, index) => {
-                              return(
-                              <FormControlLabel
-                                sx={themeStyle.radioText}
-                                value={row.id}
-                                control={<Radio sx={themeStyle.radioChecked} />}
-                                label={row.title}
-                              />
-                            )})}
-                          </>
-                        );
-                      })}
-                    </RadioGroup>
-                  </FormControl>
-                  {/* <Button
-                    sx={themeStyle.linkButton}
-                    startIcon={<AddIcon sx={{ color: "#000" }} />}
+                  <List
+                    sx={{
+                      ...themeStyle.scrollable,
+                      maxHeight: "150px",
+                      overflow: "auto",
+                    }}
                   >
-                    Add Line Item
-                  </Button> */}
+                    {changeOrder
+                      ? checkedRow?.phaseItems.map((phase, phaseIndex) => {
+                          return phase.lineItem_names.map((lineItem, index) => {
+                            counter++;
+                            if (counter <= 2) {
+                              return (
+                                <ListItem key={counter}>
+                                  <Checkbox
+                                    checked={selectedItems.some(
+                                      (item) =>
+                                        item.phaseId === phase.phaseId &&
+                                        item.lineItemId.includes(
+                                          phase.lineItemId[index]
+                                        )
+                                    )}
+                                    onChange={() =>
+                                      handleLineItemChange(
+                                        phase.phaseId,
+                                        phase.lineItemId[index]
+                                      )
+                                    }
+                                  />
+                                  <ListItemText secondary={lineItem} />
+                                </ListItem>
+                              );
+                            }
+                            if (counter > 2 && showLineItems) {
+                              return (
+                                <ListItem key={counter}>
+                                  <Checkbox
+                                    checked={selectedItems.some(
+                                      (item) =>
+                                        item.phaseId === phase.phaseId &&
+                                        item.lineItemId.includes(
+                                          phase.lineItemId[index]
+                                        )
+                                    )}
+                                    onChange={() =>
+                                      handleLineItemChange(
+                                        phase.phaseId,
+                                        phase.lineItemId[index]
+                                      )
+                                    }
+                                  />
+                                  <ListItemText secondary={lineItem} />
+                                </ListItem>
+                              );
+                            }
+                            return null;
+                          });
+                        })
+                      : Object?.keys(rowCheckboxes)?.map((phase) => {
+                          const phaseData = rowCheckboxes[phase];
+                          return phaseData.rows.map((row, index) => {
+                            counter++;
+                            if (counter <= 2) {
+                              return (
+                                <ListItem key={counter}>
+                                  <ListItemText secondary={row.title} />
+                                </ListItem>
+                              );
+                            }
+                            if (counter > 2 && showLineItems) {
+                              return (
+                                <ListItem key={counter}>
+                                  <ListItemText secondary={row.title} />
+                                </ListItem>
+                              );
+                            } else {
+                              return <></>;
+                            }
+                          });
+                        })}
+                    <ListItem style={{ padding: 0 }}>
+                      <Button
+                        style={{ padding: 0, textTransform: "lowercase" }}
+                        variant="text"
+                        color="primary"
+                        onClick={() => {
+                          setShowLineItems(!showLineItems);
+                        }}
+                      >
+                        {showLineItems ? "Hide" : "View more"}
+                      </Button>
+                    </ListItem>
+                  </List>
                 </Stack>
               </Stack>
               <Divider />
@@ -291,37 +524,38 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
                   sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
                 >
                   <Box sx={themeStyle.dateBox}>
-                  <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DemoContainer components={["DateTimePicker"]}>
-                      <DateTimePicker
-                      value={startDate}
-                      onChange={(newValue) => setStartDate(newValue)}
-                        format="MMM D, YYYY,h:mm a"
-                        viewRenderers={{
-                          hours: renderTimeViewClock,
-                          minutes: renderTimeViewClock,
-                          seconds: renderTimeViewClock,
-                        }}
-                        defaultValue={moment("2024-04-17T15:30")}
-                        slotProps={{
-                          // Targets the `IconButton` component.
-                          openPickerButton: {
-                            color: "#5B5B5B",
-                          },
-                          // Targets the `InputAdornment` component.
-                          inputAdornment: {
-                            position: "start",
-                          },
-                        }}
-                        sx={{
-                          input: {
-                            fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
-                          },
-                        }}
-                      />
-                    </DemoContainer>
-                  </LocalizationProvider>
-                </Box>
+                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                      <DemoContainer components={["DateTimePicker"]}>
+                        <DateTimePicker
+                          value={startDate}
+                          onChange={(newValue) => setStartDate(newValue)}
+                          format="MMM D, YYYY,h:mm a"
+                          viewRenderers={{
+                            hours: renderTimeViewClock,
+                            minutes: renderTimeViewClock,
+                            seconds: renderTimeViewClock,
+                          }}
+                          defaultValue={moment("2024-04-17T15:30")}
+                          slotProps={{
+                            // Targets the `IconButton` component.
+                            openPickerButton: {
+                              color: "#5B5B5B",
+                            },
+                            // Targets the `InputAdornment` component.
+                            inputAdornment: {
+                              position: "start",
+                            },
+                          }}
+                          sx={{
+                            input: {
+                              fontFamily:
+                                "GT-Walsheim-Regular-Trial, sans serif",
+                            },
+                          }}
+                        />
+                      </DemoContainer>
+                    </LocalizationProvider>
+                  </Box>
                 </Typography>
               </Stack>
               <Stack spacing={1} pt={2}>
@@ -331,40 +565,41 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
                 <Typography
                   sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
                 >
-                                   <Box sx={themeStyle.dateBox}>
-                  <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DemoContainer components={["DateTimePicker"]}>
-                      <DateTimePicker
-                      value={endDate}
-                      onChange={(newValue) => setEndDate(newValue)}
-                        format="MMM D, YYYY,h:mm a"
-                        viewRenderers={{
-                          hours: renderTimeViewClock,
-                          minutes: renderTimeViewClock,
-                          seconds: renderTimeViewClock,
-                        }}
-                        defaultValue={moment("2024-04-17T15:30")}
-                        slotProps={{
-                          // Targets the `IconButton` component.
-                          openPickerButton: {
-                            color: "#5B5B5B",
-                          },
-                          // Targets the `InputAdornment` component.
-                          inputAdornment: {
-                            position: "start",
-                          },
-                        }}
-                        sx={{
-                          input: {
-                            fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
-                          },
-                        }}
-                      />
-                    </DemoContainer>
-                  </LocalizationProvider>
-                </Box>
+                  <Box sx={themeStyle.dateBox}>
+                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                      <DemoContainer components={["DateTimePicker"]}>
+                        <DateTimePicker
+                          value={endDate}
+                          onChange={(newValue) => setEndDate(newValue)}
+                          format="MMM D, YYYY,h:mm a"
+                          viewRenderers={{
+                            hours: renderTimeViewClock,
+                            minutes: renderTimeViewClock,
+                            seconds: renderTimeViewClock,
+                          }}
+                          defaultValue={moment("2024-04-17T15:30")}
+                          slotProps={{
+                            // Targets the `IconButton` component.
+                            openPickerButton: {
+                              color: "#5B5B5B",
+                            },
+                            // Targets the `InputAdornment` component.
+                            inputAdornment: {
+                              position: "start",
+                            },
+                          }}
+                          sx={{
+                            input: {
+                              fontFamily:
+                                "GT-Walsheim-Regular-Trial, sans serif",
+                            },
+                          }}
+                        />
+                      </DemoContainer>
+                    </LocalizationProvider>
+                  </Box>
                 </Typography>
-                <Stack width={"80%"} pt={8}>
+                <Stack width={"80%"} pt={4}>
                   <BuilderProButton
                     backgroundColor={"#4C8AB1"}
                     variant={"contained"}
@@ -375,12 +610,12 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
                     handleOnClick={handleRequest}
                     marginLeft={"0px"}
                   >
-                    Request Work Order
+                    {changeOrder ? "Request Change" : "Request Work Order"}
                   </BuilderProButton>
                 </Stack>
               </Stack>
             </Stack>
-            <Stack backgroundColor={"#EFF5FF"}>
+            <Stack backgroundColor={"#EFF5FF"} width={"100%"}>
               <Box>
                 <Typography
                   sx={{
@@ -391,9 +626,32 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
                   Created By
                 </Typography>
                 <Box sx={themeStyle.avatarBox}>
-                  <Avatar sx={themeStyle.AvatarStyle} src={Avatarimg} />
-                  <Typography fontFamily={"inherit"} alignSelf={"end"}>
-                    {user?.user?.firstName}
+                  {changeOrder ? (
+                    checkedRow?.team.map((user) => {
+                      if (checkedRow?.createdby == user?.userId) {
+                        return (
+                          <Avatar
+                            sx={themeStyle.AvatarStyle}
+                            src={user.image}
+                          />
+                        );
+                      }
+                    })
+                  ) : (
+                    <Avatar
+                      sx={themeStyle.AvatarStyle}
+                      src={user.user.image ? user?.user?.image : Avatarimg}
+                    />
+                  )}
+                  <Typography fontFamily={"inherit"} alignSelf={"end"} pl={1}>
+                    {changeOrder
+                      ? checkedRow?.team.map((user) => {
+                          if (checkedRow?.createdby == user?.userId) {
+                            return <>{user?.firstName}</>;
+                          }
+                          return null; // Return null for users that don't match
+                        })
+                      : user?.user?.firstName}
                   </Typography>
                 </Box>
                 {/* Divider  */}
@@ -408,8 +666,42 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
                   Assigned
                 </Typography>
                 <Box sx={themeStyle.avatarBox}>
-                  <Avatar sx={themeStyle.AvatarStyle} src={Avatarimg} />
-                  <AssignTeamMembers assignedCheckboxes={assignedCheckboxes} setAssignedCheckboxes={setAssignedCheckboxes} />
+                  <Stack direction={"row"} pr={1}>
+                    {assignedCheckboxes.length === 0
+                      ? checkedRow?.team?.map((user) => {
+                          if (checkedRow?.createdby != user?.userId) {
+                            return (
+                              <Avatar
+                                sx={themeStyle.AvatarStyle}
+                                src={user.image}
+                              />
+                            );
+                          }
+                        })
+                      : assignedCheckboxes?.map((id) => {
+                          return (
+                            <>
+                              {data?.team?.map((user, idx) => {
+                                if (user.userId === id) {
+                                  return (
+                                    <Avatar
+                                      key={idx}
+                                      sx={themeStyle.AvatarStyle}
+                                      src={user.image}
+                                    />
+                                  );
+                                }
+                                return null; // or <></>
+                              })}
+                            </>
+                          );
+                        })}
+                  </Stack>
+                  <AssignTeamMembers
+                    assignedCheckboxes={assignedCheckboxes}
+                    setAssignedCheckboxes={setAssignedCheckboxes}
+                    data={data}
+                  />
                 </Box>
                 {/* Divider  */}
                 <hr style={themeStyle.hrLine} />
@@ -422,47 +714,20 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
                 >
                   Notes
                 </Typography>
-                <input
-                  value={notes}
-                  placeholder="Type your description..."
-                  type="text"
-                  multiple
-                  style={themeStyle.inputFields}
-                  onChange={handleNotesChange}
-                ></input>
-                {/* <Box sx={themeStyle.dateBox}>
-                  <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DemoContainer components={["DateTimePicker"]}>
-                      <DateTimePicker
-                      value={dueDate}
-                      onChange={(newValue) => setDueDate(newValue)}
-                        format="MMM D, YYYY,h:mm a"
-                        viewRenderers={{
-                          hours: renderTimeViewClock,
-                          minutes: renderTimeViewClock,
-                          seconds: renderTimeViewClock,
-                        }}
-                        defaultValue={moment("2024-04-17T15:30")}
-                        slotProps={{
-                          // Targets the `IconButton` component.
-                          openPickerButton: {
-                            color: "#5B5B5B",
-                          },
-                          // Targets the `InputAdornment` component.
-                          inputAdornment: {
-                            position: "start",
-                          },
-                        }}
-                        sx={{
-                          input: {
-                            fontFamily: "GT-Walsheim-Regular-Trial, sans serif",
-                          },
-                        }}
-                      />
-                    </DemoContainer>
-                  </LocalizationProvider>
-                </Box> */}
-                {/* Divider  */}
+                <Typography fontFamily={"inherit"} pb={4} pl={2}>
+                  <input
+                    value={notes}
+                    placeholder="Type your description..."
+                    type="text"
+                    multiple
+                    style={{
+                      ...themeStyle.inputFields,
+                      backgroundColor: "#EFF5FF",
+                    }}
+                    onChange={handleNotesChange}
+                  ></input>
+                </Typography>
+
                 <hr style={themeStyle.hrLine} />
                 <Typography
                   sx={{
@@ -508,49 +773,6 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
                   <MenuItem value={"normal"}>Normal</MenuItem>
                 </Select>
                 <hr style={themeStyle.hrLine} />
-                <Typography
-                  sx={{
-                    ...themeStyle.headingText,
-                    ...themeStyle.rightheadings,
-                  }}
-                >
-                  Status
-                </Typography>
-                <Select
-                 displayEmpty
-                 renderValue={(value) => {
-                  return (
-                    <Stack direction={"row"} gap={1}>
-                      <FlagOutlinedIcon sx={{ color: "#EB1717" }} />
-                      <Typography
-                        color={"#EB1717"}
-                        textTransform={"capitalize"}
-                        fontFamily={"Inter"}
-                        fontWeight={"500"}
-                        fontSize={{
-                          lg: "0.9rem",
-                          md: "0.9rem",
-                          sm: "0.8rem",
-                          xs: "0.6rem",
-                        }}
-                      >
-                        {value}
-                      </Typography>
-                    </Stack>
-                  );
-                }}
-                  value={status}
-                  onChange={handleStatusChange}
-                  IconComponent={KeyboardArrowDownIcon}
-                  sx={{
-                    ...themeStyle.linkButton,
-                    ...themeStyle.priorityButton,
-                  }}
-                  startIcon={<FlagOutlinedIcon sx={{ color: "#EB1717" }} />}
-                >
-                  <MenuItem value={"pending"}>Pending</MenuItem>
-                  <MenuItem value={"done"}>Done</MenuItem>
-                </Select>
               </Box>
               <Stack spacing={0.5} p={1} px={3}>
                 <Typography
@@ -594,7 +816,7 @@ const RequestWorkOrderModal = ({ rowCheckboxes }) => {
           </Stack>
         </Stack>
       </Modal>
-      { done && <GenerateInvoiceDone setDone={setDone} />}
+      {done && <GenerateInvoiceDone setDone={setDone} />}
     </>
   );
 };
@@ -611,8 +833,24 @@ const style = {
   boxShadow: 24,
   p: 0,
   borderRadius: "14px",
+  width: "700px",
 };
 const themeStyle = {
+  scrollable: {
+    scrollbarWidth: "none", // For Firefox
+    "-ms-overflow-style": "none", // For IE and Edge
+    "&::-webkit-scrollbar": {
+      width: "6px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "transparent",
+      transition: "background-color 0.3s",
+    },
+    "&:hover::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ddd",
+    },
+    overflowY: "scroll",
+  },
   inputFields: {
     border: "0px solid #FFF",
     outline: "none",
@@ -710,7 +948,7 @@ const themeStyle = {
   rightheadings: {
     fontSize: "0.9rem",
     color: "#636363",
-    margin: "1rem 0rem 0rem 2rem",
+    margin: "1rem 0rem 0rem 1rem",
   },
   linkButton: {
     fontFamily: "Inter",
@@ -737,13 +975,13 @@ const themeStyle = {
   },
   avatarBox: {
     display: "flex",
-    margin: "0.2rem 0rem 1rem 1rem",
-    gap: "2rem",
+    margin: "0.2rem 0rem 1rem 1.5rem",
+    justifyContent: "flex-start",
   },
   AvatarStyle: {
     width: 30,
     height: 30,
-    ml: 2,
+    ml: "-5px",
     mt: 1,
   },
   dateBox: {
@@ -751,19 +989,19 @@ const themeStyle = {
     paddingLeft: "1.5rem",
     marginTop: "-1rem",
   },
-  
+
   scrollable: {
-    scrollbarWidth: 'none',  // For Firefox
-    '-ms-overflow-style': 'none',  // For IE and Edge
-    '&::-webkit-scrollbar': {
-        width: '6px'
+    scrollbarWidth: "none", // For Firefox
+    "-ms-overflow-style": "none", // For IE and Edge
+    "&::-webkit-scrollbar": {
+      width: "6px",
     },
-    '&::-webkit-scrollbar-thumb': {
-        backgroundColor: 'transparent',
-        transition: 'background-color 0.3s',
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "transparent",
+      transition: "background-color 0.3s",
     },
-    '&:hover::-webkit-scrollbar-thumb': {
-        backgroundColor: '#ddd',
+    "&:hover::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ddd",
     },
-}
+  },
 };

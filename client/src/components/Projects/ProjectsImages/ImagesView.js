@@ -5,7 +5,7 @@ import Permit from '../Permit'
 const ImagesView = () => {
   return (
     <Paper flex={2}>
-       <Permit view={'Images'}/>
+       <Permit view={'Images'} type={'image'}/>
     </Paper>
   )
 }

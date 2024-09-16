@@ -1,7 +1,7 @@
 const actionButton = {
     display: "flex",
     height: "2.375rem",
-    padding: "0.75rem 1.5rem",
+    padding: {lg:"0.75rem 1.5rem"},
     justifyContent: "center",
     alignItems: "center",
     flexShrink: 0,

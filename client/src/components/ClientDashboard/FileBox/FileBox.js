@@ -40,7 +40,7 @@ function FileBox({ titleHeading, buttonName, modalHeading }) {
                             Recent
                         </Typography>
                         <Typography sx={{ ...themeStyle.titleTypo, ...themeStyle.permitNumber }}>
-                            4 Permits
+                            Permits
                         </Typography>
                     </Box>
                     <Avatar
@@ -71,7 +71,7 @@ function FileBox({ titleHeading, buttonName, modalHeading }) {
                             Last Week
                         </Typography>
                         <Typography sx={{ ...themeStyle.titleTypo, ...themeStyle.permitNumber }}>
-                            16 Permits
+                            Permits
                         </Typography>
                     </Box>
                     <Avatar

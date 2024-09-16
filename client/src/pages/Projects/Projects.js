@@ -22,7 +22,7 @@ const Projects = () => {
     const {view: currentView} = params;
 
 
-  console.log(projects);
+  //console.log(projects);
   
     switch (currentView) {
       case 'initial-proposal':

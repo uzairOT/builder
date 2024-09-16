@@ -16,7 +16,7 @@ function Client() {
   const [userInfo, setUserInfo, handleAssignRoleButton, userId, setUserId, handleUpdateAssignRole] = useOutletContext();
  
   useEffect(()=>{
-    console.log(userInfo);
+    //console.log(userInfo);
   },[userInfo])
   // Function to open the Add Modal
   const OpenAddModal = () => {

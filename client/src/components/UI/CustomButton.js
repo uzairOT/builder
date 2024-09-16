@@ -1,8 +1,8 @@
 import React from 'react';
-import {Button } from "@mui/material";
+import {Button, CircularProgress } from "@mui/material";
 import GTWalsheimTrial from "../../assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf"
 
-function CustomButton({onClick, buttonText,color,backgroundColor,width,height,borderRadius ,fontSize,border, disabled }) {
+function CustomButton({onClick, buttonText,color,backgroundColor,width,height,borderRadius ,fontSize,border, disabled, isLoading }) {
 
     const YellowBtn = {
         backgroundColor: backgroundColor,
@@ -17,7 +17,7 @@ function CustomButton({onClick, buttonText,color,backgroundColor,width,height,bo
       };
 
   return (
-    <Button  onClick={onClick} disabled={disabled} style={YellowBtn}>{buttonText}</Button>
+    <Button  onClick={onClick} disabled={disabled} style={YellowBtn}>{isLoading ? <CircularProgress size={'20px'} sx={{color:'white'}} /> : buttonText}</Button>
   );
 }
 

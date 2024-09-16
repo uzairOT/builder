@@ -1,12 +1,18 @@
 import { apiSlice } from "../apiSlice";
 
-const USER_PROJECTS_URL = "http://192.168.0.105:8080/user";
+const USER_PROJECTS_URL = "http://3.135.107.71/user";
 
 export const userProjectsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUserProjects: builder.query({
       query: (data) => ({
         url: `${USER_PROJECTS_URL}/projects/${data.userId}`,
+        method: "GET",
+      }),
+    }),
+    getFilteredUserProjects: builder.query({
+      query: (data) => ({
+        url: `${USER_PROJECTS_URL}/projects/${data.userId}?filter=${data.filter}`,
         method: "GET",
       }),
     }),
@@ -19,4 +25,4 @@ export const userProjectsApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetUserProjectsQuery, useGetMasterLineItemsQuery } = userProjectsApiSlice;
+export const { useGetUserProjectsQuery, useGetMasterLineItemsQuery, useGetFilteredUserProjectsQuery } = userProjectsApiSlice;

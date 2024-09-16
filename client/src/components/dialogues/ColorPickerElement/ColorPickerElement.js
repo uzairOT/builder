@@ -30,6 +30,8 @@ import { yellow } from "@mui/material/colors";
 import { useDispatch,useSelector  } from 'react-redux';
 import { addPhase } from '../../../redux/slices/Project/projectInitialProposal'; 
 import {useParams} from 'react-router-dom';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ColorPickerElement({
   handleUpdateOpen,
@@ -45,14 +47,13 @@ function ColorPickerElement({
   const dispatch = useDispatch();
   const local = localStorage.getItem('projectId');
   const projectId = parseInt(local);
-  console.log(projectId);
   
   const {id} = useParams();
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState(phaseData ? phaseData.color : "");
   const [colorMode, setColorMode] = useState("");
   const [phaseName, setPhaseName] = useState(
-    phaseData?.phaseName ? phaseData.phaseName : ""
+    phaseData?.phase_name ? phaseData.phase_name : ""
   );
   const [updateProjectPhase] = useUpdateProjectPhaseMutation();
   const [addProjectPhase] = useAddProjectPhaseMutation();
@@ -61,7 +62,7 @@ function ColorPickerElement({
   };
 
   const handleClickOpen = () => {
-    console.log('handle Click open run')
+    //console.log('handle Click open run')
     if (PhaseHeading === "Update Phase") {
       handleUpdateOpen();
     } else {
@@ -81,16 +82,22 @@ function ColorPickerElement({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if(phaseName === ''){
+      toast.warning('Please enter a phase name')
+      return
+    }
     if (PhaseHeading === "Update Phase") {
-      onSubmit(phaseName, color);
       const updatedPhaseData = {
         phaseName,
         color,
       };
-      updateProjectPhase({ id: phaseData?.id, updatedData: updatedPhaseData });
+      //console.log('clicked! phaseName: ', phaseName, ' color : ', color, ' updatedPhaseData: ', updatedPhaseData)
+      await updateProjectPhase({ id: phaseData?.id, updatedData: updatedPhaseData });
       setPhaseData((phaseData) => ({ ...phaseData, ...updatedPhaseData }));
-      console.log(updatedPhaseData);
-      console.log(phaseData);
+      //console.log(updatedPhaseData);
+      //console.log(phaseData);
+      onSubmit(phaseName, color);
+      setPhaseName(phaseName);
       handleUpdateClose();
     } else {
       onSubmit(phaseName, color);
@@ -99,13 +106,14 @@ function ColorPickerElement({
         color,
         colorMode,
         projectId: adminProjectView ? id : projectId,
+        initial: adminProjectView ? false : true,
       };
-      console.log(data)
-      const res = await addProjectPhase(data).unwrap().then().catch(e=>{ alert(e.message)});
-      console.log('Response:', res.phase);
+      //console.log(data)
+      const res = await addProjectPhase(data).unwrap().then().catch(e=>{ toast.error(e.message || e.data.message || e.error)});
+      //console.log('Response:', res.phase);
       setPhaseData((phaseData) => ({ ...phaseData, ...data }));
-      console.log(data);
-      console.log(phaseData);
+      //console.log(data);
+      //console.log(phaseData);
       dispatch(addPhase(res.phase))
       handleAddClose();
     }
@@ -143,6 +151,7 @@ function ColorPickerElement({
               variant="standard"
               value={phaseName}
               onChange={handlePhaseName}
+             
             />
             <Typography sx={typoText}>Select Color</Typography>
             <div className="custom-pointers example">
@@ -218,7 +227,7 @@ const generalBox = {
 
 const paperPropsStyle = {
   borderRadius: "1rem",
-  width: { lg: "25%", md: "50%", sm: "50%", xs: "50%" },
+  width: { lg: "25%", md: "50%", sm: "100%", xs: "100%" },
   padding: "0.5rem", // Change background color here
 };
 

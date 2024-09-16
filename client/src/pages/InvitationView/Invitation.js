@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import {
   Box,
   Grid,
@@ -23,21 +23,22 @@ import "../../App.css";
 // import "./Signup.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Bounce } from 'react-toastify'; // Assuming you're using react-toastify
+import { Bounce } from "react-toastify"; // Assuming you're using react-toastify
 import { useDispatch, useSelector } from "react-redux";
-import { useRegisterMutation } from "../../redux/apis/usersApiSlice";
+import { useCheckUserOnInvitationMutation, useRegisterMutation } from "../../redux/apis/usersApiSlice";
 import { setCredentials } from "../../redux/slices/authSlice";
-import { toast, ToastContainer} from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Invitation = () => {
   const isLG = useMediaQuery("(min-width: 1280px)");
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
-  const { projectId, email, userRole } = useParams();
-  console.log(projectId, email, userRole);
-
+  const { projectId, email, userRole, companyName } = useParams();
+  const role = userRole;
+  const [checkUser] = useCheckUserOnInvitationMutation();
+  const params = {projectId, email,  role};
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
 
@@ -69,24 +70,42 @@ const Invitation = () => {
     setPasswordVisible(!passwordVisible);
   };
 
+useEffect(()=> {
+  checkUserOnInvitation();
+
+},[])
+const checkUserOnInvitation = async () =>{
+      const res = await checkUser(params);
+      if(res?.data?.success){
+        console.log(res)
+        navigate('/login');
+      } else{
+        return false
+      }
+}
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Prepare data to be sent in the request body
-    const data = { ...formData, phone, userRole, email, projectId };
-    console.log(data);
-  
+    const data = {
+      ...formData,
+      phone,
+      userRole,
+      email,
+      projectId,
+      companyName,
+    };
+
     try {
       // Make POST request using Axios
-      await axios.post('http://192.168.0.105:8080/project/addme', data);
-  
+      await axios.post("http://3.135.107.71/project/addme", data);
+
       // Navigate to the desired location upon successful request
-      navigate('/');
-  
+      navigate("/login");
     } catch (err) {
       // Handle errors
-      console.log('ERORR: ', err)
-      toast.error(`${err.response.data.error}`,{
+      console.log("ERORR: ", err);
+      toast.error(`${err.response.data.error}`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -96,11 +115,10 @@ const Invitation = () => {
         progress: undefined,
         theme: "light",
         transition: Bounce,
-        });
+      });
     }
   };
 
-  
   const lableResponsiveFont = { fontSize: isMobile ? "0.7rem" : "1rem" };
   const linkResponsiveColor = { color: isMobile ? "#FFAC00" : "#4C8AB1" };
   const borderRadiusResponsive = {
@@ -176,7 +194,7 @@ const Invitation = () => {
                 />
               </Box>
             </Box>
-            
+
             <Box sx={{ marginTop: "0.5rem" }}>
               <label
                 style={{
@@ -221,7 +239,6 @@ const Invitation = () => {
                 name="phone"
               />
             </Box>
-
 
             <Box sx={{ marginTop: "0.5rem" }}>
               <label
@@ -279,7 +296,6 @@ const Invitation = () => {
                 Confirm Password
               </label>
 
-
               <Box style={{ position: "relative" }}>
                 <input
                   style={inputStyle}
@@ -307,17 +323,21 @@ const Invitation = () => {
               )}
             </Box>
 
-
-            <Box sx={{ display: "flex", justifyContent: "center", margin: "2rem 0rem 1rem" }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                margin: "2rem 0rem 1rem",
+              }}
+            >
               <Button
-                sx={{ ...YellowBtn, }}
+                sx={{ ...YellowBtn }}
                 type="submit"
                 onClick={handleSubmit}
               >
                 Done
               </Button>
             </Box>
-
           </form>
         </Grid>
         <Grid sx={bottomGrid}>
@@ -397,7 +417,6 @@ const googleAppImgsBox = {
   gap: "1rem",
 };
 
-
 const formGridContainer = {
   display: "flex",
   flexDirection: "column",
@@ -454,7 +473,6 @@ const passwordEyeBox = {
   display: "flex",
   alignItems: "center",
 };
-
 
 const bottomGrid = {
   display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
@@ -575,7 +593,6 @@ const inputStyle = {
   paddingLeft: "-1.5rem",
 };
 
-
 const labelStyle = {
   display: "block",
   marginBottom: "0.5rem",
@@ -593,7 +610,6 @@ const hptLinksStyle = {
   fontWeight: 400,
   lineHeight: "normal",
 };
-
 
 const topSpace = {
   marginTop: "0.2rem",

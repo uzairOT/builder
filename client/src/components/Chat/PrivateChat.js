@@ -39,7 +39,7 @@ function Chat({recipientId}) {
     });
   }, []);
 
-  console.log(recipientId);
+  //console.log(recipientId);
 
   return (
     <div className="Chat">

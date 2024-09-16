@@ -15,42 +15,16 @@ const Notes = () => {
     const [selectedButton, setSelectedButton] = useState(0);
     const { id } = useParams();
     const { data } = useGetProjectNotesQuery({ projectId: id });
-  console.log(data)
+  //console.log(data)
     const list =[
         {"listItem": "All Notes"},
         {"listItem": "All Notes"},
         {"listItem": "All Notes"}
     ]
-    const notes = [
-        {
-          "title": "ABEC Compeition",
-          "note": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-          "date": "20 Feb 2021",
-        },
-        {
-          "title": "Project Kick-off Meeting",
-          "note": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-          "date": "25 Feb 2021",
-        },
-        {
-          "title": "Site Inspection",
-          "note": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-          "date": "3 Mar 2021",
-        },
-        {
-          "title": "Material Delivery",
-          "note": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-          "date": "10 Mar 2021",
-        },
-        {
-          "title": "Progress Meeting",
-          "note": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-          "date": "15 Mar 2021",
-        },
-      ];
+   
       const handleSelectedButton = (index) =>{
         setSelectedButton(index);
-        console.log("Slected Btn notes: ", index);
+        //console.log("Slected Btn notes: ", index);
       }
       
   return (

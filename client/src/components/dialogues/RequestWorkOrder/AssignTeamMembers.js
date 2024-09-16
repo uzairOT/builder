@@ -13,6 +13,7 @@ import {
   TableCell,
   TableBody,
   Checkbox,
+  Stack,
 } from "@mui/material";
 import { useGetTeamMembersQuery } from "../../../redux/apis/Project/projectApiSlice";
 
@@ -36,17 +37,16 @@ const themeStyle = {
   },
 };
 
-const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes }) => {
+const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes, data }) => {
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
-  console.log("location: ", location, " projectId: ", projectId);
+  //console.log("location: ", location, " projectId: ", projectId);
   const [open, setOpen] = React.useState(false);
   const [checked, setChecked] = React.useState([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { data } = useGetTeamMembersQuery(projectId);
   const team = data?.team;
-  console.log(data?.team[0]);
+  //console.log(data?.team[0]);
 
   const handleEmailCheckBoxes = (event, row) => {
     const { checked } = event.target;
@@ -64,8 +64,8 @@ const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes }) => {
   };
 
   return (
-    <div>
-      <IconButton onClick={handleOpen} aria-label="Assign Team Members">
+    <Stack>
+      <IconButton onClick={handleOpen} aria-label="Assign Team Members" style={{marginLeft: '-14px'}}>
         <AddCircleOutlineIcon
           sx={{ ...themeStyle.AvatarStyle, color: "#A8A8A8" }}
         />
@@ -121,7 +121,7 @@ const AssignTeamMembers = ({ setAssignedCheckboxes, assignedCheckboxes }) => {
           </Box>
         </Box>
       </Modal>
-    </div>
+    </Stack>
   );
 };
 

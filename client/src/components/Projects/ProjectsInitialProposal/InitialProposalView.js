@@ -5,7 +5,7 @@ import AddPhaseView from '../../AssignProject/AddPhaseView/AddPhaseView'
 const InitialProposalView = () => {
   return (
     <Stack p={1} borderRadius={'14px'}>
-      <AddPhaseView adminProjectView={true} view={'Initial Proposal'}/>
+      <AddPhaseView InitialProposalView={true} adminProjectView={true} view={'Initial Proposal'}/>
     </Stack>
   )
 }

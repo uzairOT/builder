@@ -6,7 +6,7 @@ import Permit from '../Permit'
 const PermitView = () => {
   return (
     <Paper style={themeStyle.borders}>
-      <Permit view={'Permit'}/>
+      <Permit view={'Permit'} type={'permit'}/>
     </Paper>
   )
 }

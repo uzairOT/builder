@@ -1,6 +1,7 @@
 import { apiSlice } from "../apiSlice";
 
-const PROJECTS_URL = "http://192.168.0.105:8080/project";
+const PROJECTS_URL = "http://3.135.107.71/project";
+const EVENT_URL = "http://3.135.107.71/user/events";
 const projectId = 47;
 
 const projectApiSlice = apiSlice.injectEndpoints({
@@ -25,15 +26,15 @@ const projectApiSlice = apiSlice.injectEndpoints({
     }),
     updateProjectPhase: builder.mutation({
       query: (data) => ({
-        url: `${PROJECTS_URL}/addPhase/${data.id}`,
-        method: "PATCH",
-        body: data,
+        url: `${PROJECTS_URL}/updatePhase/${data.id}`,
+        method: "PUT",
+        body: data.updatedData,
       }),
       providesTags: ["Project"],
     }),
     deleteProjectPhase: builder.mutation({
       query: (data) => ({
-        url: `${PROJECTS_URL}/addPhase/${projectId}`,
+        url: `${PROJECTS_URL}/deletePhase/${data.id}`,
         method: "DELETE",
         body: data,
       }),
@@ -171,10 +172,25 @@ const projectApiSlice = apiSlice.injectEndpoints({
         url: `${PROJECTS_URL}/getProjectData/${data.projectId}`
       })
     }),
+    projectUpdate: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/projectUpdate/${data.projectId}`,
+        method: 'PUT',
+        body: data.body
+      })
+    }),
+    getWorkOrderDetails: builder.mutation({
+      query: (data) => ({
+        url: `${EVENT_URL}/workOrderDetails/${data.workOrderId}`,
+        method: 'POST',
+        body: data
+      })
+    })
   }),
 });
 
 export const {
+  useProjectUpdateMutation,
   useAssignProjectMutation,
   useAddProjectPhaseMutation,
   useUpdateProjectPhaseMutation,
@@ -197,5 +213,6 @@ export const {
   useGetProjectNotesQuery,
   useAddProjectNotesMutation,
   useEditProjectNotesMutation,
-  useDeleteProjectNotesMutation
+  useDeleteProjectNotesMutation,
+  useGetWorkOrderDetailsMutation
 } = projectApiSlice;

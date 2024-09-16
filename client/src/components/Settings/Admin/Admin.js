@@ -21,7 +21,7 @@ function Admin() {
   const ADMIN_VIEW = 'admin';
  
   useEffect(()=> {
-    console.log("Admin useEffect userId: ", userId)
+    //console.log("Admin useEffect userId: ", userId)
   }, [userId])
 
 
@@ -37,7 +37,7 @@ function Admin() {
     setUpdateModalOpen(false);
   };
 
-console.log(userId)
+//console.log(userId)
   return (
     <div style={{padding:"20px"}}>
       <Header title="Admin"   OpenAddModal={OpenAddModal}/>

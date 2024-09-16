@@ -15,7 +15,7 @@ const MonthCellWapper = ({props, isDrawerOpen, monthView, isProjectPage}) => {
   const isCurrentDay = currentFormattedDate === date;
 
   const isCurrentMonth = currentMonth === month;
-  console.log("isProjectPage: ", isProjectPage)
+  //console.log("isProjectPage: ", isProjectPage)
   let backgroundColor;
   if(isCurrentDay){
     backgroundColor = '#4C8AB1';

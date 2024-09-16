@@ -26,10 +26,10 @@ function Footer({ onNextStep }) {
    const userdata =  JSON.parse(localStorage.getItem('userInfo'))
    const userId = userdata.id
     const FormData = { ...Data,userId  };
-    console.log(userdata.id);
+    //console.log(userdata.id);
 
     const res = await assignProject(FormData).unwrap();
-    console.log(res);
+    //console.log(res);
   };
   const handleDone = () => {
     navigate('/')

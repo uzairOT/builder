@@ -87,7 +87,7 @@ const ClientNavbar = () => {
         navigate(path, { state: { heading } });
 
 
-        console.log('Clicked item:', item);
+        //console.log('Clicked item:', item);
     };
 
     const tabsWithDropdown = [

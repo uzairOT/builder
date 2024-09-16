@@ -30,7 +30,7 @@ function ExistenceProjectStep1({ onNextStep }) {
   const [updateExistingProject] = useUpdateProjectMutation()
   const dispatch = useDispatch();
   const {clientName} = useSelector(selectProjectForm);
-  console.log(clientName)
+  //console.log(clientName)
   const handleNextStep = async () => {
     onNextStep();
     // const putData = {
@@ -46,7 +46,7 @@ function ExistenceProjectStep1({ onNextStep }) {
     //    }
        
     // } catch (error) {
-    //   console.log(error);
+    //   //console.log(error);
     // }
   };
   const handleChange = (e) => {

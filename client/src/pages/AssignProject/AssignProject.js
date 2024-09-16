@@ -19,48 +19,55 @@ import NewProject from "../../components/AssignProject/NewProject/NewProject";
 import ExistingProject from "../../components/AssignProject/ExistingProject/ExistingProject";
 import ProjectFormFields from "../../components/AssignProject/ProjectFormFields/ProjectFormFields";
 import { useExistingProjectMutation } from "../../redux/apis/usersApiSlice";
-import {
-selectProjectForm
-} from '../../redux/slices/projectFormSlice'
-import { useSelector } from 'react-redux';
-import {toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { selectProjectForm } from "../../redux/slices/projectFormSlice";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+
 
 function AssignProject() {
-
-  const local = localStorage.getItem('userInfo');
+  const local = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(local);
   const currentUserId = currentUser?.user.id;
   const [projectType, setProjectType] = useState(null);
-  const { projectName, location } = useSelector(selectProjectForm);
+  const { projectName, location, projectColor } = useSelector(selectProjectForm);
   const [postExistingProject] = useExistingProjectMutation();
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate();
   const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
 
   const handleProjectChange = async (value) => {
-    if(value === 'Existing'){
+    if (value === "Existing") {
       const data = {
         userId: currentUserId,
         projectName: projectName,
+      };
+      const res = await postExistingProject(data);
+      
+      if (res.data?.success) {
+        setProjectType(value);
+      } else {
+        toast.error(res.error.data.message);
       }
-     const res = await postExistingProject(data);
-     if(res.data?.success){
-      setProjectType(value);
-     }else {
-      toast.error(res.error.data.message)
-     }
-    } else{
+    } else if (projectName === "") {
+      toast.warning("Please enter project name");
+    }  else if (location === "") {
+      toast.warning("Please enter project location");
+    }else if(projectColor === ''){
+      toast.warning("Please select project color");
+    } else if (projectName !== "") {
+      
       setProjectType(value);
     }
-
   };
 
   const [step, setStep] = useState(0);
   const handlePreviousStep = () => {
-    setStep(step - 1);
+    if (projectName === "") {
+      return;
+    } else {
+      setStep(step - 1);
+    }
   };
-
 
   return (
     <>
@@ -68,7 +75,7 @@ function AssignProject() {
         <>
           {" "}
           <div>
-            <Header handlePreviousStep={handlePreviousStep} />
+            <Header handlePreviousStep={handlePreviousStep} step={0} />
             <StepTitles
               stepHeading={"Step 1 of 3"}
               Heading={"What projects is your team currently engaged in"}

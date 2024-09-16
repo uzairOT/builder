@@ -5,10 +5,10 @@ import ProjectProgress from './ProjectProgress'
 import PaymentDetails from './PaymentDetails'
 import ProfitDetails from './ProfitDetails'
 
-const ProgressCard = () => {
+const ProgressCard = ({project}) => {
   return (
     <> 
-        <ProgressCardHeader />
+        <ProgressCardHeader project={project} />
         <Divider variant='fullWidth'></Divider>
         <Stack direction={'row'} pt={2}>
         <ProjectProgress />

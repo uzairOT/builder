@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 
-const BuilderProButton = ({ backgroundColor, variant, Icon,iconProps, children, handleOnClick, marginLeft, padding, fontSize, fontFamily,fontWeight, disabled }) => {
+const BuilderProButton = ({ backgroundColor, variant, Icon,iconProps, children, handleOnClick, marginLeft, padding, fontSize, fontFamily,fontWeight, disabled, visibility }) => {
   const themeStyle = {
     button: {
       backgroundColor: variant === "outlined" ? "" : backgroundColor,
@@ -16,6 +16,7 @@ const BuilderProButton = ({ backgroundColor, variant, Icon,iconProps, children, 
       fontSize: fontSize,
       fontFamily: fontFamily,
       fontWeight: fontWeight,
+      visibility: visibility ? visibility : 'visible',
     },
   };
 

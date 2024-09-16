@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // Define initial state
 const initialState = {
-  phases: [], // Array to store phases
+  phases: [],
+  initialPhases: [] // Array to store phases
 };
 
 // Create slice
@@ -13,6 +14,10 @@ const projectInitialProposalSlice = createSlice({
     // Add a new phase to the array
     addPhase: (state, action) => {
       state.phases[0]=action.payload;
+    },
+    // Add a new phase to the array
+    addInitialPhase: (state, action) => {
+      state.initialPhases[0]=action.payload;
     },
     // Add a line item to a phase
     updatePhase: (state, action) => {
@@ -71,7 +76,7 @@ const projectInitialProposalSlice = createSlice({
 });
 
 // Export actions
-export const {  addPhase, updatePhase, deletePhase, addLineItem, removeLineItem, clearPhases ,updateLineItem } = projectInitialProposalSlice.actions;
+export const {  addPhase, updatePhase, deletePhase, addLineItem, removeLineItem, clearPhases ,updateLineItem, addInitialPhase } = projectInitialProposalSlice.actions;
 
 // Export reducer
 export default projectInitialProposalSlice.reducer;

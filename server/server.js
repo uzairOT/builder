@@ -39,20 +39,20 @@ app.use(errorHandler);
 
 
 // io.on('connection', (socket) => {
-//   console.log(`User connected: ${socket.id}`);
+//   //console.log(`User connected: ${socket.id}`);
 
 
 
 
 //   socket.on('disconnect', () => {
-//     console.log(`User disconnected: ${socket.id}`);
+//     //console.log(`User disconnected: ${socket.id}`);
 //   });
 // });
 
 sequelize
   .authenticate()
   .then(() => {
-    console.log("Database connection has been established successfully.");
+    //console.log("Database connection has been established successfully.");
     // return sequelize.sync();
 
   })
@@ -61,7 +61,7 @@ sequelize
   });
 
 server.listen(8080, () => {
-  console.log("SERVER IS RUNNING");
+  //console.log("SERVER IS RUNNING");
 });
 
 
@@ -77,7 +77,7 @@ server.listen(8080, () => {
 // });
 
 // io.on("connection", (socket) => {
-//   console.log(`User Connected: ${socket.id}`);
+//   //console.log(`User Connected: ${socket.id}`);
 
 //   socket.on("join_room", (data) => {
 //     socket.join(data);
@@ -94,13 +94,13 @@ server.listen(8080, () => {
 
 // app.post("/todos", async (req, res) => {
 //   const userCredentials = req.body;
-//   console.log(userCredentials.email);
+//   //console.log(userCredentials.email);
 //   try {
 //     const todos = await pool.query(
 //       "SELECT * FROM todos WHERE user_email = $1",
 //       [userCredentials.email]
 //     );
-//     console.log(todos.rows);
+//     //console.log(todos.rows);
 //     res.json(todos.rows);
 //   } catch (err) {
 //     console.error(err);
@@ -112,6 +112,6 @@ server.listen(8080, () => {
 // const port = process.env.PORT || 8080;
 
 // server.listen(port, () => {
-//   console.log(`Server is listening on http://localhost:${port}`);
+//   //console.log(`Server is listening on http://localhost:${port}`);
 // });
 

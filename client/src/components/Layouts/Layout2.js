@@ -9,20 +9,20 @@ import {useGetProjectDataQuery} from '../../redux/apis/Project/projectApiSlice';
 
 const Layout2 = () => {
 useEffect(()=>{
-  console.log("layout 2")
+  //console.log("layout 2")
 })
     const params = useParams();
     const {id: currentProjectId} = params;
     const {data} = useGetProjectDataQuery({projectId: currentProjectId});
     // projects.find(project => project.id === parseInt(currentProjectId));
     const selectedProjectId = data?.data;
-    console.log(selectedProjectId, params);
-    console.log("cascasc");
+    //console.log(selectedProjectId, params);
+    //console.log("cascasc");
 
   return (
     <>
-    <Grid container height={"100vh"} backgroundColor={"#eff5ff"} spacing={1}>
-    <Grid item xl={2} lg={3} md={4} sm={12} xs={12} height={{xl:"99vh" ,lg:'99vh', md:'99vh', sm:'80vh', xs:'80vh' }}>
+    <Grid container height={{xl:'100vh', lg:'100vh', md:'100vh', sm:'100%', xs:'100%'}} backgroundColor={"#eff5ff"} spacing={1}>
+    <Grid item xl={2} lg={3} md={4} sm={12} xs={12} height={{xl:"99vh" ,lg:'99vh', md:'99vh', sm:'80vh', xs:'80vh' }} sx={{display:{xs:"none",sm:"block"}}}>
           <Paper sx={{ height: "100%", borderRadius: "14px" }}>
             <Typography sx={themeStyle.title} p={2} pb={1.5}>Projects Dashboard</Typography>
             <ProjectsSidebar />

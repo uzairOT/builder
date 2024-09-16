@@ -8,65 +8,29 @@ import TaskCalenderView from "../../components/Dashboard/TaskCalenderView/TaskCa
 import { getFormattedFiveDayWeather } from "../../services/WeatherService.js";
 import { useGetUserEventsMutation } from "../../redux/apis/usersApiSlice.js";
 import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import { addEvents, setIsLoading, allEvents } from "../../redux/slices/Events/eventsSlice.js";
+import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice.js";
+import { allUserProjects } from "../../redux/slices/Project/userProjectsSlice.js";
+
 
 const Dashboard = () => {
-  const [dailyForecast, setDailyForecast] = useState(null);
-  const [events, setEvents] = useState();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const allEvent = useSelector(allEvents);
+  const forecast = useSelector(getForecast);
+  const userProjects = useSelector(allUserProjects);
+  
   const local = localStorage.getItem('userInfo');
   const currentUser = JSON.parse(local);
-  const { id} = currentUser.user;
-  console.log(id);
-  const[ getEvents ]= useGetUserEventsMutation();
+  const { id } = currentUser.user;
+  
+  const loading = allEvent.isLoading;
+  const error = allEvent.error;
+  const events = allEvent.events;
+  const dailyForecast = forecast.dailyForecast;
+  const forecastIsLoading = forecast.isLoading;
+  const forecastError = forecast.error;
 
 
-  useEffect(() => {
-    const fetchWeather = async () => {
-      setLoading(true);
-      try {
-        const data = await getFormattedFiveDayWeather({
-          lat: "33.6844",
-          lon: "73.0479",
-          units: "Metric",
-        });
-
-        setDailyForecast(data);
-      } catch (error) {
-        setError(error);
-      } 
-    };
-
-    if (!dailyForecast) {
-      fetchWeather();
-    }
-  }, [dailyForecast]); // Run this effect whenever dailyForecast changes or on initial mount
-
-  useEffect(() => {
-    const getFormattedEvents = async () => {
-      if (dailyForecast) {
-        try {
-          const res = await getEvents({ id, dailyForecast });
-          const data = res.data.formattedWorkOrders;
-          const eventArr = data.map((item)=>{
-              return{
-                ...item,
-                start: moment(item.start).toDate(),
-                end: moment(item.end).toDate(),
-              }
-          })
-          console.log("EVENT ARR",eventArr)
-          setEvents(eventArr);
-        } catch (err) {
-          console.log(err);
-        } finally{
-          setLoading(false);
-        }
-      }
-    };
-
-    getFormattedEvents();
-  }, [id, dailyForecast]); // Run this effect whenever userId or dailyForecast changes
 
 
   return (
@@ -74,7 +38,7 @@ const Dashboard = () => {
       <main>
         <Grid sx={themeStyle.dashboard} container pt={1}>
           {/* Profile View */}
-          <Grid item xs={12} sm={4} md={4} xl={2} height={"97vh"}>
+          <Grid item xs={12} sm={4} md={3.5} xl={2}>
             <Paper
               sx={{
                 borderRadius: "0 14px 14px 0",
@@ -90,7 +54,7 @@ const Dashboard = () => {
             item
             xs={12}
             sm={8}
-            md={8}
+            md={8.5}
             xl={7}
             height={"100%"}
             overflow={"hidden"}
@@ -101,8 +65,8 @@ const Dashboard = () => {
               >
                 <WeatherView
                   dailyForecast={dailyForecast}
-                  loading={loading}
-                  error={error}
+                  loading={forecastIsLoading}
+                  error={forecastError}
                 />
               </Paper>
             </Grid>
@@ -112,12 +76,12 @@ const Dashboard = () => {
               container
               sx={{ ...themeStyle.scrollable }}
               overflow={"hidden"}
-              height={"72vh"}
+              height={"66vh"}
               width={"98%"}
               pt={1}
               margin={"auto"}
             >
-              <Grid
+              {Array.isArray(userProjects[0]) ? userProjects[0]?.map((project) => (<Grid
                 item
                 xs={12}
                 sm={12}
@@ -129,12 +93,13 @@ const Dashboard = () => {
                   paddingLeft: "0px ",
                   overflow: "hidden",
                 }}
+                
               >
                 <Paper sx={themeStyle.progressCard} margin={1}>
-                  <ProgressCard />
+                  <ProgressCard project={project} />
                 </Paper>
-              </Grid>
-              <Grid
+              </Grid>) ) : <>Loading..</>}
+              {/* <Grid
                 item
                 xs={12}
                 sm={12}
@@ -197,22 +162,23 @@ const Dashboard = () => {
                 <Paper sx={themeStyle.progressCard} margin={1}>
                   <ProgressCard />
                 </Paper>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
           {/* Calender Tracker View */}
-          <Grid item xs={12} sm={12} md={12} xl={3} pb={1} height={"97vh"}>
+          <Grid item xs={12} sm={12} md={12} xl={3} pb={1} height={"91vh"}>
             <Paper
               sx={{
                 borderRadius: " 14px 0 0 14px",
                 marginBottom: "8px",
                 height: "100%",
+                marginTop:"10px"
               }}
             >
               {loading ? (
                 <>Loading</>
               ) : (
-                <TaskCalenderView dailyForecast={dailyForecast} events={events} />
+                <TaskCalenderView dailyForecast={dailyForecast} eventsArr={events} />
               )}
             </Paper>
           </Grid>
@@ -227,15 +193,15 @@ export default Dashboard;
 const themeStyle = {
   dashboard: {
     backgroundColor: "#eff5ff",
-    height: "100vh",
+    height: {xl:"92vh",lg:"100%",md:"100%"},
   },
   dashboardViews: {
     height: "100%",
   },
   progressCard: {
-    height: "100%",
-    width: "100%",
-    margin: "1px",
+    height: "98%",
+    width: "97%",
+    margin: "8px",
     borderRadius: "14px",
     overflow: "hidden",
   },

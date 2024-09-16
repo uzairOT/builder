@@ -16,7 +16,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Button,
+  Badge,
+  Popper,
 } from "@mui/material";
 import { ReactComponent as BuilderProNavbarLogo } from "./assets/svgs/builder-pro-logo-navbar.svg";
 // import { ReactComponent as BuilderProNavbarShare } from "./assets/svgs/builder-pro-navbar-share.svg";
@@ -29,6 +30,20 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import users from "./assets/data/users.json";
 import LinkIcon from "@mui/icons-material/Link";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import { useDispatch, useSelector } from "react-redux";
+import Notification from "./Notifications";
+import {
+  selectNotifications,
+  selectNotificationsArr,
+  setNotifications,
+  setNotificationsArr,
+} from "../../redux/slices/Notifications/notificationSlice";
+import useSocket from "../../utils/useSocket";
+import {
+  useGetNotificationsQuery,
+  useUpdateWorkOrderReadMutation,
+} from "../../redux/apis/Project/workOrderApiSlice";
 
 const Navbar = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -40,7 +55,35 @@ const Navbar = () => {
   const navigate = useNavigate();
   const openShare = Boolean(open);
   const id = openShare ? "simple-popover" : undefined;
+  const user = useSelector((state) => state.auth.userInfo);
+  const userId = user.user.id;
+  //console.log(user);
+  const dispatch = useDispatch();
+  const { emit, on } = useSocket();
+  const notifications = useSelector(selectNotifications);
+  const notificationsArr = useSelector(selectNotificationsArr);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { data, refetch } = useGetNotificationsQuery(userId);
+  const [expanded, setExpanded] = useState(null);
+  const [updateNotificationRead] = useUpdateWorkOrderReadMutation();
+  dispatch(setNotificationsArr(data?.data));
+  console.log("JOHN NOTIFICATION TEST",anchorEl)
+  const handleClick = async (event) => {
+    if(anchorEl){
+      setAnchorEl(null)
+    } else{
+      setAnchorEl(event.currentTarget);
+      if(notifications?.length > 0){
+        await updateNotificationRead({ userId });
+        await refetch(userId)
+        dispatch(setNotifications([]));
+      }
+    }
+  };
 
+  const openNotification = Boolean(anchorEl);
+  const noti_id = open ? "simple-popper" : undefined;
+  
   const location = useLocation();
   const path = location.pathname.split("/")[1];
 
@@ -61,10 +104,42 @@ const Navbar = () => {
       case "settings":
         setSelectedTab(5);
         break;
-        default:
-          return;
+      default:
+        return;
     }
   }, [path]);
+  // useEffect(() => {
+  //   const socket = socketIOClient(ENDPOINT);
+
+  //   // Join room with user ID
+  //   socket.emit('join', userId);
+
+  //   socket.emit('getNotifications', userId);
+
+  //   socket.on('notifications', (data) => {
+  //     console.log("------------->", data);
+  //     dispatch(setNotifications(data))
+  //   });
+
+  //   socket.on('newNotification', (newNotification) => {
+  //     console.log("New Notification:", newNotification);
+  //     dispatch(setNotifications(prevNotifications => [...prevNotifications, newNotification]));
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    //listen for notifications
+    // console.log('=-------------------> notifications on')
+    emit("join", userId);
+    on("newNotification", (data) => {
+      console.log("newNotification---------->", data);
+      dispatch(setNotifications(data));
+    });
+  }, [on]);
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -90,12 +165,14 @@ const Navbar = () => {
     navbar: {
       background: "#FFF",
       boxShadow: "0px 1px 1.3px 0px rgba(0, 0, 0, 0.05)",
-      padding: "16px 16px 16px 16px",
+      padding: "4px 16px 4px 16px",
+      height: '8vh'
     },
     logo: {
-      width: "130px",
-      height: "69px",
+      width: "110px",
+      height: "50px",
       marginLeft: "28px",
+      marginBottom:"2px"
     },
     tabs: {
       margin: "auto",
@@ -124,6 +201,7 @@ const Navbar = () => {
             <BuilderProNavbarLogo
               aria-label="Builder Pro Logo"
               style={themeStyle.logo}
+              onClick={()=>{setSelectedTab(0)}}
             />
           </Link>
           <Tabs
@@ -142,15 +220,45 @@ const Navbar = () => {
             <Tab label="Subscription" style={themeStyle.getTabColor(4)} />
             <Tab label="Settings" style={themeStyle.getTabColor(5)} />
           </Tabs>
-          <Box display={"flex"}>
-            {/* <BuilderProButton
-              backgroundColor={"#FFAC00"}
-              variant={"contained"}
-              Icon={BuilderProNavbarShare}
-              handleOnClick={handleShare}
+          <Box
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            gap={1}
+          >
+            <IconButton aria-label="bell-notifications" onClick={handleClick}>
+              <Badge
+                badgeContent={notifications?.length}
+                color="error"
+                
+              >
+                <NotificationsIcon sx={{color:'#4C8AB1'}} />
+              </Badge>
+            </IconButton>
+            <Popper
+              style={{ zIndex: "100", backgroundColor:'white', borderRadius: '14px' }}
+              id={noti_id}
+              open={openNotification}
+              anchorEl={anchorEl}
+              placement="bottom-end"
             >
-              {responsiveButton ? "Share" : ""}
-            </BuilderProButton> */}
+              {Array.isArray(notificationsArr) ? (
+                notificationsArr?.map((notification, index) => (
+                  <Notification
+                    key={notification.workOrder_id}
+                    notification={notification}
+                    refetch={refetch}
+                    userId={userId}
+                    index={index}
+                    setExpanded={setExpanded}
+                    expanded={expanded}
+                  ></Notification>
+                ))
+              ) : (
+                <div style={{backgroundColor: 'lightgray', padding:20, borderRadius:'14px',}}>No new notifications available</div>
+              )}
+            </Popper>
+
             <BuilderProButton
               backgroundColor={"#4C8AB1"}
               variant={"outlined"}

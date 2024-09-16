@@ -10,12 +10,16 @@ import TabPanel from '@mui/joy/TabPanel';
 import ChangeOrder from '../Projects/ProjectsDefault/ChangeOrder'
 import BuilderProButton from '../UI/Button/BuilderProButton'
 import ChangeOrderRequest from '../dialogues/ChangeOrderRequest/ChangeOrderRequest'
+import { useNavigate, useParams } from "react-router-dom";
 
 const InnerLayout2 = () => {
+  const navigate = useNavigate();
+  const {id} = useParams();
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
-      setOpen(true);
+      navigate(`/projects/${id}/change-order`);
+      // setOpen(true);
   }
   const handleClose = () => {
     setOpen(false);
@@ -32,7 +36,7 @@ const InnerLayout2 = () => {
         <Outlet />
         {/* Change Order Tab navigation */}
         <Stack flex={1} >
-          <Paper style={{...themeStyle.border, height:'71vh', width: '99%'}}>
+          <Paper style={{...themeStyle.border, height:'80vh', width: '99%'}}>
           {/* First Item of Stack */}
           <Stack>
           <Typography p={3} pb={1} color={'#4C8AB1'}>Change Order</Typography>
@@ -49,18 +53,18 @@ const InnerLayout2 = () => {
               },
               boxShadow: 'none',
             }}>
-            <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:'15px'}}>Pending</Tab>
             <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:'15px'}}>Approved</Tab>
+            <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:'15px'}}>Pending</Tab>
             <Tab sx={{fontFamily: 'Poppins, sans serif', fontSize:'15px'}}>Declined</Tab>
             </TabList>
-            <TabPanel sx={{padding: 0, width:'500px'}} value={0}>
-          <ChangeOrder />
+            <TabPanel sx={{padding: 0, width:{xl:'28.5vw'}}} value={0}>
+          <ChangeOrder value={0} />
             </TabPanel>
-            <TabPanel sx={{padding: 0, width:'500px'}} value={1}>
-          <ChangeOrder />
+            <TabPanel sx={{padding: 0,width:{xl:'28.5vw'}}} value={1}>
+          <ChangeOrder value={1}  />
             </TabPanel>
-            <TabPanel sx={{padding: 0, width:'500px'}} value={2}>
-          <ChangeOrder />
+            <TabPanel sx={{padding: 0, width:{xl:'28.5vw'}}} value={2}>
+          <ChangeOrder value={2}  />
             </TabPanel>
           </Tabs>
           </Stack>
