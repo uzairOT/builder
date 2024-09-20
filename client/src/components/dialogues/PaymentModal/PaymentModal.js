@@ -80,7 +80,7 @@ const PaymentModal = ({
       })
         .unwrap()
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setNewAmount(res.newAmount);
           setDiscounted(res.discount);
           setPercentageOff(res.discountPercentage);
@@ -90,8 +90,8 @@ const PaymentModal = ({
     }
   };
   useEffect(() => {
-    console.log("==============1111111111 ", currentUser);
-    fetch("http://3.135.107.71/payment/config", {
+    // console.log("==============1111111111 ", currentUser);
+    fetch("https://builderbuilder.net/payment/config", {
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -107,7 +107,7 @@ const PaymentModal = ({
   }, []);
 
   useEffect(() => {
-    fetch("http://3.135.107.71/payment/create-payment-intent", {
+    fetch("https://builderbuilder.net/payment/create-payment-intent", {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json",
@@ -162,7 +162,7 @@ const PaymentModal = ({
   }, [currentPakage, paymentType]);
 
   useEffect(() => {
-    console.log(promoCode);
+    // console.log(promoCode);
   }, [promoCode]);
   useEffect(() => {
     if (discounted === "") {
@@ -340,7 +340,7 @@ const PaymentModal = ({
               </b>
               {currentPakage}
             </Typography>
-            <Typography>{amount}$</Typography>
+            <Typography>{amount ?  `$${amount}`:''}</Typography>
 
             {/* <Typography fontSize={'14px'} color={'tomato'}>{discounted ? ` -${((discounted/amount) *100)}% off` : ''}</Typography> */}
 
@@ -389,6 +389,7 @@ const PaymentModal = ({
                 orgName={currentUser.companyName}
                 orgId={currentUser?.organization?.organizationId}
                 userId={currentUser.id}
+                paymentType={paymentType}
               />
             </Elements>
           )}

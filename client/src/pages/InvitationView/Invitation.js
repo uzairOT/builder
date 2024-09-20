@@ -58,7 +58,7 @@ const Invitation = () => {
   // const role = userRole;
   const [checkUser] = useCheckUserOnInvitationMutation();
   const params = { invitationId };
-  console.log(params);
+  // console.log(params);
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
 
@@ -118,7 +118,7 @@ const Invitation = () => {
   const timeoutRef = useRef(); // Store timeout ID
   const memoizedCheckUser = useCallback(async () => {
     const res = await checkUser(params);
-    console.log(res); // Log response
+    // console.log(res); // Log response
     if (res?.data?.success) {
       window.location.href = "/login";
     } else {
@@ -145,7 +145,7 @@ const Invitation = () => {
 
     try {
       // Make POST request using Axios
-      await axios.post("http://3.135.107.71/auth/addme", data, {
+      await axios.post("https://builderbuilder.net/auth/addme", data, {
         headers: {
           "Content-Type": "application/json",
           // Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -197,9 +197,9 @@ const Invitation = () => {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
 
-  useEffect(() => {
-    console.log(values);
-  }, [values]);
+  // useEffect(() => {
+  //   console.log(values);
+  // }, [values]);
   return (
     <Grid container sx={firstGrid}>
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>

@@ -21,12 +21,12 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 const ProjectInfo = ({ data }) => {
-  console.log(data);
+  // console.log(data);
   const totalCompletedLineItems = data?.totalCompletedLineItems;
   const totalLineItems = data?.totalLineItems;
   const activeWorkOrders = data?.workOrders;
   const percentage = Math.round((parseInt(totalCompletedLineItems) / parseInt(totalLineItems)) * 100);
-  console.log(percentage)
+  // console.log(percentage)
   return (
     <Stack height={"205px"} >
       <Typography sx={themeStyle.title}>Burrow - Home Build</Typography>

@@ -24,7 +24,7 @@ const OverBudgetPieChart = () => {
         projectId,
       }).unwrap();
       setProjects(result);
-      console.log("Success GetProjectDeadlineStats:", result);
+      // console.log("Success GetProjectDeadlineStats:", result);
     } catch (err) {
       console.error("Failed to fetch reports stats:", err);
     }

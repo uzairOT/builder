@@ -16,7 +16,7 @@ const DateAndTime = () => {
         {currentDate.toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
-          hour12: false,
+          hour12: true,
         })}
       </Typography>
       <Typography variant="subtitle1" sx={themeStyle.date}>
@@ -33,16 +33,16 @@ const DateAndTime = () => {
 export default DateAndTime;
 
 const themeStyle = {
-  contianer: { paddingBottom: 4,paddingLeft:0},
+  contianer: { paddingBottom: 4, paddingLeft: 0 },
   time: {
-    fontSize: { xs: "71px", sm:'50px', md: "50px",lg:'58px',  xl: "71px" },
+    fontSize: { xs: "58px", sm: '40px', md: "40px", lg: '42px', xl: "58px" },
     color: "#FFAC00",
     fontFamily: 'var(--main-font-family)',
     fontWeight: "300",
   },
   date: {
-    paddingLeft:2,
-    fontSize: { xs: "16px", sm:'14px', md: "14px",lg:'16px' , xl: "18px" },
+    // paddingLeft: 2,
+    fontSize: { xs: "16px", sm: '14px', md: "14px", lg: '16px', xl: "18px" },
     color: "#4C8AB1",
     fontFamily: 'var(--main-font-family)',
     fontWeight: "400",

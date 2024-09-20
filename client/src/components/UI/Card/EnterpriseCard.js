@@ -44,16 +44,16 @@ const EnterpriseCard = ({
   };
 
   const handleClick = () => {
-    console.log(
-      "Cost:",
-      paymentType === "Monthly" ? plan.monthCost : plan.yearCost
-    );
+    // console.log(
+    //   "Cost:",
+    //   paymentType === "Monthly" ? plan.monthCost : plan.yearCost
+    // );
     setCurrentPlan(paymentType === "Monthly" ? plan.monthCost : plan.yearCost);
     setCurrentPakage(plan.name);
   };
 
   const handlePrevious = () => {
-    console.log("first");
+    // console.log("first");
   };
 
   const generateList = (renderItem) => {

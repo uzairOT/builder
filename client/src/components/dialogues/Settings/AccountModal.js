@@ -96,7 +96,7 @@ const AccountModal = ({
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://3.135.107.71/project/file",
+          "https://builderbuilder.net/project/file",
           {
             fileName,
             fileType,
@@ -129,7 +129,7 @@ const AccountModal = ({
           userId: userId,
           accountImage: uploadedFileUrl,
         });
-        console.log(res);
+        // console.log(res);
         if (res?.error?.status === "FETCH_ERROR") {
           throw new Error("Network response was not OK");
         }

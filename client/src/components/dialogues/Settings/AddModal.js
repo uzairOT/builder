@@ -59,7 +59,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
     (state) => state.auth.userInfo.user.organization.organizationId
   );
 
-  console.log(data);
+  // console.log(data);
   const projectNames = data
     ? data?.projects.map((project) => ({
         id: project.id,
@@ -76,7 +76,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://3.135.107.71/project/file",
+          "https://builderbuilder.net/project/file",
           {
             fileName,
             fileType,
@@ -111,8 +111,8 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
       };
       //console.log(post);
       const res = await assignRolePost(post).unwrap();
-      console.log(res);
-      toast.info("Email Invitation sent!");
+      // console.log(res);
+      toast.info("Email invitation sent!");
       setRefreshData(!refreshData);
       action.resetForm();
       setImage(null);

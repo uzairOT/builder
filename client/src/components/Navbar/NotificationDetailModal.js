@@ -73,7 +73,6 @@ const NotificationDetailModal = ({
   const userId = currentUser.user.id;
   console.log(data1);
   const [assignedCheckboxes, setAssignedCheckboxes] = useState([]);
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -91,7 +90,7 @@ const NotificationDetailModal = ({
         workOrder_id: notification.WorkOrderReq.id,
         status: "complete",
       }).unwrap();
-      toast.success("Work Order Completed!");
+      toast.success("Work order completed!");
       handleClose();
       dispatch(fetchEvents({ userId: userId, dailyForecast: dailyForecast }));
     } catch (err) {
@@ -104,7 +103,7 @@ const NotificationDetailModal = ({
       setDisable(true);
       try {
         const response = await axios.post(
-          "http://3.135.107.71/project/getUserProjectRole",
+          "https://builderbuilder.net/project/getUserProjectRole",
           {
             projectId: notification.WorkOrderReq.projectId,
             userId: userId,
@@ -122,7 +121,7 @@ const NotificationDetailModal = ({
         ) {
           setDisable(false);
         }
-        console.log(response);
+        // console.log(response);
       } catch (error) {
         console.log(error);
       }
@@ -277,7 +276,7 @@ const NotificationDetailModal = ({
                     }}
                   >
                     {notification?.WorkOrderReq?.changeOrder &&
-                    data1?.changeOrderItems?.length > 1 ? (
+                      data1?.changeOrderItems?.length > 1 ? (
                       <>
                         {data1?.changeOrderItems?.map((lineItem) => (
                           <ListItem
@@ -306,6 +305,14 @@ const NotificationDetailModal = ({
                             >
                               {lineItem?.title}
                             </label>
+                            <IconButton
+                              disabled
+                              key={`delete-${lineItem.id}`}
+                              edge="end"
+                              aria-label="delete"
+                            >
+                              {lineItem.shouldDelete && <AutoDeleteIcon sx={{ color: "red", fontSize:"16px" }}  />}
+                            </IconButton>
                           </ListItem>
                         ))}
                       </>
@@ -391,7 +398,7 @@ const NotificationDetailModal = ({
                               value={moment(
                                 notification.WorkOrderReq.start_day
                               ).utc()}
-                              format="MMM D, YYYY, h:mm a"
+                              format="MM/DD/YYYY h:mm a"
                               viewRenderers={{
                                 hours: renderTimeViewClock,
                                 minutes: renderTimeViewClock,
@@ -434,7 +441,7 @@ const NotificationDetailModal = ({
                               value={moment(
                                 notification.WorkOrderReq.end_day
                               ).utc()}
-                              format="MMM D, YYYY, h:mm a"
+                              format="MM/DD/YYYY h:mm a"
                               viewRenderers={{
                                 hours: renderTimeViewClock,
                                 minutes: renderTimeViewClock,
@@ -523,13 +530,13 @@ const NotificationDetailModal = ({
                 <Box sx={themeStyle.avatarBox}>
                   <Stack direction={"row"} pr={1}>
                     {data?.team?.map((user, idx) => {
-                      console.log(notification.WorkOrderReq.team);
-                      console.log(String(user.userId));
-                      console.log(
-                        notification.WorkOrderReq.team.includes(
-                          `${user.userId}`
-                        )
-                      );
+                      // console.log(notification.WorkOrderReq.team);
+                      // console.log(String(user.userId));
+                      // console.log(
+                      //   notification.WorkOrderReq.team.includes(
+                      //     `${user.userId}`
+                      //   )
+                      // );
 
                       if (user.userId === notification.WorkOrderReq.createdby) {
                         return <></>;

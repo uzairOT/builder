@@ -9,6 +9,7 @@ import {
   Stack,
   Modal,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import "../../App.css";
 import AddImage from "../dialogues/AddImage/AddImage";
@@ -33,6 +34,7 @@ function Permit({ view, type }) {
   const [RecentfileUrls, setRecentFilesUrls] = useState([]);
   const [OlderfileUrls, setOlderFilesUrls] = useState([]);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [modalUrl, setModalUrl] = useState("");
   const [showDelete, setShowDelete] = useState(false);
@@ -48,8 +50,9 @@ function Permit({ view, type }) {
   const { id } = useParams();
   const fetchData = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.get(
-        `http://3.135.107.71/project/files/${type}/${id}`,
+        `https://builderbuilder.net/project/files/${type}/${id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -59,6 +62,7 @@ function Permit({ view, type }) {
       );
       //replace 123 with the project id
       // Assuming the response data is an array of file URLs
+      setIsLoading(false)
       setRecentFilesUrls(response.data.recentFiles);
       setOlderFilesUrls(response.data.olderFiles);
     } catch (error) {
@@ -75,8 +79,8 @@ function Permit({ view, type }) {
       const res = await deleteProjectFile({
         fileId: file.id,
         projectId: file.projectId,
-        });
-        toast.success("File Successfully deleted");
+      });
+      toast.success("File successfully deleted");
       await fetchData();
     } catch (error) {
       console.log("Something went wrong!");
@@ -87,37 +91,37 @@ function Permit({ view, type }) {
     fetchData();
   }, [id]);
   return (
-    <div style={{ width: "100%", borderRadius: "14px", marginBottom:'14px' }}>
+    <div style={{ width: "100%", borderRadius: "14px", marginBottom: '14px' }}>
       <Box sx={themeStyle.titleBox}>
         <Typography sx={themeStyle.titleTypo}>
           {view} ({RecentfileUrls?.length} items){" "}
         </Typography>
         <Stack
-          direction={{sm:"row", xs:"column"}}
+          direction={{ sm: "row", xs: "column" }}
           gap={2}
           justifyContent={"center"}
           alignItems={"center"}
         >
           <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>
-            Add 
+            Add
           </Button>
-          
-            <Button
+
+          <Button
             variant="outlined"
             sx={{ ...themeStyle.buttonStyle, }}
-              fontSize={"12px"}
-              style={{
-                color: "white",
-                backgroundColor:'#FFAC00',
-                // fontWeight:'500'
-                // textDecoration: "underline",
-                // opacity: showDelete ? "" : "0.7",
-              }}
-              onClick={handleSetShowDelete}
-            >
-              Delete
-            </Button>
-        
+            fontSize={"12px"}
+            style={{
+              color: "white",
+              backgroundColor: '#FFAC00',
+              // fontWeight:'500'
+              // textDecoration: "underline",
+              // opacity: showDelete ? "" : "0.7",
+            }}
+            onClick={handleSetShowDelete}
+          >
+            Delete
+          </Button>
+
         </Stack>
       </Box>
       <Box
@@ -152,7 +156,7 @@ function Permit({ view, type }) {
             maxHeight={"500px"}
             sx={scrollable}
           >
-            {RecentfileUrls?.length < 1 ? (
+            {(RecentfileUrls?.length < 1 || isLoading) ? (
               <>
                 <Box
                   display="flex"
@@ -161,10 +165,12 @@ function Permit({ view, type }) {
                   // height="100%" 
                   textAlign="center"
                   padding="2rem"
+                  gap={2}
                 >
                   <Typography variant="body1" color="textSecondary">
                     No images or files found.
                   </Typography>
+                  {isLoading && <CircularProgress size={'16px'} />}
                 </Box>
               </>
             ) : (
@@ -173,7 +179,7 @@ function Permit({ view, type }) {
                   return <></>;
                 }
                 const fileType = url.fileUrl.split(".").pop().toLowerCase();
-                const fileName = url.fileUrl.split("/").pop().toLowerCase();
+                // const fileName = url.fileUrl.split("/").pop().toLowerCase();
                 const isImage = [
                   "jpg",
                   "jpeg",
@@ -209,6 +215,7 @@ function Permit({ view, type }) {
                           <DeleteIcon sx={{ color: "#EC3710" }} />
                         </IconButton>
                       </Box>
+                      <Tooltip title={url?.fileName || ''} placement="top">
                       <img
                         key={index}
                         alt={`Avatar ${index + 1}`}
@@ -222,6 +229,7 @@ function Permit({ view, type }) {
                         }}
                         download="image"
                       />
+                      </Tooltip>
                       <Typography
                         ml={"0.5rem"}
                         fontFamily={'var(--main-font-family)'}
@@ -240,7 +248,7 @@ function Permit({ view, type }) {
                     <Box
                       onClick={() => {
                         if (showDelete) return false;
-                        handleDownload(url.fileUrl, fileName, setIsDownloading);
+                        handleDownload(url.fileUrl, url.fileName, setIsDownloading);
                       }}
                       style={{ cursor: "pointer" }}
                     >
@@ -259,6 +267,7 @@ function Permit({ view, type }) {
                           <DeleteIcon sx={{ color: "#EC3710" }} />
                         </IconButton>
                       </Box>
+                      <Tooltip title={url?.fileName || ''} placement="top">
                       <img
                         src={filePlaceHolder}
                         alt={`${fileType.toUpperCase()} File`}
@@ -271,6 +280,7 @@ function Permit({ view, type }) {
                             : "0rem 0.5rem 0rem 0.5rem",
                         }}
                       />
+                      </Tooltip>
                       <Typography
                         ml={"0.5rem"}
                         fontFamily={'var(--main-font-family)'}
@@ -410,12 +420,12 @@ const themeStyle = {
   titleTypo: {
     color: "#FFFFFF",
     fontFamily: 'var(--main-font-family)',
-    fontSize: {xl:"1.3rem", lg:15,md:"1.3rem",xs:"1.3rem",},
-    margin: {sm:"1rem 2rem", xs:"2rem"},
+    fontSize: { xl: "1.3rem", lg: 15, md: "1.3rem", xs: "1.3rem", },
+    margin: { sm: "1rem 2rem", xs: "2rem" },
   },
   buttonStyle: {
     padding: "0.7rem 0.1rem",
-    fontSize: {xl:"0.9rem",lg:"0.8rem",md:"0.9rem",sm:"0.9rem",xs:"0.9rem",},
+    fontSize: { xl: "0.9rem", lg: "0.8rem", md: "0.9rem", sm: "0.9rem", xs: "0.9rem", },
     marginRight: "1rem",
     backgroundColor: "#FFFFFF",
     color: "#4C8AB1",

@@ -17,10 +17,10 @@ const MonitoringFinances = ({projectId, userId}) => {
         projectId,
       }).unwrap();
       setProjects(result);
-      console.log(
-        "Success useGetTotalProjectProfitMarginMutation Results Results Results:",
-        result
-      );
+      // console.log(
+      //   "Success useGetTotalProjectProfitMarginMutation Results Results Results:",
+      //   result
+      // );
     } catch (err) {
       console.error("Failed to fetch reports stats:", err);
     }
@@ -30,7 +30,7 @@ const MonitoringFinances = ({projectId, userId}) => {
     fetchProfitStats();
   }, []);
   const phase = data?.projects[0]?.Phases
-  console.log(phase)
+  // console.log(phase)
     const cost = 754245;
         // Format the cost to appear as $7,542.45
         const formattedCost = (cost).toLocaleString('en-US', {

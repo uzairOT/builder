@@ -142,7 +142,7 @@ function UpdateMasterLine({
   //     const getData = setTimeout(() => {
   //       axios
   //         .get(
-  //           `http://3.135.107.71/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`,
+  //           `https://builderbuilder.net/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`,
   //           {
   //             headers: {
   //               Authorization: `Bearer ${userInfo.token}`, // Add authorization header
@@ -273,7 +273,7 @@ function UpdateMasterLine({
   //   }
   // };
   const handleSetUnit = async (selectedOption, actionType) => {
-    console.log(actionType);
+    // console.log(actionType);
     if (
       selectedOption === null ||
       selectedOption?.value === MasterLineItem?.unit
@@ -283,8 +283,8 @@ function UpdateMasterLine({
     const existingUnit = Array.isArray(data)
       ? data?.allUnits?.some((unit) => unit?.value === selectedOption?.value)
       : [];
-    console.log(selectedOption);
-    console.log(existingUnit);
+    // console.log(selectedOption);
+    // console.log(existingUnit);
     if (existingUnit) {
       setUnit(selectedOption.value);
     } else {
@@ -333,7 +333,7 @@ function UpdateMasterLine({
       });
       setTotalCost(actualCost + margin);
     } else {
-      toast.error(`Add Actual Cost`, {
+      toast.error(`Add actual cost`, {
         toastId: "percentageValidation",
       });
       setPercentage(0);
@@ -396,7 +396,7 @@ function UpdateMasterLine({
   const handleMarginAndPercentageChange = () => {
     const margin = parseFloat(totalCost - total);
     const percentage = parseFloat((margin / total) * 100);
-    console.log(total);
+    // console.log(total);
     setMargin(margin);
     setPercentage(percentage);
   };
@@ -414,7 +414,7 @@ function UpdateMasterLine({
     }
   }, [MasterLineItem]);
 
-  console.log(formData);
+  // console.log(formData);
   return (
     <div className="App">
       <>

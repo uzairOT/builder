@@ -24,11 +24,11 @@ import { Close } from "@mui/icons-material";
 import { toast } from "react-toastify";
 
 const EditUnitModal = ({ open, onClose, unit, refetch, userId }) => {
-  console.log(unit);
+  // console.log(unit);
 
   const [editUnit] = useEditUnitMutation();
   const onSubmit = async (values, action) => {
-    console.log(unit);
+    // console.log(unit);
     const put = {
       ...unit,
       label: values.label ? values.label.toLowerCase() : "",
@@ -36,7 +36,7 @@ const EditUnitModal = ({ open, onClose, unit, refetch, userId }) => {
     };
     const res = await editUnit(put);
     await refetch({ userId: userId });
-    console.log(res);
+    // console.log(res);
     toast.success("Unit updated successfully!");
   };
   const {

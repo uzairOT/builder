@@ -38,7 +38,7 @@ const dispatch=useDispatch()
         setStep(step - 1);
     };
     useEffect(() => {
-        console.log('step: ', step);
+        // console.log('step: ', step);
         localStorage.setItem('step', step);
         const step1 = parseInt(localStorage.getItem('step'), 10); // Convert to number
         setStep(step1);

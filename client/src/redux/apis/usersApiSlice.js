@@ -1,8 +1,8 @@
 import { apiSlice } from './apiSlice';
-const USERS_URL = 'http://3.135.107.71/user';
-const AUTH_URL = 'http://3.135.107.71/auth';
-const PROJECTS_URL = "http://3.135.107.71/project";
-const API_URL="http://3.135.107.71/api/";
+const USERS_URL = 'https://builderbuilder.net/user';
+const AUTH_URL = 'https://builderbuilder.net/auth';
+const PROJECTS_URL = "https://builderbuilder.net/project";
+const API_URL="https://builderbuilder.net/api/";
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -39,7 +39,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     assignProject: builder.mutation({
       query: (data) => ({
-        url: `http://3.135.107.71/user/assignproject`,
+        url: `https://builderbuilder.net/user/assignproject`,
         method: "POST",
         body: data,
       }),
@@ -47,7 +47,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
     editAssignProject: builder.mutation({
       query: (data) => ({
-        url: `http://3.135.107.71/user/editAssignproject`,
+        url: `https://builderbuilder.net/user/editAssignproject`,
         method: "POST",
         body: data,
       }),

@@ -65,6 +65,11 @@ export const signupSchemea = yup.object().shape({
     
     
 });
+export const googleSchemea = yup.object().shape({
+  company: yup.string()
+    .required('Company name is required')
+    .trim(),    
+});
 export const unitSchema = yup.object().shape({
     label: yup.string().required(),
 

@@ -152,9 +152,9 @@ function WorkOrder({
                   </TableCell>
                   <TableCell sx={tableCellValueStyle}>{item.total}</TableCell>
                   <TableCell sx={{...tableCellValueStyle, whiteSpace:'nowrap'}}>
-                    {moment(item.start_day).format('MMM D, YYYY, h:mm a')}
+                    {moment(item.start_day).format('MM/DD/YYYY, h:mm a')}
                   </TableCell>
-                  <TableCell sx={{...tableCellValueStyle, whiteSpace:'nowrap'}}>{moment(item.end_day).format('MMM D, YYYY, h:mm a')}</TableCell>
+                  <TableCell sx={{...tableCellValueStyle, whiteSpace:'nowrap'}}>{moment(item.end_day).format('MM/DD/YYYY, h:mm a')}</TableCell>
                   <TableCell sx={tableCellValueStyle}>
                   {item.version> 1 ? `change order ${item.status}` : item.status}
                     {/* <Button
@@ -196,7 +196,7 @@ function WorkOrder({
                     ) : (
                       <NotificationDetailModal
                         notification={data1}
-                        
+                        data1={data1}
                         open={open}
                         setOpen={setOpen}
                       />

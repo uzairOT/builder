@@ -65,7 +65,7 @@ function AmountTable({
     setAddModalOpen(true);
   };
   const handleDelete = async (row) => {
-    console.log(row);
+    // console.log(row);
     if (row.id) {
       try {
         const res = await deleteUserAccount({ id: row.id });
@@ -73,7 +73,7 @@ function AmountTable({
         console.log(error);
       }
     } else {
-      toast.info("Default Unit can't be deleted");
+      toast.info("Default unit can't be deleted");
     }
   };
   return (

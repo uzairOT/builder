@@ -31,7 +31,7 @@ const VerticalTabs = ({ notes, handleSelectedButton , selectedButton}) => {
                  fontSize={'12px'}
                  fontWeight={'200'}
                  color={'#202227'}
-                textAlign={"left"}>{moment(note?.createdAt).format('MMM, D, YYYY HH:mm a')}</Typography>
+                textAlign={"left"}>{moment(note?.createdAt).format('MM/DD/YYYY HH:mm a')}</Typography>
               </Stack>
             </Button>
           );

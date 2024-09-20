@@ -127,7 +127,7 @@ function ColorPickerElement({
       }
 
       if (Object.keys(updatedPhaseData).length === 0) {
-        toast.info("Same Phase Data.");
+        toast.info("Same phase data.");
         return;
       }
 

@@ -15,7 +15,7 @@ function RecentImagesAndComments() {
     const fetchData = async () => {
         try {
           const response = await axios.get(
-            `http://3.135.107.71/project/files/image/${id}`,
+            `https://builderbuilder.net/project/files/image/${id}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -35,7 +35,7 @@ function RecentImagesAndComments() {
       useEffect(() => {
         fetchData();
       }, [id]);
-      console.log(recentFilesUrls);
+    //   console.log(recentFilesUrls);
       const slicedUrls = recentFilesUrls?.recentFiles?.slice(0, 4);
     return (
         <Box display={{lg:'initial', xs:'none'}}>

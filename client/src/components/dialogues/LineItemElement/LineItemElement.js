@@ -148,7 +148,7 @@ function AddLineElement({
   const changeOrderSelected = useSelector(
     (state) => state.projectInitialProposal.changeOrderLineItems
   );
-  console.log("Change Order Selected", changeOrderSelected);
+  // console.log("Change Order Selected", changeOrderSelected);
 
   const formData = {
     phaseName,
@@ -166,7 +166,7 @@ function AddLineElement({
     const getData = setTimeout(() => {
       axios
         .get(
-          `http://3.135.107.71/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`,
+          `https://builderbuilder.net/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`,
           {
             headers: {
               Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -458,7 +458,7 @@ function AddLineElement({
       }
       try {
         const response = await addPhaseLine(newLineItem);
-        console.log(response);
+        // console.log(response);s
         if (
           response?.error?.data?.message ===
           "LineItem already exists against this phase!"
@@ -467,7 +467,7 @@ function AddLineElement({
           handleAddClose();
           return;
         }
-        toast.success("Line Item Added successfully");
+        // toast.success("Line Item added successfully");
         if (InitialProposalView) {
           dispatch(addInitialPhase(response?.data?.allPhases));
         } else {
@@ -511,10 +511,10 @@ function AddLineElement({
   };
 
   const handleMarginAndPercentageChange = (value) => {
-    console.log("run");
+    // console.log("run");
     const margin = parseFloat(value - total);
     const percentage = parseFloat((margin / total) * 100);
-    console.log(total);
+    // console.log(total);
     setMargin(margin);
     setPercentage(percentage);
   };
@@ -614,17 +614,17 @@ function AddLineElement({
   //   }
   // }, [isSuccess, data]);
   const handleSetUnit = async (selectedOption, actionType) => {
-    console.log(actionType);
-    console.log(selectedOption);
+    // console.log(actionType);
+    // console.log(selectedOption);
     if (selectedOption === null || selectedOption?.value === LineItem?.unit) {
       return;
     }
     const existingUnit = Array.isArray(data?.allUnits)
       ? data?.allUnits?.some((unit) => unit?.value === selectedOption?.value)
       : null;
-    console.log(existingUnit);
-    console.log(selectedOption);
-    console.log(data);
+    // console.log(existingUnit);
+    // console.log(selectedOption);
+    // console.log(data);
     if (existingUnit) {
       setUnit(selectedOption.value);
     } else if (selectedOption.value) {
@@ -649,8 +649,8 @@ function AddLineElement({
   // }
   const setUnitOnAutoComplete = (unit) => {
     const obj = findValueInData(unit);
-    console.log(obj);
-    console.log(creatableRef);
+    // console.log(obj);
+    // console.log(creatableRef);
     creatableRef.current.setValue(obj);
   };
 
@@ -658,14 +658,14 @@ function AddLineElement({
     if (LineItem) {
       const obj = findValueInData(LineItem.unit);
       const unit = creatableRef.current?.props.value;
-      console.log(obj);
-      console.log(unit);
-      console.log(LineItem?.unit);
+      // console.log(obj);
+      // console.log(unit);
+      // console.log(LineItem?.unit);
       if (unit?.value === LineItem?.unit) {
         return;
       } else if (obj) {
         creatableRef.current?.setValue(obj);
-        console.log(creatableRef.current);
+        // console.log(creatableRef.current);
       } else {
         creatableRef.current?.setValue(LineItem.unit);
       }
@@ -685,7 +685,7 @@ function AddLineElement({
         return percentage ? percentage : 0;
       });
     } else {
-      toast.error(`Add Client Cost`);
+      toast.error(`Add client cost`);
       setMargin(0);
     }
   };
@@ -703,7 +703,7 @@ function AddLineElement({
       });
       setTotalCost(actualCost + margin);
     } else {
-      toast.error(`Add Actual Cost`, {
+      toast.error(`Add actual cost`, {
         toastId: "percentageValidation",
       });
       setPercentage(0);

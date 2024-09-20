@@ -236,6 +236,8 @@ const styles = {
     fontFamily: "var(--main-font-family)",
     fontWeight: 400,
     fontSize: { lg: "16px", xs: "14px" },
+    textAlign: 'justify',
+    paddingX: {md:0, xs:4}
   },
   demoButton: {
     color: "white",

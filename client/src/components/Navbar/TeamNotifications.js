@@ -24,7 +24,7 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
       console.log(error);
     }
   };
-  console.log(teamNotification);
+  // console.log(teamNotification);
   return (
     <>
       <Accordion disableGutters>

@@ -38,11 +38,11 @@ const InvoicePayment = () => {
   const handleChange = (event) => {
     setSelectedAccountId(event.target.value);
   };
-  console.log(selectedAccountId);
+  // console.log(selectedAccountId);
   const handleNext = async () => {
     if (selectedAccountId) {
       // Call the appropriate API when payment succeeds
-      const apiUrl = "http://3.135.107.71/invoice/payInvoice";
+      const apiUrl = "https://builderbuilder.net/invoice/payInvoice";
 
       const apiPayload = {
         invoiceId,
@@ -55,7 +55,7 @@ const InvoicePayment = () => {
           selectedAccountId === "Cash"
             ? ""
             : data?.accounts[selectedAccountId]?.accountName,
-        paymentMethod: selectedAccountId === "Cash" ? "Cash" : "Bank",
+        paymentMethod: selectedAccountId === "Cash" ? "Cash" : data?.accounts[selectedAccountId]?.accountName,
       };
 
       // Call the API with the payload when payment succeeds
@@ -68,19 +68,19 @@ const InvoicePayment = () => {
           }),
           body: JSON.stringify(apiPayload),
         });
-        console.log(response);
+        // console.log(response);
         if (response.ok) {
           setMessage("Complete");
           const responseData = await response.json();
-          console.log("API Response:", responseData);
+          // console.log("API Response:", responseData);
           window.location.href = `${window.location.origin}/completion`;
         } else {
           const responseData = await response.json();
           setMessage("Payment can't be completed");
-          console.log(
-            "API Response Error:-=-=-=-=-=-==-=",
-            responseData?.message
-          );
+          // console.log(
+          //   "API Response Error:-=-=-=-=-=-==-=",
+          //   responseData?.message
+          // );
           toast.warning(`${responseData?.message}`);
         }
       } catch (apiError) {
@@ -90,14 +90,14 @@ const InvoicePayment = () => {
     }
   };
 
-  console.log(adminId);
+  // console.log(adminId);
 
   useEffect(() => {
     fetchUserCoupons(getUserAccounts, { userId: adminId });
   }, []);
 
   useEffect(() => {
-    fetch("http://3.135.107.71/payment/create-payment-intent", {
+    fetch("https://builderbuilder.net/payment/create-payment-intent", {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json",
@@ -111,7 +111,7 @@ const InvoicePayment = () => {
   }, [totalAmount]);
 
   useEffect(() => {
-    fetch("http://3.135.107.71/payment/config", {
+    fetch("https://builderbuilder.net/payment/config", {
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: `Bearer ${getTokenFromLocalStorage()}`,

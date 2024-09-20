@@ -1,6 +1,6 @@
 import { apiSlice } from "../apiSlice";
 
-const REPORTS_URL = "http://3.135.107.71/report";
+const REPORTS_URL = "https://builderbuilder.net/report";
 
 const reportsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

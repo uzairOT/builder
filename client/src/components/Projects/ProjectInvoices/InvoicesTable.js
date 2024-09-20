@@ -13,6 +13,7 @@ import {
   Select,
   MenuItem,
   Input,
+  Tooltip,
 } from "@mui/material";
 import Button from "../../UI/CustomButton";
 import ChangeOrder from "../ProjectsDefault/ChangeOrder";
@@ -87,12 +88,17 @@ function InvoicesTable({
   const [invoicePaid, { isLoading }] = usePaidInvoiceMutation();
   const [invoiceData, setInvoiceData] = useState(null);
   const userRole = useSelector(getUserRoleFromRedux);
+  const userInfo = useSelector(state =>  state.auth.userInfo);
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleOnClick = async (id) => {
+  const handleOnClick = async (id, adminId) => {
     try {
+      if(adminId !== userInfo.user.id){
+        toast.warning("Only the person who generated the invoice can perform this action.");
+        return; // Exit the function to prevent further execution
+      }
       const res = await invoicePaid({ invoiceId: id });
       await refetch();
     } catch (error) {
@@ -135,7 +141,9 @@ function InvoicesTable({
               <TableCell sx={tableCellStyle}>Invoice Due</TableCell>
               <TableCell sx={tableCellStyle}>Invoice Status</TableCell>
               <TableCell sx={tableCellStyle}>Invoice Bill</TableCell>
-              {!paidInvoices && !(userRole.userRole === "client") && (
+              <TableCell sx={tableCellStyle}>Payment Method</TableCell>
+              <TableCell sx={tableCellStyle}>Invoice Notes</TableCell>
+              {!paidInvoices && (
                 <TableCell sx={tableCellStyle}>Invoice Paid</TableCell>
               )}
               <TableCell sx={tableCellStyle}>Invoice Details</TableCell>
@@ -156,13 +164,13 @@ function InvoicesTable({
                     {item.InvoiceNumber}
                   </TableCell>
                   <TableCell sx={tableCellValueStyle}>
-                    {moment(item.InvoiceDate).format("MMM D, YYYY, h:mm a")}
+                    {moment(item.InvoiceDate).format("MM/DD/YYYY h:mm a")}
                   </TableCell>
                   {/* <TableCell sx={tableCellValueStyle}>{item.LineItem.unit}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.LineItem.margin}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.LineItem.projectProfile}</TableCell> */}
                   <TableCell sx={tableCellValueStyle}>
-                    {moment(item.InvoiceDueDate).format("MMM D, YYYY, h:mm a")}
+                    {moment(item.InvoiceDueDate).format("MM/DD/YYYY h:mm a")}
                   </TableCell>
                   <TableCell sx={tableCellValueStyle}>
                     {item.InvoiceStatus}
@@ -170,7 +178,16 @@ function InvoicesTable({
                   <TableCell sx={tableCellValueStyle}>
                     {item.InvoiceBill}
                   </TableCell>
-                  {!paidInvoices && !(userRole.userRole === "client") && (
+                  <TableCell sx={tableCellValueStyle}>
+                    {item?.ProjectPayments[0]?.PaymentMethod ? item?.ProjectPayments[0]?.PaymentMethod : "-"}
+                  </TableCell>
+                  {/* Apply the Tooltip directly to a specific cell */}
+                  <TableCell sx={tableCellValueStyle}>
+                    <Tooltip title={item?.notes || "No notes available"}>
+                      <span>{item?.notes ? "View Notes" : "-"}</span>
+                    </Tooltip>
+                  </TableCell>
+                  {!paidInvoices && (
                     <TableCell sx={TableButtonsStyle}>
                       <BuilderProButton
                         variant={"contained"}
@@ -178,7 +195,7 @@ function InvoicesTable({
                         fontSize={"11px"}
                         fontFamily={"var(--main-font-family)"}
                         marginLeft={"5px"}
-                        handleOnClick={() => handleOnClick(item.id)}
+                        handleOnClick={() => handleOnClick(item.id, item.Admin.id)}
                         disabled={isLoading}
                       >
                         Paid

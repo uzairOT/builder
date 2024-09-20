@@ -63,7 +63,7 @@ function Footer({ onNextStep, projectId }) {
   };
   const handleDone = async () => {
     if (phases[0]?.length < 1) {
-      toast.error("Please add atleast one phase");
+      toast.error("Please add at least one phase");
       return;
     }
     try {
@@ -75,12 +75,14 @@ function Footer({ onNextStep, projectId }) {
       dispatch(
         setCredentials({ ...userdata, incompleteProject: res?.data.data })
       );
-      dispatch(addPhase([]));
+      toast.success("Project added successfully!");
       dispatch(setIsSaveAs(false));
       dispatch(setBackButtonProjectId(null));
       dispatch(resetUserAndRoleEmail());
-      toast.success("Project added successfully!");
-      navigate("/dashboard");
+      setTimeout(()=>{
+        window.location.href ="/dashboard";
+      }, 100)
+      // dispatch(addPhase([]));
     } catch (error) {
       console.log(error);
     }
@@ -92,9 +94,9 @@ function Footer({ onNextStep, projectId }) {
         userId: userId,
         projectId: projectId,
       });
-      dispatch(
-        setCredentials({ ...userdata, incompleteProject: res?.data.data })
-      );
+      // dispatch(
+      //   setCredentials({ ...userdata, incompleteProject: res?.data.data })
+      // );
       toast.info(
         "Your project has been saved. You will return back here after you log in again."
       );

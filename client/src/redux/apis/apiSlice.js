@@ -4,7 +4,7 @@ export const getTokenFromLocalStorage = () => {
   let userInfo = localStorage.getItem("userInfo");
 
   try {
-    console.log(userInfo);
+    // console.log(userInfo);
     userInfo =
       userInfo !== "undefined" && userInfo ? JSON.parse(userInfo) : null;
   } catch (e) {
@@ -12,7 +12,7 @@ export const getTokenFromLocalStorage = () => {
     userInfo = null;
   }
   const pathnameArr = window.location.pathname.split("/");
-  console.log(pathnameArr);
+  // console.log(pathnameArr);
   const token = userInfo?.token;
   // Allow access to specific pages without requiring a token
   const allowedPaths = [
@@ -26,7 +26,7 @@ export const getTokenFromLocalStorage = () => {
   const currentPath = window.location.pathname;
 
   if (token) {
-    console.log("Test", currentPath);
+    // console.log("Test", currentPath);
     if (
       userInfo?.user?.hasValidSubscription === false &&
       currentPath !== "/subscription" &&

@@ -45,12 +45,12 @@ function Notification({
     const res = await getWorkOrder({
       workOrderId: notification.WorkOrderReq.id,
     });
-    console.log("after handleonclick", res);
+    // console.log("after handleonclick", res);
     setData1(res.data);
     setOpen(true);
   };
 
-  console.log(notification);
+  // console.log(notification);
   const handleAccordionChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : -1);
   };
@@ -138,7 +138,7 @@ function Notification({
       ],
     },
   };
-  console.log(notification);
+  // console.log(notification);
   return (
     <Accordion
       disableGutters
@@ -254,7 +254,7 @@ function Notification({
                     secondaryTypographyProps={{ sx: textSecondaryStyle }}
                     secondary={moment(
                       notification.WorkOrderReq.start_day
-                    ).format("MMM, D,YYYY HH:mm a")}
+                    ).format("MM/DD/YYYY HH:mm a")}
                   />
                 </ListItem>
                 <ListItem sx={listItemStyle}>
@@ -266,7 +266,7 @@ function Notification({
                     }
                     secondaryTypographyProps={{ sx: textSecondaryStyle }}
                     secondary={moment(notification.WorkOrderReq.end_day).format(
-                      "MMM, D,YYYY HH:mm a"
+                      "MM/DD/YYYY HH:mm a"
                     )}
                   />
                 </ListItem>

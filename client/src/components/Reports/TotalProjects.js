@@ -19,14 +19,14 @@ const TotalProjects = () => {
   const fetchReportsStats = async () => {
     try {
       const result = await getReportsStats({ userId, projectId }).unwrap();
-      console.log("Success:", result);
+      // console.log("Success:", result);
     } catch (err) {
       console.error("Failed to fetch reports stats:", err);
     }
   };
 
   useEffect(() => {
-    console.log("090909()()()(userIduserIduserId", userId);
+    // console.log("090909()()()(userIduserIduserId", userId);
     fetchReportsStats();
   }, []);
   const remainingPercent =
@@ -57,15 +57,15 @@ const TotalProjects = () => {
 
   const completeProjectPercentage = Number.isNaN(data?.completedProjects / 100) ? '-' : data?.completedProjects / 100;
 
-  console.log("==-=-=-=-KPIIII", completeProjectPercentage);
+  // console.log("==-=-=-=-KPIIII", completeProjectPercentage);
 
   return (
     <>
       {isLoading ? (
         <Box sx={{ pt: 0.5 }}>
           <Skeleton />
-          <Skeleton />
-          <Skeleton />
+          {/* <Skeleton />
+          <Skeleton /> */}
         </Box>
       ) : (
         <Stack p={1}>

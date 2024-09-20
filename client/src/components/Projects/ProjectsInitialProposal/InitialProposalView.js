@@ -1,5 +1,5 @@
 import { Box, Divider, Paper, Stack, Tab, Tabs } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
 import { useGetProjectUserRoleMutation } from "../../../redux/apis/Project/projectApiSlice";
 import { useLoaderData, useParams } from "react-router-dom";
@@ -18,6 +18,9 @@ const InitialProposalView = () => {
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
+  useEffect(()=>{
+    console.log(projectId)
+  },[projectId])
 
   return (
     <>
@@ -147,7 +150,7 @@ export const projectUserRoleAuth = async ({ params, request }) => {
   //   const userId = currentUser.user.id;
   //   const projectId = params.id;
   //   try {
-  //     const response = await fetch('http://3.135.107.71/project/getUserProjectRole', {
+  //     const response = await fetch('https://builderbuilder.net/project/getUserProjectRole', {
   //       method: 'POST',
   //       body: JSON.stringify({ projectId, userId }), // Stringify the body data
   //       headers: { 'Content-Type': 'application/json', 'Authorization' : `Bearer ${getTokenFromLocalStorage()}` }, // Set content type header

@@ -13,7 +13,8 @@ import {
   setTotalPages,
 } from "../../../redux/slices/Project/userProjectsSlice";
 import QueryDebouncer from "../../../utils/QueryDebouncer/QueryDebouncer";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Search = styled("div")(({ theme }) => ({
   display: "flex",
@@ -70,7 +71,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab }) => {
+const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab, projectsPage }) => {
   const filter = selectedFilters ? selectedFilters.join(",") : "";
   const [searchQuery, setSearchQuery] = React.useState("");
   const debouncedValue = QueryDebouncer(searchQuery, 500);
@@ -79,9 +80,10 @@ const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab }) => {
   const UserId = currentUser.user.id;
   const location = useLocation();
   const path = location.pathname.split("/")[1];
-  console.log(path);
+  // console.log(path);
   // console.log(selectedTab);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { data, refetch, isLoading, error, isSuccess } =
     useGetUserProjectsQuery({
       userId: UserId,
@@ -92,12 +94,13 @@ const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab }) => {
 
   React.useEffect(() => {
     if (selectedTab === 0 || selectedTab === 1) {
-      console.log("run");
-      console.log(data);
+      // console.log("run");
+      // console.log(data);
       dispatch(setIsLoading(isLoading));
       if (data) {
-        if (data?.projects?.length < 1) {
-          window.location.href = "/assignproject";
+        if (data?.projects?.length < 1 && !projectsPage && debouncedValue === "") {
+          navigate("/assignproject")
+          toast.info("Welcome! Add a project to get started.");
           return;
         }
         dispatch(addProjects(data?.projects));

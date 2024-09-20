@@ -102,7 +102,7 @@ const projectInitialProposalSlice = createSlice({
     },
     removeLineItems: (state, action) => {
       const { phaseId, index } = action.payload;
-        console.log(index)
+        // console.log(index)
       return {
         ...state,
         changeOrderLineItems: state.changeOrderLineItems.map(phase => 

@@ -30,10 +30,10 @@ function ProjectCard() {
         projectId,
       }).unwrap();
       // setProjects(result);
-      console.log(
-        "Success useGetTotalProjectProfitMarginMutation Results Results Results:",
-        result
-      );
+      // console.log(
+      //   "Success useGetTotalProjectProfitMarginMutation Results Results Results:",
+      //   result
+      // );
     } catch (err) {
       console.error("Failed to fetch reports stats:", err);
     }
@@ -46,7 +46,7 @@ function ProjectCard() {
   const totalLineItems = data?.totalLineItems;
   const activeWorkOrders = data?.workOrders;
   const percentage = Math.round((totalCompletedLineItems / totalLineItems) * 100);
-  console.log(percentage);
+  // console.log(percentage);
 
 
 

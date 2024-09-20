@@ -57,7 +57,7 @@ function AddImage({
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://3.135.107.71/project/file",
+          "https://builderbuilder.net/project/file",
           {
             fileName,
             fileType,
@@ -109,8 +109,8 @@ function AddImage({
       toast.warning("Please upload an image.");
       return;
     }
-    console.log(fileType);
-    console.log(heading);
+    // console.log(fileType);
+    // console.log(heading);
     setFileName(file.name);
     setFileType(file.type);
     setSelectedFile(file);
@@ -147,8 +147,8 @@ function AddImage({
       toast.warning("Please upload an image.");
       return;
     }
-    console.log(fileType);
-    console.log(heading);
+    // console.log(fileType);
+    // console.log(heading);
     setFileName(file.name);
     setFileType(file.type);
     setSelectedFile(file);
@@ -180,12 +180,12 @@ function AddImage({
       const formData = new FormData(event.currentTarget);
       const formJson = Object.fromEntries(formData.entries());
       const fileUrl = await uploadFileToServer(selectedFile);
-      console.log(fileUrl);
+      // console.log(fileUrl);
       const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
       const fileType = getFileType(heading);
-      const apiUrl = `http://3.135.107.71/project/files/${id}`;
+      const apiUrl = `https://builderbuilder.net/project/files/${id}`;
       if (!uploadedFileUrl) {
-        toast.error("Error uploading Image.");
+        toast.error("Error uploading image.");
         return;
       }
       const requestBody = {
@@ -209,7 +209,7 @@ function AddImage({
           handleClickClose();
           fetchData();
         });
-      console.log(response);
+      // console.log(response);
       if (response.status !== 201) {
         throw new Error("Failed to save file URL");
       }
@@ -233,9 +233,9 @@ function AddImage({
     }
     return null;
   };
-  console.log(heading);
-  console.log(fileTypeIcons);
-  console.log(fileTypeIcons.get(selectedFile?.name?.split(".").pop()));
+  // console.log(heading);
+  // console.log(fileTypeIcons);
+  // console.log(fileTypeIcons.get(selectedFile?.name?.split(".").pop()));
   return (
     <div className="App">
       <Dialog

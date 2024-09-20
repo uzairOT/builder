@@ -45,7 +45,7 @@ const SubscriptionSidebar = () => {
   useEffect(() => {
     const fetchPaymentHistory = async () => {
       try {
-        const res = await fetch("http://3.135.107.71/payment/paymentHistory", {
+        const res = await fetch("https://builderbuilder.net/payment/paymentHistory", {
           method: "POST",
           headers: new Headers({
             "Content-Type": "application/json",
@@ -57,7 +57,7 @@ const SubscriptionSidebar = () => {
         if (data.success) {
           setPaymentHistory(data.payments);
         }
-        console.log("0909090909--->", data);
+        // console.log("0909090909--->", data);
       } catch (error) {
         console.error(error);
       }

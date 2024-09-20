@@ -28,7 +28,7 @@ const ProgressCardHeader = ({ project }) => {
   // async function markMessagesAsRead(id, userId) {
   //   try {
   //     const response = await axios.post(
-  //       "http://3.135.107.71/projectChat/unreadMessageCount",
+  //       "https://builderbuilder.net/projectChat/unreadMessageCount",
   //       {
   //         projectId: id,
   //         userId: userId,
@@ -46,7 +46,7 @@ const ProgressCardHeader = ({ project }) => {
   //   }
   // }
   useEffect(() => {
-    console.log("Uread Message", project?.unreadMessages);
+    // console.log("Uread Message", project?.unreadMessages);
     // markMessagesAsRead(id, userId);
     setUnreadMsg(project?.unreadMessages);
   }, [project?.unreadMessages]);

@@ -40,20 +40,20 @@ export default function CheckoutForm({
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(
-      "-=-=-=-=-=-",
-      address,
-      currentPlan,
-      currentPakage,
-      orgName,
-      userId,
-      orgId,
-      selectedPlan
-    );
+    // console.log(
+    //   "-=-=-=-=-=-",
+    //   address,
+    //   currentPlan,
+    //   currentPakage,
+    //   orgName,
+    //   userId,
+    //   orgId,
+    //   selectedPlan
+    // );
     if (!stripe || !elements) {
       // Stripe.js has not yet loaded.
       // Make sure to disable form submission until Stripe.js has loaded.
-      console.log("Where here???");
+      // console.log("Where here???");
       return;
     }
 
@@ -72,15 +72,15 @@ export default function CheckoutForm({
       console.log(paymentIntent, "Rrror", error);
       setMessage(error.message);
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
-      console.log(paymentIntent, "----0-009-00-09-=");
+      // console.log(paymentIntent, "----0-009-00-09-=");
 
       // Call the appropriate API when payment succeeds
       const apiUrl = isInvoicePayment
-        ? "http://3.135.107.71/invoice/payInvoice"
-        : "http://3.135.107.71/payment/addPayment";
+        ? "https://builderbuilder.net/invoice/payInvoice"
+        : "https://builderbuilder.net/payment/addPayment";
 
       const apiPayload = isInvoicePayment
-        ? { invoiceId, totalAmount: currentPlan }
+        ? { invoiceId, totalAmount: currentPlan, paymentMethod:'Stripe' }
         : payload;
 
       // Call the API with the payload when payment succeeds
@@ -105,15 +105,15 @@ export default function CheckoutForm({
             },
           };
           dispatch(setCredentials(data));
-          console.log("API Response:", responseData);
+          // console.log("API Response:", responseData);
           window.location.href = `${window.location.origin}/completion`;
         } else {
           const responseData = await response.json();
           setMessage("Payment can't be completed");
-          console.log(
-            "API Response Error:-=-=-=-=-=-==-=",
-            responseData?.message
-          );
+          // console.log(
+          //   "API Response Error:-=-=-=-=-=-==-=",
+          //   responseData?.message
+          // );
           toast.warning(`${responseData?.message}`);
         }
       } catch (apiError) {
@@ -121,7 +121,7 @@ export default function CheckoutForm({
         alert("API Error2:", apiError);
       }
     } else {
-      console.log(paymentIntent, "Nonono Fail");
+      // console.log(paymentIntent, "Nonono Fail");
       setMessage("An unexpected error occured.");
     }
 

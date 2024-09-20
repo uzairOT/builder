@@ -1,8 +1,8 @@
 import { apiSlice } from "../apiSlice";
 
-const PROJECTS_URL = "http://3.135.107.71/project";
-const INVOICE_URL = "http://3.135.107.71/invoice";
-const EVENT_URL = "http://3.135.107.71/user/events";
+const PROJECTS_URL = "https://builderbuilder.net/project";
+const INVOICE_URL = "https://builderbuilder.net/invoice";
+const EVENT_URL = "https://builderbuilder.net/user/events";
 const projectId = 47;
 
 const projectApiSlice = apiSlice.injectEndpoints({
@@ -91,7 +91,7 @@ const projectApiSlice = apiSlice.injectEndpoints({
 
     getProjectInvoices: builder.query({
       query: (data) => ({
-        url: `${INVOICE_URL}/getallInvoices/${data.projectId}/${data.userId}/${data.client}`,
+        url: `${INVOICE_URL}/getallInvoices/${data.projectId}/${data.userId}`,
         method: "GET",
       }),
     }),

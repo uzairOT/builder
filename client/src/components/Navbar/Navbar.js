@@ -104,9 +104,9 @@ const Navbar = () => {
   //   dispatch(setTeamNotifications(teamStatusData?.data));
   // }
 
-  console.log("JOHN NOTIFICATION TEST", invoiceNotification);
+  // console.log("JOHN NOTIFICATION TEST", invoiceNotification);
   const handleClick = async (event) => {
-    console.log("run bell");
+    // console.log("run bell");
     if (anchorEl) {
       setAnchorEl(null);
       // setInvoiceNotification(null);
@@ -192,7 +192,7 @@ const Navbar = () => {
     }
   };
 
-  console.log("Approved data", approvalData);
+  // console.log("Approved data", approvalData);
   useEffect(() => {
     //listen for notifications
     // console.log('=-------------------> notifications on')
@@ -209,11 +209,11 @@ const Navbar = () => {
     //   await approvalRefetchCall();
     // });
     socket.on("statusDoneNotificationResponse", async (socketReponse) => {
-      console.log("SOCKET RESPONSE: ", socketReponse);
+      // console.log("SOCKET RESPONSE: ", socketReponse);
       dispatch(addTeamNotifications(socketReponse));
     });
     socket.on(`invoiceCreated${userId}`, async (socketReponse) => {
-      console.log("SOCKET RESPONSE INVOICE: ", socketReponse);
+      // console.log("SOCKET RESPONSE INVOICE: ", socketReponse);
       setInvoiceNotification(socketReponse);
       // dispatch(addTeamNotifications(socketReponse));
     });
@@ -223,11 +223,11 @@ const Navbar = () => {
         dispatch(addNotifications(data));
       });
       socket.off("statusDoneNotificationResponse", async (socketReponse) => {
-        console.log("SOCKET RESPONSE: ", socketReponse);
+        // console.log("SOCKET RESPONSE: ", socketReponse);
         dispatch(addTeamNotifications(socketReponse));
       });
       socket.off(`sendInvoice${userId}`, async (socketReponse) => {
-        console.log("SOCKET RESPONSE: ", socketReponse);
+        // console.log("SOCKET RESPONSE: ", socketReponse);
         setInvoiceNotification(socketReponse);
         // dispatch(addTeamNotifications(socketReponse));
       });
@@ -237,7 +237,7 @@ const Navbar = () => {
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
-    console.log(newValue, " navbar click");
+    // console.log(newValue, " navbar click");
     const lowercasedValue = `${event.target.textContent}`.toLowerCase();
     navigate(lowercasedValue === "dashboard" ? "/dashboard" : lowercasedValue);
   };
@@ -254,7 +254,7 @@ const Navbar = () => {
   };
 
   const handlePopperClose = async () => {
-    console.log("run lisnter");
+    // console.log("run lisnter");
     // setAnchorEl(null);
     if (anchorEl) {
       setAnchorEl(null);

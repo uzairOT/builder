@@ -34,21 +34,26 @@ const VerifyCode = () => {
   const [code, setCode] = useState(["", "", "", "", ""]);
   const inputRefs = useRef([]);
 
-  useEffect(() => {
-    const token = localStorage.getItem("userInfo")
-      ? JSON.parse(localStorage.getItem("userInfo")).token
-      : null;
-    if (token) {
-      navigate("/assignproject");
-    }
-    if (forgetPasswordEmail === "") {
-      navigate("/login");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("userInfo")
+  //     ? JSON.parse(localStorage.getItem("userInfo")).token
+  //     : null;
+  //     const user = localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem("userInfo")).user : null
+  //   if (token) {
+  //     if(user.hasValidSubscription){
+  //       navigate("/assignproject");
+  //     }else{
+  //       navigate("/subscription");
+  //     }
+  //   }
+  //   if (forgetPasswordEmail === "") {
+  //     navigate("/login");
+  //   }
+  // }, [navigate]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("forgetPasswordEmail", forgetPasswordEmail);
+    // console.log("forgetPasswordEmail", forgetPasswordEmail);
     const otpString = code.join("");
     // Check if all verification code fields are filled
     if (code.some((value) => value === "")) {
@@ -63,12 +68,18 @@ const VerifyCode = () => {
       }).unwrap();
       toast.success("OTP matched successfully");
       if (data === "signup") {
-        console.log("wwwwwwwwwwwwwhhhhhhhhhhattttttttt::::", res);
+        console.log("wwwwwwwwwwwwwhhhhhhhhhhattttttttt::::", res.data);
         dispatch(setCredentials({ ...res.data }));
-        // navigate("/assignproject");
+       if(res.data.user.hasValidSubscription){
+         setTimeout(() => {
+           window.location.href = "/assignproject";
+         }, 1000);
+       }else{
         setTimeout(() => {
-          window.location.href = "/assignproject";
+          window.location.href = "/subscription";
         }, 1000);
+       }
+        // navigate("/assignproject");
       } else {
         navigate("/setnewpassword");
       }

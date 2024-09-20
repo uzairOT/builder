@@ -15,14 +15,14 @@ import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
 
 const ProjectInvoicesView = () => {
   const [changeView, setChangeView] = useState(false);
-  const allEvent = useSelector(allEvents);
+  // const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
   const userRole = useSelector(getUserRoleFromRedux);
-  const role = useSelector((state) => state.userRole.userRole);
-  const events = allEvent.events;
+  // const role = useSelector((state) => state.userRole.userRole);
+  // const events = allEvent.events;
   const params = useParams();
-  const userRoleAuth = useSelector(getUserRoleFromRedux);
-  console.log(userRoleAuth);
+  // const userRoleAuth = useSelector(getUserRoleFromRedux);
+  // console.log(userRoleAuth);
   const { id: currentProjectId } = params;
   const currentUser = localStorage.getItem("userInfo");
   const user = JSON.parse(currentUser);
@@ -42,7 +42,7 @@ const ProjectInvoicesView = () => {
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
-  console.log(userRole);
+  // console.log(userRole);
   // const [projectName, projectLocation, SuperAdminId] = useOutletContext();
   // const canGenerate = usePermissionCheck("generate-invoices", role, SuperAdminId)
   return (

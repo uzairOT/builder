@@ -30,7 +30,7 @@ const InnerLayout2 = () => {
     "change-order",
     permissionsState
   );
-  console.log("Project Data Chk", selectedProjectData);
+  // console.log("Project Data Chk", selectedProjectData);
   const handleOpen = () => {
     navigate(`/projects/${id}/change-order`);
     //This component is depreciated

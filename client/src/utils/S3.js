@@ -5,7 +5,7 @@
  */
 import axios from "axios";
 import fileDownload from "js-file-download";
-import { getTokenFromLocalStorage } from "../redux/apis/apiSlice";
+// import { getTokenFromLocalStorage } from "../redux/apis/apiSlice";
 // import messageService from "services/APIs/services/messageService";
 /**
  * Uploads an image to S3 using a presigned URL.
@@ -74,9 +74,9 @@ export const uploadToS3 = async (
       onUploadProgress,
     };
     const body = FileObject;
-    console.log("presignedUrl :", presignedUrl)
-    console.log("body :", body)
-    console.log("config :", config)
+    // console.log("presignedUrl :", presignedUrl)
+    // console.log("body :", body)
+    // console.log("config :", config)
     const res = await axios.put(presignedUrl, body, config);
     if (res.status === 200) return presignedUrl.split("?").shift();
   } catch (error) {

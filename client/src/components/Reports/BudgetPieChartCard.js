@@ -63,7 +63,7 @@ const BudgetPieChartCard = () => {
         projectId,
       }).unwrap();
       setProjects(result);
-      console.log("Success 'fetchOutstandingInvoices':", result);
+      // console.log("Success 'fetchOutstandingInvoices':", result);
     } catch (err) {
       console.error("Failed to fetch reports stats:", err);
     }

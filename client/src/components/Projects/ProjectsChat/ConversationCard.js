@@ -16,12 +16,12 @@ const ConversationCard = ({
   userId,
 }) => {
   const [lastMessage, setLastMessage] = useState();
-  console.log(conversation);
+  // console.log(conversation);
   useEffect(() => {
     socket.on(
       `lastMessage${conversation?.ChatConversation?.id}`,
       (lastMessage) => {
-        console.log(lastMessage);
+        // console.log(lastMessage);
         setLastMessage(lastMessage);
       }
     );

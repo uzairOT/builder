@@ -69,7 +69,7 @@ const ProjectsPermissionAccess = () => {
           projectId: currentProjectId,
         }).unwrap();
         setPermissionsList(response);
-        setPermissionsState(response);
+        // setPermissionsState(response);
       } catch (error) {
         console.error("Failed to fetch permissions:", error);
       } finally {
@@ -93,7 +93,7 @@ const ProjectsPermissionAccess = () => {
       role,
       value: updatedValue,
     });
-    dispatch(setPermissionsState(permissionList));
+    // dispatch(setPermissionsState(permissionList));
 
     setTimeout(() => {
       setPermissionsList((prevList) => {
@@ -126,7 +126,7 @@ const ProjectsPermissionAccess = () => {
           projectId: currentProjectId,
         }).unwrap();
         setPermissionsList(response);
-        setPermissionsState(response);
+        // setPermissionsState(response);
       } catch (error) {
         console.error("Failed to fetch permissions:", error);
       }

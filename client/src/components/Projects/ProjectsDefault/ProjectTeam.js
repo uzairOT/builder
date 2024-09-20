@@ -110,7 +110,7 @@ const ProjectTeam = ({ SuperAdminId }) => {
         return false;
       }
       if (email === "") {
-        toast.warning("Please enter en email.");
+        toast.warning("Please enter an email.");
         return false;
       }
       if (!emailRegex.test(email)) {
@@ -118,7 +118,7 @@ const ProjectTeam = ({ SuperAdminId }) => {
         return false;
       }
       const res = await assignRolePost(userInviteBody).unwrap();
-      console.log(res);
+      // console.log(res);
       toast.info(res?.data?.message || res?.message || "Success");
       refetch();
     } catch (error) {
@@ -127,7 +127,7 @@ const ProjectTeam = ({ SuperAdminId }) => {
       );
     }
   };
-  console.log(pendingInvitations);
+  // console.log(pendingInvitations);
   const roleFormat = (role) => {
     switch (role) {
       case "Superadmin":

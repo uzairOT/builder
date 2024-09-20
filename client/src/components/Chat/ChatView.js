@@ -127,7 +127,7 @@ function ChatView({
         fileType: fileType,
       });
     } else {
-      console.log(chatUser);
+      // console.log(chatUser);
       if (messages?.length < 1) {
         await socket.emit("conversation", {
           userId: chatUser?.userId,
@@ -160,7 +160,7 @@ function ChatView({
   async function markMessagesAsRead(id, userId) {
     try {
       const response = await axios.post(
-        "http://3.135.107.71/projectChat/markMessagesAsRead",
+        "https://builderbuilder.net/projectChat/markMessagesAsRead",
         {
           projectId: id,
           userId: userId,
@@ -172,7 +172,7 @@ function ChatView({
           },
         }
       );
-      console.log("Messages marked as read successfully", response.data);
+      // console.log("Messages marked as read successfully", response.data);
       dispatch(setIsLoading(isLoading));
       await refetch({ userId: userId, q: "", filter: "", page: 1 });
       if (data) {
@@ -194,7 +194,7 @@ function ChatView({
   //
   const projectRole = userRoleProject.userRole;
   const fetchProjectChat = async (newOffset, direction, project) => {
-    console.log("conversation Id: ", conversationId);
+    // console.log("conversation Id: ", conversationId);
     try {
       const res = await getChatMessages({
         projectId: project === "project" ? id : null,
@@ -202,8 +202,8 @@ function ChatView({
         offset: newOffset,
         recipientType: recipientType,
       }).unwrap();
-      console.log("messages length: ", res);
-      console.log("has more messages: ", hasMoreMessages);
+      // console.log("messages length: ", res);
+      // console.log("has more messages: ", hasMoreMessages);
       if (res.data.length === 0 && direction === "up") {
         setHasMoreMessages(false);
         setMsgLoading(false);
@@ -244,8 +244,8 @@ function ChatView({
   //
   useEffect(() => {
     // console.log("run");
-    console.log("scrollHeight : ", boxRef.current.scrollHeight);
-    console.log("scrollTop: ", boxRef.current.scrollTop);
+    // console.log("scrollHeight : ", boxRef.current.scrollHeight);
+    // console.log("scrollTop: ", boxRef.current.scrollTop);
     boxRef.current.scrollTop = boxRef.current.scrollHeight;
 
     setScrollingUp(false);
@@ -327,7 +327,7 @@ function ChatView({
     return moment(date).isSame(today, "day");
   };
   const formatDate = (date) => {
-    console.log(date);
+    // console.log(date);
     if (isToday(date)) {
       return moment.utc(date).tz(moment.tz.guess()).format("HH:mm A");
     } else {
@@ -357,7 +357,7 @@ function ChatView({
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://3.135.107.71/project/file",
+          "https://builderbuilder.net/project/file",
           {
             fileName,
             fileType,
@@ -399,12 +399,12 @@ function ChatView({
   //   }
   // };
   useEffect(() => {
-    console.log(messages);
+    // console.log(messages);
     // console.log("scrollHeight : ",boxRef.current.scrollHeight);
     // console.log("scrollTop: ",boxRef.current.scrollTop);
     if (boxRef.current && !scrollingUp) {
       boxRef.current.scrollTop = boxRef.current.scrollHeight;
-      console.log("scrollTop2: ", boxRef.current.scrollTop);
+      // console.log("scrollTop2: ", boxRef.current.scrollTop);
     }
   }, [messages, id, conversationId]);
 
@@ -415,28 +415,28 @@ function ChatView({
     setImage(null);
     setS3Url("");
   };
-  console.log("conversationId: ", conversationId, "value: ", value);
+  // console.log("conversationId: ", conversationId, "value: ", value);
 
   useEffect(() => {
     const boxElement = boxRef.current;
-    console.log(
-      "Inside useEffect conversationId: ",
-      conversationId,
-      "value: ",
-      value
-    );
+    // console.log(
+    //   "Inside useEffect conversationId: ",
+    //   conversationId,
+    //   "value: ",
+    //   value
+    // );
     const handleLoadOld = () => {
-      console.log(
-        "Inside handleLoadOld conversationId: ",
-        conversationId,
-        "value: ",
-        value
-      );
+      // console.log(
+      //   "Inside handleLoadOld conversationId: ",
+      //   conversationId,
+      //   "value: ",
+      //   value
+      // );
       // const newOffset = offset + 10;
       // setOffset(newOffset);
       // fetchProjectChat(newOffset, "up");
       // setScrollingUp(true);
-      console.log("scroll up!", value);
+      // console.log("scroll up!", value);
       setOffset((prev) => {
         const newOffset = offset + 10;
         if (!(value === id)) {
@@ -453,7 +453,7 @@ function ChatView({
       if (!boxRef.current) return;
 
       const { scrollTop, scrollHeight, clientHeight } = boxRef.current;
-      console.log("scrolling up", scrollTop, hasMoreMessages);
+      // console.log("scrolling up", scrollTop, hasMoreMessages);
       if (scrollTop === 0 && hasMoreMessages) {
         handleLoadOld();
       }

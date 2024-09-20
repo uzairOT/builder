@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Divider,
   FormControl,
   Modal,
@@ -9,7 +8,6 @@ import {
   Typography,
   Select,
   MenuItem,
-  Checkbox,
   ListItem,
   ListItemText,
   List,
@@ -47,8 +45,6 @@ import {
 import { useLocation } from "react-router-dom";
 import useSocket from "../../../utils/useSocket";
 import {
-  ArrowDropDownIcon,
-  MobileDatePicker,
   MobileDateTimePicker,
 } from "@mui/x-date-pickers";
 import UpdateLineDialogue from "../UpdateLineDialogue/UpdateLineDialogue";
@@ -126,7 +122,7 @@ const RequestWorkOrderModal = ({
   // const changeOrderSelected = useSelector(
   //   (state) => state.projectInitialProposal.changeOrderLineItems
   // );
-  console.log(updateRow);
+  // console.log(updateRow);
   const hasMoreThanTwoItems = Object.values(rowCheckboxes).some(
     (phaseData) => phaseData.rows.length > 2
   );
@@ -169,7 +165,7 @@ const RequestWorkOrderModal = ({
   }
 
   // });
-  const ENDPOINT = "http://3.135.107.71/";
+  const ENDPOINT = "https://builderbuilder.net/";
   //test new workd order
 
   // Object?.values(rowCheckboxes)?.forEach((phaseData) => {
@@ -293,7 +289,7 @@ const RequestWorkOrderModal = ({
 
   const handleUpdateOpen = (lineItem, index) => {
     // setUpdateRow(() => rowCheckboxes);
-    console.log("RUN", index, lineItem);
+    // console.log("RUN", index, lineItem);
     setLineItemIndex(index);
     setLineItem(lineItem);
     setShowUpdateLine(true);
@@ -303,7 +299,7 @@ const RequestWorkOrderModal = ({
     if (lineItemId) {
       markLineItemForDeletion(lineItem.phase_id, index);
     } else {
-      console.log("I RAN!", index);
+      // console.log("I RAN!", index);
       setUpdateRow((prevState) => {
         if (
           index !== -1 &&
@@ -466,7 +462,7 @@ const RequestWorkOrderModal = ({
           //console.log("update", response);
           if (response.success) {
             setDone(true);
-            toast.success("Change Order request sent!");
+            toast.success("Change order request sent!");
 
             refetch({ projectId, userId: userId });
           } else {
@@ -489,7 +485,7 @@ const RequestWorkOrderModal = ({
               // console.log("work order",response);
               setDone(true);
               dispatch(clearPhases());
-              toast.success("Work Order request sent!");
+              toast.success("Work order request sent!");
               if (refetchChangeOrder) {
                 await refetchChangeOrder({ projectId, userId: userId });
               }
@@ -549,7 +545,7 @@ const RequestWorkOrderModal = ({
       refetchTeam();
     }
   }, [open]);
-  console.log(rowCheckboxes);
+  // console.log(rowCheckboxes);
 
   const permissionsState = useSelector(
     (state) => state?.permissions?.permissions
@@ -569,7 +565,7 @@ const RequestWorkOrderModal = ({
     "work-order",
     permissionsState
   );
-  console.log("selectedProjectData", selectedProjectData);
+  // console.log("selectedProjectData", selectedProjectData);
   return (
     <>
       {pathCheck.includes("initial-proposal") ? (

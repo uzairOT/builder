@@ -40,7 +40,7 @@ function SaveAsProject({ onSaveStep, onNextStep, currentUserId }) {
       };
       try {
         const res = await checkProjectDuplication(data);
-        console.log(res);
+        // console.log(res);
         if (res?.data?.success) {
           onSaveStep();
           dispatch(setIsSaveAs(true))

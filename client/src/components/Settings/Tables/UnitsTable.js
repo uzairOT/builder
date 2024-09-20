@@ -90,7 +90,7 @@ function UnitsTable({
   };
 
   const handleDelete = async (row) => {
-    console.log(row);
+    // console.log(row);
     if (row.id) {
       try {
         const res = await deleteUnit({ id: row.id });
@@ -104,7 +104,7 @@ function UnitsTable({
         console.log(error);
       }
     } else {
-      toast.info("Default Unit can't be deleted");
+      toast.info("Default unit can't be deleted");
     }
   };
   console.log(error);

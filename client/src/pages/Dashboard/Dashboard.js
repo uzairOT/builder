@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Grid, Paper, Stack } from "@mui/material";
 import ProfileView from "../../components/Dashboard/ProfileView/ProfileView.js";
-import Navbar from "../../components/Navbar/Navbar.js";
 import WeatherView from "../../components/Dashboard/WeatherView/WeatherView.js";
 import ProgressCard from "../../components/Dashboard/ProgressCard/ProgressCard.js";
 import TaskCalenderView from "../../components/Dashboard/TaskCalenderView/TaskCalenderView.js";
-import { getFormattedFiveDayWeather } from "../../services/WeatherService.js";
-import { useGetUserEventsMutation } from "../../redux/apis/usersApiSlice.js";
-import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addEvents,
@@ -49,7 +45,7 @@ const Dashboard = () => {
   // }, []);
 
   useEffect(() => {
-    console.log("undefined", UserId);
+    // console.log("undefined", UserId);
     socket.emit("userJoin", {
       userId: UserId,
     });

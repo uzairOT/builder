@@ -22,7 +22,7 @@ const TotalCostPieChart = () => {
         userId,
         projectId,
       }).unwrap();
-      console.log("Success getProjectCostStats:", result);
+      // console.log("Success getProjectCostStats:", result);
     } catch (err) {
       console.error("Failed to fetch reports stats:", err);
     }

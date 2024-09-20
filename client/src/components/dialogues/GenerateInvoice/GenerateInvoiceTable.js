@@ -41,7 +41,7 @@ export default function GenerateInvoiceTable({
   invoiceData,
 }) {
   let totalCost = 0;
-  console.log(invoiceData);
+  // console.log(invoiceData);
 
   return (
     <TableContainer component={Paper} width={"100%"}>

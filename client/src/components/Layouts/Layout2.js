@@ -28,9 +28,6 @@ import { socket } from "../../socket";
 import { setPermissionsListState } from "../../redux/slices/LoginPermissions/PermissionsSlice";
 
 const Layout2 = () => {
-  useEffect(() => {
-    //console.log("layout 2")
-  });
   const params = useParams();
   const { id: currentProjectId } = params;
   const { data } = useGetProjectDataQuery({ projectId: currentProjectId });
@@ -45,7 +42,7 @@ const Layout2 = () => {
   const projectName = selectedProjectId?.projectName;
   const projectLocation = selectedProjectId?.location;
   const SuperAdminId = selectedProjectId?.userId;
-  console.log("Selected Project:", SuperAdminId);
+  // console.log("Selected Project:", SuperAdminId);
   // console.log('APP.JS: ',id)
 
   const [GetPermissionsList] = usePermissionsMutation();
@@ -66,7 +63,7 @@ const Layout2 = () => {
 
   useEffect(() => {
     handleUpdatePermission();
-
+    
     const handleSocketUpdate = async () => {
       try {
         await handleUpdatePermission();
@@ -76,8 +73,8 @@ const Layout2 = () => {
     };
 
     socket.on("project-permissions-updated", (data) => {
-      console.log("Run");
-      if (data?.projectId === currentProjectId) {
+      // console.log("Run", data?.projectId);
+      if (data?.projectId == currentProjectId) {
         handleSocketUpdate();
       }
     });

@@ -124,7 +124,7 @@ const ChangeOrderRequestModal = ({
   // const changeOrderSelected = useSelector(
   //   (state) => state.projectInitialProposal.changeOrderLineItems
   // );
-  console.log(updateRow);
+  // console.log(updateRow);
   const hasMoreThanTwoItems = Object.values(rowCheckboxes).some(
     (phaseData) => phaseData.rows.length > 2
   );
@@ -167,7 +167,7 @@ const ChangeOrderRequestModal = ({
   }
 
   // });
-  const ENDPOINT = "http://3.135.107.71/";
+  const ENDPOINT = "https://builderbuilder.net/";
 
   const [requestWorkOrderPut] = useRequestWorkOrderMutation();
 
@@ -281,7 +281,7 @@ const ChangeOrderRequestModal = ({
 
   const handleUpdateOpen = (lineItem, index) => {
     // setUpdateRow(() => rowCheckboxes);
-    console.log("RUN", index, lineItem);
+    // console.log("RUN", index, lineItem);
     setLineItemIndex(index);
     setLineItem(lineItem);
     setShowUpdateLine(true);
@@ -291,7 +291,7 @@ const ChangeOrderRequestModal = ({
     if (lineItemId) {
       markLineItemForDeletion(lineItem.phase_id, index);
     } else {
-      console.log("I RAN!", index);
+      // console.log("I RAN!", index);
       setUpdateRow((prevState) => {
         if (
           index !== -1 &&
@@ -397,7 +397,7 @@ const ChangeOrderRequestModal = ({
 
   const handleRequest = async () => {
     if (subject === "") {
-      toast.warning("Please complete the Request Change order form");
+      toast.warning("Please complete the request change order form");
       return;
     }
     // if (!startDate || !endDate) {
@@ -455,7 +455,7 @@ const ChangeOrderRequestModal = ({
           //console.log("update", response);
           if (response.success) {
             setDone(true);
-            toast.success("Change Order request sent!");
+            toast.success("Change order request sent!");
 
             refetch({ projectId, userId: userId });
           } else {
@@ -478,7 +478,7 @@ const ChangeOrderRequestModal = ({
               // console.log("work order",response);
               setDone(true);
               dispatch(clearPhases());
-              toast.success("Change Order request sent!");
+              toast.success("Change order request sent!");
               if (refetchChangeOrder) {
                 await refetchChangeOrder({ projectId, userId: userId });
               }
@@ -538,7 +538,7 @@ const ChangeOrderRequestModal = ({
       refetchTeam();
     }
   }, [open]);
-  console.log(rowCheckboxes);
+  // console.log(rowCheckboxes);
 
   const permissionsState = useSelector(
     (state) => state?.permissions?.permissions
@@ -548,7 +548,7 @@ const ChangeOrderRequestModal = ({
     "change-order",
     permissionsState
   );
-  console.log("selectedProjectData", selectedProjectData);
+  // console.log("selectedProjectData", selectedProjectData);
   return (
     <>
       {pathCheck.includes("initial-proposal") ? (
@@ -664,7 +664,7 @@ const ChangeOrderRequestModal = ({
             </Stack>
             <Stack flex={1} backgroundColor={"#EFF5FF"} width={"100%"}>
               <Box>
-                <Box style={{ padding: "5px 5px 0px 5px" }}>
+                <Box >
                   <Typography fontFamily={"var(--main-font-family)"}>
                     <Typography
                       sx={{
@@ -684,12 +684,13 @@ const ChangeOrderRequestModal = ({
                       style={{
                         ...themeStyle.inputFields,
                         backgroundColor: "#EFF5FF",
+                        marginLeft:'12px'
                       }}
                       onChange={handleSubjectChange}
                     ></input>
                   </Typography>
                 </Box>
-                <Box style={{ padding: "5px 5px 0px 5px" }}>
+                <Box>
                   <Typography
                     pb={1}
                     fontFamily={"var(--main-font-family)"}
@@ -712,6 +713,7 @@ const ChangeOrderRequestModal = ({
                       style={{
                         ...themeStyle.inputFields,
                         backgroundColor: "#EFF5FF",
+                         marginLeft:'12px'
                       }}
                       onChange={handleDescriptionChange}
                     ></input>
@@ -771,7 +773,7 @@ const ChangeOrderRequestModal = ({
                 <Typography
                   fontFamily={"var(--main-font-family)"}
                   pb={4}
-                  pl={2}
+                  pl={'12px'}
                 >
                   <input
                     maxlength="50"
@@ -905,7 +907,8 @@ const ChangeOrderRequestModal = ({
                                 borderBottom: "none",
                                 outline: "none",
                               },
-                          },
+                            },
+                            marginRight: "16px !important"
                         }}
                       />
                     </DemoContainer>
@@ -1032,7 +1035,7 @@ const themeStyle = {
   inputFields: {
     border: "0px solid #FFF",
     outline: "none",
-    width: "calc(100% - 8px)",
+    width: "calc(100% - 16px)",
     padding: 4,
   },
   typoTitle: {
@@ -1148,7 +1151,7 @@ const themeStyle = {
     color: "#D92525",
   },
   priorityButton: {
-    margin: "0rem 0rem 1rem 1.5rem",
+    margin: "0rem 0rem 1rem 1rem",
     color: "#636363",
   },
   avatarBox: {

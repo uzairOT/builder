@@ -94,13 +94,13 @@ function EditProjectModal({ title, open, onClose, project, page }) {
   const handleNavigation = () => {
     navigate(`${project.id}/initial-proposal`);
   };
-  console.log(project);
+  // console.log(project);
 
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://3.135.107.71/project/file",
+          "https://builderbuilder.net/project/file",
           {
             fileName,
             fileType,
@@ -240,7 +240,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
       }
     });
   }, [project]); // Dependency array
-  console.log(errors);
+  // console.log(errors);
   return (
     <form onSubmit={handleSubmit}>
       <ToastContainer />

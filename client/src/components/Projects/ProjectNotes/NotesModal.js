@@ -73,7 +73,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://3.135.107.71/project/file",
+          "https://builderbuilder.net/project/file",
           {
             fileName: selectedFile.name,
             fileType: selectedFile.type,
@@ -123,8 +123,8 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
     await Promise.all(promises).then((uploadFileToServer) => {
       urlArray.push(...uploadFileToServer);
     });
-    console.log(promises);
-    console.log(urlArray);
+    // console.log(promises);
+    // console.log(urlArray);
     const form = {
       subject: noteSubject,
       content: noteBody,
@@ -132,7 +132,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
       noteId: noteId,
       files: urlArray,
     };
-    console.log(form);
+    // console.log(form);
     if (showEditModal) {
       //console.log(noteId);
       const res = await editProjectNotes(form).unwrap();
@@ -179,9 +179,9 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
     imagesCopy.splice(index, 1);
     setImages(imagesCopy);
   };
-  useEffect(() => {
-    console.log(images);
-  }, [images]);
+  // useEffect(() => {
+  //   console.log(images);
+  // }, [images]);
 
 
   return (

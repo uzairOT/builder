@@ -1,8 +1,8 @@
 import UpdateMasterLine from "../../../components/dialogues/UpdateMasterLine/UpdateMasterLine";
 import { apiSlice } from "../apiSlice";
 
-const COUPON_URL = "http://3.135.107.71/coupon";
-const PROJECTS_URL = "http://3.135.107.71/project";
+const COUPON_URL = "https://builderbuilder.net/coupon";
+const PROJECTS_URL = "https://builderbuilder.net/project";
 
 export const CouponApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

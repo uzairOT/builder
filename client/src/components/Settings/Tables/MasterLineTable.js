@@ -99,7 +99,7 @@ function MasterLineTable({
   });
   const [showUpdateLine, setShowUpdateLine] = useState(false);
   const [masterLine, setMasterLine] = useState();
-  console.log(data);
+  // console.log(data);
 
   const handleUpdateOpen = (row) => {
     setMasterLine(row);

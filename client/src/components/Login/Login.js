@@ -108,7 +108,7 @@ const Login = () => {
       try {
         const res = await googleLogin({ email }).unwrap();
 
-        if (res.message === "Login Successful!") {
+        if (res.message === "Login successful!") {
           localStorage.setItem("login", Date.now()); // Use this key to trigger the storage event
           dispatch(setCredentials({ ...res.data }));
           if (res?.data?.incompleteProject?.incomplete) {
@@ -120,7 +120,7 @@ const Login = () => {
               window.location.href = "/dashboard";
             }, 1000);
           }
-        } else if (res.message === "notFound!") {
+        } else if (res.message === "Not found!") {
           toast.warning("User not found");
           navigate("/signup");
         } else {
@@ -128,7 +128,7 @@ const Login = () => {
           navigate("/signup");
         }
       } catch (err) {
-        if (err.data.message === "notFound!") {
+        if (err.data.message === "Not found!") {
           toast.warning("Profile doesn't exist");
           navigate("/signup");
         } else {
@@ -200,9 +200,9 @@ const Login = () => {
     validationSchema: loginSchemea,
     onSubmit: submitHandler,
   });
-  useEffect(() => {
-    console.log(values);
-  }, [values]);
+  // useEffect(() => {
+  //   console.log(values);
+  // }, [values]);
 
   return (
     <Grid container sx={firstGrid}>
@@ -438,7 +438,7 @@ const Login = () => {
             </Box>
             <Stack alignItems={"center"} justifyContent={"center"}>
               <GoogleLogin
-                clientId="960267013158-g1avbe0m8oe44tcflp4urhe4gkh5olb1.apps.googleusercontent.com"
+                clientId="928001550940-g7ihssmag34eb686v0rtceot3bb0qudh.apps.googleusercontent.com"
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
                 cookiePolicy={"single_host_origin"}

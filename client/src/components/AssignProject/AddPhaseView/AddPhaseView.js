@@ -106,6 +106,7 @@ function AddPhaseView({
   const changeOrderSelected = useSelector(
     (state) => state.projectInitialProposal.changeOrderLineItems
   );
+  const [isLoadingSendApproval, setIsLoadingSendApproval] = useState(false)
   const newChangePath = `/projects/${projectId}/change-order`;
   const newWorkPath = `/projects/${projectId}/work-order`;
   const navigate = useNavigate();
@@ -160,7 +161,7 @@ function AddPhaseView({
       if (InitialProposalView) {
         try {
           const response = await axios.get(
-            `http://3.135.107.71/project/getInitialPhases/${id}`,
+            `https://builderbuilder.net/project/getInitialPhases/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -176,7 +177,7 @@ function AddPhaseView({
         try {
           //console.log("fetching data...");
           const response = await axios.get(
-            `http://3.135.107.71/project/getPhases/${id}?query=${formattedView}`,
+            `https://builderbuilder.net/project/getPhases/${id}?query=${formattedView}`,
             {
               headers: {
                 Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -194,7 +195,7 @@ function AddPhaseView({
     } else {
       try {
         const response = await axios.get(
-          `http://3.135.107.71/project/getPhases/${projectId}`,
+          `https://builderbuilder.net/project/getPhases/${projectId}`,
           {
             headers: {
               Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -210,9 +211,9 @@ function AddPhaseView({
       setIsLoading(false);
     }
   };
-
+  console.log('run')
   useEffect(() => {
-    //console.log("UserEffect run");
+    // console.log("UserEffect run");
     fetchData();
 
     // Cleanup function
@@ -227,11 +228,13 @@ function AddPhaseView({
 
   const handleSendApproval = () => {
     const sentBy = userId;
+    setIsLoadingSendApproval(true)
     socket.emit("sendApprovalNotification", { projectId, sentBy }, (data) => {
       const toastType = data?.success === true ? "success" : "error";
       toast[toastType](data?.message);
       dispatch(toggleWorkOrderDeclineRecall());
       if (data?.success) {
+        setIsLoadingSendApproval(false)
         window.location.reload();
       }
     });
@@ -701,7 +704,7 @@ function AddPhaseView({
                           }}
                           disabled={
                             !ProjectApprovalSendPermission ||
-                            initialPhases?.[0]?.[0]?.status === "pending"
+                            initialPhases?.[0]?.[0]?.status === "pending" || isLoadingSendApproval
                           }
                         >
                           <Typography

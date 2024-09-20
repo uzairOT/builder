@@ -14,6 +14,16 @@ const WeatherView = ({
   //console.log(dailyForecast)
   const userInfo = useSelector((state) => state.auth.userInfo);
   const firstName = userInfo?.user?.firstName;
+  const currentHour = new Date().getHours();
+  let greeting;
+
+  if (currentHour < 12) {
+    greeting = "Good Morning";
+  } else if (currentHour < 18) {
+    greeting = "Good Afternoon";
+  } else {
+    greeting = "Good Evening";
+  }
 
   return (
     <Stack
@@ -27,9 +37,9 @@ const WeatherView = ({
       spacing={2}
       padding={2}
     >
-      <Box flex={{md:2, xs:0}}>
-        <Typography display={{md:'block', xs:'none'}} sx={themeStyle.title}>
-          Good Morning, {firstName ? `${firstName}` : userGreetings}
+      <Box flex={{ md: 2, xs: 0 }}>
+        <Typography display={{ md: 'block', xs: 'none' }} sx={themeStyle.title}>
+          {greeting}, {firstName ? `${firstName}` : userGreetings}
         </Typography>
         <Stack
           direction="row"
@@ -40,7 +50,7 @@ const WeatherView = ({
           pl={3}
           pr={2.5}
           flexWrap={"wrap"}
-          display={{md:'flex', xs:'none'}}
+          display={{ md: 'flex', xs: 'none' }}
         >
           {(!loading && Array.isArray(dailyForecast)) ? (
             dailyForecast?.map((forecast, index) => (
@@ -64,8 +74,8 @@ const WeatherView = ({
         </Stack>
       </Box>
       <Box flex={1} display={"flex"} flexDirection={'column'} width={"100%"}>
-      <Typography display={{md:'none', xs:'block'}} sx={themeStyle.title}>
-          Good Morning, {firstName ? `${firstName}` : userGreetings}
+        <Typography display={{ md: 'none', xs: 'block' }} sx={themeStyle.title}>
+        {greeting}, {firstName ? `${firstName}` : userGreetings}
         </Typography>
         <WeatherAppCurrentForecast />
       </Box>
@@ -79,7 +89,7 @@ const themeStyle = {
   title: {
     color: "var(--Link-Text, #4C8AB1)",
     fontFamily: 'var(--main-font-family)',
-    fontSize: {xs:'18px',sm:'18px', md:'18px',lg:'22px',xl:"22px"},
+    fontSize: { xs: '18px', sm: '18px', md: '18px', lg: '22px', xl: "22px" },
     fontStyle: "normal",
     fontWeight: "400",
     lineHeight: "20px" /* 90.909% */,

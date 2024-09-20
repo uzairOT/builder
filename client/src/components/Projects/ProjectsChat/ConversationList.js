@@ -52,7 +52,7 @@ const ConversationList = ({
   const [tabValue, setTableValue] = useState(0);
 
   const handleTabChange = (event, newValue) => {
-    console.log(newValue);
+    // console.log(newValue);
     setTableValue(newValue);
   };
   const CustomTabPanel = (props) => {
@@ -86,7 +86,7 @@ const ConversationList = ({
         if (res?.data?.message === "Conversation created successfully!") {
           await refetchConverstations();
         }
-        console.log(res);
+        // console.log(res);
       } catch (error) {
         console.log(error);
       }
@@ -100,7 +100,7 @@ const ConversationList = ({
     const handleRefetch = async () => {
       try {
         await refetchConverstations({ userId: userId });
-        console.log("socket run!");
+        // console.log("socket run!");
       } catch (error) {
         console.error("Error refetching conversations:", error);
       }

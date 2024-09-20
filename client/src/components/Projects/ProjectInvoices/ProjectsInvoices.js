@@ -36,13 +36,12 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
   const { data, refetch } = useGetProjectInvoicesQuery({
     projectId: currentProjectId,
     userId: user.user.id,
-    client: userRole?.userRole,
   });
-  console.log(data);
+  // console.log(data);
   const [checkedRow, setCheckedRow] = useState(null);
   // const [getWorkOrder, {isLoading}] = useGetWorkOrderDetailsMutation()
   const [phaseItems, setPhaseItems] = useState();
-
+  
   //   const handleChangeView = () => {
   //     setChangeView(true);
   //   }

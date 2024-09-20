@@ -1,13 +1,8 @@
 import {
   Avatar,
   Divider,
-  FormControl,
   IconButton,
-  Input,
   InputAdornment,
-  InputLabel,
-  MenuItem,
-  Select,
   Stack,
   TextField,
   Typography,
@@ -23,10 +18,9 @@ import {
   Container,
 } from "@mui/material";
 import * as yup from "yup";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import CloseIcon from "@mui/icons-material/Close";
-import LinkIcon from "@mui/icons-material/Link";
 import users from "./assets/data/users.json";
 import { Box, Modal } from "@mui/material";
 import {
@@ -57,20 +51,19 @@ const ShareModal = ({
   const currentUser = userInfo?.user;
   const [currentPayment, setCurrentPayment] = useState([[]]);
   const [percentage, setPercentage] = useState([[]]);
-  const [userExits, setClientExists] = useState(false);
+
   const location = useLocation();
   const [errorState, setErrorState] = useState([]);
   const pathSegments = location.pathname.split("/");
   const [selectedUser, setSelectedUser] = useState("");
   const projectId = pathSegments[2];
   const userAuth = userRoleAuth.userRole === "supplier";
-  const { data, isError, refetch } = useGetProjectTeamQuery(projectId);
+  const { data } = useGetProjectTeamQuery(projectId);
   const [isLoading, setIsLoading] = useState(false);
-  const [clientInvoice, { data: invoiceData }] = useClientInvoiceMutation();
-  const [updatePhaseLine, { isLoading: updateIsLoading }] =
+  const [clientInvoice] = useClientInvoiceMutation();
+  const [updatePhaseLine] =
     useUpdatePhaseLineMutation();
   const rowsArray = Object.values(rowCheckboxes).flatMap(({ rows }) => rows);
-  console.log(userRoleAuth);
   const invoiceDataCall = async () => {
     try {
       const lineItemIds = rowsArray.flatMap((lineItem) => lineItem.id);
@@ -81,8 +74,8 @@ const ShareModal = ({
         projectId,
         supplier: userAuth,
         enteredEmail: formik?.values?.email,
+        notes: formik?.values?.notes
       }).unwrap();
-      console.log("Success:", result);
       setInvoiceData(result);
       setRowCheckboxes({});
       dispatch(toggleWorkOrderDeclineRecall());
@@ -90,51 +83,16 @@ const ShareModal = ({
     } catch (err) {
       console.error("Failed to fetch reports stats:", err);
       toast.error(err?.data?.message || "Something went wrong!");
-      // setRowCheckboxes({})
-      // dispatch(toggleWorkOrderDeclineRecall())
       return false;
     }
   };
-  console.log("TEAMTEAMTEAMTEAMTEAMTEAM TEAMTEAMTEAMTEAMTEAM", currentPayment);
 
-  // useEffect(() => {
-  //   console.log("API CALLED090909()()()(userIduserIduserId");
 
-  // }, []);
-
-  //
-  const handleSetPayment = async (id, index, pendingPayment, outterIndex) => {
-    console.log(currentPayment[outterIndex][index]);
-    console.log(pendingPayment);
-    if (
-      parseFloat(currentPayment[outterIndex][index]) >
-      parseFloat(pendingPayment)
-    ) {
-      toast.error("Please enter a value less than the remaining cost");
-      return;
-    }
-    //on send button the line item will update against it and then the invoice will generate
-    try {
-      const res = await updatePhaseLine({
-        id: id,
-        currentPayment: currentPayment[outterIndex][index],
-        projectId: projectId,
-      });
-      toast.success("Payment has been set");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const team = data?.team;
-  const [open, setOpen] = useState(true);
-  const [userType, setUserType] = useState("");
   const handleClose = () => {
     setShareToClient(false);
   };
 
-  const handleUserTypeChange = (event) => {
-    setUserType(event.target.value);
-  };
+
 
   const handleChange = (
     index,
@@ -192,6 +150,7 @@ const ShareModal = ({
   const formik = useFormik({
     initialValues: {
       email: "",
+      notes: ""
     },
     validationSchema: yup.object({
       email: yup
@@ -221,8 +180,6 @@ const ShareModal = ({
       }
       updatedPercentage[outerIndex][index] = value;
       if (automated) {
-        // console.log(automated);
-        // console.log()
         const payment = pendingPayment * (value / 100);
         handleChange(index, payment, outerIndex, pendingPayment, false);
       }
@@ -232,7 +189,6 @@ const ShareModal = ({
 
   const handleUserSelect = (user) => {
     setSelectedUser(user);
-    // console.log("Selected user:", user);
   };
 
   const handleSend = async () => {
@@ -246,12 +202,9 @@ const ShareModal = ({
     //   return;
     // }
     setIsLoading(true);
-    console.log(lineItemData);
-    console.log(currentPayment);
     try {
       await handleSetAllPayments();
       const result = await invoiceDataCall();
-      console.log(result);
       if (result) {
         setDone(true);
         setShareToClient(false);
@@ -286,7 +239,6 @@ const ShareModal = ({
         console.log(err);
       }
     }
-    // toast.success("Succes");
   };
   const isValidIndex = (array, outerIndex, innerIndex) =>
     Array.isArray(array) &&
@@ -306,14 +258,20 @@ const ShareModal = ({
         return (
           user.role === "Superadmin" ||
           user.role === "Admin" ||
-          user.role === "Project Manager"
+          user.role === "Project Manager" ||
+          user.role === "Client" ||
+          user.role === "Subcontractor" ||
+          user.role === "Employee" ||
+          user.role === "Others"
         );
       } else {
         return (
           user.role === "Client" ||
           user.role === "Admin" ||
           user.role === "Project Manager" ||
-          user.role === "Subcontractor"
+          user.role === "Subcontractor" ||
+          user.role === "Employee" ||
+          user.role === "Others"
         );
       }
     });
@@ -321,7 +279,7 @@ const ShareModal = ({
 
   return (
     <>
-      <Modal open={open} onClose={setShareToClient}>
+      <Modal open={true} onClose={setShareToClient}>
         <Stack sx={style}>
           <Stack
             direction={"row"}
@@ -333,49 +291,84 @@ const ShareModal = ({
               justifyContent={"start"}
               alignItems={"center"}
               gap={1}
+              width={'100%'}
             >
-              <Typography
-                sx={{ p: 1 }}
-                color={"#4C8AB1"}
-                fontWeight={"500"}
-                fontSize={{ sm: "20px", xs: "16px" }}
-              >
-                Send to
-              </Typography>
-              <Box width={{ sm: "300px", xs: "150px" }}>
-                {/* Email input */}
-                {/* <Typography variant="body1">Email</Typography> */}
-                <TextField
-                  fullWidth
-                  id="email"
-                  name="email"
-                  placeholder="Email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.email && Boolean(formik.errors.email)}
-                  helperText={formik.touched.email ? formik.errors.email : ""}
-                  InputProps={{
-                    style: {
-                      ...InputStyle,
-                      border:
-                        formik.errors.email && formik.touched.email
-                          ? "1px solid #d32f2f"
-                          : "1px solid #E0E4EC",
-                    },
-                    maxLength: 50,
-                  }}
-                  inputProps={{
-                    style: {
-                      padding: "10px",
-                    },
-                  }}
-                />
+              <Box>
+
+                <Typography
+                  sx={{ p: 1 }}
+                  color={"#4C8AB1"}
+                  fontWeight={"500"}
+                  fontSize={{ sm: "20px", xs: "16px" }}
+                  whiteSpace={'nowrap'}
+                >
+                  Send to
+                </Typography>
+                <Box height={'22.91px'}></Box>
               </Box>
+              <Stack direction={{ md: 'row', xs: 'column' }} gap={1} >
+                <Box width={{ sm: "300px", xs: "180px" }}>
+                  {/* Email input */}
+                  <TextField
+                    fullWidth
+                    id="email"
+                    name="email"
+                    placeholder="Email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email ? formik.errors.email : ""}
+                    InputProps={{
+                      style: {
+                        ...InputStyle,
+                        border:
+                          formik.errors.email && formik.touched.email
+                            ? "1px solid #d32f2f"
+                            : "1px solid #E0E4EC",
+                      },
+                      maxLength: 50,
+                    }}
+                    inputProps={{
+                      style: {
+                        padding: "10px",
+                      },
+                    }}
+                  />
+                  {!formik.errors.email && <Box height={'22.91px'}></Box>}
+                </Box>
+                <Box width={{ sm: "300px", xs: "180px" }}>
+                  {/* Notes input */}
+                  <TextField
+                    fullWidth
+                    id="notes"
+                    name="notes"
+                    placeholder="Notes"
+                    value={formik.values.notes}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    InputProps={{
+                      style: {
+                        ...InputStyle,
+                      },
+                      maxLength: 50,
+                    }}
+                    inputProps={{
+                      style: {
+                        padding: "10px",
+                      },
+                    }}
+                  />
+                  <Box height={'22.91px'}></Box>
+                </Box>
+              </Stack>
             </Stack>
-            <IconButton onClick={handleClose}>
-              <CloseIcon sx={{ p: 2, color: "#535353", fontSize: "20px" }} />
-            </IconButton>
+            <Box>
+              <IconButton onClick={handleClose}>
+                <CloseIcon sx={{ p: 2, color: "#535353", fontSize: "20px" }} />
+              </IconButton>
+              <Box height={'22.91px'}></Box>
+            </Box>
           </Stack>
           <Divider variant="fullWidth" />
           {data?.team.length > 0 ? (
@@ -480,9 +473,7 @@ const ShareModal = ({
           )}
 
           <Stack justifyContent={"center"} alignItems={"flex-start"}>
-            {userAuth ? (
-              <></>
-            ) : (
+            {
               <TableContainer component={Paper}>
                 <Table>
                   <TableHead>
@@ -581,7 +572,7 @@ const ShareModal = ({
                                 }}
                                 helperText={
                                   isValidIndex(errorState, outerIndex, index) &&
-                                  errorState[outerIndex][index]
+                                    errorState[outerIndex][index]
                                     ? "Enter below remaining"
                                     : ""
                                 }
@@ -638,8 +629,8 @@ const ShareModal = ({
                                 value={
                                   isValidIndex(percentage, outerIndex, index)
                                     ? Number(
-                                        percentage[outerIndex][index]
-                                      ).toFixed(2)
+                                      percentage[outerIndex][index]
+                                    ).toFixed(2)
                                     : ""
                                 }
                                 onChange={(e) => {
@@ -675,20 +666,6 @@ const ShareModal = ({
                                 }}
                               />
                             </TableCell>
-                            {/* <TableCell sx={tableCellStyles}>
-                              <BuilderProButton
-                                handleOnClick={() =>
-                                  handleSetPayment(
-                                    row.id,
-                                    index,
-                                    row.paymentPending,
-                                    outerIndex
-                                  )
-                                }
-                              >
-                                Set
-                              </BuilderProButton>
-                            </TableCell> */}
                           </TableRow>
                         );
                       })
@@ -696,87 +673,9 @@ const ShareModal = ({
                   </TableBody>
                 </Table>
               </TableContainer>
-            )}
+            }
           </Stack>
           <Divider variant="fullWidth" />
-          {/* <Stack direction={"row"} pl={4} pr={4} pt={2} pb={2} spacing={3}>
-            <Stack
-              direction={"row"}
-              border={"2px solid #FFAC00"}
-              borderRadius={"30px"}
-              pl={2}
-              width={"100%"}
-            >
-              <Input
-                placeholder="Select Person To Send Email To:"
-                aria-describedby="my-helper-text"
-                value={selectedUser?.firstName || ""}
-                onChange={(e) => setSelectedUser(e.target.value)}
-                sx={{
-                  "&::after": {
-                    borderBottom: "none",
-                  },
-                  "&:before": {
-                    borderBottom: "none",
-                  },
-                  "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before":
-                    {
-                      borderBottom: "none",
-                    },
-                  width: "90%",
-                }}
-              />
-              <FormControl
-                style={{ marginLeft: "5px", width: "120px" }}
-                size="small"
-                fullWidth
-              >
-                <InputLabel
-                  id="demo-simple-select-label"
-                  style={{
-                    fontSize: "12px",
-                    top: "3px",
-                    fontFamily: 'var(--main-font-family)',
-                    color: "#202227",
-                  }}
-                  sx={{
-                    marginRight: "5px",
-                    paddingRight: "5px",
-                    "&.Mui-focused": {
-                      display: "none",
-                    },
-                    "&.MuiInputLabel-shrink": {
-                      display: "none",
-                    },
-                  }}
-                >
-                  Select Role
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={userType}
-                  label={userType}
-                  onChange={handleUserTypeChange}
-                  placeholder={`Client`}
-                  sx={{
-                    cursor: "pointer",
-                    ".css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
-                      border: "none",
-                    },
-                  }}
-                >
-                  <MenuItem value={"user"}>Client</MenuItem>
-                  <MenuItem value={"admin"}>Admin</MenuItem>
-                  <MenuItem value={"super admin"}>Super admin</MenuItem>
-                  <MenuItem value={"super admin"}>Project Manager</MenuItem>
-                  <MenuItem value={"super admin"}>Subcontractor</MenuItem>
-                  <MenuItem value={"super admin"}>Supplier</MenuItem>
-                  <MenuItem value={"super admin"}>Employee</MenuItem>
-                </Select>
-              </FormControl>
-            </Stack>
-          </Stack> */}
 
           <Stack direction={"row"} p={2} pl={3} justifyContent={"center"}>
             <BuilderProButton
@@ -794,17 +693,7 @@ const ShareModal = ({
                 <Typography>Send</Typography>
               )}
             </BuilderProButton>
-            {/* <BuilderProButton
-              backgroundColor={"#FFAC00"}
-              variant={"contained"}
-              padding={"6px 32px 6px 32px"}
-              disabled={isLoading}
-              handleOnClick={() => {
-                handleSetAllPayments()
-              }}
-            >
-              <Typography>check object</Typography>
-            </BuilderProButton> */}
+
           </Stack>
         </Stack>
       </Modal>
@@ -839,14 +728,7 @@ const style = {
   borderRadius: "14px",
   overflowX: "auto",
 };
-const label = {
-  fontSize: "12px",
-  fontFamily: "var(--main-font-family)",
-  maxWidth: { xl: "60px", lg: "60px", md: "70px", xs: "100%" },
-  minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
-  // overflow:'hidden',
-  // whitespace: 'nowrap'
-};
+
 
 const tableCellStyles = {
   fontSize: "12px", // Smaller font size

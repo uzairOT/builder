@@ -53,7 +53,7 @@ const ProjectList = ({
   totalCount,
   currentUserId,
 }) => {
-  console.log(rows);
+  // console.log(rows);
   const navigate = useNavigate();
   const [deleteProject, { isLoading: deletingProjectLoading }] =
     useDeleteUserProjectMutation();
@@ -92,10 +92,7 @@ const ProjectList = ({
     filter: "",
     page: 1,
   });
-  useEffect(() => {
-    console.log("Fetching projects: ", isSuccess);
-    console.log("Fetching data: ", data);
-  }, [data]);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -138,7 +135,7 @@ const ProjectList = ({
       const res = await deleteProject({
         id: id,
       });
-      console.log(res);
+      // console.log(res);
       if (res?.error?.data?.message) {
         toast.error(res?.error?.data?.message);
         return;
@@ -150,7 +147,7 @@ const ProjectList = ({
         filter: "",
         page: 1,
       });
-      console.log("REFETCHED DATA: ", refetchRes);
+      // console.log("REFETCHED DATA: ", refetchRes);
       if (data) {
         dispatch(addProjects(data?.projects));
         dispatch(setTotalCount(data?.totalCount));
@@ -166,7 +163,10 @@ const ProjectList = ({
   };
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+  useEffect(() => {
+    console.log("Filter open: ", open);
 
+  }, [open]);
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
   };
@@ -400,6 +400,7 @@ const ProjectList = ({
               selectedFilters={selectedFilters}
               page={page}
               setPage={setPage}
+              projectsPage={true}
             />
           </Stack>
           <Stack
@@ -416,6 +417,7 @@ const ProjectList = ({
               handleOnClick={() => {
                 navigate("/assignproject");
               }}
+              // disabled={open}
             >
               Add{" "}
               <Box

@@ -16,10 +16,12 @@ import {
   setIsSaveAs,
 } from "../../../redux/slices/Project/handlingProjectFlowSlice";
 import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
+import { setCredentials } from "../../../redux/slices/authSlice";
 
 function Header({ step, gap, handlePreviousStep, step2, step3 }) {
   //console.log("Header step: ", step);
   const phases = useSelector((state) => state.projectInitialProposal.phases);
+  const userdata = JSON.parse(localStorage.getItem("userInfo"));
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTab = useMediaQuery("(max-width:900px)");
   const isMd = useMediaQuery("(max-width:1200px)");
@@ -44,14 +46,17 @@ function Header({ step, gap, handlePreviousStep, step2, step3 }) {
     handlePreviousStep();
   };
   const handleLogoClcik = () => {
-    if (phases[0]?.length < 1) {
-      toast.error("Please add atleast one phase");
+    if (phases[0]?.length < 1 || phases?.length < 1) {
+      toast.error("Please add at least one phase against a project");
       return;
     }
     dispatch(addPhase([]));
     dispatch(setIsSaveAs(false));
     dispatch(setBackButtonProjectId(null));
     // dispatch(resetUserAndRoleEmail());
+    dispatch(
+      setCredentials({ ...userdata, incompleteProject: null })
+    );
     dispatch(resetUserAndRoleEmail());
     navigate("/dashboard");
   };

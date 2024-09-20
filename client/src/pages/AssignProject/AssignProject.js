@@ -31,7 +31,7 @@ import { getBackButtonProjectId } from "../../redux/slices/Project/handlingProje
 function AssignProject() {
   const local = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(local);
-  console.log(currentUser);
+  // console.log(currentUser);
   const currentUserId = currentUser?.user.id;
   const [projectType, setProjectType] = useState(null);
   const { projectName, location, projectColor, start_time, end_time } =
@@ -100,7 +100,7 @@ function AssignProject() {
       try {
         const res = await checkProjectDuplication(data);
 
-        console.log(res);
+        // console.log(res);
         if (res?.data?.success) {
           setProjectType(value);
         } else {

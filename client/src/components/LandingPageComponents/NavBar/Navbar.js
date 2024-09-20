@@ -35,7 +35,7 @@ const Navbar = () => {
   const userParsedInfo = JSON.parse(userInfo);
   // Define the function separately
   const handleNavigateToDashboard = () => {
-    console.log("navigate", userInfo);
+    // console.log("navigate", userInfo);
     if (userParsedInfo?.user?.hasValidSubscription) {
       navigate("/dashboard");
     } else {

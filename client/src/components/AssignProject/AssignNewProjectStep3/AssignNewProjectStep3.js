@@ -1,13 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+
 import AddPhaseView from "../AddPhaseView/AddPhaseView";
-import Footer from "../Footer/Footer";
 import StepTitles from "../StepTitles/StepTitles";
 import { Grid } from "@mui/material";
 
 function AssignNewProjectStep3({ projectId, onNextStep }) {
-  const navigate = useNavigate();
-  console.log(projectId);
+
+  // console.log(projectId);
 
   return (
     <div>

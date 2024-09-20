@@ -37,7 +37,7 @@ const LineItemDetailModal = ({
         phaseId: lineItem.phase_id,
         client: false
       }, (response) => {
-        console.log(response.data);
+        // console.log(response.data);
         dispatch(toggleWorkOrderDeclineRecall());
       });
       // console.log(res);
@@ -46,7 +46,7 @@ const LineItemDetailModal = ({
     }
     handleClose();
   };
-  console.log(lineItem)
+  // console.log(lineItem)
   const disableButton = () => {
     const userStatus = lineItem?.UserLineItemStatuses?.find( user => user.userId === userId);
     if(userStatus?.status === 'done'){

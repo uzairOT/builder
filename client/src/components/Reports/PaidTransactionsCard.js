@@ -20,7 +20,7 @@ const PaidTransactionsCard = () => {
         userId,
         projectId,
       }).unwrap();
-      console.log("Success getProjectCostStats:", result);
+      // console.log("Success getProjectCostStats:", result);
       // Calculate total payment amount
       const total = result.reduce(
         (sum, transaction) => sum + parseFloat(transaction?.PaymentAmount || 0),

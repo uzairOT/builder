@@ -28,7 +28,7 @@ import { Close } from "@mui/icons-material";
 import { toast } from "react-toastify";
 
 const AddUnitModal = ({ open, onClose, unit, refetch }) => {
-  console.log(unit);
+  // console.log(unit);
   const userInfo = useSelector((state) => state.auth.userInfo);
   const [addUnit] = useAddUnitMutation();
   const handleClose = () => {
@@ -36,7 +36,7 @@ const AddUnitModal = ({ open, onClose, unit, refetch }) => {
     onClose();
   };
   const onSubmit = async (values, action) => {
-    console.log(unit);
+    // console.log(unit);
 
     const post = {
       label: values.label ? values.label.toLowerCase() : "",
@@ -54,7 +54,7 @@ const AddUnitModal = ({ open, onClose, unit, refetch }) => {
     }
     toast.success("Unit added successfully.");
     await refetch({ userId: userInfo.user.id });
-    console.log(res);
+    // console.log(res);
     handleClose();
   };
   const {

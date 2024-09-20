@@ -20,7 +20,7 @@ function Client() {
   const [searchInput, setSearchInput] = useState("");
   const debouncedValue =  QueryDebouncer(searchInput,500);
   const [refreshData, setRefreshData] = useState(true);
-  console.log(debouncedValue)
+  // console.log(debouncedValue)
   useEffect(()=>{
     //console.log(userInfo);
   },[userInfo])

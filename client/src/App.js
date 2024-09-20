@@ -1,14 +1,9 @@
 import {
-  BrowserRouter,
-  Routes,
   Route,
-  Link,
   createRoutesFromElements,
-  useNavigate,
-  useParams,
 } from "react-router-dom";
 // import Signup from "./pages/SignUp/Signup";
-import React, { lazy, Suspense, useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout3 from "./components/Layouts/Layout3";
 import Profile from "./components/Settings/Profile/Profile";
@@ -30,8 +25,6 @@ import Images from "./components/ClientDashboard/Images/Images";
 import Chats from "./components/ClientDashboard/Chats/Chats";
 import ClientDashboardCards from "./components/ClientDashboard/ClientDashboardCards/ClientDashboardCards";
 import DailyLog from "./components/ClientDashboard/DailyLog/DailyLog";
-
-import { loader } from "./pages/Projects/ProjectsTable";
 import PageLoader from "./components/UI/Loaders/PageLoader/PageLoader";
 import InnerLayout2 from "./components/Layouts/InnerLayout2";
 import ProjectsDefault from "./components/Projects/ProjectsDefault/ProjectsDefault";
@@ -49,15 +42,10 @@ import Invitation from "./pages/InvitationView/Invitation";
 import { ToastContainer } from "react-toastify";
 //import "react-toastify/dist/ReactToastify.css";
 import { getFormattedFiveDayWeather } from "./services/WeatherService.js";
-import { addEvents, fetchEvents } from "./redux/slices/Events/eventsSlice.js";
+import { fetchEvents } from "./redux/slices/Events/eventsSlice.js";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-import ProjectsChangeOrder from "./components/Projects/ProjectsChangeOrder/ProjectsChangeOrder";
-import { useGetUserEventsMutation } from "./redux/apis/usersApiSlice.js";
-import moment from "moment";
 import {
-  allEvents,
   setIsLoading,
   setError,
 } from "./redux/slices/Events/eventsSlice.js";
@@ -78,21 +66,15 @@ import PrivacyTerms from "./pages/PrivacyTerms/PrivacyTerms.jsx";
 import ChangeOrder from "./pages/Projects/ChangeOrder.js";
 import Employee from "./components/Settings/Employee/Employee.js";
 import NoInternetConnection from "./pages/NoInternetPage/NoInternetConnection.js";
-import useSocket from "./utils/useSocket.js";
 import Units from "./components/Settings/Units/Units.js";
 import ClientLayout from "./components/Layouts/ClientLayout.js";
-import { useGetProjectUserRoleMutation } from "./redux/apis/Project/userProjectApiSlice.js";
 import { getUserRoleFromRedux } from "./redux/slices/auth/userRoleSlice.js";
 import Completion from "./components/dialogues/PaymentModal/Completion.js";
 import ChatViewMain from "./components/Projects/ProjectsChat/ChatViewMain.js";
 import PermitClient from "./components/ClientDashboard/Permit/Permit";
 import NotFound from "./pages/NotFound/NotFound.js";
-import ProjectsChangeOrderView from "./components/Projects/ProjectsChangeOrder/ProjectsChangeOrderView.js";
 import InvoicePayment from "./components/dialogues/GenerateInvoice/InvoicePayment/InvoicePayment.js";
-import ProjectsInvoicesView from "./components/Projects/ProjectInvoices/ProjectsInvoices.js";
-import ProjectsInvoices from "./components/Projects/ProjectInvoices/ProjectsInvoices.js";
 import ProjectInvoicesView from "./components/Projects/ProjectInvoices/ProjectInvoicesView.js";
-import Cupon from "./components/Settings/Cupon/Coupon.js";
 import Coupon from "./components/Settings/Cupon/Coupon.js";
 import Accounts from "./components/Settings/Accounts/Accounts.js";
 import Others from "./components/Settings/Others/Others.js";
@@ -101,13 +83,6 @@ import MainHome from "./components/LandingPageComponents/MainHome.js";
 import PolicyPage from "./components/LandingPageComponents/PrivacyPolicy/index.js";
 import TermsPage from "./components/LandingPageComponents/Terms/index.js";
 import PermissionAccess from "./components/Settings/PermissionAccess/Permissions.js";
-import { usePermissionsMutation } from "./redux/apis/Permissions/permissionsApiSlice.js";
-import {
-  setPermissionsState,
-  updatePermission,
-} from "./redux/slices/LoginPermissions/PermissionsSlice.js";
-import { socket } from "./socket.js";
-import NewSubscription from "./pages/Subscription/NewSubscription.js";
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -135,20 +110,15 @@ function App() {
   let userInfo = JSON.parse(data);
   const isInLocalStorage = userInfo?.user;
   const currentUser = isInLocalStorage ? userInfo?.user?.id : null;
-  const [getUserRole] = useGetProjectUserRoleMutation();
   const userRole = useSelector(getUserRoleFromRedux);
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
   // const [dailyForecast, setDailyForecast] = useState(null);
-  const { emit, on } = useSocket();
-  const [events, setEvents] = useState();
-  const [getEvents] = useGetUserEventsMutation();
-  const allEvent = useSelector(allEvents);
   const query = useSelector((state) => state.dailyForecast.query);
   const forecast = useSelector(getForecast);
   const dailyForecast = forecast.dailyForecast || [];
   const dispatch = useDispatch();
-
+  // console.log('rerender')
   // const [GetPermissions] = usePermissionsMutation();
 
   // const handleUpdatePermission = async () => {
@@ -187,19 +157,22 @@ function App() {
         let lon = position.coords.longitude;
 
         dispatch(setLatLon({ lat, lon }));
+        if (dailyForecast.length < 1) {
+          fetchWeather(lat, lon);
+        }
       });
     }
-  });
+  },[dailyForecast, query.temperatureUnit, query.lat]);
 
-  const fetchWeather = async () => {
+  const fetchWeather = async (lat,lon) => {
     // setLoading(true);
     dispatch(setIsLoading(true));
     dispatch(setForecastLoading(true));
 
     try {
       const data = await getFormattedFiveDayWeather({
-        lat: "34.0549",
-        lon: "118.2426",
+        lat: lat,
+        lon: lon,
         units: query.temperatureUnit,
       });
       dispatch(setDailyForecast(data));
@@ -211,11 +184,9 @@ function App() {
       dispatch(setForecastLoading(false));
     }
   };
-  useEffect(() => {
-    if (dailyForecast.length < 1) {
-      fetchWeather();
-    }
-  }, [dailyForecast, query.temperatureUnit, query.lat]); // Run this effect whenever dailyForecast changes or on initial mount
+  // useEffect(() => {
+ 
+  // }, [dailyForecast, query.temperatureUnit, query.lat]); // Run this effect whenever dailyForecast changes or on initial mount
   // useEffect(() => {
   //   if (
   //     userInfo?.user?.hasValidSubscription === false &&
@@ -355,7 +326,7 @@ function App() {
           element={<Invitation />}
         />
 
-        <Route path="/clientdashboard" element={<ClientDashboard />}>
+        {/* <Route path="/clientdashboard" element={<ClientDashboard />}>
           <Route path="/clientdashboard" element={<ClientDashboardCards />} />
           <Route path="permit" element={<Permit />} />
           <Route path="drawing" element={<Drawing />} />
@@ -364,7 +335,7 @@ function App() {
           <Route path="invoices" element={<Invoices />} />
           <Route path="dailylog" element={<DailyLog />} />
           <Route path="chats" element={<Chats />} />
-        </Route>
+        </Route> */}
         <Route path="/*" element={<NotFound />} />
       </>
     )

@@ -58,7 +58,7 @@ function ProfileView() {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://3.135.107.71/project/file",
+          "https://builderbuilder.net/project/file",
           {
             fileName,
             fileType,
@@ -139,7 +139,7 @@ function ProfileView() {
     return Object.keys(newErrors).length === 0 && isValid;
   };
 
-  console.log(formData);
+  // console.log(formData);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -185,7 +185,7 @@ function ProfileView() {
   };
 
   const handleSubmit = async (image) => {
-    console.log(image);
+    // console.log(image);
     if (!validate()) {
       toast.error("Your phone number is not valid");
       return;
@@ -200,7 +200,7 @@ function ProfileView() {
           image: uploadedFileUrl,
         };
         const res = await updateProfile(put);
-        console.log(res);
+        // console.log(res);
         localStorage.setItem("userInfo", JSON.stringify(res.data));
         dispatch(setCredentials(res.data));
         if (image === "image") {

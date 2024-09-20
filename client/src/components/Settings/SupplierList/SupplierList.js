@@ -38,7 +38,7 @@ function SupplierList() {
   const handlePageChange = (event, newValue) => {
     setPage(newValue)
   }
-  console.log(totalEntries)
+  // console.log(totalEntries)
  
   let startIndex = 1;
   let endIndex = 6;

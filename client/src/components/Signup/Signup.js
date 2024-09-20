@@ -154,12 +154,12 @@ const SignupComp = () => {
       try {
         const res = await googleLogin({ email }).unwrap();
 
-        if (res.message === "Login Successful!") {
+        if (res.message === "Login successful!") {
           dispatch(setCredentials({ ...res.data }));
           setTimeout(() => {
             window.location.href = "/dashboard";
           }, 1000);
-        } else if (res.message === "notFound!") {
+        } else if (res.message === "Not found!") {
           toast.warning("User not found");
           navigate("/signup");
         }
@@ -173,7 +173,7 @@ const SignupComp = () => {
           navigate("/signup");
         }
       } catch (err) {
-        if (err?.data?.message === "notFound!") {
+        if (err?.data?.message === "Not found!") {
           toast.warning("Please enter following information");
           navigate("/userinfo");
         } else {
@@ -181,7 +181,7 @@ const SignupComp = () => {
           //navigate("/signup");
         }
 
-        console.log("+(+(+++", err);
+        // console.log("+(+(+++", err);
         // alert("---",err?.data?.message || "---",err.error);
       }
       //
@@ -202,10 +202,10 @@ const SignupComp = () => {
       return;
     }
     if (checked) {
-      const data = { ...values, phoneNumber: phone };
+      const data = { ...values, phoneNumber: phone, withGoogle: false };
       try {
         const res = await register(data).unwrap();
-        console.log("Sign up: ", res);
+        // console.log("Sign up: ", res);
         // dispatch(setCredentials({ ...res }));
         // navigate("/assignproject");
         if (res.redirectTo === "verifyOtp") {
@@ -219,11 +219,11 @@ const SignupComp = () => {
           toast.error(res.message || "Something went wrong!");
           return;
         }
-        console.log("hi");
+        // console.log("hi");
       } catch (err) {
         console.log(err);
         if (err.status === "FETCH_ERROR") {
-          toast.error("Network Issues");
+          toast.error("Network issues");
           return;
         }
         toast.error(err?.data?.error || err.error || "Something went wrong!");
@@ -267,9 +267,9 @@ const SignupComp = () => {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
 
-  useEffect(() => {
-    console.log(values);
-  }, [values]);
+  // useEffect(() => {
+  //   console.log(values);
+  // }, [values]);
   return (
     <Grid container sx={{ ...firstGrid }}>
       <ToastContainer />
@@ -725,7 +725,7 @@ const SignupComp = () => {
             </Box>
             <Stack alignItems={"center"} justifyContent={"center"}>
               <GoogleLogin
-                clientId="960267013158-g1avbe0m8oe44tcflp4urhe4gkh5olb1.apps.googleusercontent.com"
+                clientId="928001550940-g7ihssmag34eb686v0rtceot3bb0qudh.apps.googleusercontent.com"
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
                 cookiePolicy={"single_host_origin"}

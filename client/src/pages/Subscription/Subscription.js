@@ -1,4 +1,4 @@
-import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Grid, } from "@mui/material";
 import React, { useState } from "react";
 import SubscriptionSidebar from "../../components/Subscription/SubscriptionSidebar";
 import SubscriptionPlans from "../../components/Subscription/SubscriptionPlans";
@@ -12,7 +12,7 @@ const Subscription = () => {
   const userParseInfo = JSON.parse(userInfo);
   let IsValidSub = userParseInfo?.user?.hasValidSubscription;
   const subHeight = !IsValidSub ? "100vh" : "93vh";
-  console.log("Plan Type", IsValidSub);
+  // console.log("Plan Type", IsValidSub);
   return (
     <>
       <Grid

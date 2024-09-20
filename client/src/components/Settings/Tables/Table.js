@@ -149,7 +149,7 @@ function CustomTable({
       setTotalEntries(data?.totalCount);
       setTotalPages(data?.totalPages);
     }
-    console.log(data);
+    // console.log(data);
   }, [data]);
 
   useEffect(() => {

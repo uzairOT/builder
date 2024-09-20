@@ -10,6 +10,7 @@ const SubscriptionPlans = ({
   setCurrentPakage,
 }) => {
   const [currentPayment, setCurrentPayment] = useState([]);
+  const [expiryDate, setExpiryDate] = useState(null)
   let userData = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(userData);
   const currentUser = userInfo?.user;
@@ -17,7 +18,7 @@ const SubscriptionPlans = ({
     const fetchCurrentPayment = async () => {
       try {
         const res = await fetch(
-          "http://3.135.107.71/payment/checkPaymentPlan",
+          "https://builderbuilder.net/payment/checkPaymentPlan",
           {
             method: "POST",
             headers: new Headers({
@@ -29,15 +30,16 @@ const SubscriptionPlans = ({
         );
         const data = await res.json();
         if (data.success) {
-          console.log("080808080--->", data?.payment?.planType);
+          // console.log("080808080--->", data?.payment?.planType);
           setCurrentPayment(data?.payment?.planType);
+          setExpiryDate(data?.payment.expiryDate)
         }
       } catch (error) {
         console.error(error);
       }
     };
     fetchCurrentPayment();
-    console.log("currentPaymentcurrentPaymentcurrentPayment", currentPayment);
+    // console.log("currentPaymentcurrentPaymentcurrentPayment", currentPayment);
   }, []);
   return (
     <Stack p={1} pl={4}>
@@ -47,7 +49,7 @@ const SubscriptionPlans = ({
             Your Current Plan
           </Typography>
           <Stack spacing={2} pb={1} p={1}>
-            <SubscriptionCard current={true} planType={currentPayment} />
+            <SubscriptionCard current={true} planType={currentPayment} expiryDate={expiryDate}/>
             <Divider />
           </Stack>
         </>
@@ -72,7 +74,7 @@ const SubscriptionPlans = ({
             currentPlan={currentPlan}
             setCurrentPlan={setCurrentPlan}
             setCurrentPakage={setCurrentPakage}
-            planType={"Pro"}
+            planType={"Business Pro"}
           />
         </Grid>
 

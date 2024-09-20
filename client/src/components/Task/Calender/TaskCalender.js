@@ -22,8 +22,8 @@ moment.tz.setDefault("UTC");
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClient, eventsArr }) => {
-  console.log("Current time: "); console.log(moment().format());
-  console.log("Currrent timezone after updating: "); console.log(moment().tz());
+  // console.log("Current time: "); console.log(moment().format());
+  // console.log("Currrent timezone after updating: "); console.log(moment().tz());
   const {id}= useParams();
   const [monthEventView, setMonthEventView] = useState(true);
   const [eventView, setEventView] = useState('Work Order')
@@ -51,7 +51,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
         end: parsedEnd,
       }
     }) : [];
-    console.log(id);
+    // console.log(id);
 
   // console.log("In Task Calender View: ", eventsArr);
 

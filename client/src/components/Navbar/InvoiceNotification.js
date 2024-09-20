@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const InvoiceNotification = ({ data, setInvoiceNotification }) => {
   const navigate = useNavigate()
-  console.log(data)
+  // console.log(data)
 
   return (
     <Stack p={1} borderRadius={"14px"}>
@@ -26,7 +26,7 @@ const InvoiceNotification = ({ data, setInvoiceNotification }) => {
         Please review the invoice and make a payment by:
       </Typography>
       <Typography>
-        {moment(data?.data?.InvoiceDueDate).format("MMM, DD, YYYY")}.
+        {moment(data?.data?.InvoiceDueDate).format("MM/DD/YYYY")}.
       </Typography>
       <Typography fontFamily={'var(--main-font-family)'} fontSize={"14px"}>
         Please check your email.

@@ -1,6 +1,6 @@
 import { apiSlice } from "../apiSlice";
 
-const PERMISSIONS_URL = "http://3.135.107.71/permission";
+const PERMISSIONS_URL = "https://builderbuilder.net/permission";
 
 const permissionsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

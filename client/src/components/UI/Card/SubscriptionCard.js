@@ -10,12 +10,14 @@ import {
 } from "@mui/material";
 import React, { cloneElement, useState } from "react";
 import CheckSharpIcon from "@mui/icons-material/CheckSharp";
+import moment from 'moment'
 
 const SubscriptionCard = ({
   planType,
   current,
   setCurrentPlan,
   currentPlan,
+  expiryDate,
   setCurrentPakage,
 }) => {
   const plan = (() => {
@@ -25,14 +27,14 @@ const SubscriptionCard = ({
           name: "Business +",
           color: "#22506C",
           cost: 10,
-          planPackage: ["Enabled", "50", "40", "1", true],
+          planPackage: ["Enabled", "50", "40", "3", true],
         };
-      case "Pro":
+      case "Business Pro":
         return {
           name: "Business Pro",
           color: "#226C6C",
           cost: 15,
-          planPackage: ["Enabled", "500", "440", "2 to 10", true],
+          planPackage: ["Enabled", "500", "440", "4 to 10", true],
         };
       default:
         return {
@@ -56,12 +58,12 @@ const SubscriptionCard = ({
     );
   };
   const handleClick = () => {
-    console.log("Cost:", plan.cost);
+    // console.log("Cost:", plan.cost);
     setCurrentPlan(plan?.cost);
     setCurrentPakage(plan.name);
   };
   const handlePrevious = () => {
-    console.log("first");
+    // console.log("first");
   };
   // console.log("plan",plan)
   return (
@@ -136,6 +138,7 @@ const SubscriptionCard = ({
           <span>Yaerly Cost:</span>${plan.cost}
         </Typography> */}
         {/* { current ? <Typography sx={themeStyle.bodyText} >Last Paid: 12/12/2024</Typography> : <Typography sx={themeStyle.bodyText} >per person/month, when billed monthly</Typography>} */}
+        { current && <Typography sx={{...themeStyle.bodyText, color:'black'}} >Expiry Date: {moment(expiryDate).format("MM/DD/YYYY")}</Typography>}
       </Stack>
     </Paper>
   );

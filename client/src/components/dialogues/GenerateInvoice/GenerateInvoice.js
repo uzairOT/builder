@@ -47,14 +47,14 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
   const targetRef = useRef();
   const handleInvoicePrint = () => {
     generatePDF(targetRef, {...options, filename:`Invoice-${invoiceData?.invoiceCompleteObj?.InvoiceNumber}.pdf`});
-    console.log("Invoice Generated Successfully");
+    // console.log("Invoice Generated Successfully");
   };
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     const options = { year: "numeric", month: "long", day: "numeric" };
     return date.toLocaleDateString(undefined, options);
   };
-  console.log(invoiceData)
+  // console.log(invoiceData)
   return (
     <>
        <Modal
@@ -170,7 +170,10 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
                       {invoiceData?.invoiceCompleteObj?.Admin?.companyName}
                     </Typography>
                     <Typography sx={modalStyle}>
-                      Name: {invoiceData?.invoiceCompleteObj?.Client?.firstName}
+                      Name: {invoiceData?.invoiceCompleteObj?.Client ? invoiceData?.invoiceCompleteObj?.Client?.firstName : invoiceData?.invoiceCompleteObj?.email}
+                    </Typography>
+                    <Typography sx={modalStyle}>
+                      Biller: {invoiceData?.invoiceCompleteObj?.Admin?.firstName}
                     </Typography>
                     {/* <Typography sx={modalStyle}>Company Address</Typography>
                 <Typography sx={modalStyle}>City,State Zip</Typography>

@@ -132,7 +132,7 @@ function AssignNewProjectStep2({
   
   
 
-  console.log(Data);
+  // console.log(Data);
 
   const handleCreateNewProject = async () => {
     localStorage.removeItem("projectId");
@@ -151,9 +151,9 @@ function AssignNewProjectStep2({
       };
  
       // Call the assignProject function and wait for the result
-      console.log(backButtonProjectId)
+      // console.log(backButtonProjectId)
       if (backButtonProjectId) {
-        console.log(backButtonProjectId)
+        // console.log(backButtonProjectId)
         const res = await editAssignProject(FormData).unwrap();
 
         // If successful, store the project ID in local storage
@@ -163,11 +163,11 @@ function AssignNewProjectStep2({
         onNextStep();
       } else {
         const res = await assignProject(FormData).unwrap();
-        console.log(res)
+        // console.log(res)
         // localStorage.setItem("userInfo", JSON.stringify({...userInfo, incompleteProject: res?.incompleteProject}));
         if(res.message === "Existing User is not part of the organization."){
           toast.error(
-       "Existing User is not part of the organization."
+       "Existing user is not part of the organization."
           );
           return;
         }
@@ -204,7 +204,7 @@ function AssignNewProjectStep2({
     // console.log(users.slice(0, index).concat(users.slice(index + 1)));
     dispatch(removeUser(index));
   };
-  console.log(showSkipInvite);
+  // console.log(showSkipInvite);
   return (
     <>
       <StepTitles
