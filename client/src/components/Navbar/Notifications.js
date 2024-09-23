@@ -64,7 +64,7 @@ function Notification({
       await refetch(userId);
       dispatch(fetchEvents({ userId: userId, dailyForecast: dailyForecast }));
       toast.success("Work order approved sucessfully!");
-      window.location.reload();
+      // window.location.reload();
 
       // socket.emit('statusDoneNotification', {
       //   userId: userId,
@@ -76,8 +76,8 @@ function Notification({
       //   phaseId: notification?.WorkOrderReq?.phaseItems[0]?.phaseId,
       // }, (response) => {
       //   console.log(response.data);
-      //   // dispatch(toggleWorkOrderDeclineRecall());
       // })
+      dispatch(toggleWorkOrderDeclineRecall());
       // window.location.reload();
     } catch (err) {
       // console.log(err);
@@ -105,7 +105,7 @@ function Notification({
       // })
       dispatch(toggleWorkOrderDeclineRecall());
       toast.info("Work order declined sucessfully!");
-      window.location.reload();
+      // window.location.reload();
 
       // window.location.reload();
     } catch (err) {

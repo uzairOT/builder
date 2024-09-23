@@ -28,6 +28,7 @@ import { Elements, PaymentElement } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import { useVerifyCouponMutation } from "../../../redux/apis/Coupon/CouponApiSlice";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
+import { toast } from "react-toastify";
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -74,9 +75,13 @@ const PaymentModal = ({
   };
   const handlePromoCode = async () => {
     try {
+      if(!amount){
+        toast.warning("Select a plan");
+        return;
+      }
       const res = await verifyCoupon({
         couponCode: promoCode,
-        amount: currentPlan,
+        amount: amount,
       })
         .unwrap()
         .then((res) => {

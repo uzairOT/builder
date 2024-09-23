@@ -1,18 +1,12 @@
 import {
   Avatar,
   Box,
-  Button,
   Divider,
-  FormControl,
   Modal,
   Stack,
   Typography,
   Select,
   MenuItem,
-  Checkbox,
-  ListItem,
-  ListItemText,
-  List,
   IconButton,
   Tooltip,
 } from "@mui/material";
@@ -21,16 +15,13 @@ import BuilderProButton from "../../UI/Button/BuilderProButton";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Avatarimg from "../Assets/pngs/woman.png";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
-import { selectAddPhase } from "../../../redux/slices/addPhaseSlice";
 import GenerateInvoiceDone from "../GenerateInvoice/GenerateInvoiceDone";
-import { useRequestWorkOrderMutation } from "../../../redux/apis/Project/workOrderApiSlice";
 import { toast } from "react-toastify";
 //import "react-toastify/dist/ReactToastify.css";
 import { useGetUserEventsMutation } from "../../../redux/apis/usersApiSlice";
@@ -46,12 +37,9 @@ import {
 import { useLocation } from "react-router-dom";
 import useSocket from "../../../utils/useSocket";
 import {
-  ArrowDropDownIcon,
-  MobileDatePicker,
   MobileDateTimePicker,
 } from "@mui/x-date-pickers";
 import UpdateLineDialogue from "../UpdateLineDialogue/UpdateLineDialogue";
-import { io } from "socket.io-client";
 import CloseIcon from "@mui/icons-material/Close";
 import { socket } from "../../../socket";
 import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
@@ -62,11 +50,7 @@ import {
 } from "../../../redux/slices/Project/projectInitialProposal";
 import { useProjectPermissionCheck } from "../../Projects/ProjectPermissions/ProjectsPermissionCheck";
 
-const local = localStorage.getItem("userInfo");
-const currentUser = JSON.parse(local);
-// const socket = io("http://3.135.107.71", {
-//   query: { userId: currentUser?.user?.id },
-// });
+
 
 const ChangeOrderRequestModal = ({
   rowCheckboxes,
@@ -85,24 +69,20 @@ const ChangeOrderRequestModal = ({
   const projectId = location.pathname.split("/")[2];
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
-  const [showLineItems, setShowLineItems] = useState(false);
-  const { addPhase } = useSelector(selectAddPhase);
   const [updateRow, setUpdateRow] = useState(rowCheckboxes);
   const [priority, setPriority] = useState("normal");
-  const [status, setStatus] = useState("pending");
   const [subject, setSubject] = useState(
     changeOrder ? checkedRow?.subject : ""
   );
 
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  // const [startDate, setStartDate] = useState(null);
+  // const [endDate, setEndDate] = useState(null);
   const [description, setDescription] = useState(
     changeOrder ? checkedRow?.description : ""
   );
-  const { data, refetch: refetchProjectTeam } =
-    useGetTeamMembersQuery(projectId);
-  const [assignedCheckboxes, setAssignedCheckboxes] = useState([]);
-  const [superAdminId, setSuperAdminId] = useState();
+  // const {  refetch: refetchProjectTeam } =
+  //   useGetTeamMembersQuery(projectId);
+  // const [superAdminId, setSuperAdminId] = useState();
   const userInfo = localStorage.getItem("userInfo");
   const user = JSON.parse(userInfo);
   const userId = user?.user.id;
@@ -111,7 +91,7 @@ const ChangeOrderRequestModal = ({
   const dailyForecast = forecast.dailyForecast || [];
   const [getEvents] = useGetUserEventsMutation();
   const dispatch = useDispatch();
-  const { emit } = useSocket();
+  // const { emit } = useSocket();
   const [selectedItems, setSelectedItems] = useState([]);
   const [showUpdateLine, setShowUpdateLine] = useState(false);
   const phaseId = rowCheckboxes[0]?.rows[0]?.phase_id;
@@ -167,9 +147,7 @@ const ChangeOrderRequestModal = ({
   }
 
   // });
-  const ENDPOINT = "https://builderbuilder.net/";
 
-  const [requestWorkOrderPut] = useRequestWorkOrderMutation();
 
   const isButtonDisabled = changeOrder
     ? checkedRow === null
@@ -179,7 +157,6 @@ const ChangeOrderRequestModal = ({
     setNotes(e.target.value);
   };
   const handleClose = () => {
-    setShowLineItems(false);
     setSelectedItems([]);
     setOpen(false);
   };
@@ -388,8 +365,8 @@ const ChangeOrderRequestModal = ({
     if (changeOrder) {
       setSubject(checkedRow?.subject);
       setDescription(checkedRow?.description);
-      setStartDate(moment(checkedRow?.start_day));
-      setEndDate(moment(checkedRow?.end_day));
+      // setStartDate(moment(checkedRow?.start_day));
+      // setEndDate(moment(checkedRow?.end_day));
     }
 
     fetchData(); // Call the fetchData function
@@ -423,14 +400,14 @@ const ChangeOrderRequestModal = ({
       startDate: formattedStartDate,
       endDate: formattedEndDate,
       priority: priority,
-      status: status,
+      status: "pending",
       phase: phaseId,
       lineItem: changeOrder
         ? checkedRow.LineItem_id
         : lineItemIds[0].lineItemId[0],
       phaseItems: changeOrder ? selectedItems : lineItemIds,
       createdby: userId,
-      teamIds: [...assignedCheckboxes, userId, superAdminId],
+      teamIds: [ userId],
       notes: notes,
       projectId: projectId,
       total: changeOrder ? checkedRow?.total : totalWorkOrder,
@@ -514,9 +491,9 @@ const ChangeOrderRequestModal = ({
     }
     handleClose();
   };
-  const refetchTeam = async () => {
-    const res = await refetchProjectTeam();
-  };
+  // const refetchTeam = async () => {
+  //   const res = await refetchProjectTeam();
+  // };
   const showToast = () => {
     if (selectedProjectData?.initialProposalApproved === false) {
       toast.warning(
@@ -533,11 +510,11 @@ const ChangeOrderRequestModal = ({
     }
   }, [rowCheckboxes]);
 
-  useEffect(() => {
-    if (open) {
-      refetchTeam();
-    }
-  }, [open]);
+  // useEffect(() => {
+  //   if (open) {
+  //     refetchTeam();
+  //   }
+  // }, [open]);
   // console.log(rowCheckboxes);
 
   const permissionsState = useSelector(

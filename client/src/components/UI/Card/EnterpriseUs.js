@@ -7,25 +7,15 @@ import {
   FormControlLabel,
   Grid,
   useMediaQuery,
-  Snackbar,
-  Alert,
 } from "@mui/material";
 import { useSendContactFormMutation } from "../../../redux/apis/usersApiSlice";
 import * as yup from "yup";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { PhoneInput } from "react-international-phone";
 import { useFormik } from "formik";
 import { PhoneNumberUtil } from "google-libphonenumber";
 import { toast } from "react-toastify";
-import { motion } from "framer-motion";
 
-const popEffect = {
-  hidden: { scale: 1 },
-  hover: {
-    scale: 1.05,
-    transition: { type: "spring", stiffness: 300, damping: 15 },
-  },
-};
+
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
@@ -43,10 +33,6 @@ const isPhoneValid = (phone) => {
 const EnterpriseUs = () => {
   const [sendContactForm, { isLoading, isSuccess, isError, error }] =
     useSendContactFormMutation();
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-  const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(false);
 
   const isMobile = useMediaQuery("(max-width:600px)");
 

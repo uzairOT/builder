@@ -246,7 +246,7 @@ const Invitation = () => {
         </Box>
         <Box sx={googleAppImgsBox}>
           <a
-            href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
+            href="https://play.google.com/store/apps/details?id=com.npisoftware.builder_builder_pro"
             target="blank"
           >
             <img src={googlePlay} style={{ cursor: "pointer" }} alt="" />

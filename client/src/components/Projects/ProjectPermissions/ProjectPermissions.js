@@ -18,14 +18,12 @@ import {
   Tooltip,
 } from "@mui/material";
 import loader from "./assets/loader.gif";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { socket } from "../../../socket";
 import Header from "../../Settings/Header/Header";
 import { useGetProjectPermissionsListMutation } from "../../../redux/apis/Permissions/permissionsApiSlice";
 import { useGetProjectDataQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { useParams } from "react-router-dom";
-import { setPermissionsListState } from "../../../redux/slices/LoginPermissions/PermissionsSlice";
-import { setPermissionsState } from "../../../redux/slices/Permissions/permissionsSlice";
 import { toast } from "react-toastify";
 
 const formatRoleName = (role) => {
@@ -44,13 +42,13 @@ const ProjectsPermissionAccess = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const params = useParams();
   const { id: currentProjectId } = params;
-  const { data } = useGetProjectDataQuery({ projectId: currentProjectId });
+  // const { data } = useGetProjectDataQuery({ projectId: currentProjectId });
   const [permissionList, setPermissionsList] = useState([]);
   const [GetPermissionsList, { refetch }] =
     useGetProjectPermissionsListMutation();
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const currentUser = userInfo?.user;
-  const dispatch = useDispatch();
+  // const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  // const currentUser = userInfo?.user;
+  // const dispatch = useDispatch();
   const roles = [
     "admin",
     "projectManager",

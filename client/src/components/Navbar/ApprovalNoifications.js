@@ -11,10 +11,6 @@ import {
   Box,
 } from "@mui/material";
 import BuilderProButton from "../UI/Button/BuilderProButton";
-import { useGetWorkOrderDetailsMutation } from "../../redux/apis/Project/projectApiSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice";
-import { socket } from "../../socket";
 import {
   useApproveInitialPhasesMutation,
   useApprovePhaseMutation,
@@ -22,7 +18,7 @@ import {
   useDeclinePhaseMutation,
 } from "../../redux/apis/NotificationsApproval/NotificationApprovalApiSlice";
 import { toast } from "react-toastify";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 function ApprovalNotification({
   index,
@@ -32,24 +28,24 @@ function ApprovalNotification({
   notification,
   approvalRefetchCall,
 }) {
-  const [checkedRow, setCheckedRow] = useState(null);
-  const [open, setOpen] = useState(false);
-  const [data1, setData1] = useState(null);
+  // const [checkedRow, setCheckedRow] = useState(null);
+  // const [open, setOpen] = useState(false);
+  // const [data1, setData1] = useState(null);
   const [declineReason, setDeclineReason] = useState("");
   const [showError, setShowError] = useState(false);
   const [showReasonField, setShowReasonField] = useState(false);
-  const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation();
+  // const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation();
 
   const [approvePhases] = useApprovePhaseMutation();
   const [declinePhases] = useDeclinePhaseMutation();
   const [approveInitialPhases] = useApproveInitialPhasesMutation();
   const [declineInitialPhases] = useDeclineInitialPhasesMutation();
   const navigate = useNavigate();
-  const forecast = useSelector(getForecast);
-  const dailyForecast = forecast.dailyForecast || [];
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const path = location.pathname.split("/");
+  // const forecast = useSelector(getForecast);
+  // const dailyForecast = forecast.dailyForecast || [];
+  // const dispatch = useDispatch();
+  // const location = useLocation();
+  // const path = location.pathname.split("/");
   const projectId = notification?.projectId;
   const newPath = `/projects/${projectId}/initial-proposal`;
 
@@ -281,21 +277,3 @@ function ApprovalNotification({
 
 export default ApprovalNotification;
 
-const listItemStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-};
-
-const textStyle = {
-  fontFamily: "var(--main-font-family)",
-  fontWeight: "bold",
-  fontSize: "14px",
-  width: { sm: "25ch", xs: "10ch" },
-};
-const textSecondaryStyle = {
-  fontFamily: "var(--main-font-family)",
-  fontSize: "14px",
-  width: { sm: "25ch", xs: "10ch" },
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-};

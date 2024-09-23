@@ -2,7 +2,6 @@ import Stack from "@mui/joy/Stack";
 import {
   Box,
   Button,
-  Container,
   Divider,
   List,
   ListItem,
@@ -18,10 +17,10 @@ import EnterpriseUs from "./EnterpriseUs";
 
 const EnterpriseCard = ({
   planType,
-  current,
-  setCurrentPlan,
-  currentPlan,
-  setCurrentPakage,
+  // current,
+  // setCurrentPlan,
+  // currentPlan,
+  // setCurrentPakage,
 }) => {
   const plan = (() => {
     switch (planType) {
@@ -36,25 +35,25 @@ const EnterpriseCard = ({
     }
   })();
 
-  const [paymentType, setPaymentType] = useState("");
+  // const [paymentType, setPaymentType] = useState("");
   const [modalOpen, setModalOpen] = useState(false); // State to manage modal visibility
 
-  const handlePaymentTypeChange = (event) => {
-    setPaymentType(event.target.value);
-  };
+  // const handlePaymentTypeChange = (event) => {
+  //   setPaymentType(event.target.value);
+  // };
 
-  const handleClick = () => {
-    // console.log(
-    //   "Cost:",
-    //   paymentType === "Monthly" ? plan.monthCost : plan.yearCost
-    // );
-    setCurrentPlan(paymentType === "Monthly" ? plan.monthCost : plan.yearCost);
-    setCurrentPakage(plan.name);
-  };
+  // const handleClick = () => {
+  //   // console.log(
+  //   //   "Cost:",
+  //   //   paymentType === "Monthly" ? plan.monthCost : plan.yearCost
+  //   // );
+  //   setCurrentPlan(paymentType === "Monthly" ? plan.monthCost : plan.yearCost);
+  //   setCurrentPakage(plan.name);
+  // };
 
-  const handlePrevious = () => {
-    // console.log("first");
-  };
+  // const handlePrevious = () => {
+  //   // console.log("first");
+  // };
 
   const generateList = (renderItem) => {
     return [" Users"].map((value, index) =>

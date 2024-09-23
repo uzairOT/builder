@@ -107,7 +107,7 @@ const StatsAndDownload = () => {
             </Button>
             <Button>
               <a
-                href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
+                href="https://play.google.com/store/apps/details?id=com.npisoftware.builder_builder_pro"
                 target="blank"
               >
                 <DownloadGooglePlay />

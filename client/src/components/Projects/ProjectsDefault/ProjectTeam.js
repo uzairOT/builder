@@ -17,6 +17,7 @@ import {
   ListItemSecondaryAction,
   Avatar,
 } from "@mui/material";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import React, { useEffect, useState } from "react";
 import data1 from "./assests/data/data.json";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
@@ -24,12 +25,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import { ReactComponent as BuilderProNavbarShare } from "./assests/svgs/builder-pro-navbar-share.svg";
 import users from "./assests/data/users.json";
 import LinkIcon from "@mui/icons-material/Link";
-import { useGetProjectTeamQuery } from "../../../redux/apis/Project/projectApiSlice";
+import { useDeleteInvitationMutation, useGetProjectTeamQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { useLocation } from "react-router-dom";
 import { useCheckUserOnInvitationMutation } from "../../../redux/apis/usersApiSlice";
 import { useAddAssignRoleMutation } from "../../../redux/apis/Admin/assignRoleApiSlice";
 import { toast } from "react-toastify";
-import { SupervisorAccountRounded } from "@mui/icons-material";
+import {  SupervisorAccountRounded } from "@mui/icons-material";
 // import { usePermissionCheck } from "../../Settings/PermissionAccess/PermissionCheck";
 import { useSelector } from "react-redux";
 //import "react-toastify/dist/ReactToastify.css";
@@ -50,6 +51,7 @@ const ProjectTeam = ({ SuperAdminId }) => {
   const currentUser = JSON.parse(local);
   const currentUserId = currentUser.user.id;
   const [assignRolePost] = useAddAssignRoleMutation();
+  const [deleteInvitation, {isLoading: deleteLoading}] = useDeleteInvitationMutation();
   //console.log(pathSegments)
   const { data, isLoading, isError, refetch } =
     useGetProjectTeamQuery(projectId);
@@ -92,6 +94,20 @@ const ProjectTeam = ({ SuperAdminId }) => {
     setEmail(e.target.value);
     // Simple email validation regex
   };
+  const handleDeleteInvitation = async (id) => {
+    if(!id){
+      toast.warning("No ID found");
+    }
+    try{
+      const deletedInvitation = await deleteInvitation({invitationId:id});
+      handleClosePendingInvitations();
+      toast.success("Invitation deleted.")
+      await refetch();
+    }catch(error){
+      console.error(error);
+      toast.error("Something went wrong!");
+    }
+  }
   const handleInviteUser = async () => {
     const userRole = userType;
     const userId = currentUserId;
@@ -525,7 +541,7 @@ const ProjectTeam = ({ SuperAdminId }) => {
       </Popover>
       <Popover
         id={id}
-        open={openPendingInvitations}
+        open={openPendingInvitations && pendingInvitations?.length > 0}
         anchorEl={openPending}
         onClose={handleClosePendingInvitations}
         anchorOrigin={{
@@ -569,9 +585,9 @@ const ProjectTeam = ({ SuperAdminId }) => {
                   />
                   {/* Add "Accept" and "Reject" buttons if needed */}
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
-                      {/* Replace with your "Accept" or "Reject" icon */}
-                    </IconButton>
+                    {/* <IconButton edge="end" aria-label="delete" onClick={()=> handleDeleteInvitation(pending.id)} disabled={deleteLoading}>
+                     <DeleteOutlinedIcon color='error' />
+                    </IconButton> */}
                   </ListItemSecondaryAction>
                 </ListItem>
               ))}

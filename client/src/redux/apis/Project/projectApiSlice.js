@@ -222,6 +222,13 @@ const projectApiSlice = apiSlice.injectEndpoints({
         body: data
       })
     }),
+    deleteInvitation: builder.mutation({
+      query: (data) => ({
+        url:`${PROJECTS_URL}/deleteInvitation`,
+        method: 'DELETE',
+        body: data
+      })
+    }),
     deleteProjectFile: builder.mutation({
       query: (data) => ({
         url: `${PROJECTS_URL}/files/${data.fileId}/${data.projectId}`,
@@ -263,5 +270,6 @@ export const {
   useGetPhasesAndLineItemsByIdMutation,
   useUpdateUserLineItemStatusMutation,
   useCheckProjectDuplicationMutation,
-  useDeleteProjectFileMutation
+  useDeleteProjectFileMutation,
+  useDeleteInvitationMutation,
 } = projectApiSlice;
