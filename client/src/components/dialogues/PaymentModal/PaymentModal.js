@@ -341,7 +341,7 @@ const PaymentModal = ({
                   fontFamily: "var(--main-font-family)",
                 }}
               >
-                Choosen Plan:{" "}
+                Chosen Plan:{" "}
               </b>
               {currentPakage}
             </Typography>

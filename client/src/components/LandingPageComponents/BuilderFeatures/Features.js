@@ -268,6 +268,7 @@ const styles = {
     fontSize: { md: "16px", sm: "16px", xs: "14px" },
     fontWeight: 400,
     color: "#454245",
+    textAlign:'left'
   },
   CardTitle: {
     fontFamily: "var(--main-font-family)",

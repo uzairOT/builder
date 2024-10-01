@@ -80,7 +80,7 @@ const [showImage, setShowImage] = useState(false);
                     {showImage && (
                         <img
                             src={builder1}
-                            alt="Your Image"
+                            alt="Builder Logo"
                             style={{ width: '100%', height: '100%' }}
                         />
                     )}
@@ -98,7 +98,7 @@ const [showImage, setShowImage] = useState(false);
                     {showNewImage && (
                         <img
                             src={getBuilderImage()}
-                            alt="Your New Image"
+                            alt="Builder Logo"
                             style={{ width: '100%', height: '100%', overflow: "hidden" }}
                         />
                     )}

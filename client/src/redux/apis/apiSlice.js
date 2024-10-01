@@ -20,6 +20,7 @@ export const getTokenFromLocalStorage = () => {
     "/login",
     "/terms",
     "/privacypolicy",
+    "/help",
     "/verifycode",
   ];
   const notAllowedPaths = ["/login", "/signup"];

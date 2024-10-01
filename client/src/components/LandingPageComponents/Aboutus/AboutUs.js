@@ -217,6 +217,7 @@ const styles = {
     fontSize: { md: "16px", sm: "16px", xs: "14px" },
     margin: "0 auto",
     color: "#666666",
+    textAlign:'left'
   },
   gridContainer: {
     marginTop: 10,
