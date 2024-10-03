@@ -188,8 +188,8 @@ const Footer = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={formik.touched.email && Boolean(formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
                   />
+                  {formik.touched.email && <Typography sx={{color:'#d32f2f', fontSize:'0.75rem'}} p={0.5}>{formik.errors.email}</Typography>}
                 </form>
               </Box>
             </Box>
