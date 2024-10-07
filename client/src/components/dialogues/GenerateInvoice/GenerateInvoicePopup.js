@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import loader from "./assets/gifs/loader.gif";
-import { Box, Modal, Stack, Typography } from "@mui/material";
-import BuilderProButton from "../../UI/Button/BuilderProButton";
+import { Modal, Stack, Typography } from "@mui/material";
 
 const GenerateInvoicePopup = ({setGenerateInvoice, setShareToClient}) => {
   const [open, setOpen] = useState(true);

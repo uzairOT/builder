@@ -13,14 +13,13 @@ import {
   Stack,
   IconButton
 } from "@mui/material";
-import UploadIcon from "../../../assets/settings/uploadimg.svg";
 import Button from "../../UI/CustomButton";
 import { useFormik } from "formik";
 import { useLocation } from "react-router-dom";
 import FormHelperText from '@mui/material/FormHelperText';
 import { settingsSchema } from "../../../utils/Validation/settingsPageSchema";
 import { useGetAssignedRolesQuery, useUpdateAssignRoleMutation } from "../../../redux/apis/Admin/assignRoleApiSlice";
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 import { Close } from "@mui/icons-material";

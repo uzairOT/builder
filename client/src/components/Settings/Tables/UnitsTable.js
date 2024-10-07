@@ -10,15 +10,12 @@ import {
   IconButton,
   Stack,
   Grid,
-  capitalize,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import EditIcon from "../../../assets/settings/edit.png";
 import {
   useDeleteUnitMutation,
-  useGetUnitsQuery,
 } from "../../../redux/apis/Project/userProjectApiSlice";
-import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import DeleteIcon from "../../../assets/settings/delete.png";
 import { toast } from "react-toastify";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";

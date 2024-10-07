@@ -17,6 +17,6 @@
   ],
 
   "retainUncompressedFiles": true,
-  "asynchronousCompression": true,
+  "asynchronousCompression": false,
   "directory": "/build"
 }

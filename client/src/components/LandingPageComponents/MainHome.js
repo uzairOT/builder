@@ -15,12 +15,6 @@ import { useInView } from "react-intersection-observer";
 import BG from "./assets/PNG/BG.png";
 import Testimonials from "./Testimonials/Testimonials";
 
-const backgroundImage = `url(${BG})`;
-
-const fadeInUp = {
-  hidden: { opacity: 20, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
 
 const Section = ({ id, Component, animation, delay }) => {
   const controls = useAnimation();

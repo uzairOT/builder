@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  ButtonGroup,
   IconButton,
   Pagination,
   Paper,
@@ -13,7 +12,6 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
   Typography,
 } from "@mui/material";
@@ -25,7 +23,6 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchBar from "../../UI/SearchBar/SearchBar";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import EditProjectModal from "../../dialogues/EditProject/EditProjectModal";
 import moment from "moment-timezone";
@@ -53,7 +50,6 @@ const ProjectList = ({
   totalCount,
   currentUserId,
 }) => {
-  // console.log(rows);
   const navigate = useNavigate();
   const [deleteProject, { isLoading: deletingProjectLoading }] =
     useDeleteUserProjectMutation();
@@ -78,7 +74,6 @@ const ProjectList = ({
   const [page, setPage] = useState(1);
   const [openModal, setOpenModal] = useState(false);
   const [selectedProjectId, setSelectProjectId] = useState("");
-  const rowsPerPage = 7;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const {
     refetch,
@@ -186,26 +181,6 @@ const ProjectList = ({
       endIndex = startIndex + endIndex - 1;
     }
   }
-  // const emptyRows =
-  //   rowsPerPage - Math.min(rowsPerPage, rows?.length - page * rowsPerPage);
-
-  // useEffect(() => {
-  //   fetch("https://my.api.mockaroo.com/bui.json?key=64d2dd90")
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! Status: ${response.status}`);
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       setRows(data);
-  //     })
-  //     .catch((err) => console.error("Error fetching data: ", err))
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // }, []); // Empty dependency array to execute the effect only once on component mount
-  // console.log(rows);
   return (
     <Stack width={"100%"} height={"inherit"}>
       {/* Project List Header */}
@@ -632,25 +607,10 @@ const ProjectList = ({
                       </TableRow>
                     );
                   })}
-                {/* {emptyRows > 0 && (
-                  <TableRow sx={themeStyle.tableCell} style={{ height: 60 * emptyRows }}>
-                    <TableCell rowSpan={6} />
-                  </TableRow>
-                )} */}
               </TableBody>
             </Table>
           )}
         </TableContainer>
-
-        {/* <TablePagination
-          page={page}
-          rowsPerPage={rowsPerPage}
-          component={"div"}
-          onPageChange={handlePageChange}
-          count={isLoading ?  0 : rows.length}
-          labelRowsPerPage={true}
-          rowsPerPageOptions={[1]}
-        ></TablePagination> */}
       </Stack>
       <Stack pl={1}>
         <Typography variant="body1" sx={paginationTextStyle}>

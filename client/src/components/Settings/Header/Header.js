@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Typography, Box, TextField ,Hidden,IconButton, Menu, MenuItem } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
+import React, { useState } from "react";
+import { Typography, Box ,Hidden } from "@mui/material";
 import Button from "../../UI/CustomButton";
 import Search from "../../UI/CustomSearchInput";
-import AddIcon from '@mui/icons-material/Add';
-import  axios  from "axios";
 
 function Header({ title, OpenAddModal, searchInput, setSearchInput }) {
  

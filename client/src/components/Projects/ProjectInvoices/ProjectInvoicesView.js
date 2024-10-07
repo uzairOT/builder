@@ -1,22 +1,15 @@
 import { Box, Paper, Stack, Tab, Tabs } from "@mui/material";
 import React, { useState } from "react";
 import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
-import { useOutletContext, useParams } from "react-router-dom";
-import ProjectsChangeOrder from "../ProjectsChangeOrder/ProjectsChangeOrder";
-import TaskCalender from "../../Task/Calender/TaskCalender";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { allEvents } from "../../../redux/slices/Events/eventsSlice";
-import { getForecast } from "../../../redux/slices/DailyForecast/dailyForecastSlice";
 import { useGetProjectChangeOrderQuery } from "../../../redux/apis/Project/projectApiSlice";
-import { ref } from "yup";
-import BuilderProButton from "../../UI/Button/BuilderProButton";
 import ProjectsInvoices from "./ProjectsInvoices";
 import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
 
 const ProjectInvoicesView = () => {
   const [changeView, setChangeView] = useState(false);
   // const allEvent = useSelector(allEvents);
-  const forecast = useSelector(getForecast);
   const userRole = useSelector(getUserRoleFromRedux);
   // const role = useSelector((state) => state.userRole.userRole);
   // const events = allEvent.events;
@@ -31,7 +24,6 @@ const ProjectInvoicesView = () => {
     userId: user.user.id,
     changeOrder: false,
   });
-  const dailyForecast = forecast.dailyForecast;
   const { id } = useParams();
 
   const handleChangeView = () => {

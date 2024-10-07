@@ -1,8 +1,7 @@
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import { Divider, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ProfitMarginStackedBarChart from "./ProfitMarginStackedBarChart";
 import CircleIcon from "@mui/icons-material/Circle";
-import SelectMenuBarChart from "./SelectMenuBarChart";
 import { useGetTotalProjectProfitMarginMutation } from "../../redux/apis/Reports/reportsApiSlice";
 import { useParams } from "react-router-dom";
 import { formatMoney } from "../../utils/Formatters/moneyFormat";
@@ -14,12 +13,6 @@ const ProfitMarginBarChartCard = () => {
   const userId = currentUser?.id;
   const { id } = useParams();
   const projectId = id;
-  const listItems = [
-    { listItem: "List Item #1" },
-    { listItem: "List Item #1" },
-    { listItem: "List Item #1" },
-  ];
-
   const [getProjectDeadlineStats, { data, error, isLoading }] =
     useGetTotalProjectProfitMarginMutation();
   const [projects, setProjects] = useState();

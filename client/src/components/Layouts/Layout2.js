@@ -9,7 +9,6 @@ import React, { useEffect } from "react";
 import ProjectsSidebar from "../Projects/ProjectsDashboard/ProjectsSidebar";
 import { Outlet, useParams } from "react-router-dom";
 import ProjectsNavbar from "../Projects/ProjectsNavbar";
-import projects from "./assets/data/projects";
 import { useGetProjectDataQuery } from "../../redux/apis/Project/projectApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetProjectUserRoleMutation } from "../../redux/apis/Project/userProjectApiSlice";
@@ -20,12 +19,10 @@ import {
   setUserRoleIsLoading,
 } from "../../redux/slices/auth/userRoleSlice";
 import {
-  useGetProjectPermssionsListMutation,
   usePermissionsMutation,
 } from "../../redux/apis/Permissions/permissionsApiSlice";
 import { setPermissionsState } from "../../redux/slices/Permissions/permissionsSlice";
 import { socket } from "../../socket";
-import { setPermissionsListState } from "../../redux/slices/LoginPermissions/PermissionsSlice";
 
 const Layout2 = () => {
   const params = useParams();

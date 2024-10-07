@@ -34,7 +34,6 @@ import {
 import axios from "axios";
 import { uploadToS3 } from "../../../utils/S3";
 import { useProjectUpdateMutation } from "../../../redux/apis/Project/projectApiSlice";
-import { PhoneInput } from "react-international-phone";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import UploadIcon from "../../../assets/settings/uploadimg.svg";
 import { useDispatch } from "react-redux";

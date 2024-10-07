@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useFetcher, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useGoogleLoginMutation,
@@ -19,19 +19,13 @@ import {
   Checkbox,
   useMediaQuery,
   Button,
-  MenuItem,
-  Select,
   CircularProgress,
   Stack,
-  Container,
 } from "@mui/material";
 import builder1 from "../Signup/Assets/pngs/builderProYellowLogo.png";
 import downloadForMob from "../Signup/Assets/pngs/downloadForMob.png";
-import { Circle, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "../Signup/Assets/svgs/GoogleIcon.svg";
-import builderProLargeIcon, {
-  BuilderProIcon,
-} from "../../assets/FileSvg/builderPro";
 import YellowBtn from "../UI/button";
 import "../../App.css";
 import { useFormik } from "formik";
@@ -56,15 +50,13 @@ const Login = () => {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [login, { isLoading, error }] = useLoginMutation();
   const [googleLogin] = useGoogleLoginMutation();
-  const { userInfo } = useSelector((state) => state.auth);
-  const projectsCount = useSelector((state) => state.userProjects.totalCount);
 
   // useEffect(() => {
   //   if (userInfo) {
@@ -159,11 +151,8 @@ const Login = () => {
 
       dispatch(setCredentials({ ...res.data }));
       // navigate("/");
-
       if (
-        res?.data?.incompleteProject?.incomplete ||
-        projectsCount === 0 ||
-        projectsCount < 0
+        res?.data?.incompleteProject?.incomplete
       ) {
         setTimeout(() => {
           window.location.href = "/assignproject";

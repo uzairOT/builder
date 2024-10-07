@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Box, Divider, Typography } from "@mui/material";
-import ChatView from "../../Chat/ChatView";
 import Header from "../Header/Header";
 import Pagination from "@mui/material/Pagination";
-import AddModal from "../../dialogues/Settings/AddModal";
-import UpdateModal from "../../dialogues/Settings/UpdateModal";
-
-import { useOutletContext } from "react-router-dom";
 import CustomTable from "./table/Table";
 import CouponModal from "../../dialogues/Settings/CouponModal";
 import { useSelector } from "react-redux";
 import { useDeleteUserCouponsMutation, useGetCreateUserCouponsMutation, useGetUserCouponsMutation, useUpdateUserCouponsMutation } from "../../../redux/apis/Coupon/CouponApiSlice";
-import { useDeleteUnitMutation } from "../../../redux/apis/Project/userProjectApiSlice";
 import { fetchUserCoupons } from "./apis/fetchUserCoupon";
 import QueryDebouncer from "../../../utils/QueryDebouncer/QueryDebouncer";
 

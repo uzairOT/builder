@@ -1,9 +1,5 @@
 import React from "react";
-import Navbar from "../NavBar/Navbar";
 import TermsAndConditions from "./Terms";
-import GetInTouch from "../ContactForm/GetInTouch";
-import StatsAndDownload from "../Statistics/StatsAndDownload";
-import Footer from "../Footer/Footer";
 import { Grid } from "@mui/material";
 
 export default function TermsPage() {

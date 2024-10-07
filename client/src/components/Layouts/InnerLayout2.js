@@ -12,7 +12,6 @@ import BuilderProButton from "../UI/Button/BuilderProButton";
 import ChangeOrderRequest from "../dialogues/ChangeOrderRequest/ChangeOrderRequest";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { usePermissionCheck } from "../Settings/PermissionAccess/PermissionCheck";
 import { useProjectPermissionCheck } from "../Projects/ProjectPermissions/ProjectsPermissionCheck";
 
 const InnerLayout2 = () => {

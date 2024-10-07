@@ -8,22 +8,13 @@ import {
   TableRow,
   Paper,
   IconButton,
-  Avatar,
-  Select,
-  MenuItem,
-  Input,
   Stack,
   Grid,
   Typography,
 } from "@mui/material";
 import EditIcon from "../../../assets/settings/edit.png";
-import DeleteIcon from "../../../assets/settings/delete.png";
-import EmailIcon from "../../../assets/settings/email.png";
-import Button from "../../UI/CustomButton";
 import { useGetMasterLineItemsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 import { useSelector } from "react-redux";
-import UpdateLineDialogue from "../../dialogues/UpdateLineDialogue/UpdateLineDialogue";
-import moment from "moment";
 import UpdateMasterLine from "../../dialogues/UpdateMasterLine/UpdateMasterLine";
 
 const dummyData = [

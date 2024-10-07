@@ -3,12 +3,8 @@ import React, { useState } from "react";
 import ProjectsChangeOrder from "../../components/Projects/ProjectsChangeOrder/ProjectsChangeOrder";
 import { useOutletContext, useParams } from "react-router-dom";
 import { useGetProjectChangeOrderQuery } from "../../redux/apis/Project/projectApiSlice";
-import BuilderProButton from "../../components/UI/Button/BuilderProButton";
-import TaskCalender from "../../components/Task/Calender/TaskCalender";
 import AddPhaseView from "../../components/AssignProject/AddPhaseView/AddPhaseView";
 import { useSelector } from "react-redux";
-import { allEvents } from "../../redux/slices/Events/eventsSlice";
-import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice";
 import { getUserRoleFromRedux } from "../../redux/slices/auth/userRoleSlice";
 
 const ChangeOrder = () => {
@@ -18,10 +14,6 @@ const ChangeOrder = () => {
   const currentUser = localStorage.getItem("userInfo");
   const user = JSON.parse(currentUser);
   const authUserRole = useSelector(getUserRoleFromRedux);
-  const allEvent = useSelector(allEvents);
-  const forecast = useSelector(getForecast);
-  const events = allEvent.events;
-  const dailyForecast = forecast.dailyForecast;
   // const { project } = useGetProjectDataQuery({ projectId: currentProjectId });
   const { data, refetch } = useGetProjectChangeOrderQuery({
     projectId: currentProjectId,

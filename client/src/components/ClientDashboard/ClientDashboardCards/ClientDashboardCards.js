@@ -1,8 +1,7 @@
 import React from 'react'
-import { Grid, Paper, Box } from "@mui/material";
+import {  Paper, Box } from "@mui/material";
 import WhatsHappeningCard from '../WhatsHappeningCard/WhatsHappeningCard';
 import ProjectCard from '../ProjectCard/ProjectCard';
-import ScheduleCard from '../ScheduleCard/ScheduleCard';
 import TaskCalender from '../../Task/Calender/TaskCalender';
 import { useSelector } from 'react-redux';
 import { allEvents } from '../../../redux/slices/Events/eventsSlice';
@@ -11,17 +10,9 @@ import { getForecast } from '../../../redux/slices/DailyForecast/dailyForecastSl
 
 function ClientDashboardCards() {
     const allEvent = useSelector(allEvents);
-    const forecast = useSelector(getForecast);
-    const local = localStorage.getItem('userInfo');
-    const currentUser = JSON.parse(local);
-    const { id } = currentUser.user;
-    const loading = allEvent.isLoading;
-    const error = allEvent.error;
+    const forecast = useSelector(getForecast);;
     const events = allEvent.events;
     const dailyForecast = forecast.dailyForecast;
-    const forecastIsLoading = forecast.isLoading;
-    const forecastError = forecast.error;
-  
 
 
 

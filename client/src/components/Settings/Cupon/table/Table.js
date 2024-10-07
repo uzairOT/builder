@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -8,22 +8,13 @@ import {
   TableRow,
   Paper,
   IconButton,
-  Avatar,
   Stack,
   Typography,
 } from "@mui/material";
-// import EditIcon from "../../../../assets/settings/edit.png";
-// import DeleteIcon from "../../../assets/settings/delete.png";
-// import EmailIcon from "../../../assets/settings/email.png";
-// import EditIcon from "@mui/icons-material/Edit";
-
 import { useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
 import {
   useDeleteAssignRoleMutation,
-  useGetAssignedRolesQuery,
 } from "../../../../redux/apis/Admin/assignRoleApiSlice";
-import { useGetUserCouponsMutation } from "../../../../redux/apis/Coupon/CouponApiSlice";
 import EditIcon from "../../../../assets/settings/edit.png";
 import DeleteIcon from "../../../../assets/settings/delete.png";
 

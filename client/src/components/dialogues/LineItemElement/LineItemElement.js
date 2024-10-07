@@ -2,12 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 import {
-  updateFormData,
-  resetFormData,
-} from "../../../redux/slices/addLineSlice";
-import {
   useAddPhaseLineMutation,
-  useGetLineItemQuery,
   useUpdatePhaseLineMutation,
 } from "../../../redux/apis/Project/projectApiSlice";
 import {
@@ -16,35 +11,26 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Box,
   Typography,
-  MenuItem,
   Autocomplete,
   Stack,
   IconButton,
   InputAdornment,
   CircularProgress,
-  MenuList,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "../../../App.css";
 import "./LineItemElement.css";
 import {
   addInitialPhase,
   addPhase,
   updateCheckedItems,
-  updateLineItem,
 } from "../../../redux/slices/Project/projectInitialProposal";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
-import { DemoItem } from "@mui/x-date-pickers/internals/demo";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import utc from "dayjs/plugin/utc"; // Optional if you need UTC handling
 import Close from "@mui/icons-material/Close";
 import CreateableSelect from "react-select/creatable";
 import { components } from "react-select";
@@ -52,9 +38,7 @@ import {
   useAddUnitMutation,
   useGetUnitsQuery,
 } from "../../../redux/apis/Project/userProjectApiSlice";
-import { isPlainObject } from "@reduxjs/toolkit";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
-import { authUserRole } from "../../../redux/slices/auth/userRoleSlice";
 import { toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
 
 function AddLineElement({

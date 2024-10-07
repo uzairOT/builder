@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import GoogleLogin from "react-google-login";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -8,8 +8,6 @@ import {
   Checkbox,
   useMediaQuery,
   Button,
-  MenuItem,
-  Select,
   CircularProgress,
   Stack,
 } from "@mui/material";
@@ -22,7 +20,6 @@ import "react-international-phone/style.css";
 import YellowBtn from "../UI/button";
 import "../../App.css";
 import "./Signup.css";
-import axios from "axios";
 //import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -52,13 +49,10 @@ const isPhoneValid = (phone) => {
 };
 
 const SignupComp = () => {
-  const isLG = useMediaQuery("(min-width: 1280px)");
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
   const [phoneIsValid, setPhoneIsValid] = useState(true);
-  const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
-  const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
 
   let heightValue;
   if (isMobile) {

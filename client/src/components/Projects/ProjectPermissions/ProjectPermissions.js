@@ -18,11 +18,9 @@ import {
   Tooltip,
 } from "@mui/material";
 import loader from "./assets/loader.gif";
-import { useDispatch } from "react-redux";
 import { socket } from "../../../socket";
 import Header from "../../Settings/Header/Header";
 import { useGetProjectPermissionsListMutation } from "../../../redux/apis/Permissions/permissionsApiSlice";
-import { useGetProjectDataQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 

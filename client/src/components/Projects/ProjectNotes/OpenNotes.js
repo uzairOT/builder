@@ -8,52 +8,24 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { styled } from "@mui/material/styles";
-import ShareIcon from "@mui/icons-material/Share";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import BuilderProButton from "../../UI/Button/BuilderProButton";
-import pdf from "./assets/images/pdf.png";
-import p from "./assets/images/imagepng.png";
-import deletebtn from "./assets/images/delete.png";
 import download from "./assets/images/download.png";
-import DownloadSharpIcon from "@mui/icons-material/DownloadSharp";
-import LinearProgress, {
-  linearProgressClasses,
-} from "@mui/material/LinearProgress";
-import CloseIcon from "@mui/icons-material/Close";
 import NotesModal from "./NotesModal";
-import { useOutletContext, useParams } from "react-router-dom";
 import {
   useDeleteProjectNotesMutation,
-  useGetProjectNotesQuery,
 } from "../../../redux/apis/Project/projectApiSlice";
 import { toast } from "react-toastify";
 import { fileTypeIcons } from "../../dialogues/AddImage/assets/fileTypes";
 import { handleDownload } from "../../../utils/S3";
-import { usePermissionCheck } from "../../Settings/PermissionAccess/PermissionCheck";
-//import "react-toastify/dist/ReactToastify.css";
 
 const OpenNotes = ({ notes, refetchNotes, setSelectedButton, canManageNotes }) => {
   const isNoteSelected = Boolean(notes);
-  const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-    height: 10,
-    borderRadius: 5,
-    [`&.${linearProgressClasses.colorPrimary}`]: {
-      backgroundColor: "#D7D7D7",
-    },
-    [`& .${linearProgressClasses.bar}`]: {
-      borderRadius: 5,
-      backgroundColor: "#00B65E",
-    },
-    width: "100%",
-  }));
   const [showEditModal, setShowEditModal] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
-  const { id } = useParams();
   const [deleteProjectNote] = useDeleteProjectNotesMutation();
   const noteId = notes?.id;
-  const { refetch } = useGetProjectNotesQuery({ projectId: id });
+  // const { refetch } = useGetProjectNotesQuery({ projectId: id });
   const handleEdit = () => {
     setShowEditModal(!showEditModal);
   };

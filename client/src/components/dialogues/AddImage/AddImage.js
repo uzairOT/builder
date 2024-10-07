@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import {
   Button,
-  TextField,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Box,
   Typography,
@@ -13,17 +11,15 @@ import {
   Stack,
   IconButton,
   TextareaAutosize,
-  ToggleButton,
   Switch,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
 import upload from "./assets/upload.png";
 import "../../../App.css";
-import { getPresignedUrl, uploadToS3 } from "../../../utils/S3";
+import { uploadToS3 } from "../../../utils/S3";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { fileTypeIcons } from "./assets/fileTypes";
 import filePlaceHolder from "../../../assets/FileSvg/file.svg";
 import CloseIcon from "@mui/icons-material/Close";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";

@@ -1,28 +1,21 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import YellowBtn from "../../UI/button";
 import {
-  useLoginMutation,
   useRegisterMutation,
 } from "../../../redux/apis/usersApiSlice";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { setCredentials } from "../../../redux/slices/authSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { Password } from "@mui/icons-material";
-import { Grid, Checkbox, useMediaQuery, MenuItem, Select } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { Grid, useMediaQuery } from "@mui/material";
 import builder1 from "../../Signup/Assets/pngs/builderProYellowLogo.png";
 import downloadForMob from "../../Signup/Assets/pngs/downloadForMob.png";
 import googlePlay from "../../Signup/Assets/pngs/googlePlay.png";
 import appStore from "../../Signup/Assets/pngs/appStore.png";
 import { PhoneInput } from "react-international-phone";
 import { useFormik } from "formik";
-import { googleSchemea } from "../../../utils/Validation/settingsPageSchema";
 import { PhoneNumberUtil } from "google-libphonenumber";
 
 const phoneUtil = PhoneNumberUtil.getInstance();

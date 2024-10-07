@@ -8,17 +8,12 @@ import {
   Modal,
   Button,
   LinearProgress,
-  Select,
-  MenuItem,
   Divider,
 } from "@mui/material";
-import { animateScroll as scroll, Events, scrollSpy } from "react-scroll";
 import { TextField, IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { io } from "socket.io-client";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import {
-  useCreateConverstaionMutation,
   useGetChatMessagesMutation,
 } from "../../redux/apis/Chat/chatApiSlice";
 import moment from "moment-timezone";
@@ -41,7 +36,6 @@ import {
   setTotalCount,
   setTotalPages,
 } from "../../redux/slices/Project/userProjectsSlice";
-import { useGetProjectTeamQuery } from "../../redux/apis/Project/projectApiSlice";
 let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
 const currentUser = userInfo?.user;
@@ -78,17 +72,12 @@ function ChatView({
   const [image, setImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState("");
   const [s3Url, setS3Url] = useState("");
-  // const { id } = useParams();
-  const messageBoxRef = useRef(null);
   const [usersOnline, setUsersOnline] = useState({}); // State to store online status of users
   const [recipientType, setRecipentType] = useState("team+client");
   const [projectName] = useOutletContext();
   const [offset, setOffset] = useState(0);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const boxRef = useRef(null);
-
-  // const [chatUser, setChatUser] = useState();
-  const [createConverstaion] = useCreateConverstaionMutation();
   const [scrollingUp, setScrollingUp] = useState(false);
   const userId = currentUser?.id;
   const dispatch = useDispatch();

@@ -1,8 +1,6 @@
-import { Box, Paper } from '@mui/material'
+import { Paper } from '@mui/material'
 import React from 'react'
 import Permit from '../Permit'
-import { Height } from '@mui/icons-material'
-
 
 const PermitView = () => {
   return (

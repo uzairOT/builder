@@ -2,8 +2,7 @@ import {
   Route,
   createRoutesFromElements,
 } from "react-router-dom";
-// import Signup from "./pages/SignUp/Signup";
-import React, { lazy, Suspense, useEffect } from "react";
+import React, { lazy, Suspense, useCallback, useEffect, useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout3 from "./components/Layouts/Layout3";
 import Profile from "./components/Settings/Profile/Profile";
@@ -13,16 +12,8 @@ import Client from "./components/Settings/Client/Client";
 import Subcontractor from "./components/Settings/Subcontractor/Subcontractor";
 import SupplierList from "./components/Settings/SupplierList/SupplierList";
 import MasterLineItem from "./components/Settings/MasterLineItem/MasterLineItem";
-import Signup from "./pages/Signup/Signup";
-import Login from "./pages/Login/Login";
-import AssignProject from "./pages/AssignProject/AssignProject";
-import ClientDashboard from "./pages/ClientDashboard/ClientDashboard";
-import Permit from "./components/ClientDashboard/Permit/Permit";
-import ChangeOrders from "./components/ClientDashboard/ChangeOrders/ChangeOrders";
-import Invoices from "./components/ClientDashboard/Invoices/Invoices";
 import Drawing from "./components/ClientDashboard/Drawing/Drawing";
 import Images from "./components/ClientDashboard/Images/Images";
-import Chats from "./components/ClientDashboard/Chats/Chats";
 import ClientDashboardCards from "./components/ClientDashboard/ClientDashboardCards/ClientDashboardCards";
 import DailyLog from "./components/ClientDashboard/DailyLog/DailyLog";
 import PageLoader from "./components/UI/Loaders/PageLoader/PageLoader";
@@ -57,10 +48,6 @@ import {
   setLatLon,
 } from "./redux/slices/DailyForecast/dailyForecastSlice.js";
 import GoogleLogin from "./components/Login/GoogleLogin/GoogleLogin.js";
-import ForgotPassword from "./components/Login/ForgotPassword/ForgotPassword.js";
-import VerifyCode from "./components/Login/ForgotPassword/VerifyCode.js";
-import PasswordReset from "./components/Login/ForgotPassword/PasswordReset.js";
-import SetNewPassword from "./components/Login/ForgotPassword/SetNewPassword.js";
 import Help from "./pages/Help/Help.jsx";
 import PrivacyTerms from "./pages/PrivacyTerms/PrivacyTerms.jsx";
 import ChangeOrder from "./pages/Projects/ChangeOrder.js";
@@ -73,7 +60,6 @@ import Completion from "./components/dialogues/PaymentModal/Completion.js";
 import ChatViewMain from "./components/Projects/ProjectsChat/ChatViewMain.js";
 import PermitClient from "./components/ClientDashboard/Permit/Permit";
 import NotFound from "./pages/NotFound/NotFound.js";
-import InvoicePayment from "./components/dialogues/GenerateInvoice/InvoicePayment/InvoicePayment.js";
 import ProjectInvoicesView from "./components/Projects/ProjectInvoices/ProjectInvoicesView.js";
 import Coupon from "./components/Settings/Cupon/Coupon.js";
 import Accounts from "./components/Settings/Accounts/Accounts.js";
@@ -83,6 +69,14 @@ import MainHome from "./components/LandingPageComponents/MainHome.js";
 import PolicyPage from "./components/LandingPageComponents/PrivacyPolicy/index.js";
 import TermsPage from "./components/LandingPageComponents/Terms/index.js";
 import PermissionAccess from "./components/Settings/PermissionAccess/Permissions.js";
+const SetNewPassword = lazy(() => import("./components/Login/ForgotPassword/SetNewPassword.js"));
+const InvoicePayment = lazy(() => import("./components/dialogues/GenerateInvoice/InvoicePayment/InvoicePayment.js"));
+const PasswordReset = lazy(()=> import("./components/Login/ForgotPassword/PasswordReset.js"))
+const VerifyCode = lazy(()=> import("./components/Login/ForgotPassword/VerifyCode.js"))
+const ForgotPassword = lazy(()=> import("./components/Login/ForgotPassword/ForgotPassword.js"))
+const AssignProject = lazy(()=>import("./pages/AssignProject/AssignProject"))
+const Signup  = lazy(()=> import("./pages/Signup/Signup"))
+const Login  = lazy(()=> import("./pages/Login/Login"))
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -111,50 +105,18 @@ function App() {
   const isInLocalStorage = userInfo?.user;
   const currentUser = isInLocalStorage ? userInfo?.user?.id : null;
   const userRole = useSelector(getUserRoleFromRedux);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-  // const [dailyForecast, setDailyForecast] = useState(null);
   const query = useSelector((state) => state.dailyForecast.query);
   const forecast = useSelector(getForecast);
-  const dailyForecast = forecast.dailyForecast || [];
+  const dailyForecast = useMemo(() => forecast.dailyForecast || [], [forecast]);
   const dispatch = useDispatch();
-  // console.log('rerender')
-  // const [GetPermissions] = usePermissionsMutation();
-
-  // const handleUpdatePermission = async () => {
-  //   try {
-  //     const response = await GetPermissions().unwrap();
-
-  //     if (response && Array.isArray(response)) {
-  //       dispatch(setPermissionsState(response));
-  //     }
-
-  //   } catch (error) {
-  //     console.error("Failed to update permission:", error);
-  //   }
-  // };
-
-  // React.useEffect(() => {
-  //   handleUpdatePermission();
-  // }, [GetPermissions]);
-
-  // useEffect(()=>{
-  //   socket.on("organization-permissions-updated", ()=>{
-  //     handleUpdatePermission();
-  //   });
-
-  //   return ()=>{
-  //     socket.off("organization-permissions-updated", ()=>{
-  //       handleUpdatePermission();
-  //     });
-  //   }
-  // },[])
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        let lat = position.coords.latitude;
-        let lon = position.coords.longitude;
+    if(isAuthenticated && currentUser){
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          let lat = position.coords.latitude;
+          let lon = position.coords.longitude;
 
         dispatch(setLatLon({ lat, lon }));
         if (dailyForecast.length < 1) {
@@ -162,9 +124,10 @@ function App() {
         }
       });
     }
-  },[dailyForecast, query.temperatureUnit, query.lat]);
+  }
+  },[dailyForecast, query.temperatureUnit, query.lat, isAuthenticated, currentUser]);
 
-  const fetchWeather = async (lat,lon) => {
+  const fetchWeather =useCallback(async (lat,lon) => {
     // setLoading(true);
     dispatch(setIsLoading(true));
     dispatch(setForecastLoading(true));
@@ -183,25 +146,13 @@ function App() {
     } finally {
       dispatch(setForecastLoading(false));
     }
-  };
-  // useEffect(() => {
- 
-  // }, [dailyForecast, query.temperatureUnit, query.lat]); // Run this effect whenever dailyForecast changes or on initial mount
-  // useEffect(() => {
-  //   if (
-  //     userInfo?.user?.hasValidSubscription === false &&
-  //     window.location !== "subscription"
-  //   ) {
-  //     window.location = "subscription";
-  //   }
-  // }, [userInfo]);
+  },[query.temperatureUnit]);
 
   useEffect(() => {
-    // getFormattedEvents();
     if (dailyForecast.length > 1) {
       dispatch(fetchEvents({ userId: userId, dailyForecast: dailyForecast }));
     }
-  }, [userId, dailyForecast]); // Run this effect whenever userId or dailyForecast changes
+  }, [userId, dailyForecast]);
 
   const router = createBrowserRouter(
     createRoutesFromElements(

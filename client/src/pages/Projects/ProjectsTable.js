@@ -1,18 +1,13 @@
 import { Grid, Paper, Stack } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import ProjectList from '../../components/Projects/ProjectTable/ProjectList'
-import { useGetFilteredUserProjectsQuery, useGetUserProjectsQuery } from '../../redux/apis/Project/userProjectApiSlice'
 import { useSelector } from 'react-redux'
 import { projectsPackage } from '../../redux/slices/Project/userProjectsSlice'
 
 const ProjectsTable = () => {
-  // const [selectedFilters, setSelectedFilters] = useState([]);
   const local = localStorage.getItem('userInfo');
-  
   const currentUser = JSON.parse(local);
-  const currentUserId = currentUser.user.id
-//  const filter = selectedFilters.join(',')
-  // const {data, isLoading, error} = useGetFilteredUserProjectsQuery({userId: currentUserId, filter: '', page:page});
+  const currentUserId = currentUser.user.id;
   const projects = useSelector(projectsPackage)
 
   return (

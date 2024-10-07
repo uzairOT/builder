@@ -1,19 +1,13 @@
 import { Paper, Stack, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import BuilderProButton from '../../UI/Button/BuilderProButton'
-import SearchBar from '../../UI/SearchBar/SearchBar'
-import EventNoteIcon from '@mui/icons-material/EventNote';
-import SelectMenuBarChart from '../../Reports/SelectMenuBarChart';
 import VerticalTabs from './VerticalTabs';
-import ButtonGroup from '@mui/joy/ButtonGroup';
 import OpenNotes from './OpenNotes';
 import NotesModal from './NotesModal';
-import { useOutletContext, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useGetProjectNotesQuery } from '../../../redux/apis/Project/projectApiSlice';
 import  Search  from '../../UI/CustomSearchInput';
 import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 // import { usePermissionCheck } from '../../Settings/PermissionAccess/PermissionCheck';
 
 const Notes = () => {
@@ -22,8 +16,6 @@ const Notes = () => {
     const [searchInput, setSearchInput] = useState('');
     const debouncedValue = QueryDebouncer(searchInput, 500)
     const { data, refetch } = useGetProjectNotesQuery({ projectId: id, q:debouncedValue ? debouncedValue : '' });
-    const role = useSelector(state => state.userRole.userRole);
-    const [projectName, projectLocation, SuperAdminId] = useOutletContext(); 
     // const canManageNotes = usePermissionCheck("manage-project-notes", role, SuperAdminId)
   
       const handleSelectedButton = (index) =>{

@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import HelpComp from "../../components/HelpAndTerms/HelpComp";
 import Splash from "../../components/Splash/Splash";
 import PrivacyTermsComp from "../../components/HelpAndTerms/PrivacyTermsComp";
 

@@ -15,7 +15,6 @@ import {
   Checkbox,
   Stack,
 } from "@mui/material";
-import { useGetTeamMembersQuery } from "../../../redux/apis/Project/projectApiSlice";
 
 const style = {
   position: "absolute",

@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { useState } from "react";
 import QueryDebouncer from "../../../utils/QueryDebouncer/QueryDebouncer";
 import { useSelector } from "react-redux";
-import { useGetUnitsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 import { Box, Divider, Pagination, Typography } from "@mui/material";
 import {
   useCreateUserAccountMutation,

@@ -19,7 +19,6 @@ import BuilderProButton from "../../UI/Button/BuilderProButton";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Avatarimg from "../Assets/pngs/woman.png";
@@ -48,7 +47,6 @@ import {
   MobileDateTimePicker,
 } from "@mui/x-date-pickers";
 import UpdateLineDialogue from "../UpdateLineDialogue/UpdateLineDialogue";
-import { io } from "socket.io-client";
 import CloseIcon from "@mui/icons-material/Close";
 import { socket } from "../../../socket";
 import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
@@ -59,11 +57,6 @@ import {
 } from "../../../redux/slices/Project/projectInitialProposal";
 import { useProjectPermissionCheck } from "../../Projects/ProjectPermissions/ProjectsPermissionCheck";
 
-const local = localStorage.getItem("userInfo");
-const currentUser = JSON.parse(local);
-// const socket = io("http://3.135.107.71", {
-//   query: { userId: currentUser?.user?.id },
-// });
 
 const RequestWorkOrderModal = ({
   rowCheckboxes,

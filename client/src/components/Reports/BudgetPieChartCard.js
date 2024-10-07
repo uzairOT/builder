@@ -2,7 +2,6 @@ import { Box, Button, Divider, Modal, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import BudgetPieChart from "./BudgetPieChart";
 import CircleIcon from "@mui/icons-material/Circle";
-import SelectMenuBarChart from "./SelectMenuBarChart";
 import BuilderProButton from "../UI/Button/BuilderProButton";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import GenerateInvoiceTable from "../dialogues/GenerateInvoice/GenerateInvoiceTable";
@@ -10,7 +9,6 @@ import GenerateInvoicePopup from "../dialogues/GenerateInvoice/GenerateInvoicePo
 import ShareModal from "../dialogues/ShareModal/ShareModal";
 import GenerateInvoiceDone from "../dialogues/GenerateInvoice/GenerateInvoiceDone";
 import {
-  useGetAllProjectsLineItemsMutation,
   useGetOutstandingInvoicesMutation,
 } from "../../redux/apis/Reports/reportsApiSlice";
 import { useParams } from "react-router-dom";

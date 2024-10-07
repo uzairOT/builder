@@ -18,15 +18,9 @@ import {
   MenuItem,
   Badge,
   Popper,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Snackbar,
-  Alert,
   ClickAwayListener,
 } from "@mui/material";
 import { ReactComponent as BuilderProNavbarLogo } from "./assets/svgs/builder-pro-logo-navbar.svg";
-// import { ReactComponent as BuilderProNavbarShare } from "./assets/svgs/builder-pro-navbar-share.svg";
 import { ReactComponent as BuilderProNavbarLogout } from "./assets/svgs/builder-pro-navbar-logout.svg";
 import React, { useEffect, useState } from "react";
 import SearchBar from "../UI/SearchBar/SearchBar";
@@ -62,12 +56,6 @@ import TeamNotifications from "./TeamNotifications";
 import InvoiceNotification from "./InvoiceNotification";
 import { toast } from "react-toastify";
 import ApprovalNotification from "./ApprovalNoifications";
-const local = localStorage.getItem("userInfo");
-const currentUser = JSON.parse(local);
-
-// const socket = io("http://3.135.107.71", {
-//   query: { userId: currentUser?.user?.id },
-// });
 
 const Navbar = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -81,12 +69,9 @@ const Navbar = () => {
   const id = openShare ? "simple-popover" : undefined;
   const user = useSelector((state) => state.auth.userInfo);
   const userId = user.user.id;
-  //console.log(user);
   const dispatch = useDispatch();
-  // const { emit, on } = useSocket();
   const notifications = useSelector(selectNotifications);
   const teamNotifications = useSelector(selectTeamNotifications);
-  const approvalNotifications = useSelector(selectTeamNotifications);
   const notificationsArr = useSelector(selectNotificationsArr);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { data: data1, refetch: refetchNotifcations } =
@@ -100,16 +85,9 @@ const Navbar = () => {
   const [invoiceNotification, setInvoiceNotification] = useState(null);
   const [updateNotificationRead] = useUpdateWorkOrderReadMutation();
   dispatch(setNotificationsArr(data?.data));
-  // if (teamNotifications ? teamNotifications.length < 1 : true) {
-  //   dispatch(setTeamNotifications(teamStatusData?.data));
-  // }
-
-  // console.log("JOHN NOTIFICATION TEST", invoiceNotification);
   const handleClick = async (event) => {
-    // console.log("run bell");
     if (anchorEl) {
       setAnchorEl(null);
-      // setInvoiceNotification(null);
     } else {
       setAnchorEl(event.currentTarget);
       await updateNotificationRead({ userId });
@@ -147,28 +125,6 @@ const Navbar = () => {
         return;
     }
   }, [path]);
-  // useEffect(() => {
-  //   const socket = socketIOClient(ENDPOINT);
-
-  //   // Join room with user ID
-  //   socket.emit('join', userId);
-
-  //   socket.emit('getNotifications', userId);
-
-  //   socket.on('notifications', (data) => {
-  //     console.log("------------->", data);
-  //     dispatch(setNotifications(data))
-  //   });
-
-  //   socket.on('newNotification', (newNotification) => {
-  //     console.log("New Notification:", newNotification);
-  //     dispatch(setNotifications(prevNotifications => [...prevNotifications, newNotification]));
-  //   });
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
   const refetchCall = async () => {
     try {
       await refetch(userId);
@@ -176,8 +132,6 @@ const Navbar = () => {
       console.log("err:", err);
     }
   };
-  // console.log("APPROVED DATA: ",approvalData)
-
   const approvalRefetchCall = async () => {
     try {
       await refetchApprovalNotifications(userId);
@@ -192,10 +146,7 @@ const Navbar = () => {
     }
   };
 
-  // console.log("Approved data", approvalData);
   useEffect(() => {
-    //listen for notifications
-    // console.log('=-------------------> notifications on')
     socket.emit("join", userId);
     socket.on("newNotification", async (data) => {
       await refetchCall();
@@ -205,17 +156,11 @@ const Navbar = () => {
     socket.on("receiveNotifications", async (response) => {
       await approvalRefetchCall();
     });
-    // socket.on("sendApprovalNotification", async () => {
-    //   await approvalRefetchCall();
-    // });
     socket.on("statusDoneNotificationResponse", async (socketReponse) => {
-      // console.log("SOCKET RESPONSE: ", socketReponse);
       dispatch(addTeamNotifications(socketReponse));
     });
     socket.on(`invoiceCreated${userId}`, async (socketReponse) => {
-      // console.log("SOCKET RESPONSE INVOICE: ", socketReponse);
       setInvoiceNotification(socketReponse);
-      // dispatch(addTeamNotifications(socketReponse));
     });
     return () => {
       socket.off("newNotification", async (data) => {
@@ -223,13 +168,10 @@ const Navbar = () => {
         dispatch(addNotifications(data));
       });
       socket.off("statusDoneNotificationResponse", async (socketReponse) => {
-        // console.log("SOCKET RESPONSE: ", socketReponse);
         dispatch(addTeamNotifications(socketReponse));
       });
       socket.off(`sendInvoice${userId}`, async (socketReponse) => {
-        // console.log("SOCKET RESPONSE: ", socketReponse);
         setInvoiceNotification(socketReponse);
-        // dispatch(addTeamNotifications(socketReponse));
       });
       socket.off("receiveNotifications");
     };
@@ -237,7 +179,6 @@ const Navbar = () => {
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
-    // console.log(newValue, " navbar click");
     const lowercasedValue = `${event.target.textContent}`.toLowerCase();
     navigate(lowercasedValue === "dashboard" ? "/dashboard" : lowercasedValue);
   };
@@ -246,19 +187,13 @@ const Navbar = () => {
     localStorage.clear(); // Clear the local storage after setting the logout item
     navigate("/login");
   };
-  // const handleShare = (e) => {
-  //   setOpen(e.currentTarget);
-  // };
   const handleClose = () => {
     setOpen(null);
   };
 
   const handlePopperClose = async () => {
-    // console.log("run lisnter");
-    // setAnchorEl(null);
     if (anchorEl) {
       setAnchorEl(null);
-      // setInvoiceNotification(null);
     }
   };
 

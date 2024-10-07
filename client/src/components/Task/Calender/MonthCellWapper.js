@@ -1,6 +1,6 @@
 import React from 'react'
 import PartlySunny from './assets/partly-cloudy.png'
-import { Box, Stack, Typography } from '@mui/material'
+import {  Stack, Typography } from '@mui/material'
 import moment from 'moment';
 
 const currentDate = moment(new Date());

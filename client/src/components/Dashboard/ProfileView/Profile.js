@@ -1,7 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
 import ProfileImage from "../../UI/ProfilePic/ProfilePic";
-import UserImage from "./assets/images/user-image.jpg";
 import DataAndTime from "../../UI/DataAndTime/DataAndTime";
 import { useSelector } from "react-redux";
 

@@ -5,8 +5,6 @@ import {
   Stack,
   Typography,
   Box,
-  Modal,
-  Container,
   CircularProgress,
   useMediaQuery,
   useTheme,
@@ -21,7 +19,6 @@ import { useDeleteProjectPhaseMutation } from "../../../redux/apis/Project/proje
 import { useDispatch, useSelector } from "react-redux";
 import UpdatePhaseDialogue from "../../dialogues/UpdatePhaseDialogue/UpdatePhaseDialogue";
 import AddPhaseDialogue from "../../dialogues/AddPhaseDialogue/AddPhaseDialogue";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { useRef } from "react";
 import generatePDF from "react-to-pdf";
 import {
@@ -30,35 +27,27 @@ import {
   clearPhases,
 } from "../../../redux/slices/Project/projectInitialProposal";
 import RequestWorkOrderModal from "../../dialogues/RequestWorkOrder/RequestWorkOrderModal";
-import { selectAddPhase } from "../../../redux/slices/addPhaseSlice";
 import axios from "axios";
 import {
   useLocation,
   useNavigate,
-  useOutletContext,
   useParams,
 } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
-import GenerateInvoiceTable from "../../dialogues/GenerateInvoice/GenerateInvoiceTable";
 import GenerateInvoicePopup from "../../dialogues/GenerateInvoice/GenerateInvoicePopup";
 import ShareModal from "../../dialogues/ShareModal/ShareModal";
-import GenerateInvoiceDone from "../../dialogues/GenerateInvoice/GenerateInvoiceDone";
 import {
   selectWorkOrderDeclineRecall,
   toggleWorkOrderDeclineRecall,
 } from "../../../redux/slices/Notifications/notificationSlice";
-// import { BuilderProNavbarLogo } from "./assets/svgs/builder-pro-logo-navbar.svg";
-import BuilderProNavbarLogo from "../../Navbar/assets/svgs/builder-pro-logo-navbar.svg";
 import GenerateInvoice from "../../dialogues/GenerateInvoice/GenerateInvoice";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
 import AddIcon from "@mui/icons-material/Add";
-import { usePermissionCheck } from "../../Settings/PermissionAccess/PermissionCheck";
 import { socket } from "../../../socket";
 import { useProjectPermissionCheck } from "../../Projects/ProjectPermissions/ProjectsPermissionCheck";
 import ChangeOrderRequestModal from "../../dialogues/ChangeOrderRequestModal/ChangeOrderRequestModal";
-import WorkOrder from "../../Projects/ProjectsWorkOrder/WorkOrder";
 //import "react-toastify/dist/ReactToastify.css";
 
 function AddPhaseView({

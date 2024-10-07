@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import builder1 from "../../Signup/Assets/pngs/builderPro2.png";
 import {
   Box,

@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Divider, Typography } from "@mui/material";
-import ChatView from "../../Chat/ChatView";
 import Header from "../Header/Header";
 import Table from "../Tables/MasterLineTable";
 import Pagination from "@mui/material/Pagination";
-import AddModal from '../../dialogues/Settings/AddModal';
-import UpdateModal from '../../dialogues/Settings/UpdateModal';
-
-import { useOutletContext } from 'react-router-dom';
 import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
 
 function MasterLine() {
@@ -16,7 +11,6 @@ function MasterLine() {
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
   const [page, setPage]= useState(1);
-  const [userInfo, setUserInfo, handleAssignRoleButton, userId, setUserId, handleUpdateAssignRole] = useOutletContext();
   const [searchInput, setSearchInput] = useState("");
   const [totalEntries, setTotalEntries] = useState(0)
   const [totalPages, setTotalPages] = useState(0)

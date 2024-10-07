@@ -1,4 +1,4 @@
-import { Box, Grid, Paper } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import React from "react";
 import { Outlet, useOutletContext } from "react-router-dom";
 import RecentImagesAndComments from "../ClientDashboard/RecentImagesAndComments/RecentImagesAndComments";

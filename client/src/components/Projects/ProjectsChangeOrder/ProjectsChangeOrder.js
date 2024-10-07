@@ -1,22 +1,11 @@
-import { ButtonGroup, Paper, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import {Stack, Typography } from "@mui/material";
+import React, {  useState } from "react";
 import WorkOrder from "../ProjectsWorkOrder/WorkOrder";
 import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab, { tabClasses } from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
-import BuilderProButton from "../../UI/Button/BuilderProButton";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
-import RequestWorkOrderModal from "../../dialogues/RequestWorkOrder/RequestWorkOrderModal";
-import {
-  useGetProjectChangeOrderQuery,
-  useGetProjectWorkOrderQuery,
-  useGetWorkOrderDetailsMutation,
-} from "../../../redux/apis/Project/projectApiSlice";
-import { useGetRequestWorkOrderQuery } from "../../../redux/apis/Project/workOrderApiSlice";
-import { useParams } from "react-router-dom";
+
 
 const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) => {
   const [checkedRow, setCheckedRow] = useState(null);

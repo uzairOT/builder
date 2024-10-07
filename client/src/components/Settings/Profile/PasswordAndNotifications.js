@@ -9,7 +9,6 @@ import {
   CircularProgress,
 } from "@mui/material";
 import Button from "../../UI/CustomButton";
-import { useTheme } from "@mui/material/styles";
 import {
   useResetProfilePasswordMutation,
   useUpdateUserNotificationsMutation,
@@ -19,11 +18,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 import { useGetUserNotificationQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 import { useEffect } from "react";
-import { duration } from "moment-timezone";
 
 export default function MyApp() {
-  const theme = useTheme();
-  const isXs = theme.breakpoints.down("xs");
   const user = useSelector((state) => state.auth.userInfo);
   const { data, refetch } = useGetUserNotificationQuery({
     userId: user.user.id,

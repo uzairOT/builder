@@ -3,9 +3,6 @@ import {
   useMediaQuery,
   Button,
   Box,
-  Typography,
-  TextField,
-  MenuItem,
 } from "@mui/material";
 
 import "../../App.css";
@@ -13,18 +10,15 @@ import FooterCircles from "../../components/AssignProject/FooterCircles/FooterCi
 import YellowBtn from "../../components/UI/button";
 import StepTitles from "../../components/AssignProject/StepTitles/StepTitles";
 import StepBoxes from "../../components/AssignProject/StepBoxes/StepBoxes";
-import { useNavigate } from "react-router-dom";
 import Header from "../../components/AssignProject/Header/Header";
 import NewProject from "../../components/AssignProject/NewProject/NewProject";
-import ExistingProject from "../../components/AssignProject/ExistingProject/ExistingProject";
 import ProjectFormFields from "../../components/AssignProject/ProjectFormFields/ProjectFormFields";
 import { useExistingProjectMutation } from "../../redux/apis/usersApiSlice";
 import { selectProjectForm } from "../../redux/slices/projectFormSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import { authUserRole } from "../../redux/slices/auth/userRoleSlice";
-import AssignNewProjectStep3 from "../../components/AssignProject/AssignNewProjectStep3/AssignNewProjectStep3";
 import { useCheckProjectDuplicationMutation } from "../../redux/apis/Project/projectApiSlice";
 import { getBackButtonProjectId } from "../../redux/slices/Project/handlingProjectFlowSlice";
 

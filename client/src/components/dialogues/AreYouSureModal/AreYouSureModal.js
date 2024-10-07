@@ -1,24 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
-  TextField,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
-  Box,
-  Typography,
-  MenuItem,
-  Avatar,
-  IconButton,
-  Stack,
   CircularProgress,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import YellowBtn from "../../UI/button";
-import { useDispatch } from "react-redux";
-import { resetUserAndRoleEmail } from "../../../redux/slices/projectFormSlice";
 
 function AreYouSureModal({
   open,

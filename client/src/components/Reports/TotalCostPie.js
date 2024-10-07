@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { styled } from "@mui/material/styles";
 

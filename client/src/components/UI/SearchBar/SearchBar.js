@@ -135,7 +135,6 @@ const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab, projectsPa
       refetchProjects();
     }
   }, [path]);
-  // console.log(searchQuery)
   return (
     <>
       <Search>

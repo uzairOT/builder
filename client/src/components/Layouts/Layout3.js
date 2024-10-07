@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Grid, IconButton, Paper, Stack, useMediaQuery, useTheme } from "@mui/material";
+import { Grid, Paper, Stack, useMediaQuery, useTheme } from "@mui/material";
 import SideBar from "../Settings/SideBar/SideBar";
 import { Outlet } from "react-router";
-import Navbar from "../../components/Navbar/Navbar.js";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useLocation } from "react-router-dom";
 import {
   useAddAssignRoleMutation,
   useUpdateAssignRoleMutation,
 } from "../../redux/apis/Admin/assignRoleApiSlice.js";
 import ProjectNavbarDrawer from "../Projects/ProjectNavbarDrawer.js";
-import { useOutletContext } from 'react-router-dom';
 function Layout3() {
   const [userInfo, setUserInfo] = useState({
     userRole: "",

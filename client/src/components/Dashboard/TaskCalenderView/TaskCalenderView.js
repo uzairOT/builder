@@ -3,18 +3,9 @@ import TaskCalender from "../../Task/Calender/TaskCalender";
 import { Box, Drawer, IconButton } from "@mui/material";
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import "./styles/drawer.css";
-import moment from "moment";
 
 const TaskCalenderView = ({ dailyForecast, eventsArr }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  // const events = eventsArr?.map((item)=>{
-  //   return{
-  //     ...item,
-  //     start: moment(item.start).toDate(),
-  //     end: moment(item.end).toDate(),
-  //   }
-  // })
-  // //console.log("In Task Calender View: ", events);
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);

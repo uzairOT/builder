@@ -1,19 +1,9 @@
-import { Paper, Stack, Typography } from '@mui/material';
+import { Paper, Stack } from '@mui/material';
 import React, { useEffect } from 'react';
-import MonitoringFinances from './MonitoringFinances';
-import ProjectInfoAndTeam from './ProjectInfoAndTeam';
 import TaskCalender from '../../Task/Calender/TaskCalender';
-import ChangeOrder from './ChangeOrder';
-import Tabs from '@mui/joy/Tabs';
-import TabList from '@mui/joy/TabList';
-import Tab, { tabClasses } from '@mui/joy/Tab';
-import TabPanel from '@mui/joy/TabPanel';
-import { styled } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
-import { userApiSlice } from '../../../redux/apis/usersApiSlice';
 import { allEvents } from '../../../redux/slices/Events/eventsSlice';
 import { getForecast } from '../../../redux/slices/DailyForecast/dailyForecastSlice';
-import { useOutletContext } from 'react-router-dom';
 
 const themeStyle = {
   border: {

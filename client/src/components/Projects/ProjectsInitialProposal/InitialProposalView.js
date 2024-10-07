@@ -1,10 +1,8 @@
-import { Box, Divider, Paper, Stack, Tab, Tabs } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Box, Paper, Stack} from "@mui/material";
+import React, { useEffect } from "react";
 import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
-import { useGetProjectUserRoleMutation } from "../../../redux/apis/Project/projectApiSlice";
-import { useLoaderData, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
 
 const InitialProposalView = () => {
@@ -13,11 +11,6 @@ const InitialProposalView = () => {
   const { id } = useParams();
   const projectId = id;
 
-  const [selectedTab, setSelectedTab] = useState(0);
-
-  const handleTabChange = (event, newValue) => {
-    setSelectedTab(newValue);
-  };
   useEffect(()=>{
     console.log(projectId)
   },[projectId])

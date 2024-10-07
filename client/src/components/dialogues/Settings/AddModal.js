@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -10,15 +10,12 @@ import {
   Select,
   MenuItem,
   FormControl,
-  InputLabel,
   FormHelperText,
-  Autocomplete,
   Stack,
   IconButton,
 } from "@mui/material";
-import UploadIcon from "../../../assets/settings/uploadimg.svg";
 import Button from "../../UI/CustomButton";
-import { useFormik, useFormikContext } from "formik";
+import { useFormik } from "formik";
 import { settingsSchema } from "../../../utils/Validation/settingsPageSchema";
 import { useLocation } from "react-router-dom";
 import {
@@ -27,11 +24,9 @@ import {
 } from "../../../redux/apis/Admin/assignRoleApiSlice";
 import { toast } from "react-toastify";
 //import "react-toastify/dist/ReactToastify.css";
-import { allUserProjects } from "../../../redux/slices/Project/userProjectsSlice";
 import { useSelector } from "react-redux";
 import {
   useGetFilteredUserProjectsQuery,
-  useGetUserProjectsQuery,
 } from "../../../redux/apis/Project/userProjectApiSlice";
 import { createFilterOptions } from "@mui/material/Autocomplete";
 import { uploadToS3 } from "../../../utils/S3";

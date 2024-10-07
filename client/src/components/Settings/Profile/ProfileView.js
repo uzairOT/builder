@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Grid,
   Typography,
   TextField,
   Stack,
-  Snackbar,
-  IconButton,
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import AvatarImg from "../../../assets/settings/UploadProfileIcon.png";
@@ -19,7 +17,6 @@ import {
   useDeleteUserProfileMutation,
 } from "../../../redux/apis/usersApiSlice";
 import { setCredentials } from "../../../redux/slices/authSlice";
-import { Textarea } from "@mui/joy";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { PhoneInput } from "react-international-phone";

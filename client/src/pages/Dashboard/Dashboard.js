@@ -4,19 +4,15 @@ import ProfileView from "../../components/Dashboard/ProfileView/ProfileView.js";
 import WeatherView from "../../components/Dashboard/WeatherView/WeatherView.js";
 import ProgressCard from "../../components/Dashboard/ProgressCard/ProgressCard.js";
 import TaskCalenderView from "../../components/Dashboard/TaskCalenderView/TaskCalenderView.js";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import {
-  addEvents,
-  setIsLoading,
   allEvents,
 } from "../../redux/slices/Events/eventsSlice.js";
 import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice.js";
 import {
-  addProjects,
   allUserProjects,
 } from "../../redux/slices/Project/userProjectsSlice.js";
 import { socket } from "../../socket.js";
-import { useGetUserProjectsQuery } from "../../redux/apis/Project/userProjectApiSlice.js";
 import TaskCalenderLoader from "../../components/Task/Calender/TaskCalenderLoader.js";
 import ProgressCardLoader from "../../components/Dashboard/ProgressCard/ProgressCardLoader.js";
 
@@ -30,22 +26,12 @@ const Dashboard = () => {
   const UserId = currentUser.user.id;
 
   const loading = allEvent.isLoading;
-  const error = allEvent.error;
   const events = allEvent.events;
   const dailyForecast = forecast.dailyForecast;
   const forecastIsLoading = forecast.isLoading;
   const forecastError = forecast.error;
-  // const phaseCheck= useSelector((state)=>state?.projectForm?.projectName)
-
-  // console.log("State Check", phaseCheck)
-  // useEffect(() => {
-  //   if (local?.user?.hasValidSubscription === false) {
-  //     window.location = "subscription";
-  //   }
-  // }, []);
 
   useEffect(() => {
-    // console.log("undefined", UserId);
     socket.emit("userJoin", {
       userId: UserId,
     });
@@ -90,8 +76,6 @@ const Dashboard = () => {
                 />
               </Paper>
             </Grid>
-            {/* direction={{md:'column', lg:'row'}} */}
-            {/*  height:{xl:'67vh', lg:'65vh', md:'43vh', sm:'45vh', xs: '45vh'} */}
             <Grid
               container
               borderTop={"2px solid rgba(0, 0, 0, 0.1)"}
@@ -133,70 +117,6 @@ const Dashboard = () => {
                   <ProgressCardLoader />
                 </>
               )}
-              {/* <Grid
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                lg={6}
-                mb={1}
-                style={{
-                  paddingTop: "0px",
-                  paddingLeft: "8px",
-                  overflow: "hidden",
-                }}
-              >
-                <Paper sx={themeStyle.progressCard} margin={1}>
-                  <ProgressCard />
-                </Paper>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                lg={6}
-                mb={1}
-                style={{
-                  paddingTop: "0px",
-                  paddingLeft: "0px",
-                  overflow: "hidden",
-                }}
-              >
-                <Paper sx={themeStyle.progressCard} margin={1}>
-                  <ProgressCard />
-                </Paper>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                lg={6}
-                mb={1}
-                style={{
-                  paddingTop: "0px",
-                  paddingLeft: "8px",
-                  overflow: "hidden",
-                }}
-              >
-                <Paper sx={themeStyle.progressCard} margin={1}>
-                  <ProgressCard />
-                </Paper>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                lg={6}
-                mb={1}
-                style={{ paddingTop: "0px", paddingLeft: "0px", overflow: "" }}
-              >
-                <Paper sx={themeStyle.progressCard} margin={1}>
-                  <ProgressCard />
-                </Paper>
-              </Grid> */}
             </Grid>
           </Grid>
           {/* Calender Tracker View */}

@@ -1,13 +1,10 @@
 import { Box, Modal, Stack, Typography } from "@mui/material";
 import React from "react";
-import SearchIcon from "@mui/icons-material/Search";
 import BuilderProButton from "../UI/Button/BuilderProButton";
-import Card from "@mui/material/Card";
 import TotalProjects from "./TotalProjects";
 import BudgetPieChartCard from "./BudgetPieChartCard";
 import ProfitMarginBarChartCard from "./ProfitMarginBarChartCard";
 import PaidTransactionsCard from "./PaidTransactionsCard";
-import TotalDaysAllotted from "./TotalDaysAllottedView";
 import TotalDaysAllottedView from "./TotalDaysAllottedView";
 import ProjectsInvoices from "../Projects/ProjectInvoices/ProjectsInvoices";
 

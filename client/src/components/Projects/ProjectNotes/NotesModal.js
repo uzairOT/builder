@@ -5,11 +5,11 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import Input from "@mui/joy/Input";
 import Textarea from "@mui/joy/Textarea";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import {
   useAddProjectNotesMutation,
@@ -23,19 +23,14 @@ import { fileTypeIcons } from "../../dialogues/AddImage/assets/fileTypes";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CloseIcon from "@mui/icons-material/Close";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
-import { usePermissionCheck } from "../../Settings/PermissionAccess/PermissionCheck";
-import { useSelector } from "react-redux";
 //import "react-toastify/dist/ReactToastify.css";
 
 const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
   const [open, setOpen] = useState(false);
   const { id } = useParams();
-  //console.log(notes);
+
   const [noteSubject, setNoteSubject] = useState(notes ? notes?.subject : "");
   const [noteBody, setNoteBody] = useState(notes ? notes?.content : "");
-  // const [fileName, setFileName] = useState("");
-  // const [fileType, setFileType] = useState("");
-  const [selectedFile, setSelectedFile] = useState("");
 
   const [images, setImages] = useState(notes ? notes.files : []);
   const [isLoading, setIsLoading] = useState(false);

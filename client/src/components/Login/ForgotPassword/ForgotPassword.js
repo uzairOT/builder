@@ -15,7 +15,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import YellowBtn from "../../UI/button";
 import { useNavigate } from "react-router-dom";
 import { useForgetPasswordMutation } from "../../../redux/apis/usersApiSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setForgetPasswordEmail } from "../../../redux/slices/authSlice";
 import { toast } from "react-toastify";
 
@@ -23,9 +23,7 @@ const ForgotPassword = () => {
   const [forgetPassword] = useForgetPasswordMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const forgetPasswordEmail = useSelector(
-    (state) => state.auth.forgetPasswordEmail
-  );
+
 
   const formik = useFormik({
     initialValues: {

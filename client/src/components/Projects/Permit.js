@@ -4,7 +4,6 @@ import {
   Box,
   Typography,
   Button,
-  Avatar,
   CircularProgress,
   Stack,
   Modal,
@@ -14,12 +13,10 @@ import {
 import "../../App.css";
 import AddImage from "../dialogues/AddImage/AddImage";
 import { useParams } from "react-router-dom";
-import { fileTypeIcons } from "../dialogues/AddImage/assets/fileTypes";
 import { handleDownload } from "../../utils/S3";
 import filePlaceHolder from "../../assets/FileSvg/file.svg";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
-import NoImg from "../ClientDashboard/RecentImagesAndComments/assets/no-image.png";
 import { useDeleteProjectFileMutation } from "../../redux/apis/Project/projectApiSlice";
 import { toast } from "react-toastify";
 function Permit({ view, type }) {

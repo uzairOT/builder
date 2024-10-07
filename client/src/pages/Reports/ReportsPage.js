@@ -2,7 +2,6 @@ import { Box, Grid, Paper, Typography } from "@mui/material";
 import React from "react";
 import ProjectsSidebar from "../../components/Projects/ProjectsDashboard/ProjectsSidebar";
 import Profile from "../../components/Dashboard/ProfileView/Profile";
-import ProfileReport from "./ProfileReport";
 import Reports from "../../components/Reports/Reports";
 import ReportsSideBar from "../../components/Reports/ReportsSideBar";
 

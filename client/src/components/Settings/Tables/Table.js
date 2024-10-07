@@ -15,8 +15,6 @@ import {
 } from "@mui/material";
 import EditIcon from "../../../assets/settings/edit.png";
 import DeleteIcon from "../../../assets/settings/delete.png";
-import EmailIcon from "../../../assets/settings/email.png";
-import Button from "../../UI/CustomButton";
 import {
   useDeleteAssignRoleMutation,
   useGetAssignedRolesQuery,

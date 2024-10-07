@@ -32,10 +32,8 @@ import {
 } from "../../../redux/slices/Events/eventsSlice";
 import {
   useGetPhasesAndLineItemsByIdMutation,
-  useGetTeamMembersQuery,
 } from "../../../redux/apis/Project/projectApiSlice";
 import { useLocation } from "react-router-dom";
-import useSocket from "../../../utils/useSocket";
 import {
   MobileDateTimePicker,
 } from "@mui/x-date-pickers";

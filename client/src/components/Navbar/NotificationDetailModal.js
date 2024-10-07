@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { json, useLocation, useParams } from "react-router-dom";
 import moment from "moment";
 import {
   useGetTeamMembersQuery,
-  useGetWorkOrderDetailsMutation,
 } from "../../redux/apis/Project/projectApiSlice";
 import {
   Avatar,
   Box,
-  Button,
   Divider,
   FormControl,
   IconButton,
   List,
   ListItem,
-  ListItemText,
-  MenuItem,
   Modal,
-  Select,
   Stack,
   Typography,
 } from "@mui/material";
@@ -30,12 +24,8 @@ import {
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import AssignTeamMembers from "../dialogues/RequestWorkOrder/AssignTeamMembers";
-import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import GenerateInvoiceDone from "../dialogues/GenerateInvoice/GenerateInvoiceDone";
-import WorkOrder from "../Projects/ProjectsWorkOrder/WorkOrder";
 import LineItemDetailModal from "../dialogues/LineItemDetailModal/LineItemDetailModal";
-import { projectUserRoleAuth } from "../Projects/ProjectsInitialProposal/InitialProposalView";
 import axios from "axios";
 import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 import { useUpdateRequestWorkOrderMutation } from "../../redux/apis/Project/workOrderApiSlice";

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Divider, Typography } from "@mui/material";
-import ChatView from "../../Chat/ChatView";
 import Header from "../Header/Header";
 import CustomTable from "../Tables/Table";
 import Pagination from "@mui/material/Pagination";

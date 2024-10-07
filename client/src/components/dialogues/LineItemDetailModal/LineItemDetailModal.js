@@ -1,13 +1,12 @@
-import { Box, Button, Modal, Stack, Typography } from "@mui/material";
+import { Box, Modal, Stack, Typography } from "@mui/material";
 import React from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useUpdateUserLineItemStatusMutation } from "../../../redux/apis/Project/projectApiSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { socket } from "../../../socket";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
 import { toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
 
 const LineItemDetailModal = ({
