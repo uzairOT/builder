@@ -27,21 +27,21 @@ const SubscriptionCard = ({
           name: "Business +",
           color: "#22506C",
           cost: 10,
-          planPackage: ["Enabled", "50", "40", "3", true],
+          planPackage: ["- Enabled", "- 50", "- 40", "3 Users", true],
         };
       case "Business Pro":
         return {
           name: "Business Pro",
           color: "#226C6C",
           cost: 15,
-          planPackage: ["Enabled", "500", "440", "4 to 10", true],
+          planPackage: ["- Enabled", "- 500", "- 440", "10 Users", true],
         };
       default:
         return {
           name: "Free Plan",
           color: "#3E226C",
           cost: 5,
-          planPackage: ["10mb", "10", "5", false],
+          planPackage: ["10mb", "- 10", "5", false],
         };
     }
   })();
@@ -50,7 +50,7 @@ const SubscriptionCard = ({
       "Promo code",
       "Amount of pics",
       "Amount of files",
-      "Amount of users",
+      "Up to ",
       // "Yearly plan option",
       // "Monthly plan option",
     ].map((value, index) =>
@@ -120,7 +120,7 @@ const SubscriptionCard = ({
                     primary={`${value}  ${
                       typeof plan.planPackage[index] === "boolean"
                         ? ""
-                        : `- ${plan.planPackage[index]}`
+                        : `${plan.planPackage[index]}`
                     }`}
                     // secondary={secondary ? `Secondary text: ${value}` : null}
                   />

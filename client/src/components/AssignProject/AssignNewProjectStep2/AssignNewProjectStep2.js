@@ -217,6 +217,7 @@ function AssignNewProjectStep2({
       {users.map((user, index) => (
         <StepFormField
           removeIndex={removeIndex}
+          usersLength={users.length}
           key={index}
           index={index}
           email={user.email}

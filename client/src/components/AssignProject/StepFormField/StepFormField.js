@@ -24,6 +24,7 @@ function ProjectFormFields({
   onUpdateRole,
   removeIndex,
   userInfo,
+  usersLength
 }) {
   const MAX_EMAIL_LENGTH = 50;
   const isSmallMobile = useMediaQuery("(max-width:500px)");
@@ -93,12 +94,15 @@ function ProjectFormFields({
                 sx={{
                   ...inputStyle,
                   ...borderRadiusResponsive,
+                 
                   "& input": {
                     borderBottom: "none", // Remove bottom border of the input
+                     
                   },
 
                   ".MuiInput-input": {
                     color: role === "none" ? "lightgray" : "#202227",
+                    fontSize: "12px",
                   },
                 }}
                 inputProps={{ maxLength: 50 }}
@@ -137,7 +141,7 @@ function ProjectFormFields({
               </TextField>
             </Box>
             <Box display={"flex"} alignItems={"center"} pb={"8px"}>
-              {!(index === 0) ? (
+              {( usersLength > 1)? (
                 <IconButton
                   onClick={() => {
                     removeIndex(index);
@@ -207,6 +211,6 @@ const counterTypo = {
 };
 
 const menuItem = {
-  fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem", xs: "0.7rem" },
+  fontSize: { lg: "0.8rem", md: "0.7rem", sm: "0.7rem", xs: "0.7rem" },
 };
 export default ProjectFormFields;

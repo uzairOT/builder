@@ -41,7 +41,7 @@ const ConversationList = ({
   data,
   handleChatUserChange,
   setConversationId,
-  refetchConverstations,
+  refetchConversations,
   chatUser,
   setIsLoading,
 }) => {
@@ -51,8 +51,7 @@ const ConversationList = ({
   const [createConverstaion] = useCreateConverstaionMutation();
   const [tabValue, setTableValue] = useState(0);
 
-  const handleTabChange = (event, newValue) => {
-    // console.log(newValue);
+  const handleTabChange = async (event, newValue) => {
     setTableValue(newValue);
   };
   const CustomTabPanel = (props) => {
@@ -84,7 +83,7 @@ const ConversationList = ({
         });
         setConversationId(res?.data?.conversation?.id);
         if (res?.data?.message === "Conversation created successfully!") {
-          await refetchConverstations();
+          await refetchConversations();
         }
         // console.log(res);
       } catch (error) {
@@ -99,8 +98,8 @@ const ConversationList = ({
   useEffect(() => {
     const handleRefetch = async () => {
       try {
-        await refetchConverstations({ userId: userId });
-        // console.log("socket run!");
+        await refetchConversations({ userId: userId });
+
       } catch (error) {
         console.error("Error refetching conversations:", error);
       }
@@ -115,6 +114,17 @@ const ConversationList = ({
     };
   }, [userId]);
   // console.log(conversationId);
+  useEffect(()=>{
+    const handleRefetch = async () => {
+      try {
+        await refetchConversations({ userId: userId });
+
+      } catch (error) {
+        console.error("Error refetching conversations:", error);
+      }
+    };
+    handleRefetch();
+  },[tabValue])
 
   return (
     <Stack>

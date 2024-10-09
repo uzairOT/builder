@@ -468,6 +468,7 @@ const ChangeOrderRequestModal = ({
                   response.message ||
                   "Something went wrong!"
               );
+              dispatch(clearPhases());
               return response;
             }
           }

@@ -507,7 +507,9 @@ const NotificationDetailModal = ({
                   </Typography>
                 </Box>
                 {/* Divider  */}
-                <hr style={themeStyle.hrLine} />
+               {!notification?.WorkOrderReq?.changeOrder &&
+               <>
+               <hr style={themeStyle.hrLine} />
 
                 <Typography
                   sx={{
@@ -557,6 +559,8 @@ const NotificationDetailModal = ({
                     data={data}
                   />
                 </Box>
+                </>
+                }
                 {/* Divider  */}
                 <hr style={themeStyle.hrLine} />
 

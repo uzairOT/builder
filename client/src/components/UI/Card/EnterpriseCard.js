@@ -30,7 +30,7 @@ const EnterpriseCard = ({
           color: "#3E226C",
           yearCost: 5,
           monthCost: 1,
-          planPackage: ["10+", "10", "5", false],
+          planPackage: ["10+ Users", "10", "5", false],
         };
     }
   })();
@@ -56,7 +56,7 @@ const EnterpriseCard = ({
   // };
 
   const generateList = (renderItem) => {
-    return [" Users"].map((value, index) =>
+    return ["Up to"].map((value, index) =>
       cloneElement(renderItem(value, index), { key: value, value: value })
     );
   };
@@ -107,7 +107,7 @@ const EnterpriseCard = ({
                     primary={`${value}  ${
                       typeof plan.planPackage[index] === "boolean"
                         ? ""
-                        : `- ${plan.planPackage[index]}`
+                        : `${plan.planPackage[index]}`
                     }`}
                   />
                 </ListItem>

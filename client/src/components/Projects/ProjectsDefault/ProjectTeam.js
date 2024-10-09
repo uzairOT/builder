@@ -521,6 +521,7 @@ const ProjectTeam = ({ SuperAdminId }) => {
                 <Typography
                   fontFamily={"var(--main-font-family)"}
                   fontSize={"14px"}
+                  width={'110px'}
                 >
                   {roleFormat(user.role)}
                 </Typography>

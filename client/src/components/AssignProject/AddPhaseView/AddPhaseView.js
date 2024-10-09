@@ -441,6 +441,9 @@ function AddPhaseView({
     permissionsState
   );
 
+  const initalApproved = initialPhases?.[0]?.[0]?.status === "approved";
+  const initialLengthZero = initialPhases?.[0]?.length === 0 || initialPhases?.length === 0
+
   return (
     <>
       <Grid container sx={{ ...firstGrid, width: "100%" }}>
@@ -474,7 +477,7 @@ function AddPhaseView({
           {view === "Initial Proposal" ? (
             <>
               <>
-                {initialPhases?.[0]?.[0]?.status === "approved" && (
+                {initalApproved && (
                   <>
                     <Stack direction={"row"} sx={buttonBox}>
                       <Tooltip
@@ -536,10 +539,11 @@ function AddPhaseView({
 
                 {initialPhases?.[0]?.[0]?.status === "not approved" ||
                 initialPhases?.[0]?.[0]?.status === "declined" ||
-                initialPhases?.[0]?.[0]?.status === "pending" ? (
+                initialPhases?.[0]?.[0]?.status === "pending" ||
+                initialLengthZero ? (
                   <Stack direction={"row"} sx={buttonBox}>
                     {(initialPhases?.[0]?.[0]?.status === "not approved" ||
-                      initialPhases?.[0]?.[0]?.status === "declined") && (
+                      initialPhases?.[0]?.[0]?.status === "declined" || initialLengthZero) && (
                       <>
                         <Tooltip
                           title={
