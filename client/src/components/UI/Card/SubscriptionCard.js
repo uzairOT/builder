@@ -41,7 +41,7 @@ const SubscriptionCard = ({
         case "Free Trial":
           return {
             name: "Free Trial",
-            color: "#3E226C",
+            color: "#4C8AB1",
             cost: 0,
             planPackage: ["Free Plan", "- 10", "- 5","3 Users" ,false],
           };
@@ -143,10 +143,10 @@ const SubscriptionCard = ({
         {!current && 
         <Stack direction={{lg:'row', md:'row', sm: 'row', xs:'row'}} justifyContent={'space-between'}>
         <Typography sx={themeStyle.bodyTitle} color={plan.color}>
-          ${plan.costMonth}<span> -/per month</span>
+          ${plan.costMonth}<span> per month</span>
         </Typography>
         <Typography sx={themeStyle.bodyTitle} color={plan.color}>
-          ${plan.costAnnum}<span> -/per annum</span>
+          ${plan.costAnnum}<span> per annum</span>
         </Typography>
         </Stack>
         }
