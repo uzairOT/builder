@@ -441,7 +441,7 @@ const Navbar = () => {
                         (!Array.isArray(teamNotifications) ||
                           teamNotifications.length === 0) &&
                         (!Array.isArray(notificationsArr) ||
-                          notificationsArr.length === 0) ? (
+                          notificationsArr.length === 0) && !invoiceNotification? (
                           <div
                             style={{
                               backgroundColor: "#F2F2F2",

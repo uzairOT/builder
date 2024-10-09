@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import SubscriptionCard from "../UI/Card/SubscriptionCard";
 import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 import EnterpriseCard from "../UI/Card/EnterpriseCard";
+import { toast } from "react-toastify";
 
 const SubscriptionPlans = ({
   setCurrentPlan,
@@ -30,10 +31,12 @@ const SubscriptionPlans = ({
         );
         const data = await res.json();
         if (data.success) {
-          // console.log("080808080--->", data?.payment?.planType);
           setCurrentPayment(data?.payment?.planType);
           setExpiryDate(data?.payment.expiryDate)
+        }else{
+          toast.warning(data?.message)
         }
+        
       } catch (error) {
         console.error(error);
       }

@@ -74,8 +74,12 @@ const LineItemTeamStatus = ({ modalOpen, setModalOpen, UserLineItemStatuses }) =
             </TableHead>
             <TableBody >
               {/* <Divider /> */}
-              {UserLineItemStatuses.map((user) => (
-                <TableRow key={user.userId}>
+              {UserLineItemStatuses.map((user) => {
+                const isSuperAdmin = user.User.ProjectMembers[0]?.role === 'superadmin';
+                if(isSuperAdmin){
+                  return <></>
+                }
+                return (<TableRow key={user.userId}>
                   <StyledTableCell><Avatar src={user.User.image} alt='Profile pic'></Avatar></StyledTableCell>
                   <StyledTableCell>
                     {user.User.firstName} {user.User.lastName}
@@ -83,8 +87,8 @@ const LineItemTeamStatus = ({ modalOpen, setModalOpen, UserLineItemStatuses }) =
                   <StyledTableCell>{user.User.email}</StyledTableCell>
                   <StyledTableCell>{user.User.ProjectMembers[0]?.role}</StyledTableCell>
                   <StyledTableCell ><Button sx={{borderRadius:'28px' , backgroundColor: user.status === 'pending' ? '#FFDADA' : '#16C09821',  color: user.status === 'pending' ? '#DF0404' : '#008767',}}>{user.status}</Button></StyledTableCell>
-                </TableRow>
-              ))}
+                </TableRow>)
+              })}
             </TableBody>
           </StyledTable>
         </StyledPaper>

@@ -26,16 +26,25 @@ const SubscriptionCard = ({
         return {
           name: "Business +",
           color: "#22506C",
-          cost: 10,
-          planPackage: ["- Enabled", "- 50", "- 40", "3 Users", true],
+          costMonth: 39.99,
+          costAnnum: 400,
+          planPackage: ["Promo code - Enabled", "- 50", "- 40", "3 Users", true],
         };
       case "Business Pro":
         return {
           name: "Business Pro",
           color: "#226C6C",
-          cost: 15,
-          planPackage: ["- Enabled", "- 500", "- 440", "10 Users", true],
+          costMonth: 319,
+          costAnnum: 2799,
+          planPackage: ["Promo code - Enabled", "- 500", "- 440", "10 Users", true],
         };
+        case "Free Trial":
+          return {
+            name: "Free Trial",
+            color: "#3E226C",
+            cost: 0,
+            planPackage: ["Free Plan", "- 10", "- 5","3 Users" ,false],
+          };
       default:
         return {
           name: "Free Plan",
@@ -47,8 +56,8 @@ const SubscriptionCard = ({
   })();
   const generateList = (renderItem) => {
     return [
-      "Promo code",
-      "Amount of pics",
+      "",
+      "Amount of photos",
       "Amount of files",
       "Up to ",
       // "Yearly plan option",
@@ -130,13 +139,17 @@ const SubscriptionCard = ({
           </List>
         </Stack>
       </Stack>
-      <Stack p={1} px={4} direction={"row"} gap={2}>
-        {/* <Typography sx={themeStyle.bodyTitle} color={plan.color}>
-          <span>Monthly Cost:</span>${plan.cost}
+      <Stack p={1} px={4} gap={2}>
+        {!current && 
+        <Stack direction={{lg:'row', md:'row', sm: 'row', xs:'row'}} justifyContent={'space-between'}>
+        <Typography sx={themeStyle.bodyTitle} color={plan.color}>
+          ${plan.costMonth}<span> -/per month</span>
         </Typography>
         <Typography sx={themeStyle.bodyTitle} color={plan.color}>
-          <span>Yaerly Cost:</span>${plan.cost}
-        </Typography> */}
+          ${plan.costAnnum}<span> -/per annum</span>
+        </Typography>
+        </Stack>
+        }
         {/* { current ? <Typography sx={themeStyle.bodyText} >Last Paid: 12/12/2024</Typography> : <Typography sx={themeStyle.bodyText} >per person/month, when billed monthly</Typography>} */}
         { current && <Typography sx={{...themeStyle.bodyText, color:'black'}} >Expiry Date: {moment(expiryDate).format("MM/DD/YYYY")}</Typography>}
       </Stack>
@@ -161,7 +174,7 @@ const themeStyle = {
     color: "#FFF",
   },
   bodyTitle: {
-    fontSize: { xl: "24px", lg: 22, md: "24px", xs: "24px" },
+    fontSize: { xl: "16px", lg: "14px", md: "14px", xs: "14px" },
     fontWeight: "500",
     fontFamily: "var(--main-font-family)",
   },

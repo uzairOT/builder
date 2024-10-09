@@ -104,7 +104,9 @@ export default function CheckoutForm({
               hasValidSubscription: responseData?.hasValidSubscription,
             },
           };
-          dispatch(setCredentials(data));
+          if(!isInvoicePayment){
+            dispatch(setCredentials(data));
+          }
           // console.log("API Response:", responseData);
           window.location.href = `${window.location.origin}/completion`;
         } else {
