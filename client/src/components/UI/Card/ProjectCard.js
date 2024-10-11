@@ -142,6 +142,15 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
             >
               Location: {projectProfileCard.location ? projectProfileCard.location : '-'}
             </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                ...themeStyle.cardBody,
+                color:  "#848484",
+              }}
+            >
+              Organization: {projectProfileCard?.User?.companyName ? projectProfileCard?.User?.companyName : '-'}
+            </Typography>
           </>
         ) : (
           <>

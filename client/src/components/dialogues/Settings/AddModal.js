@@ -59,6 +59,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
     ? data?.projects.map((project) => ({
         id: project.id,
         projectName: project.projectName,
+        organizationId: project.User?.Organizations[0]?.organizationId
       }))
     : [];
   //console.log(projectNames);
@@ -99,10 +100,11 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
       //console.log(uploadedFileUrl);
       const post = {
         ...values,
+        project: values.project.id,
         userRole: userRole,
         userId: currentUserId,
         companyName: currentUser.user.companyName,
-        organizationId: organizationId,
+        organizationId: values?.project?.organizationId,
       };
       //console.log(post);
       const res = await assignRolePost(post).unwrap();
@@ -337,6 +339,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
                   name="project"
                   fullWidth
                   renderValue={(selected) => {
+                    console.log(selected)
                     if (selected.length === 0) {
                       return (
                         <Typography
@@ -347,7 +350,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
                       );
                     }
                     const selectedProject = projectNames.find(
-                      (project) => project.id === selected
+                      (project) => project.id === selected.id
                     );
                     return selectedProject ? selectedProject.projectName : "";
                   }}
@@ -362,7 +365,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
                   }}
                 >
                   {projectNames?.map((projectName) => (
-                    <MenuItem key={projectName.id} value={projectName.id}>
+                    <MenuItem key={projectName.id} value={projectName}>
                       {projectName.projectName}
                     </MenuItem>
                   ))}

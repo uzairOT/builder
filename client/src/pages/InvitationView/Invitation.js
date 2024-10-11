@@ -378,9 +378,9 @@ const Invitation = () => {
               </label>
 
               <PhoneInput
-                disableDialCodePrefill
+                // disableDialCodePrefill
                 style={{ ...customPhoneStyles }}
-                defaultCountry=""
+                defaultCountry="us"
                 name={"phoneNumber"}
                 value={phone}
                 onChange={(phone) => setPhone(phone)}
@@ -402,7 +402,7 @@ const Invitation = () => {
                 inputStyle={{ ...customeInputStyles }}
                 inputProps={{
                   border: "none",
-                  placeholder: "+1 (123) 456-7890",
+                  // placeholder: "+1 (123) 456-7890",
                 }}
                 required
               />

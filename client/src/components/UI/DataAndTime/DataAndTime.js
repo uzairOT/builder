@@ -35,7 +35,7 @@ export default DateAndTime;
 const themeStyle = {
   contianer: { paddingBottom: 4, paddingLeft: 0 },
   time: {
-    fontSize: { xs: "58px", sm: '40px', md: "40px", lg: '42px', xl: "58px" },
+    fontSize: { xs: "58px", sm: '40px', md: "40px", lg: '42px', xl: "52px" },
     color: "#FFAC00",
     fontFamily: 'var(--main-font-family)',
     fontWeight: "300",

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Profile from "../Dashboard/ProfileView/Profile";
 import PaymentHistoryCard from "../UI/Card/PaymentHistoryCard";
 import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
+import AreYouSureModal from "../dialogues/AreYouSureModal/AreYouSureModal";
 
 let userData = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(userData);
@@ -10,38 +11,41 @@ const currentUser = userInfo?.user;
 
 const SubscriptionSidebar = () => {
   const [paymentHistory, setPaymentHistory] = useState([]);
-  // const data = [
-  //   {
-  //     plan: "Business+",
-  //     payment: "$7.50 USD",
-  //     date: "February 12/2024",
-  //   },
-  //   {
-  //     plan: "Business+",
-  //     payment: "$7.50 USD",
-  //     date: "February 12/2024",
-  //   },
-  //   {
-  //     plan: "Business+",
-  //     payment: "$7.50 USD",
-  //     date: "February 12/2024",
-  //   },
-  //   {
-  //     plan: "Business+",
-  //     payment: "$7.50 USD",
-  //     date: "February 12/2024",
-  //   },
-  //   {
-  //     plan: "Business+",
-  //     payment: "$7.50 USD",
-  //     date: "February 12/2024",
-  //   },
-  //   {
-  //     plan: "Business+",
-  //     payment: "$7.50 USD",
-  //     date: "February 12/2024",
-  //   },
-  // ];
+  const [open, setOpen] = useState(false)
+  const [refundPlan, setRefundPlan] = useState();
+
+  const handleOpenModal = (refundAmount) => {
+    setRefundPlan(refundAmount)
+    setOpen(true)
+  }
+  const handleConfirm = async (action) => {
+    if(action){
+      await createRefundIntent()
+      setOpen(false)
+    }else{
+      setOpen(false)
+    }
+  }
+  const createRefundIntent = async () => {
+    try {
+      const response = await fetch("https://builderbuilder.net/payment/create-refund-intent", {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+        }),
+        body: JSON.stringify(refundPlan),
+      });
+  
+      const message = await response.json();
+      console.log(message)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  // Call this function whenever you need to create a refund intent
+  
   useEffect(() => {
     const fetchPaymentHistory = async () => {
       try {
@@ -81,10 +85,15 @@ const SubscriptionSidebar = () => {
               paymentHistory.map((item) => (
                 <PaymentHistoryCard
                   key={item.id}
+                  handleOpenModal={handleOpenModal}
                   data={{
+                    id:item.id,
                     plan: item.planType,
                     payment: `$${item.amount} USD`,
-                    date: new Date(item.createdAt).toLocaleDateString(),
+                    date: new Date(item.createdAt),
+                    status: item.status,
+                    paymentIntentId: item.paymentIntentId,
+                    amount: item.amount
                   }}
                 />
               ))
@@ -96,6 +105,11 @@ const SubscriptionSidebar = () => {
           </Stack>
         </Box>
       </Paper>
+      <AreYouSureModal
+        open={open}
+        question={`This process may take 5-10 days.<br />Are you sure you want to refund`}
+        handleConfirmDelete={handleConfirm}
+      />
     </>
   );
 };

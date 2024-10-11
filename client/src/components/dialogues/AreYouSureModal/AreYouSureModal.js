@@ -15,6 +15,7 @@ function AreYouSureModal({
   handleConfirmDelete,
   isLoading,
   text,
+  question='Are you sure you want to delete this',
 }) {
   const handleClickClose = () => {
     handleClose();
@@ -40,7 +41,7 @@ function AreYouSureModal({
         {/* </Stack> */}
         <DialogContent>
           <DialogContentText sx={typoTect} id="alert-dialog-slide-description">
-            Are you sure you want to delete this {text}?
+          <span dangerouslySetInnerHTML={{ __html: question }} /> {text}?
           </DialogContentText>
         </DialogContent>
 

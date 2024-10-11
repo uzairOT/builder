@@ -7,6 +7,7 @@ const SubscriptionForm = ({
   currentPakage,
   selectedPlan,
   setSelectedPlan,
+  currentPayment
 }) => {
   return (
     <Stack p={4} mt={1} sx={themeStyle.scrollable} overflow={"hidden"}>
@@ -15,6 +16,7 @@ const SubscriptionForm = ({
         setSelectedPlan={setSelectedPlan}
         currentPlan={currentPlan}
         currentPakage={currentPakage}
+        currentPayment={currentPayment}
       />
     </Stack>
   );

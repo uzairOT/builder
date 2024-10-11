@@ -1,18 +1,21 @@
 import { Grid, } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SubscriptionSidebar from "../../components/Subscription/SubscriptionSidebar";
 import SubscriptionPlans from "../../components/Subscription/SubscriptionPlans";
 import SubscriptionForm from "../../components/Subscription/SubscriptionForm";
 
 const Subscription = () => {
+  //currentPlan is the selected Plan
   const [currentPlan, setCurrentPlan] = useState("");
   const [currentPakage, setCurrentPakage] = useState("");
   const [selectedPlan, setSelectedPlan] = useState("");
+  //current Payment is the ongoing subscription
+  const [currentPayment, setCurrentPayment] = useState([]);
   let userInfo = localStorage.getItem("userInfo");
   const userParseInfo = JSON.parse(userInfo);
   let IsValidSub = userParseInfo?.user?.hasValidSubscription;
   const subHeight = !IsValidSub ? "100vh" : "93vh";
-  // console.log("Plan Type", IsValidSub);
+
   return (
     <>
       <Grid
@@ -54,6 +57,8 @@ const Subscription = () => {
               selectedPlan={selectedPlan}
               setSelectedPlan={setSelectedPlan}
               setCurrentPlan={setCurrentPlan}
+              setCurrentPayment={setCurrentPayment}
+              currentPayment={currentPayment}
               currentPlan={currentPlan}
               setCurrentPakage={setCurrentPakage}
             />
@@ -64,6 +69,7 @@ const Subscription = () => {
               setSelectedPlan={setSelectedPlan}
               currentPlan={currentPlan}
               currentPakage={currentPakage}
+              currentPayment={currentPayment}
             />
           </Grid>
         </Grid>

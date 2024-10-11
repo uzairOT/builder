@@ -11,7 +11,7 @@ const Profile = ({reports}) => {
   const email = userInfo?.user?.email;
   return (
     <>
-    <Grid sx={{  paddingLeft:4, display:"flex", flexDirection:"column"}}>
+    <Grid sx={{  paddingLeft:{xl:3, lg:1, md:4, xs:4}, display:"flex", flexDirection:"column"}}>
 
       <Box sx={themeStyle.container}>
         <Box padding={0.4} >

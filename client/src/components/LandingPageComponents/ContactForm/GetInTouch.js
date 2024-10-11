@@ -255,9 +255,9 @@ const GetInTouch = () => {
                     Phone number
                   </label>
                   <PhoneInput
-                    disableDialCodePrefill
+                    // disableDialCodePrefill
                     style={{ ...customPhoneStyles }}
-                    defaultCountry=""
+                    defaultCountry="us"
                     name="phoneNumber"
                     value={formik.values.phoneNumber}
                     onBlur={(e) => {
@@ -281,10 +281,10 @@ const GetInTouch = () => {
                     inputStyle={{ ...customeInputStyles }}
                     inputProps={{
                       border: "none",
-                      placeholder: "+1 (123) 456-7890",
+                      // placeholder: "+1 (123) 456-7890",
                     }}
                   />
-                  {!isPhoneValid(formik.values.phoneNumber) && (
+                  {(!isPhoneValid(formik.values.phoneNumber) && formik.touched.phoneNumber)&& (
                     <Typography
                       sx={{
                         color: "#d32f2f",

@@ -35,7 +35,7 @@ import {  SupervisorAccountRounded } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 //import "react-toastify/dist/ReactToastify.css";
 
-const ProjectTeam = ({ SuperAdminId }) => {
+const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
   const [open, setOpen] = useState(null);
   const [openPending, setOpenPending] = useState(null);
   const [userType, setUserType] = useState("");
@@ -59,9 +59,7 @@ const ProjectTeam = ({ SuperAdminId }) => {
   const pendingInvitationsLength = data?.invitation?.length;
   const team = data?.team;
   const id = openShare ? "simple-popover" : undefined;
-  const organizationId = useSelector(
-    (state) => state.auth.userInfo.user.organization.organizationId
-  );
+
   const groupedData = isLoading ? (
     <>Loading...</>
   ) : (
@@ -118,7 +116,7 @@ const ProjectTeam = ({ SuperAdminId }) => {
       email,
       userId,
       companyName,
-      organizationId: organizationId,
+      organizationId: projectOrganizationId,
     };
     try {
       if (userRole === "") {

@@ -33,6 +33,7 @@ function AddImage({
   fetchData,
   showDelete,
   setShowDelete,
+  projectOrganizationId
 }) {
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState(null);
@@ -171,7 +172,6 @@ function AddImage({
       return false;
     }
     try {
-      debugger;
       setLoading(true);
       const formData = new FormData(event.currentTarget);
       const formJson = Object.fromEntries(formData.entries());
@@ -190,7 +190,7 @@ function AddImage({
         fileName: fileName,
         notes: notes,
         primary: primary,
-        organizationId: currentUser?.organization?.organizationId,
+        organizationId: projectOrganizationId,
       };
       const response = await axios
         .post(apiUrl, requestBody, {

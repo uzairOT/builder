@@ -5,10 +5,11 @@ import { toast } from "react-toastify";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../../../redux/slices/authSlice";
+import AreYouSureModal from "../AreYouSureModal/AreYouSureModal";
 
 export default function CheckoutForm({
   address,
-  currentPlan,
+  paymentAmount,
   currentPakage,
   orgName,
   userId,
@@ -18,6 +19,8 @@ export default function CheckoutForm({
   invoiceId,
   paymentType,
   setPaymentType,
+  currentPlan,
+  currentPayment,
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -26,9 +29,12 @@ export default function CheckoutForm({
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [open, setOpen] = useState(false)
+  console.log(currentPayment)
+  const plans = ['Free Trial', 'Business +', 'Business Pro'];
   const payload = {
     address: address,
-    amount: currentPlan,
+    amount: paymentAmount,
     planType: currentPakage,
     orgName: orgName,
     userId: userId,
@@ -38,12 +44,30 @@ export default function CheckoutForm({
 
     // Add other form values here as needed
   };
-  const handleSubmit = async (e) => {
+  const handleConfrimChangeSubs = async (action) => {
+    if (action) {
+      console.log(action);
+      setOpen(false)
+      await handleSubmit()
+    } else {
+      setOpen(false)
+      console.log(action);
+    }
+  }
+  const handleSubmitSubscription = async (e) => {
+    console.log(currentPayment);
     e.preventDefault();
+    if (plans.includes(currentPayment)) {
+      setOpen(true)
+    } else {
+      await handleSubmit(e);
+    }
+  }
+  const handleSubmit = async (e) => {
     // console.log(
     //   "-=-=-=-=-=-",
     //   address,
-    //   currentPlan,
+    //   paymentAmount,
     //   currentPakage,
     //   orgName,
     //   userId,
@@ -72,7 +96,7 @@ export default function CheckoutForm({
       console.log(paymentIntent, "Rrror", error);
       setMessage(error.message);
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
-      // console.log(paymentIntent, "----0-009-00-09-=");
+      console.log(paymentIntent, "----0-009-00-09-=");
 
       // Call the appropriate API when payment succeeds
       const apiUrl = isInvoicePayment
@@ -80,8 +104,8 @@ export default function CheckoutForm({
         : "https://builderbuilder.net/payment/addPayment";
 
       const apiPayload = isInvoicePayment
-        ? { invoiceId, totalAmount: currentPlan, paymentMethod:'Stripe' }
-        : payload;
+        ? { invoiceId, totalAmount: paymentAmount, paymentMethod: 'Stripe' }
+        : {...payload, paymentIntentId: paymentIntent.id};
 
       // Call the API with the payload when payment succeeds
       try {
@@ -104,7 +128,7 @@ export default function CheckoutForm({
               hasValidSubscription: responseData?.hasValidSubscription,
             },
           };
-          if(!isInvoicePayment){
+          if (!isInvoicePayment) {
             dispatch(setCredentials(data));
           }
           // console.log("API Response:", responseData);
@@ -131,23 +155,26 @@ export default function CheckoutForm({
   };
 
   return (
-    <form id="payment-form">
-      <PaymentElement id="payment-element" />
-      <button
-        disabled={isProcessing || !stripe || !elements}
-        id="submit"
-        // type="submit"
-        onClick={handleSubmit}
-        style={{ borderRadius: "10px" }}
-      >
-        <span id="button-text">
-          {isProcessing ? "Processing ... " : "Pay now"}
-        </span>
-      </button>
-      {/* Show any error or success messages */}
-      <div style={{ marginTop: "1rem" }}>
-        {message && <alert id="payment-message">{message}</alert>}
-      </div>
-    </form>
+    <>
+      <form id="payment-form">
+        <PaymentElement id="payment-element" />
+        <button
+          disabled={isProcessing || !stripe || !elements}
+          id="submit"
+          // type="submit"
+          onClick={handleSubmitSubscription}
+          style={{ borderRadius: "10px" }}
+        >
+          <span id="button-text">
+            {isProcessing ? "Processing ... " : "Pay now"}
+          </span>
+        </button>
+        {/* Show any error or success messages */}
+        <div style={{ marginTop: "1rem" }}>
+          {message && <alert id="payment-message">{message}</alert>}
+        </div>
+      </form>
+      <AreYouSureModal open={open} handleConfirmDelete={handleConfrimChangeSubs} question={`<b>Active '${currentPayment}' Plan found</b>.<br />Do you want to void and proceed`} />
+    </>
   );
 }

@@ -20,7 +20,7 @@ const InnerLayout2 = () => {
   const userInfo = useSelector((state) => state.auth.userInfo);
   const userId = userInfo.user.id;
   const [open, setOpen] = useState(false);
-  const [projectName, projectLocation, SuperAdminId, selectedProjectData] =
+  const [projectName, projectLocation, SuperAdminId, selectedProjectData, projectOrganizationId] =
     useOutletContext(); // Extracting the context values
   const permissionsState = useSelector(
     (state) => state?.permissions?.permissions
@@ -63,6 +63,7 @@ const InnerLayout2 = () => {
               SuperAdminId={SuperAdminId}
               projectId={id}
               userId={userId}
+              projectOrganizationId={projectOrganizationId}
             />
           </Paper>
         </Stack>
@@ -74,7 +75,7 @@ const InnerLayout2 = () => {
         sx={{ height: "calc(92vh - 295px)" }}
       >
         <Stack flex={2} height={"inherit"}>
-          <Outlet context={[SuperAdminId]} />
+          <Outlet context={[SuperAdminId, projectOrganizationId]} />
         </Stack>
         {/* Change Order Tab navigation */}
         <Stack flex={1} pt={{ xs: 1, lg: 0 }}>

@@ -39,7 +39,8 @@ const Layout2 = () => {
   const projectName = selectedProjectId?.projectName;
   const projectLocation = selectedProjectId?.location;
   const SuperAdminId = selectedProjectId?.userId;
-  // console.log("Selected Project:", SuperAdminId);
+  const projectOrganizationId = selectedProjectData?.User?.Organizations[0]?.organizationId;
+  console.log("Selected Project:", selectedProjectData);
   // console.log('APP.JS: ',id)
 
   const [GetPermissionsList] = usePermissionsMutation();
@@ -186,6 +187,7 @@ const Layout2 = () => {
                 projectLocation,
                 SuperAdminId,
                 selectedProjectData,
+                projectOrganizationId
               ]}
             />
           )}

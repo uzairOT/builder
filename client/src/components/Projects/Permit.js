@@ -19,7 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 import { useDeleteProjectFileMutation } from "../../redux/apis/Project/projectApiSlice";
 import { toast } from "react-toastify";
-function Permit({ view, type }) {
+function Permit({ view, type, projectOrganizationId }) {
   const placeholderImg = `https://source.unsplash.com/random/100x100`;
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -363,6 +363,7 @@ function Permit({ view, type }) {
           handleClose={handleClose}
           heading={type}
           fetchData={fetchData}
+          projectOrganizationId={projectOrganizationId}
         ></AddImage>
       )}
     </div>

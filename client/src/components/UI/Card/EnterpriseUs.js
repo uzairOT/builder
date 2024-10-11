@@ -238,9 +238,9 @@ const EnterpriseUs = () => {
                   Phone number
                 </label>
                 <PhoneInput
-                  disableDialCodePrefill
+                  // disableDialCodePrefill
                   style={{ ...customPhoneStyles }}
-                  defaultCountry=""
+                  defaultCountry="us"
                   name="phoneNumber"
                   value={formik.values.phoneNumber}
                   onBlur={(e) => {
@@ -264,7 +264,7 @@ const EnterpriseUs = () => {
                   inputStyle={{ ...customeInputStyles }}
                   inputProps={{
                     border: "none",
-                    placeholder: "+1 (123) 456-7890",
+                    // placeholder: "+1 (123) 456-7890",
                   }}
                 />
                 {!isPhoneValid(formik.values.phoneNumber) && (

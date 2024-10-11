@@ -170,7 +170,7 @@ const Navbar = () => {
       socket.off("statusDoneNotificationResponse", async (socketReponse) => {
         dispatch(addTeamNotifications(socketReponse));
       });
-      socket.off(`sendInvoice${userId}`, async (socketReponse) => {
+      socket.off(`invoiceCreated${userId}`, async (socketReponse) => {
         setInvoiceNotification(socketReponse);
       });
       socket.off("receiveNotifications");

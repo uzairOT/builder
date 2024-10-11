@@ -129,7 +129,7 @@ const CustomToolbar = ({
         >
           <Typography
             sx={themeStyle.toolbarTitle}
-            pl={{ xl: 1, lg: 2, md: 2, xs: 1 }}
+            pl={{ xl: 1, lg: 2, md: 2, xs: 2.5 }}
           >
             Work Order
           </Typography>

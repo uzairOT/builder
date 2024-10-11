@@ -5,7 +5,7 @@ const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2
 const SUPPORTD_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
 
 export const settingsSchema = yup.object().shape({
-    project: yup.string().required(),
+    project: yup.object().required(),
     email: yup.string().email().required(),
     // image: yup.mixed().nullable().required().test("FILE_FORMAT", "Uploaded file has unsupported format.", (value)=> !value || (value && SUPPORTD_FORMATS.includes(value?.type))),
 })

@@ -222,8 +222,8 @@ function AddPhaseView({
       const toastType = data?.success === true ? "success" : "error";
       toast[toastType](data?.message);
       dispatch(toggleWorkOrderDeclineRecall());
+      setIsLoadingSendApproval(false)
       if (data?.success) {
-        setIsLoadingSendApproval(false)
         window.location.reload();
       }
     });

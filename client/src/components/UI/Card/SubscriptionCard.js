@@ -26,7 +26,7 @@ const SubscriptionCard = ({
         return {
           name: "Business +",
           color: "#22506C",
-          costMonth: 39.99,
+          costMonth: 39,
           costAnnum: 400,
           planPackage: ["Promo code - Enabled", "- 50", "- 40", "3 Users", true],
         };
@@ -34,7 +34,7 @@ const SubscriptionCard = ({
         return {
           name: "Business Pro",
           color: "#226C6C",
-          costMonth: 319,
+          costMonth: 399,
           costAnnum: 2799,
           planPackage: ["Promo code - Enabled", "- 500", "- 440", "10 Users", true],
         };

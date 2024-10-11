@@ -53,6 +53,7 @@ const PaymentModal = ({
   currentPakage,
   selectedPlan,
   setSelectedPlan,
+  currentPayment
 }) => {
   const [values, setValues] = useState(initialValues);
   const [countries, setCountries] = useState([]);
@@ -66,10 +67,11 @@ const PaymentModal = ({
   const [paymentType, setPaymentType] = useState("Monthly");
   const [verifyCoupon, { isLoading }] = useVerifyCouponMutation();
   const [amount, setAmount] = useState();
+  console.log("Payment Modal", currentPayment)
   const handlePaymentTypeChange = (event) => {
     setPaymentType(event.target.value);
   };
-
+// console.log(currentPlan);
   const handlePromoCodeChange = (e) => {
     setPromoCode(e.target.value);
   };
@@ -121,14 +123,33 @@ const PaymentModal = ({
       body: JSON.stringify({ amount }),
     })
       .then(async (result) => {
-        // console.log("-=-=-=-result ", result);
-        var { clientSecret } = await result.json();
+        var { clientSecret, paymentIntent } = await result.json();
+        console.log("-=-=-=-result ", paymentIntent);
         setClientSecret(clientSecret);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [amount]);
+
+  // useEffect(() => {
+  //   fetch("https://builderbuilder.net/payment/create-refund-intent", {
+  //     method: "POST",
+  //     headers: new Headers({
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+  //     }),
+  //     body: JSON.stringify({ amount }),
+  //   })
+  //     .then(async (result) => {
+  //       // console.log("-=-=-=-result ", result);
+  //       var { clientSecret } = await result.json();
+  //       setClientSecret(clientSecret);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, [amount]);
 
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -157,11 +178,11 @@ const PaymentModal = ({
   useEffect(() => {
     if (currentPakage === "Business Pro") {
       setAmount(
-        paymentType === "Yearly" ? 2799 : paymentType === "Monthly" ? 319 : ""
+        paymentType === "Yearly" ? 2799 : paymentType === "Monthly" ? 399 : ""
       );
     } else if (currentPakage === "Business +") {
       setAmount(
-        paymentType === "Yearly" ? 400 : paymentType === "Monthly" ? 39.99 : ""
+        paymentType === "Yearly" ? 400 : paymentType === "Monthly" ? 39 : ""
       );
     }
   }, [currentPakage, paymentType]);
@@ -389,12 +410,14 @@ const PaymentModal = ({
               <CheckoutForm
                 selectedPlan={selectedPlan}
                 address={values.address}
-                currentPlan={discounted ? newAmount : amount}
+                paymentAmount={discounted ? newAmount : amount}
                 currentPakage={currentPakage}
                 orgName={currentUser.companyName}
                 orgId={currentUser?.organization?.organizationId}
                 userId={currentUser.id}
                 paymentType={paymentType}
+                currentPlan={currentPlan}
+                currentPayment={currentPayment}
               />
             </Elements>
           )}

@@ -9,8 +9,10 @@ const SubscriptionPlans = ({
   setCurrentPlan,
   currentPlan,
   setCurrentPakage,
+  setCurrentPayment,
+  currentPayment,
+  setRefundPlan
 }) => {
-  const [currentPayment, setCurrentPayment] = useState([]);
   const [expiryDate, setExpiryDate] = useState(null)
   let userData = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(userData);
