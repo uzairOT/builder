@@ -4,6 +4,7 @@ import Profile from "../Dashboard/ProfileView/Profile";
 import PaymentHistoryCard from "../UI/Card/PaymentHistoryCard";
 import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 import AreYouSureModal from "../dialogues/AreYouSureModal/AreYouSureModal";
+import { toast } from "react-toastify";
 
 let userData = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(userData);
@@ -13,6 +14,7 @@ const SubscriptionSidebar = () => {
   const [paymentHistory, setPaymentHistory] = useState([]);
   const [open, setOpen] = useState(false)
   const [refundPlan, setRefundPlan] = useState();
+  const [loading, setLoading] = useState(false);
 
   const handleOpenModal = (refundAmount) => {
     setRefundPlan(refundAmount)
@@ -28,6 +30,7 @@ const SubscriptionSidebar = () => {
   }
   const createRefundIntent = async () => {
     try {
+      setLoading(true)
       const response = await fetch("https://builderbuilder.net/payment/create-refund-intent", {
         method: "POST",
         headers: new Headers({
@@ -38,9 +41,21 @@ const SubscriptionSidebar = () => {
       });
   
       const message = await response.json();
+      if (message?.error?.message) {
+        throw new Error(message.error.message); // Throw the error message if it exists
+      } else if (message?.error) {
+        throw new Error('An unknown error occurred'); // Generic error if only message.error exists without a message property
+      }if(message?.error){
+        throw new Error (message?.error?.message)
+      }
       console.log(message)
+      toast.success(message?.message||'Success')
+      setLoading(false)
     } catch (error) {
-      console.log(error);
+      const errorMessage = error.message || 'Something went wrong'; // Extract the error message
+      toast.error(errorMessage); // Pass the string to toast.error
+      setLoading(false);
+      console.log(error); // Log the actual error object
     }
   };
   
@@ -61,6 +76,7 @@ const SubscriptionSidebar = () => {
         if (data.success) {
           setPaymentHistory(data.payments);
         }
+
         // console.log("0909090909--->", data);
       } catch (error) {
         console.error(error);
@@ -109,6 +125,7 @@ const SubscriptionSidebar = () => {
         open={open}
         question={`This process may take 5-10 days.<br />Are you sure you want to refund`}
         handleConfirmDelete={handleConfirm}
+        isLoading={loading}
       />
     </>
   );

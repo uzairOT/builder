@@ -243,7 +243,7 @@ const Login = () => {
             <img src={googlePlay} style={{ cursor: "pointer" }} alt="" />
           </a>
 
-          <a href="https://testflight.apple.com/join/Fejy1iQ6" target="blank">
+          <a href="https://apps.apple.com/us/app/builderbuilder-pro/id6714458398" target="blank">
             <img src={appStore} style={{ cursor: "pointer" }} alt="" />
           </a>
         </Box>

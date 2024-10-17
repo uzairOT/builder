@@ -66,7 +66,7 @@ const SubscriptionPlans = ({
         {currentPayment ? "Update Plan" : "Choose plan"}
       </Typography>
       <Grid container spacing={4} p={1}>
-        <Grid item xl={6} lg={6}>
+        <Grid item xs={12}>
           <SubscriptionCard
             currentPlan={currentPlan}
             setCurrentPlan={setCurrentPlan}
@@ -74,7 +74,7 @@ const SubscriptionPlans = ({
             planType={"Business +"}
           />
         </Grid>
-        <Grid item xl={6} lg={6}>
+        <Grid item xs={12}>
           <SubscriptionCard
             currentPlan={currentPlan}
             setCurrentPlan={setCurrentPlan}
@@ -83,7 +83,7 @@ const SubscriptionPlans = ({
           />
         </Grid>
 
-        <Grid item xl={6} lg={6}>
+        <Grid item xs={12}>
           <EnterpriseCard
             currentPlan={currentPlan}
             setCurrentPlan={setCurrentPlan}

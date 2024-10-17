@@ -99,7 +99,7 @@ const StatsAndDownload = () => {
           <Box sx={styles.appIcons}>
             <Button>
               <a
-                href="https://testflight.apple.com/join/Fejy1iQ6"
+                href="https://apps.apple.com/us/app/builderbuilder-pro/id6714458398"
                 target="blank"
               >
                 <DownloadAppStore />

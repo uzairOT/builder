@@ -26,21 +26,21 @@ const SubscriptionCard = ({
         return {
           name: "Business +",
           color: "#22506C",
-          costMonth: 39,
-          costAnnum: 400,
+          costMonth: 39.99,
+          costAnnum: 399,
           planPackage: ["Promo code - Enabled", "- 50", "- 40", "3 Users", true],
         };
       case "Business Pro":
         return {
           name: "Business Pro",
           color: "#226C6C",
-          costMonth: 399,
+          costMonth: 319,
           costAnnum: 2799,
           planPackage: ["Promo code - Enabled", "- 500", "- 440", "10 Users", true],
         };
         case "Free Trial":
           return {
-            name: "Free Trial",
+            name: "30 Day Free Trial",
             color: "#4C8AB1",
             cost: 0,
             planPackage: ["Free Plan", "- 10", "- 5","3 Users" ,false],
@@ -146,7 +146,7 @@ const SubscriptionCard = ({
           ${plan.costMonth}<span> per month</span>
         </Typography>
         <Typography sx={themeStyle.bodyTitle} color={plan.color}>
-          ${plan.costAnnum}<span> per annum</span>
+          ${plan.costAnnum}<span> per year</span>
         </Typography>
         </Stack>
         }

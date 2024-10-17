@@ -67,7 +67,6 @@ const PaymentModal = ({
   const [paymentType, setPaymentType] = useState("Monthly");
   const [verifyCoupon, { isLoading }] = useVerifyCouponMutation();
   const [amount, setAmount] = useState();
-  console.log("Payment Modal", currentPayment)
   const handlePaymentTypeChange = (event) => {
     setPaymentType(event.target.value);
   };
@@ -114,6 +113,7 @@ const PaymentModal = ({
   }, []);
 
   useEffect(() => {
+    setClientSecret('');
     fetch("https://builderbuilder.net/payment/create-payment-intent", {
       method: "POST",
       headers: new Headers({
@@ -123,8 +123,7 @@ const PaymentModal = ({
       body: JSON.stringify({ amount }),
     })
       .then(async (result) => {
-        var { clientSecret, paymentIntent } = await result.json();
-        console.log("-=-=-=-result ", paymentIntent);
+        var { clientSecret } = await result.json();
         setClientSecret(clientSecret);
       })
       .catch((error) => {
@@ -178,18 +177,16 @@ const PaymentModal = ({
   useEffect(() => {
     if (currentPakage === "Business Pro") {
       setAmount(
-        paymentType === "Yearly" ? 2799 : paymentType === "Monthly" ? 399 : ""
+        paymentType === "Yearly" ? 2799 : paymentType === "Monthly" ? 319 : ""
       );
     } else if (currentPakage === "Business +") {
       setAmount(
-        paymentType === "Yearly" ? 400 : paymentType === "Monthly" ? 39 : ""
+        paymentType === "Yearly" ? 399 : paymentType === "Monthly" ? 39.99 : ""
       );
     }
   }, [currentPakage, paymentType]);
 
-  useEffect(() => {
-    // console.log(promoCode);
-  }, [promoCode]);
+
   useEffect(() => {
     if (discounted === "") {
     } else {

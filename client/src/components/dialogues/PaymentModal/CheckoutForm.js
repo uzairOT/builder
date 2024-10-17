@@ -30,7 +30,6 @@ export default function CheckoutForm({
   const [message, setMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [open, setOpen] = useState(false)
-  console.log(currentPayment)
   const plans = ['Free Trial', 'Business +', 'Business Pro'];
   const payload = {
     address: address,
