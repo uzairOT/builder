@@ -23,7 +23,7 @@ const ProjectsNavbar = ({ project }) => {
   const location = useLocation();
   const page = location.pathname.split("/")[3];
   const theme = useTheme();
-  const showHamburger = useMediaQuery(theme.breakpoints.down("lg"));
+  const showHamburger = useMediaQuery(theme.breakpoints.down("xl"));
   const navigate = useNavigate();
   const userRole = useSelector(getUserRoleFromRedux);
   const userOrganization = useSelector(
@@ -186,7 +186,7 @@ const ProjectsNavbar = ({ project }) => {
         spacing={1}
         pr={2}
         pl={1}
-        display={{ xl: "flex", lg: "flex", md: "none", sm: "none", xs: "none" }}
+        display={{ xl: "flex", lg: "none", md: "none", sm: "none", xs: "none" }}
       >
         {navLinks.map((navlink, index) => {
           if (

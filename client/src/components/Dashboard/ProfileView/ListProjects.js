@@ -156,7 +156,7 @@ const ListProjects = () => {
             {/* removed error message to prompt user to refresh if error occurs */}
           </>
         ) : (
-          <Stack spacing={2} pl={"5px"} pr={"5px"}>
+          <Stack spacing={2} pl={{xl:"5px", lg:'0px', xs:'5px'}} pr={{xl:"5px", lg:'0px', xs:'5px'}}>
             {isLoading ? (
               <Stack justifyContent={"center"} alignItems={"center"}>
                 <CircularProgress />

@@ -164,13 +164,13 @@ function InvoicesTable({
                     {item.InvoiceNumber}
                   </TableCell>
                   <TableCell sx={tableCellValueStyle}>
-                    {moment(item.InvoiceDate).format("MM/DD/YYYY h:mm a")}
+                    {moment(item.InvoiceDate).format("MM/DD/YYYY")}
                   </TableCell>
                   {/* <TableCell sx={tableCellValueStyle}>{item.LineItem.unit}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.LineItem.margin}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.LineItem.projectProfile}</TableCell> */}
                   <TableCell sx={tableCellValueStyle}>
-                    {moment(item.InvoiceDueDate).format("MM/DD/YYYY h:mm a")}
+                    {moment(item.InvoiceDueDate).format("MM/DD/YYYY")}
                   </TableCell>
                   <TableCell sx={tableCellValueStyle}>
                     {item.InvoiceStatus}
@@ -236,7 +236,7 @@ const tableCellStyle = {
   textOverflow: "ellipsis",
   overflow: "hidden",
   fontWeight: 500,
-  fontSize: { xl: "14px", lg: "11px", md: "11px", xs: "11px" },
+  fontSize: { xl: "16px", lg: "13px", md: "13px", xs: "13px" },
   fontFamily: "var(--main-font-family)",
   color: "#8C8C8C",
   textAlign: "left",
@@ -247,7 +247,7 @@ const tableCellValueStyle = {
   textOverflow: "ellipsis",
   overflow: "hidden",
   fontWeight: 400,
-  fontSize: { xl: "14px", lg: "11px", md: "11px", xs: "11px" },
+  fontSize: { xl: "16px", lg: "13px", md: "13px", xs: "13px" },
   borderBottom: "none",
   fontFamily: "var(--main-font-family)",
   color: "#000000",

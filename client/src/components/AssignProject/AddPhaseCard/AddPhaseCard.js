@@ -421,7 +421,7 @@ const AddPhaseCard = ({
                 borderTopLeftRadius: "7px",
                 borderTopRightRadius: "7px",
                 display: "flex",
-                flexDirection: { sm: "row", xs: "column" },
+                flexDirection: { sm: "row", xs: "row" },
               }}
             >
               {phaseData?.initial === false && (
@@ -470,7 +470,7 @@ const AddPhaseCard = ({
               >
                 {phaseData.phase_name}
               </Typography>
-
+                
               <Chip
                 sx={{
                   maxWidth: "10rem",
@@ -493,6 +493,24 @@ const AddPhaseCard = ({
                       : "error"
                 }
               />
+                     {phaseData?.declinedReason &&
+                        (phaseData?.status === "declined" ||
+                          phaseData?.status === "change declined") && (
+                          <>
+                            <Tooltip
+                              title={
+                                phaseData?.declinedReason
+                                  ? phaseData?.declinedReason
+                                  : ""
+                              }
+                              arrow
+                            >
+                              <IconButton sx={{height:'40px', marginTop: 1,}}>
+                                <InfoIcon sx={{ color: `red`, }} />
+                              </IconButton>
+                            </Tooltip>
+                          </>
+                        )}
             </Box>
 
             {/* <Box>
@@ -574,7 +592,7 @@ const AddPhaseCard = ({
                               arrow
                             >
                               <IconButton>
-                                <InfoIcon sx={{ color: "red" }} />
+                                <InfoIcon sx={{ color: `red`, }} />
                               </IconButton>
                             </Tooltip>
                           </>
@@ -704,7 +722,7 @@ const AddPhaseCard = ({
                           arrow
                         >
                           <IconButton>
-                            <InfoIcon />
+                            <InfoIcon sx={{color:`${phaseData?.color}8D`}} />
                           </IconButton>
                         </Tooltip>
                       </>

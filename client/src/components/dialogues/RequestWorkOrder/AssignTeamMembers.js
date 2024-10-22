@@ -42,7 +42,8 @@ const AssignTeamMembers = ({
   data,
   hideCheck,
   workOrderTeam,
-  setSuperAdminId
+  setSuperAdminId,
+  createdBy
 }) => {
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
@@ -118,6 +119,10 @@ const AssignTeamMembers = ({
                     if (hideCheck) {
                       if (workOrderTeam.includes(`${row.userId}`)) {
                         if(row.role === 'Superadmin'){
+                          // setSuperAdminId(row.userId)
+                          return <></>
+                        }
+                        if(createdBy == row.userId){
                           // setSuperAdminId(row.userId)
                           return <></>
                         }

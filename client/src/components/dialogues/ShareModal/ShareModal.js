@@ -138,10 +138,12 @@ const ShareModal = ({
         return updatedErrorState;
       });
 
-      if (automated) {
-        const percentage =
-          (parseFloat(value) * 100) / parseFloat(pendingPayment);
-        handlePercentage(index, percentage, outerIndex, pendingPayment, false);
+      if (automated && value !== "") {
+        const numericValue = parseFloat(value) || 0;  // Ensure numericValue is 0 if value is ""
+        const percentage = (numericValue * 100) / parseFloat(pendingPayment);
+        handlePercentage(index, percentage?.toFixed(2), outerIndex, pendingPayment, false);
+      } else if (value === "") {
+        handlePercentage(index, "0.00", outerIndex, pendingPayment, false);  // Set to 0.00 for consistency
       }
 
       return updatedPayments;
@@ -181,7 +183,7 @@ const ShareModal = ({
       updatedPercentage[outerIndex][index] = value;
       if (automated) {
         const payment = pendingPayment * (value / 100);
-        handleChange(index, payment, outerIndex, pendingPayment, false);
+        handleChange(index, payment?.toFixed(2), outerIndex, pendingPayment, false);
       }
       return updatedPercentage;
     });
@@ -573,7 +575,7 @@ const ShareModal = ({
                                 helperText={
                                   isValidIndex(errorState, outerIndex, index) &&
                                     errorState[outerIndex][index]
-                                    ? "Enter below remaining"
+                                    ? "Enter below remaining cost"
                                     : ""
                                 }
                                 value={
@@ -585,14 +587,16 @@ const ShareModal = ({
                                     ? currentPayment[outerIndex][index]
                                     : ""
                                 }
-                                onChange={(e) =>
-                                  handleChange(
-                                    index,
-                                    e.target.value,
-                                    outerIndex,
-                                    row.paymentPending,
-                                    true
-                                  )
+                                onChange={(e) =>{
+                                  if (/^\d*\.?\d{0,2}$/.test(e.target.value)){
+                                    handleChange(
+                                      index,
+                                      e.target.value,
+                                      outerIndex,
+                                      row.paymentPending,
+                                      true
+                                    )}
+                                  }
                                 }
                                 InputProps={{
                                   startAdornment: (
@@ -624,29 +628,20 @@ const ShareModal = ({
                                 margin="dense"
                                 id="total"
                                 name="total"
-                                type="number"
+                                type="text"
                                 variant="standard"
                                 value={
                                   isValidIndex(percentage, outerIndex, index)
-                                    ? Number(
-                                      percentage[outerIndex][index]
-                                    ).toFixed(2)
+                                    ? percentage[outerIndex][index]
                                     : ""
                                 }
                                 onChange={(e) => {
                                   let value = e.target.value;
-
-                                  if (!isNaN(value) && value !== "") {
-                                    value = parseFloat(value).toFixed(2);
+                                  console.log(value)
+                                  if (/^\d*\.?\d{0,2}$/.test(value)) {
+                                    // Pass the raw input value (string) to the handler
+                                    handlePercentage(index, value, outerIndex, row.paymentPending, true);
                                   }
-
-                                  handlePercentage(
-                                    index,
-                                    value,
-                                    outerIndex,
-                                    row.paymentPending,
-                                    true
-                                  );
                                 }}
                                 InputProps={{
                                   startAdornment: (

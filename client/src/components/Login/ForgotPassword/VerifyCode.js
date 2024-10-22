@@ -8,6 +8,7 @@ import {
   CardContent,
   Container,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -248,7 +249,11 @@ const VerifyCode = () => {
                     textAlign: "center",
                   }}
                 >
+                  <Tooltip title='Did you check your spam section?'>
+                  <spam>
                   Didn’t receive a code?{" "}
+                  </spam>
+                  </Tooltip>
                   <span
                     style={{ color: "#4C8AB1", cursor: "pointer" }}
                     onClick={resendHandler}

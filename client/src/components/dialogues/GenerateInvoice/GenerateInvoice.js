@@ -1,13 +1,14 @@
-import { Box, Container, Modal, Stack, Typography } from '@mui/material';
-import React, { useRef } from 'react'
+import { Box, CircularProgress, Container, Modal, Stack, Typography } from '@mui/material';
+import React, { useRef, useState } from 'react'
 import BuilderProButton from '../../UI/Button/BuilderProButton';
 import generatePDF,  { Resolution, Margin } from "react-to-pdf";
 import GenerateInvoiceTable from './GenerateInvoiceTable';
 import BuilderProNavbarLogo from "../../Navbar/assets/svgs/builder-pro-logo-navbar.svg";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import { toast } from 'react-toastify';
 const options = {
   // default is `save`
-  method: 'open',
+  method: 'save',
   // default is Resolution.MEDIUM = 3, which should be enough, higher values
   // increases the image quality but also the size of the PDF, so be careful
   // using values higher than 10 when having multiple pages generated, it
@@ -43,12 +44,33 @@ const options = {
 
 
 const GenerateInvoice = ({open, handleClose,invoiceData}) => {
+  const [loading, setLoading] = useState(false)
   const isInvoiceData = Boolean(invoiceData)
   const targetRef = useRef();
   const handleInvoicePrint = () => {
-    generatePDF(targetRef, {...options, filename:`Invoice-${invoiceData?.invoiceCompleteObj?.InvoiceNumber}.pdf`});
-    // console.log("Invoice Generated Successfully");
+    setLoading(true); // Start loading
+
+    try {
+      generatePDF(targetRef, {
+        ...options,
+        filename: `Invoice-${invoiceData?.invoiceCompleteObj?.InvoiceNumber || 'Unknown'}.pdf`,
+      }).then(() => {
+        setLoading(false); // Stop loading
+        toast.success('Invoice generated successfully!', { position: toast.POSITION.TOP_RIGHT });
+      }).catch((error) => {
+        setLoading(false); // Stop loading
+        toast.error('Error generating invoice PDF', { position: toast.POSITION.TOP_RIGHT });
+        console.error("Error generating invoice PDF:", error);
+      });
+    } catch (error) {
+      setLoading(false); // Stop loading in case of synchronous error
+      toast.error('Error generating invoice PDF', { position: toast.POSITION.TOP_RIGHT });
+      console.error("Error generating invoice PDF:", error);
+    }
   };
+
+
+  
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -99,9 +121,9 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
                     // console.log("Click Chala");
                     handleInvoicePrint();
                   }}
-                  disabled={!isInvoiceData}
+                  disabled={!isInvoiceData || loading}
                 >
-                  Download Invoice
+                  {loading ? <Stack direction={'row'} justifyContent={'center'} alignItems={'center'} gap={2}>Generating... <CircularProgress size={'16px'} sx={{color:'white'}}/></Stack>: 'Download Invoice'}
                 </BuilderProButton>
               </Stack>
             </Stack>

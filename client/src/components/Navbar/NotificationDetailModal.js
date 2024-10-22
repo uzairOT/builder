@@ -556,6 +556,7 @@ const NotificationDetailModal = ({
                     assignedCheckboxes={assignedCheckboxes}
                     setAssignedCheckboxes={setAssignedCheckboxes}
                     workOrderTeam={notification.WorkOrderReq?.team}
+                    createdBy={notification.WorkOrderReq.createdby}
                     data={data}
                   />
                 </Box>

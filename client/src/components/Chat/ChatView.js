@@ -36,6 +36,7 @@ import {
   setTotalCount,
   setTotalPages,
 } from "../../redux/slices/Project/userProjectsSlice";
+import { Chat } from "@mui/icons-material";
 let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
 const currentUser = userInfo?.user;
@@ -54,6 +55,7 @@ function ChatView({
   refetchConverstations,
   isLoadingChat,
   setIsLoadingChat,
+  projectImage
 }) {
   const userRoleProject = useSelector(getUserRoleFromRedux);
   const [openModal, setOpenModal] = useState(false);
@@ -454,7 +456,7 @@ function ChatView({
       };
     }
   }, [offset, hasMoreMessages, conversationId, value]);
-  // console.log(boxRef.current)
+  console.log(messages.length)
 
   return (
     <>
@@ -462,7 +464,7 @@ function ChatView({
         <Stack justifyContent={"space-between"} direction={"row"}>
           <Box sx={{ ...headerStyle }}>
             <Avatar
-              src={!(value === id) ? chatUser?.image : currentUser?.image}
+              src={!(value === id) ? chatUser?.image : projectImage}
               sx={{ marginRight: "1rem" }}
             ></Avatar>
             <Typography
@@ -600,17 +602,25 @@ function ChatView({
             </Box>
           ) : (
             <>
-              {!messages || !Array?.isArray(messages) ? (
-                <div
-                  style={{
-                    fontFamily: "var(--main-font-family)",
-                    marginLeft: "1rem",
-                    justifyContent: "center",
-                    display: "flex",
-                  }}
-                >
-                  No chat available...
-                </div>
+              {!messages || !Array?.isArray(messages)  || messages.length === 0 ? (
+               <Box
+               sx={{
+                 fontFamily: "var(--main-font-family)",
+                 marginLeft: "1rem",
+                 display: "flex",
+                 flexDirection: 'column',
+                 justifyContent: "center",
+                 alignItems: 'center',
+                 height: 'inherit',
+                 textAlign: 'center',
+                 padding: '2rem', // Add padding for spacing
+               }}
+             >
+               <Chat sx={{ fontSize: 50, color: 'gray', mb: 2 }} /> {/* Chat icon */}
+               <Typography variant="h6" sx={{ color: 'gray' }}>
+                 No chat available...
+               </Typography>
+             </Box>
               ) : (
                 messages?.map((msg, index) => {
                   const isSender = msg?.User?.id === currentUser?.id;

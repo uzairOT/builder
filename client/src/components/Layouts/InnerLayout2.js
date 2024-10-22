@@ -112,7 +112,7 @@ const InnerLayout2 = () => {
                       fontFamily={"var(--main-font-family)"}
                       fontSize={{
                         xl: "14px",
-                        lg: "10px",
+                        lg: "12.5px",
                         md: "14px",
                         sm: "12px",
                         xs: "10px",
@@ -143,7 +143,7 @@ const InnerLayout2 = () => {
                   <Tab
                     sx={{
                       fontFamily: "var(--main-font-family)",
-                      fontSize: { xl: "15px", lg: "12px", md: 15, xs: 15 },
+                      fontSize: { xl: "15px", lg: "13px", md: 15, xs: 15 },
                     }}
                   >
                     Approved
@@ -151,7 +151,7 @@ const InnerLayout2 = () => {
                   <Tab
                     sx={{
                       fontFamily: "var(--main-font-family)",
-                      fontSize: { xl: "15px", lg: "12px", md: 15, xs: 15 },
+                      fontSize: { xl: "15px", lg: "13px", md: 15, xs: 15 },
                     }}
                   >
                     Pending
@@ -159,7 +159,7 @@ const InnerLayout2 = () => {
                   <Tab
                     sx={{
                       fontFamily: "var(--main-font-family)",
-                      fontSize: { xl: "15px", lg: "12px", md: 15, xs: 15 },
+                      fontSize: { xl: "15px", lg: "13px", md: 15, xs: 15 },
                     }}
                   >
                     Declined
