@@ -118,14 +118,6 @@ const WorkOrderView = () => {
         <Stack justifyContent={"flex-start"} height={"95%"}>
           {selectedTab === 0 && (
             <>
-              <Box height="600px" bgcolor={"white"}>
-                <TaskCalender
-                  dailyForecast={dailyForecast}
-                  eventsArr={events}
-                  isProjectPage={true}
-                  isDrawerOpen={true}
-                />
-              </Box>
               <Stack p={1} borderRadius={"14px"} width={"99%"}>
                 <AddPhaseView
                   refetchChangeOrder={refetch}
@@ -136,6 +128,14 @@ const WorkOrderView = () => {
                   selectedProjectData={selectedProjectData}
                 />
               </Stack>
+              <Box height="600px" bgcolor={"white"}>
+                <TaskCalender
+                  dailyForecast={dailyForecast}
+                  eventsArr={events}
+                  isProjectPage={true}
+                  isDrawerOpen={true}
+                />
+              </Box>
             </>
           )}
         </Stack>

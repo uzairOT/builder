@@ -7,5 +7,5 @@ export const DateFormat = {
       return `${dayOfMonth}\n${dayOfWeek}`;
     },
     timeGutterFormat: (date, culture, localizer) =>
-          localizer.format(date, 'HH:mm ', culture)
+          localizer.format(date, 'hh:mm a', culture)
   };

@@ -8,6 +8,7 @@ import { useGetProjectNotesQuery } from '../../../redux/apis/Project/projectApiS
 import  Search  from '../../UI/CustomSearchInput';
 import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
 import { useEffect } from 'react';
+
 // import { usePermissionCheck } from '../../Settings/PermissionAccess/PermissionCheck';
 
 const Notes = () => {
@@ -16,7 +17,7 @@ const Notes = () => {
     const [searchInput, setSearchInput] = useState('');
     const debouncedValue = QueryDebouncer(searchInput, 500)
     const { data, refetch } = useGetProjectNotesQuery({ projectId: id, q:debouncedValue ? debouncedValue : '' });
-    // const canManageNotes = usePermissionCheck("manage-project-notes", role, SuperAdminId)
+  
   
       const handleSelectedButton = (index) =>{
         setSelectedButton(index);

@@ -19,7 +19,7 @@ import { toast } from "react-toastify";
 import { fileTypeIcons } from "../../dialogues/AddImage/assets/fileTypes";
 import { handleDownload } from "../../../utils/S3";
 
-const OpenNotes = ({ notes, refetchNotes, setSelectedButton, canManageNotes }) => {
+const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
   const isNoteSelected = Boolean(notes);
   const [showEditModal, setShowEditModal] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -51,7 +51,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton, canManageNotes }) =
           {/* <ShareIcon style={{ color: "#3F3F3F" }} /> */}
 
 
-          {canManageNotes && <ButtonGroup
+         <ButtonGroup
             disableElevation
             variant="contained"
             aria-label="Disabled button group"
@@ -78,7 +78,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton, canManageNotes }) =
             >
               <BorderColorIcon />
             </Button>
-          </ButtonGroup>}
+          </ButtonGroup>
           {showEditModal && (
             <NotesModal
               notes={notes}

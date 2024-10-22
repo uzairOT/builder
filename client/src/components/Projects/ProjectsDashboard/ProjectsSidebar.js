@@ -164,7 +164,7 @@ const ProjectsSidebar = ({ reports }) => {
             height: reports ? "calc(85vh - 278px)" : "calc(85vh - 225px)",
           }}
         >
-          <Stack spacing={1} pl={2} pr={2} pt={1}>
+          <Stack spacing={1} pl={{xl:2, lg:'0px', xs:2}} pr={{xl:2, lg:'0px', xs:2}} pt={1}>
             <>
               {projects[0]?.map((projectProfileCard) => {
                 const selected = Number(projectProfileCard.id) === Number(id);

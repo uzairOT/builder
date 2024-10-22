@@ -45,7 +45,11 @@ const ConversationList = ({
   chatUser,
   setIsLoading,
 }) => {
-  const [projectName] = useOutletContext();
+  const [projectName,
+    projectLocation,
+    SuperAdminId,
+    selectedProjectData,
+    projectOrganizationId ] = useOutletContext();
   const userId = currentUser?.id;
   const { data: team, isLoading: teamIsLoading } = useGetProjectTeamQuery(id);
   const [createConverstaion] = useCreateConverstaionMutation();
@@ -113,8 +117,8 @@ const ConversationList = ({
       socket.off(`conversation${userId}`, handleRefetch);
     };
   }, [userId]);
-  // console.log(conversationId);
-  useEffect(()=>{
+
+  useEffect(() => {
     const handleRefetch = async () => {
       try {
         await refetchConversations({ userId: userId });
@@ -124,7 +128,7 @@ const ConversationList = ({
       }
     };
     handleRefetch();
-  },[tabValue])
+  }, [tabValue])
 
   return (
     <Stack>
@@ -174,9 +178,9 @@ const ConversationList = ({
               value=""
             >
               <Typography
-              textTransform={"capitalize"}
-                fontFamily={ 'var(--main-font-family)'}
-                fontSize={{ xl: "11px", lg: "9px" }}
+                textTransform={"capitalize"}
+                fontFamily={'var(--main-font-family)'}
+                fontSize={{ xl: "13px", lg: "11px" }}
                 pt={0.5}
                 ml={0.6}
                 color={"white"}
@@ -264,7 +268,7 @@ const ConversationList = ({
               onClick={() => handleValueChange(id)}
             >
               <ListItemAvatar>
-                <Avatar alt={""} src={""} />
+                <Avatar alt={"Project Picture"} src={selectedProjectData?.image} />
               </ListItemAvatar>
               <ListItemText
                 fontFamily={"var(--main-font-family)"}

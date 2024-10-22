@@ -10,7 +10,7 @@ import {
 import React, { useState } from "react";
 import ChatView from "../../Chat/ChatView";
 import ConversationList from "./ConversationList";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { useGetConversationQuery } from "../../../redux/apis/Chat/chatApiSlice";
 import { useSelector } from "react-redux";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -19,7 +19,11 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 const Chat = () => {
   const theme = useTheme();
   const matchesMdDown = useMediaQuery(theme.breakpoints.down("lg"));
-
+  const [projectName,
+    projectLocation,
+    SuperAdminId,
+    selectedProjectData,
+    projectOrganizationId ] = useOutletContext();
   const user = useSelector((state) => state.auth.userInfo);
   const [conversationId, setConversationId] = useState();
   const [chatUser, setChatUser] = useState(null);
@@ -56,7 +60,7 @@ const Chat = () => {
   const handleChatUserChange = (user) => {
     setChatUser(user);
   };
-
+  const projectImage = selectedProjectData?.image
   return (
     <Paper
       sx={{
@@ -144,6 +148,7 @@ const Chat = () => {
 
         <Grid item xl={8.995} lg={8.995} xs={!matchesMdDown ? 8 : 12}>
           <ChatView
+            projectImage={projectImage}
             conversationId={conversationId}
             chatUser={chatUser}
             handleChatUserChange={handleChatUserChange}

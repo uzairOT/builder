@@ -584,9 +584,9 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
                   />
                   {/* Add "Accept" and "Reject" buttons if needed */}
                   <ListItemSecondaryAction>
-                    {/* <IconButton edge="end" aria-label="delete" onClick={()=> handleDeleteInvitation(pending.id)} disabled={deleteLoading}>
+                    <IconButton edge="end" aria-label="delete" onClick={()=> handleDeleteInvitation(pending.id)} disabled={deleteLoading}>
                      <DeleteOutlinedIcon color='error' />
-                    </IconButton> */}
+                    </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
               ))}
