@@ -158,10 +158,7 @@ const ProjectList = ({
   };
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-  useEffect(() => {
-    console.log("Filter open: ", open);
 
-  }, [open]);
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
   };

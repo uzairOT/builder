@@ -311,7 +311,7 @@ const SignupComp = () => {
         <Box sx={downloadForMobBox} pl={"4px"}>
           <img
             src={downloadForMob}
-            width={"100%"}
+            // width={"100%"}
             alt=""
             style={{ height: "120px" }}
           />
@@ -370,7 +370,7 @@ const SignupComp = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                   {errors.firstName && touched.firstName
                     ? errors.firstName
                     : ""}
@@ -401,7 +401,7 @@ const SignupComp = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                   {errors.lastName && touched.lastName ? errors.lastName : ""}
                 </Typography>
               </Box>
@@ -436,7 +436,7 @@ const SignupComp = () => {
                 onChange={handleEmailChange}
                 onBlur={handleBlur}
               />
-              <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+              <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                 {errors.email && touched.email ? errors.email : ""}
               </Typography>
             </Box>
@@ -489,7 +489,7 @@ const SignupComp = () => {
                     sx={{
                       color: "#d32f2f",
                       fontSize: "12px",
-                      marginLeft: "14px",
+                      marginLeft: "4px",
                       marginRight: "14px",
                       marginTop: "3px",
                       fontFamily: "var(--main-font-family)",
@@ -526,7 +526,7 @@ const SignupComp = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+              <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                 {errors.company && touched.company ? errors.company : ""}
               </Typography>
             </Box>
@@ -566,7 +566,7 @@ const SignupComp = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                   {errors.password && touched.password ? errors.password : ""}
                 </Typography>
                 <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
@@ -613,7 +613,7 @@ const SignupComp = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                   {errors.confirmPassword && touched.confirmPassword
                     ? errors.confirmPassword
                     : ""}

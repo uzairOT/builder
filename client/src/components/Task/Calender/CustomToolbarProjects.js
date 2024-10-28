@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setMonth } from "../../../redux/slices/Project/projectWeather";
 
-const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
+const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient, handleMonthRange,projectWeather }) => {
   const [activeButton, setActiveButton] = useState("day");
   const [activeHeader, setActiveHeader] = useState("Work Order");
+  const dispatch = useDispatch()
   const goToDayView = (view) => {
     toolbar.onView(view);
     setActiveButton(view);
@@ -20,8 +23,19 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
     setActiveButton(view);
   };
   const handleNavigate = (action) => {
+    // Get the current date from the toolbar label or a reference
     toolbar.onNavigate(action);
-  };
+ 
+  }
+  useEffect(()=>{
+    if(toolbar.view === "month"){
+      const currentDate = new Date(toolbar.date);
+      dispatch(setMonth(toolbar.label))
+      const startOfMonth = toolbar.localizer.startOf(currentDate, "month");
+      const endOfMonth = toolbar.localizer.endOf(currentDate, "month");
+      handleMonthRange(startOfMonth, endOfMonth)
+    }
+  },[toolbar.date, toolbar.view])
   //   const handleMonthEventTasks =() => {
   //     setMonthEventView(prevState => {
   //       //console.log('Tasks Clicked');
@@ -102,7 +116,6 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
     monthEventHeader: {},
   };
   //
-
   return (
     <>
       <div className="rbc-toolbar">
@@ -140,7 +153,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                     fontSize: "0.7rem",
                   }}
                   style={{
-                    textTransform:"capitalize",
+                    textTransform: "capitalize",
                     ...themeStyle.toolbarButton,
                     backgroundColor:
                       activeHeader === "Work Order" ? "white" : "",
@@ -149,8 +162,8 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                         ? "#4C8AB1"
                         : "black"
                       : activeHeader === "Work Order"
-                      ? "#4C8AB1"
-                      : "white",
+                        ? "#4C8AB1"
+                        : "white",
                   }}
                   onClick={() => {
                     handleActiveHeader("Work Order");
@@ -190,7 +203,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                     fontSize: "0.7rem"
                   }}
                   style={{
-                    textTransform:"capitalize",
+                    textTransform: "capitalize",
                     ...themeStyle.toolbarButton,
                     backgroundColor:
                       activeHeader === "Work Order" ? "white" : "",
@@ -207,7 +220,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                     fontSize: "0.7rem",
                   }}
                   style={{
-                    textTransform:"capitalize",
+                    textTransform: "capitalize",
                     ...themeStyle.toolbarButton,
                     backgroundColor: activeHeader === "Notes" ? "white" : "",
                     color: activeHeader === "Notes" ? "#4C8AB1" : "white",
@@ -224,7 +237,8 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
           <Box element="div" style={themeStyle.toolbarButtonGroup}>
             <Button
               sx={{
-                fontSize:"0.7rem"}}
+                fontSize: "0.7rem"
+              }}
               style={{
                 textTransform: "capitalize",
                 ...themeStyle.toolbarButton,
@@ -285,7 +299,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
             <IconButton
               style={themeStyle.toolbarIcon}
               aria-label="Left Arrow Icon"
-              onClick={() => toolbar.onNavigate("NEXT")}
+              onClick={() => handleNavigate("NEXT")}
             >
               <ArrowRightIcon style={{ color: "#797979" }} />
             </IconButton>

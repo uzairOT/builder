@@ -129,7 +129,6 @@ function App() {
 
   const fetchWeather =useCallback(async (lat,lon) => {
     // setLoading(true);
-    dispatch(setIsLoading(true));
     dispatch(setForecastLoading(true));
 
     try {
@@ -148,11 +147,18 @@ function App() {
     }
   },[query.temperatureUnit]);
 
+  // useEffect(() => {
+  //   if (dailyForecast.length > 1) {
+  //     dispatch(fetchEvents({ userId: userId, dailyForecast: dailyForecast }));
+  //   }
+  // }, [userId, dailyForecast]);
+
   useEffect(() => {
-    if (dailyForecast.length > 1) {
-      dispatch(fetchEvents({ userId: userId, dailyForecast: dailyForecast }));
+    if (userId) {
+      // dispatch(setIsLoading(true));
+      dispatch(fetchEvents({ userId: userId, dailyForecast: [] }));
     }
-  }, [userId, dailyForecast]);
+  }, [userId]);
 
   const router = createBrowserRouter(
     createRoutesFromElements(

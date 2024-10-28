@@ -40,7 +40,7 @@ const Layout2 = () => {
   const projectLocation = selectedProjectId?.location;
   const SuperAdminId = selectedProjectId?.userId;
   const projectOrganizationId = selectedProjectData?.User?.Organizations[0]?.organizationId;
-  console.log("Selected Project:", selectedProjectData);
+  // console.log("Selected Project:", selectedProjectData);
   // console.log('APP.JS: ',id)
 
   const [GetPermissionsList] = usePermissionsMutation();

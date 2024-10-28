@@ -36,6 +36,7 @@ function AssignProject() {
   const backButtonProjectId = useSelector(getBackButtonProjectId);
   // const notify = () => toast.success("Wow so easy!");
   const dispatch = useDispatch();
+  const [showLocationWarning, setShowLocationWarning] = useState(false)
   const [checkProjectDuplication, { isLoading }] =
     useCheckProjectDuplicationMutation();
   dispatch(authUserRole(""));
@@ -59,11 +60,12 @@ function AssignProject() {
       // console.log("Please enter project name");
       return;
     }
-    // else if (location === "") {
-    //   toast.warning("Please enter project location");
-    //   // console.log("Please enter project location");
-    //   return;
-    // }
+    else if (location === "") {
+      toast.warning("Please enter project location");
+      setShowLocationWarning(true)
+      // console.log("Please enter project location");
+      return;
+    }
     // else if (projectColor === "") {
     //   toast.warning("Please select project color");
     //   return;
@@ -135,7 +137,7 @@ function AssignProject() {
             />
             <StepBoxes />
 
-            <ProjectFormFields />
+            <ProjectFormFields showLocationWarning={showLocationWarning} />
             {!isMobile ? (
               <Box sx={buttonBox}>
                 <Button

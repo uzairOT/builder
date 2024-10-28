@@ -25,7 +25,7 @@ export const getTokenFromLocalStorage = () => {
   ];
   const notAllowedPaths = ["/login", "/signup"];
   const currentPath = window.location.pathname;
-
+  
   if (token) {
     // console.log("Test", currentPath);
     if (

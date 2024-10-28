@@ -13,10 +13,20 @@ import NotificationDetailModal from "../../Navbar/NotificationDetailModal";
 import { useGetWorkOrderDetailsMutation } from "../../../redux/apis/Project/projectApiSlice";
 import { useParams } from "react-router-dom";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
+import { useSelector } from "react-redux";
+import { getTempUnit } from "../../../redux/slices/DailyForecast/dailyForecastSlice";
+import { getWeatherIcon } from "../../../utils/weatherFunctions";
 
 const CustomEventDayTasks = ({ event, isProjectPage }) => {
   const { id } = useParams();
   const projectId = id;
+  const temperatureUnit = useSelector(getTempUnit)
+  const tempUnit = temperatureUnit === 'imperial' ? 'F' : 'C'
+  let temperature = event?.data?.weather?.temp ? event?.data?.weather?.temp : 'N/A'
+  if(temperatureUnit === 'imperial' && temperature !== 'N/A'){
+    temperature = ((temperature * 9/5) + 32).toFixed(2);
+  }
+  const formattedTemperature = temperature !== 'N/A' ? `${temperature}°${tempUnit}` :'N/A';
   const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation({
     workOrderId: event?.data?.workOrderId,
   });
@@ -63,14 +73,14 @@ const CustomEventDayTasks = ({ event, isProjectPage }) => {
                   <>
                     {" "}
                     <img
-                      src={PartlySunny}
+                      src={getWeatherIcon(event?.data?.weather?.description)}
                       alt={PartlySunny}
                       style={themeStyle.eventIcon}
                       fontSize={"10px"}
                     ></img>
                     
                     <Typography sx={themeStyle.eventText} fontSize={"10px"}>
-                      {event?.data?.weather?.temp}
+                      {formattedTemperature}
                     </Typography>
                     <Typography sx={themeStyle.eventText} fontSize={"10px"}>
                       {event?.data?.weather?.description}
@@ -155,13 +165,13 @@ const CustomEventDayTasks = ({ event, isProjectPage }) => {
               ) : (
                 <>
                   <img
-                    src={PartlySunny}
+                    src={getWeatherIcon(event?.data?.weather?.description)}
                     alt={PartlySunny}
                     style={themeStyle.eventIcon}
                     fontSize={"10px"}
                   ></img>
                   <Typography sx={themeStyle.eventText} fontSize={"10px"}>
-                    {event?.data?.weather?.temp}
+                    {formattedTemperature}
                   </Typography>
                   <Typography sx={themeStyle.eventText} fontSize={"10px"}>
                     {event?.data?.weather?.description}
@@ -218,6 +228,13 @@ const CustomEventDayTasks = ({ event, isProjectPage }) => {
 const CustomEventDayNotes = ({ event, isProjectPage }) => {
   const { id } = useParams();
   const projectId = id;
+  const temperatureUnit = useSelector(getTempUnit)
+  const tempUnit = temperatureUnit === 'imperial' ? 'F' : 'C'
+  let temperature = event?.data?.weather?.temp ? event?.data?.weather?.temp : 'N/A'
+  if(temperatureUnit === 'imperial'  && temperature !== 'N/A'){
+    temperature = ((temperature * 9/5) + 32).toFixed(2);
+  }
+  const formattedTemperature = temperature !== 'N/A' ? `${temperature}°${tempUnit}` :'N/A';
   const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation({
     workOrderId: event?.data?.workOrderId,
   });
@@ -263,13 +280,13 @@ const CustomEventDayNotes = ({ event, isProjectPage }) => {
                 ) : (
                   <>
                     <img
-                      src={PartlySunny}
+                      src={getWeatherIcon(event?.data?.weather?.description)}
                       alt={PartlySunny}
                       style={themeStyle.eventIcon}
                       fontSize={"10px"}
                     ></img>
                     <Typography sx={themeStyle.eventText} fontSize={"10px"}>
-                      {event?.data?.weather?.temp}
+                      {formattedTemperature}
                     </Typography>
                     <Typography sx={themeStyle.eventText} fontSize={"10px"}>
                       {event?.data?.weather?.description}
@@ -348,13 +365,13 @@ const CustomEventDayNotes = ({ event, isProjectPage }) => {
               ) : (
                 <>
                   <img
-                    src={PartlySunny}
+                    src={getWeatherIcon(event?.data?.weather?.description)}
                     alt={PartlySunny}
                     style={themeStyle.eventIcon}
                     fontSize={"10px"}
                   ></img>
                   <Typography sx={themeStyle.eventText} fontSize={"10px"}>
-                    {event?.data?.weather?.temp}
+                    {formattedTemperature}
                   </Typography>
                   <Typography sx={themeStyle.eventText} fontSize={"10px"}>
                     {event?.data?.weather?.description}
@@ -454,7 +471,7 @@ const CustomEventWeek = ({ event, isProjectPage }) => {
                 </Box>
                 <Box width={"fit-content"}>
                   <img
-                    src={PartlySunny}
+                    src={getWeatherIcon(event?.data?.weather?.description)}
                     alt={PartlySunny}
                     width={"fit-content"}
                     style={themeStyle.eventIcon}
@@ -516,7 +533,7 @@ const CustomEventWeek = ({ event, isProjectPage }) => {
               </Box>
               <Box width={"fit-content"}>
                 <img
-                  src={PartlySunny}
+                  src={getWeatherIcon(event?.data?.weather?.description)}
                   alt={PartlySunny}
                   width={"fit-content"}
                   style={themeStyle.eventIcon}
@@ -557,6 +574,13 @@ const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
   const projectId = id;
   const start = moment(event.start).format("HH:mm");
   const end = moment(event.end).format("HH:mm");
+  const temperatureUnit = useSelector(getTempUnit)
+  const tempUnit = temperatureUnit === 'imperial' ? 'F' : 'C'
+  let temperature = event?.data?.weather?.temp ? event?.data?.weather?.temp : 'N/A'
+  if(temperatureUnit === 'imperial'  && temperature !== 'N/A'){
+    temperature = ((temperature * 9/5) + 32).toFixed(2);
+  }
+  const formattedTemperature = temperature !== 'N/A' ? `${temperature}°${tempUnit}` :'N/A';
   const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation({
     workOrderId: event?.data?.workOrderId,
   });
@@ -636,7 +660,7 @@ const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
                 </Stack>
                 <Box>
                   <img
-                    src={PartlySunny}
+                    src={getWeatherIcon(event?.data?.weather?.description)}
                     alt={PartlySunny}
                     style={themeStyle.eventIcon}
                     fontSize={"8px"}
@@ -659,10 +683,10 @@ const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
                     overflow={"hidden"}
                     textOverflow={"ellipsis"}
                     fontSize={"10px"}
-                  >{`${event?.data?.weather?.description}`}</Typography>
+                  >{`${event?.data?.weather?.description ? event?.data?.weather?.description : ''}`}</Typography>
                   <Typography fontSize={"12px"}>
                     {" "}
-                    {`${event?.data?.weather?.temp}°`}
+                    {formattedTemperature}
                   </Typography>
                 </Box>
               </Stack>
@@ -746,7 +770,7 @@ const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
               </Stack>
               <Box>
                 <img
-                  src={PartlySunny}
+                  src={getWeatherIcon(event?.data?.weather?.description)}
                   alt={PartlySunny}
                   style={themeStyle.eventIcon}
                   fontSize={"8px"}
@@ -769,10 +793,10 @@ const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
                   overflow={"hidden"}
                   textOverflow={"ellipsis"}
                   fontSize={"10px"}
-                >{`${event?.data?.weather?.description}`}</Typography>
+                >{`${event?.data?.weather?.description ? event?.data?.weather?.description : ''}`}</Typography>
                 <Typography fontSize={"12px"}>
                   {" "}
-                  {`${event?.data?.weather?.temp}°`}
+                  {formattedTemperature}
                 </Typography>
               </Box>
             </Stack>

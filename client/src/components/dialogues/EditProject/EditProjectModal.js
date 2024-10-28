@@ -1,16 +1,11 @@
 import {
   Box,
-  Snackbar,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
-  FormHelperText,
   Grid,
   IconButton,
-  MenuItem,
-  Select,
   Stack,
   TextField,
   Typography,
@@ -22,14 +17,9 @@ import Button from "../../UI/CustomButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
-import {
-  useAddAssignRoleMutation,
-  useGetAssignedRolesQuery,
-} from "../../../redux/apis/Admin/assignRoleApiSlice";
 import { useFormik } from "formik";
 import {
   projectSchema,
-  settingsSchema,
 } from "../../../utils/Validation/settingsPageSchema";
 import axios from "axios";
 import { uploadToS3 } from "../../../utils/S3";
@@ -330,6 +320,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
               {/* Name input */}
               <Typography variant="body1">Location</Typography>
               <TextField
+              disabled
                 error={errors.location ? true : false}
                 placeholder="San Francisco"
                 name={"location"}

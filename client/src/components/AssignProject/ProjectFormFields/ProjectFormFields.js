@@ -1,11 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   useMediaQuery,
-  Button,
   Box,
-  Typography,
-  TextField,
-  MenuItem,
   Stack,
 } from "@mui/material";
 import "../StepFormField/StepFormField.css";
@@ -17,12 +13,17 @@ import {
   setProjectColor,
   setStartTime,
   setEndTime,
+  setLatLng
 } from "../../../redux/slices/projectFormSlice";
 import "../../../App.css";
 import ColorPicker from "../../dialogues/ColorPickerProject/ColorPicker";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import LocationPicker from "../../UI/LocationPicker/LocationPicker";
+import { styled } from '@mui/material/styles';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 
 const colors = [
   "#FFF",
@@ -40,7 +41,23 @@ const colors = [
   "#ADA1F5",
 ];
 
-function ProjectFormFields() {
+// const iconMap = {
+//   locality: <LocationOnIcon />,
+//   airport: <LocalAirportIcon />,
+//   point_of_interest: <PinDropIcon />,
+//   establishment: <StoreMallDirectoryIcon />,
+// };
+const LightTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.common.white,
+    color: 'rgba(0, 0, 0, 0.87)',
+    boxShadow: theme.shadows[1],
+    fontSize: 11,
+  },
+}));
+function ProjectFormFields({ showLocationWarning }) {
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTab = useMediaQuery("(max-width:900px)");
   const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
@@ -60,9 +77,12 @@ function ProjectFormFields() {
     dispatch(setProjectName(event.target.value));
   };
 
-  // Event handler to update the location state
-  const handleLocationChange = (event) => {
-    dispatch(setLocation(event.target.value));
+  const handleLocationChange = (value, points) => {
+    dispatch(setLatLng(points))
+    dispatch(setLocation(value));
+  };
+  const handleSelect = async (value) => {
+    dispatch(setLocation(value));
   };
   const handleProjectColorChange = (color) => {
     dispatch(setProjectColor(color));
@@ -74,10 +94,11 @@ function ProjectFormFields() {
     dispatch(setEndTime(newValue.format("YYYY/MM/DD")));
   };
 
+
   return (
     <div>
       <Box sx={formBox}>
-        <form style={{ ...formStyle, ...formWidth }}>
+        <form style={{ ...formStyle, ...formWidth }} autoComplete="off">
           <Box sx={{ marginTop: "0.5rem" }}>
             <label
               style={{ ...labelStyle, ...labelDisplay, ...labelResponsiveFont }}
@@ -101,47 +122,78 @@ function ProjectFormFields() {
               required
             />
           </Box>
-          <Box sx={{ marginTop: "0.2rem" }}>
-            <label
-              style={{ ...labelStyle, ...labelDisplay, ...labelResponsiveFont }}
-              htmlFor="location"
-            >
-              Project Location
-            </label>
-            <TextField
-             
-              inputProps={{ maxLength: 50, className:"placeholder" }}
-              sx={{
-                ...inputStyle,
-                ...borderRadiusResponsive,
-                // paddingLeft:'2rem',
-
-                "& input": {
-                  borderBottom: "none", // Remove bottom border of the input
-                 
-                },
-              }}
-              id="location"
-              type="text"
-              variant="standard"
+          <Box sx={{ marginTop: "0.2rem" }} spacing={1}>
+            <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
+              <label
+                style={{ ...labelStyle, ...labelDisplay, ...labelResponsiveFont }}
+                htmlFor="location"
+              >
+                Project Location
+              </label>
+              {showLocationWarning && <Stack>
+                <LightTooltip title='Valid location is required.' placement="top">
+                  <WarningRoundedIcon sx={{ color: '#EC3710' }} />
+                </LightTooltip>
+              </Stack>}
+            </Stack>
+            {/* <PlacesAutocomplete
               value={location}
-              InputProps={{
-                disableUnderline: true,
-                className: 'placeholder'
-              }}
               onChange={handleLocationChange}
-              placeholder="Enter your location..."
+              onSelect={handleSelect}
+              googleCallbackName="myCallbackFunc"
             >
-              {/* <MenuItem value={""}  disabled sx={{ ...menuItem, color: 'gray', }}>
-                                Select Location
-                                </MenuItem>
-                                <MenuItem sx={menuItem} value={"Islamabad"}>Islamabad</MenuItem>
-                            <MenuItem sx={menuItem} value={"Lahore"}>Lahore</MenuItem>
-                            <MenuItem sx={menuItem} value={"Karachi"}>Karachi</MenuItem> */}
-            </TextField>
+              {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                <div>
+                  <TextField
+                    {...getInputProps({
+                      placeholder: "Enter your location...",
+                      id: "location",
+                      inputProps: { maxLength: 50, className: "placeholder" },
+                    })}
+                    sx={{
+                      ...inputStyle,
+                      ...borderRadiusResponsive,
+                      "& input": {
+                        borderBottom: "none", // Remove bottom border of the input
+                      },
+                    }}
+                    variant="standard"
+                    InputProps={{
+                      disableUnderline: true,
+                      className: 'placeholder',
+                    }}
+                  />
+                  <Paper elevation={3} style={{ position: 'absolute', zIndex: 1 }}>
+                    {loading && (
+                      <Box display="flex" alignItems="center" justifyContent="space-between" style={{ minWidth: '300px', backgroundColor: '#ffffff', borderRadius: '4px', padding: '8px' }}>
+                        <span style={{ marginLeft: '8px' }}>Loading...</span>
+                        <CircularProgress size={18} />
+                      </Box>
+                    )}
+                    <List>
+                      {console.log(suggestions)}
+                      {suggestions.map((suggestion) => {
+                        const icon = suggestion.types.map(type => iconMap[type]).find(Boolean) || <LocationOnIcon />; // Default icon
+                        return (
+                          <ListItem
+                            {...getSuggestionItemProps(suggestion)}
+                            key={suggestion.placeId}
+                            button
+                          >
+                            {icon}
+                            {suggestion.description}
+                          </ListItem>
+                        )
+                      })}
+                    </List>
+                  </Paper>
+                </div>
+              )}
+            </PlacesAutocomplete> */}
+            <LocationPicker isMobile={isMobile} handleLocationChange={handleLocationChange} />
           </Box>
-          <Stack direction={"row"} justifyContent={"space-between"}>
-            <Box sx={{ marginTop: "0.5rem", width: "45%", marginBottom:'1rem' }}>
+          <Stack direction={"row"} justifyContent={"space-between"} width={'100%'}>
+            <Box sx={{ marginTop: "0.5rem", width: "45%", marginBottom: '1rem' }}>
               <label
                 style={{
                   ...labelStyle,
@@ -154,7 +206,7 @@ function ProjectFormFields() {
               </label>
               <Box
                 sx={{
-                  width: "100%", // Set width to 100% for responsiveness
+                  width: 'calc(100% + 16px)', // Set width to 100% for responsiveness
                   alignSelf: "center",
                   fontSize: "14px",
                   // border: "1px solid #ccc",
@@ -165,12 +217,13 @@ function ProjectFormFields() {
               >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <MobileDatePicker
-                    sx={{ width: "100%", 
-                      ".MuiOutlinedInput-notchedOutline ":{
+                    sx={{
+                      width: "100%",
+                      ".MuiOutlinedInput-notchedOutline ": {
                         border: "1px solid #ccc !important",
                         borderRadius: "12px",
                       }
-                     }}
+                    }}
                     value={dayjs(start_time)}
                     onChange={handleStartDateChange}
                     format="MM/DD/YYYY"
@@ -192,7 +245,7 @@ function ProjectFormFields() {
               </label>
               <Box
                 sx={{
-                  width: "100%", // Set width to 100% for responsiveness
+                  width: 'calc(100% + 16px)', // Set width to 100% for responsiveness
                   alignSelf: "center",
                   fontSize: "14px",
                   // border: "1px solid #ccc",
@@ -203,17 +256,18 @@ function ProjectFormFields() {
               >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <MobileDatePicker
-                    sx={{ width: "100%", 
-                      ".MuiOutlinedInput-notchedOutline ":{
+                    sx={{
+                      width: "100%",
+                      ".MuiOutlinedInput-notchedOutline ": {
                         border: "1px solid #ccc !important",
                         borderRadius: "12px",
                         paddingRight: "0px"
                       }
-                     }}
+                    }}
                     value={dayjs(end_time)}
                     onChange={handleEndDateChange}
                     format="MM/DD/YYYY"
-                    minDate={start_time ? dayjs(start_time).add(1,'day') : dayjs(Date.now()).add(1, 'day')}
+                    minDate={start_time ? dayjs(start_time).add(1, 'day') : dayjs(Date.now()).add(1, 'day')}
                   />
                 </LocalizationProvider>
               </Box>
@@ -265,25 +319,25 @@ function ProjectFormFields() {
                   );
                 })} */}
                 <Box
-                        width={"40px"}
-                        height={"40px"}
-                        bgcolor={projectColor}
-                        sx={{cursor:'pointer'}}
-                        // boxShadow={
-                        //   (projectColor ? projectColor === color : '#FFF' === color)
-                        //     ? "rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;"
-                        //     : ""
-                        // }
-                        borderRadius={"99999px"}
-                        border={'1px dashed gray'}
-                        // onClick={() => {
-                        //   handleProjectColorChange(color);
-                        // }}
-                        // border={
-                        //   (projectColor ? projectColor === color : '#FFF' === color)
-                        //   ? "3px solid #ADADAD" : "1px solid #ADADAD"
-                        // }
-                      ></Box>
+                  width={"40px"}
+                  height={"40px"}
+                  bgcolor={projectColor}
+                  sx={{ cursor: 'pointer' }}
+                  // boxShadow={
+                  //   (projectColor ? projectColor === color : '#FFF' === color)
+                  //     ? "rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;"
+                  //     : ""
+                  // }
+                  borderRadius={"99999px"}
+                  border={'1px dashed gray'}
+                // onClick={() => {
+                //   handleProjectColorChange(color);
+                // }}
+                // border={
+                //   (projectColor ? projectColor === color : '#FFF' === color)
+                //   ? "3px solid #ADADAD" : "1px solid #ADADAD"
+                // }
+                ></Box>
                 {/* Req change to display an array of 12 colors */}
                 <ColorPicker />
               </Stack>
@@ -314,6 +368,9 @@ const inputStyle = {
   borderRadius: "12px",
   color: "#202227",
   fontFamily: "var(--main-font-family)",
+  "::placeholder":{
+    fontFamily:'inherit'
+  }
   // paddingLeft: "-.5rem",
 };
 const formBox = {

@@ -195,7 +195,7 @@ const validate = () => {
           </Typography>
           <Typography sx={thirdHeading}>Log in to your account</Typography>
           <Box sx={downloadForMobBox}>
-            <img src={downloadForMob} width={DoMobWidth} alt="" />
+            <img src={downloadForMob}  alt="" />
           </Box>
           <Box sx={googleAppImgsBox}>
             <img src={googlePlay} width={widthValue} alt="" />
@@ -301,7 +301,7 @@ const validate = () => {
                     sx={{
                       color: "#d32f2f",
                       fontSize: "12px",
-                      marginLeft: "14px",
+                      marginLeft: "4px",
                       marginRight: "14px",
                       marginTop: "3px",
                       fontFamily: "var(--main-font-family)",

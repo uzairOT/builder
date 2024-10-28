@@ -230,7 +230,7 @@ const Login = () => {
         <Box sx={downloadForMobBox}>
           <img
             src={downloadForMob}
-            width={"100%"}
+            // width={"100%"}
             alt=""
             style={{ height: "120px", paddingLeft: "4px" }}
           />
@@ -291,7 +291,7 @@ const Login = () => {
                 }}
                 placeholder="JohnDoe@gmail.com"
               />
-              <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+              <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                 {errors.email && touched.email ? errors.email : ""}
               </Typography>
             </Box>
@@ -335,7 +335,7 @@ const Login = () => {
                     </span>
                   )}
                 </Box>
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                   {errors.password && touched.password ? errors.password : ""}
                 </Typography>
               </Box>

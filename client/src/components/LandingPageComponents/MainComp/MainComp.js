@@ -7,6 +7,7 @@ import {
   useTheme,
   useMediaQuery,
   capitalize,
+  Stack,
 } from "@mui/material";
 import { DownloadAppStore, DownloadGooglePlay } from "../assets/svg";
 import devicesimg from "../assets/PNG/devices.png";
@@ -33,42 +34,36 @@ const texts = [
   { text: "GOOD!", color: "#FFAD03" },
 ];
 const fadeUpVariants = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0.5, y: 6 },
   visible: { opacity: 1, y: 2 },
 };
 
 const fadeInUp = {
-  hidden: { opacity: 0, y: 50 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
-    },
-  },
+  hidden: { opacity: 0, y: 50 }, // Start 50px below and hidden
+  visible: { opacity: 1, y: 0 }, // Animate to original position
+  exit: { opacity: 0, y: -50 },  // Exit 50px above and hidden
 };
-
 const MainContent = () => {
   const theme = useTheme();
   const downView = useMediaQuery(theme.breakpoints.down("lg"));
+  const mdView = useMediaQuery(theme.breakpoints.down("md"));
   const mobView = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isEnd, setIsEnd] = useState(false);
 
   useEffect(() => {
-    const duration = 2500;
-    const timer = setTimeout(() => {
+    const duration = 3000;
+    const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => {
         const nextIndex = (prevIndex + 1) % texts.length;
-        setIsEnd(nextIndex === 0);
+        console.log(nextIndex)
         return nextIndex;
       });
     }, duration);
 
     return () => clearTimeout(timer);
-  }, [currentIndex, isEnd, texts.length]);
+  }, [setCurrentIndex]);
 
   return (
     <Grid container md={12} sx={styles.container}>
@@ -78,26 +73,36 @@ const MainContent = () => {
             <Typography sx={styles.heading1}>
               Your Trusted Construction Management
             </Typography>
-            <Typography component="div" sx={styles.heading2}>
-              Using BuilderBUILDER PRO will make you
-              <br /> more{" "}
-              <AnimatePresence>
-                <motion.div
-                  key={texts[currentIndex].text}
-                  initial="hidden"
-                  animate="visible"
-                  variants={fadeUpVariants}
-                  transition={{ duration: mobView ? 2 : 0.8 }}
-                  style={{
-                    display: mobView ? "inline-block" : "inline",
-                    color: texts[currentIndex].color,
-                    fontSize: mobView ? "20px" : "48px",
-                  }}
-                >
-                  {texts[currentIndex].text}
-                </motion.div>
-              </AnimatePresence>
-            </Typography>
+            <Stack sx={{ margin: { xs: "20px 0", md: "20px 0" }, }}>
+
+              <Typography component="div" sx={styles.heading2}>
+                Using BuilderBUILDER PRO will make you {mdView && 'more '}
+              </Typography>
+              <Stack direction={'row'} alignItems={'center'} justifyContent={mdView ? 'center': ''} gap={1.5}>
+                {!mdView && <Typography component="div" sx={styles.heading2}>
+                  more{" "}
+                </Typography>}
+                <Box height={mobView ? '25px' : '45px'} sx={styles.heading2}  style={{ paddingTop: '4px', overflow: 'hidden', display: 'inline-block' }}>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={texts[currentIndex].text}
+                      initial="hidden"
+                      animate="visible"
+                      variants={fadeInUp}
+                      transition={{ duration: mobView ? 2 : 1.5 }}
+                      style={{
+                        display: mobView ? "inline-block" : "inline-block",
+                        color: texts[currentIndex].color,
+                        fontSize: mobView ? "20px" : "48px",
+                        textAlign: 'end'
+                      }}
+                    >
+                      {texts[currentIndex].text}
+                    </motion.div>
+                  </AnimatePresence>
+                </Box>
+              </Stack>
+            </Stack>
 
             <Typography component="div" sx={styles.bodyText}>
               BuilderBUILDER PRO is your all-in-one solution to efficiently
@@ -117,46 +122,46 @@ const MainContent = () => {
               DOWNLOAD NOW!
             </Typography>
             <Box sx={{ gap: { sm: 0, xs: 2 } }}>
-            <motion.div
-              initial="hidden"
-              whileHover="hover"
-              variants={popEffect}
-            >
-              <Box>
-                <a
-                  href="https://apps.apple.com/us/app/builderbuilder-pro/id6714458398"
-                  target="blank"
-                  style={{ height: 60, width: 150 }}
-                >
-                  <img
-                    alt="App Store"
-                    src={appStore}
+              <motion.div
+                initial="hidden"
+                whileHover="hover"
+                variants={popEffect}
+              >
+                <Box>
+                  <a
+                    href="https://apps.apple.com/us/app/builderbuilder-pro/id6714458398"
+                    target="blank"
                     style={{ height: 60, width: 150 }}
-                  />
-                  {/* <DownloadAppStore /> */}
-                </a>
-              </Box>
+                  >
+                    <img
+                      alt="App Store"
+                      src={appStore}
+                      style={{ height: 60, width: 150 }}
+                    />
+                    {/* <DownloadAppStore /> */}
+                  </a>
+                </Box>
               </motion.div>
               <motion.div
-              initial="hidden"
-              whileHover="hover"
-              variants={popEffect}
-            >
-              <Box>
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.npisoftware.builder_builder_pro"
-                  target="blank"
-                  style={{ height: 60, width: 150 }}
-                >
-                  <img
-                    alt="Play Store"
-                    src={googlePlay}
+                initial="hidden"
+                whileHover="hover"
+                variants={popEffect}
+              >
+                <Box>
+                  <a
+                    href="https://play.google.com/store/apps/details?id=com.npisoftware.builder_builder_pro"
+                    target="blank"
                     style={{ height: 60, width: 150 }}
-                  />
+                  >
+                    <img
+                      alt="Play Store"
+                      src={googlePlay}
+                      style={{ height: 60, width: 150 }}
+                    />
 
-                  {/* <DownloadGooglePlay /> */}
-                </a>
-              </Box>
+                    {/* <DownloadGooglePlay /> */}
+                  </a>
+                </Box>
               </motion.div>
             </Box>
           </Grid>
@@ -205,7 +210,6 @@ const styles = {
     fontFamily: "var(--main-font-family)",
     fontWeight: 700,
     fontSize: { lg: "40px", md: "36px", sm: "40px", xs: "20px" },
-    margin: { xs: "20px 0", md: "20px 0" },
     lineHeight: 1.2,
   },
   motionDiv: {
@@ -237,7 +241,7 @@ const styles = {
     fontWeight: 400,
     fontSize: { lg: "16px", xs: "14px" },
     textAlign: 'justify',
-    paddingX: {md:0, xs:4}
+    paddingX: { md: 0, xs: 4 }
   },
   demoButton: {
     color: "white",

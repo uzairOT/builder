@@ -69,7 +69,7 @@ const VerifyCode = () => {
       }).unwrap();
       toast.success("OTP matched successfully");
       if (data === "signup") {
-        console.log("wwwwwwwwwwwwwhhhhhhhhhhattttttttt::::", res.data);
+        // console.log("wwwwwwwwwwwwwhhhhhhhhhhattttttttt::::", res.data);
         dispatch(setCredentials({ ...res.data }));
        if(res.data.user.hasValidSubscription){
          setTimeout(() => {

@@ -42,5 +42,6 @@ const eventsSlice = createSlice({
 export const {setForecastLoading, setForecastError, setDailyForecast, setTemperatureUnit,setLatLon } = eventsSlice.actions;
 
 export const getForecast = state => state.dailyForecast;
+export const getTempUnit = state => state.dailyForecast.query.temperatureUnit;
 
 export default eventsSlice.reducer;

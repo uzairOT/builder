@@ -172,7 +172,9 @@ const CustomToolbar = ({
                 backgroundColor: activeButton === "month" ? "#4C8AB1" : "",
                 color: activeButton === "month" ? "#FFF" : "",
               }}
-              onClick={() => goToMonthView("month")}
+              onClick={() =>{ 
+                goToMonthView("month")
+                handleActiveHeader("Work Order");}}
             >
               Month
             </Button>
@@ -226,7 +228,7 @@ const CustomToolbar = ({
               >
                 Work Order
               </Button>
-              <Button
+              {/* <Button
                 sx={{
                   fontSize: "0.7rem",
                 }}
@@ -242,7 +244,7 @@ const CustomToolbar = ({
                 }}
               >
                 Weather/ Notes
-              </Button>
+              </Button> */}
             </Stack>
           )}
           {toolbar.view === "day" && (

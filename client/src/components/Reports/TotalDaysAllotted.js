@@ -64,11 +64,11 @@ const TotalDaysAllotted = ({ data }) => {
           borderRadius={"14px"}
         ></Box>
       </Stack>
-      <Stack direction={"column"} spacing={1} width={"70%"} pb={2} pl={3}>
+      <Stack direction={"column"} spacing={1} width={"80%"} pb={2} pl={2}>
         <Stack direction={"row"} justifyContent={"space-between"}>
           <Stack direction={"row"} spacing={1} alignItems={"center"}>
             <CircleIcon sx={{ color: "#2D9CDB",  fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
-            <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
+            <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"12px",md:"12px",xs:"12px"}}>
               Work Days spent
             </Typography>
           </Stack>
@@ -79,7 +79,7 @@ const TotalDaysAllotted = ({ data }) => {
         <Stack direction={"row"} justifyContent={"space-between"}>
           <Stack direction={"row"} spacing={1} alignItems={"center"}>
             <CircleIcon sx={{ color: "#90BE6D", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
-            <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
+            <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"12px",md:"12px",xs:"12px"}}>
               Work Days Remaining
             </Typography>
           </Stack>
@@ -90,7 +90,7 @@ const TotalDaysAllotted = ({ data }) => {
         <Stack direction={"row"} justifyContent={"space-between"}>
           <Stack direction={"row"} spacing={1} alignItems={"center"}>
             <CircleIcon sx={{ color: "#F94144", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
-            <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
+            <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"12px",md:"12px",xs:"12px"}}>
               Work Days Overdue
             </Typography>
           </Stack>

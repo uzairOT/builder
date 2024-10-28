@@ -6,6 +6,7 @@ import addPhaseReducer from './slices/addPhaseSlice';
 import { apiSlice } from './apis/apiSlice'; // Import the apiSlice or whatever file defines your API endpoints
 import userProjectsReducer from './slices/Project/userProjectsSlice';
 import projectInitialProposalReducer from './slices/Project/projectInitialProposal';
+import projectWeatherReducer from './slices/Project/projectWeather';
 import eventsReducer from './slices/Events/eventsSlice';
 import dailyForecastSlice from './slices/DailyForecast/dailyForecastSlice';
 import notificationSlice from './slices/Notifications/notificationSlice';
@@ -31,6 +32,7 @@ export const store = configureStore({
     permissions: permissionsReducer,
     ProjectPermssionList:ProjectPermissionsReducer,
     handleProjectFlows:handleProjectFlowsReducer,
+    projectWeather: projectWeatherReducer,
     [apiSlice.reducerPath]: apiSlice.reducer, // Include the API slice reducer
   },
   middleware: (getDefaultMiddleware) =>

@@ -2,10 +2,8 @@ import {
   Drawer,
   IconButton,
   List,
-  ListItem,
   ListItemButton,
   ListItemText,
-  Tooltip,
 } from "@mui/material";
 import React, { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -37,17 +35,19 @@ const ProjectNavbarDrawer = ({ navLinks, userRole }) => {
                   navlink.title === "Project Report"))
             ) {
               return (
-                <Tooltip
-                  title="You can't access this while the initial phases are not approved"
-                  key={navlink.title}
-                >
-                  <ListItem>
-                    <ListItemText
-                      primary={navlink.title}
-                      style={{ color: "#A0A0A0", cursor: "not-allowed" }}
-                    />
-                  </ListItem>
-                </Tooltip>
+                <>
+                {/* // <Tooltip
+                //   title="You can't access this while the initial phases are not approved"
+                //   key={navlink.title}
+                // >
+                //   <ListItem>
+                //     <ListItemText
+                //       primary={navlink.title}
+                //       style={{ color: "#A0A0A0", cursor: "not-allowed" }}
+                //     />
+                //   </ListItem>
+                // </Tooltip> */}
+                </>
               );
             } else {
               return (

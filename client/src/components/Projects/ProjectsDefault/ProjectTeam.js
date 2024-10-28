@@ -16,6 +16,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Avatar,
+  Tooltip,
 } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import React, { useEffect, useState } from "react";
@@ -155,7 +156,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
   // const canInvite = usePermissionCheck("invite-users", role, SuperAdminId)
   // console.log("cantInvite: ", canInvite, role, SuperAdminId)
   return (
-    <Stack pl={{ xl: 5, lg: 5, md: 1 }}>
+    <Stack pl={{ xl: 3, lg: 3, md: 1 }}>
       <Stack direction={"row"} sx={{ justifyContent: "space-between" }} pr={1}>
         <Typography sx={themeStyle.title}>Project Team</Typography>
 
@@ -222,26 +223,20 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
                   >
                     <Stack
                       direction={"row"}
-                      width={{
-                        xl: "100%",
-                        lg: "100%",
-                        md: "100%",
-                        sm: "100%",
-                        xs: "380px",
-                      }}
+                      width={'100%'}
                       justifyContent={"space-between"}
                     >
                       <Stack
                         direction={"row"}
                         pl={{ md: 0, xs: 2 }}
-                        flex={{ xl: 5, lg: 5, md: 5, sm: 5, xs: 5 }}
+                        flex={1}
                         gap={1}
                         justifyContent={"space-between"}
                       >
                         <Typography sx={themeStyle.subTitle}>
                           {roleFormat(role)}
                         </Typography>
-                        <Stack
+                        {/* <Stack
                           direction={"row"}
                           width={{
                             xl: "270px",
@@ -257,8 +252,8 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
                             let fullName = `${firstName} ${lastName}`;
 
                             // Truncate the name if it exceeds the max length
-                            if (fullName.length > 20) {
-                              fullName = fullName.substring(0, 20 - 3) + "...";
+                            if (fullName.length > 11) {
+                              fullName = fullName.substring(0, 11 - 3) + "...";
                             }
 
                             if (index > 1) {
@@ -289,27 +284,27 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
                               );
                             }
                           })}
-                        </Stack>
+                        </Stack> */}
                       </Stack>
-                      <Stack direction={"row"} flex={1}>
+                      <Stack direction={"row"} flex={1} justifyContent={'flex-end'} mr={'10px'}>
                         {groupedData[role].map((person, index) => {
-                          if (index > 3) {
+                          if (index > 6) {
                             return <></>;
                           }
                           return (
-                            <>
+                            <Tooltip title={`${person.firstName} ${person.lastName}`} placement="top">
                               <Avatar
                                 key={index}
                                 src={person.image}
                                 alt="profile"
                                 style={{
                                   borderRadius: "50px",
-                                  marginLeft: "-10px",
+                                  marginLeft: "-5px",
                                   width: "30px",
                                   height: "30px",
                                 }}
                               ></Avatar>
-                            </>
+                            </Tooltip>
                           );
                         })}
                       </Stack>
@@ -613,9 +608,10 @@ const themeStyle = {
     pl: { md: 0, xs: 2.5 },
   },
   subTitle: {
-    fontSize: { xl: "13px", lg: "11px", xs: "11px" },
+    fontSize: { xl: "14px", lg: "14px", xs: "13px" },
     color: "#202227",
     fontFamily: "var(--main-font-family)",
     textAlign: "left",
+    // width:'60px'
   },
 };

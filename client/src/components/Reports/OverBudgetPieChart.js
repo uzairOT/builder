@@ -125,7 +125,7 @@ const OverBudgetPieChart = () => {
               <Typography
                 key={index}
                 fontFamily={"var(--main-font-family)"}
-                fontSize={{ xl: "13px", lg: "11px", md: "13px", xs: "13px" }}
+                fontSize={{ xl: "13px", lg: "12px", md: "13px", xs: "13px" }}
               >
                 {moment(project.end_time).format("YYYY-MM-DD")}
               </Typography>

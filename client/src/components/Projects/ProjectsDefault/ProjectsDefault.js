@@ -4,6 +4,7 @@ import TaskCalender from '../../Task/Calender/TaskCalender';
 import { useSelector } from 'react-redux';
 import { allEvents } from '../../../redux/slices/Events/eventsSlice';
 import { getForecast } from '../../../redux/slices/DailyForecast/dailyForecastSlice';
+import { useOutletContext } from 'react-router-dom';
 
 const themeStyle = {
   border: {
@@ -33,6 +34,7 @@ const themeStyle = {
 };
 
 const ProjectsDefault = () => {
+  const [SuperAdminId, projectOrganizationId, selectedProjectData] = useOutletContext()
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
   const local = localStorage.getItem('userInfo');
@@ -44,10 +46,10 @@ const ProjectsDefault = () => {
   const dailyForecast = forecast.dailyForecast;
   const forecastIsLoading = forecast.isLoading;
   const forecastError = forecast.error;
-
-  useEffect(() => {
-    //console.log(events);
-  }, [events]);
+const coordinates = {
+  lat: selectedProjectData?.lat,
+  lng: selectedProjectData?.lng
+}
 
   return (
     <>
@@ -60,7 +62,7 @@ const ProjectsDefault = () => {
       ) : (
         <Stack flex={2} height={'100%'}>
           <Paper style={{ ...themeStyle.border, height:'inherit', overflow:'hidden', ...themeStyle.scrollable}}>
-            <TaskCalender dailyForecast={dailyForecast} eventsArr={events} isProjectPage={true} isDrawerOpen={true} />
+            <TaskCalender coordinates={coordinates} dailyForecast={dailyForecast} eventsArr={events} isProjectPage={true} isDrawerOpen={true} />
           </Paper>
         </Stack>
       )}

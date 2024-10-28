@@ -15,6 +15,7 @@ import {
   Checkbox,
   Stack,
 } from "@mui/material";
+import { CloseRounded } from "@mui/icons-material";
 
 const style = {
   position: "absolute",
@@ -53,7 +54,7 @@ const AssignTeamMembers = ({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  //console.log(workOrderTeam);
+  // console.log(createdBy);
   //console.log(data);
 
   const team = data?.team;
@@ -92,9 +93,14 @@ const AssignTeamMembers = ({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {hideCheck ? "Assigned Users" : "Assign Users"}
           </Typography>
+          <IconButton onClick={handleClose}>
+            <CloseRounded />
+          </IconButton>
+          </Stack>
           <Divider />
           <Box sx={{overflow:'auto'}}>
             <Table >
@@ -153,6 +159,10 @@ const AssignTeamMembers = ({
                     } else {
                       if(row.role === 'Superadmin'){
                         setSuperAdminId(row.userId)
+                        return <></>
+                      }
+                      if(createdBy == row.userId){
+                        // setSuperAdminId(row.userId)
                         return <></>
                       }
                       return (

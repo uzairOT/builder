@@ -132,20 +132,21 @@ const AboutSection = () => {
       </Container>
       <Grid
         container
-        justifyContent="center"
+        justifyContent="space-between"
         mt={20}
-        spacing={5}
+        gap={0}
         sx={{
            alignItems:"center",
-          padding: { lg: 5, xs: 2 },
+          // padding: { lg: , xs: 2 },
           width: "100%",
+          maxWidth:'1200px'
           // backgroundColor: "#F7FAFC",
         }}
       >
         {features.map((feature, index) => (
           <>
-            <Grid item xs={12} lg={4} key={index}>
-              <Box sx={{ display: "flex", justifyContent:"center", alignItems:"center" }}>
+            <Grid item xs={12} lg={4} key={index} width={'100%'}>
+              <Box sx={{ display: "flex", justifyContent:"center", alignItems:"center", padding:3 }}>
                 <motion.div
                   initial="hidden"
                   whileHover="hover"
@@ -174,6 +175,10 @@ export default AboutSection;
 
 const styles = {
   container: {
+    display:'flex',
+    flexDirection:'column',
+    justifyContent:'center',
+    alignItems:'center',
     padding: { lg: 8, md: 10, xs: 4 },
     backgroundColor: "#ffffff",
     mt: { xl: 20, lg: 40, md: 2, xs: 2 },

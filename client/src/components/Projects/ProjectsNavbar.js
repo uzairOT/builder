@@ -1,13 +1,10 @@
 import {
-  Box,
-  Button,
   Divider,
   IconButton,
   Stack,
   Tooltip,
   Typography,
   useMediaQuery,
-  useRadioGroup,
   useTheme,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -183,7 +180,7 @@ const ProjectsNavbar = ({ project }) => {
       <Stack
         direction={"row"}
         alignItems={"center"}
-        spacing={1}
+        spacing={0.5}
         pr={2}
         pl={1}
         display={{ xl: "flex", lg: "none", md: "none", sm: "none", xs: "none" }}
@@ -204,7 +201,7 @@ const ProjectsNavbar = ({ project }) => {
                     fontSize={{ xl: "15px", lg: "11px" }}
                     fontWeight={"400"}
                     fontFamily={"var(--main-font-family)"}
-                    pr={1}
+                    pr={0.5}
                     style={{ cursor: "not-allowed" }}
                   >
                     {navlink.title}
@@ -221,7 +218,7 @@ const ProjectsNavbar = ({ project }) => {
                     fontSize={{ xl: "15px", lg: "11px" }}
                     fontWeight={"400"}
                     fontFamily={"var(--main-font-family)"}
-                    pr={1}
+                    pr={0.5}
                   >
                     {navlink.title}
                   </Typography>
@@ -230,7 +227,7 @@ const ProjectsNavbar = ({ project }) => {
               {index !== navLinks.length - 1 && (
                 <Divider
                   orientation="vertical"
-                  style={{ borderWidth: "1px" }}
+                  style={{ borderWidth: "1px", marginRight:'4px' }}
                   flexItem
                 />
               )}

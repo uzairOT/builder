@@ -235,6 +235,13 @@ const projectApiSlice = apiSlice.injectEndpoints({
         method: 'DELETE',
         body: data
       })
+    }),
+    getProjectWeather: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/weather`,
+        method: 'POST',
+        body: data
+      })
     })
   }),
 });
@@ -272,4 +279,5 @@ export const {
   useCheckProjectDuplicationMutation,
   useDeleteProjectFileMutation,
   useDeleteInvitationMutation,
+  useGetProjectWeatherMutation
 } = projectApiSlice;

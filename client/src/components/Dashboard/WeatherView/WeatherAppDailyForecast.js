@@ -6,31 +6,32 @@ import Thunderstorm from './assets/images/thunderstorm.png'
 import Drizzle from './assets/images/drizzle.png'
 import Clear from './assets/images/sunny.png'
 import { useSelector } from 'react-redux';
+import { getWeatherIcon } from '../../../utils/weatherFunctions';
 
 
 const WeatherAppDailyForecast = ({ forecast }) => {
   const query = useSelector(state => state.dailyForecast.query);
-  let weatherIcon;
-    switch (forecast.weatherDetails){
-      case 'Clouds':
-      weatherIcon = Clouds;
-      break;
-      case 'Rain':
-      weatherIcon = Rain;
-      break;
-      case 'Thunderstorm':
-      weatherIcon = Thunderstorm;
-      break;
-      case 'Drizzle':
-      weatherIcon = Drizzle;
-      break;
-      case 'Clear':
-      weatherIcon = Clear;
-      break;
-      default:
-      //console.log('Can not fetch weather icon');
-      break
-    }
+  // let weatherIcon;
+  //   switch (forecast.weatherDetails){
+  //     case 'Clouds':
+  //     weatherIcon = Clouds;
+  //     break;
+  //     case 'Rain':
+  //     weatherIcon = Rain;
+  //     break;
+  //     case 'Thunderstorm':
+  //     weatherIcon = Thunderstorm;
+  //     break;
+  //     case 'Drizzle':
+  //     weatherIcon = Drizzle;
+  //     break;
+  //     case 'Clear':
+  //     weatherIcon = Clear;
+  //     break;
+  //     default:
+  //     //console.log('Can not fetch weather icon');
+  //     break
+  //   }
 
 
     return (
@@ -40,7 +41,7 @@ const WeatherAppDailyForecast = ({ forecast }) => {
                 <Divider variant="fullWidth" />
                 <Box
                     component="img"
-                    src={weatherIcon}
+                    src={getWeatherIcon(forecast.weatherDetails)}
                     alt="/"
                     sx={themeStyle.dailyForecastBubbleImg}
                 ></Box>

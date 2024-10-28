@@ -966,7 +966,7 @@ const RequestWorkOrderModal = ({
                       })}
                   </Stack>
                   <AssignTeamMembers
-                   createdBy={checkedRow?.createdby}
+                   createdBy={checkedRow?.createdby || userId}
                     setSuperAdminId={setSuperAdminId}
                     assignedCheckboxes={assignedCheckboxes}
                     setAssignedCheckboxes={setAssignedCheckboxes}

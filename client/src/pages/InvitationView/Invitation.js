@@ -239,7 +239,7 @@ const Invitation = () => {
         <Box sx={downloadForMobBox}>
           <img
             src={downloadForMob}
-            width={"100%"}
+            
             alt=""
             style={{ height: "143px" }}
           />
@@ -298,7 +298,7 @@ const Invitation = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-1rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-1rem"}>
                   {errors.firstName && touched.firstName
                     ? errors.firstName
                     : ""}
@@ -329,7 +329,7 @@ const Invitation = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-1rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-1rem"}>
                   {errors.lastName && touched.lastName ? errors.lastName : ""}
                 </Typography>
               </Box>
@@ -360,7 +360,7 @@ const Invitation = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-1rem"}>
+              <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-1rem"}>
                 {errors.email && touched.email ? errors.email : ""}
               </Typography>
             </Box>
@@ -412,7 +412,7 @@ const Invitation = () => {
                     sx={{
                       color: "#d32f2f",
                       fontSize: "12px",
-                      marginLeft: "14px",
+                      marginLeft: "4px",
                       marginRight: "14px",
                       marginTop: "3px",
                       fontFamily: 'var(--main-font-family)',
@@ -458,7 +458,7 @@ const Invitation = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-1rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-1rem"}>
                   {errors.password && touched.password ? errors.password : ""}
                 </Typography>
                 <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
@@ -507,7 +507,7 @@ const Invitation = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-1rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-1rem"}>
                   {errors.confirmPassword && touched.confirmPassword
                     ? errors.confirmPassword
                     : ""}

@@ -9,6 +9,7 @@ import {
   setDailyForecast,
   setTemperatureUnit,
 } from "../../../redux/slices/DailyForecast/dailyForecastSlice";
+import { getWeatherIcon } from "../../../utils/weatherFunctions";
 // import { setTemperatureUnit } from "../../../redux/slices/Weather/weatherSlice";
 // import { WiHumidity, WiStrongWind } from 'react-icons/wi';
 
@@ -16,7 +17,6 @@ const WeatherAppCurrentForecast = () => {
   const query = useSelector((state) => state.dailyForecast.query);
   const dispatch = useDispatch();
   const [currentWeather, setCurrentWeather] = useState({});
-
   const handleUnitChange = (event) => {
     dispatch(setDailyForecast([]));
     dispatch(setTemperatureUnit(event.target.value));
@@ -75,7 +75,7 @@ const WeatherAppCurrentForecast = () => {
           >
             <Box
               component="img"
-              src={SunnyWindy}
+              src={getWeatherIcon(currentWeather.details)}
               alt="SunnyWindy"
               sx={themeStyle.image}
             />
@@ -189,6 +189,8 @@ const themeStyle = {
   image: {
     width: "100px",
     height: "100px",
+    marginRight:'8px',
+    // marginBottom: '4px'
   },
   text: {
     color: "#4C8AB1",
