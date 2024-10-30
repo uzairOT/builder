@@ -50,6 +50,7 @@ const WeatherAppCurrentForecast = () => {
           xl: "space-between",
           lg: "space-between",
           md: "center",
+          xs:'center'
         },
       }}
       width={"100%"}
@@ -63,7 +64,7 @@ const WeatherAppCurrentForecast = () => {
       >
         <Box
           display={"flex"}
-          justifyContent={"start"}
+          justifyContent={{md:"start", xs:'center'}}
           alignItems={"center"}
           width={"100%"}
         >
@@ -119,8 +120,8 @@ const WeatherAppCurrentForecast = () => {
               xl: "left",
               lg: "left",
               md: "left",
-              sm: "left",
-              xs: "left",
+              sm: "center",
+              xs: "center",
             },
           }}
           width={"100%"}

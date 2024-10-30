@@ -93,7 +93,7 @@ const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab, projectsPa
     });
 
   React.useEffect(() => {
-    if (selectedTab === 0 || selectedTab === 1) {
+    if (selectedTab === 0 || selectedTab === 1 || selectedTab === 2) {
       // console.log("run");
       // console.log(data);
       dispatch(setIsLoading(isLoading));

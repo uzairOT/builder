@@ -46,6 +46,7 @@ import {
   setForecastError,
   getForecast,
   setLatLon,
+  setDefaultLocation,
 } from "./redux/slices/DailyForecast/dailyForecastSlice.js";
 import GoogleLogin from "./components/Login/GoogleLogin/GoogleLogin.js";
 import Help from "./pages/Help/Help.jsx";
@@ -71,12 +72,12 @@ import TermsPage from "./components/LandingPageComponents/Terms/index.js";
 import PermissionAccess from "./components/Settings/PermissionAccess/Permissions.js";
 const SetNewPassword = lazy(() => import("./components/Login/ForgotPassword/SetNewPassword.js"));
 const InvoicePayment = lazy(() => import("./components/dialogues/GenerateInvoice/InvoicePayment/InvoicePayment.js"));
-const PasswordReset = lazy(()=> import("./components/Login/ForgotPassword/PasswordReset.js"))
-const VerifyCode = lazy(()=> import("./components/Login/ForgotPassword/VerifyCode.js"))
-const ForgotPassword = lazy(()=> import("./components/Login/ForgotPassword/ForgotPassword.js"))
-const AssignProject = lazy(()=>import("./pages/AssignProject/AssignProject"))
-const Signup  = lazy(()=> import("./pages/Signup/Signup"))
-const Login  = lazy(()=> import("./pages/Login/Login"))
+const PasswordReset = lazy(() => import("./components/Login/ForgotPassword/PasswordReset.js"))
+const VerifyCode = lazy(() => import("./components/Login/ForgotPassword/VerifyCode.js"))
+const ForgotPassword = lazy(() => import("./components/Login/ForgotPassword/ForgotPassword.js"))
+const AssignProject = lazy(() => import("./pages/AssignProject/AssignProject"))
+const Signup = lazy(() => import("./pages/Signup/Signup"))
+const Login = lazy(() => import("./pages/Login/Login"))
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
 const ImagesView = lazy(() =>
@@ -111,23 +112,36 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(isAuthenticated && currentUser){
+    if (isAuthenticated && currentUser) {
 
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
           let lat = position.coords.latitude;
           let lon = position.coords.longitude;
 
-        dispatch(setLatLon({ lat, lon }));
-        if (dailyForecast.length < 1) {
-          fetchWeather(lat, lon);
+          dispatch(setLatLon({ lat, lon }));
+          dispatch(setDefaultLocation(false));
+          if (dailyForecast.length < 1) {
+            fetchWeather(lat, lon);
+          }
+        }, (error) => {
+          // If location access is denied, use the default location (California, USA)
+          if (error.code === error.PERMISSION_DENIED) {
+            const defaultLat = 36.7783; // Latitude for California
+            const defaultLon = -119.4179; // Longitude for California
+            dispatch(setLatLon({ lat: defaultLat, lon: defaultLon }));
+            dispatch(setDefaultLocation(true));
+            if (dailyForecast.length < 1) {
+              fetchWeather(defaultLat, defaultLon);
+            }
+          }
         }
-      });
+        );
+      }
     }
-  }
-  },[dailyForecast, query.temperatureUnit, query.lat, isAuthenticated, currentUser]);
+  }, [dailyForecast, query.temperatureUnit, query.lat, isAuthenticated, currentUser]);
 
-  const fetchWeather =useCallback(async (lat,lon) => {
+  const fetchWeather = useCallback(async (lat, lon) => {
     // setLoading(true);
     dispatch(setForecastLoading(true));
 
@@ -145,7 +159,7 @@ function App() {
     } finally {
       dispatch(setForecastLoading(false));
     }
-  },[query.temperatureUnit]);
+  }, [query.temperatureUnit]);
 
   // useEffect(() => {
   //   if (dailyForecast.length > 1) {
@@ -217,7 +231,7 @@ function App() {
                     <Route
                       path="initial-proposal"
                       element={<InitialProposalView />}
-                      // loader={projectUserRoleAuth}
+                    // loader={projectUserRoleAuth}
                     />
                     <Route path="work-order" element={<WorkOrderView />} />
                     <Route path="invoices" element={<ProjectInvoicesView />} />

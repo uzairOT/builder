@@ -114,8 +114,9 @@ const BuilderFeatures = () => {
             <Box>
               <img
                 src={DashboardFeature}
-                style={{ width: xsView ? "20%" : "100%" }}
+                style={{ width: xsView ? "20%" : "100%", borderRadius: '14px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}
                 alt="Dashboard Features"
+                loading="lazy"
               />
             </Box>
           </motion.div>
@@ -145,8 +146,9 @@ const BuilderFeatures = () => {
             <Box>
               <img
                 src={EventFeature}
-                style={{ width: xsView ? "20%" : "100%" }}
+                style={{ width: xsView ? "20%" : "100%", borderRadius: '14px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}
                 alt="Event Features"
+                loading="lazy"
               />
             </Box>
           </motion.div>
@@ -160,8 +162,9 @@ const BuilderFeatures = () => {
             <Box>
               <img
                 src={SubscriptionFeature}
-                style={{ width: xsView ? "20%" : "100%" }}
+                style={{ width: xsView ? "20%" : "100%", borderRadius: '14px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}
                 alt="Subscription Features"
+                loading="lazy"
               />
             </Box>
           </motion.div>
@@ -191,8 +194,9 @@ const BuilderFeatures = () => {
             <Box>
               <img
                 src={ReportsFeature}
-                style={{ width: xsView ? "20%" : "100%" }}
+                style={{ width: xsView ? "20%" : "100%", borderRadius: '14px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}
                 alt="Reports Features"
+                loading="lazy"
               />
             </Box>
           </motion.div>
@@ -206,8 +210,9 @@ const BuilderFeatures = () => {
             <Box>
               <img
                 src={InvitationFeature}
-                style={{ width: xsView ? "20%" : "100%" }}
+                style={{ width: xsView ? "20%" : "100%", borderRadius: '14px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}
                 alt="Invitation Features"
+                loading="lazy"
               />
             </Box>
           </motion.div>
@@ -237,8 +242,9 @@ const BuilderFeatures = () => {
             <Box>
               <img
                 src={InvoiceFeature}
-                style={{ width: xsView ? "20%" : "100%" }}
+                style={{ width: xsView ? "20%" : "100%", borderRadius: '14px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}
                 alt="Invoice Features"
+                loading="lazy"
               />
             </Box>
           </motion.div>
@@ -268,7 +274,7 @@ const styles = {
     fontSize: { md: "16px", sm: "16px", xs: "14px" },
     fontWeight: 400,
     color: "#454245",
-    textAlign:'left'
+    textAlign: 'left'
   },
   CardTitle: {
     fontFamily: "var(--main-font-family)",

@@ -30,6 +30,7 @@ const Dashboard = () => {
   const dailyForecast = forecast.dailyForecast;
   const forecastIsLoading = forecast.isLoading;
   const forecastError = forecast.error;
+  const isDefaultLocation = forecast.defaultLocation
 
   useEffect(() => {
     socket.emit("userJoin", {
@@ -73,6 +74,7 @@ const Dashboard = () => {
                   dailyForecast={dailyForecast}
                   loading={forecastIsLoading}
                   error={forecastError}
+                  isDefaultLocation={isDefaultLocation}
                 />
               </Paper>
             </Grid>

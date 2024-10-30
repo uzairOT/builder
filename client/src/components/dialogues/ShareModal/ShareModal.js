@@ -373,6 +373,7 @@ const ShareModal = ({
             </Box>
           </Stack>
           <Divider variant="fullWidth" />
+          <Stack height={'250px'} overflow={'auto'}>
           {data?.team.length > 0 ? (
             filterTeam?.map((user, index) => {
               // if (userRoleAuth.userRole === "supplier") {
@@ -394,7 +395,7 @@ const ShareModal = ({
               //   }
               // }
               return (
-                <Stack p={0.5} width={"100%"}>
+                <Stack p={0.5}>
                   <Container justifyContent="center" display="flex">
                     <Stack
                       sx={{ ml: { xl: 25, lg: 20, md: 18, xs: 0 } }}
@@ -473,11 +474,11 @@ const ShareModal = ({
           ) : (
             <Typography p={2}>No Team Members were Assigned</Typography>
           )}
-
+          </Stack>
           <Stack justifyContent={"center"} alignItems={"flex-start"}>
             {
-              <TableContainer component={Paper}>
-                <Table>
+              <TableContainer component={Paper} style={{height:'300px', backgroundColor:'transparent'}}>
+                <Table >
                   <TableHead>
                     <TableRow>
                       <TableCell sx={tableCellStyles}>Title</TableCell>
@@ -721,7 +722,7 @@ const style = {
   boxShadow: 24,
   p: 1,
   borderRadius: "14px",
-  overflowX: "auto",
+  // overflowX: "auto",
 };
 
 

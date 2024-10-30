@@ -4,12 +4,14 @@ import WeatherAppDailyForecast from "./WeatherAppDailyForecast";
 import WeatherAppCurrentForecast from "./WeatherAppCurrentForecast";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useSelector } from "react-redux";
+import { InfoOutlined } from "@mui/icons-material";
 
 const WeatherView = ({
   dailyForecast,
   loading,
   error,
   userGreetings = "Admin",
+  isDefaultLocation
 }) => {
   //console.log(dailyForecast)
   const userInfo = useSelector((state) => state.auth.userInfo);
@@ -29,7 +31,7 @@ const WeatherView = ({
     <Stack
       direction={{
         xs: "column-reverse",
-        sm: "row",
+        sm: "colum-reverse",
         md: "row",
         lg: "row",
         xl: "row",
@@ -37,45 +39,60 @@ const WeatherView = ({
       spacing={2}
       padding={2}
     >
-      <Box flex={{ md: 2, xs: 0 }}>
-        <Typography display={{ md: 'block', xs: 'none' }} sx={themeStyle.title}>
-          {greeting}, {firstName ? `${firstName}` : userGreetings}
-        </Typography>
-        <Stack
-          direction="row"
-          justifyContent={{ xl: "flex-start", lg: "space-evenly", md: "center" }}
-          alignItems={"center"}
-          height={"50%"}
-          spacing={1}
-          pl={3}
-          pr={2.5}
-          flexWrap={"wrap"}
-          display={{ md: 'flex', xs: 'none' }}
-        >
-          {(!loading && Array.isArray(dailyForecast)) ? (
-            dailyForecast?.map((forecast, index) => (
-              <React.Fragment key={index}>
-                <WeatherAppDailyForecast
-                  key={index}
-                  forecast={forecast}
-                />
-                {error}
-              </React.Fragment>
-            ))
-          ) : (
-            <Stack
-              width={"100%"}
-              justifyContent={"center"}
-              alignItems={"center"}
-            >
-              <CircularProgress></CircularProgress>
-            </Stack>
-          )}
+      <Stack flex={{ md: 2, xs: 0 }} justifyContent={'space-between'} gap={1}>
+        <Box>
+          <Typography display={{ md: 'block', xs: 'none' }} sx={themeStyle.title}>
+            {greeting}, {firstName ? `${firstName}` : userGreetings}
+          </Typography>
+          <Stack
+            direction="row"
+            justifyContent={{ xl: "flex-start", lg: "space-evenly", md: "center" }}
+            alignItems={"center"}
+            height={"50%"}
+            spacing={1}
+            pl={3}
+            pr={2.5}
+            flexWrap={"wrap"}
+            display={{ md: 'flex', xs: 'none' }}
+          >
+            {(!loading && Array.isArray(dailyForecast)) ? (
+              dailyForecast?.map((forecast, index) => (
+                <React.Fragment key={index}>
+                  <WeatherAppDailyForecast
+                    key={index}
+                    forecast={forecast}
+                  />
+                  {error}
+                </React.Fragment>
+              ))
+            ) : (
+              <Stack
+                width={"100%"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <CircularProgress></CircularProgress>
+              </Stack>
+            )}
+          </Stack>
+        </Box>
+       {isDefaultLocation && <Stack direction="row" alignItems="center" justifyContent={'flex-end'} spacing={0.5}>
+          <InfoOutlined style={{ color: 'lightgray', fontSize: '16px' }} />
+          <Typography
+            style={{
+              fontStyle: 'italic',
+              color: 'lightgray',
+              fontSize: '13px'
+            }}
+          >
+            Enable location to get the weather for your area.
+          </Typography>
         </Stack>
-      </Box>
-      <Box flex={1} display={"flex"} flexDirection={'column'} width={"100%"}>
+}
+      </Stack>
+      <Box flex={1} display={"flex"} flexDirection={'column'} width={"100%"} justifyContent={'center'}>
         <Typography display={{ md: 'none', xs: 'block' }} sx={themeStyle.title}>
-        {greeting}, {firstName ? `${firstName}` : userGreetings}
+          {greeting}, {firstName ? `${firstName}` : userGreetings}
         </Typography>
         <WeatherAppCurrentForecast />
       </Box>

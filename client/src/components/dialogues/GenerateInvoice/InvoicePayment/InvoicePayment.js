@@ -33,7 +33,6 @@ const InvoicePayment = () => {
     useGetUserAccountsMutation({ userId: userId });
   const [loading, setLoading] = useState(true);
   const [selectedAccountId, setSelectedAccountId] = useState(null);
-
   const handleChange = (event) => {
     setSelectedAccountId(event.target.value);
   };
@@ -141,7 +140,7 @@ const InvoicePayment = () => {
             stripePromise && (
               <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <CheckoutForm
-                  currentPlan={totalAmount}
+                  paymentAmount={totalAmount}
                   isInvoicePayment={true}
                   invoiceId={invoiceId}
                 />

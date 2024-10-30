@@ -88,7 +88,7 @@ const AboutSection = () => {
       <Container>
         <SectionTitle
           subtitle="About Us"
-          title="Personalized Primary Care at Your Doorstep"
+          title="Building Smarter Solutions for Construction Professionals"
           description="Hello and welcome! Our journey in the construction industry began in 2004, inspired by our founder, a third-generation construction professional.
            With a passion for excellence and innovation, the National Property Institute was established. Over the years, 
            we’ve encountered the same challenges as many in our field—juggling the demands of on-site work with the complexities of office management. 
@@ -139,7 +139,7 @@ const AboutSection = () => {
            alignItems:"center",
           // padding: { lg: , xs: 2 },
           width: "100%",
-          maxWidth:'1200px'
+          maxWidth:'1200px',
           // backgroundColor: "#F7FAFC",
         }}
       >
@@ -196,14 +196,14 @@ const styles = {
     color: "#4C8AB1",
   },
   featureTitle: {
-    textAlign: { md: "left", xs: "center" },
+    textAlign: { md: "left", xs: "left" },
     fontFamily: "var(--main-font-family)",
     fontSize: { md: "24px", sm: "24px", xs: "22px" },
     fontWeight: 500,
   },
   featureDesc: {
 
-    textAlign: { md: "justify", xs: "center" },
+    textAlign: { md: "justify", xs: "left" },
     fontFamily: "var(--main-font-family)",
     fontSize: { md: "16px", sm: "16px", xs: "14px" },
     fontWeight: 400,
