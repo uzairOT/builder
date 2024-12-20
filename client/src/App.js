@@ -204,7 +204,6 @@ function App() {
               path="/projects"
               element={<ProjectsTable />}
               loader={() => {
-                //console.log("hello from loader");
                 return null;
               }}
             />

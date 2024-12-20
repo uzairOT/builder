@@ -130,21 +130,16 @@ const AddPhaseCard = ({
   const user = useSelector((state) => state.auth.userInfo);
   const userId = user.user.id;
   const userRoleAuth = useSelector(getUserRoleFromRedux);
-  //console.log(userRoleAuth);
   const [deletePhaseLine, { isLoading }] = useDeletePhaseLineMutation();
-  //console.log(adminProjectView);
   const dispatch = useDispatch();
   const { rowCheckbox } = useSelector(selectAddPhase);
   let totalCost = 0;
   let minStartDay = moment(phaseData?.LineItems[0]?.start_day);
   let maxEndDay = moment(phaseData?.LineItems[0]?.end_day);
   let totalHours = 0;
-  //console.log("changeOrder ", changeOrder);
   const location = useLocation();
   const path = location.pathname.split("/")[1];
   const pathCheck = location.pathname;
-
-  //console.log("", phaseData);
 
   phaseData.LineItems.forEach((row) => {
     totalCost += parseFloat(row.total) + parseFloat(row.margin); // Accumulate the total cost
@@ -202,8 +197,6 @@ const AddPhaseCard = ({
     // const updatedRows = rows.filter((_, index) => !selectedRows.includes(index));
     // // Handle the updated rows according to your application logic
     // deletePhaseLine(selectedRows);
-    // //console.log("Deleted rows:", selectedRows);
-    // //console.log("Remaining rows:", updatedRows);
 
     // // Clear the selectedRows state after deletion
     // setSelectedRows([]);
@@ -277,7 +270,6 @@ const AddPhaseCard = ({
   };
 
   const handleSendApprove = () => {
-    //console.log("run");
     socket.emit(
       "sendPhaseApprovalNotification",
       {
@@ -303,12 +295,10 @@ const AddPhaseCard = ({
     const updatedRows = [...rows];
     updatedRows[index] = { ...updatedRows[index], ...newData };
     setRows(updatedRows);
-    //console.log(updatedRows)
   };
   const handleAddRow1 = (newData) => {
     const updatedRows = [...rows, newData];
     setRows(updatedRows);
-    //console.log("handle add row:",updatedRows);
   };
 
   const [checkedRow, setCheckedRow] = useState(null);
@@ -365,14 +355,11 @@ const AddPhaseCard = ({
 
   // Function to check if a row is selected
   const isRowSelected = (row, phaseId) => {
-    //console.log("Check run phaseId ", rowCheckboxes);
     const isSelected =
       rowCheckboxes[phaseId]?.rows.some((r) => r.id === row.id) || false;
-    //console.log("Check boolean phaseId ", isSelected);
     return isSelected;
   };
 
-  // console.log('PHASE :', phaseData)
   const currentRoute = location.pathname;
 
   const permissionsState = useSelector(

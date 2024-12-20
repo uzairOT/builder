@@ -361,12 +361,12 @@ const textStyle = {
   fontFamily: "var(--main-font-family)",
   fontWeight: "bold",
   fontSize: "14px",
-  width: { sm: "25ch", xs: "10ch" },
+  width: { sm: "20ch", xs: "10ch" },
 };
 const textSecondaryStyle = {
   fontFamily: "var(--main-font-family)",
   fontSize: "14px",
-  width: { sm: "25ch", xs: "10ch" },
+  width: { sm: "20ch", xs: "10ch" },
   overflow: "hidden",
   textOverflow: "ellipsis",
 };

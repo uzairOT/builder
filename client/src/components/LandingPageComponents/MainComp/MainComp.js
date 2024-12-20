@@ -57,7 +57,6 @@ const MainContent = () => {
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => {
         const nextIndex = (prevIndex + 1) % texts.length;
-        console.log(nextIndex)
         return nextIndex;
       });
     }, duration);
