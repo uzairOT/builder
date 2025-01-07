@@ -1,11 +1,8 @@
 import React from "react";
 import {
-  useMediaQuery,
   Button,
   Box,
   Typography,
-  TextField,
-  MenuItem,
 } from "@mui/material";
 import "../StepFormField/StepFormField.css";
 import FooterCircles from "../FooterCircles/FooterCircles";

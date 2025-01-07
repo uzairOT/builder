@@ -2,6 +2,7 @@ import { fetchBaseQuery, createApi } from "@reduxjs/toolkit/query/react";
 
 export const getTokenFromLocalStorage = () => {
   let userInfo = localStorage.getItem("userInfo");
+  let invoiceCheck = localStorage.getItem("invoice");
 
   try {
     // console.log(userInfo);
@@ -12,6 +13,9 @@ export const getTokenFromLocalStorage = () => {
     userInfo = null;
   }
   const pathnameArr = window.location.pathname.split("/");
+  // Parse the token from the query string
+const queryParams = new URLSearchParams(window.location.search);
+const qToken = queryParams.get("token");
   // console.log(pathnameArr);
   const token = userInfo?.token;
   // Allow access to specific pages without requiring a token
@@ -21,34 +25,35 @@ export const getTokenFromLocalStorage = () => {
     "/terms",
     "/privacypolicy",
     "/help",
-    "/verifycode",
+    "/verifycode",  
   ];
+  const allowedBasePaths = [
+    "invitation"
+  ]
   const notAllowedPaths = ["/login", "/signup"];
   const currentPath = window.location.pathname;
-  
+  const basePath = pathnameArr[1]
+
   if (token) {
-    // console.log("Test", currentPath);
-    if (
-      userInfo?.user?.hasValidSubscription === false &&
-      currentPath !== "/subscription" &&
-      currentPath !== "/"
-    ) {
+
+    if (userInfo?.user?.hasValidSubscription === false && !["/subscription", "/"].includes(currentPath)) {
       window.location.href = "/subscription";
-      // return;
     } else {
-      if (notAllowedPaths.includes(currentPath)) {
-        window.location.href = "/dashboard";
-      }
+      if(invoiceCheck){ return token }
+      if (notAllowedPaths.includes(currentPath)) { window.location.href = "/dashboard"; }
     }
     return token;
   } else {
-    if (pathnameArr[1] === "invitation") {
-      return;
-    }
-    // If the current path is allowed, don't redirect
-    if (!allowedPaths.includes(currentPath)) {
+
+     if (basePath === 'invoicePayment') {
+      if(qToken){ return qToken; }
+
+      const prepareInvoiceObj = JSON.stringify({currentPath: currentPath, alertShown: false});
+      localStorage.setItem('invoice', prepareInvoiceObj)
+      window.location.href = "/login";
+    } else if  (!allowedPaths.includes(currentPath) && !allowedBasePaths.includes(basePath)) {
       window.location.href = "/";
-    }
+    } 
   }
 };
 

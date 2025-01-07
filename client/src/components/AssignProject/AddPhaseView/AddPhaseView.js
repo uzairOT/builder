@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
   Grid,
-  Button,
   Stack,
   Typography,
   Box,
   CircularProgress,
   useMediaQuery,
   useTheme,
-  Tooltip,
 } from "@mui/material";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import SendIcon from "@mui/icons-material/Send";
-import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import PhaseCard from "../AddPhaseCard/AddPhaseCard";
-import actionButton from "../../UI/actionButton";
 import { useDeleteProjectPhaseMutation } from "../../../redux/apis/Project/projectApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import UpdatePhaseDialogue from "../../dialogues/UpdatePhaseDialogue/UpdatePhaseDialogue";
@@ -48,6 +42,11 @@ import AddIcon from "@mui/icons-material/Add";
 import { socket } from "../../../socket";
 import { useProjectPermissionCheck } from "../../Projects/ProjectPermissions/ProjectsPermissionCheck";
 import ChangeOrderRequestModal from "../../dialogues/ChangeOrderRequestModal/ChangeOrderRequestModal";
+import InitialProposalButtons from "./InitialProposalButtons";
+import GenerateInvoiceButtons from "./GenerateInvoiceButtons";
+import WorkOrderButtons from "./WorkOrderButtons";
+import DefaultButtons from "./DefaultButtons";
+import GenerativeAiDialogue from "../../dialogues/GenerativeAIDialogue/GenerativeAiDialogue";
 //import "react-toastify/dist/ReactToastify.css";
 
 function AddPhaseView({
@@ -89,6 +88,7 @@ function AddPhaseView({
   );
   const [showUpdatePhaseDialogue, setShowUpdatePhaseDialogue] = useState(false);
   const [showAddPhaseDialogue, setShowAddPhaseDialogue] = useState(false);
+  const [showGenerativeAiDialouge, setShowGenerativeAiDialouge] = useState(false);
   const [rowCheckboxes, setRowCheckboxes] = useState({}); // State to track the checked state of each checkbox in the table rows
   const location = useLocation();
   const pathCheck = location.pathname;
@@ -291,6 +291,12 @@ function AddPhaseView({
   const handleAddPhase = () => {
     setShowAddPhaseDialogue(true);
   };
+  const handleGenAiDialogue = () => {
+    setShowGenerativeAiDialouge(true);
+  }
+  const closeGenAiDialogue = () => {
+    setShowGenerativeAiDialouge(false);
+  }
   const handleGenerateInvoice = () => {
     if (Object.keys(rowCheckboxes).length < 1) {
       toast.warn("Please select a line item.", { toastId: "Inovice toast" });
@@ -443,7 +449,12 @@ function AddPhaseView({
 
   const initalApproved = initialPhases?.[0]?.[0]?.status === "approved";
   const initialLengthZero = initialPhases?.[0]?.length === 0 || initialPhases?.length === 0
-
+  const initalUnapprovedPendingDeclined = (initialPhases?.[0]?.[0]?.status === "not approved" ||
+    initialPhases?.[0]?.[0]?.status === "declined" ||
+    initialPhases?.[0]?.[0]?.status === "pending")
+  const initalUnapprovedPending = (initialPhases?.[0]?.[0]?.status === "not approved" ||
+    initialPhases?.[0]?.[0]?.status === "declined")
+    console.log(view)
   return (
     <>
       <Grid container sx={{ ...firstGrid, width: "100%" }}>
@@ -452,7 +463,7 @@ function AddPhaseView({
           justifyContent={view ? "space-between" : "center"}
           sx={{ borderBottom: "2px solid rgba(0, 0, 0, 0.2)", borderRadius: 1 }}
 
-          // sx={{ width: "100%" }}
+        // sx={{ width: "100%" }}
         >
           <Stack sx={{ justifyContent: "center" }}>
             {adminProjectView && (
@@ -476,477 +487,33 @@ function AddPhaseView({
           </Stack>
           {view === "Initial Proposal" ? (
             <>
-              <>
-                {initalApproved && (
-                  <>
-                    <Stack direction={"row"} sx={buttonBox}>
-                      <Tooltip
-                        title={
-                          changeOrderPermission
-                            ? ""
-                            : "You don't have permission to access this feature"
-                        }
-                        arrow
-                      >
-                        <span>
-                          <BuilderProButton
-                            disabled={!changeOrderPermission}
-                            backgroundColor={"#FFAC00"}
-                            variant={"contained"}
-                            fontFamily={"var(--main-font-family)"}
-                            fontSize={{ lg: "16px", xs: "11px" }}
-                            fontWeight={"600"}
-                            padding={{
-                              sm: "6px 32px 6px 32px",
-                              xs: "5px 20px 5px 20px",
-                            }}
-                            handleOnClick={handleChangeOpen}
-                          >
-                            Change Order
-                          </BuilderProButton>
-                        </span>
-                      </Tooltip>
-
-                      <Tooltip
-                        title={
-                          workOrderPermission
-                            ? ""
-                            : "You don't have permission to access this feature"
-                        }
-                        arrow
-                      >
-                        <span>
-                          <BuilderProButton
-                            disabled={!workOrderPermission}
-                            backgroundColor={"#FFAC00"}
-                            variant={"contained"}
-                            fontFamily={"var(--main-font-family)"}
-                            fontSize={{ lg: "16px", xs: "11px" }}
-                            fontWeight={"600"}
-                            padding={{
-                              sm: "6px 32px 6px 32px",
-                              xs: "5px 20px 5px 20px",
-                            }}
-                            handleOnClick={handleWorkOpen}
-                          >
-                            Work Order
-                          </BuilderProButton>
-                        </span>
-                      </Tooltip>
-                    </Stack>
-                  </>
-                )}
-
-                {initialPhases?.[0]?.[0]?.status === "not approved" ||
-                initialPhases?.[0]?.[0]?.status === "declined" ||
-                initialPhases?.[0]?.[0]?.status === "pending" ||
-                initialLengthZero ? (
-                  <Stack direction={"row"} sx={buttonBox}>
-                    {(initialPhases?.[0]?.[0]?.status === "not approved" ||
-                      initialPhases?.[0]?.[0]?.status === "declined" || initialLengthZero) && (
-                      <>
-                        <Tooltip
-                          title={
-                            projectManagementPermission
-                              ? ""
-                              : "You don't have permission to access this feature"
-                          }
-                          arrow
-                        >
-                          <span>
-                            <Button
-                              disabled={!projectManagementPermission}
-                              sx={{
-                                ...actionButton,
-                                padding: { lg: "0.75rem 1.5rem" },
-                                background: "#FFAC00",
-                                whiteSpace: "nowrap",
-                                height:
-                                  initialPhases[0]?.length < 1 || isLoading
-                                    ? "4rem"
-                                    : "2.375rem",
-                                display: isLoading ? "none" : "flex",
-                                fontSize:
-                                  initialPhases[0]?.length < 1 || isLoading
-                                    ? "24px"
-                                    : "18px",
-                                width:
-                                  initialPhases[0]?.length < 1 || isLoading
-                                    ? "300px"
-                                    : downView
-                                    ? "40px"
-                                    : "150px",
-                                height:
-                                  initialPhases[0]?.length < 1 || isLoading
-                                    ? "50px"
-                                    : "40px",
-                              }}
-                              onClick={handleAddPhase}
-                            >
-                              {downView && <AddIcon />}
-                              {downView
-                                ? mobileView
-                                  ? ""
-                                  : "Add"
-                                : "Add Phase"}
-                            </Button>
-                          </span>
-                        </Tooltip>
-                        <Tooltip
-                          title={
-                            projectManagementPermission
-                              ? ""
-                              : "You don't have permission to access this feature"
-                          }
-                          arrow
-                        >
-                          <span>
-                            <Button
-                              disabled={!projectManagementPermission}
-                              sx={{
-                                ...actionButton,
-                                display:
-                                  initialPhases[0]?.length < 1 || isLoading
-                                    ? "none"
-                                    : "flex",
-                                fontSize: { lg: "18px", xs: "11px" },
-                              }}
-                              startIcon={
-                                <ModeEditOutlinedIcon
-                                  sx={{ marginLeft: { md: "0px", xs: "12px" } }}
-                                />
-                              }
-                              onClick={handleEditPhase}
-                            >
-                              <Typography
-                                sx={{
-                                  fontFamily: "var(--main-font-family)",
-                                  fontSize: { lg: "18px", xs: "11px" },
-                                  display: { md: "block", xs: "none" },
-                                }}
-                              >
-                                Edit
-                              </Typography>
-                            </Button>
-                          </span>
-                        </Tooltip>
-
-                        <Tooltip
-                          title={
-                            projectManagementPermission
-                              ? ""
-                              : "You don't have permission to access this feature"
-                          }
-                          arrow
-                        >
-                          <span>
-                            <Button
-                              disabled={!projectManagementPermission}
-                              sx={{
-                                ...actionButton,
-                                display:
-                                  initialPhases[0]?.length < 1 || isLoading
-                                    ? "none"
-                                    : "flex",
-                                fontSize: { lg: "18px", xs: "11px" },
-                              }}
-                              startIcon={
-                                <DeleteOutlinedIcon
-                                  sx={{ marginLeft: { md: "0px", xs: "12px" } }}
-                                />
-                              }
-                              onClick={handleOpenModal}
-                            >
-                              <Typography
-                                sx={{
-                                  fontFamily: "var(--main-font-family)",
-                                  fontSize: { lg: "18px", xs: "11px" },
-                                  display: { md: "block", xs: "none" },
-                                }}
-                              >
-                                Delete
-                              </Typography>
-                            </Button>
-                          </span>
-                        </Tooltip>
-                      </>
-                    )}
-
-                    <Tooltip
-                      title={
-                        ProjectApprovalSendPermission
-                          ? ""
-                          : "You don't have permission to access this feature"
-                      }
-                      arrow
-                    >
-                      <span>
-                        <Button
-                          onClick={handleSendApproval}
-                          startIcon={
-                            <SendIcon
-                              sx={{ marginLeft: { md: "0px", xs: "12px" } }}
-                            />
-                          }
-                          sx={{
-                            ...actionButton,
-                            display:
-                              initialPhases[0]?.length < 1 || isLoading
-                                ? "none"
-                                : "flex",
-                          }}
-                          disabled={
-                            !ProjectApprovalSendPermission ||
-                            initialPhases?.[0]?.[0]?.status === "pending" || isLoadingSendApproval
-                          }
-                        >
-                          <Typography
-                            sx={{
-                              fontFamily: "var(--main-font-family)",
-                              fontSize: { lg: "18px", xs: "11px" },
-                              display: { md: "block", xs: "none" },
-                            }}
-                          >
-                            {initialPhases?.[0]?.[0]?.status === "pending"
-                              ? "Pending"
-                              : "Send Approval"}
-                          </Typography>
-                        </Button>
-                      </span>
-                    </Tooltip>
-                  </Stack>
-                ) : (
-                  <></>
-                )}
-              </>
+            <InitialProposalButtons handleChangeOpen={handleChangeOpen} handleWorkOpen={handleWorkOpen} isLoading={isLoading} handleAddPhase={handleAddPhase} handleEditPhase={handleEditPhase} handleOpenModal={handleOpenModal} handleSendApproval={handleSendApproval} isLoadingSendApproval={isLoadingSendApproval}/>
             </>
           ) : view === "Generate Invoice" ? (
             <>
-              {/* {canGenerate &&  */}
-              <Stack direction={"row"} sx={buttonBox}>
-                <Tooltip
-                  title={
-                    GenerateInvoicePermission
-                      ? ""
-                      : "You don't have permission to access this feature"
-                  }
-                  arrow
-                >
-                  <span>
-                    <Button
-                      disabled={!GenerateInvoicePermission}
-                      sx={{ ...actionButton }}
-                      style={{
-                        color:
-                          Object.keys(rowCheckboxes).length < 1
-                            ? "white"
-                            : "white",
-                      }}
-                      onClick={handleGenerateInvoice}
-                    >
-                      Generate Invoice
-                    </Button>
-                  </span>
-                </Tooltip>
-              </Stack>
-              {/* } */}
+            <GenerateInvoiceButtons handleGenerateInvoice={handleGenerateInvoice}/>
             </>
           ) : view === "Work Order" ? (
             <>
-              <Stack direction={"row"} sx={buttonBox}>
-                {adminProjectView && !mobileView ? (
-                  <RequestWorkOrderModal
-                    rowCheckboxes={rowCheckboxes}
-                    setRowCheckboxes={setRowCheckboxes}
-                    phases={phases}
-                    fetchData={fetchData}
-                    refetchChangeOrder={refetchChangeOrder}
-                    changeOrderView={changeOrderView}
-                    selectedProjectData={selectedProjectData}
-                  />
-                ) : (
-                  <></>
-                )}
-              </Stack>
+              <WorkOrderButtons adminProjectView={adminProjectView} rowCheckboxes={rowCheckboxes} setRowCheckboxes={setRowCheckboxes} phases={phases} fetchData={fetchData} refetchChangeOrder={refetchChangeOrder} changeOrderView={changeOrderView} selectedProjectData={selectedProjectData} />
             </>
           ) : (
-            <>
-              {(authUserRole === "superadmin" ||
-                authUserRole === "" ||
-                authUserRole === "projectManager" ||
-                authUserRole === "admin") && (
-                <Stack direction={"row"} sx={buttonBox}>
-                  {view === "Change Order" &&
-                  pathCheck.includes("initial-proposal") ? (
-                    <></>
-                  ) : (
-                    <>
-                      <Tooltip
-                        title={
-                          projectManagementPermission
-                            ? ""
-                            : "You are not authorized!"
-                        }
-                        arrow
-                      >
-                        <span>
-                          <Button
-                            disabled={!projectManagementPermission}
-                            sx={{
-                              ...actionButton,
-                              whiteSpace: "nowrap",
-                              background: "#FFAC00",
-                              fontSize:
-                                phases[0]?.length < 1 || isLoading
-                                  ? "40px"
-                                  : { lg: "18px", xs: "12px" },
-                              width:
-                                phases[0]?.length < 1 || isLoading
-                                  ? downView
-                                    ? "300px"
-                                    : "450px"
-                                  : downView
-                                  ? "40px"
-                                  : "130px",
-                              height:
-                                phases[0]?.length < 1 || isLoading
-                                  ? "90px"
-                                  : "40px",
-                              display: isLoading ? "none" : "flex",
-                            }}
-                            onClick={handleAddPhase}
-                          >
-                            {downView && !(phases[0]?.length < 1) && (
-                              <AddIcon />
-                            )}
-                            {downView
-                              ? phases[0]?.length < 1
-                                ? "Add Phase"
-                                : mobileView
-                                ? ""
-                                : "Add"
-                              : "Add Phase"}
-                          </Button>
-                        </span>
-                      </Tooltip>
-                      <Tooltip
-                        title={
-                          projectManagementPermission
-                            ? ""
-                            : "You are not authorized!"
-                        }
-                        arrow
-                      >
-                        <span>
-                          <Button
-                            disabled={!projectManagementPermission}
-                            sx={{
-                              ...actionButton,
-                              display:
-                                phases[0]?.length < 1 || isLoading
-                                  ? "none"
-                                  : "flex",
-                              fontSize: { lg: "18px", xs: "11px" },
-                            }}
-                            startIcon={
-                              <ModeEditOutlinedIcon
-                                sx={{ marginLeft: { md: "0px", xs: "12px" } }}
-                              />
-                            }
-                            onClick={handleEditPhase}
-                          >
-                            <Typography
-                              sx={{
-                                fontFamily: "var(--main-font-family)",
-                                fontSize: { lg: "18px", xs: "11px" },
-                                display: { md: "block", xs: "none" },
-                              }}
-                            >
-                              Edit
-                            </Typography>
-                          </Button>
-                        </span>
-                      </Tooltip>
-                      {view !== "Change Order" && (
-                        <Tooltip
-                          title={
-                            projectManagementPermission
-                              ? ""
-                              : "You are not authorized!"
-                          }
-                          arrow
-                        >
-                          <span>
-                            <Button
-                              disabled={!projectManagementPermission}
-                              sx={{
-                                ...actionButton,
-                                display:
-                                  phases[0]?.length < 1 || isLoading
-                                    ? "none"
-                                    : "flex",
-                              }}
-                              startIcon={
-                                <DeleteOutlinedIcon
-                                  sx={{ marginLeft: { md: "0px", xs: "12px" } }}
-                                />
-                              }
-                              onClick={handleOpenModal}
-                            >
-                              <Typography
-                                sx={{
-                                  fontFamily: "var(--main-font-family)",
-                                  fontSize: { lg: "18px", xs: "11px" },
-                                  display: { md: "block", xs: "none" },
-                                }}
-                              >
-                                Delete
-                              </Typography>
-                            </Button>
-                          </span>
-                        </Tooltip>
-                      )}
-                    </>
-                  )}
-                  {/* <Button
-                    startIcon={
-                      <SendIcon
-                        sx={{ marginLeft: { md: "0px", xs: "12px" } }}
-                      />
-                    }
-                    sx={{
-                      ...actionButton,
-                      display:
-                        phases[0]?.length < 1 || isLoading ? "none" : "flex",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontFamily: "var(--main-font-family)",
-                        fontSize: { lg: "18px", xs: "11px" },
-                        display: { md: "block", xs: "none" },
-                      }}
-                    >
-                      Send Approval
-                    </Typography>
-                  </Button> */}
-
-                  {adminProjectView && !mobileView ? (
-                    <ChangeOrderRequestModal
-                      rowCheckboxes={rowCheckboxes}
-                      setRowCheckboxes={setRowCheckboxes}
-                      phases={phases}
-                      fetchData={fetchData}
-                      refetchChangeOrder={refetchChangeOrder}
-                      changeOrderView={changeOrderView}
-                      selectedProjectData={selectedProjectData}
-                    />
-                  ) : (
-                    <></>
-                  )}
-                </Stack>
-              )}
-            </>
+            <DefaultButtons
+              authUserRole={authUserRole}
+              view={view}
+              isLoading={isLoading}
+              handleAddPhase={handleAddPhase}
+              handleGenAiDialogue={handleGenAiDialogue}
+              handleEditPhase={handleEditPhase}
+              handleOpenModal={handleOpenModal}
+              rowCheckboxes={rowCheckboxes}
+              adminProjectView={adminProjectView}
+              setRowCheckboxes={setRowCheckboxes}
+              fetchData={fetchData}
+              refetchChangeOrder={refetchChangeOrder}
+              changeOrderView={changeOrderView}
+              selectedProjectData={selectedProjectData}
+            />
           )}
         </Stack>
         {view !== "Initial Proposal" &&
@@ -993,9 +560,9 @@ function AddPhaseView({
                 }}
               >
                 {initialPhases !== null &&
-                initialPhases[0] !== undefined &&
-                initialPhases[0].length !== 0 &&
-                !isLoading ? (
+                  initialPhases[0] !== undefined &&
+                  initialPhases[0].length !== 0 &&
+                  !isLoading ? (
                   initialPhases[0]?.map((phase, index) => {
                     // console.log("inital",view)
                     return (
@@ -1065,9 +632,9 @@ function AddPhaseView({
                 }}
               >
                 {changeOrderSelected !== null &&
-                changeOrderSelected !== undefined &&
-                changeOrderSelected.length !== 0 &&
-                !isLoading ? (
+                  changeOrderSelected !== undefined &&
+                  changeOrderSelected.length !== 0 &&
+                  !isLoading ? (
                   changeOrderSelected?.map((phase, index) => {
                     // console.log("inital",view)
                     return (
@@ -1096,8 +663,8 @@ function AddPhaseView({
                           key={phase?.id}
                           phaseData={phase}
                           length={phase.length}
-                          onGridToggle={() => {}}
-                          handleSelectCard={() => {}}
+                          onGridToggle={() => { }}
+                          handleSelectCard={() => { }}
                           adminProjectView={adminProjectView}
                           setRowCheckboxes={setRowCheckboxes}
                           handleAddRow={handleAddRow}
@@ -1133,8 +700,8 @@ function AddPhaseView({
                       ? "calc(93vh - 140px)"
                       : (changeOrderView || InitialProposalAndChange) &&
                         !(changeOrderView && InitialProposalAndChange)
-                      ? "calc(93vh)"
-                      : "calc(98vh - 300px)"
+                        ? "calc(93vh)"
+                        : "calc(98vh - 300px)"
                     : "",
                   ...themeStyle.scrollable,
                   width: {
@@ -1147,9 +714,9 @@ function AddPhaseView({
                 }}
               >
                 {phases !== null &&
-                phases[0] !== undefined &&
-                phases[0].length !== 0 &&
-                !isLoading ? (
+                  phases[0] !== undefined &&
+                  phases[0].length !== 0 &&
+                  !isLoading ? (
                   phases[0]?.map((phase, index) => {
                     // if (InitialProposalAndChange && phase.initial) {
                     //   return (
@@ -1210,8 +777,8 @@ function AddPhaseView({
                         {changeOrderView
                           ? " Change"
                           : pathCheck.includes("assignproject")
-                          ? " "
-                          : " Approved"}
+                            ? " "
+                            : " Approved"}
                       </span>{" "}
                       Phases Available
                     </Typography>
@@ -1244,6 +811,13 @@ function AddPhaseView({
             onSubmit={handleAddSubmit}
             InitialProposalView={InitialProposalView}
             adminProjectView={adminProjectView}
+          />
+        )}
+        {showGenerativeAiDialouge && (
+          <GenerativeAiDialogue
+            closeGenAiDialogue={closeGenAiDialogue}
+            projectId={projectId}
+            fetchData={fetchData}
           />
         )}
       </Grid>
@@ -1299,33 +873,7 @@ const firstGrid = {
   margin: "auto",
   // border: "2px solid red",
 };
-const buttonBox = {
-  display: "flex",
-  justifyContent: {
-    lg: "flex-end",
-    md: "flex-end",
-    sm: "center",
-    xs: "center",
-  },
-  // overflowX: "auto",
-  gap: "0.3rem",
-  marginTop: "0.5rem",
-  padding: {
-    //changes
-    lg: "0.5rem 2rem",
-    md: "0.1rem 0rem",
-    sm: "1rem 2rem",
-    xs: "0rem 0.10rem",
-  },
-};
-const approvalButton = {
-  background: "#FFAC00",
-  padding: "1rem 0.5rem",
-};
 
-const displayButton = {
-  display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-};
 const slectedCardStyle = {
   padding: "0rem 0rem 0rem 0rem",
   margin: "0rem",
@@ -1349,36 +897,5 @@ const themeStyle = {
   },
 };
 
-const scrollable = {
-  overflow: "scroll",
-  scrollbarWidth: "none", // For Firefox
-  "-ms-overflow-style": "none", // For IE and Edge
-  "&::-webkit-scrollbar": {
-    width: "6px",
-  },
-  "&::-webkit-scrollbar-thumb": {
-    backgroundColor: "transparent",
-    transition: "background-color 0.3s",
-  },
-  "&:hover::-webkit-scrollbar-thumb": {
-    backgroundColor: "#ddd",
-  },
-};
-const style = {
-  position: "absolute",
-  top: { xl: "50%", lg: "50%", md: "50%", sm: "50%", xs: "80%" },
-  left: { xl: "50%", lg: "50%", md: "50%", sm: "50%", xs: "55%" },
-  transform: "translate(-50%, -50%)",
-  bgcolor: "background.paper",
-  border: "0px solid #000",
-  boxShadow: 24,
-  p: 4,
-  borderRadius: "14px",
-};
-
-const modalStyle = {
-  color: "gray",
-  fontSize: "15px",
-};
 
 export default AddPhaseView;

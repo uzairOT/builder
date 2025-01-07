@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
 
@@ -19,7 +17,6 @@ import {
 import YellowBtn from "../../UI/button";
 import FooterCircles from "../FooterCircles/FooterCircles";
 import "../../../App.css";
-import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
 import { useSetProjectToIncompleteMutation } from "../../../redux/apis/Project/userProjectApiSlice";
 import { toast } from "react-toastify";
 import { setCredentials } from "../../../redux/slices/authSlice";
@@ -30,7 +27,6 @@ import {
 
 function Footer({ onNextStep, projectId }) {
   const phases = useSelector((state) => state.projectInitialProposal.phases);
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -82,7 +78,6 @@ function Footer({ onNextStep, projectId }) {
       setTimeout(()=>{
         window.location.href ="/dashboard";
       }, 100)
-      // dispatch(addPhase([]));
     } catch (error) {
       console.log(error);
     }

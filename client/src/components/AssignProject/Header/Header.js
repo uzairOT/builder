@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import { Box, Grid, Button, useMediaQuery } from "@mui/material";
 
@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   resetUserAndRoleEmail,
-  setProjectIdOnBackBtn,
 } from "../../../redux/slices/projectFormSlice";
 import { toast } from "react-toastify";
 import {

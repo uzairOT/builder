@@ -40,6 +40,8 @@ const Login = () => {
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
+    const invoiceCheckString = localStorage.getItem("invoice")
+    const invoiceCheck = JSON.parse(invoiceCheckString)
 
   // const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "70%" : "100%";
@@ -76,6 +78,15 @@ const Login = () => {
       });
     });
   }, []);
+  useEffect(()=>{
+    if( invoiceCheck && !invoiceCheck?.alertShown){
+      invoiceCheck.alertShown = true;
+      const prepareInvoiceCheckObj  = JSON.stringify(invoiceCheck)
+      localStorage.setItem("invoice", prepareInvoiceCheckObj)
+      toast.info("Please login to complete payment")
+    }
+  },[invoiceCheck])
+
   const openInNewTab = (url) => {
     window.open(url, "_blank", "noopener,noreferrer");
   };
@@ -103,7 +114,11 @@ const Login = () => {
         if (res.message === "Login successful!") {
           localStorage.setItem("login", Date.now()); // Use this key to trigger the storage event
           dispatch(setCredentials({ ...res.data }));
-          if (res?.data?.incompleteProject?.incomplete) {
+          if(invoiceCheck && invoiceCheck?.currentPath){
+            setTimeout(() => {
+              window.location.href = invoiceCheck.currentPath;
+            }, 1000);
+          } else if (res?.data?.incompleteProject?.incomplete) {
             setTimeout(() => {
               window.location.href = "/assignproject";
             }, 1000);
@@ -150,8 +165,12 @@ const Login = () => {
       localStorage.setItem("login", Date.now()); // Use this key to trigger the storage event
 
       dispatch(setCredentials({ ...res.data }));
-      // navigate("/");
-      if (
+      if(invoiceCheck){
+        console.log(invoiceCheck)
+        setTimeout(() => {
+          window.location.href = invoiceCheck.currentPath;
+        }, 1000);
+      } else if (
         res?.data?.incompleteProject?.incomplete
       ) {
         setTimeout(() => {

@@ -242,6 +242,13 @@ const projectApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data
       })
+    }),
+    projectGenAI: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/projectGenAI`,
+        method: 'POST',
+        body: data
+      }),
     })
   }),
 });
@@ -279,5 +286,6 @@ export const {
   useCheckProjectDuplicationMutation,
   useDeleteProjectFileMutation,
   useDeleteInvitationMutation,
-  useGetProjectWeatherMutation
+  useGetProjectWeatherMutation,
+  useProjectGenAIMutation
 } = projectApiSlice;

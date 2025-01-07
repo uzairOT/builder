@@ -5,27 +5,16 @@ import AssignNewProjectStep3 from "../AssignNewProjectStep3/AssignNewProjectStep
 
 import Header from "../Header/Header";
 import AssignProject from "../../../pages/AssignProject/AssignProject";
-import { UNSAFE_NavigationContext, useNavigate } from "react-router-dom";
 import SaveAsProject from "../SaveAsProject/SaveAsProject";
 import Footer from "../Footer/Footer";
-import {setBackButtonProjectId } from "../../../redux/slices/Project/handlingProjectFlowSlice";
-import { useDispatch } from "react-redux";
+
 
 function NewProject({step3}) {
-    const navigate = useNavigate()
     const [step, setStep] = useState(step3 ? step3 : 0);
-    // const [isSaveAs,setIsSaveAs] = useState(false)
     const [projectId, setProjectId] = useState(null);
-    const [backButtonProject, setBackButtonProject]=useState(null)
-    const [locationKeys, setLocationKeys] = useState([]);
     const local = localStorage.getItem("userInfo");
     const currentUser = JSON.parse(local);
 
-const dispatch=useDispatch()
-// console.log(step3)
-
-    
- 
     const onSaveStep = () => {
         setStep(0);
     }
@@ -61,7 +50,7 @@ const dispatch=useDispatch()
                 return (
                     <div>
                         <Header step={step} step2={true} handlePreviousStep={handlePreviousStep} />
-                        <AssignNewProjectStep2 setBackButtonProjectId={setBackButtonProject} setProjectId={setProjectId} projectId={projectId} onNextStep={onNextStep} />
+                        <AssignNewProjectStep2 setProjectId={setProjectId} projectId={projectId} onNextStep={onNextStep} />
                     </div>
                 );
             case 1:

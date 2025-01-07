@@ -1,25 +1,15 @@
 import React, { useState } from "react";
 import {
   Button,
-  TextField,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
-  Box,
-  Typography,
-  MenuItem,
-  Avatar,
-  IconButton,
-  Stack,
   CircularProgress,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import YellowBtn from "../../UI/button";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  resetUserAndRoleEmail,
   setSkipInvite,
 } from "../../../redux/slices/projectFormSlice";
 import { toast } from "react-toastify";

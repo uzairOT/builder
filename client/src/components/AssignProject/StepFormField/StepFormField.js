@@ -1,20 +1,15 @@
 import React, { useState } from "react";
 import {
   useMediaQuery,
-  Button,
   Box,
   Typography,
   TextField,
   MenuItem,
-  FormControl,
-  formControlStyle,
-  Select,
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import "../../../App.css";
 import "./StepFormField.css";
-import { toast } from "react-toastify";
 
 function ProjectFormFields({
   index,

@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import FooterCircles from "../FooterCircles/FooterCircles";
 import YellowBtn from "../../UI/button";
 import StepTitles from "../StepTitles/StepTitles";
-import AttachFileSharpIcon from "@mui/icons-material/AttachFileSharp";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SkipInvite from "../../dialogues/SkipInvite/SkipInvite";
 
@@ -13,17 +11,13 @@ import {
   updateUserEmail,
   updateUserRole,
   selectUsers,
-  resetUserAndRoleEmail,
   removeUser,
-  setSkipInvite,
 } from "../../../redux/slices/projectFormSlice";
 
 import { Button, Box, useMediaQuery, CircularProgress } from "@mui/material";
 import StepFormField from "../StepFormField/StepFormField";
 import {
   selectProjectForm,
-  setProjectName,
-  setLocation,
 } from "../../../redux/slices/projectFormSlice";
 import {
   useAssignProjectMutation,
@@ -253,7 +247,7 @@ function AssignNewProjectStep2({
       <Box sx={{ ...buttonBox, ...buttoncontainer }}>
         <Button
           disabled={isLoading || isEditLoading}
-          sx={{ ...YellowBtn, ...buttonStyle }}
+          sx={{ ...YellowBtn, }}
           onClick={() => {  
                handleNextStep();
 

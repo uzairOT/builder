@@ -195,6 +195,7 @@ function App() {
           path="/invoicePayment/:invoiceId/:adminId/:totalAmount"
           element={<InvoicePayment />}
         />
+
         {/* <Route path="/subscribe" element={<NewSubscription />} /> */}
 
         {isAuthenticated && currentUser ? (
@@ -325,7 +326,7 @@ function App() {
             pauseOnFocusLoss={false}
             draggable
             pauseOnHover
-            theme="light"
+            theme="dark"
           />
           <RouterProvider router={router} />
         </Suspense>
