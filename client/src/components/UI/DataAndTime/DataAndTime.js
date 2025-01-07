@@ -38,7 +38,7 @@ const themeStyle = {
     fontSize: { xs: "58px", sm: '40px', md: "40px", lg: '42px', xl: "52px" },
     color: "#FFAC00",
     fontFamily: 'var(--main-font-family)',
-    fontWeight: "300",
+    fontWeight: "600",
   },
   date: {
     // paddingLeft: 2,

@@ -81,7 +81,7 @@ const MainContent = () => {
                 {!mdView && <Typography component="div" sx={styles.heading2}>
                   more{" "}
                 </Typography>}
-                <Box height={mobView ? '25px' : '45px'} sx={styles.heading2}  style={{ paddingTop: '4px', overflow: 'hidden', display: 'inline-block' }}>
+                <Box height={mobView ? '25px' : '58px'} sx={styles.heading2}  style={{ paddingTop: '4px', overflow: 'hidden', display: 'inline-block' }}>
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={texts[currentIndex].text}
