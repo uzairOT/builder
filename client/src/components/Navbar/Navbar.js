@@ -20,6 +20,7 @@ import {
   Popper,
   ClickAwayListener,
 } from "@mui/material";
+import TranslateIcon from "@mui/icons-material/Translate";
 import { ReactComponent as BuilderProNavbarLogo } from "./assets/svgs/builder-pro-logo-navbar.svg";
 import { ReactComponent as BuilderProNavbarLogout } from "./assets/svgs/builder-pro-navbar-logout.svg";
 import React, { useEffect, useState } from "react";
@@ -56,8 +57,10 @@ import TeamNotifications from "./TeamNotifications";
 import InvoiceNotification from "./InvoiceNotification";
 import { toast } from "react-toastify";
 import ApprovalNotification from "./ApprovalNoifications";
+import i18n from "../../i18n";
 
 const Navbar = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [open, setOpen] = useState(null);
   const [userType, setUserType] = useState("");
@@ -265,7 +268,12 @@ const Navbar = () => {
       boxShadow: "0 3px 6px rgba(0, 0, 0, 0.3)",
     },
   };
-
+  const handleClickAway = () => {
+    setDropdownOpen(false);
+  };
+  const handleDropdownToggle = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
   return (
     <>
       {IsValidSub === true && (
@@ -286,7 +294,13 @@ const Navbar = () => {
                 />
               </Link>
               <Tabs
-                sx={themeStyle.tabs}
+                sx={{
+                  ...themeStyle.tabs,
+                  "& .MuiTabs-scroller": {
+                    overflow: "visible !important",
+                    position: "relative !important",
+                  },
+                }}
                 value={selectedTab}
                 // onClick={handleTabChange}
                 indicatorColor="#FFF"
@@ -321,6 +335,68 @@ const Navbar = () => {
                   onClick={(e) => handleTabChange(e, 5)}
                 />
               </Tabs>
+              <ClickAwayListener onClickAway={handleClickAway}>
+                <Box
+                  sx={{
+                    position: "relative",
+                    display: "flex",
+                    alignItems: "center",
+                    ml: 2,
+                    cursor: "pointer",
+                  }}
+                >
+                  <IconButton onClick={handleDropdownToggle}>
+                    <TranslateIcon sx={{ color: "#4C8AB1" }} />
+                  </IconButton>
+                  {dropdownOpen && (
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: "40px", // Adjust for spacing below the icon
+                        right: 0,
+                        backgroundColor: "white",
+                        boxShadow: "0px 8px 16px 0px rgba(0,0,0,0.2)",
+                        zIndex: 9999, // High z-index to ensure it appears above
+                        borderRadius: "8px",
+                        overflow: "hidden",
+                        animation: "fadeIn 0.3s ease-out",
+                        minWidth: "150px",
+                        "@keyframes fadeIn": {
+                          from: {
+                            opacity: 0,
+                            transform: "translateY(-10px)",
+                          },
+                          to: { opacity: 1, transform: "translateY(0)" },
+                        },
+                      }}
+                    >
+                      {["en", "fr", "es", "zh", "de"].map((lang) => (
+                        <MenuItem
+                          key={lang}
+                          onClick={() => i18n.changeLanguage(lang)}
+                          sx={{
+                            padding: "10px 20px",
+                            fontSize: "14px",
+                            "&:hover": {
+                              backgroundColor: "rgba(0, 0, 0, 0.05)",
+                            },
+                          }}
+                        >
+                          {lang === "en"
+                            ? "English"
+                            : lang === "fr"
+                            ? "French"
+                            : lang === "es"
+                            ? "Spanish"
+                            : lang === "zh"
+                            ? "Chinese"
+                            : "German"}
+                        </MenuItem>
+                      ))}
+                    </Box>
+                  )}
+                </Box>
+              </ClickAwayListener>
 
               <Box
                 display={"flex"}
@@ -441,7 +517,8 @@ const Navbar = () => {
                         (!Array.isArray(teamNotifications) ||
                           teamNotifications.length === 0) &&
                         (!Array.isArray(notificationsArr) ||
-                          notificationsArr.length === 0) && !invoiceNotification? (
+                          notificationsArr.length === 0) &&
+                        !invoiceNotification ? (
                           <div
                             style={{
                               backgroundColor: "#F2F2F2",
@@ -468,7 +545,6 @@ const Navbar = () => {
               </Box>
             </Toolbar>
           </AppBar>
-
         </>
       )}
     </>

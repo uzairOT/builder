@@ -9,6 +9,7 @@ import {
   VisionSvg,
 } from "../assets/svg";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 // Define the hover effect animation variants
 const popEffect = {
@@ -62,24 +63,25 @@ const InfoCard = ({ icon, title, description, position }) => {
 };
 
 const AboutSection = () => {
+  const { t } = useTranslation();
   const features = [
     {
       icon: <SolutionIcn />,
-      title: "Solution",
+      title: `${t('aboutus.features.title1')}`,
       description:
-        "BuilderBUILDER PRO offers a comprehensive suite of tools designed to streamline every aspect of construction management. From project planning and resource allocation to real-time collaboration and progress tracking, our software ensures a smooth and efficient workflow, accessible from any device.",
+        `${t('aboutus.features.desc1')}`,
     },
     {
       icon: <ColabAbtIcn />,
-      title: "Collaboration ",
+      title: `${t('aboutus.features.title2')}`,
       description:
-        "At BuilderBUILDER PRO, we believe that great construction projects are built on strong collaboration. Our platform fosters seamless communication and coordination among all stakeholders, from architects and engineers to contractors and clients, ensuring everyone is on the same page.",
+        `${t('aboutus.features.desc2')}`,
     },
     {
       icon: <InnIcn />,
-      title: "Innovation",
+      title: `${t('aboutus.features.title3')}`,
       description:
-        "Innovation is at the heart of BuilderBUILDER PRO. We continually invest in the latest technologies and integrate advanced features to keep our users ahead of the curve, making construction management more efficient, transparent, and adaptable to changing industry demands.",
+        `${t('aboutus.features.desc3')}`,
     },
   ];
 
@@ -88,16 +90,8 @@ const AboutSection = () => {
       <Container>
         <SectionTitle
           subtitle="About Us"
-          title="Building Smarter Solutions for Construction Professionals"
-          description="Hello and welcome! Our journey in the construction industry began in 2004, inspired by our founder, a third-generation construction professional.
-           With a passion for excellence and innovation, the National Property Institute was established. Over the years, 
-           we’ve encountered the same challenges as many in our field—juggling the demands of on-site work with the complexities of office management. 
-           We needed a solution that could seamlessly bridge both worlds, and that’s how BuilderBUILDER PRO was born.
-           BuilderBUILDER PRO is more than just construction management software;
-            it’s a tool forged from our firsthand experiences. Designed to streamline project management and enhance collaboration,
-             it empowers you to efficiently manage your projects, whether you're on-site or in the office.
-              We’re proud to introduce BuilderBUILDER PRO and excited to help you build smarter, faster, and more efficiently. BuilderBUILDER PRO will make you good, better and best!
-           "
+          title={t('aboutus.text1')}
+          description={t('aboutus.text2')}
         />
         <Grid container spacing={4} sx={styles.gridContainer}>
           <Grid item xs={12} md={6}>
@@ -108,8 +102,8 @@ const AboutSection = () => {
             >
               <InfoCard
                 icon={<VisionSvg />}
-                title="Vision"
-                description="To revolutionize the construction industry by providing seamless, innovative management solutions that empower professionals to build smarter, faster, and more efficiently."
+                title={t('aboutus.cards.title1')}
+                description={t('aboutus.cards.desc1')}
                 position="topLeft"
               />
             </motion.div>
@@ -122,8 +116,8 @@ const AboutSection = () => {
             >
               <InfoCard
                 icon={<MissionSvg />}
-                title="Mission"
-                description="Our mission is to simplify construction management through cutting-edge technology, ensuring projects are completed on time, within budget, and to the highest standards of quality."
+                title={t('aboutus.cards.title2')}
+                description={t('aboutus.cards.desc2')}
                 position="bottomRight"
               />
             </motion.div>

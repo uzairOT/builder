@@ -7,62 +7,52 @@ import {
   InnovateIcn,
 } from "../assets/svg";
 import { motion } from "framer-motion";
-
-
-
-
+import { useTranslation } from "react-i18next";
 
 // Define the hover effect animation variants
 const popEffect = {
   hidden: { scale: 1 },
-  hover: { scale: 1.05, transition: { type: "spring", stiffness: 300, damping: 15 } },
+  hover: {
+    scale: 1.05,
+    transition: { type: "spring", stiffness: 300, damping: 15 },
+  },
 };
 
-const features = [
-  {
-    icon: <ComprehensiveIcn />,
-    title: "Comprehensive Solution",
-    description:
-      "Manage all aspects of your projects seamlessly with BuilderBUILDER PRO’s complete toolkit.",
-  },
-  {
-    icon: <ColabIcn />,
-    title: "Real-Time Collaboration ",
-    description:
-      "Stay connected and make decisions faster with our live updates and collaborative tools",
-  },
-  {
-    icon: <ScaleIcn />,
-    title: "Scalable & Flexible",
-    description:
-      "Grow effortlessly with customizable features and adaptable pricing plans.",
-  },
-  {
-    icon: <InnovateIcn />,
-    title: "Innovative & Reliability",
-    description:
-      "Trust BuilderBUILDER PRO’s cutting-edge technology for reliable project management innovations.",
-  },
-];
-
 const WhyChooseBuilder = () => {
+  const { t } = useTranslation();
+  const features = [
+    {
+      icon: <ComprehensiveIcn />,
+      title: `${t("chooseus.features.title1")}`,
+      description: `${t("chooseus.features.desc1")}`,
+    },
+    {
+      icon: <ColabIcn />,
+      title: `${t("chooseus.features.title2")}`,
+      description: `${t("chooseus.features.desc2")}`,
+    },
+    {
+      icon: <ScaleIcn />,
+      title: `${t("chooseus.features.title3")}`,
+      description: `${t("chooseus.features.desc3")}`,
+    },
+    {
+      icon: <InnovateIcn />,
+      title: `${t("chooseus.features.title4")}`,
+      description: `${t("chooseus.features.desc4")}`,
+    },
+  ];
   return (
     <Box mb={5}>
       <Container>
         <Typography align="center" sx={styles.titleFont}>
-          Why Choose BuilderBUILDER PRO?
+          {t("chooseus.title1")}
         </Typography>
         <Typography sx={styles.SubtitleFont} align="center">
-          We understand the unique challenges of the construction industry.
+          {t("chooseus.title2")}
         </Typography>
 
-        <Typography sx={styles.DecsFont}>
-          Our platform is designed by construction professionals for
-          construction professionals, offering unmatched functionality, ease of
-          use, and mobile accessibility. With BuilderBUILDER PRO, you gain a
-          partner committed to your success, providing the tools you need to
-          manage your projects with confidence and precision.
-        </Typography>
+        <Typography sx={styles.DecsFont}>{t("chooseus.title3")}</Typography>
         <Grid
           container
           spacing={2}
@@ -72,22 +62,21 @@ const WhyChooseBuilder = () => {
         >
           {features.map((feature, index) => (
             <Grid item xs={12} md={3} key={index} alignItems={"center"}>
-               <motion.div
-          initial="hidden"
-          whileHover="hover"
-          variants={popEffect}
-        >
-
-              <Box textAlign="center">
-                <Typography>{feature.icon}</Typography>
-                <Typography sx={styles.featureTitle} gutterBottom>
-                  {feature.title}
-                </Typography>
-                <Typography sx={styles.featureDesc}>
-                  {feature.description}
-                </Typography>
-              </Box>
-</motion.div>
+              <motion.div
+                initial="hidden"
+                whileHover="hover"
+                variants={popEffect}
+              >
+                <Box textAlign="center">
+                  <Typography>{feature.icon}</Typography>
+                  <Typography sx={styles.featureTitle} gutterBottom>
+                    {feature.title}
+                  </Typography>
+                  <Typography sx={styles.featureDesc}>
+                    {feature.description}
+                  </Typography>
+                </Box>
+              </motion.div>
             </Grid>
           ))}
         </Grid>
@@ -128,6 +117,6 @@ const styles = {
     fontSize: { md: "16px", sm: "16px", xs: "14px" },
     fontWeight: 400,
     color: "#454245",
-    textAlign:'left'
+    textAlign: "left",
   },
 };

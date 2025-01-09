@@ -26,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 import googlePlay from "../../../assets/FileSvg/googlePlay.svg";
 import appStore from "../../../assets/FileSvg/appStore.svg";
 import { motion } from "framer-motion";
-
+import { useTranslation } from 'react-i18next';
 const popEffect = {
   hidden: { scale: 1 },
   hover: {
@@ -36,6 +36,7 @@ const popEffect = {
 };
 
 const Footer = () => {
+  const { t } = useTranslation();
   const [sendContactForm] = useSendContactFormMutation();
   const navigate = useNavigate();
 
@@ -127,7 +128,7 @@ const Footer = () => {
                   sx={styles.newletterStyles}
                   style={{ color: "#000" }}
                 >
-                  Subscribe to our newsletter
+                  {t('footer.title1')}
                 </Typography>
                 <form onSubmit={formik.handleSubmit}>
                   <TextField
@@ -144,7 +145,7 @@ const Footer = () => {
                       },
                     }}
                     variant="outlined"
-                    placeholder="Enter your email"
+                    placeholder={t('footer.title2')}
                     style={styles.subscribeInput}
                     InputProps={{
                       startAdornment: (
@@ -169,7 +170,7 @@ const Footer = () => {
                               textTransform: "none",
                             }}
                           >
-                            Submit
+                            {t('footer.title3')}
                           </Button>
                         </InputAdornment>
                       ),
@@ -207,11 +208,7 @@ const Footer = () => {
               <BuilderIcnSm />
             </Typography>
             <Typography variant="body2" style={styles.footerDesc}>
-              BuilderBUILDER PRO is the leading construction management
-              solution, designed to help you streamline your projects from start
-              to finish. With our powerful tools and features, you can manage
-              every aspect of your construction projects with ease and
-              efficiency.
+              {t('footer.title4')}
             </Typography>
           </Grid>
           <Grid
@@ -244,7 +241,7 @@ const Footer = () => {
             textAlign={{ lg: "left", xs: "center" }}
           >
             <Typography sx={styles.footerIntallText} variant="h6" gutterBottom>
-              Install App
+              {t('footer.title5')}
             </Typography>
             <Container
               style={styles.appButtons}
@@ -301,7 +298,7 @@ const Footer = () => {
         <Box style={styles.footerBottom}>
           <Box>
             <Typography variant="body2" styles={styles.footerCopyright}>
-              © Copyright 2024, All Rights Reserved by BuilderBUILDER PRO
+              {t('footer.title6')}
             </Typography>
           </Box>
           <Box>

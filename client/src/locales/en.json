@@ -1,0 +1,233 @@
+{
+  "landingPage": {
+    "text1": "Your Trusted Construction Management",
+    "text2": "Using BuilderBUILDER PRO will make you",
+    "text3": "more",
+    "text4": "PROFITABLE!",
+    "text5": "ORGANIZED!",
+    "text6": "EFFICIENT!",
+    "text7": "STREAMLINED!",
+    "text8": "COLABORATIVE!",
+    "text9": "PROFESSIONAL!",
+    "text10": "GOOD!",
+    "text11": "BuilderBUILDER PRO is your all-in-one solution to efficiently manage construction projects from start to finish. Designed for professionals who demand precision, organization, and results, BuilderBUILDER PRO offers robust features to streamline every aspect of your project management."
+  },
+  "buttons": {
+    "btn1": "Schedule a Demo",
+    "btn2": "DOWNLOAD NOW!"
+  },
+  "aboutus": {
+    "text1": "Building Smarter Solutions for Construction Professionals",
+    "text2": "Hello and welcome! Our journey in the construction industry began in 2004, inspired by our founder, a third-generation construction professional. With a passion for excellence and innovation, the National Property Institute was established. Over the years, we’ve encountered the same challenges as many in our field—juggling the demands of on-site work with the complexities of office management. We needed a solution that could seamlessly bridge both worlds, and that’s how BuilderBUILDER PRO was born. BuilderBUILDER PRO is more than just construction management software; it’s a tool forged from our firsthand experiences. Designed to streamline project management and enhance collaboration, it empowers you to efficiently manage your projects, whether you're on-site or in the office. We’re proud to introduce BuilderBUILDER PRO and excited to help you build smarter, faster, and more efficiently. BuilderBUILDER PRO will make you good, better and best!",
+    "cards": {
+      "title1": "Vision",
+      "title2": "Mission",
+      "desc1": "To revolutionize the construction industry by providing seamless, innovative management solutions that empower professionals to build smarter, faster, and more efficiently.",
+      "desc2": "Our mission is to simplify construction management through cutting-edge technology, ensuring projects are completed on time, within budget, and to the highest standards of quality."
+    },
+    "features": {
+      "title1": "Solution",
+      "title2": "Collaboration",
+      "title3": "Innovation",
+      "desc1": "BuilderBUILDER PRO offers a comprehensive suite of tools designed to streamline every aspect of construction management. From project planning and resource allocation to real-time collaboration and progress tracking, our software ensures a smooth and efficient workflow, accessible from any device.",
+      "desc2": "At BuilderBUILDER PRO, we believe that great construction projects are built on strong collaboration. Our platform fosters seamless communication and coordination among all stakeholders, from architects and engineers to contractors and clients, ensuring everyone is on the same page.",
+      "desc3": "Innovation is at the heart of BuilderBUILDER PRO. We continually invest in the latest technologies and integrate advanced features to keep our users ahead of the curve, making construction management more efficient, transparent, and adaptable to changing industry demands."
+    }
+  },
+  "chooseus": {
+    "title1": "Why Choose BuilderBUILDER PRO?",
+    "title2": "We understand the unique challenges of the construction industry.",
+    "title3": "Our platform is designed by construction professionals for construction professionals, offering unmatched functionality, ease of use, and mobile accessibility. With BuilderBUILDER PRO, you gain a partner committed to your success, providing the tools you need to manage your projects with confidence and precision.",
+    "features": {
+      "title1": "Comprehensive Solution",
+      "title2": "Real-Time Collaboration",
+      "title3": "Scalable & Flexible",
+      "title4": "Innovative & Reliability",
+      "desc1": "Manage all aspects of your projects seamlessly with BuilderBUILDER PRO’s complete toolkit.",
+      "desc2": "Stay connected and make decisions faster with our live updates and collaborative tools",
+      "desc3": "Grow effortlessly with customizable features and adaptable pricing plans.",
+      "desc4": "Trust BuilderBUILDER PRO’s cutting-edge technology for reliable project management innovations."
+    }
+  },
+  "whatwedo": {
+    "title1": "What We Do?",
+    "title2": "Unlock the Full Potential of Your Construction Projects",
+    "title3": "BuilderBUILDER PRO offers a comprehensive suite of features designed to streamline and optimize every aspect of construction management. Discover how our powerful tools can help you achieve success from planning to completion.",
+    "features": {
+      "title1": "Dashboard",
+      "title2": "Work Order Events",
+      "title3": "Subscription",
+      "title4": "Reports",
+      "title5": "Team Invitations",
+      "title6": "Invoice Management",
+      "desc1": "Access detailed project insights, track progress and costs, manage tasks efficiently, and receive personalized updates with real-time analytics and weather integration.",
+      "desc2": "Detailed project overviews, including line items and costs, get real-time weather updates, and organize daily notes for comprehensive information management.",
+      "desc3": "Display current plan details and renewal dates, provide transparent billing records, highlight plan benefits and features, and offer clear upgrade options.",
+      "desc4": "Track project costs, invoices, and profit margins with intuitive visuals, monitor workdays to keep timelines on track, and receive automatic deadline alerts for timely project completion.",
+      "desc5": "Effortlessly create new projects and invite team members to join your secure workspace, streamlining project initiation and collaboration.",
+      "desc6": "Easily generate detailed invoices with itemized lists, download PDFs for convenient sharing, access invoice history for each project, and customize line items to fit project-specific needs."
+    }
+  },
+  "features": {
+    "title1": "Features",
+    "title2": "Here's how",
+    "title3": "BuilderBUILDER PRO",
+    "title4": "sets you up for the best Management",
+    "title5": "Choose us for a seamless blend of innovation, reliability, and customer-centric solutions. With a track record of delivering unparalleled quality, our dedicated team ensures your experience is nothing short of exceptional.",
+    "features": {
+      "title1": "Dashboard",
+      "title2": "Work Order Events",
+      "title3": "Subscription",
+      "title4": "Reports",
+      "title5": "Team Invitations",
+      "title6": "Invoice Management",
+      "desc1": {
+        "list1": "Access key project details like client names, job totals, and locations with interactive project cards for quick, at-a-glance updates.",
+        "list2": "Track real-time progress, analyze costs, and project profits with advanced tools for informed decision-making.",
+        "list3": "Use a user-friendly task calendar to organize, prioritize, and optimize your daily tasks and team productivity."
+      },
+      "desc2": {
+        "list1": "View detailed project information, including line items, quantities, rates, and costs, all in one location.",
+        "list2": "Receive live weather conditions for project locations to aid in planning and scheduling.",
+        "list3": "Keep and organize daily notes for each project, ensuring important updates are easily accessible."
+      },
+      "desc3": {
+        "list1": "Display the user's plan details, including remaining days and renewal dates.",
+        "list2": "Provide a transparent record of payments with dates, amounts, and plan names.",
+        "list3": "Highlight current plan benefits and features, and offer easy options for plan upgrades or switches."
+      },
+      "desc4": {
+        "list1": "Track project costs, invoices, and profit margins with intuitive charts and graphs.",
+        "list2": "Monitor workdays spent, remaining, and overdue to keep projects on schedule.",
+        "list3": "Receive automatic alerts for upcoming deadlines to ensure timely project completion."
+      },
+      "desc5": {
+        "list1": "Quickly create new projects with a user-friendly interface.",
+        "list2": "Effortlessly invite team members to collaborate on your projects.",
+        "list3": "Ensure a protected environment for all project activities and data."
+      },
+      "desc6": {
+        "list1": "Easily create detailed invoices with itemized lists, quantities, rates, and total amounts for projects.",
+        "list2": "Offer downloadable PDF invoices for convenient record-keeping and sharing.",
+        "list3": "Access and manage a history of all invoices for a project, with options to add new line items and view detailed invoice information."
+      }
+    }
+  },
+  "contactus": {
+    "title1": "Contact Us",
+    "title2": "Let’s talk on something great together",
+    "title3": "Have something in mind that you think we'd be a great fit for it? We'd love to know what you're thinking.",
+    "title4": "Get in",
+    "title5": "Touch",
+    "form": {
+      "btn1": "Sending...",
+      "name": "First Name",
+      "lastName": "Last Name",
+      "email": "Email address",
+      "phone": "Phone number",
+      "message": "Message",
+      "submit": "Send message",
+      "title1": "You agree to our friendly",
+      "title2": "privacy policy"
+    },
+    "info": {
+      "title": "Contact Information",
+      "address": "123 Main St, City, State, ZIP Code",
+      "phone": "+1 (123) 456-7890",
+      "email": "info@builderbuilderpro.com"
+    }
+  },
+  "faqs": {
+    "title1": "FAQ's",
+    "title2": "Frequently Asked Questions",
+    "title3": "Everything you need to know about the product and billing.",
+    "title4": "Still have questions?",
+    "title5": "Can't find the answer you're looking for? Please chat to our friendly team.",
+    "title6": "Get in touch",
+    "drawer1": {
+      "title": "How does the weather integration feature help in project management?",
+      "desc": "The integrated weather forecast feature provides real-time weather updates, enabling you to plan projects with confidence and adjust schedules for any conditions that might impact your workflow."
+    },
+    "drawer2": {
+      "title": "Where can I find my payment history?",
+      "desc": "You can find your payment history in the 'Billing' or 'Payment History' section under the 'Account' or 'Settings' menu. This section will provide a detailed breakdown of your past payments and invoices."
+    },
+    "drawer3": {
+      "title": "What financial metrics are available in the reports section?",
+      "desc": "The reports section includes various financial metrics such as project budgets, expenditure breakdowns, profit and loss statements, and ROI calculations. These metrics help you analyze the financial health of your projects and make informed decisions."
+    },
+    "drawer4": {
+      "title": "Can I track the workdays spent on a project?",
+      "desc": "Yes, you can track workdays spent on a project using the 'Time Tracking' or 'Project Timeline' feature. This allows you to see the total days and hours logged by team members, helping you monitor productivity and manage project timelines effectively."
+    },
+    "drawer5": {
+      "title": "How do I receive notifications for upcoming project deadlines?",
+      "desc": "To receive notifications for upcoming project deadlines, enable notifications in the 'Settings' section. You can customize notifications to be sent via email, in-app alerts, or push notifications to ensure you never miss an important deadline."
+    },
+    "drawer6": {
+      "title": "How can I invite team members to join a project?",
+      "desc": "To invite team members to join a project, go to the 'Project Management' or 'Team' section, and click on 'Invite Members.' Enter their email addresses, assign roles, and send invitations. They will receive an email with instructions to join the project."
+    }
+  },
+  "testimonials": {
+    "title1": "Testimonials",
+    "title2": "What Our Customers Are Saying",
+    "title3": "We're proud to share the positive feedback from our valued customers. Here's what they have to say about their experiences with us.",
+    "title4": "BuilderBUILDER PRO has transformed the way we manage our construction projects. The intuitive interface and robust features have saved us time and money while improving our overall project quality.",
+    "title5": "John D., Construction Manager",
+    "title6": "With BuilderBUILDER PRO, our team can collaborate seamlessly, whether we’re in the office or on-site. It’s a game-changer for our workflow and project success.",
+    "title7": "Sarah L., Project Coordinator",
+    "title8": "Numbers are telling our story",
+    "title9": "Our platform is designed by construction professionals for construction professionals, offering unmatched functionality, ease of use, and mobile accessibility.",
+    "title10": "Tickets Delivered This Month",
+    "title11": "Active Customers Rate",
+    "title12": "Customer Satisfaction Rate"
+  },
+  "footer": {
+    "title1": "Subscribe to our newsletter",
+    "title2": "Enter your email",
+    "title3": "Submit",
+    "title4": "BuilderBUILDER PRO is the leading construction management solution, designed to help you streamline your projects from start to finish. With our powerful tools and features, you can manage every aspect of your construction projects with ease and efficiency.",
+    "title5": "Install App",
+    "title6": "© Copyright 2024, All Rights Reserved by BuilderBUILDER PRO"
+  },
+  "userProject": {
+    "title1": "User Projects",
+    "title2": "All Listed Projects",
+    "title3": "Remodel",
+    "title4": "New Build",
+    "title5": "Commercial",
+    "title6": "Client Name:",
+    "title7": "Job Running Total:",
+    "title8": "Location:",
+    "title9": "Organization:",
+    "title10": "Add New Project",
+    "weather": {
+      "title1": "Good Morning",
+      "title2": "Good Afternoon",
+      "title3": "Good Evening",
+      "title4": "Enable location to get the weather for your area.",
+      "title5": "Commercial",
+      "title6": "Client Name:",
+      "title7": "Job Running Total:",
+      "title8": "Location:",
+      "title9": "Organization:",
+      "title10": "Add New Project",
+      "title11": "Humidity",
+      "title12": "Wind speed",
+      "title13": "Feels like:"
+    },
+    "processcard": {
+        "title1": "Client Name:",
+        "title2": "No Client Name",
+        "title3": "Pending Invoice",
+        "title4": "Unread Messages",
+        "title5": "Project Progress",
+        "title6": "Project Cost",
+        "title7": "Profit Details",
+        "title8": "Projected Profit",
+        "title9": "Margin",
+        "title10": "Progress"
+    }
+  }
+}

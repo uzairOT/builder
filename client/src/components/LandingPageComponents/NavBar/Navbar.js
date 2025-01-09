@@ -11,16 +11,23 @@ import {
   ListItem,
   ListItemText,
   capitalize,
+  MenuItem,
+  ClickAwayListener,
 } from "@mui/material";
+import i18n from "i18next";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Buildericn } from "../assets/svg";
 import { useNavigate } from "react-router-dom";
-
+import TranslateIcon from "@mui/icons-material/Translate";
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const handleDropdownToggle = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
   const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -122,7 +129,9 @@ const Navbar = () => {
       </List>
     </Box>
   );
-
+  const handleClickAway = () => {
+    setDropdownOpen(false);
+  };
   return (
     <AppBar
       position="static"
@@ -190,6 +199,105 @@ const Navbar = () => {
           >
             FAQs
           </Typography>
+          <ClickAwayListener onClickAway={handleClickAway}>
+          <Typography
+            variant="body1"
+            component="div"
+            sx={{
+              ...styles.navItemFont,
+              position: "relative",
+              display: "inline-block",
+              alignItems: "center",
+              cursor: "pointer",
+              "&:hover": {
+                color: "primary.main", // Adds hover effect for the dropdown toggle
+              },
+            }}
+            onClick={handleDropdownToggle}
+          >
+            <IconButton><TranslateIcon /></IconButton>
+            
+            {dropdownOpen && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  backgroundColor: "white",
+                  boxShadow: "0px 8px 16px 0px rgba(0,0,0,0.2)",
+                  zIndex: 1,
+                  mt: 1,
+                  borderRadius: "8px", // Adds rounded corners
+                  overflow: "hidden", // Ensures content stays within rounded edges
+                  animation: "fadeIn 0.3s ease-out", // Smooth animation on dropdown open
+                  "@keyframes fadeIn": {
+                    from: { opacity: 0, transform: "translateY(-10px)" },
+                    to: { opacity: 1, transform: "translateY(0)" },
+                  },
+                }}
+              >
+                <MenuItem
+                  onClick={() => i18n.changeLanguage("en")}
+                  sx={{
+                    padding: "10px 20px",
+                    fontSize: "14px",
+                    "&:hover": {
+                      backgroundColor: "rgba(0, 0, 0, 0.1)", // Adds hover effect for menu items
+                    },
+                  }}
+                >
+                  English
+                </MenuItem>
+                <MenuItem
+                  onClick={() => i18n.changeLanguage("fr")}
+                  sx={{
+                    padding: "10px 20px",
+                    fontSize: "14px",
+                    "&:hover": {
+                      backgroundColor: "rgba(0, 0, 0, 0.1)",
+                    },
+                  }}
+                >
+                  French
+                </MenuItem>
+                <MenuItem
+                  onClick={() => i18n.changeLanguage("es")}
+                  sx={{
+                    padding: "10px 20px",
+                    fontSize: "14px",
+                    "&:hover": {
+                      backgroundColor: "rgba(0, 0, 0, 0.1)",
+                    },
+                  }}
+                >
+                  Spanish
+                </MenuItem>
+                <MenuItem
+                  onClick={() => i18n.changeLanguage("zh")}
+                  sx={{
+                    padding: "10px 20px",
+                    fontSize: "14px",
+                    "&:hover": {
+                      backgroundColor: "rgba(0, 0, 0, 0.1)",
+                    },
+                  }}
+                >
+                  Chinese
+                </MenuItem>
+                <MenuItem
+                  onClick={() => i18n.changeLanguage("de")}
+                  sx={{
+                    padding: "10px 20px",
+                    fontSize: "14px",
+                    "&:hover": {
+                      backgroundColor: "rgba(0, 0, 0, 0.1)",
+                    },
+                  }}
+                >
+                  German
+                </MenuItem>
+              </Box>
+            )}
+          </Typography>
+          </ClickAwayListener>
         </Box>
 
         <Box

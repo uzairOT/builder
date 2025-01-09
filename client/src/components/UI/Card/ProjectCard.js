@@ -1,11 +1,13 @@
 import React from "react";
 import { Box, Card, CardMedia, Stack, Typography } from "@mui/material";
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import { useTranslation } from 'react-i18next';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import logo from "../../Signup/Assets/pngs/builderProYellowLogo.png";
 import { formatMoney } from "../../../utils/Formatters/moneyFormat";
 import { styled } from '@mui/material/styles';
 const ProjectCard = ({ projectProfileCard, selected }) => {
+  const { t } = useTranslation();
   const displayAlert = Boolean(projectProfileCard.end_time);
   const alert1 = Boolean(projectProfileCard.start_time)
   const alert2 = Boolean( projectProfileCard.location)
@@ -122,7 +124,7 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
                 color:"#848484",
               }}
             >
-              Client Name: {projectProfileCard.clientName ? projectProfileCard.clientName : "-"}
+              {t('userProject.title6')} {projectProfileCard.clientName ? projectProfileCard.clientName : "-"}
             </Typography>
             <Typography
               variant="body1"
@@ -131,7 +133,7 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
                 color: "#848484",
               }}
             >
-              Job Running Total: {`$${formatMoney(projectProfileCard.totalJobRunning)}`}
+              {t('userProject.title7')} {`$${formatMoney(projectProfileCard.totalJobRunning)}`}
             </Typography>
             <Typography
               variant="body1"
@@ -140,7 +142,7 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
                 color:  "#848484",
               }}
             >
-              Location: {projectProfileCard.location ? projectProfileCard.location : '-'}
+              {t('userProject.title8')} {projectProfileCard.location ? projectProfileCard.location : '-'}
             </Typography>
             <Typography
               variant="body1"
@@ -149,7 +151,7 @@ const ProjectCard = ({ projectProfileCard, selected }) => {
                 color:  "#848484",
               }}
             >
-              Organization: {projectProfileCard?.User?.companyName ? projectProfileCard?.User?.companyName : '-'}
+              {t('userProject.title9')} {projectProfileCard?.User?.companyName ? projectProfileCard?.User?.companyName : '-'}
             </Typography>
           </>
         ) : (

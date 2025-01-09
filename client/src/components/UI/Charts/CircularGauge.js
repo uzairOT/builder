@@ -1,8 +1,9 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import GaugeComponent from "react-gauge-component";
-
+import { useTranslation } from 'react-i18next';
 const CircularGauge = ({ progress }) => {
+  const { t } = useTranslation();
   const gaugeOptions = {
     type: "radial",
     arc: {
@@ -47,7 +48,7 @@ const CircularGauge = ({ progress }) => {
         //   animationDuration:5000
         // }}
       />
-      <Typography textAlign={"center"}>Progress</Typography>
+      <Typography textAlign={"center"}>{t('userProject.processcard.title10')}</Typography>
     </Box>
   );
 };

@@ -5,6 +5,7 @@ import HumidityImg from "./assets/images/humidity.png";
 import WindImg from "./assets/images/wind.png";
 import { getFormattedWeatherData } from "../../../services/WeatherService";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next';
 import {
   setDailyForecast,
   setTemperatureUnit,
@@ -14,6 +15,7 @@ import { getWeatherIcon } from "../../../utils/weatherFunctions";
 // import { WiHumidity, WiStrongWind } from 'react-icons/wi';
 
 const WeatherAppCurrentForecast = () => {
+  const { t } = useTranslation();
   const query = useSelector((state) => state.dailyForecast.query);
   const dispatch = useDispatch();
   const [currentWeather, setCurrentWeather] = useState({});
@@ -86,7 +88,7 @@ const WeatherAppCurrentForecast = () => {
                 {query.temperatureUnit === "metric" ? "C" : "F"}
               </Typography>
               <Typography sx={{ ...themeStyle.text, fontSize: "13px" }}>
-                Feels like:{" "}
+              {t('userProject.weather.title13')}{" "}
                 <span sx={{ fontSize: "18px", display: "inline" }}>
                   {Math.round(
                     currentWeather?.feels_like ? currentWeather?.feels_like : 0
@@ -139,7 +141,7 @@ const WeatherAppCurrentForecast = () => {
               {currentWeather?.humidity ? currentWeather?.humidity : 0}%
             </Typography>
             <Typography sx={{ ...themeStyle.text }} variant="body2">
-              Humidity
+            {t('userProject.weather.title11')}
             </Typography>
           </Stack>
 
@@ -157,7 +159,7 @@ const WeatherAppCurrentForecast = () => {
               {query.temperatureUnit === "metric" ? "m/s" : "mph"}
             </Typography>
             <Typography sx={{ ...themeStyle.text }} variant="body2">
-              Wind speed
+            {t('userProject.weather.title12')}
             </Typography>
           </Stack>
         </Box>

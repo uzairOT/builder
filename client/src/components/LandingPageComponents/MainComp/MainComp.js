@@ -9,6 +9,7 @@ import {
   capitalize,
   Stack,
 } from "@mui/material";
+import { useTranslation } from 'react-i18next';
 import { DownloadAppStore, DownloadGooglePlay } from "../assets/svg";
 import devicesimg from "../assets/PNG/devices.png";
 import { motion, AnimatePresence } from "framer-motion";
@@ -24,15 +25,7 @@ const popEffect = {
   },
 };
 
-const texts = [
-  { text: "PROFITABLE!", color: "green" },
-  { text: "ORGANIZED!", color: "blue" },
-  { text: "EFFICIENT!", color: "orange" },
-  { text: "STREAMLINED!", color: "grey" },
-  { text: "COLABORATIVE!", color: "purple" },
-  { text: "PROFESSIONAL!", color: "dodgerblue" },
-  { text: "GOOD!", color: "#FFAD03" },
-];
+
 const fadeUpVariants = {
   hidden: { opacity: 0.5, y: 6 },
   visible: { opacity: 1, y: 2 },
@@ -44,11 +37,20 @@ const fadeInUp = {
   exit: { opacity: 0, y: -50 },  // Exit 50px above and hidden
 };
 const MainContent = () => {
+  const { t } = useTranslation();
+  const texts = [
+    { text: `${t('landingPage.text4')}`, color: "green" },
+    { text: `${t('landingPage.text5')}`, color: "blue" },
+    { text: `${t('landingPage.text6')}`, color: "orange" },
+    { text: `${t('landingPage.text7')}`, color: "grey" },
+    { text: `${t('landingPage.text8')}`, color: "purple" },
+    { text: `${t('landingPage.text9')}`, color: "dodgerblue" },
+    { text: `${t('landingPage.text10')}`, color: "#FFAD03" },
+  ];
   const theme = useTheme();
   const downView = useMediaQuery(theme.breakpoints.down("lg"));
   const mdView = useMediaQuery(theme.breakpoints.down("md"));
   const mobView = useMediaQuery(theme.breakpoints.down("sm"));
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isEnd, setIsEnd] = useState(false);
 
@@ -63,23 +65,23 @@ const MainContent = () => {
 
     return () => clearTimeout(timer);
   }, [setCurrentIndex]);
-
+ 
   return (
     <Grid container md={12} sx={styles.container}>
       <Grid>
         <Grid container md={12}>
           <Grid item md={10} xs={12}>
             <Typography sx={styles.heading1}>
-              Your Trusted Construction Management
+            {t('landingPage.text1')}
             </Typography>
             <Stack sx={{ margin: { xs: "20px 0", md: "20px 0" }, }}>
 
               <Typography component="div" sx={styles.heading2}>
-                Using BuilderBUILDER PRO will make you {mdView && 'more '}
+              {t('landingPage.text2')} {mdView && 'more '}
               </Typography>
               <Stack direction={'row'} alignItems={'center'} justifyContent={mdView ? 'center': ''} gap={1.5}>
                 {!mdView && <Typography component="div" sx={styles.heading2}>
-                  more{" "}
+                  {t('landingPage.text3')}{" "}
                 </Typography>}
                 <Box height={mobView ? '25px' : '58px'} sx={styles.heading2}  style={{ paddingTop: '4px', overflow: 'hidden', display: 'inline-block' }}>
                   <AnimatePresence mode="wait">
@@ -104,21 +106,17 @@ const MainContent = () => {
             </Stack>
 
             <Typography component="div" sx={styles.bodyText}>
-              BuilderBUILDER PRO is your all-in-one solution to efficiently
-              manage construction projects from start to finish. Designed for
-              professionals who demand precision, organization, and results,
-              BuilderBUILDER PRO offers robust features to streamline every
-              aspect of your project management.
+            {t('landingPage.text11')}
             </Typography>
 
             <Button variant="outlined" sx={styles.demoButton} href="/#contact">
-              Schedule a Demo
+              {t('buttons.btn1')}
             </Button>
           </Grid>
 
           <Grid item md={2} xs={12}>
             <Typography component="div" sx={styles.downloadText}>
-              DOWNLOAD NOW!
+              {t('buttons.btn2')}
             </Typography>
             <Box sx={{ gap: { sm: 0, xs: 2 } }}>
               <motion.div

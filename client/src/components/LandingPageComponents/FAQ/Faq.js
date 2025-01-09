@@ -12,8 +12,36 @@ import {
 } from "@mui/material";
 import { FaqCloseIcn, FaqExtendIcn } from "../assets/svg";
 import { faqData } from "./FaqData";
+import { useTranslation } from "react-i18next";
 
 const FAQ = () => {
+  const { t } = useTranslation();
+  const faqData = [
+    {
+      question: `${t("faqs.drawer1.title")}`,
+      answer: `${t("faqs.drawer1.desc")}`,
+    },
+    {
+      question: `${t("faqs.drawer2.title")}`,
+      answer: `${t("faqs.drawer2.desc")}`, 
+    },
+    {
+      question: `${t("faqs.drawer3.title")}`,
+      answer: `${t("faqs.drawer3.desc")}`,
+    },
+    {
+      question: `${t("faqs.drawer4.title")}`,
+      answer: `${t("faqs.drawer4.desc")}`,
+    },
+    {
+      question: `${t("faqs.drawer5.title")}`,
+      answer: `${t("faqs.drawer5.desc")}`,
+    },
+    {
+      question: `${t("faqs.drawer6.title")}`,
+      answer: `${t("faqs.drawer6.desc")}`,
+    },
+  ];
   const [expanded, setExpanded] = useState(null);
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -23,13 +51,13 @@ const FAQ = () => {
   return (
     <Box>
       <Container style={styles.container}>
-        <Typography sx={styles.titleFont}>FAQ's</Typography>
+        <Typography sx={styles.titleFont}>{t("faqs.title1")}</Typography>
 
         <Typography sx={styles.SubtitleFont} align="center" gutterBottom>
-          Frequently Asked Questions
+          {t("faqs.title2")}
         </Typography>
         <Typography sx={styles.SubtitleFont} align="center" paragraph>
-          Everything you need to know about the product and billing.
+          {t("faqs.title3")}
         </Typography>
         {faqData.map((item, index) => (
           <Accordion
@@ -67,15 +95,14 @@ const FAQ = () => {
             align="center"
             gutterBottom
           >
-            Still have questions?
+            {t("faqs.title4")}
           </Typography>
           <Typography sx={styles.Contactsecondheading} align="center">
-            Can't find the answer you're looking for? Please chat to our
-            friendly team.
+            {t("faqs.title5")}
           </Typography>
 
           <Button style={styles.button} href="/#contact">
-            Get in touch
+            {t("faqs.title6")}
           </Button>
         </Box>
       </Container>

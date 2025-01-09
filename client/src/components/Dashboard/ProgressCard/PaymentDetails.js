@@ -1,12 +1,14 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import PieChartDisplay from "../../UI/Charts/PieChart";
-
+import { useTranslation } from "react-i18next";
 const PaymentDetails = ({ totalProjectCost }) => {
+  const { t } = useTranslation();
+
   return (
     <Box width={"100%"} pl={1.5} pt={2}>
       <Typography textAlign={"left"} sx={themeStyle.title}>
-        Project Cost
+        {t("userProject.processcard.title6")}
       </Typography>
       <PieChartDisplay totalProjectCost={totalProjectCost} />
     </Box>
@@ -17,7 +19,7 @@ export default PaymentDetails;
 
 const themeStyle = {
   title: {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     color: "#202224",
     opacity: "0.7",
   },
