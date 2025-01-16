@@ -5,6 +5,7 @@ import WeatherAppCurrentForecast from "./WeatherAppCurrentForecast";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useSelector } from "react-redux";
 import { InfoOutlined } from "@mui/icons-material";
+import { useTranslation } from 'react-i18next';
 
 const WeatherView = ({
   dailyForecast,
@@ -13,6 +14,7 @@ const WeatherView = ({
   userGreetings = "Admin",
   isDefaultLocation
 }) => {
+  const { t } = useTranslation();
   //console.log(dailyForecast)
   const userInfo = useSelector((state) => state.auth.userInfo);
   const firstName = userInfo?.user?.firstName;
@@ -20,11 +22,11 @@ const WeatherView = ({
   let greeting;
 
   if (currentHour < 12) {
-    greeting = "Good Morning";
+    greeting = `${t('userProject.weather.title1')}`;
   } else if (currentHour < 18) {
-    greeting = "Good Afternoon";
+    greeting = `${t('userProject.weather.title2')}`;
   } else {
-    greeting = "Good Evening";
+    greeting = `${t('userProject.weather.title3')}`;
   }
 
   return (
@@ -85,7 +87,7 @@ const WeatherView = ({
               fontSize: '13px'
             }}
           >
-            Enable location to get the weather for your area.
+            {t('userProject.weather.title4')}
           </Typography>
         </Stack>
 }

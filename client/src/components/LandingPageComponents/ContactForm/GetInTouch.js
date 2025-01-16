@@ -17,6 +17,7 @@ import { useFormik } from "formik";
 import { PhoneNumberUtil } from "google-libphonenumber";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
+import { useTranslation } from 'react-i18next';
 
 const popEffect = {
   hidden: { scale: 1 },
@@ -40,12 +41,9 @@ const isPhoneValid = (phone) => {
 };
 
 const GetInTouch = () => {
+  const { t } = useTranslation();
   const [sendContactForm, { isLoading, isSuccess, isError, error }] =
     useSendContactFormMutation();
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-  const [privacyPolicyChecked, setPrivacyPolicyChecked] = useState(false);
 
   const isMobile = useMediaQuery("(max-width:600px)");
 
@@ -122,13 +120,12 @@ const GetInTouch = () => {
           textAlign: "center",
         }}
       >
-        <Typography sx={styles.titleFont}>Contact Us</Typography>
+        <Typography sx={styles.titleFont}>{t('contactus.title1')}</Typography>
         <Typography sx={styles.SubtitleFont}>
-          Let’s talk on something great together
+        {t('contactus.title2')}
         </Typography>
         <Typography sx={styles.DecsFont}>
-          Have something in mind that you think we'd be a great fit for it? We'd
-          love to know what you're thinking.
+        {t('contactus.title3')}
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
@@ -146,16 +143,16 @@ const GetInTouch = () => {
           <Grid item xs={12} md={6} mt={3}>
             <Typography sx={styles.TouchFont} textAlign="left" pb={2}>
               {" "}
-              Get in{" "}
+              {t('contactus.title4')}{" "}
               <span style={{ ...styles.TouchFont, color: "#4C8AB1" }}>
-                Touch
+              {t('contactus.title5')}
               </span>
             </Typography>
             <form onSubmit={formik.handleSubmit}>
               <Grid container spacing={0.3}>
                 <Grid item xs={12} sm={6}>
                   <label style={{ ...labelStyle, ...lableResponsiveFont }}>
-                    First Name
+                  {t('contactus.form.name')}
                   </label>
                   <input
                     name="firstName"
@@ -169,7 +166,7 @@ const GetInTouch = () => {
                       ...placeholderStyle,
                       ...lableResponsiveFont,
                     }}
-                    placeholder="First Name"
+                    placeholder={t('contactus.form.name')}
                   />
                   {formik.touched.firstName && formik.errors.firstName && (
                     <Typography
@@ -185,7 +182,7 @@ const GetInTouch = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <label style={{ ...labelStyle, ...lableResponsiveFont }}>
-                    Last Name
+                  {t('contactus.form.lastName')}
                   </label>
                   <input
                     name="lastName"
@@ -199,7 +196,7 @@ const GetInTouch = () => {
                       ...placeholderStyle,
                       ...lableResponsiveFont,
                     }}
-                    placeholder="Last Name"
+                    placeholder={t('contactus.form.lastName')}
                   />
                   {formik.touched.lastName && formik.errors.lastName && (
                     <Typography
@@ -215,7 +212,7 @@ const GetInTouch = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <label style={{ ...labelStyle, ...lableResponsiveFont }}>
-                    Email address
+                  {t('contactus.form.email')}
                   </label>
                   <input
                     name="email"
@@ -251,7 +248,7 @@ const GetInTouch = () => {
                       paddingTop: "5px",
                     }}
                   >
-                    Phone number
+                    {t('contactus.form.phone')}
                   </label>
                   <PhoneInput
                     // disableDialCodePrefill
@@ -299,7 +296,7 @@ const GetInTouch = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <label style={{ ...labelStyle, ...lableResponsiveFont }}>
-                    Message
+                  {t('contactus.form.message')}
                   </label>
                   <textarea
                     name="message"
@@ -341,7 +338,7 @@ const GetInTouch = () => {
                   }
                   label={
                     <Typography variant="body2">
-                      You agree to our friendly{" "}
+                      {t('contactus.form.title1')}{" "}
                       <span
                         style={{
                           textDecoration: "none",
@@ -353,7 +350,7 @@ const GetInTouch = () => {
                           openInNewTab("/privacypolicy");
                         }}
                       >
-                        privacy policy
+                        {t('contactus.form.title2')}
                       </span>
                       .
                     </Typography>
@@ -389,7 +386,7 @@ const GetInTouch = () => {
                 }}
                 disabled={isLoading}
               >
-                {isLoading ? "Sending..." : "Send message"}
+                {isLoading ? `${t('contactus.form.btn1')}` : `${t('contactus.form.submit')}`}
               </Button>
             </form>
           </Grid>

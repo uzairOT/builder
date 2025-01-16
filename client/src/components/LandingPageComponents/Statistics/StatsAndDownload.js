@@ -7,7 +7,7 @@ import {
 } from "../assets/svg";
 import Elipse from "../assets/PNG/Elipse.png";
 import { motion } from "framer-motion";
-
+import { useTranslation } from 'react-i18next';
 const popEffect = {
   hidden: { scale: 1 },
   hover: {
@@ -19,18 +19,17 @@ const popEffect = {
 const backgroundImage = `url(${Elipse})`;
 
 const StatsAndDownload = () => {
+  const { t } = useTranslation();
   return (
     <Box sx={styles.section}>
       <Grid container spacing={5} alignItems="center" justifyContent={"space"}>
         <Grid item xs={12} md={6} justifyContent={"center"}>
           <Container maxWidth={"sm"}>
             <Typography sx={styles.heading}>
-              Numbers are telling our story
+            {t('testimonials.title8')}
             </Typography>
             <Typography sx={styles.subHeading}>
-              Our platform is designed by construction professionals for
-              construction professionals, offering unmatched functionality, ease
-              of use, and mobile accessibility.
+            {t('testimonials.title9')}
             </Typography>
           </Container>
         </Grid>
@@ -44,7 +43,7 @@ const StatsAndDownload = () => {
               <Box maxWidth={"sm"} sx={styles.statItem}>
                 <Typography sx={styles.statValue}>2M+</Typography>
                 <Typography sx={styles.statLabel}>
-                  Tickets Delivered This Month
+                {t('testimonials.title10')}
                 </Typography>
               </Box>
             </motion.div>
@@ -56,7 +55,7 @@ const StatsAndDownload = () => {
               <Box maxWidth={"sm"} sx={styles.statItem}>
                 <Typography sx={styles.statValue}>46K+</Typography>
                 <Typography sx={styles.statLabel}>
-                  Active Customers Rate
+                {t('testimonials.title11')}
                 </Typography>
               </Box>
             </motion.div>
@@ -68,7 +67,7 @@ const StatsAndDownload = () => {
               <Box maxWidth={"sm"} sx={styles.statItem}>
                 <Typography sx={styles.statValue}>99%</Typography>
                 <Typography sx={styles.statLabel}>
-                  Customer Satisfaction Rate
+                {t('testimonials.title12')}
                 </Typography>
               </Box>
             </motion.div>

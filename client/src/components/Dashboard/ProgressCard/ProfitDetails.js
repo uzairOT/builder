@@ -3,21 +3,23 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import RadialBarsChart from "../../UI/Charts/RadialBarsChart";
 import React from "react";
 import { formatMoney } from "../../../utils/Formatters/moneyFormat";
+import { useTranslation } from 'react-i18next';
 import { Textarea } from "@mui/joy";
 import { valueFormatter } from "../../../utils/Formatters/valueFormatter";
 
 const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectCost }) => {
+  const { t } = useTranslation();
   const percentage = (parseFloat(TotalProfit)/parseFloat(totalProjectCost)) * 100;
   return (
     <Stack pt={2} justifyContent={"center"}>
       <Typography pl={4} textAlign={"left"} sx={themeStyle.title}>
-        Profit Details
+         {t('userProject.processcard.title7')}
       </Typography>
       <Stack pl={0} direction={"row"} justifyContent={"center"} width={"100%"} pt={2}>
         <Box>
           <Stack direction={"row"} sx={themeStyle.innerStackLayout}>
             <Typography textAlign={"left"} sx={themeStyle.innerTitle}>
-              Projected Profit
+            {t('userProject.processcard.title8')}
             </Typography>
             <Typography textAlign={"left"} sx={{...themeStyle.innerSubtitle, maxWidth:'300px', overflow:'hidden', textOverflow:'ellipsis'}}>
               ${formatMoney(TotalProfit)}
@@ -33,7 +35,7 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
           </Stack> */}
           <Stack direction={"row"} sx={themeStyle.innerStackLayout}>
             <Typography textAlign={"left"} sx={themeStyle.innerTitle}>
-              Margin
+            {t('userProject.processcard.title9')}
             </Typography>
             <Typography textAlign={"left"} sx={themeStyle.innerSubtitle}>
               {isNaN(percentage)  ? 0 : percentage?.toFixed(2)}%
@@ -103,7 +105,7 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
                   fontFamily={'var(--main-font-family)'}
                  
                 >
-                  Projected Profit
+                  {t('userProject.processcard.title8')}
                 </Typography>
               </Stack>
             </Stack>
@@ -140,7 +142,7 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
                   ${formatMoney(totalProfitFromPaidInvoices)}
                 </Typography> */}
                 <Typography fontSize={"9px"} fontFamily={'var(--main-font-family)'}>
-                  Margin
+                {t('userProject.processcard.title9')}
                 </Typography>
               </Stack>
             </Stack>

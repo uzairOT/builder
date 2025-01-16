@@ -17,6 +17,7 @@ import {
   WorkOrderCardIcn,
 } from "../assets/svg";
 import { motion } from "framer-motion";
+import { useTranslation } from 'react-i18next';
 
 const popEffect = {
   hidden: { scale: 1 },
@@ -27,6 +28,7 @@ const popEffect = {
 };
 
 const WhatWeDo = () => {
+  const { t } = useTranslation();
   return (
     <Grid container style={styles.section}>
       <Container
@@ -36,15 +38,12 @@ const WhatWeDo = () => {
           mt: 6,
         }}
       >
-        <Typography sx={styles.titleFont}>What We Do?</Typography>
+        <Typography sx={styles.titleFont}>{t('whatwedo.title1')}</Typography>
         <Typography sx={styles.SubtitleFont}>
-          Unlock the Full Potential of Your Construction Projects
+        {t('whatwedo.title2')}
         </Typography>
         <Typography variant="body1" sx={styles.DecsFont}>
-          BuilderBUILDER PRO offers a comprehensive suite of features designed
-          to streamline and optimize every aspect of construction management.
-          Discover how our powerful tools can help you achieve success from
-          planning to completion.
+        {t('whatwedo.title3')}
         </Typography>
       </Container>
       <Grid
@@ -58,8 +57,8 @@ const WhatWeDo = () => {
           <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
             <CardItem
               icon={<DashboardCardIcn />}
-              title="Dashboard"
-              description="Access detailed project insights, track progress and costs, manage tasks efficiently, and receive personalized updates with real-time analytics and weather integration."
+              title={t('whatwedo.features.title1')}
+              description={t('whatwedo.features.desc1')}
               decorationPosition="topLeft"
             />
           </motion.div>
@@ -68,46 +67,45 @@ const WhatWeDo = () => {
           <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
             <CardItem
               icon={<WorkOrderCardIcn />}
-              title="Work Order Events"
-              description="Detailed project overviews, including line items and costs, get real-time weather updates, and organize daily notes for comprehensive information management."
-            />
+              title={t('whatwedo.features.title2')}
+              description={t('whatwedo.features.desc2')}/>
           </motion.div>
         </Grid>
         <Grid item xs={12} md={4}>
           <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
             <CardItem
               icon={<SubCardIcn />}
-              title="Subscription"
-              description="Display current plan details and renewal dates, provide transparent billing records, highlight plan benefits and features, and offer clear upgrade options."
               decorationPosition="bottomRight"
-            />
+              title={t('whatwedo.features.title3')}
+              description={t('whatwedo.features.desc3')}
+              />
           </motion.div>
         </Grid>
         <Grid item xs={12} md={4}>
           <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
             <CardItem
               icon={<ReportCardIcn />}
-              title="Reports"
-              description="Track project costs, invoices, and profit margins with intuitive visuals, monitor workdays to keep timelines on track, and receive automatic deadline alerts for timely project completion."
-            />
+              title={t('whatwedo.features.title4')}
+              description={t('whatwedo.features.desc4')}
+              />
           </motion.div>
         </Grid>
         <Grid item xs={12} md={4}>
           <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
             <CardItem
               icon={<TeamCardIcn />}
-              title="Team Invitations"
-              description="Effortlessly create new projects and invite team members to join your secure workspace, streamlining project initiation and collaboration."
-            />
+              title={t('whatwedo.features.title5')}
+              description={t('whatwedo.features.desc5')}
+              />
           </motion.div>
         </Grid>
         <Grid item xs={12} md={4}>
           <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
             <CardItem
               icon={<InvoiceCardIcn />}
-              title="Invoice Management"
-              description="Easily generate detailed invoices with itemized lists, download PDFs for convenient sharing, access invoice history for each project, and customize line items to fit project-specific needs."
-            />
+              title={t('whatwedo.features.title6')}
+              description={t('whatwedo.features.desc6')}
+              />
           </motion.div>
         </Grid>
       </Grid>

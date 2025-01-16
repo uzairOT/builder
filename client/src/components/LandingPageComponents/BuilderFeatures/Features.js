@@ -14,7 +14,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { features } from "./FeaturesData";
+// import { features } from "./FeaturesData";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DashboardFeature from "../assets/Card/dashboardCard.png";
 import EventFeature from "../assets/Card/workEventsCard.png";
@@ -31,6 +31,8 @@ import {
   TeamCardIcn,
   WorkOrderCardIcn,
 } from "../assets/svg";
+import { useTranslation } from "react-i18next";
+
 import { motion } from "framer-motion";
 
 const popEffect = {
@@ -77,21 +79,53 @@ const FeatureCard = ({ title, features, image, icon }) => {
 };
 
 const BuilderFeatures = () => {
+  const { t } = useTranslation();
+  const features = {
+    dashboardFeature: [
+      `${t('features.features.desc1.list1')}`,
+      `${t('features.features.desc1.list2')}`,
+      `${t('features.features.desc1.list3')}`,
+    ],
+    eventFeature: [
+      `${t('features.features.desc2.list1')}`,
+      `${t('features.features.desc2.list2')}`,
+      `${t('features.features.desc2.list3')}`,
+    ],
+    subscriptionFeature: [
+      `${t('features.features.desc3.list1')}`,
+      `${t('features.features.desc3.list2')}`,
+      `${t('features.features.desc3.list3')}`,
+    ],
+    reportFeature: [
+      `${t('features.features.desc4.list1')}`,
+      `${t('features.features.desc4.list2')}`,
+      `${t('features.features.desc4.list3')}`,
+    ],
+    inviteFeature: [
+      `${t('features.features.desc5.list1')}`,
+      `${t('features.features.desc5.list2')}`,
+      `${t('features.features.desc5.list3')}`,
+    ],
+    invoiceFeature: [
+      `${t('features.features.desc6.list1')}`,
+      `${t('features.features.desc6.list2')}`,
+      `${t('features.features.desc6.list3')}`,
+    ],
+  };
   const theme = useTheme();
   const xsView = useMediaQuery(theme.breakpoints.down("xs"));
   return (
     <Grid style={styles.container}>
       <Container maxWidth={"xl"} sx={{ textAlign: "center", mt: 4 }}>
-        <Typography sx={styles.titleFont}>Features</Typography>
+        <Typography sx={styles.titleFont}> {t("features.title1")}</Typography>
         <Typography
           variant="h4"
           align="center"
           gutterBottom
           style={styles.title}
         >
-          Here's how{" "}
-          <strong style={{ color: "#2E728F" }}>BuilderBUILDER PRO</strong> sets
-          you up for the best Management
+          {t('features.title2')}{" "}
+          <strong style={{ color: "#2E728F" }}>{t('features.title3')}</strong> {t('features.title4')}
         </Typography>
         <Container maxWidth={"lg"}>
           <Typography
@@ -100,10 +134,7 @@ const BuilderFeatures = () => {
             paragraph
             style={styles.DecsFont}
           >
-            Choose us for a seamless blend of innovation, reliability, and
-            customer-centric solutions. With a track record of delivering
-            unparalleled quality, our dedicated team ensures your experience is
-            nothing short of exceptional.
+            {t('features.title5')}
           </Typography>
         </Container>
       </Container>
@@ -114,7 +145,11 @@ const BuilderFeatures = () => {
             <Box>
               <img
                 src={DashboardFeature}
-                style={{ width: xsView ? "20%" : "100%", borderRadius: '14px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}
+                style={{
+                  width: xsView ? "20%" : "100%",
+                  borderRadius: "14px",
+                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                }}
                 alt="Dashboard Features"
                 loading="lazy"
               />
@@ -123,7 +158,7 @@ const BuilderFeatures = () => {
         </Grid>
         <Grid item xs={12} md={6}>
           <FeatureCard
-            title="Dashboard"
+            title={t('features.features.title1')}
             features={features.dashboardFeature}
             image={DashboardFeature}
             icon={{ Component: DashboardCardIcn }}
@@ -135,7 +170,7 @@ const BuilderFeatures = () => {
       <Grid container padding={2} mt={5}>
         <Grid item xs={12} md={6} sx={{ justifyContent: "left" }}>
           <FeatureCard
-            title="Work Order Events"
+            title={t('features.features.title2')}
             features={features.eventFeature}
             image={EventFeature}
             icon={{ Component: WorkOrderCardIcn }}
@@ -146,7 +181,11 @@ const BuilderFeatures = () => {
             <Box>
               <img
                 src={EventFeature}
-                style={{ width: xsView ? "20%" : "100%", borderRadius: '14px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}
+                style={{
+                  width: xsView ? "20%" : "100%",
+                  borderRadius: "14px",
+                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                }}
                 alt="Event Features"
                 loading="lazy"
               />
@@ -162,7 +201,11 @@ const BuilderFeatures = () => {
             <Box>
               <img
                 src={SubscriptionFeature}
-                style={{ width: xsView ? "20%" : "100%", borderRadius: '14px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}
+                style={{
+                  width: xsView ? "20%" : "100%",
+                  borderRadius: "14px",
+                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                }}
                 alt="Subscription Features"
                 loading="lazy"
               />
@@ -171,7 +214,7 @@ const BuilderFeatures = () => {
         </Grid>
         <Grid item xs={12} md={6} sx={{ justifyContent: "left" }}>
           <FeatureCard
-            title="Subscription"
+            title={t('features.features.title3')}
             features={features.subscriptionFeature}
             image={SubscriptionFeature}
             icon={{ Component: SubCardIcn }}
@@ -183,7 +226,7 @@ const BuilderFeatures = () => {
       <Grid container padding={2} mt={5}>
         <Grid item xs={12} md={6} sx={{ justifyContent: "left" }}>
           <FeatureCard
-            title="Reports"
+            title={t('features.features.title4')}
             features={features.reportFeature}
             image={ReportsFeature}
             icon={{ Component: ReportCardIcn }}
@@ -194,7 +237,11 @@ const BuilderFeatures = () => {
             <Box>
               <img
                 src={ReportsFeature}
-                style={{ width: xsView ? "20%" : "100%", borderRadius: '14px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}
+                style={{
+                  width: xsView ? "20%" : "100%",
+                  borderRadius: "14px",
+                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                }}
                 alt="Reports Features"
                 loading="lazy"
               />
@@ -210,7 +257,11 @@ const BuilderFeatures = () => {
             <Box>
               <img
                 src={InvitationFeature}
-                style={{ width: xsView ? "20%" : "100%", borderRadius: '14px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}
+                style={{
+                  width: xsView ? "20%" : "100%",
+                  borderRadius: "14px",
+                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                }}
                 alt="Invitation Features"
                 loading="lazy"
               />
@@ -219,7 +270,7 @@ const BuilderFeatures = () => {
         </Grid>
         <Grid item xs={12} md={6} sx={{ justifyContent: "left" }}>
           <FeatureCard
-            title="Team Invitations"
+            title={t('features.features.title5')}
             features={features.inviteFeature}
             image={SubscriptionFeature}
             icon={{ Component: TeamCardIcn }}
@@ -231,7 +282,7 @@ const BuilderFeatures = () => {
       <Grid container padding={2} mt={5}>
         <Grid item xs={12} md={6} sx={{ justifyContent: "left" }}>
           <FeatureCard
-            title="Invoice Management"
+            title={t('features.features.title6')}
             features={features.invoiceFeature}
             image={InvitationFeature}
             icon={{ Component: InvoiceCardIcn }}
@@ -242,7 +293,11 @@ const BuilderFeatures = () => {
             <Box>
               <img
                 src={InvoiceFeature}
-                style={{ width: xsView ? "20%" : "100%", borderRadius: '14px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}
+                style={{
+                  width: xsView ? "20%" : "100%",
+                  borderRadius: "14px",
+                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                }}
                 alt="Invoice Features"
                 loading="lazy"
               />
@@ -274,7 +329,7 @@ const styles = {
     fontSize: { md: "16px", sm: "16px", xs: "14px" },
     fontWeight: 400,
     color: "#454245",
-    textAlign: 'left'
+    textAlign: "left",
   },
   CardTitle: {
     fontFamily: "var(--main-font-family)",

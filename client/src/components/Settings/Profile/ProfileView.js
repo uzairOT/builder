@@ -1,17 +1,12 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Grid,
-  Typography,
-  TextField,
-  Stack,
-} from "@mui/material";
+import { Box, Grid, Typography, TextField, Stack, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import AvatarImg from "../../../assets/settings/UploadProfileIcon.png";
 import Button from "../../UI/CustomButton";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { uploadToS3 } from "../../../utils/S3";
+import i18n from 'i18next';
 import {
   useUpdateProfileMutation,
   useDeleteUserProfileMutation,
@@ -36,12 +31,15 @@ const isPhoneValid = (phone) => {
 };
 
 function ProfileView() {
+  const [selectedLanguage, setSelectedLanguage] = useState('');
   const user = useSelector((state) => state.auth.userInfo);
   const [fileName, setFileName] = useState("");
   const [fileType, setFileType] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
   const [image, setImage] = useState(user ? user.user.image : null);
-  const [phone, setPhone] = useState(user.user.phoneNumber ? user.user.phoneNumber : "");
+  const [phone, setPhone] = useState(
+    user.user.phoneNumber ? user.user.phoneNumber : ""
+  );
   const [phoneIsValid, setPhoneIsValid] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -190,7 +188,7 @@ function ProfileView() {
     try {
       const fileUrl = await uploadFileToServer(selectedFile);
       const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
-     if (uploadedFileUrl) {
+      if (uploadedFileUrl) {
         const put = {
           ...formData,
           phoneNumber: phone,
@@ -201,7 +199,6 @@ function ProfileView() {
         localStorage.setItem("userInfo", JSON.stringify(res.data));
         dispatch(setCredentials(res.data));
         if (image === "image") {
-
         } else {
           toast.success("Profile updated successfully");
         }
@@ -215,7 +212,6 @@ function ProfileView() {
         localStorage.setItem("userInfo", JSON.stringify(res.data));
         dispatch(setCredentials(res.data));
         if (image === "image") {
-          
         } else {
           toast.success("Profile updated successfully");
         }
@@ -244,6 +240,13 @@ function ProfileView() {
   //     handleSubmit();
   //   }
   // }, [selectedFile]);
+  
+
+const handleLanguageChange = (event) => {
+  console.log(event.target.value)
+  
+  setSelectedLanguage(event.target.value);
+};
   return (
     <Box sx={{ mb: 2 }}>
       <Grid container spacing={2}>
@@ -251,7 +254,12 @@ function ProfileView() {
           <Grid container spacing={2}>
             <Grid item xs={12} sx={Profile}>
               <Stack direction={"row"} alignItems={"center"} gap={1}>
-                <Typography sx={{ fontFamily:'var(--main-font-family)'}} variant="h5">My Profile</Typography>
+                <Typography
+                  sx={{ fontFamily: "var(--main-font-family)" }}
+                  variant="h5"
+                >
+                  My Profile
+                </Typography>
                 <Avatar
                   src={image ? image : AvatarImg}
                   alt={image ? "Uploaded Avatar" : "Placeholder Avatar"}
@@ -261,9 +269,10 @@ function ProfileView() {
             </Grid>
 
             <Grid item xs={12}>
-              <Typography sx={{ fontFamily:'var(--main-font-family)'}}>First Name</Typography>
+              <Typography sx={{ fontFamily: "var(--main-font-family)" }}>
+                First Name
+              </Typography>
               <TextField
-            
                 inputProps={{ maxLength: 50 }}
                 name="firstName"
                 type="text"
@@ -277,7 +286,9 @@ function ProfileView() {
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography sx={{ fontFamily:'var(--main-font-family)'}}>Last name</Typography>
+              <Typography sx={{ fontFamily: "var(--main-font-family)" }}>
+                Last name
+              </Typography>
               <TextField
                 inputProps={{ maxLength: 50 }}
                 name="lastName"
@@ -291,7 +302,9 @@ function ProfileView() {
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography sx={{ fontFamily:'var(--main-font-family)'}}>Email</Typography>
+              <Typography sx={{ fontFamily: "var(--main-font-family)" }}>
+                Email
+              </Typography>
               <TextField
                 inputProps={{ maxLength: 50 }}
                 name="email"
@@ -303,15 +316,9 @@ function ProfileView() {
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography sx={{ fontFamily:'var(--main-font-family)'}}>Phone Number</Typography>
-              {/* <TextField
-                name="phoneNumber"
-                placeholder="Please enter your phone number"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                fullWidth
-                sx={InputStyle}
-              /> */}
+              <Typography sx={{ fontFamily: "var(--main-font-family)" }}>
+                Phone Number
+              </Typography>
               <PhoneInput
                 // disableDialCodePrefill
                 style={{ ...customPhoneStyles }}
@@ -341,13 +348,13 @@ function ProfileView() {
                 <Box>
                   <Typography
                     sx={{
-                      fontFamily:'var(--main-font-family)',
+                      fontFamily: "var(--main-font-family)",
                       color: "#d32f2f",
                       fontSize: "12px",
                       marginLeft: "14px",
                       marginRight: "14px",
                       marginTop: "3px",
-                      fontFamily: 'var(--main-font-family)',
+                      fontFamily: "var(--main-font-family)",
                     }}
                   >
                     Phone is not valid
@@ -355,22 +362,30 @@ function ProfileView() {
                 </Box>
               )}
             </Grid>
-            {/* <Grid item xs={12}>
-              <Typography>Address</Typography>
-              <Textarea
-                name="address"
-                placeholder="Write your address here"
-                value={formData.address}
-                onChange={handleChange}
-                multiline
-                rows={4}
-                fullWidth
-                sx={textAreaStyle}
-              />
-            </Grid> */}
+            <Grid item xs={12}>
+              <Typography>Select Language</Typography>
+              <FormControl sx={{ mt: 1 }} fullWidth>
+                <InputLabel id="language-select-label">Language</InputLabel>
+                <Select
+                sx={InputStyle}
+                  labelId="language-select-label"
+                  id="language-select"
+                  value={selectedLanguage}
+                  onChange={handleLanguageChange}
+                  
+                  label="Language"
+                >
+                  <MenuItem value="English" onClick={()=>i18n.changeLanguage('en')}>English</MenuItem>
+                  <MenuItem value="French" onClick={()=>i18n.changeLanguage('fr')}>French</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
             <Grid item xs={12} sx={{ display: "flex", gap: 4, my: 6.1 }}>
               <Button
-                sx={{ whiteSpace: "nowrap",fontFamily:'var(--main-font-family)'  }}
+                sx={{
+                  whiteSpace: "nowrap",
+                  fontFamily: "var(--main-font-family)",
+                }}
                 buttonText="Update Profile"
                 color="#ffffff"
                 backgroundColor="#4C8AB1"
@@ -383,7 +398,10 @@ function ProfileView() {
               />
               <Button
                 buttonText="Delete Profile"
-                sx={{ whiteSpace: "nowrap",fontFamily:'var(--main-font-family)' }}
+                sx={{
+                  whiteSpace: "nowrap",
+                  fontFamily: "var(--main-font-family)",
+                }}
                 // color="#4C8AB1"
                 color="red"
                 border={"1px solid red"}
@@ -448,7 +466,10 @@ function ProfileView() {
             </div>
             <Typography variant="subtitle1" sx={changeProfile}>
               <Button
-                sx={{ whiteSpace: "nowrap", fontFamily:'var(--main-font-family)' }}
+                sx={{
+                  whiteSpace: "nowrap",
+                  fontFamily: "var(--main-font-family)",
+                }}
                 buttonText="Change Profile"
                 color="#ffffff"
                 backgroundColor="#4C8AB1"
@@ -533,15 +554,15 @@ export default ProfileView;
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   "& input": {
-    fontFamily: 'var(--main-font-family)',
+    fontFamily: "var(--main-font-family)",
     border: "1px solid #E0E4EC",
     borderRadius: "8px",
     padding: "10px",
   },
-  '& .MuiInputBase-input::placeholder': {
-    fontFamily: 'var(--main-font-family)',
+  "& .MuiInputBase-input::placeholder": {
+    fontFamily: "var(--main-font-family)",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
@@ -565,7 +586,7 @@ const TextStyle = {
   color: "#202227",
   display: "inline-block",
   width: 100,
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontWeight: 400,
   marginBottom: "8px",
   fontSize: "1.2rem",
@@ -574,7 +595,7 @@ const ValueStyle = {
   whiteSpace: "nowrap",
   color: "#535353C9",
   display: "flex",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontWeight: 400,
   marginBottom: "8px",
   overflow: "hidden",
@@ -583,7 +604,7 @@ const ValueStyle = {
 const Profile = {
   marginTop: "20px",
   marginBottom: "30px",
-  fontFamily: 'var(--main-font-family)',
+  fontFamily: "var(--main-font-family)",
   fontWeight: "700",
   color: "#4C8AB1",
 };
@@ -610,7 +631,6 @@ const customPhoneStyles = {
   // padding: "0.5rem",
 };
 const customeInputStyles = {
-  
   width: "85%",
   border: "none",
   padding: "0px 10px 0px 0px",

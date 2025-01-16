@@ -5,6 +5,7 @@ import {
   Stack,
   CircularProgress,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
 import ProjectCard from "../../UI/Card/ProjectCard";
 import projects from "./assets/data/projects.json";
@@ -23,6 +24,7 @@ import { authUserRole } from "../../../redux/slices/auth/userRoleSlice";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 
 const ListProjects = () => {
+  const { t } = useTranslation();
   const userRole = useSelector(authUserRole);
   const navigate = useNavigate();
   const [activeBtn, setActiveBtn] = useState("remodel");
@@ -59,7 +61,7 @@ const ListProjects = () => {
           fontFamily: "var(--main-font-family)",
         }}
       >
-        User Projects
+        {t("userProject.title1")}
       </Typography>
       <Divider variant="middle" />
       <Typography
@@ -71,7 +73,7 @@ const ListProjects = () => {
           fontWeight: "400",
         }}
       >
-        All Listed Projects
+        {t("userProject.title2")}
       </Typography>
       <Stack
         direction={"row"}
@@ -96,7 +98,7 @@ const ListProjects = () => {
             fontFamily={"var(--main-font-family)"}
             width={"100%"}
           >
-            Remodel
+            {t("userProject.title3")}
           </Typography>
         </BuilderProButton>
         <BuilderProButton
@@ -115,7 +117,7 @@ const ListProjects = () => {
             fontFamily={"var(--main-font-family)"}
             width={"100%"}
           >
-            New Build
+            {t("userProject.title4")}
           </Typography>
         </BuilderProButton>
         <BuilderProButton
@@ -133,7 +135,7 @@ const ListProjects = () => {
             color={"black"}
             fontFamily={"var(--main-font-family)"}
           >
-            Commercial
+            {t("userProject.title5")}
           </Typography>
         </BuilderProButton>
       </Stack>
@@ -156,7 +158,11 @@ const ListProjects = () => {
             {/* removed error message to prompt user to refresh if error occurs */}
           </>
         ) : (
-          <Stack spacing={2} pl={{xl:"5px", lg:'0px', xs:'5px'}} pr={{xl:"5px", lg:'0px', xs:'5px'}}>
+          <Stack
+            spacing={2}
+            pl={{ xl: "5px", lg: "0px", xs: "5px" }}
+            pr={{ xl: "5px", lg: "0px", xs: "5px" }}
+          >
             {isLoading ? (
               <Stack justifyContent={"center"} alignItems={"center"}>
                 <CircularProgress />
@@ -200,7 +206,7 @@ const ListProjects = () => {
               navigate("/assignproject");
             }}
           >
-            Add New Project
+            {t('userProject.title10')}
           </BuilderProButton>
         </Stack>
       </Stack>
