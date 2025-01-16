@@ -21,8 +21,8 @@ import {
 import {
   usePermissionsMutation,
 } from "../../redux/apis/Permissions/permissionsApiSlice";
-import { setPermissionsState } from "../../redux/slices/Permissions/permissionsSlice";
 import { socket } from "../../socket";
+import { setPermissionsState } from "../../redux/slices/Permissions/permissionsSlice";
 
 const Layout2 = () => {
   const params = useParams();

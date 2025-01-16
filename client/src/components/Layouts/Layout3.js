@@ -76,7 +76,7 @@ function Layout3() {
   const navLinks = [
     { path: "/settings", title: "Profile" },
     // { path: "/settings/permissions", title: "Permission Access" },
-    { path: "/settings/materline", title: "Master Line Items" },
+    { path: "/settings/masterline", title: "Master Line Items" },
     { path: "/settings/units", title: "Units" },
     { path: "/settings/admin", title: "Admin" },
     { path: "/settings/projectManager", title: "Project Manager" },

@@ -8,7 +8,7 @@ function SideBar() {
 
   const paths = [
     "/settings",
-    "/settings/materline",
+    "/settings/masterline",
     "/settings/units",
     "/settings/admin",
     "/settings/projectManager",
@@ -39,7 +39,7 @@ function SideBar() {
         </ListItem>
         <ListItem
           component={Link}
-          to="/settings/materline"
+          to="/settings/masterline"
           selected={selectedItem === 1}
           sx={listItemStyle}
         >

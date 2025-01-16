@@ -284,7 +284,7 @@ function App() {
 
               <Route path="coupon" element={<Coupon />} />
               {/* -- */}
-              <Route path="materline" element={<MasterLineItem />} />
+              <Route path="masterline" element={<MasterLineItem />} />
               <Route path="permissions" element={<PermissionAccess />} />
               <Route path="units" element={<Units />} />
             </Route>
