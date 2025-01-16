@@ -5,11 +5,20 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setMonth } from "../../../redux/slices/Project/projectWeather";
+import { GanttChartSection } from "../../UI/Charts/GanttChartSection";
 
-const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient, handleMonthRange,projectWeather }) => {
+const CustomToolbarProjects = ({
+  toolbar,
+  setEventView,
+  bgColorClient,
+  handleMonthRange,
+  projectWeather,
+}) => {
   const [activeButton, setActiveButton] = useState("day");
   const [activeHeader, setActiveHeader] = useState("Work Order");
-  const dispatch = useDispatch()
+  const [showGanttChart, setShowGanttChart] = useState(false);
+
+  const dispatch = useDispatch();
   const goToDayView = (view) => {
     toolbar.onView(view);
     setActiveButton(view);
@@ -25,17 +34,16 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient, handleMon
   const handleNavigate = (action) => {
     // Get the current date from the toolbar label or a reference
     toolbar.onNavigate(action);
- 
-  }
-  useEffect(()=>{
-    if(toolbar.view === "month"){
+  };
+  useEffect(() => {
+    if (toolbar.view === "month") {
       const currentDate = new Date(toolbar.date);
-      dispatch(setMonth(toolbar.label))
+      dispatch(setMonth(toolbar.label));
       const startOfMonth = toolbar.localizer.startOf(currentDate, "month");
       const endOfMonth = toolbar.localizer.endOf(currentDate, "month");
-      handleMonthRange(startOfMonth, endOfMonth)
+      handleMonthRange(startOfMonth, endOfMonth);
     }
-  },[toolbar.date, toolbar.view])
+  }, [toolbar.date, toolbar.view]);
   //   const handleMonthEventTasks =() => {
   //     setMonthEventView(prevState => {
   //       //console.log('Tasks Clicked');
@@ -56,6 +64,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient, handleMon
   const handleActiveHeader = (view) => {
     setEventView(() => {
       setActiveHeader(view);
+      setShowGanttChart(view === "Chart");
       return view;
     });
   };
@@ -162,8 +171,8 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient, handleMon
                         ? "#4C8AB1"
                         : "black"
                       : activeHeader === "Work Order"
-                        ? "#4C8AB1"
-                        : "white",
+                      ? "#4C8AB1"
+                      : "white",
                   }}
                   onClick={() => {
                     handleActiveHeader("Work Order");
@@ -187,6 +196,22 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient, handleMon
                 >
                   Weather/notes
                 </Button>
+                <Button
+                  sx={{
+                    fontSize: "0.7rem",
+                  }}
+                  style={{
+                    textTransform: "capitalize",
+                    ...themeStyle.toolbarButton,
+                    backgroundColor: activeHeader === "Chart" ? "white" : "",
+                    color: activeHeader === "Chart" ? "#4C8AB1" : "white",
+                  }}
+                  onClick={() => {
+                    handleActiveHeader("Chart");
+                  }}
+                >
+                  Gantt chart
+                </Button>
               </Stack>
             )}
             {toolbar.view === "day" && (
@@ -200,7 +225,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient, handleMon
               >
                 <Button
                   sx={{
-                    fontSize: "0.7rem"
+                    fontSize: "0.7rem",
                   }}
                   style={{
                     textTransform: "capitalize",
@@ -231,13 +256,30 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient, handleMon
                 >
                   Weather/ Notes
                 </Button>
+                <Button
+                  sx={{
+                    fontSize: "0.7rem",
+                  }}
+                  style={{
+                    textTransform: "capitalize",
+                    ...themeStyle.toolbarButton,
+                    backgroundColor: activeHeader === "Chart" ? "white" : "",
+                    color: activeHeader === "Chart" ? "#4C8AB1" : "white",
+                  }}
+                  onClick={() => {
+                    handleActiveHeader("Chart");
+                  }}
+                >
+                  Gantt chart
+                </Button>
               </Stack>
             )}
           </Stack>
+          {/* {!showGanttChart && ( */}
           <Box element="div" style={themeStyle.toolbarButtonGroup}>
             <Button
               sx={{
-                fontSize: "0.7rem"
+                fontSize: "0.7rem",
               }}
               style={{
                 textTransform: "capitalize",
@@ -281,31 +323,37 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient, handleMon
               Month
             </Button>
           </Box>
+          {/* )} */}
         </Stack>
-        <Stack
-          width={"100%"}
-          direction={"row"}
-          justifyContent={"space-between"}
-        >
-          <Stack direction={"row"} alignItems={"center"} spacing={2} pl={1}>
-            <IconButton
-              style={themeStyle.toolbarIcon}
-              aria-label="Left Arrow Icon"
-              onClick={() => handleNavigate("PREV")}
-            >
-              <ArrowLeftIcon style={{ color: "#797979" }} />
-            </IconButton>
-            <p style={themeStyle.toolbarLabel}>{toolbar.label}</p>
-            <IconButton
-              style={themeStyle.toolbarIcon}
-              aria-label="Left Arrow Icon"
-              onClick={() => handleNavigate("NEXT")}
-            >
-              <ArrowRightIcon style={{ color: "#797979" }} />
-            </IconButton>
+        {!showGanttChart && (
+          <Stack
+            width={"100%"}
+            direction={"row"}
+            justifyContent={"space-between"}
+          >
+            <Stack direction={"row"} alignItems={"center"} spacing={2} pl={1}>
+              <IconButton
+                style={themeStyle.toolbarIcon}
+                aria-label="Left Arrow Icon"
+                onClick={() => handleNavigate("PREV")}
+              >
+                <ArrowLeftIcon style={{ color: "#797979" }} />
+              </IconButton>
+
+              <p style={themeStyle.toolbarLabel}>{toolbar.label}</p>
+
+              <IconButton
+                style={themeStyle.toolbarIcon}
+                aria-label="Left Arrow Icon"
+                onClick={() => handleNavigate("NEXT")}
+              >
+                <ArrowRightIcon style={{ color: "#797979" }} />
+              </IconButton>
+            </Stack>
           </Stack>
-        </Stack>
+        )}
       </div>
+      {showGanttChart && <GanttChartSection />}
     </>
   );
 };

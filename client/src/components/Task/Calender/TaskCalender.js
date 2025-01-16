@@ -52,6 +52,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
   // }, [monthRange.startDate])
   const eventViewRef = useRef(eventView);
   eventViewRef.current = eventView;
+  console.log("first event",eventViewRef.current)
   const currentDate = moment();
 
   const startTime = moment(currentDate).set({ hour: 12, minute: 0, second: 0, millisecond: 0 }).toDate();
