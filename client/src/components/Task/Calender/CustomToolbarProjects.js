@@ -5,7 +5,6 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setMonth } from "../../../redux/slices/Project/projectWeather";
-import { GanttChartSection } from "../../UI/Charts/GanttChartSection";
 
 const CustomToolbarProjects = ({
   toolbar,
@@ -17,20 +16,31 @@ const CustomToolbarProjects = ({
   const [activeButton, setActiveButton] = useState("day");
   const [activeHeader, setActiveHeader] = useState("Work Order");
   const [showGanttChart, setShowGanttChart] = useState(false);
-
   const dispatch = useDispatch();
-  const goToDayView = (view) => {
+  // const goToDayView = (view) => {
+  //   setShowGanttChart(false)
+  //   toolbar.onView(view);
+  //   setActiveButton(view);
+  // };
+  // const goToWeekView = (view) => {
+  //   setShowGanttChart(false)
+  //   toolbar.onView(view);
+  //   setShowGanttChart(false)
+  //   setActiveButton(view);
+  // };
+  // const goToMonthView = (view) => {
+  //   setShowGanttChart(false)
+  //   toolbar.onView(view);
+  //   setActiveButton(view);
+  // };
+
+  const handelViewChange = (view) => {
+    setActiveHeader("Work Order");
+    setShowGanttChart(false)
     toolbar.onView(view);
     setActiveButton(view);
-  };
-  const goToWeekView = (view) => {
-    toolbar.onView(view);
-    setActiveButton(view);
-  };
-  const goToMonthView = (view) => {
-    toolbar.onView(view);
-    setActiveButton(view);
-  };
+  }
+
   const handleNavigate = (action) => {
     // Get the current date from the toolbar label or a reference
     toolbar.onNavigate(action);
@@ -64,7 +74,16 @@ const CustomToolbarProjects = ({
   const handleActiveHeader = (view) => {
     setEventView(() => {
       setActiveHeader(view);
-      setShowGanttChart(view === "Chart");
+      setShowGanttChart((showGanttChart) => {
+        if(view === "Chart"){
+          toolbar.onView("chart")
+          setActiveButton("chart");
+          return true
+        } else{
+          return showGanttChart
+        }
+        
+      });
       return view;
     });
   };
@@ -274,6 +293,60 @@ const CustomToolbarProjects = ({
                 </Button>
               </Stack>
             )}
+            {toolbar.view === "chart" && (
+              <Stack
+                direction={{ sm: "row", xs: "column" }}
+                spacing={2}
+                pr={0.5}
+                pl={5}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <Button
+                  sx={{
+                    fontSize: "0.7rem",
+                  }}
+                  style={{
+                    textTransform: "capitalize",
+                    ...themeStyle.toolbarButton,
+                    backgroundColor: activeHeader === "Chart" ? "white" : "",
+                    color: activeHeader === "Chart" ? "#4C8AB1" : "white",
+                  }}
+                  onClick={() => {
+                    handleActiveHeader("Chart");
+                  }}
+                >
+                  Gantt chart
+                </Button>
+              </Stack>
+            )}
+            {toolbar.view === "week" && (
+              <Stack
+                direction={{ sm: "row", xs: "column" }}
+                spacing={2}
+                pr={0.5}
+                pl={5}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <Button
+                  sx={{
+                    fontSize: "0.7rem",
+                  }}
+                  style={{
+                    textTransform: "capitalize",
+                    ...themeStyle.toolbarButton,
+                    backgroundColor: activeHeader === "Chart" ? "white" : "",
+                    color: activeHeader === "Chart" ? "#4C8AB1" : "white",
+                  }}
+                  onClick={() => {
+                    handleActiveHeader("Chart");
+                  }}
+                >
+                  Gantt chart
+                </Button>
+              </Stack>
+            )}
           </Stack>
           {/* {!showGanttChart && ( */}
           <Box element="div" style={themeStyle.toolbarButtonGroup}>
@@ -287,7 +360,7 @@ const CustomToolbarProjects = ({
                 backgroundColor: activeButton === "day" ? "#FFF" : "",
                 color: activeButton === "day" ? "black" : "#FFF",
               }}
-              onClick={() => goToDayView("day")}
+              onClick={() => handelViewChange("day")}
             >
               Day
             </Button>
@@ -304,7 +377,7 @@ const CustomToolbarProjects = ({
                   backgroundColor: "none",
                 },
               }}
-              onClick={() => goToWeekView("week")}
+              onClick={() => handelViewChange("week")}
             >
               Week
             </Button>
@@ -318,15 +391,16 @@ const CustomToolbarProjects = ({
                 backgroundColor: activeButton === "month" ? "#FFF" : "",
                 color: activeButton === "month" ? "#000000" : "#FFF",
               }}
-              onClick={() => goToMonthView("month")}
+              onClick={() => handelViewChange("month")}
             >
               Month
             </Button>
           </Box>
           {/* )} */}
         </Stack>
-        {!showGanttChart && (
+        
           <Stack
+            display={showGanttChart ? "none" : "flex"}
             width={"100%"}
             direction={"row"}
             justifyContent={"space-between"}
@@ -351,9 +425,8 @@ const CustomToolbarProjects = ({
               </IconButton>
             </Stack>
           </Stack>
-        )}
+        
       </div>
-      {showGanttChart && <GanttChartSection />}
     </>
   );
 };

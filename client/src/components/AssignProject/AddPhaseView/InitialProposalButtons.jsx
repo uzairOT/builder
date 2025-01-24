@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Stack,
   Tooltip,
@@ -17,6 +18,7 @@ import SendIcon from "@mui/icons-material/Send";
 import actionButton from "../../UI/actionButton";
 import AddIcon from "@mui/icons-material/Add";
 import { buttonBox } from "./stylingObjects";
+import { Excel } from "../../../assets/FileSvg/excel";
 
 //HEADER BUTTONS
 const InitialProposalButtons = ({
@@ -28,6 +30,7 @@ const InitialProposalButtons = ({
   handleSendApproval,
   handleOpenModal,
   isLoadingSendApproval,
+  handleExportPhases
 }) => {
   const location = useLocation();
   const theme = useTheme();
@@ -76,6 +79,15 @@ const InitialProposalButtons = ({
         {initalApproved && (
           <>
             <Stack direction={"row"} sx={buttonBox}>
+            <Tooltip title="Export phases" placement="top">
+                <Box sx={{ cursor: "pointer" }} onClick={handleExportPhases}>
+                  <Excel
+                    fill={"#4C8AB1"}
+                    width={"30px"}
+                    height={"30px"}
+                  />
+                </Box>
+              </Tooltip>
               <Tooltip
                 title={
                   changeOrderPermission

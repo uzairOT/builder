@@ -249,6 +249,13 @@ const projectApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data
       }),
+    }),
+    projectGanttChart: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/projectGanttChart`,
+        method: 'POST',
+        body: data
+      }),
     })
   }),
 });
@@ -287,5 +294,6 @@ export const {
   useDeleteProjectFileMutation,
   useDeleteInvitationMutation,
   useGetProjectWeatherMutation,
-  useProjectGenAIMutation
+  useProjectGenAIMutation,
+  useProjectGanttChartMutation
 } = projectApiSlice;

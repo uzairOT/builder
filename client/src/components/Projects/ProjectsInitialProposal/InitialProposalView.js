@@ -11,9 +11,7 @@ const InitialProposalView = () => {
   const { id } = useParams();
   const projectId = id;
 
-  useEffect(()=>{
-    console.log(projectId)
-  },[projectId])
+
 
   return (
     <>

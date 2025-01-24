@@ -16,7 +16,7 @@ const WorkOrderButtons = ({
 }) => {
   const theme = useTheme();
   const mobileView = useMediaQuery(theme.breakpoints.down("md"));
-  console.log("adminProjectView", adminProjectView);
+
   return (
     <>
       <Stack direction={"row"} sx={buttonBox}>

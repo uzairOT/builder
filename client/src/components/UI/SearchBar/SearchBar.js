@@ -2,9 +2,10 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
-import { useDispatch } from "react-redux";
+import { useGetUserPinnedProjectQuery, useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  addPinnedProject,
   addProjects,
   setError,
   setIsLoading,
@@ -72,6 +73,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab, projectsPage }) => {
+  const fetchPinnedProjectToggle = useSelector(state =>  state.userProjects.fetchPinnedProjectToggle)
   const filter = selectedFilters ? selectedFilters.join(",") : "";
   const [searchQuery, setSearchQuery] = React.useState("");
   const debouncedValue = QueryDebouncer(searchQuery, 500);
@@ -84,13 +86,18 @@ const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab, projectsPa
   // console.log(selectedTab);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { data, refetch, isLoading, error, isSuccess } =
+  const { data: pinnedProject, refetch: refetchPinnedProject, isLoading1} =
+  useGetUserPinnedProjectQuery({
+    userId: UserId,
+  });
+  const { data, refetch, isLoading2, error, isSuccess } =
     useGetUserProjectsQuery({
       userId: UserId,
       q: debouncedValue,
       filter: filter,
       page: page,
     });
+    const isLoading = isLoading1 || isLoading2;
 
   React.useEffect(() => {
     if (selectedTab === 0 || selectedTab === 1 || selectedTab === 2) {
@@ -103,6 +110,7 @@ const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab, projectsPa
           toast.info("Welcome! Add a project to get started.");
           return;
         }
+        dispatch(addPinnedProject(pinnedProject?.pinnedProject));
         dispatch(addProjects(data?.projects));
         dispatch(setTotalCount(data?.totalCount));
         dispatch(setTotalPages(data?.totalPages));
@@ -135,6 +143,10 @@ const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab, projectsPa
       refetchProjects();
     }
   }, [path]);
+  React.useEffect(() => {
+    refetchPinnedProject();
+    refetchProjects()
+}, [fetchPinnedProjectToggle]);
   return (
     <>
       <Search>

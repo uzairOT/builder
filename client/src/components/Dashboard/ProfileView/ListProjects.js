@@ -10,13 +10,10 @@ import React, { useEffect, useState } from "react";
 import ProjectCard from "../../UI/Card/ProjectCard";
 import projects from "./assets/data/projects.json";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  useGetProjectUserRoleMutation,
-  useGetUserProjectsQuery,
-} from "../../../redux/apis/Project/userProjectApiSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   addProjects,
+  getPinnedProject,
   projectsPackage,
 } from "../../../redux/slices/Project/userProjectsSlice";
 import { Height } from "@mui/icons-material";
@@ -29,6 +26,7 @@ const ListProjects = () => {
   const navigate = useNavigate();
   const [activeBtn, setActiveBtn] = useState("remodel");
   const { projects, error, isLoading } = useSelector(projectsPackage);
+  const pinnedProject = useSelector(getPinnedProject);
   //console.log('LIST PROJECTS:', currentUserId)
   // const { data, isLoading, error } = useGetUserProjectsQuery({
   //   userId: currentUserId,
@@ -169,6 +167,17 @@ const ListProjects = () => {
               </Stack>
             ) : (
               <>
+                {pinnedProject?.id && <Link
+                  key={pinnedProject.id}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    // handleClick(projectProfileCard.id, e);
+                  }}
+                  // to={`projects/${projectProfileCard.id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <ProjectCard handleClick={handleClick} projectProfileCard={pinnedProject} pinnedProject={true} />
+                </Link>}
                 {projects[0]?.map((projectProfileCard) => {
                   if (projectProfileCard.buildType === activeBtn) {
                     return (
@@ -176,12 +185,12 @@ const ListProjects = () => {
                         key={projectProfileCard.id}
                         onClick={(e) => {
                           e.preventDefault();
-                          handleClick(projectProfileCard.id, e);
+                          // handleClick(projectProfileCard.id, e);
                         }}
                         // to={`projects/${projectProfileCard.id}`}
                         style={{ textDecoration: "none" }}
                       >
-                        <ProjectCard projectProfileCard={projectProfileCard} />
+                        <ProjectCard handleClick={handleClick} projectProfileCard={projectProfileCard} />
                       </Link>
                     );
                   } else {

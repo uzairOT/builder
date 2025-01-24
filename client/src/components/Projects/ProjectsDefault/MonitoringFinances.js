@@ -38,7 +38,6 @@ const MonitoringFinances = ({projectId, userId}) => {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
         });
-    
   return (
     <Stack p={1} pl={3} pr={3} spacing={2} height={'205px'}>
         {/* <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}><Typography sx={themeStyle.label}>Approved Price</Typography><Typography sx={themeStyle.price}>{formattedCost}</Typography></Stack>
@@ -47,10 +46,10 @@ const MonitoringFinances = ({projectId, userId}) => {
         <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}><Typography sx={themeStyle.label}>Cost to Complete</Typography><Typography sx={themeStyle.price}>{formattedCost}</Typography></Stack> */}
         {phase?.map((item, index)=>{
           if(index >3){
-            return<></>
+            return<React.Fragment key={item?.id}></React.Fragment>
           }
             return(
-                <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} gap={0.5}><Typography sx={themeStyle.label}>{item?.phase_name}</Typography><Typography sx={themeStyle.price}>${formatMoney(item?.totalCost)}</Typography></Stack>
+                <Stack key={item?.id} direction={'row'} justifyContent={'space-between'} alignItems={'center'} gap={0.5}><Typography sx={themeStyle.label}>{item?.phase_name}</Typography><Typography sx={themeStyle.price}>${formatMoney(item?.totalCost)}</Typography></Stack>
             )
         })}
         <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} gap={0.5} ><Typography width={'100px'} overflow={'hidden'} sx={themeStyle.label}>Total Cost</Typography><Typography sx={themeStyle.price}>${formatMoney(data?.totalCost)}</Typography></Stack>

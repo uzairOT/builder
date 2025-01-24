@@ -101,19 +101,21 @@ const useCalendarComponents = ({
 
   const MonthComponent = useCallback(
     (props) => {
-      let monthView;
-      switch (eventViewRef.current) {
-        case "Work Order":
-          monthView = "tasks";
-          break;
-        case "Chart":
-          return (
-            <>
-            </>
-          );
-        default:
-          monthView = "weather/notes";
-      }
+      const monthView = eventViewRef.current === 'Work Order' ? 'tasks' : 'weather/notes';
+      // let monthView;
+      // console.log(eventViewRef.current)
+      // switch (eventViewRef.current) {
+      //   case "Work Order":
+      //     monthView = "tasks";
+      //     break;
+      //   case "Chart":
+      //     return (
+      //       <>
+      //       </>
+      //     );
+      //   default:
+      //     monthView = "weather/notes";
+      // }
   
       return (
         <MonthCellWapper
@@ -124,7 +126,7 @@ const useCalendarComponents = ({
         />
       );
     },
-    [isDrawerOpen, isProjectPage, eventViewRef]
+    [isDrawerOpen, isProjectPage, eventViewRef.current]
   );
   const eventComponent = useCallback(
     (props) =>

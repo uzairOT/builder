@@ -149,6 +149,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     
     }),
+    pinProject: builder.mutation({
+      query: (data) => ({
+        url:`${USERS_URL}/pinProject`,
+        method: 'POST',
+        body: data
+      })
+    })
   }),
 });
 
@@ -172,4 +179,5 @@ export const {
   useCheckUserOnInvitationMutation,
   useResetProfilePasswordMutation,
   useUpdateUserNotificationsMutation,
+  usePinProjectMutation
 } = userApiSlice;

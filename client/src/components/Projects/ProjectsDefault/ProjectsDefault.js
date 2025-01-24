@@ -62,7 +62,7 @@ const coordinates = {
       ) : (
         <Stack flex={2} height={'100%'}>
           <Paper style={{ ...themeStyle.border, height:'inherit', overflow:'hidden', ...themeStyle.scrollable}}>
-            <TaskCalender coordinates={coordinates} dailyForecast={dailyForecast} eventsArr={events} isProjectPage={true} isDrawerOpen={true} />
+            <TaskCalender coordinates={coordinates} selectedProjectData={selectedProjectData} dailyForecast={dailyForecast} eventsArr={events} isProjectPage={true} isDrawerOpen={true} />
           </Paper>
         </Stack>
       )}

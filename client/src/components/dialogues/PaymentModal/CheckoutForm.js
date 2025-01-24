@@ -45,16 +45,13 @@ export default function CheckoutForm({
   };
   const handleConfrimChangeSubs = async (action) => {
     if (action) {
-      console.log(action);
       setOpen(false)
       await handleSubmit()
     } else {
       setOpen(false)
-      console.log(action);
     }
   }
   const handleSubmitSubscription = async (e) => {
-    console.log(currentPayment);
     e.preventDefault();
     if (plans.includes(currentPayment)) {
       setOpen(true)
@@ -92,10 +89,10 @@ export default function CheckoutForm({
     });
 
     if (error) {
-      console.log(paymentIntent, "Rrror", error);
+      console.log("Rrror", error);
       setMessage(error.message);
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
-      console.log(paymentIntent, "----0-009-00-09-=");
+
 
       // Call the appropriate API when payment succeeds
       const apiUrl = isInvoicePayment

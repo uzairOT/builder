@@ -1,194 +1,180 @@
 // Import necessary libraries
 import ReactApexChart from "react-apexcharts";
+import ApexCharts from "apexcharts";
 import moment from "moment";
-import { Box, Typography } from "@mui/material";
-import React from "react";
+import { Box, Button, Modal, Stack, Typography } from "@mui/material";
+import React, { useEffect, useState, useRef, useMemo } from "react";
+import { useProjectGanttChartMutation } from "../../../redux/apis/Project/projectApiSlice";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { allUserProjects, setGanttChart } from "../../../redux/slices/Project/userProjectsSlice";
+import loader from "../../../assets/gifs/loader.gif";
+import { useParams } from "react-router-dom";
+import actionButton from "../actionButton";
 
-// Replace Gantt chart rendering with ApexChart
-export const GanttChartSection = () => {
-  const [chartData, setChartData] = React.useState({
-    series: [
-      {
-        name: "Planning",
-        data: [
-          {
-            x: "Project Assessment",
-            y: [
-              new Date("2019-03-05").getTime(),
-              new Date("2019-03-08").getTime(),
-            ],
-          },
-          {
-            x: "Code",
-            y: [
-              new Date("2019-03-08").getTime(),
-              new Date("2019-03-11").getTime(),
-            ],
-          },
-          {
-            x: "Test",
-            y: [
-              new Date("2019-03-11").getTime(),
-              new Date("2019-03-16").getTime(),
-            ],
-          },
-        ],
-      },
-      {
-        name: "Development",
-        data: [
-          {
-            x: "Pages",
-            y: [
-              new Date("2019-03-05").getTime(),
-              new Date("2019-03-08").getTime(),
-            ],
-          },
-          {
-            x: "Login/Signup",
-            y: [
-              new Date("2019-03-08").getTime(),
-              new Date("2019-03-11").getTime(),
-            ],
-          },
-          {
-            x: "Launch App",
-            y: [
-              new Date("2019-03-11").getTime(),
-              new Date("2019-03-16").getTime(),
-            ],
-          },
-        ],
-      },
-      {
-        name: "Design",
-        data: [
-          {
-            x: "Wireframe",
-            y: [
-              new Date("2019-03-02").getTime(),
-              new Date("2019-03-05").getTime(),
-            ],
-          },
-          {
-            x: "Mock-up",
-            y: [
-              new Date("2019-03-06").getTime(),
-              new Date("2019-03-09").getTime(),
-            ],
-          },
-          {
-            x: "Reviews",
-            y: [
-              new Date("2019-03-10").getTime(),
-              new Date("2019-03-19").getTime(),
-            ],
-          },
-        ],
-      },
-      {
-        name: "Viscosity",
-        data: [
-          {
-            x: "Pages",
-            y: [
-              new Date("2019-03-05").getTime(),
-              new Date("2019-03-08").getTime(),
-            ],
-          },
-          {
-            x: "Login/Signup",
-            y: [
-              new Date("2019-03-08").getTime(),
-              new Date("2019-03-11").getTime(),
-            ],
-          },
-          {
-            x: "Launch App",
-            y: [
-              new Date("2019-03-11").getTime(),
-              new Date("2019-03-16").getTime(),
-            ],
-          },
-        ],
-      },
-      {
-        name: "Testing",
-        data: [
-          {
-            x: "Wireframe",
-            y: [
-              new Date("2019-03-02").getTime(),
-              new Date("2019-03-05").getTime(),
-            ],
-          },
-          {
-            x: "Mock-up",
-            y: [
-              new Date("2019-03-06").getTime(),
-              new Date("2019-03-09").getTime(),
-            ],
-          },
-          {
-            x: "Reviews",
-            y: [
-              new Date("2019-03-10").getTime(),
-              new Date("2019-03-19").getTime(),
-            ],
-          },
-        ],
-      },
-    ],
-    options: {
-      chart: {
-        height: 350,
-        type: "rangeBar",
-        toolbar: {
-          show: false,
-        },
-      },
-      plotOptions: {
-        bar: {
-          borderRadius: 10,
-          horizontal: true,
-        },
-      },
-      dataLabels: {
-        enabled: false,
-        formatter: function (val) {
-          const start = moment(val[0]);
-          const end = moment(val[1]);
-          const diff = end.diff(start, "days");
-          return diff + (diff > 1 ? " days" : " day");
-        },
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-          shade: "light",
-          type: "vertical",
-          opacityFrom: 1,
-          opacityTo: 1,
-        },
-      },
-      xaxis: {
-        type: "datetime",
-      },
-      legend: {
-        position: "top",
-      },
+const options = {
+  chart: {
+    id: "gantt-chart",
+    height: 350,
+    type: "rangeBar",
+    toolbar: {
+      show: true,
+      offsetX: 0,
+      offsetY: -30,
     },
-  });
+  },
+  plotOptions: {
+    bar: {
+      borderRadius: 10,
+      horizontal: true,
+    },
+  },
+  dataLabels: {
+    enabled: false,
+    formatter: function (val) {
+      const start = moment(val[0]);
+      const end = moment(val[1]);
+      const diff = end.diff(start, "days");
+      return diff + (diff > 1 ? " days" : " day");
+    },
+  },
+  fill: {
+    type: "gradient",
+    gradient: {
+      shade: "light",
+      type: "vertical",
+      opacityFrom: 1,
+      opacityTo: 1,
+    },
+  },
+  xaxis: {
+    type: "datetime",
+  },
+  legend: {
+    position: "top",
+  },
+};
+
+
+export const GanttChartSection = () => {
+  const params = useParams()
+  const projects = useSelector(allUserProjects)
+  const [open, setOpen] = useState(false);
+  const currentProject = useMemo(() => {
+    return projects[0].find(project => project.id === Number(params.id));
+  }, [params.id, projects]);
+  const [chartData, setChartData] = useState(currentProject?.ganttChart ? JSON.parse(JSON.stringify(currentProject?.ganttChart)) : []);
+  const chartRef = useRef(null); // Reference for the ApexChart instance
+  const [generateProjectGanttChart, { isLoading }] = useProjectGanttChartMutation();
+  const chartContainerRef = useRef(null);
+  const dispatch = useDispatch();
+
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const generateGanttChart = async () => {
+    try {
+      toast.info("Creating your Gantt chart now. Please allow 2 minutes for the process to complete.");
+      const data = await generateProjectGanttChart({ projectId: params?.id });
+
+      if (data?.data?.genText) {
+        const ganttChart = JSON.parse(JSON.stringify(data.data.genText));
+        setChartData(JSON.parse(JSON.stringify(data.data.genText)));
+        dispatch(setGanttChart({ projectId: params?.id, ganttChart: ganttChart }))
+      } else {
+        toast.error("Something went wrong! " + data?.error?.data?.message);
+      }
+    } catch (error) {
+      console.error("Error generating Gantt chart:", error);
+      toast.error("Something went wrong! Please wait a minute before making another request.");
+    }
+  };
+  useEffect(() => {
+    if (!currentProject?.ganttChart) {
+      generateGanttChart();
+    }
+  }, []);
 
   return (
-    <Box sx={{ padding: 2 }}>
+    <Box sx={{ padding: 2 }} ref={chartContainerRef}>
       <Typography variant="h6">Gantt Chart</Typography>
-      <ReactApexChart
-        options={chartData.options}
-        series={chartData.series}
-        type="rangeBar"
-        height={350}
-      />
+      {isLoading ? <Stack justifyContent={'center'} alignItems={'center'}>
+        <img src={loader} alt="Loading animation"></img>
+        <Typography>Generating your chart...</Typography>
+      </Stack> : chartData && <>
+        <ReactApexChart
+          ref={chartRef} // Attach the chart reference
+          options={options}
+          series={chartData}
+          type="rangeBar"
+          height={350}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleOpen}
+          sx={{
+            ...actionButton,
+            background: "#4C8AB1",
+            marginTop: "0.7rem",
+            "@media (max-width: 600px)": {
+              fontFamily: "var(--main-font-family)",
+              minWidth: 0,
+              width: "2.5rem",
+              height: "2.5rem",
+              borderRadius: "50%",
+              padding: 0,
+              fontSize: "0.75rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            },
+          }}
+        >
+          Go Fullscreen
+        </Button>
+        {/* Fullscreen Modal */}
+        <Modal open={open} onClose={handleClose}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              bgcolor: "background.paper",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <div style={{ width: "90%", height: "90%" }}>
+              <ReactApexChart
+                options={options}
+                series={chartData}
+                type="rangeBar"
+                height={"100%"}
+              />
+            </div>
+            <Button
+              onClick={handleClose}
+              variant="contained"
+              color="secondary"
+              sx={{
+                position: "absolute",
+                top: 16,
+                left: 16,
+                zIndex: 10,
+                ...actionButton,
+                background: "#4C8AB1",
+              }}
+            >
+              Close Fullscreen
+            </Button>
+          </Box>
+        </Modal>
+      </>}
     </Box>
   );
 };

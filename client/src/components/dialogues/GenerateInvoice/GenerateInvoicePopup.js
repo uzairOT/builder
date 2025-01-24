@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import loader from "./assets/gifs/loader.gif";
+// import loader from "./assets/gifs/loader.gif";
+import loader from "../../../assets/gifs/loader.gif";
 import { Modal, Stack, Typography } from "@mui/material";
 
 const GenerateInvoicePopup = ({setGenerateInvoice, setShareToClient}) => {

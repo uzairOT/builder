@@ -12,6 +12,7 @@ import { useGetProjectWeatherMutation } from "../../../redux/apis/Project/projec
 import useCalendarComponents from "./useCalendarComponents";
 import { useDispatch } from "react-redux";
 import { setIsLoadingProjectWeather, setProjectWeather } from "../../../redux/slices/Project/projectWeather";
+import { GanttChartSection } from "../../UI/Charts/GanttChartSection";
 
 
 
@@ -52,9 +53,16 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
   // }, [monthRange.startDate])
   const eventViewRef = useRef(eventView);
   eventViewRef.current = eventView;
-  console.log("first event",eventViewRef.current)
-  const currentDate = moment();
 
+  const currentDate = moment();
+  const chart = () => <GanttChartSection />;
+  chart.title = () => 'Chart';
+  const views = {
+    month: true,
+    week: true,
+    day: true,
+    chart: chart, // Add the custom empty view
+  };
   const startTime = moment(currentDate).set({ hour: 12, minute: 0, second: 0, millisecond: 0 }).toDate();
   const endTime = moment(currentDate).set({ hour: 23, minute: 59, second: 59, millisecond: 999 }).toDate();
 
@@ -94,7 +102,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
     allDay: 'Week'
   }
   const filteredEvents = useMemo(() => isProjectPage ? events.filter(event => !isProjectPage || event.data.projectId === id) : events, [id, isProjectPage, events]);
-
+  
   return (
 
     <>
@@ -102,7 +110,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
         <DnDCalendar
           defaultDate={moment()}
           defaultView="day"
-          views={["day", "week", "month"]}
+          views={views}
           events={filteredEvents}
           localizer={localizer}
           resizable={false}

@@ -1,6 +1,8 @@
 import {
+  Box,
   IconButton,
   Stack,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -14,6 +16,9 @@ import {
 import { useParams } from "react-router-dom";
 import InvoicesTable from "./InvoicesTable";
 import CloseIcon from "@mui/icons-material/Close";
+import { currencyFormatter, headerFormatter } from "../../../utils/Formatters/excelFormatters";
+import XLSX from "xlsx-js-style";
+import { Excel } from "../../../assets/FileSvg/excel";
 
 const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
   const params = useParams();
@@ -29,34 +34,47 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
   // const [getWorkOrder, {isLoading}] = useGetWorkOrderDetailsMutation()
   const [phaseItems, setPhaseItems] = useState();
   
-  //   const handleChangeView = () => {
-  //     setChangeView(true);
-  //   }
-  const rowCheckboxes = {
-    phase: {
-      id: 2,
-      rows: [
-        {
-          id: 10,
-          phase_id: 2,
-          title: "Line1",
-          description: "Lorem ipsum",
-          unit: "sqft",
-          // Add other properties as needed
-        },
-        {
-          id: 11,
-          phase_id: 2,
-          title: "Line2",
-          description: "Lorem ipsum",
-          unit: "sqft",
-          // Add other properties as needed
-        },
-        // Add more rows as needed
-      ],
-    },
-  };
 
+  const handleExportInvoices = () => {
+    const invoiceRows = [];
+  
+    const processInvoices = (invoices, status) => {
+      invoices.forEach((invoice) => {
+        invoice.InvoiceLineItems.forEach((lineItem) => {
+          invoiceRows.push({
+            InvoiceNumber: invoice.InvoiceNumber,
+            InvoiceDate: new Date(invoice.InvoiceDate).toLocaleDateString(),
+            InvoiceDueDate: new Date(invoice.InvoiceDueDate).toLocaleDateString(),
+            InvoiceStatus: status,
+            InvoiceBill: Number(invoice.InvoiceBill),
+            ClientName: invoice.Client?.firstName || "N/A",
+            ClientEmail: invoice.Client?.email || "N/A",
+            CompanyName: invoice.Client?.companyName || "N/A",
+            LineItemTitle: lineItem.LineItem?.title || "N/A",
+            LineItemQuantity: lineItem.LineItem?.quantity || "N/A",
+            LineItemUnitPrice: Number(lineItem.LineItem?.unit_price) || 0,
+            LineItemTotalAmount: Number(lineItem.totalAmount) || 0,
+          });
+        });
+      });
+    };
+  
+    processInvoices(data.paidInvoices, "Paid");
+    processInvoices(data.unpaidInvoices, "Unpaid");
+    processInvoices(data.overdueInvoices, "Overdue");
+  
+    // Convert JSON to Sheet
+    const worksheet = XLSX.utils.json_to_sheet(invoiceRows);
+
+    const currencyColumns = ["InvoiceBill", "LineItemUnitPrice", "LineItemTotalAmount"];
+    currencyFormatter(currencyColumns, invoiceRows, worksheet);
+    headerFormatter(worksheet);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
+  
+    // Export to Excel
+    XLSX.writeFile(workbook, `Invoices-${new Date().toISOString().slice(0, 10)}.xlsx`);
+  };
   return (
     <>
       <Stack width="80x%">
@@ -129,32 +147,15 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
               </Tab>
             </TabList>
             <Stack direction={"row"} style={{ paddingRight: "16px" }}>
-              {/* {workOrder ? (
-                <>
-                <BuilderProButton
-                  backgroundColor={"#4C8AB1"}
-                  variant={"contained"}
-                  fontFamily={'var(--main-font-family)'}
-                  fontSize={"16px"}
-                  fontWeight={"600"}
-                  padding={{md:"6px 32px 6px 32px"}}
-                  handleOnClick={handleChangeView}
-                  
-                  >
-                  Request New Work Order
-                </BuilderProButton>
-                  </>
-              ) : (
-                <RequestWorkOrderModal
-                  rowCheckboxes={rowCheckboxes}
-                  checkedRow={checkedRow}
-                  setCheckedRow={setCheckedRow}
-                  changeOrder={true}
-                  refetch={refetch}
-                  setPhaseItems={setPhaseItems}
-                  phaseItems={phaseItems}
-                />
-              )} */}
+            <Tooltip title="Export invoices" placement="top">
+                <Box sx={{ cursor: "pointer" }} onClick={handleExportInvoices}>
+                  <Excel
+                    fill={"#4C8AB1"}
+                    width={"30px"}
+                    height={"30px"}
+                  />
+                </Box>
+              </Tooltip>
             </Stack>
           </Stack>
           <TabPanel

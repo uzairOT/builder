@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   addProjects,
+  getPinnedProject,
   projectsPackage,
 } from "../../../redux/slices/Project/userProjectsSlice";
 import { addInitialPhase } from "../../../redux/slices/Project/projectInitialProposal";
@@ -19,11 +20,7 @@ import { authUserRole } from "../../../redux/slices/auth/userRoleSlice";
 const ProjectsSidebar = ({ reports }) => {
   const [activeBtn, setActiveBtn] = useState("remodel");
   const dispatch = useDispatch();
-  const [getUserRole] = useGetProjectUserRoleMutation();
-  const local = localStorage.getItem("userInfo");
   const userRole = useSelector(authUserRole);
-  const currentUser = JSON.parse(local);
-  const currentUserId = currentUser.user.id;
   const location = useLocation();
   const path =
     !location.pathname.split("/")[3] ||
@@ -33,7 +30,7 @@ const ProjectsSidebar = ({ reports }) => {
   const handleListedProjectsButton = (btn) => {
     setActiveBtn(btn);
   };
-
+  const pinnedProject  = useSelector(getPinnedProject);
   const navigate = useNavigate();
 
   const handleClick = async (projectId, pathTo, e) => {
@@ -166,6 +163,23 @@ const ProjectsSidebar = ({ reports }) => {
         >
           <Stack spacing={1} pl={{xl:2, lg:'0px', xs:2}} pr={{xl:2, lg:'0px', xs:2}} pt={1}>
             <>
+            {pinnedProject?.id && <React.Fragment key={pinnedProject.id}>
+                      <Link
+                        key={pinnedProject.id}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleClick(pinnedProject.id, path, e);
+                        }}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <ProjectCard
+                          handleClick={()=>{}}
+                          projectProfileCard={pinnedProject}
+                          selected={Number(pinnedProject.id) === Number(id)}
+                          pinnedProject={true}
+                        />
+                      </Link>
+                    </React.Fragment>}
               {projects[0]?.map((projectProfileCard) => {
                 const selected = Number(projectProfileCard.id) === Number(id);
                 if (projectProfileCard.buildType === activeBtn) {
@@ -180,6 +194,7 @@ const ProjectsSidebar = ({ reports }) => {
                         style={{ textDecoration: "none" }}
                       >
                         <ProjectCard
+                          handleClick={()=>{}}
                           projectProfileCard={projectProfileCard}
                           selected={selected}
                         />

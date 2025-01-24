@@ -1,4 +1,4 @@
-import { Paper, Stack, Typography } from '@mui/material'
+import { Paper, Stack, Tooltip, Typography } from '@mui/material'
 import React from 'react'
 import moment from 'moment-timezone';
 const PaymentHistoryCard = ({data, handleOpenModal}) => {
@@ -20,7 +20,7 @@ const PaymentHistoryCard = ({data, handleOpenModal}) => {
         <Typography sx={themeStyle.subtitle} >{data.payment}</Typography>
         <Typography sx={themeStyle.footer} >Plan: {data.plan}</Typography>
         {(!isRefundable && (data.status !== 'success')) && <Typography sx={themeStyle.footer} >Status: {data.status}</Typography>}
-        {(isRefundable && data.plan !== 'Free Trial') && <Typography sx={themeStyle.refund} onClick={()=>handleOpenModal({id: data.id, payment:data.amount, paymentIntentId: data.paymentIntentId})}>Request a Refund</Typography>}
+        {(isRefundable && data.plan !== 'Free Trial') && <Tooltip title="Refund window is 3 days" placement='top-end'><Typography sx={themeStyle.refund} onClick={()=>handleOpenModal({id: data.id, payment:data.amount, paymentIntentId: data.paymentIntentId})}>Request a Refund</Typography></Tooltip>}
     </Paper>
   )
 }

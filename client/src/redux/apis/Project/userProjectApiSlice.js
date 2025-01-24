@@ -83,7 +83,13 @@ export const userProjectsApiSlice = apiSlice.injectEndpoints({
         url: `${USER_PROJECTS_URL}/projects/${data.id}`,
         method: 'DELETE'
       })
-    })
+    }),
+    getUserPinnedProject: builder.query({
+      query: (data) => ({
+        url: `${USER_PROJECTS_URL}/pinnedProject/${data.userId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -99,5 +105,6 @@ export const {
   useGetProjectUserRoleMutation,
   useGetUserNotificationQuery,
   useSetProjectToIncompleteMutation,
-  useDeleteUserProjectMutation
+  useDeleteUserProjectMutation,
+  useGetUserPinnedProjectQuery
 } = userProjectsApiSlice;

@@ -137,7 +137,6 @@ const ShareModal = ({
 
         return updatedErrorState;
       });
-
       if (automated && value !== "") {
         const numericValue = parseFloat(value) || 0;  // Ensure numericValue is 0 if value is ""
         const percentage = (numericValue * 100) / parseFloat(pendingPayment);
@@ -516,11 +515,12 @@ const ShareModal = ({
                       phase.rows.map((row, index) => {
                         const totalCost =
                           Number(row.total) + Number(row.margin);
+                        const paymentPending = row.paymentPending ? row.paymentPending : 0;
                         lineItemData.push({
                           outerIndex,
                           index,
                           id: row.id,
-                          pendingPayment: row.paymentPending,
+                          pendingPayment: paymentPending,
                         });
                         return (
                           <TableRow key={row.id}>
@@ -594,7 +594,7 @@ const ShareModal = ({
                                       index,
                                       e.target.value,
                                       outerIndex,
-                                      row.paymentPending,
+                                      paymentPending,
                                       true
                                     )}
                                   }

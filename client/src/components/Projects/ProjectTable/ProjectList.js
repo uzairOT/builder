@@ -13,6 +13,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import logo from "../../Signup/Assets/pngs/builderProYellowLogo.png";
@@ -29,6 +30,7 @@ import moment from "moment-timezone";
 import {
   useDeleteUserProjectMutation,
   useGetUserProjectsQuery,
+  userProjectsApiSlice,
 } from "../../../redux/apis/Project/userProjectApiSlice";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
 import { useDispatch } from "react-redux";
@@ -41,6 +43,9 @@ import {
 } from "../../../redux/slices/Project/userProjectsSlice";
 import { setError } from "../../../redux/slices/Notifications/notificationSlice";
 import { toast } from "react-toastify";
+import XLSX from "xlsx-js-style";
+import { currencyFormatter, headerFormatter } from "../../../utils/Formatters/excelFormatters";
+import { Excel } from "../../../assets/FileSvg/excel";
 
 const ProjectList = ({
   rows,
@@ -163,6 +168,53 @@ const ProjectList = ({
     setPage(newPage);
   };
 
+  const handleExportProject = async () => {
+    try {
+      const response = await dispatch(
+        userProjectsApiSlice.endpoints.getUserProjects.initiate({
+          userId: currentUserId,
+          all: "",
+        })
+      );
+
+      /* Checking for response */
+      if (response.data && response.data.projects) {
+        const date = moment().format("MM_DD_YY");
+        const projects = response.data.projects;
+
+        const formattedData = projects.map((project) => ({
+          "Project Name": project.projectName,
+          "Build Type": project.buildType,
+          "Client Name": project.clientName || "N/A",
+          "Start Date": project.start_time ? moment(project.start_time).format("MM/DD/YYYY") : "N/A",
+          "End Date": project.end_time ? moment(project.end_time).format("MM/DD/YYYY") : "N/A",
+          "Location": project.location,
+          "Total Profit": project.totalProfit || "N/A",
+          "Total Project Cost": project.totalProjectCost || "N/A",
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(formattedData);
+
+        const currencyColumns = ["Total Profit", "Total Project Cost"]
+        currencyFormatter(currencyColumns, formattedData, worksheet);
+        headerFormatter(worksheet);
+
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          `Projects_Export_${date}`
+        );
+
+        XLSX.writeFile(workbook, `Projects_Export_${date}.xlsx`);
+        console.log("Excel file exported successfully!");
+      }
+    } catch (error) {
+      console.error("Error exporting projects:", error);
+    }
+  };
+
+
   let startIndex = 1;
   let endIndex = limit;
   if (page === 1) {
@@ -221,6 +273,15 @@ const ProjectList = ({
           </Stack>
           {/* Buttons Remodel And Filter */}
           <Stack direction={"row"} height={"35px"}>
+            <Tooltip title="Export projects" placement="top">
+              <Box sx={{ cursor: "pointer" }} onClick={handleExportProject}>
+                <Excel
+                  fill={"#4C8AB1"}
+                  width={"30px"}
+                  height={"30px"}
+                />
+              </Box>
+            </Tooltip>
             <Box display={{ md: "flex", xs: "none" }}>
               {selectedFilters?.map((filter) => (
                 <BuilderProButton
@@ -389,7 +450,7 @@ const ProjectList = ({
               handleOnClick={() => {
                 navigate("/assignproject");
               }}
-              // disabled={open}
+            // disabled={open}
             >
               Add{" "}
               <Box
@@ -554,12 +615,12 @@ const ProjectList = ({
                             {row.userId === currentUserId && (
                               <Paper>
                                 <IconButton
-                                  
+
                                   variant={"contained"}
                                   onClick={() => handleOpenEditModel(row)}
                                 >
                                   <EditOutlinedIcon
-                                  sx={{fontSize:{md:'20px', xs:'14px'}}}
+                                    sx={{ fontSize: { md: '20px', xs: '14px' } }}
                                     style={{ color: "#4C8AB1" }}
                                   />
                                 </IconButton>
@@ -571,7 +632,7 @@ const ProjectList = ({
                                   onClick={() => handleDeleteFlow(row.id)}
                                 >
                                   <DeleteOutlineOutlinedIcon
-                                   sx={{fontSize:{md:'20px', xs:'14px'}}}
+                                    sx={{ fontSize: { md: '20px', xs: '14px' } }}
                                     style={{ color: "#DF0404" }}
                                   />
                                 </IconButton>
@@ -646,7 +707,7 @@ export default ProjectList;
 
 const themeStyle = {
   tableCell: {
-      fontFamily: 'var(--main-font-family)',
+    fontFamily: 'var(--main-font-family)',
     maxWidth: { xl: "40px", lg: "30px", md: "70px", xs: "100%" },
     minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
     textOverflow: "ellipsis",

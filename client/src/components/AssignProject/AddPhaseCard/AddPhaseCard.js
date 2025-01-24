@@ -55,6 +55,7 @@ import { CoEditChip } from "../../LandingPageComponents/assets/svg";
 import { ChipDelete } from "@mui/joy";
 import { useProjectPermissionCheck } from "../../Projects/ProjectPermissions/ProjectsPermissionCheck";
 import ReportIcon from "@mui/icons-material/Report";
+import { hasAdminPrivileges, hasOtherPrivileges, hasPartneredPrivileges, isCheckBoxRestricted, isNotAdmin } from "./constants/checkArray";
 
 const initialRows = [
   {
@@ -871,9 +872,7 @@ const AddPhaseCard = ({
             <Typography sx={listOfLineText}>List of Line Items </Typography>
 
             <Box>
-              {(userRoleAuth.userRole === "superadmin" ||
-                userRoleAuth.userRole === "admin" ||
-                userRoleAuth.userRole === "projectManager") && (
+              {(hasAdminPrivileges.includes(userRoleAuth.userRole)) && (
                   <Typography
                     sx={{
                       ...blackHeading,
@@ -1009,22 +1008,15 @@ const AddPhaseCard = ({
                             : "Status"}
                       </TableCell>
 
-                      {(userRoleAuth.userRole === "employee" ||
-                        userRoleAuth.userRole === "subcontractor" ||
-                        userRoleAuth.userRole === "supplier") && (
+                      {(hasPartneredPrivileges.includes(userRoleAuth.userRole)) && (
                           <TableCell sx={tableHeadings}>Update Status</TableCell>
                         )}
-                      {(userRoleAuth.userRole === "superadmin" ||
-                        userRoleAuth.userRole === "admin" ||
-                        userRoleAuth.userRole === "projectManager") && (
+                      {(hasAdminPrivileges.includes(userRoleAuth.userRole)) && (
                           <TableCell sx={tableHeadings}>Team Status</TableCell>
                         )}
                     </>
                   )}
-                  {(userRoleAuth.userRole === "superadmin" ||
-                    userRoleAuth.userRole === "admin" ||
-                    userRoleAuth.userRole === "projectManager" ||
-                    userRoleAuth.userRole === "") &&
+                  {([...hasAdminPrivileges, ""].includes(userRoleAuth.userRole)) &&
                     (changeOrderSelectedView ||
                       pathCheck.includes("/assignproject") ||
                       phaseData.status === "not approved" ||
@@ -1074,20 +1066,13 @@ const AddPhaseCard = ({
 
                     // Main condition for rendering TableCell
                     const showTableCell =
-                      (userRoleAuth.userRole === "superadmin" ||
-                        userRoleAuth.userRole === "admin" ||
-                        userRoleAuth.userRole === "projectManager" ||
-                        userRoleAuth.userRole === "") &&
+                      ([...hasAdminPrivileges, ""].includes(userRoleAuth.userRole)) &&
                       (view === "Change Order" ||
                         changeOrderSelectedView ||
                         InitialProposalView ||
                         pathCheck.includes("/assignproject")) &&
                       (showEditIcon || showDeleteIcon);
-                    if (
-                      userRoleAuth.userRole === "employee" ||
-                      userRoleAuth.userRole === "subcontractor" ||
-                      userRoleAuth.userRole === "supplier"
-                    ) {
+                    if (hasPartneredPrivileges.includes(userRoleAuth.userRole)) {
                       const userLineItem = row?.UserLineItemStatuses?.find(
                         (user) => user.userId === userId
                       );
@@ -1129,10 +1114,11 @@ const AddPhaseCard = ({
                             display: changeOrderSelectedView ? "none" : "",
                           }}
                         >
-                          {(row.status === "Change Order Requested" ||
+                          {/* row.status === "Change Order Requested" ||
                             row.status === "Change Order approved" ||
                             row.status === "Change Order declined" ||
-                            row.status === "Change Order Not requested") && (
+                            row.status === "Change Order Not requested" */}
+                          {(row.status?.includes("Change Order")) && (
                               <>
                                 <IconButton
                                 // onClick={() => handleCheckboxChange(row)}
@@ -1176,10 +1162,9 @@ const AddPhaseCard = ({
                                   view === "Work Order") &&
                                 !pathCheck.includes("initial-proposal") && (
                                   <>
-                                    {phaseData?.status === "change pending" ||
-                                      phaseData?.status === "pending" ||
-                                      row?.status === "Work Order Requested" ||
-                                      row?.status === "Change Order Requested" ? (
+                                    {phaseData?.status?.includes("pending") ||
+                                      isCheckBoxRestricted.some((restrictedStatus) =>
+                                        row?.status?.includes(restrictedStatus)) ? (
                                       <Tooltip
                                         title={`Line Item is ${row?.status ===
                                             "Work Order Requested" ||
@@ -1206,6 +1191,7 @@ const AddPhaseCard = ({
                                             fontSize: 20,
                                           },
                                         }}
+                                        disabled={row?.status === "Work Order approved"}
                                         checked={
                                           isRowSelected(row, row.phase_id)
                                             ? isRowSelected(row, row.phase_id)
@@ -1224,6 +1210,7 @@ const AddPhaseCard = ({
                             !(row.paymentPending === "0") && (
                               <Checkbox
                                 // checked={checkedRow === row}
+                                isabled={row?.status === "Work Order approved"}
                                 sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
                                 checked={
                                   isRowSelected(row, row.phase_id)
@@ -1307,10 +1294,7 @@ const AddPhaseCard = ({
                           )}
 
                         {!(
-                          userRoleAuth.userRole === "client" ||
-                          userRoleAuth.userRole === "employee" ||
-                          userRoleAuth.userRole === "subcontractor" ||
-                          userRoleAuth.userRole === "supplier"
+                          isNotAdmin.includes(userRoleAuth.userRole)
                         ) && (
                             <TableCell
                               sx={{
@@ -1379,9 +1363,7 @@ const AddPhaseCard = ({
                                 {row.status}
                               </TableCell>
                             )}
-                            {(userRoleAuth.userRole === "superadmin" ||
-                              userRoleAuth.userRole === "admin" ||
-                              userRoleAuth.userRole === "projectManager") && (
+                            {(hasAdminPrivileges.includes(userRoleAuth.userRole)) && (
                                 <TableCell sx={tableCell}>
                                   <Button
                                     sx={{
@@ -1412,10 +1394,7 @@ const AddPhaseCard = ({
                                   </Button>
                                 </TableCell>
                               )}
-                            {(userRoleAuth.userRole === "employee" ||
-                              userRoleAuth.userRole === "subcontractor" ||
-                              userRoleAuth.userRole === "others" ||
-                              userRoleAuth.userRole === "supplier") && (
+                            {(hasOtherPrivileges.includes(userRoleAuth.userRole)) && (
                                 <TableCell sx={tableCell}>
                                   {row.status === "Work Order approved" && (
                                     <IconButton

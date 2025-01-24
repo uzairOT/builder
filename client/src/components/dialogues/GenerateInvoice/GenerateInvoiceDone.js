@@ -1,6 +1,6 @@
 import { Modal, Stack, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
-import Done from './assets/gifs/done.gif'
+import Done from '../../../assets/gifs/done.gif'
 
 const GenerateInvoiceDone = ({setDone}) => {
     const [open, setOpen] = React.useState(true);

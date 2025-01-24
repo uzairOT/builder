@@ -25,6 +25,7 @@ import axios from "axios";
 import {
   useLocation,
   useNavigate,
+  useOutletContext,
   useParams,
 } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -47,6 +48,8 @@ import GenerateInvoiceButtons from "./GenerateInvoiceButtons";
 import WorkOrderButtons from "./WorkOrderButtons";
 import DefaultButtons from "./DefaultButtons";
 import GenerativeAiDialogue from "../../dialogues/GenerativeAIDialogue/GenerativeAiDialogue";
+import { currencyFormatter, headerFormatter } from "../../../utils/Formatters/excelFormatters";
+import XLSX from "xlsx-js-style";
 //import "react-toastify/dist/ReactToastify.css";
 
 function AddPhaseView({
@@ -99,7 +102,6 @@ function AddPhaseView({
   const newChangePath = `/projects/${projectId}/change-order`;
   const newWorkPath = `/projects/${projectId}/work-order`;
   const navigate = useNavigate();
-
   // const projects = useSelector(
   //   (state) => state.userProjects.projects
   // );
@@ -200,7 +202,7 @@ function AddPhaseView({
       setIsLoading(false);
     }
   };
-  console.log('run')
+  
   useEffect(() => {
     // console.log("UserEffect run");
     fetchData();
@@ -416,45 +418,49 @@ function AddPhaseView({
     navigate(newWorkPath);
   };
 
-  const currentRoute = location.pathname;
 
-  const permissionsState = useSelector(
-    (state) => state?.permissions?.permissions
-  );
-  const ProjectApprovalSendPermission = useProjectPermissionCheck(
-    "project-approval",
-    permissionsState
-  );
+  const handleExportPhases = () => {
+    const allPhases = [...phases, ...initialPhases];
 
-  const projectManagementPermission = useProjectPermissionCheck(
-    "project-management",
-    permissionsState,
-    currentRoute
-  );
+    const phaseRows = [];
 
-  const GenerateInvoicePermission = useProjectPermissionCheck(
-    "generate-invoice",
-    permissionsState
-  );
+    // Function to process phases and their line items
+    const processPhase = (phase) => {
+      phase.forEach((p) => {
+        // Process line items for each phase
+        p.LineItems.forEach((lineItem) => {
+          phaseRows.push({
+            LineItemTitle: lineItem.title,
+            LineItemDescription: lineItem.description,
+            LineItemStatus: lineItem.status,
+            LineItemUnit: lineItem.unit,
+            LineItemQuantity: lineItem.quantity,
+            LineItemUnitPrice: Number(lineItem.unit_price) || 0,
+            LineItemTotalAmount: Number(lineItem.total) || 0,
+            Margin: lineItem.margin,
+            PaymentPending: lineItem.paymentPending || 0,
+            PhaseName: p.phase_name,
+            PhaseStatus: p.status,
+          });
+        });
+      });
+    };
 
-  const changeOrderPermission = useProjectPermissionCheck(
-    "change-order",
-    permissionsState
-  );
+    // Process both phases and initialPhases
+    console.log(allPhases)
+    allPhases.forEach((phaseArray, index) => {
+      const status = index < phases.length ? "Not Approved" : "Approved";
+      processPhase(phaseArray, status);
+    });
 
-  const workOrderPermission = useProjectPermissionCheck(
-    "work-order",
-    permissionsState
-  );
-
-  const initalApproved = initialPhases?.[0]?.[0]?.status === "approved";
-  const initialLengthZero = initialPhases?.[0]?.length === 0 || initialPhases?.length === 0
-  const initalUnapprovedPendingDeclined = (initialPhases?.[0]?.[0]?.status === "not approved" ||
-    initialPhases?.[0]?.[0]?.status === "declined" ||
-    initialPhases?.[0]?.[0]?.status === "pending")
-  const initalUnapprovedPending = (initialPhases?.[0]?.[0]?.status === "not approved" ||
-    initialPhases?.[0]?.[0]?.status === "declined")
-    console.log(view)
+    const worksheet = XLSX.utils.json_to_sheet(phaseRows);
+    const currencyColumns = ["LineItemUnitPrice", "LineItemTotalAmount", "PaymentPending"]
+    currencyFormatter(currencyColumns, phaseRows, worksheet);
+    headerFormatter(worksheet);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Project Phases");
+    XLSX.writeFile(workbook, `Project-Phases-${new Date().toISOString().slice(0, 10)}.xlsx`);
+  };
   return (
     <>
       <Grid container sx={{ ...firstGrid, width: "100%" }}>
@@ -487,7 +493,7 @@ function AddPhaseView({
           </Stack>
           {view === "Initial Proposal" ? (
             <>
-            <InitialProposalButtons handleChangeOpen={handleChangeOpen} handleWorkOpen={handleWorkOpen} isLoading={isLoading} handleAddPhase={handleAddPhase} handleEditPhase={handleEditPhase} handleOpenModal={handleOpenModal} handleSendApproval={handleSendApproval} isLoadingSendApproval={isLoadingSendApproval}/>
+            <InitialProposalButtons handleExportPhases={handleExportPhases} handleChangeOpen={handleChangeOpen} handleWorkOpen={handleWorkOpen} isLoading={isLoading} handleAddPhase={handleAddPhase} handleEditPhase={handleEditPhase} handleOpenModal={handleOpenModal} handleSendApproval={handleSendApproval} isLoadingSendApproval={isLoadingSendApproval}/>
             </>
           ) : view === "Generate Invoice" ? (
             <>

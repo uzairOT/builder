@@ -61,7 +61,6 @@ const NotificationDetailModal = ({
   const user = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(user);
   const userId = currentUser.user.id;
-  console.log(data1);
   const [assignedCheckboxes, setAssignedCheckboxes] = useState([]);
   const handleClose = () => {
     setOpen(false);
@@ -106,6 +105,7 @@ const NotificationDetailModal = ({
         );
         if (
           response.data.role === "superadmin" ||
+          response.data.role === "admin" ||
           response.data.role === "client" ||
           response.data.role === "projectManager"
         ) {

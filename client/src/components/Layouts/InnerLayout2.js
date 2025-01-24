@@ -75,7 +75,7 @@ const InnerLayout2 = () => {
         sx={{ height: "calc(92vh - 295px)" }}
       >
         <Stack flex={2} height={"inherit"}>
-          <Outlet context={[SuperAdminId, projectOrganizationId, selectedProjectData]} />
+          <Outlet context={[SuperAdminId, projectOrganizationId, selectedProjectData,projectName]} />
         </Stack>
         {/* Change Order Tab navigation */}
         <Stack flex={1} pt={{ xs: 1, lg: 0 }}>
