@@ -256,7 +256,7 @@ const projectApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data
       }),
-    })
+    }),
   }),
 });
 

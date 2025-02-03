@@ -390,7 +390,7 @@ const Navbar = () => {
                             : lang === "es"
                             ? "Spanish"
                             : lang === "zh"
-                            ? "Chinese"
+                            ? "Mandarin"
                             : "German"}
                         </MenuItem>
                       ))}

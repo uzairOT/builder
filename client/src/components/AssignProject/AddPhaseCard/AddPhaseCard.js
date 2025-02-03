@@ -25,9 +25,7 @@ import "./AddPhaseCard.css";
 import AddLineDialogue from "../../dialogues/AddLineDialogue/AddLineDialogue";
 import UpdateLineDialogue from "../../dialogues/UpdateLineDialogue/UpdateLineDialogue";
 import { useDeletePhaseLineMutation } from "../../../redux/apis/Project/projectApiSlice";
-import {
-  selectAddPhase,
-} from "../../../redux/slices/addPhaseSlice";
+import { selectAddPhase } from "../../../redux/slices/addPhaseSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addInitialPhase,
@@ -51,11 +49,19 @@ import SendIcon from "@mui/icons-material/Send";
 import { socket } from "../../../socket";
 import InfoIcon from "@mui/icons-material/Info";
 import { toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { CoEditChip } from "../../LandingPageComponents/assets/svg";
 import { ChipDelete } from "@mui/joy";
 import { useProjectPermissionCheck } from "../../Projects/ProjectPermissions/ProjectsPermissionCheck";
 import ReportIcon from "@mui/icons-material/Report";
-import { hasAdminPrivileges, hasOtherPrivileges, hasPartneredPrivileges, isCheckBoxRestricted, isNotAdmin } from "./constants/checkArray";
+import {
+  hasAdminPrivileges,
+  hasOtherPrivileges,
+  hasPartneredPrivileges,
+  isCheckBoxCompleted,
+  isCheckBoxRestricted,
+  isNotAdmin,
+} from "./constants/checkArray";
 
 const initialRows = [
   {
@@ -284,8 +290,8 @@ const AddPhaseCard = ({
             data?.success === true
               ? "toast-success"
               : data?.success === false
-                ? "toast-error"
-                : "toast-default",
+              ? "toast-error"
+              : "toast-default",
         });
         dispatch(toggleWorkOrderDeclineRecall());
       }
@@ -458,7 +464,7 @@ const AddPhaseCard = ({
               >
                 {phaseData.phase_name}
               </Typography>
-                
+
               <Chip
                 sx={{
                   maxWidth: "10rem",
@@ -473,32 +479,32 @@ const AddPhaseCard = ({
                 label={phaseData?.status}
                 color={
                   phaseData?.status === "approved" ||
-                    phaseData?.status === "change approved"
+                  phaseData?.status === "change approved"
                     ? "success"
                     : phaseData?.status === "pending" ||
                       phaseData?.status === "change pending"
-                      ? "warning"
-                      : "error"
+                    ? "warning"
+                    : "error"
                 }
               />
-                     {phaseData?.declinedReason &&
-                        (phaseData?.status === "declined" ||
-                          phaseData?.status === "change declined") && (
-                          <>
-                            <Tooltip
-                              title={
-                                phaseData?.declinedReason
-                                  ? phaseData?.declinedReason
-                                  : ""
-                              }
-                              arrow
-                            >
-                              <IconButton sx={{height:'40px', marginTop: 1,}}>
-                                <InfoIcon sx={{ color: `red`, }} />
-                              </IconButton>
-                            </Tooltip>
-                          </>
-                        )}
+              {phaseData?.declinedReason &&
+                (phaseData?.status === "declined" ||
+                  phaseData?.status === "change declined") && (
+                  <>
+                    <Tooltip
+                      title={
+                        phaseData?.declinedReason
+                          ? phaseData?.declinedReason
+                          : ""
+                      }
+                      arrow
+                    >
+                      <IconButton sx={{ height: "40px", marginTop: 1 }}>
+                        <InfoIcon sx={{ color: `red` }} />
+                      </IconButton>
+                    </Tooltip>
+                  </>
+                )}
             </Box>
 
             {/* <Box>
@@ -564,8 +570,8 @@ const AddPhaseCard = ({
                 userRoleAuth.userRole === "") && (
                 <>
                   {phaseData?.status === "not approved" ||
-                    phaseData?.status === "declined" ||
-                    phaseData?.status === "pending" ? (
+                  phaseData?.status === "declined" ||
+                  phaseData?.status === "pending" ? (
                     <>
                       {phaseData?.declinedReason &&
                         (phaseData?.status === "declined" ||
@@ -580,7 +586,7 @@ const AddPhaseCard = ({
                               arrow
                             >
                               <IconButton>
-                                <InfoIcon sx={{ color: `red`, }} />
+                                <InfoIcon sx={{ color: `red` }} />
                               </IconButton>
                             </Tooltip>
                           </>
@@ -588,62 +594,62 @@ const AddPhaseCard = ({
 
                       {(phaseData?.status === "not approved" ||
                         phaseData?.status === "declined") && (
-                          <>
-                            <Tooltip
-                              title={
-                                projectManagementPermission
-                                  ? ""
-                                  : "You are not authorized!"
-                              }
-                              arrow
+                        <>
+                          <Tooltip
+                            title={
+                              projectManagementPermission
+                                ? ""
+                                : "You are not authorized!"
+                            }
+                            arrow
+                          >
+                            <Button
+                              disabled={!projectManagementPermission}
+                              sx={{
+                                ...actionButton,
+                                background: "#4C8AB1",
+                                marginTop: "0.7rem",
+                                marginBottom: "1rem",
+                                marginRight: { xl: "-8rem", xs: "0rem" },
+                                "@media (max-width: 600px)": {
+                                  minWidth: 0,
+                                  width: "2.5rem",
+                                  height: "2.5rem",
+                                  borderRadius: "50%",
+                                  padding: 0,
+                                  fontSize: "0.75rem",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  fontFamily: "var(--main-font-family)",
+                                },
+                              }}
+                              onClick={handleAddLine}
                             >
-                              <Button
-                                disabled={!projectManagementPermission}
+                              <AddIcon
                                 sx={{
-                                  ...actionButton,
-                                  background: "#4C8AB1",
-                                  marginTop: "0.7rem",
-                                  marginBottom: "1rem",
-                                  marginRight: { xl: "-8rem", xs: "0rem" },
-                                  "@media (max-width: 600px)": {
-                                    minWidth: 0,
-                                    width: "2.5rem",
-                                    height: "2.5rem",
-                                    borderRadius: "50%",
-                                    padding: 0,
-                                    fontSize: "0.75rem",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    fontFamily: "var(--main-font-family)",
+                                  "@media (min-width: 601px)": {
+                                    display: "none",
                                   },
                                 }}
-                                onClick={handleAddLine}
+                              />
+                              <Typography
+                                sx={{
+                                  fontFamily: "var(--main-font-family)",
+                                  "@media (min-width: 601px)": {
+                                    display: "inline",
+                                  },
+                                  "@media (max-width: 600px)": {
+                                    display: "none",
+                                  },
+                                }}
                               >
-                                <AddIcon
-                                  sx={{
-                                    "@media (min-width: 601px)": {
-                                      display: "none",
-                                    },
-                                  }}
-                                />
-                                <Typography
-                                  sx={{
-                                    fontFamily: "var(--main-font-family)",
-                                    "@media (min-width: 601px)": {
-                                      display: "inline",
-                                    },
-                                    "@media (max-width: 600px)": {
-                                      display: "none",
-                                    },
-                                  }}
-                                >
-                                  Add Line Item
-                                </Typography>
-                              </Button>
-                            </Tooltip>
-                          </>
-                        )}
+                                Add Line Item
+                              </Typography>
+                            </Button>
+                          </Tooltip>
+                        </>
+                      )}
                     </>
                   ) : (
                     <></>
@@ -710,7 +716,7 @@ const AddPhaseCard = ({
                           arrow
                         >
                           <IconButton>
-                            <InfoIcon sx={{color:`${phaseData?.color}8D`}} />
+                            <InfoIcon sx={{ color: `${phaseData?.color}8D` }} />
                           </IconButton>
                         </Tooltip>
                       </>
@@ -718,7 +724,7 @@ const AddPhaseCard = ({
 
                   {(view === "Change Order" ||
                     pathCheck.includes("/assignproject")) &&
-                    !pathCheck.includes("/initial-proposal") ? (
+                  !pathCheck.includes("/initial-proposal") ? (
                     <>
                       {/* {(phaseData?.status === "not approved" ||
                         phaseData?.status === "declined") && (
@@ -872,21 +878,21 @@ const AddPhaseCard = ({
             <Typography sx={listOfLineText}>List of Line Items </Typography>
 
             <Box>
-              {(hasAdminPrivileges.includes(userRoleAuth.userRole)) && (
-                  <Typography
-                    sx={{
-                      ...blackHeading,
-                      paddingRight: "1rem",
-                      fontSize: "20px",
-                      marginTop: "0",
-                      width: { sm: "100%", xs: "14ch" },
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    Price: ${formatMoney(totalCost)}
-                  </Typography>
-                )}
+              {hasAdminPrivileges.includes(userRoleAuth.userRole) && (
+                <Typography
+                  sx={{
+                    ...blackHeading,
+                    paddingRight: "1rem",
+                    fontSize: "20px",
+                    marginTop: "0",
+                    width: { sm: "100%", xs: "14ch" },
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  Price: ${formatMoney(totalCost)}
+                </Typography>
+              )}
             </Box>
           </Box>
 
@@ -968,15 +974,15 @@ const AddPhaseCard = ({
                     userRoleAuth.userRole === "subcontractor" ||
                     userRoleAuth.userRole === "supplier"
                   ) && (
-                      <TableCell
-                        sx={{
-                          ...tableHeadings,
-                          display: changeOrderSelectedView ? "none" : "",
-                        }}
-                      >
-                        Profit
-                      </TableCell>
-                    )}
+                    <TableCell
+                      sx={{
+                        ...tableHeadings,
+                        display: changeOrderSelectedView ? "none" : "",
+                      }}
+                    >
+                      Profit
+                    </TableCell>
+                  )}
                   <TableCell
                     sx={{
                       ...tableHeadings,
@@ -1004,19 +1010,21 @@ const AddPhaseCard = ({
                         {view === "Generate Invoice"
                           ? "Invoice"
                           : pathCheck.includes("/initial-proposal")
-                            ? ""
-                            : "Status"}
+                          ? ""
+                          : "Status"}
                       </TableCell>
 
-                      {(hasPartneredPrivileges.includes(userRoleAuth.userRole)) && (
-                          <TableCell sx={tableHeadings}>Update Status</TableCell>
-                        )}
-                      {(hasAdminPrivileges.includes(userRoleAuth.userRole)) && (
-                          <TableCell sx={tableHeadings}>Team Status</TableCell>
-                        )}
+                      {hasAdminPrivileges.includes(userRoleAuth.userRole) && (
+                        <TableCell sx={tableHeadings}>Team Status</TableCell>
+                      )}
+                      {view === "Work Order" && (
+                        <TableCell sx={tableHeadings}>Update Status</TableCell>
+                      )}
                     </>
                   )}
-                  {([...hasAdminPrivileges, ""].includes(userRoleAuth.userRole)) &&
+                  {[...hasAdminPrivileges, ""].includes(
+                    userRoleAuth.userRole
+                  ) &&
                     (changeOrderSelectedView ||
                       pathCheck.includes("/assignproject") ||
                       phaseData.status === "not approved" ||
@@ -1066,13 +1074,17 @@ const AddPhaseCard = ({
 
                     // Main condition for rendering TableCell
                     const showTableCell =
-                      ([...hasAdminPrivileges, ""].includes(userRoleAuth.userRole)) &&
+                      [...hasAdminPrivileges, ""].includes(
+                        userRoleAuth.userRole
+                      ) &&
                       (view === "Change Order" ||
                         changeOrderSelectedView ||
                         InitialProposalView ||
                         pathCheck.includes("/assignproject")) &&
                       (showEditIcon || showDeleteIcon);
-                    if (hasPartneredPrivileges.includes(userRoleAuth.userRole)) {
+                    if (
+                      hasPartneredPrivileges.includes(userRoleAuth.userRole)
+                    ) {
                       const userLineItem = row?.UserLineItemStatuses?.find(
                         (user) => user.userId === userId
                       );
@@ -1095,8 +1107,8 @@ const AddPhaseCard = ({
                           maxHeight: "50px",
                           backgroundColor:
                             row.status === "Change Order Requested" ||
-                              row.status === "Change Order approved" ||
-                              row.status === "Change Order declined"
+                            row.status === "Change Order approved" ||
+                            row.status === "Change Order declined"
                               ? "#F4F4F4"
                               : "",
                           textDecoration: row.shouldDelete
@@ -1118,37 +1130,37 @@ const AddPhaseCard = ({
                             row.status === "Change Order approved" ||
                             row.status === "Change Order declined" ||
                             row.status === "Change Order Not requested" */}
-                          {(row.status?.includes("Change Order")) && (
-                              <>
-                                <IconButton
-                                // onClick={() => handleCheckboxChange(row)}
-                                >
-                                  <>
-                                    <Chip
-                                      style={{
-                                        border: isRowSelected(row, row.phase_id)
-                                          ? "1px solid black"
-                                          : "none",
-                                      }}
-                                      color={"warning"}
-                                      label={
-                                        <span
-                                          style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                          }}
-                                        >
-                                          CO
-                                          <ModeEditIcon
-                                            sx={{ fontSize: "0.980rem" }}
-                                          />
-                                        </span>
-                                      }
-                                    />
-                                  </>
-                                </IconButton>
-                              </>
-                            )}
+                          {row.status?.includes("Change Order") && (
+                            <>
+                              <IconButton
+                              // onClick={() => handleCheckboxChange(row)}
+                              >
+                                <>
+                                  <Chip
+                                    style={{
+                                      border: isRowSelected(row, row.phase_id)
+                                        ? "1px solid black"
+                                        : "none",
+                                    }}
+                                    color={"warning"}
+                                    label={
+                                      <span
+                                        style={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                        }}
+                                      >
+                                        CO
+                                        <ModeEditIcon
+                                          sx={{ fontSize: "0.980rem" }}
+                                        />
+                                      </span>
+                                    }
+                                  />
+                                </>
+                              </IconButton>
+                            </>
+                          )}
                           {!InitialProposalView && (
                             <>
                               {!(path === "assignproject") &&
@@ -1162,46 +1174,66 @@ const AddPhaseCard = ({
                                   view === "Work Order") &&
                                 !pathCheck.includes("initial-proposal") && (
                                   <>
-                                    {phaseData?.status?.includes("pending") ||
-                                      isCheckBoxRestricted.some((restrictedStatus) =>
-                                        row?.status?.includes(restrictedStatus)) ? (
-                                      <Tooltip
-                                        title={`Line Item is ${row?.status ===
-                                            "Work Order Requested" ||
-                                            row?.status ===
-                                            "Change Order Requested"
-                                            ? row?.status
-                                            : phaseData?.status
-                                          }`}
-                                        arrow
-                                      >
-                                        <IconButton size="small">
-                                          <ReportIcon
-                                            color="error"
-                                            sx={{
-                                              marginRight: 1,
-                                            }}
-                                          />
-                                        </IconButton>
-                                      </Tooltip>
-                                    ) : (
-                                      <Checkbox
-                                        sx={{
-                                          "& .MuiSvgIcon-root": {
-                                            fontSize: 20,
-                                          },
-                                        }}
-                                        disabled={row?.status === "Work Order approved"}
-                                        checked={
-                                          isRowSelected(row, row.phase_id)
-                                            ? isRowSelected(row, row.phase_id)
-                                            : false
-                                        }
-                                        onChange={() =>
-                                          handleCheckboxChange(row)
-                                        }
-                                      />
-                                    )}
+                                    {(() => {
+                                      const status = row?.status;
+                                      const phaseStatus = phaseData?.status;
+                                      const isPending =
+                                        phaseStatus?.includes("pending");
+                                      const isRestricted =
+                                        isCheckBoxRestricted.some((s) =>
+                                          status?.includes(s)
+                                        );
+                                      const isApproved = isCheckBoxCompleted.some((s) => status?.includes(s))
+
+                                      // Determine tooltip message based on original logic
+                                      const tooltipIsRestrictedMessage = `Line Item is ${
+                                        status === "Work Order Requested" ||
+                                        status === "Change Order Requested"
+                                          ? status
+                                          : phaseStatus
+                                      }`;
+                                      const tooltipIsApprovedMessage =  status === 'Work Order complete' ? "Line item completed" : "Line item approved";
+
+                                      if (isPending || isRestricted) {
+                                        return (
+                                          <Tooltip title={tooltipIsRestrictedMessage} arrow>
+                                            <IconButton size="small" sx={{ marginRight: 1 }}>
+                                              <ReportIcon
+                                                color="error"      
+                                              />
+                                            </IconButton>
+                                          </Tooltip>
+                                        );
+                                      }
+
+                                      if (isApproved) {
+                                        return (
+                                          <Tooltip title={tooltipIsApprovedMessage} arrow>
+                                            <IconButton size="small" sx={{ marginRight: 1 }}>
+                                              <CheckCircleIcon
+                                                color="success"
+                                              />
+                                            </IconButton>
+                                          </Tooltip>
+                                        );
+                                      }
+
+                                      return (
+                                        <Checkbox
+                                          sx={{
+                                            "& .MuiSvgIcon-root": {
+                                              fontSize: 20,
+                                            },
+                                          }}
+                                          checked={
+                                            !!isRowSelected(row, row.phase_id)
+                                          }
+                                          onChange={() =>
+                                            handleCheckboxChange(row)
+                                          }
+                                        />
+                                      );
+                                    })()}
                                   </>
                                 )}
                             </>
@@ -1210,7 +1242,7 @@ const AddPhaseCard = ({
                             !(row.paymentPending === "0") && (
                               <Checkbox
                                 // checked={checkedRow === row}
-                                isabled={row?.status === "Work Order approved"}
+                                // disabled={row?.status === "Work Order approved"}
                                 sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
                                 checked={
                                   isRowSelected(row, row.phase_id)
@@ -1259,52 +1291,50 @@ const AddPhaseCard = ({
                         {!(
                           path === "assignproject" || changeOrderSelectedView
                         ) && (
-                            <TableCell
-                              sx={{
-                                ...tableCell,
-                                maxWidth: "",
-                                minWidth: "",
-                                width: "60px",
-                              }}
-                            >
-                              {row?.start_day
-                                ? moment(row?.start_day).format(
+                          <TableCell
+                            sx={{
+                              ...tableCell,
+                              maxWidth: "",
+                              minWidth: "",
+                              width: "60px",
+                            }}
+                          >
+                            {row?.start_day
+                              ? moment(row?.start_day).format(
                                   "MM/DD/YYYY HH:mm a"
                                 )
-                                : "-"}
-                            </TableCell>
-                          )}
+                              : "-"}
+                          </TableCell>
+                        )}
                         {!(
                           path === "assignproject" || changeOrderSelectedView
                         ) && (
-                            <TableCell
-                              sx={{
-                                ...tableCell,
-                                maxWidth: "",
-                                minWidth: "",
-                                width: "60px",
-                              }}
-                            >
-                              {row?.end_day
-                                ? moment(row?.end_day).format(
+                          <TableCell
+                            sx={{
+                              ...tableCell,
+                              maxWidth: "",
+                              minWidth: "",
+                              width: "60px",
+                            }}
+                          >
+                            {row?.end_day
+                              ? moment(row?.end_day).format(
                                   "MM/DD/YYYY HH:mm a"
                                 )
-                                : "-"}
-                            </TableCell>
-                          )}
+                              : "-"}
+                          </TableCell>
+                        )}
 
-                        {!(
-                          isNotAdmin.includes(userRoleAuth.userRole)
-                        ) && (
-                            <TableCell
-                              sx={{
-                                ...tableCell,
-                                display: changeOrderSelectedView ? "none" : "",
-                              }}
-                            >
-                              ${formatMoney(row?.margin)}
-                            </TableCell>
-                          )}
+                        {!isNotAdmin.includes(userRoleAuth.userRole) && (
+                          <TableCell
+                            sx={{
+                              ...tableCell,
+                              display: changeOrderSelectedView ? "none" : "",
+                            }}
+                          >
+                            ${formatMoney(row?.margin)}
+                          </TableCell>
+                        )}
                         <TableCell
                           sx={{
                             ...tableCell,
@@ -1360,53 +1390,89 @@ const AddPhaseCard = ({
                                   textTransform: "capitalize",
                                 }}
                               >
-                                {row.status}
-                              </TableCell>
-                            )}
-                            {(hasAdminPrivileges.includes(userRoleAuth.userRole)) && (
-                                <TableCell sx={tableCell}>
-                                  <Button
-                                    sx={{
-                                      height: "2rem",
-                                      padding: { lg: "0.75rem 1.5rem" },
-                                      justifyContent: "center",
-                                      alignItems: "center",
-                                      flexShrink: 0,
-                                      alignSelf: "stretch",
-                                      borderRadius: "2.8125rem",
-                                      background:
-                                        row?.UserLineItemStatuses?.length < 1
-                                          ? "lightgray"
-                                          : "#4C8AB1",
-                                      color: "#FFF",
-                                      textTransform: "none",
-                                      "&:hover": {
-                                        background: "#357899",
-                                      },
-                                      marginTop: "0.3rem",
-                                    }}
-                                    onClick={() => {
-                                      handleShowTeamStatus(row);
-                                    }}
-                                    disabled={row?.UserLineItemStatuses?.length < 1}
-                                  >
-                                    Details
-                                  </Button>
-                                </TableCell>
-                              )}
-                            {(hasOtherPrivileges.includes(userRoleAuth.userRole)) && (
-                                <TableCell sx={tableCell}>
-                                  {row.status === "Work Order approved" && (
-                                    <IconButton
-                                      onClick={() => {
-                                        handleUpdateUserStatus(row);
+                                <Tooltip
+                                  title={
+                                    <Typography
+                                      sx={{
+                                        fontSize: "10px",
+                                        textTransform: "capitalize",
                                       }}
                                     >
-                                      <AssignmentTurnedInRoundedIcon fontSize="large" />
-                                    </IconButton>
-                                  )}
-                                </TableCell>
-                              )}
+                                      {row.status}
+                                    </Typography>
+                                  }
+                                  arrow
+                                >
+                                  {row.status}
+                                </Tooltip>
+                              </TableCell>
+                            )}
+                            {hasAdminPrivileges.includes(
+                              userRoleAuth.userRole
+                            ) && (
+                              <TableCell sx={tableCell}>
+                                <Button
+                                  sx={{
+                                    height: "2rem",
+                                    padding: { lg: "0.75rem 1.5rem" },
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    flexShrink: 0,
+                                    alignSelf: "stretch",
+                                    borderRadius: "2.8125rem",
+                                    background:
+                                      row?.UserLineItemStatuses?.length < 1
+                                        ? "lightgray"
+                                        : "#4C8AB1",
+                                    color: "#FFF",
+                                    textTransform: "none",
+                                    "&:hover": {
+                                      background: "#357899",
+                                    },
+                                    marginTop: "0.3rem",
+                                  }}
+                                  onClick={() => {
+                                    handleShowTeamStatus(row);
+                                  }}
+                                  disabled={
+                                    row?.UserLineItemStatuses?.length < 1
+                                  }
+                                >
+                                  Details
+                                </Button>
+                              </TableCell>
+                            )}
+                            {view === "Work Order" && (
+                              <TableCell sx={tableCell}>
+                                <IconButton
+                                  onClick={() => {
+                                    if (row.status !== "Work Order approved")
+                                      return;
+                                    handleUpdateUserStatus(row);
+                                  }}
+                                >
+                                  <Tooltip
+                                    title={
+                                      row.status !== "Work Order approved" ? (
+                                        <Typography
+                                          sx={{
+                                            fontSize: "10px",
+                                            textTransform: "capitalize",
+                                          }}
+                                        >
+                                          {row.status}
+                                        </Typography>
+                                      ) : (
+                                        ""
+                                      )
+                                    }
+                                    arrow
+                                  >
+                                    <AssignmentTurnedInRoundedIcon fontSize="large" />
+                                  </Tooltip>
+                                </IconButton>
+                              </TableCell>
+                            )}
                           </>
                         )}
                         {showTableCell && (
@@ -1425,7 +1491,7 @@ const AddPhaseCard = ({
                                     onClick={
                                       changeOrderSelectedView
                                         ? () =>
-                                          hanldeEditChangeLineItem(row, index)
+                                            hanldeEditChangeLineItem(row, index)
                                         : () => handleUpdateLine(row)
                                     }
                                     disabled={!projectManagementPermission}
@@ -1448,10 +1514,10 @@ const AddPhaseCard = ({
                                     onClick={
                                       changeOrderSelectedView
                                         ? () =>
-                                          handleDeleteChangeLineItem(
-                                            row,
-                                            index
-                                          )
+                                            handleDeleteChangeLineItem(
+                                              row,
+                                              index
+                                            )
                                         : () => handleDeleteLineItem(row.id)
                                     }
                                     disabled={

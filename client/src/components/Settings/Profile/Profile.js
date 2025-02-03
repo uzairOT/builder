@@ -2,51 +2,47 @@ import React, { useState } from 'react';
 import { Typography, Divider, Box } from '@mui/material';
 import Profile from './ProfileView';
 import PasswordNotifications from './PasswordAndNotifications';
+import Others from './OthersView'; // Example new component for "Others"
 
 function ProfileView() {
   const [currentState, setCurrentState] = useState('Profile');
-  const profileTextStyle = {
-    color: currentState === 'Profile' ? '#4C8AB1' : '#535353C9',
+
+  // Define the tabs and their associated components
+  const tabs = [
+    { label: 'Profile', key: 'Profile', component: <Profile /> },
+    { label: 'Passwords & Notifications', key: 'PasswordNotifications', component: <PasswordNotifications /> },
+    { label: 'Others', key: 'Others', component: <Others /> }, // Add more tabs here as needed
+  ];
+
+  const getTabStyle = (key) => ({
+    color: currentState === key ? '#4C8AB1' : '#535353C9',
     fontSize: '18px',
-    fontWeight: currentState === 'Profile' ? 700 : 500,
+    fontWeight: currentState === key ? 700 : 500,
     fontFamily: 'Manrope',
     cursor: 'pointer',
     marginRight: '40px',
-    borderBottom: currentState === 'Profile' ? '2px solid #4C8AB1' : 'none',
-    paddingBottom: "10px",
-  };
-
-  const passwordTextStyle = {
-    ...profileTextStyle,
-    color: currentState === 'PasswordNotifications' ? '#4C8AB1' : '#535353C9',
-    fontWeight: currentState === 'PasswordNotifications' ? 700 : 500,
-    borderBottom: currentState === 'PasswordNotifications' ? '2px solid #4C8AB1' : 'none'
-  };
+    borderBottom: currentState === key ? '2px solid #4C8AB1' : 'none',
+    paddingBottom: '10px',
+  });
 
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'start',padding:"20px 20px 0px" }}>
-        <Typography
-          variant="body1"
-          sx={profileTextStyle}
-          onClick={() => setCurrentState('Profile')}
-        >
-          Profile
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={passwordTextStyle}
-          onClick={() => setCurrentState('PasswordNotifications')}
-        >
-          Passwords & Notifications
-        </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'start', padding: '20px 20px 0px' }}>
+        {tabs.map((tab) => (
+          <Typography
+            key={tab.key}
+            variant="body1"
+            sx={getTabStyle(tab.key)}
+            onClick={() => setCurrentState(tab.key)}
+          >
+            {tab.label}
+          </Typography>
+        ))}
       </Box>
-      <Box sx={{ padding:"0px 20px 0px" }}>
-      <Divider sx={{ marginTop:"-2px", height: '2px', backgroundColor: '#E0E4EC' }} />
-      
-      {currentState === 'Profile' ? <Profile /> : <PasswordNotifications />}
+      <Box sx={{ padding: '0px 20px 0px' }}>
+        <Divider sx={{ marginTop: '-2px', height: '2px', backgroundColor: '#E0E4EC' }} />
+        {tabs.find((tab) => tab.key === currentState)?.component}
       </Box>
-     
     </>
   );
 }

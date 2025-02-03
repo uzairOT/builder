@@ -280,7 +280,7 @@ const Navbar = () => {
                     },
                   }}
                 >
-                  Chinese
+                  Mandarin
                 </MenuItem>
                 <MenuItem
                   onClick={() => i18n.changeLanguage("de")}

@@ -107,47 +107,19 @@ const LineItemDetailModal = ({
               Close
             </BuilderProButton>
             <Stack>
-              {(userRole === "employee"|| userRole === "other") ? (
-                <>
-                  <BuilderProButton
-                    backgroundColor={"#4C8AB1"}
-                    variant={"contained"}
-                    Icon={CheckCircleOutlineIcon}
-                    handleOnClick={handleDone}
-                    marginLeft={"0px"}
-                    disabled={isLoading || disableButton()}
-                  >
-                    Done
-                  </BuilderProButton>
-                </>
-              ) : userRole === "subcontractor" ? (
-                <>
-                  <BuilderProButton
-                    backgroundColor={"#4C8AB1"}
-                    variant={"contained"}
-                    Icon={CheckCircleOutlineIcon}
-                    handleOnClick={handleDone}
-                    marginLeft={"0px"}
-                    disabled={isLoading || disableButton()}
-                  >
-                    Done
-                  </BuilderProButton>
-                </>
-              ) : userRole === "supplier" ? (
-                <> <BuilderProButton
-                backgroundColor={"#4C8AB1"}
-                variant={"contained"}
-                Icon={CheckCircleOutlineIcon}
-                handleOnClick={handleDone}
-                marginLeft={"0px"}
-                disabled={isLoading || disableButton()}
-              >
-                Done
-              </BuilderProButton></>
+              {(userRole === "employee" || userRole === "other" || userRole === "subcontractor" || userRole === "supplier") ? (
+                <BuilderProButton
+                  backgroundColor={"#4C8AB1"}
+                  variant={"contained"}
+                  Icon={CheckCircleOutlineIcon}
+                  handleOnClick={handleDone}
+                  marginLeft={"0px"}
+                  disabled={isLoading || disableButton()}
+                >
+                  Done
+                </BuilderProButton>
               ) : (
-                <>
-                 
-                </>
+                <></>
               )}
             </Stack>
           </Stack>

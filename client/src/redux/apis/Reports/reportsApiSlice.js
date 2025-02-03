@@ -66,6 +66,13 @@ const reportsApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data
       })
+    }),
+    getLineItemMargins: builder.mutation({
+      query: (data) => ({
+        url: `${REPORTS_URL}/getLineItemMargins`,
+        method: 'POST',
+        body: data
+      }),
     })
   }),
 });
@@ -79,5 +86,6 @@ export const {
   useGetTotalProjectProfitMarginMutation,
   useGetAllProjectsLineItemsMutation,
   useGetOutstandingInvoicesMutation,
-  useGetWorkOrdersLineItemsProgressMutation
+  useGetWorkOrdersLineItemsProgressMutation,
+  useGetLineItemMarginsMutation
 } = reportsApiSlice;

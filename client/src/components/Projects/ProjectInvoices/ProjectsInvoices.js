@@ -19,7 +19,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import { currencyFormatter, headerFormatter } from "../../../utils/Formatters/excelFormatters";
 import XLSX from "xlsx-js-style";
 import { Excel } from "../../../assets/FileSvg/excel";
+import BuilderProButton from "../../UI/Button/BuilderProButton";
+import axios from "axios";
+import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
+import { toast } from "react-toastify";
 
+const ADD_INVOICE_URL = "https://builderbuilder.net/payment/addInvoiceToQuickBooks";
 const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
   const params = useParams();
   const { id: currentProjectId } = params;
@@ -62,8 +67,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
     processInvoices(data.paidInvoices, "Paid");
     processInvoices(data.unpaidInvoices, "Unpaid");
     processInvoices(data.overdueInvoices, "Overdue");
-  
-    // Convert JSON to Sheet
+
     const worksheet = XLSX.utils.json_to_sheet(invoiceRows);
 
     const currencyColumns = ["InvoiceBill", "LineItemUnitPrice", "LineItemTotalAmount"];
@@ -71,10 +75,29 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
     headerFormatter(worksheet);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
-  
-    // Export to Excel
     XLSX.writeFile(workbook, `Invoices-${new Date().toISOString().slice(0, 10)}.xlsx`);
   };
+
+  const handleConnectToQuickbooks  = async () => {
+    try {
+        const response = await axios.post(ADD_INVOICE_URL, {
+          projectId: currentProjectId,
+          userId: user.user.id,
+          organizationId: user.user.organization.organizationId
+        }, {
+          headers: {
+            'Authorization': `Bearer ${getTokenFromLocalStorage()}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        toast.success(response?.data?.message)
+    } catch (error) {
+      console.error('Error fetching authUri:', error);
+      toast.error(error?.response?.data?.message)
+
+    }
+  }
+
   return (
     <>
       <Stack width="80x%">
@@ -146,7 +169,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
                 Overdue
               </Tab>
             </TabList>
-            <Stack direction={"row"} style={{ paddingRight: "16px" }}>
+            <Stack direction={"row"} style={{ paddingRight: "16px" }} justifyContent={'center'} alignItems={'center'} gap={2}>
             <Tooltip title="Export invoices" placement="top">
                 <Box sx={{ cursor: "pointer" }} onClick={handleExportInvoices}>
                   <Excel
@@ -156,6 +179,20 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
                   />
                 </Box>
               </Tooltip>
+            <BuilderProButton
+                    backgroundColor={"#FFAC00"}
+                    variant={"contained"}
+                    fontFamily={"var(--main-font-family)"}
+                    fontSize={{ lg: "12px", xs: "10px" }}
+                    fontWeight={"600"}
+                    padding={{
+                      sm: "6px 32px 6px 32px",
+                      xs: "5px 20px 5px 20px",
+                    }}
+                    handleOnClick={handleConnectToQuickbooks}
+                  >
+                    Add to quickbooks
+                  </BuilderProButton>
             </Stack>
           </Stack>
           <TabPanel

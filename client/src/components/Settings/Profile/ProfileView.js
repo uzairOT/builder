@@ -175,7 +175,7 @@ function ProfileView() {
     }
   };
   const handleProfileImage = async () => {
-    toast.success("Profile Picture updated successfully", { toastId: "123" });
+    toast.success("Profile picture updated successfully", { toastId: "123" });
     handleSubmit("image");
   };
 
@@ -362,7 +362,7 @@ const handleLanguageChange = (event) => {
                 </Box>
               )}
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Typography>Select Language</Typography>
               <FormControl sx={{ mt: 1 }} fullWidth>
                 <InputLabel id="language-select-label">Language</InputLabel>
@@ -379,7 +379,7 @@ const handleLanguageChange = (event) => {
                   <MenuItem value="French" onClick={()=>i18n.changeLanguage('fr')}>French</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sx={{ display: "flex", gap: 4, my: 6.1 }}>
               <Button
                 sx={{

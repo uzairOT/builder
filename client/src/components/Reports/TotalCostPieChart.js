@@ -2,7 +2,7 @@ import { Divider, Paper, Stack, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import TotalCostPie from "./TotalCostPie";
 import CircleIcon from "@mui/icons-material/Circle";
-import { useGetProjectCostStatsMutation } from "../../redux/apis/Reports/reportsApiSlice";
+import { useGetLineItemMarginsMutation, useGetProjectCostStatsMutation } from "../../redux/apis/Reports/reportsApiSlice";
 import { useParams } from "react-router-dom";
 import { formatMoney } from "../../utils/Formatters/moneyFormat";
 
@@ -28,9 +28,12 @@ const TotalCostPieChart = () => {
     }
   };
 
+
   useEffect(() => {
     fetchCostStats();
+    // fetchLineItemStats();
   }, []);
+  
   return (
     <Paper sx={{ borderRadius: "14px" }}>
       <Stack p={2}>
@@ -62,7 +65,8 @@ const TotalCostPieChart = () => {
         <TotalCostPie
           total={data?.totalCost}
           remaning={data?.remaining}
-          spent={data?.spent}
+          spent={data?.projectSpent}
+          currentExpectedMargin={data?.currentExpectedMargins}
         />
         <Stack direction={"column"} spacing={1} width={"70%"} pb={2}>
           <Stack direction={"row"} justifyContent={"space-between"}>
@@ -76,7 +80,21 @@ const TotalCostPieChart = () => {
               </Typography>
             </Stack>
             <Typography textAlign={"right"}>
-              ${formatMoney(data?.spent)}
+              ${formatMoney(data?.projectSpent)}
+            </Typography>
+          </Stack>
+          <Stack direction={"row"} justifyContent={"space-between"}>
+            <Stack direction={"row"} spacing={1} alignItems={"center"}>
+              <CircleIcon sx={{ color: "#90BE6D",  fontSize: { xl: "10px", lg: "8px", md: "10px", xs: "10px" }, }} />
+              <Typography
+                fontFamily={'var(--main-font-family)'}
+                fontSize={{ xl: "12px", lg: "11px", md: "12px", xs: "12px" }}
+              >
+                Current Expected Margin
+              </Typography>
+            </Stack>
+            <Typography textAlign={"right"}>
+              ${formatMoney(data?.currentExpectedMargins)}
             </Typography>
           </Stack>
           <Stack direction={"row"} justifyContent={"space-between"}>

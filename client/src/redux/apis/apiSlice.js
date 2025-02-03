@@ -35,7 +35,7 @@ const qToken = queryParams.get("token");
   const basePath = pathnameArr[1]
 
   if (token) {
-
+    console.log(basePath)
     if (userInfo?.user?.hasValidSubscription === false && !["/subscription", "/"].includes(currentPath)) {
       window.location.href = "/subscription";
     } else {
@@ -45,7 +45,8 @@ const qToken = queryParams.get("token");
     return token;
   } else {
 
-     if (basePath === 'invoicePayment') {
+    console.log(basePath)
+     if (basePath === 'invoicePayment' || basePath === 'connect-quickbooks') {
       if(qToken){ return qToken; }
 
       const prepareInvoiceObj = JSON.stringify({currentPath: currentPath, alertShown: false});

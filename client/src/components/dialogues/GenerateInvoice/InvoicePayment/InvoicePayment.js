@@ -24,7 +24,7 @@ const InvoicePayment = () => {
   const { invoiceId, totalAmount, adminId } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const token = queryParams.get('token');
+  const token = queryParams.get('token') || getTokenFromLocalStorage();
   const invoiceCheckString = localStorage.getItem("invoice")
   const invoiceCheck = JSON.parse(invoiceCheckString)
   const [stripePromise, setStripePromise] = useState(null);

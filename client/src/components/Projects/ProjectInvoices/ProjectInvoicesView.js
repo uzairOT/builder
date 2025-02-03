@@ -187,7 +187,7 @@ const ProjectInvoicesView = () => {
                   fontFamily: "var(--main-font-family)",
                   backgroundColor: selectedTab === 0 ? "#FFAC00" : "#F2F2F2",
                   color:
-                    selectedTab === 0 ? "white !important" : "black !important",
+                    selectedTab === 0 ? "white !important" : "",
                   border:
                     selectedTab === 0
                       ? "1px solid #FFAC00"
@@ -208,7 +208,7 @@ const ProjectInvoicesView = () => {
                   color:
                     selectedTab === 1
                       ? "white !important"
-                      : "black !importants",
+                      : "",
                   border:
                     selectedTab === 1
                       ? "1px solid #FFAC00"

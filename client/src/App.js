@@ -70,6 +70,7 @@ import MainHome from "./components/LandingPageComponents/MainHome.js";
 import PolicyPage from "./components/LandingPageComponents/PrivacyPolicy/index.js";
 import TermsPage from "./components/LandingPageComponents/Terms/index.js";
 import PermissionAccess from "./components/Settings/PermissionAccess/Permissions.js";
+import ConnectQuickBooksPage from "./pages/QuickBookConnection/QuickBookConnectionPage.js";
 const SetNewPassword = lazy(() => import("./components/Login/ForgotPassword/SetNewPassword.js"));
 const InvoicePayment = lazy(() => import("./components/dialogues/GenerateInvoice/InvoicePayment/InvoicePayment.js"));
 const PasswordReset = lazy(() => import("./components/Login/ForgotPassword/PasswordReset.js"))
@@ -269,6 +270,7 @@ function App() {
             <Route path="reports" element={<ReportsPage />} />
             <Route path="subscription" element={<Subscription />} />
             <Route path="/completion" element={<Completion />} />
+            <Route path="/connect-quickbooks" element={<ConnectQuickBooksPage />} />
             <Route path="/settings" element={<Layout3 />}>
               <Route index element={<Profile />} />
               <Route path="" element={<Profile />} />
