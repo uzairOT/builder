@@ -1,18 +1,21 @@
 import { Box, Button, Typography } from '@mui/material';
 import React from 'react'
-import BuilderProButton from '../../UI/Button/BuilderProButton';
 import axios from 'axios';
 import { getTokenFromLocalStorage } from '../../../redux/apis/apiSlice';
 import { ReactComponent as QuickBooksLogo } from '../../../assets/quickbooks-logo1.svg'
+import { useSelector } from 'react-redux';
 
 
 const PAYMENT_URL = "https://builderbuilder.net/payment/authUri";
 
 const OthersView = () => {
-
+    const user = useSelector((state) => state.auth.userInfo);
+    console.log(user)
     const handleConnectToQuickbooks = async () => {
         try {
-            const response = await axios.get(PAYMENT_URL, {
+            const response = await axios.post(PAYMENT_URL, {
+                organizationId: user.user.organization.organizationId
+            } ,{
                 headers: {
                     'Authorization': `Bearer ${getTokenFromLocalStorage()}`,
                     'Content-Type': 'application/json',

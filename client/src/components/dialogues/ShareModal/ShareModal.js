@@ -61,8 +61,7 @@ const ShareModal = ({
   const { data } = useGetProjectTeamQuery(projectId);
   const [isLoading, setIsLoading] = useState(false);
   const [clientInvoice] = useClientInvoiceMutation();
-  const [updatePhaseLine] =
-    useUpdatePhaseLineMutation();
+  const [updatePhaseLine] = useUpdatePhaseLineMutation();
   const rowsArray = Object.values(rowCheckboxes).flatMap(({ rows }) => rows);
   const invoiceDataCall = async () => {
     try {
@@ -74,7 +73,7 @@ const ShareModal = ({
         projectId,
         supplier: userAuth,
         enteredEmail: formik?.values?.email,
-        notes: formik?.values?.notes
+        notes: formik?.values?.notes,
       }).unwrap();
       setInvoiceData(result);
       setRowCheckboxes({});
@@ -87,12 +86,9 @@ const ShareModal = ({
     }
   };
 
-
   const handleClose = () => {
     setShareToClient(false);
   };
-
-
 
   const handleChange = (
     index,
@@ -138,11 +134,17 @@ const ShareModal = ({
         return updatedErrorState;
       });
       if (automated && value !== "") {
-        const numericValue = parseFloat(value) || 0;  // Ensure numericValue is 0 if value is ""
+        const numericValue = parseFloat(value) || 0; // Ensure numericValue is 0 if value is ""
         const percentage = (numericValue * 100) / parseFloat(pendingPayment);
-        handlePercentage(index, percentage?.toFixed(2), outerIndex, pendingPayment, false);
+        handlePercentage(
+          index,
+          percentage?.toFixed(2),
+          outerIndex,
+          pendingPayment,
+          false
+        );
       } else if (value === "") {
-        handlePercentage(index, "0.00", outerIndex, pendingPayment, false);  // Set to 0.00 for consistency
+        handlePercentage(index, "0.00", outerIndex, pendingPayment, false); // Set to 0.00 for consistency
       }
 
       return updatedPayments;
@@ -151,7 +153,7 @@ const ShareModal = ({
   const formik = useFormik({
     initialValues: {
       email: "",
-      notes: ""
+      notes: "",
     },
     validationSchema: yup.object({
       email: yup
@@ -182,7 +184,13 @@ const ShareModal = ({
       updatedPercentage[outerIndex][index] = value;
       if (automated) {
         const payment = pendingPayment * (value / 100);
-        handleChange(index, payment?.toFixed(2), outerIndex, pendingPayment, false);
+        handleChange(
+          index,
+          payment?.toFixed(2),
+          outerIndex,
+          pendingPayment,
+          false
+        );
       }
       return updatedPercentage;
     });
@@ -255,15 +263,14 @@ const ShareModal = ({
     if (!data?.team) return [];
 
     return data?.team.filter((user) => {
-      if (userRoleAuth.userRole === "supplier") {
+      if (
+        userRoleAuth.userRole === "supplier" ||
+        userRoleAuth.userRole === "subcontractor"
+      ) {
         return (
           user.role === "Superadmin" ||
           user.role === "Admin" ||
-          user.role === "Project Manager" ||
-          user.role === "Client" ||
-          user.role === "Subcontractor" ||
-          user.role === "Employee" ||
-          user.role === "Others"
+          user.role === "Project Manager"
         );
       } else {
         return (
@@ -277,7 +284,7 @@ const ShareModal = ({
       }
     });
   }, [data, userRoleAuth.userRole]);
-
+  console.log(filterTeam);
   return (
     <>
       <Modal open={true} onClose={setShareToClient}>
@@ -292,22 +299,21 @@ const ShareModal = ({
               justifyContent={"start"}
               alignItems={"center"}
               gap={1}
-              width={'100%'}
+              width={"100%"}
             >
               <Box>
-
                 <Typography
                   sx={{ p: 1 }}
                   color={"#4C8AB1"}
                   fontWeight={"500"}
                   fontSize={{ sm: "20px", xs: "16px" }}
-                  whiteSpace={'nowrap'}
+                  whiteSpace={"nowrap"}
                 >
                   Send to
                 </Typography>
-                <Box height={'22.91px'}></Box>
+                <Box height={"22.91px"}></Box>
               </Box>
-              <Stack direction={{ md: 'row', xs: 'column' }} gap={1} >
+              <Stack direction={{ md: "row", xs: "column" }} gap={1}>
                 <Box width={{ sm: "300px", xs: "180px" }}>
                   {/* Email input */}
                   <TextField
@@ -336,7 +342,7 @@ const ShareModal = ({
                       },
                     }}
                   />
-                  {!formik.errors.email && <Box height={'22.91px'}></Box>}
+                  {!formik.errors.email && <Box height={"22.91px"}></Box>}
                 </Box>
                 <Box width={{ sm: "300px", xs: "180px" }}>
                   {/* Notes input */}
@@ -360,7 +366,7 @@ const ShareModal = ({
                       },
                     }}
                   />
-                  <Box height={'22.91px'}></Box>
+                  <Box height={"22.91px"}></Box>
                 </Box>
               </Stack>
             </Stack>
@@ -368,116 +374,135 @@ const ShareModal = ({
               <IconButton onClick={handleClose}>
                 <CloseIcon sx={{ p: 2, color: "#535353", fontSize: "20px" }} />
               </IconButton>
-              <Box height={'22.91px'}></Box>
+              <Box height={"22.91px"}></Box>
             </Box>
           </Stack>
           <Divider variant="fullWidth" />
-          <Stack height={'250px'} overflow={'auto'}>
-          {data?.team.length > 0 ? (
-            filterTeam?.map((user, index) => {
-              // if (userRoleAuth.userRole === "supplier") {
-              //   if (
-              //     user.role === "Superadmin" ||
-              //     user.role === "admin" ||
-              //     user.role === "projectManager"
-              //   ) {
-              //     console.log(user);
-              //     // Continue to the main render if the role matches
-              //   } else {
-              //     return <></>; // Return an empty element if the role doesn't match
-              //   }
-              // } else {
-              //   if (user.role !== "Client") {
-              //     return <></>; // Return an empty element if the role doesn't match
-              //   } else {
-              //     setClientExists(true);
-              //   }
-              // }
-              return (
-                <Stack p={0.5}>
-                  <Container justifyContent="center" display="flex">
-                    <Stack
-                      sx={{ ml: { xl: 25, lg: 20, md: 18, xs: 0 } }}
-                      id={user.img}
-                      direction="row"
-                      alignItems="center"
-                      pb={1}
-                      onClick={() =>
-                        handleUserSelect(() => {
-                          if (selectedUser.userId === user.userId) {
-                            return "";
-                          } else {
-                            return user;
-                          }
-                        })
-                      }
-                    >
+          <Stack height={"250px"} overflow={"auto"}>
+            {filterTeam?.length > 0 ? (
+              filterTeam?.map((user, index) => {
+                // if (userRoleAuth.userRole === "supplier") {
+                //   if (
+                //     user.role === "Superadmin" ||
+                //     user.role === "admin" ||
+                //     user.role === "projectManager"
+                //   ) {
+                //     console.log(user);
+                //     // Continue to the main render if the role matches
+                //   } else {
+                //     return <></>; // Return an empty element if the role doesn't match
+                //   }
+                // } else {
+                //   if (user.role !== "Client") {
+                //     return <></>; // Return an empty element if the role doesn't match
+                //   } else {
+                //     setClientExists(true);
+                //   }
+                // }
+                return (
+                  <Stack p={0.5}>
+                    <Container justifyContent="center" display="flex">
                       <Stack
+                        sx={{}}
+                        id={user.img}
                         direction="row"
-                        justifyContent="flex-start"
                         alignItems="center"
-                        p={2}
-                        gap={1}
-                        border={
-                          selectedUser.userId === user.userId
-                            ? "2px solid black"
-                            : ""
+                        justifyContent={"center"}
+                        pb={1}
+                        onClick={() =>
+                          handleUserSelect(() => {
+                            if (selectedUser.userId === user.userId) {
+                              return "";
+                            } else {
+                              return user;
+                            }
+                          })
                         }
-                        sx={{ cursor: "pointer" }}
                       >
-                        <Avatar
-                          src={user.img}
-                          alt="User Profile Pic"
+                        <Stack
+                          direction="row"
+                          justifyContent="space-between"
+                          alignItems="center"
+                          p={2}
+                          gap={1}
+                          border={
+                            selectedUser.userId === user.userId
+                              ? "2px solid black"
+                              : ""
+                          }
                           sx={{
-                            width: "32px",
-                            height: "32px",
-                            borderRadius: "50px",
+                            cursor: "pointer",
+                            width: {
+                              xl: "370px",
+                              lg: "370px",
+                              md: "350px",
+                              xs: "340px",
+                            },
                           }}
-                        />
-                        <Typography
-                          color="#202227"
-                          fontSize="14px"
-                          fontFamily="var(--main-font-family)"
                         >
-                          {user?.firstName}
-                        </Typography>
-                        <Typography
-                          fontFamily="var(--main-font-family)"
-                          fontSize="14px"
-                        >
-                          {user.role}
-                        </Typography>
-                        <Tooltip title={user.email} arrow>
+                          <Stack 
+                          direction={"row"}
+                          justifyContent="center"
+                          alignItems="center"
+                          gap={1}
+                          >
+                            <Avatar
+                              src={user.img}
+                              alt="User Profile Pic"
+                              sx={{
+                                width: "32px",
+                                height: "32px",
+                                borderRadius: "50px",
+                              }}
+                            />
+                            <Typography
+                              color="#202227"
+                              fontSize="14px"
+                              fontFamily="var(--main-font-family)"
+                            >
+                              {user?.firstName}
+                            </Typography>
+                          </Stack>
                           <Typography
-                            maxWidth="20ch"
                             fontFamily="var(--main-font-family)"
                             fontSize="14px"
-                            noWrap
-                            sx={{
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                            }}
                           >
-                            {user.email}
+                            {user.role}
                           </Typography>
-                        </Tooltip>
+                          <Tooltip title={user.email} arrow>
+                            <Typography
+                              maxWidth="20ch"
+                              fontFamily="var(--main-font-family)"
+                              fontSize="14px"
+                              noWrap
+                              sx={{
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              {user.email}
+                            </Typography>
+                          </Tooltip>
+                        </Stack>
                       </Stack>
-                    </Stack>
-                  </Container>
+                    </Container>
 
-                  {users.length - 1 === index ? <></> : <Divider />}
-                </Stack>
-              );
-            })
-          ) : (
-            <Typography p={2}>No Team Members were Assigned</Typography>
-          )}
+                    {users.length - 1 === index ? <></> : <Divider />}
+                  </Stack>
+                );
+              })
+            ) : (
+              <Typography p={2}>No client was assigned</Typography>
+            )}
           </Stack>
           <Stack justifyContent={"center"} alignItems={"flex-start"}>
             {
-              <TableContainer component={Paper} style={{height:'300px', backgroundColor:'transparent'}}>
-                <Table >
+              <TableContainer
+                component={Paper}
+                style={{ height: "300px", backgroundColor: "transparent" }}
+              >
+                <Table>
                   <TableHead>
                     <TableRow>
                       <TableCell sx={tableCellStyles}>Title</TableCell>
@@ -515,7 +540,9 @@ const ShareModal = ({
                       phase.rows.map((row, index) => {
                         const totalCost =
                           Number(row.total) + Number(row.margin);
-                        const paymentPending = row.paymentPending ? row.paymentPending : 0;
+                        const paymentPending = row.paymentPending
+                          ? row.paymentPending
+                          : 0;
                         lineItemData.push({
                           outerIndex,
                           index,
@@ -575,7 +602,7 @@ const ShareModal = ({
                                 }}
                                 helperText={
                                   isValidIndex(errorState, outerIndex, index) &&
-                                    errorState[outerIndex][index]
+                                  errorState[outerIndex][index]
                                     ? "Enter below remaining cost"
                                     : ""
                                 }
@@ -588,17 +615,17 @@ const ShareModal = ({
                                     ? currentPayment[outerIndex][index]
                                     : ""
                                 }
-                                onChange={(e) =>{
-                                  if (/^\d*\.?\d{0,2}$/.test(e.target.value)){
+                                onChange={(e) => {
+                                  if (/^\d*\.?\d{0,2}$/.test(e.target.value)) {
                                     handleChange(
                                       index,
                                       e.target.value,
                                       outerIndex,
                                       paymentPending,
                                       true
-                                    )}
+                                    );
                                   }
-                                }
+                                }}
                                 InputProps={{
                                   startAdornment: (
                                     <InputAdornment position="start">
@@ -638,10 +665,16 @@ const ShareModal = ({
                                 }
                                 onChange={(e) => {
                                   let value = e.target.value;
-                                  console.log(value)
+                                  console.log(value);
                                   if (/^\d*\.?\d{0,2}$/.test(value)) {
                                     // Pass the raw input value (string) to the handler
-                                    handlePercentage(index, value, outerIndex, row.paymentPending, true);
+                                    handlePercentage(
+                                      index,
+                                      value,
+                                      outerIndex,
+                                      row.paymentPending,
+                                      true
+                                    );
                                   }
                                 }}
                                 InputProps={{
@@ -689,7 +722,6 @@ const ShareModal = ({
                 <Typography>Send</Typography>
               )}
             </BuilderProButton>
-
           </Stack>
         </Stack>
       </Modal>
@@ -724,7 +756,6 @@ const style = {
   borderRadius: "14px",
   // overflowX: "auto",
 };
-
 
 const tableCellStyles = {
   fontSize: "12px", // Smaller font size
