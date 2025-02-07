@@ -1,12 +1,22 @@
 import React, { useState } from "react";
-import { Box, Grid, Typography, TextField, Stack, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  TextField,
+  Stack,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import AvatarImg from "../../../assets/settings/UploadProfileIcon.png";
 import Button from "../../UI/CustomButton";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { uploadToS3 } from "../../../utils/S3";
-import i18n from 'i18next';
+import i18n from "i18next";
 import {
   useUpdateProfileMutation,
   useDeleteUserProfileMutation,
@@ -31,7 +41,7 @@ const isPhoneValid = (phone) => {
 };
 
 function ProfileView() {
-  const [selectedLanguage, setSelectedLanguage] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState("");
   const user = useSelector((state) => state.auth.userInfo);
   const [fileName, setFileName] = useState("");
   const [fileType, setFileType] = useState("");
@@ -163,6 +173,7 @@ function ProfileView() {
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
+    if (!file) return;
     setFileName(file.name);
     setFileType(file.type);
     setSelectedFile(file);
@@ -240,13 +251,12 @@ function ProfileView() {
   //     handleSubmit();
   //   }
   // }, [selectedFile]);
-  
 
-const handleLanguageChange = (event) => {
-  console.log(event.target.value)
-  
-  setSelectedLanguage(event.target.value);
-};
+  // const handleLanguageChange = (event) => {
+  //   console.log(event.target.value);
+
+  //   setSelectedLanguage(event.target.value);
+  // };
   return (
     <Box sx={{ mb: 2 }}>
       <Grid container spacing={2}>
@@ -442,7 +452,7 @@ const handleLanguageChange = (event) => {
                 onChange={handleImageUpload}
                 style={{ display: "none", cursor: "pointer" }}
                 id="avatarInput"
-                multiple
+                // multiple
               />
               <label
                 htmlFor="avatarInput"

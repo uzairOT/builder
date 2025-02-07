@@ -71,15 +71,15 @@ const VerifyCode = () => {
       if (data === "signup") {
         // console.log("wwwwwwwwwwwwwhhhhhhhhhhattttttttt::::", res.data);
         dispatch(setCredentials({ ...res.data }));
-       if(res.data.user.hasValidSubscription){
-         setTimeout(() => {
-           window.location.href = "/assignproject";
-         }, 1000);
-       }else{
-        setTimeout(() => {
-          window.location.href = "/subscription";
-        }, 1000);
-       }
+        if (res.data.user.hasValidSubscription) {
+          setTimeout(() => {
+            window.location.href = "/assignproject";
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            window.location.href = "/subscription";
+          }, 1000);
+        }
         // navigate("/assignproject");
       } else {
         navigate("/setnewpassword");
@@ -213,11 +213,12 @@ const VerifyCode = () => {
                 <Box sx={{ display: "flex", gap: "10px", marginTop: "10px" }}>
                   {code.map((value, index) => (
                     <TextField
-                      sx={{
-                        ".MuiOutlinedInput-notchedOutline ": {
-                          borderColor: "grey",
-                        },
-                      }}
+                    sx={{
+                      // Target the notchedOutline element inside the OutlinedInput.
+                      "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+                        display:"none !important"
+                      },
+                    }}
                       key={index}
                       inputRef={(el) => (inputRefs.current[index] = el)}
                       type="text"
@@ -232,6 +233,7 @@ const VerifyCode = () => {
                           borderRadius: "12px",
                         },
                       }}
+                      
                       value={value}
                       onChange={(e) => handleInputChange(index, e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e, index)}
@@ -249,10 +251,8 @@ const VerifyCode = () => {
                     textAlign: "center",
                   }}
                 >
-                  <Tooltip title='Did you check your spam section?'>
-                  <spam>
-                  Didn’t receive a code?{" "}
-                  </spam>
+                  <Tooltip title="Did you check your spam section?">
+                    <spam>Didn’t receive a code? </spam>
                   </Tooltip>
                   <span
                     style={{ color: "#4C8AB1", cursor: "pointer" }}
