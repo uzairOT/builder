@@ -93,7 +93,7 @@ const DefaultButtons = ({ authUserRole, view, isLoading, handleAddPhase, handleG
               >
 
               </Tooltip>
-              <Stack justifyContent={'center'} alignItems={'center'}>
+              {view !== "Change Order" &&<Stack justifyContent={'center'} alignItems={'center'}>
                   <Button
                     disabled={!projectManagementPermission}
                     sx={{
@@ -122,7 +122,7 @@ const DefaultButtons = ({ authUserRole, view, isLoading, handleAddPhase, handleG
                       : "AI Generated"}
                       </Typography>
                   </Button>
-                </Stack>
+                </Stack>}
               </Stack>
               <Tooltip
                 title={

@@ -949,7 +949,7 @@ const RequestWorkOrderModal = ({
                       : assignedCheckboxes?.map((id) => {
                         return (
                           <>
-                            {data?.team?.map((user, idx) => {
+                            {data?.team?.filter((user) => user.role !== "Superadmin").map((user, idx) => {
                               if (user.userId === id) {
                                 return (
                                   <Avatar

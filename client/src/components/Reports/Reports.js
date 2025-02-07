@@ -7,6 +7,7 @@ import ProfitMarginBarChartCard from "./ProfitMarginBarChartCard";
 import PaidTransactionsCard from "./PaidTransactionsCard";
 import TotalDaysAllottedView from "./TotalDaysAllottedView";
 import ProjectsInvoices from "../Projects/ProjectInvoices/ProjectsInvoices";
+import SubcontractorBillingChart from "./SubcontractorInvoices";
 
 const Reports = () => {
   const [open, setOpen] = React.useState(false);
@@ -91,6 +92,24 @@ const Reports = () => {
             sx={{ border: "1px solid #D3D3D3", borderRadius: "10px" }}
           >
             <ProfitMarginBarChartCard />
+          </Box>
+        </Stack>
+        <Stack
+          flex={1}
+          direction={{
+            xl: "row",
+            lg: "row",
+            md: "column",
+            sm: "column",
+            xs: "column",
+          }}
+          spacing={1}
+        >
+          <Box
+            flex={1}
+            sx={{ border: "1px solid #D3D3D3", borderRadius: "10px" }}
+          >
+            <SubcontractorBillingChart />
           </Box>
           <Box
             flex={1}

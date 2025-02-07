@@ -11,6 +11,7 @@ import ProfitMarginStackedBarChart from "./ProfitMarginStackedBarChart";
 import CircleIcon from "@mui/icons-material/Circle";
 import {
   useGetLineItemMarginsMutation,
+  useGetSubcontractorInvoicesMutation,
   useGetTotalProjectProfitMarginMutation,
 } from "../../redux/apis/Reports/reportsApiSlice";
 import { useParams } from "react-router-dom";
@@ -37,6 +38,7 @@ const ProfitMarginBarChartCard = () => {
     getLineItemMargins,
     { data: lineItemsData, isLoading: isLoadingLineItens },
   ] = useGetLineItemMarginsMutation({ projectId });
+
 
   const handleSelectValue = (event) => {
     setSelectValue(event.target.value);
@@ -126,6 +128,7 @@ const ProfitMarginBarChartCard = () => {
         userId,
         projectId,
       }).unwrap();
+
       setProjects(result);
       setChartValues(() => {
         const marginPercentage = ((result.totalMargin / result.totalCost) * 100).toFixed(2);
@@ -297,11 +300,11 @@ const ProfitMarginBarChartCard = () => {
               fontSize: { xl: "16px", lg: "14px", md: "16px", xs: "16px" },
               fontFamily: "var(--main-font-family)",
               fontWeight: 400,
-              maxWidth: "250px",
+              maxWidth: "200px",
               display: selectValue === "total" ? "none" : "initial"
             }}
           >
-            <MenuItem value="all">Total lineItems</MenuItem>
+            <MenuItem value="all">Total Line Items</MenuItem>
             {lineItems.map((lineItem) =>{ 
               return (<MenuItem value={lineItem.id}>{lineItem.title}</MenuItem>)
             })}

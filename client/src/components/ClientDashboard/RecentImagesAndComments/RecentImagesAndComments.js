@@ -53,7 +53,7 @@ function RecentImagesAndComments() {
             <Typography sx={themeStyle.typoText}>
                 Recent Images
             </Typography>
-            <Grid container gap={1} justifyContent={'center'}>
+            <Grid container justifyContent={'flex-start'} alignItems={'center'}>
                 {slicedUrls?.map((url, index) => {
                     return(
                         <Grid item xl={5.5}>
@@ -155,7 +155,7 @@ const themeStyle = {
     },
 
     smallimgBox: {
-        
+        margin: "0.5rem",
         width: '100%',
         height: '200px',
         borderRadius: '14px',

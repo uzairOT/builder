@@ -13,15 +13,17 @@ import {
 import { TextField, IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useOutletContext } from "react-router-dom";
-import {
-  useGetChatMessagesMutation,
-} from "../../redux/apis/Chat/chatApiSlice";
+import { useGetChatMessagesMutation } from "../../redux/apis/Chat/chatApiSlice";
 import moment from "moment-timezone";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import axios from "axios";
 import { uploadToS3 } from "../../utils/S3";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import DescriptionIcon from "@mui/icons-material/Description";
+import TableChartIcon from "@mui/icons-material/TableChart";
+import ArchiveIcon from "@mui/icons-material/Archive";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { socket } from "../../socket";
 import { getUserRoleFromRedux } from "../../redux/slices/auth/userRoleSlice";
@@ -55,7 +57,7 @@ function ChatView({
   refetchConverstations,
   isLoadingChat,
   setIsLoadingChat,
-  projectImage
+  projectImage,
 }) {
   const userRoleProject = useSelector(getUserRoleFromRedux);
   const [openModal, setOpenModal] = useState(false);
@@ -456,7 +458,7 @@ function ChatView({
       };
     }
   }, [offset, hasMoreMessages, conversationId, value]);
-  console.log(messages.length)
+  console.log(messages.length);
 
   return (
     <>
@@ -602,25 +604,28 @@ function ChatView({
             </Box>
           ) : (
             <>
-              {!messages || !Array?.isArray(messages)  || messages.length === 0 ? (
-               <Box
-               sx={{
-                 fontFamily: "var(--main-font-family)",
-                 marginLeft: "1rem",
-                 display: "flex",
-                 flexDirection: 'column',
-                 justifyContent: "center",
-                 alignItems: 'center',
-                 height: 'inherit',
-                 textAlign: 'center',
-                 padding: '2rem', // Add padding for spacing
-               }}
-             >
-               <Chat sx={{ fontSize: 50, color: 'gray', mb: 2 }} /> {/* Chat icon */}
-               <Typography variant="h6" sx={{ color: 'gray' }}>
-                 No chat available...
-               </Typography>
-             </Box>
+              {!messages ||
+              !Array?.isArray(messages) ||
+              messages.length === 0 ? (
+                <Box
+                  sx={{
+                    fontFamily: "var(--main-font-family)",
+                    marginLeft: "1rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "inherit",
+                    textAlign: "center",
+                    padding: "2rem", // Add padding for spacing
+                  }}
+                >
+                  <Chat sx={{ fontSize: 50, color: "gray", mb: 2 }} />{" "}
+                  {/* Chat icon */}
+                  <Typography variant="h6" sx={{ color: "gray" }}>
+                    No chat available...
+                  </Typography>
+                </Box>
               ) : (
                 messages?.map((msg, index) => {
                   const isSender = msg?.User?.id === currentUser?.id;
@@ -675,77 +680,134 @@ function ChatView({
                           // ref={messageBoxRef}
                         >
                           <>
-                            {[
-                              ".png",
-                              ".jpg",
-                              ".jpeg",
-                              ".gif",
-                              ".webp",
-                              ".bmp",
-                              ".tiff",
-                            ].some((ext) => {
-                              const lowercaseFileUrl =
-                                msg?.fileUrl?.toLowerCase();
-                              return lowercaseFileUrl?.endsWith(ext);
-                            }) ? (
-                              <>
-                                <img
-                                  src={msg.fileUrl}
-                                  onClick={() => handleOpenModal(msg.fileUrl)}
-                                  download="image"
-                                  alt="file"
-                                  style={{
-                                    width: "100%",
-                                    objectFit: "contain",
-                                    wordWrap: "break-word",
-                                  }}
-                                />
-                                <br />
-                              </>
-                            ) : msg?.fileUrl?.endsWith(".pdf") ||
-                              msg?.fileUrl?.endsWith(".txt") ||
-                              msg?.fileUrl?.endsWith(".docx") ||
-                              msg?.fileUrl?.endsWith(".doc") ||
-                              msg?.fileUrl?.endsWith(".zip") ? (
-                              <>
-                                <IconButton
-                                  href={msg.fileUrl}
-                                  download="document"
-                                  aria-label="download"
-                                >
-                                  <Typography
+                            {/* Image File Rendering */}
+                            {(() => {
+                              const imageExtensions = [
+                                ".png",
+                                ".jpg",
+                                ".jpeg",
+                                ".gif",
+                                ".webp",
+                                ".bmp",
+                                ".tiff",
+                              ];
+                              const isImage = imageExtensions.some((ext) =>
+                                msg?.fileUrl?.toLowerCase().endsWith(ext)
+                              );
+
+                              if (isImage) {
+                                return (
+                                  <>
+                                    <img
+                                      src={msg.fileUrl}
+                                      onClick={() =>
+                                        handleOpenModal(msg.fileUrl)
+                                      }
+                                      alt="Uploaded content"
+                                      style={{
+                                        width: "100%",
+                                        maxHeight: "400px",
+                                        objectFit: "contain",
+                                        cursor: "pointer",
+                                        borderRadius: "8px",
+                                        // boxShadow: theme.shadows[2],
+                                      }}
+                                    />
+                                    <br />
+                                  </>
+                                );
+                              }
+                            })()}
+
+                            {/* Document File Rendering */}
+                            {(() => {
+                              const documentExtensions = {
+                                ".pdf": {
+                                  Icon: PictureAsPdfIcon,
+                                  color: "error.main",
+                                },
+                                ".doc": {
+                                  Icon: DescriptionIcon,
+                                  color: "info.main",
+                                },
+                                ".docx": {
+                                  Icon: DescriptionIcon,
+                                  color: "info.main",
+                                },
+                                ".xlsx": {
+                                  Icon: TableChartIcon,
+                                  color: "success.main",
+                                },
+                                ".csv": {
+                                  Icon: TableChartIcon,
+                                  color: "success.main",
+                                },
+                                ".txt": {
+                                  Icon: InsertDriveFileIcon,
+                                  color: "text.secondary",
+                                },
+                                ".zip": {
+                                  Icon: ArchiveIcon,
+                                  color: "warning.main",
+                                },
+                              };
+
+                              const fileExt = Object.keys(
+                                documentExtensions
+                              ).find((ext) =>
+                                msg?.fileUrl?.toLowerCase().endsWith(ext)
+                              );
+
+                              if (fileExt) {
+                                const { Icon, color } =
+                                  documentExtensions[fileExt];
+                                const fileName =
+                                  msg.ChatFiles?.[0]?.fileName || msg?.fileName ||
+                                  msg.fileUrl
+                                    ?.split("/")
+                                    .pop()
+                                    ?.split("#")[0]
+                                    ?.split("?")[0] ||
+                                  "Download File";
+
+                                return (
+                                  <Box
+                                    component="a"
+                                    href={msg.fileUrl}
+                                    download
                                     sx={{
-                                      fontSize: {
-                                        xl: "12px",
-                                        lg: "10px",
-                                        md: "12px",
-                                        xs: "12px",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: 1,
+                                      p: 1.5,
+                                      // my: 1,
+                                      borderRadius: 1,
+                                      textDecoration: "none",
+                                      backgroundColor: "action.hover",
+                                      "&:hover": {
+                                        backgroundColor: "action.selected",
                                       },
                                     }}
-                                    variant="body2"
-                                    component="span"
                                   >
-                                    <Box sx={{ color: "primary.main" }}>
-                                      <InsertDriveFileIcon />
-                                    </Box>
-                                    {msg.ChatFiles &&
-                                    msg.ChatFiles.length > 0 ? (
-                                      msg.ChatFiles.map((file, index) => (
-                                        <span key={index}>
-                                          {file.fileName}{" "}
-                                          {/* Display each file's name */}
-                                        </span>
-                                      ))
-                                    ) : (
-                                      <span>File</span>
-                                    )}
-                                  </Typography>
-                                </IconButton>
-                                <br />
-                              </>
-                            ) : (
-                              <></>
-                            )}
+                                    <Icon sx={{ color, fontSize: "28px" }} />
+                                    <Typography
+                                      variant="body2"
+                                      sx={{
+                                        color: "text.primary",
+                                        fontWeight: 500,
+                                        fontSize: "0.875rem",
+                                        maxWidth: "250px",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        whiteSpace: "nowrap",
+                                      }}
+                                    >
+                                      {fileName}
+                                    </Typography>
+                                  </Box>
+                                );
+                              }
+                            })()}
                           </>
 
                           {/* Time:{moment

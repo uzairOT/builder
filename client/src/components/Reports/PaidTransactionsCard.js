@@ -35,7 +35,6 @@ const PaidTransactionsCard = () => {
   useEffect(() => {
     fetchCostStats();
   }, []);
-
   return (
     <Stack justifyContent={"space-between"} height={"100%"}>
       <Stack>
@@ -51,7 +50,7 @@ const PaidTransactionsCard = () => {
         </Stack>
         <Divider variant="fullWidth" />
         <Stack p={2} spacing={1}>
-          {data &&
+          {(data && data.length > 0) ?
             data.map((transaction, index) => (
               <Stack
                 key={index}
@@ -75,7 +74,7 @@ const PaidTransactionsCard = () => {
                   ${transaction?.PaymentAmount}
                 </Typography>
               </Stack>
-            ))}
+            )) : <>No data available</>}
         </Stack>
       </Stack>
       <Stack>

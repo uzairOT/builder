@@ -51,7 +51,7 @@ const TotalCostPie = ({ spent, remaning, total, currentExpectedMargin }) => {
     { id: 0, value: 25, color: "#1F9EF3, #1B59F800" },
     { id: 1, value: 75, color: "#eff5ff" },
   ];
-  console.log("first:", "currentExpectedMargin", currentExpectedMargin);
+
   return (
     <Stack
       width={"100%"}

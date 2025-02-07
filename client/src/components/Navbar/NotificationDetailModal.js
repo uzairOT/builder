@@ -521,15 +521,7 @@ const NotificationDetailModal = ({
                 </Typography>
                 <Box sx={themeStyle.avatarBox}>
                   <Stack direction={"row"} pr={1}>
-                    {data?.team?.map((user, idx) => {
-                      // console.log(notification.WorkOrderReq.team);
-                      // console.log(String(user.userId));
-                      // console.log(
-                      //   notification.WorkOrderReq.team.includes(
-                      //     `${user.userId}`
-                      //   )
-                      // );
-
+                    {data?.team?.filter((user) => user.role !== "Superadmin").map((user, idx) => {
                       if (user.userId === notification.WorkOrderReq.createdby) {
                         return <></>;
                       } else if (

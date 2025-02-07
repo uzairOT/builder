@@ -170,7 +170,7 @@ const BudgetPieChartCard = () => {
                 Unpaid
               </Typography>
               <Typography
-                textAlign={"left"}
+                textAlign={"center"}
                 fontFamily={'var(--main-font-family)'}
                 fontWeight={"500"}
               >

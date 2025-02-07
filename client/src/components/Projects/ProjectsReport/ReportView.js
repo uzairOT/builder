@@ -32,7 +32,7 @@ const ReportView = () => {
           sx={{
             ...themeStyle.scrollable,
             height: {
-              xl: "calc(93vh + 175px)",
+              xl: "calc(76vh + 175px)",
               lg: `calc(93vh + 175px)`,
               md: `calc(93vh + 175px)`,
               sm: `calc(93vh + 175px)`,
