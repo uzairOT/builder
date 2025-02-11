@@ -185,7 +185,7 @@ const ConversationList = ({
                 ml={0.6}
                 color={"white"}
               >
-                Start New Converstion
+                Start New Conversation
               </Typography>
             </MenuItem>
             <MenuItem value={id} disabled={value === id}>
@@ -193,7 +193,7 @@ const ConversationList = ({
                 Project Chat: {projectName}
               </Typography>
             </MenuItem>
-            {team?.team?.map((user, index) => {
+            {team?.team?.filter((user) => user.role !== "Superadmin").map((user, index) => {
               if (user.userId === userId) {
                 return null;
               }

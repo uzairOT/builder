@@ -37,8 +37,7 @@ const ProfitMarginBarChartCard = () => {
   const [
     getLineItemMargins,
     { data: lineItemsData, isLoading: isLoadingLineItens },
-  ] = useGetLineItemMarginsMutation({ projectId });
-
+  ] = useGetLineItemMarginsMutation({ projectId, userId });
 
   const handleSelectValue = (event) => {
     setSelectValue(event.target.value);
@@ -146,6 +145,7 @@ const ProfitMarginBarChartCard = () => {
     try {
       await getLineItemMargins({
         projectId,
+        userId
       }).unwrap();
       // console.log("Success getProjectCostStats:", result);
     } catch (err) {

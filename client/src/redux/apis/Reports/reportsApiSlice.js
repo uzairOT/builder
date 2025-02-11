@@ -81,6 +81,13 @@ const reportsApiSlice = apiSlice.injectEndpoints({
         body: data
       }),
     }),
+    getMonthlyMargin: builder.mutation({
+      query: (data) => ({
+        url: `${REPORTS_URL}/generateMonthlyMargins`,
+        method: 'POST',
+        body: data
+      }),
+    }),
   }),
 });
 
@@ -95,5 +102,6 @@ export const {
   useGetOutstandingInvoicesMutation,
   useGetWorkOrdersLineItemsProgressMutation,
   useGetLineItemMarginsMutation,
-  useGetSubcontractorInvoicesMutation
+  useGetSubcontractorInvoicesMutation,
+  useGetMonthlyMarginMutation
 } = reportsApiSlice;

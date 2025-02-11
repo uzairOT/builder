@@ -50,6 +50,7 @@ import DefaultButtons from "./DefaultButtons";
 import GenerativeAiDialogue from "../../dialogues/GenerativeAIDialogue/GenerativeAiDialogue";
 import { currencyFormatter, headerFormatter } from "../../../utils/Formatters/excelFormatters";
 import XLSX from "xlsx-js-style";
+import RenderPhases from "./RenderPhases";
 //import "react-toastify/dist/ReactToastify.css";
 
 function AddPhaseView({
@@ -461,6 +462,33 @@ function AddPhaseView({
     XLSX.utils.book_append_sheet(workbook, worksheet, "Project Phases");
     XLSX.writeFile(workbook, `Project-Phases-${new Date().toISOString().slice(0, 10)}.xlsx`);
   };
+  const renderPhasesProps = {
+    isLoading,
+    InitialProposalView,
+    changeOrderSelectedView,
+    initialPhases,
+    changeOrderSelected,
+    phases,
+    selectedPhaseId,
+    slectedCardStyle,
+    themeStyle,
+    adminProjectView,
+    id,
+    projectId,
+    handleGridToggle,
+    handleSelectCard,
+    setRowCheckboxes,
+    handleAddRow,
+    authUserRole,
+    hanldeEditChangeLineItem,
+    handleAddChangeLineItem,
+    handleDeleteChangeLineItem,
+    view,
+    changeOrderView,
+    InitialProposalAndChange,
+    pathCheck,
+    rowCheckboxes,
+  };
   return (
     <>
       <Grid container sx={{ ...firstGrid, width: "100%" }}>
@@ -541,259 +569,8 @@ function AddPhaseView({
               />
             </Stack>
           )}
-        {isLoading ? (
-          <Stack
-            height={"44vh"}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            <CircularProgress />
-          </Stack>
-        ) : (
-          <>
-            {InitialProposalView ? (
-              <Box
-                sx={{
-                  height: "calc(78vh - 140px)",
-                  ...themeStyle.scrollable,
-                  width: {
-                    xl: "100%",
-                    lg: "100%",
-                    md: "100%",
-                    sm: "100%",
-                    xs: "95vw",
-                  },
-                }}
-              >
-                {initialPhases !== null &&
-                  initialPhases[0] !== undefined &&
-                  initialPhases[0].length !== 0 &&
-                  !isLoading ? (
-                  initialPhases[0]?.map((phase, index) => {
-                    // console.log("inital",view)
-                    return (
-                      <Stack
-                        key={phase.id}
-                        style={{
-                          ...slectedCardStyle,
-                          // width: "100%",
-                          cursor: "pointer", // Add cursor pointer to indicate clickable
-                          borderRadius: "8px", // Rounded corners
-                          boxShadow:
-                            selectedPhaseId === phase.id
-                              ? `0 0 0 2px #1B1B1B, 0 5px 20px ${phase.color}`
-                              : "none", // Border and glow effect
-                          transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
-                          marginTop: "1rem",
-                          // padding:5,
-                          marginRight: "1rem",
-                          marginLeft: "1rem",
-                          marginBottom: "1rem",
-                        }}
-                      >
-                        <PhaseCard
-                          projectId={adminProjectView ? id : projectId}
-                          key={phase?.id}
-                          phaseData={phase}
-                          length={phase.length}
-                          onGridToggle={() =>
-                            handleGridToggle(index, phase?.previousIndex)
-                          }
-                          handleSelectCard={handleSelectCard}
-                          adminProjectView={adminProjectView}
-                          setRowCheckboxes={setRowCheckboxes}
-                          handleAddRow={handleAddRow}
-                          InitialProposalView={InitialProposalView}
-                          authUserRole={authUserRole}
-                          rowCheckboxes={rowCheckboxes}
-                        />
-                      </Stack>
-                    );
-                  })
-                ) : (
-                  <div
-                    style={{
-                      height: "44vh",
-                      alignItems: "center",
-                      display: "grid",
-                      textAlign: "center",
-                    }}
-                  >
-                    No Phases Available
-                  </div>
-                )}
-              </Box>
-            ) : changeOrderSelectedView ? (
-              <Box
-                sx={{
-                  height: "calc(95vh - 100px)",
-                  ...themeStyle.scrollable,
-                  width: {
-                    xl: "100%",
-                    lg: "100%",
-                    md: "100%",
-                    sm: "100%",
-                    xs: "95vw",
-                  },
-                }}
-              >
-                {changeOrderSelected !== null &&
-                  changeOrderSelected !== undefined &&
-                  changeOrderSelected.length !== 0 &&
-                  !isLoading ? (
-                  changeOrderSelected?.map((phase, index) => {
-                    // console.log("inital",view)
-                    return (
-                      <Stack
-                        key={phase.id}
-                        style={{
-                          ...slectedCardStyle,
-                          width: "95%",
-                          cursor: "pointer", // Add cursor pointer to indicate clickable
-                          borderRadius: "8px", // Rounded corners
-                          boxShadow:
-                            selectedPhaseId === phase.id
-                              ? `0 0 0 2px #1B1B1B, 0 5px 20px ${phase.color}`
-                              : "none", // Border and glow effect
-                          transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
-                          marginTop: "1rem",
-                          // padding:5,
-                          marginRight: "1rem",
-                          marginLeft: "1rem",
-                          marginBottom: "1rem",
-                        }}
-                      >
-                        <PhaseCard
-                          hanldeEditChangeLineItem={hanldeEditChangeLineItem}
-                          projectId={adminProjectView ? id : projectId}
-                          key={phase?.id}
-                          phaseData={phase}
-                          length={phase.length}
-                          onGridToggle={() => { }}
-                          handleSelectCard={() => { }}
-                          adminProjectView={adminProjectView}
-                          setRowCheckboxes={setRowCheckboxes}
-                          handleAddRow={handleAddRow}
-                          changeOrderSelectedView={changeOrderSelectedView}
-                          authUserRole={authUserRole}
-                          rowCheckboxes={rowCheckboxes}
-                          handleAddChangeLineItem={handleAddChangeLineItem}
-                          handleDeleteChangeLineItem={
-                            handleDeleteChangeLineItem
-                          }
-                        />
-                      </Stack>
-                    );
-                  })
-                ) : (
-                  <div
-                    style={{
-                      height: "44vh",
-                      alignItems: "center",
-                      display: "grid",
-                      textAlign: "center",
-                    }}
-                  >
-                    No Phases Available
-                  </div>
-                )}
-              </Box>
-            ) : (
-              <Box
-                sx={{
-                  height: adminProjectView
-                    ? view === "Generate Invoice"
-                      ? "calc(93vh - 140px)"
-                      : (changeOrderView || InitialProposalAndChange) &&
-                        !(changeOrderView && InitialProposalAndChange)
-                        ? "calc(93vh)"
-                        : "calc(98vh - 300px)"
-                    : "",
-                  ...themeStyle.scrollable,
-                  width: {
-                    xl: "100%",
-                    lg: "100%",
-                    md: "100%",
-                    sm: "100%",
-                    xs: "95vw",
-                  },
-                }}
-              >
-                {phases !== null &&
-                  phases[0] !== undefined &&
-                  phases[0].length !== 0 &&
-                  !isLoading ? (
-                  phases[0]?.map((phase, index) => {
-                    // if (InitialProposalAndChange && phase.initial) {
-                    //   return (
-                    //    <></>
-                    //   );
-                    // }
-
-                    return (
-                      <Stack
-                        key={phase.id}
-                        style={{
-                          ...slectedCardStyle,
-                          // width: "100%",
-                          cursor: "pointer", // Add cursor pointer to indicate clickable
-                          borderRadius: "8px", // Rounded corners
-                          boxShadow:
-                            selectedPhaseId === phase.id
-                              ? `0 0 0 2px #1B1B1B, 0 5px 20px ${phase.color}`
-                              : "none", // Border and glow effect
-                          transition: "background-color 0.3s, box-shadow 0.3s", // Smooth transition
-                          marginTop: "1rem",
-                          marginRight: "1rem",
-                          marginLeft: "1rem",
-                          marginBottom: "1rem",
-                        }}
-                      >
-                        <PhaseCard
-                          projectId={adminProjectView ? id : projectId}
-                          key={phase?.id}
-                          phaseData={phase}
-                          length={phase.length}
-                          onGridToggle={() =>
-                            handleGridToggle(index, phase?.previousIndex)
-                          }
-                          view={view}
-                          handleSelectCard={handleSelectCard}
-                          adminProjectView={adminProjectView}
-                          setRowCheckboxes={setRowCheckboxes}
-                          handleAddRow={handleAddRow}
-                          rowCheckboxes={rowCheckboxes}
-                          changeOrderView={changeOrderView}
-                        />
-                      </Stack>
-                    );
-                  })
-                ) : (
-                  <div
-                    style={{
-                      height: "44vh",
-                      alignItems: "center",
-                      display: "grid",
-                      textAlign: "center",
-                    }}
-                  >
-                    <Typography>
-                      No{" "}
-                      <span>
-                        {changeOrderView
-                          ? " Change"
-                          : pathCheck.includes("assignproject")
-                            ? " "
-                            : " Approved"}
-                      </span>{" "}
-                      Phases Available
-                    </Typography>
-                  </div>
-                )}
-              </Box>
-            )}
-          </>
-        )}
+          {/* Previous code is save in notes*/}
+        <RenderPhases {...renderPhasesProps} />
 
         {showUpdatePhaseDialogue && (
           <UpdatePhaseDialogue

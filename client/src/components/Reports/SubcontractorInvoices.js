@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { Card, CardContent, Divider, Typography } from "@mui/material";
 import { useGetSubcontractorInvoicesMutation } from "../../redux/apis/Reports/reportsApiSlice";
 import { useParams } from "react-router-dom";
 import moment from "moment-timezone";
+import CustomTooltip from "../UI/Tooltip/CustomTooltip";
 
 const SubcontractorBillingChart = () => {
+  let dataUser = localStorage.getItem("userInfo");
+  let userInfo = JSON.parse(dataUser);
+  const currentUser = userInfo?.user;
+  const userId = currentUser?.id;
   const { id } = useParams();
   const projectId = id;
   const [invoiceData, setInvoiceData] = useState([]);
@@ -15,11 +20,25 @@ const SubcontractorBillingChart = () => {
   ] = useGetSubcontractorInvoicesMutation({ projectId });
   const today = moment().tz("UTC");
   // Aggregate invoice amounts per subcontractor
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [tooltipContent, setTooltipContent] = useState(null);
+  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+
+  // Listen for mouse movements to update tooltip position
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setTooltipPosition({ top: e.clientY + 10, left: e.clientX + 10 });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
 
   const fetchProfitStats = async () => {
     try {
       const result = await getSubcontractorInvoices({
         projectId,
+        userId
       }).unwrap();
       const invoiceData = result.invoices.reduce((acc, invoice) => {
         const subName = `${invoice.Admin?.firstName} ${invoice.Admin?.lastName}` || "Unknown Subcontractor";
@@ -69,6 +88,52 @@ const SubcontractorBillingChart = () => {
       type: "bar",
       height: 350,
       toolbar: { show: false },
+      events: {
+        // Example: On data point mouse enter, show custom tooltip
+        dataPointMouseEnter: function(event, chartContext, config) {
+          const dataPointIndex = config.dataPointIndex;
+          const subName = labels[dataPointIndex];
+          const invoices = invoiceData[subName].invoices;
+          // Build tooltip content as JSX
+          const content = (
+            <div>
+              <strong style={{ fontSize: '14px', color: '#333' }}>{subName}</strong>
+              <table style={{ width: '100%', fontSize: '12px', marginTop: '5px' }}>
+                <thead>
+                  <tr>
+                    <th style={{ textAlign: 'left', padding: '3px' }}>Amount</th>
+                    <th style={{ textAlign: 'left', padding: '3px' }}>Status</th>
+                    <th style={{ textAlign: 'left', padding: '3px' }}>Due</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {invoices.map((inv, idx) => (
+                    <tr key={idx}>
+                      <td style={{ padding: '3px' }}>${inv.amount}</td>
+                      <td style={{
+                        padding: '3px',
+                        color: inv.status === "paid"
+                          ? "#4CAF50"
+                          : inv.status === "unpaid"
+                          ? "#FFC107"
+                          : "#F44336"
+                      }}>
+                        {inv.status.toUpperCase()}
+                      </td>
+                      <td style={{ padding: '3px' }}>{inv.dueDate}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
+          setTooltipContent(content);
+          setTooltipVisible(true);
+        },
+        dataPointMouseLeave: function(event, chartContext, config) {
+          setTooltipVisible(false);
+        }
+      }
     },
     plotOptions: {
       bar: {
@@ -80,40 +145,7 @@ const SubcontractorBillingChart = () => {
     dataLabels: { enabled: false },
     xaxis: { categories: labels },
     yaxis: { title: { text: "Invoice Amount ($)" } },
-    tooltip: {
-      custom: function ({ series, seriesIndex, dataPointIndex, w }) {
-        const subName = labels[dataPointIndex];
-        const invoices = invoiceData[subName].invoices;
-
-        return `
-            <div style="background: #fff; padding: 8px; border-radius: 5px; border: 1px solid #ddd; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); max-width: 220px; white-space: normal; word-wrap: break-word;">
-              <strong style="font-size: 14px; color: #333;">${subName}</strong>
-              <table style="width: 100%; font-size: 12px; margin-top: 5px;">
-                <tr>
-                  <th style="text-align: left; padding: 3px;">Amount</th>
-                  <th style="text-align: left; padding: 3px;">Status</th>
-                  <th style="text-align: left; padding: 3px;">Due</th>
-                </tr>
-                ${invoices
-                  .map(
-                    (inv) =>
-                      `<tr>
-                        <td style="padding: 3px;">$${inv.amount}</td>
-                        <td style="padding: 3px; color: ${
-                          inv.status === "paid"
-                            ? "#4CAF50"
-                            : inv.status === "unpaid"
-                            ? "#FFC107"
-                            : "#F44336"
-                        };">${inv.status.toUpperCase()}</td>
-                        <td style="padding: 3px;">${inv.dueDate}</td>
-                      </tr>`
-                  )
-                  .join("")}
-              </table>
-            </div>`;
-      },
-    },
+    tooltip: { enabled: false }, // Disable built-in tooltip
     title: { text: "Subcontractor Billing Overview", align: "center" },
     noData: {
       text: "No data available",
@@ -124,28 +156,41 @@ const SubcontractorBillingChart = () => {
     }
   };
 
+
   return (
-    <Card sx={{ p: 0, borderRadius: 3, boxShadow: 0 }}>
-      <CardContent sx={{ p: 0 }}>
-        <Typography
-          fontSize={{ xl: "20px", lg: "16px", md: "20px", xs: "20px" }}
-          fontFamily={"var(--main-font-family)"}
-          fontWeight={"500"}
-          color={"#4C8AB1"}
-          variant="h6"
-          p={1}
-        >
-          Subcontractor Billing Overview
-        </Typography>
-        <Divider variant="fullWidth" />
-        <Chart
-          options={chartOptions}
-          series={[{ name: "Total Invoice", data: values }]}
-          type="bar"
-          height={350}
-        />
-      </CardContent>
-    </Card>
+    <>
+        <style>
+        {`
+          .apexcharts-tooltip {
+            z-index: 9999 !important;
+          }
+        `}
+      </style>
+      <Card sx={{ p: 0, borderRadius: 3, boxShadow: 0, overflow: "visible" }}>
+        <CardContent sx={{ p: 0 }}>
+          <Typography
+            fontSize={{ xl: "20px", lg: "16px", md: "20px", xs: "20px" }}
+            fontFamily={"var(--main-font-family)"}
+            fontWeight={"500"}
+            color={"#4C8AB1"}
+            variant="h6"
+            p={1}
+          >
+            Subcontractor Billing Overview
+          </Typography>
+          <Divider variant="fullWidth" />
+          <Chart
+            options={chartOptions}
+            series={[{ name: "Total Invoice", data: values }]}
+            type="bar"
+            height={350}
+          />
+        </CardContent>
+      </Card>
+      <CustomTooltip visible={tooltipVisible} position={tooltipPosition}>
+        {tooltipContent}
+      </CustomTooltip>
+    </>
   );
 };
 

@@ -15,127 +15,153 @@ import actionButton from "../../UI/actionButton";
 import "../../../App.css";
 import Close from "@mui/icons-material/Close";
 import { useProjectGenAIMutation } from "../../../redux/apis/Project/projectApiSlice";
-import {GoogleGenerativeAI} from '@google/generative-ai'; // Adjust based on the actual package name
+import { GoogleGenerativeAI } from "@google/generative-ai"; // Adjust based on the actual package name
 import { toast } from "react-toastify";
-import loader from "../../../assets/gifs/loader.gif"
+import loader from "../../../assets/gifs/loader.gif";
 
-const prompt = `
-You are a helpful assistant for a react-based construction app. Your task is to generate project phase and line item data based on a project description provided by the user.
+const createConstructionPrompt = (
+  projectDescription,
+  projectSize,
+  projectProfit
+) => {
+  return `
+# Construction Project Estimation Generator
 
-Instructions:
+## Objective
+Generate accurate phase and line item data for construction projects in valid JSON format. Strictly handle non-construction projects with error responses.
 
-1.  Project Context: Projects are divided into phases (one or more). Each phase contains line items representing expenditures.
+## Input Parameters
+- Project Description: ${projectDescription}
+- Project Size: ${projectSize}
+- Profit Margin: ${projectProfit}%
 
-2.  Phase Data: For each phase, provide:
-       phaseName: The name of the phase.
-       color: A random dark hexadecimal color code (e.g., #208C00).
+## Validation Criteria
+1. FIRST check if the project is construction-related (e.g., buildings, infrastructure, renovations, new build, remodel, commercial, residential, etc.)
+2. Reject and return error JSON if:
+   - Description is unclear/unrelated to construction
+   - Contains nonsensical text or jokes
+   - Lacks measurable components
+   - Is about software, abstract concepts, or non-physical projects
 
-3.  Line Item Data: For each line item within a phase, provide:
-       title: The name of the line item.
-       description: A brief description of the item.
-       unit: The unit of measurement (e.g., kg, lb, m).
-       quantity: An estimated quantity.
-       unit_price: An estimated unit price.
-       total: The calculated cost price (unit_price * quantity).
-       margin: A 10% profit margin on the total (calculated as total * 0.1).
-       notes: Optional additional notes.
+## Data Generation Guidelines
 
-4.  Estimates: Provide reasonable estimates for quantities and prices. Accuracy is not critical, but values should be contextually appropriate.
+### Phase Creation
+1. Create 2-5 logical construction phases
+2. Phase Names: Use standard construction terminology (e.g., "Site Preparation", "Foundation Work")
+3. Colors: Random dark hex colors (#000000 to #7F7F7F)
 
-5.  Response Format: Return a JSON representing the project data. The map should follow this structure (STRICTLY ONLY RETURN THE JSON, NO ADDED BACK TICKS OR STRINGS):
+### Line Items
+For each phase, include 3-8 items with:
+1. Title: Specific material/labor item (e.g., "Reinforced Concrete", "Electrical Wiring")
+2. Description: Clear purpose/implementation details
+3. Unit: Context-appropriate measurement (sq.ft, lb, m, etc.)
+4. Quantity: Size-adjusted estimate based on ${projectSize}
+5. Unit Price: Market-realistic pricing (research typical construction costs)
+6. Total: quantity × unit_price
+7. Margin: ${projectProfit}% of total (total × ${projectProfit / 100})
+8. Notes: Safety considerations or special instructions
 
- ex:
+## Response Requirements
+1. Strictly valid JSON text format (NO MARKDOWN OR BACKTICKS)
+2. Maintain this structure:
+{
+  "phases": [
     {
-      "phases": [
-        {
-          "phaseName": "Phase 1 Name",
-          "color": "#123456",
-          "lineItems": [
-            {
-              "title": "Line Item 1",
-              "description": "Description of item 1",
-              "unit": "unit",
-              "quantity": 1,
-              "unit_price": 1.0,
-              "total": 1.0,
-              "margin": 0.1,
-              "notes": "Optional notes"
-            },
-            {
-                //... more line items
-            }
-          ]
-        },
-        {
-            //... more phases
+      "phaseName": "Phase Name",
+      "color": "#HEXCODE",
+      "lineItems": [
+        { 
+          "title": "Item Name",
+          "description": "Detailed description",
+          "unit": "measurement",
+          "quantity": 123,
+          "unit_price": 12.34,
+          "total": 1516.42,
+          "margin": 151.64,
+          "notes": "Special considerations"
         }
       ]
     }
+  ]
+}
 
+3. Error response format:
+{ "error": "invalid project description" }
 
-6. Error Handling: If the project description is unclear, unrelated to construction, or you are unable to generate relevant data, return the following JSON (STRICTLY ONLY RETURN THE JSON (text format, which I will parse into JSON), NO ADDED BACK TICKS) ex: {"error": "invalid project description"}.
+## Calculation Examples
+For ${projectSize} project:
+- 200 sq.ft concrete slab @ $5/sq.ft = 200 × 5 = $1000 total
+- ${projectProfit}% margin = 1000 × ${projectProfit / 100} = $${
+    projectProfit * 10
+  }
 
-7. You will be provided the project size, example: 50 sq. yds and the project profit, example: 10% the project is expected to make to taking these factors make the tweaking and adjustments accordingly!
+## Final Checks
+1. Validate all numerical calculations
+2. Ensure construction-specific terminology
+3. Verify JSON syntax before responding
+4. Re-check project relevance
 
-8. very important point to not that you are communicating with an api so return a response in JSON(text format, which I will parse into JSON)
-
-9. "\`\`\`json \`\`\`"  please don't respond in these qoutes, it give an error in my api, instead let's keep it to text and I can parse the string into a json object
-Now, generate phases and line items for the following project description:
+PROCESSING PROJECT: "${projectDescription}"
 `;
+};
 
+function GenerativeAiDialogue({ closeGenAiDialogue, projectId, fetchData }) {
+  const [aiPrompt, setAiPrompt] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [projectSize, setProjectSize] = useState("");
+  const [projectProfit, setProjectProfit] = useState("");
+  const [generateWithAI] = useProjectGenAIMutation();
+  const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEN_AI_KEY);
+  const handleSetProjectSize = (e) => {
+    setProjectSize(e.target.value);
+  };
+  const handleSetProjectProfit = (e) => {
+    setProjectProfit(e.target.value);
+  };
+  const handleSetAiPrompt = (e) => {
+    setAiPrompt(e.target.value);
+  };
+  const handleClickClose = () => {
+    closeGenAiDialogue();
+  };
 
-function GenerativeAiDialogue({
-    closeGenAiDialogue,
-    projectId,
-    fetchData
-}) {
-    const [aiPrompt, setAiPrompt] = useState("");
-    const [isGenerating, setIsGenerating] = useState(false);
-    const [projectSize, setProjectSize] = useState("");
-    const [projectProfit, setProjectProfit] = useState("");
-    const [generateWithAI] = useProjectGenAIMutation();
-    const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEN_AI_KEY);
-    const handleSetProjectSize = (e) => {
-      setProjectSize(e.target.value);
-    };
-    const handleSetProjectProfit = (e) => {
-      setProjectProfit(e.target.value);
-    };
-    const handleSetAiPrompt = (e) => {
-        setAiPrompt(e.target.value);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsGenerating(true);
+    try {
+      if (!aiPrompt) {
+        toast.error("Please enter a project description");
+        setIsGenerating(false);
+        return;
+      }
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-001" });
+      const userPrompt = createConstructionPrompt(aiPrompt, projectSize, projectProfit);
+      const result = await model.generateContent([userPrompt]);
+      const response = await result.response;
+      const text = await response.text();
+      const cleanedText = text
+      .replace(/```json|```/g, "") // Remove code block markers
+      .replace(/'/g, '"')         // Replace single quotes with double quotes
+      .replace(/`/g, "")          // Remove backticks
+      .trim();                    // Remove any extra whitespace or newlines
+      const genAIResponse = JSON.parse(cleanedText);
+      const phases = genAIResponse.phases || genAIResponse.error;
+      const data = { phases, projectId };
+      const responseAi = await generateWithAI(data);
+      if (responseAi?.error) {
+        toast.error(responseAi?.error?.data.message);
+      } else {
+        toast.success(responseAi?.data?.message);
+      }
+      setIsGenerating(false);
+      await fetchData();
+      handleClickClose();
+    } catch (err) {
+      console.log(err);
+      toast.error("Api is exasted please try again later!");
+      setIsGenerating(false);
     }
-    const handleClickClose = () => {
-        closeGenAiDialogue();
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        setIsGenerating(true)
-        try{
-
-            const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-001" });
-            const userPrompt = aiPrompt + " the size of the area the project will take: " + projectSize + " the project margin expected: " + projectProfit;
-            const result = await model.generateContent([prompt + userPrompt]);
-            const response = await result.response;
-            const text = await response.text();
-            const genAIResponse = JSON.parse(text);
-            const phases = genAIResponse.phases || genAIResponse.error;
-            const data = { phases, projectId };
-            const responseAi = await generateWithAI(data);
-            if(responseAi?.error){
-                toast.error(responseAi?.error?.data.message);
-            }else{
-                toast.success(responseAi?.data?.message);
-            }
-            setIsGenerating(false)
-            await fetchData();
-            handleClickClose();
-        }catch(err){
-            console.log(err);
-            toast.error("Something went wrong!");
-            setIsGenerating(false)
-        }
-    }
+  };
 
   return (
     <div className="App">
@@ -183,15 +209,15 @@ function GenerativeAiDialogue({
               value={aiPrompt}
               onChange={handleSetAiPrompt}
             />
-              <Stack direction={"row"} justifyContent={'space-between'}>
-              <Stack alignItems={'start'} justifyContent={'flex-start'}>
+            <Stack direction={"row"} justifyContent={"space-between"}>
+              <Stack alignItems={"start"} justifyContent={"flex-start"}>
                 <Typography sx={typoText}>Project Size</Typography>
                 <TextField
                   inputProps={{ maxLength: 150 }}
                   sx={{
                     ...inputStyle,
                     width: "calc(100% - 24px)",
-                    alignSelf:"start",
+                    alignSelf: "start",
                   }}
                   margin="dense"
                   id="projectSize"
@@ -211,7 +237,7 @@ function GenerativeAiDialogue({
                   sx={{
                     ...inputStyle,
                     width: "calc(100% - 16px)",
-                    alignSelf:"start",
+                    alignSelf: "start",
                   }}
                   margin="dense"
                   id="projectProfit"
@@ -225,8 +251,15 @@ function GenerativeAiDialogue({
                 />
               </Stack>
             </Stack>
-            <Typography sx={typoText}>Provide a detailed description of your project to generate a suggested breakdown of phases and associated line items using AI. Processing may take up to 30 seconds.</Typography>
-            <Typography sx={{...typoText, color: "red", fontSize:'14px'}}>Warning: This will rewrite your previously saved phases and line Items.</Typography>
+            <Typography sx={typoText}>
+              Provide a detailed description of your project to generate a
+              suggested breakdown of phases and associated line items using AI.
+              Processing may take up to 30 seconds.
+            </Typography>
+            <Typography sx={{ ...typoText, color: "red", fontSize: "14px" }}>
+              Warning: This will rewrite your previously saved phases and line
+              Items.
+            </Typography>
           </DialogContent>
           <DialogActions sx={generalBox}>
             <Button
@@ -239,9 +272,14 @@ function GenerativeAiDialogue({
               onClick={handleSubmit}
               disabled={isGenerating}
             >
-              {isGenerating ? <><img src={loader} alt="loading gif"  width={'50px'}></img></> : "Generate"}
+              {isGenerating ? (
+                <>
+                  <img src={loader} alt="loading gif" width={"50px"}></img>
+                </>
+              ) : (
+                "Generate"
+              )}
             </Button>
-
           </DialogActions>
         </Dialog>
       </>
@@ -273,8 +311,8 @@ const generalBox = {
   display: "flex",
   justifyContent: "center",
   marginTop: "2rem",
-  alignItems:'center',
-  gap:2
+  alignItems: "center",
+  gap: 2,
 };
 
 const paperPropsStyle = {
