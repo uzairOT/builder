@@ -16,6 +16,7 @@ import EditIcon from "../../../assets/settings/edit.png";
 import { useGetMasterLineItemsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 import { useSelector } from "react-redux";
 import UpdateMasterLine from "../../dialogues/UpdateMasterLine/UpdateMasterLine";
+import { useTranslation } from "react-i18next";
 
 const dummyData = [
   {
@@ -82,6 +83,7 @@ function MasterLineTable({
   setTotalEntries,
   setTotalPages,
 }) {
+  const {t} =  useTranslation();
   const userInfo = useSelector((state) => state.auth.userInfo);
   const { data, isLoading, refetch, error } = useGetMasterLineItemsQuery({
     userId: userInfo.user.id,
@@ -133,10 +135,10 @@ function MasterLineTable({
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={tableCellStyle}>Name</TableCell>
-              <TableCell sx={tableCellStyle}>Description</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.name")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.description")}</TableCell>
               <TableCell sx={tableCellStyle}>
-                Unit
+              {t("Settings.masterTable.unit")}
                 {/* <IconButton>
                 <Select
                   value={""}
@@ -153,19 +155,19 @@ function MasterLineTable({
               </IconButton> */}
               </TableCell>
 
-              <TableCell sx={tableCellStyle}>Quantity</TableCell>
-              <TableCell sx={tableCellStyle}>Unit Price</TableCell>
-              <TableCell sx={tableCellStyle}>Total</TableCell>
-              <TableCell sx={tableCellStyle}>Profit</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.quantity")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.unitPrice")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.quantity")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.profit")}</TableCell>
               {/* <TableCell sx={tableCellStyle}>Start</TableCell>
             <TableCell sx={tableCellStyle}>End</TableCell> */}
-              <TableCell sx={tableCellStyle}>Total Cost</TableCell>
-              <TableCell sx={tableCellStyle}>Notes</TableCell>
-              <TableCell sx={tableCellStyle}>Action</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.totalCost")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.notes")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.action")}</TableCell>
             </TableRow>
           </TableHead>
           {error ? (
-            <Stack p={2}>{"Something went wrong!"}</Stack>
+            <Stack p={2}>{t("Settings.masterTable.error")}</Stack>
           ) : (
             <TableBody>
               {isLoading ? (
@@ -203,7 +205,7 @@ function MasterLineTable({
                     }}
                   >
                     <Typography paddingTop={30} paddingBottom={30}>
-                      No Records
+                    {t("Settings.masterTable.noRecords")}
                     </Typography>
                   </TableCell>
                 </TableRow>

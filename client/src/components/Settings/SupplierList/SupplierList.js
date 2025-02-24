@@ -8,8 +8,9 @@ import UpdateModal from '../../dialogues/Settings/UpdateModal';
 import { useOutletContext } from 'react-router-dom';
 import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 function SupplierList() {
-
+  const {t} = useTranslation()
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
   const [userInfo, setUserInfo, handleAssignRoleButton, userId, setUserId, handleUpdateAssignRole] = useOutletContext();
@@ -64,7 +65,7 @@ function SupplierList() {
   },[debouncedValue])
   return (
     <div style={{padding:"20px"}}>
-      <Header title="Supplier"   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
+      <Header title={t("Settings.supplier")}   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
       <CustomTable refreshData={refreshData} setUpdateModalOpen={setUpdateModalOpen}  setUserId={setUserId} searchInput={debouncedValue} setTotalEntries={setTotalEntries} setTotalPages={setTotalPages} page={page}/>
 
       <Box mt={2} mb={2}>
@@ -82,8 +83,8 @@ function SupplierList() {
         </Typography>
         <Pagination count={totalPages} variant="outlined" shape="rounded" page={page}  onChange={handlePageChange}  sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Supplier"} refreshData={refreshData} setRefreshData={setRefreshData} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} />
-      <UpdateModal title={"Supplier"} refreshData={refreshData} setRefreshData={setRefreshData} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo} />
+      <AddModal title={t("Settings.supplier")} refreshData={refreshData} setRefreshData={setRefreshData} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} />
+      <UpdateModal title={t("Settings.supplier")} refreshData={refreshData} setRefreshData={setRefreshData} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo} />
     </div>
   );
 }

@@ -19,6 +19,7 @@ import {
 import DeleteIcon from "../../../assets/settings/delete.png";
 import { toast } from "react-toastify";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
+import { useTranslation } from "react-i18next";
 
 const tableCellStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
@@ -55,6 +56,7 @@ function UnitsTable({
   page,
   error,
 }) {
+  const {t} = useTranslation()
   const userInfo = useSelector((state) => state.auth.userInfo);
   const [open, setOpen] = useState(false);
   const [deleteUnitId, setDeleteUnitId] = useState(null);
@@ -118,12 +120,12 @@ function UnitsTable({
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={tableCellStyle}>Unit</TableCell>
-              <TableCell sx={tableCellStyle}>Action</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.UnitsTable.unit")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.UnitsTable.action")}</TableCell>
             </TableRow>
           </TableHead>
           {error ? (
-            <Stack p={2}>{"Something went wrong!"}</Stack>
+            <Stack p={2}>{t("Settings.UnitsTable.error")}</Stack>
           ) : (
             <TableBody>
               {isLoading ? (
@@ -177,7 +179,7 @@ function UnitsTable({
         handleClose={handleClose}
         handleConfirmDelete={handleConfirmDelete}
         isLoading={isDeleteUnitLoading}
-        text={"unit"}
+        text={t("Settings.UnitsTable.areYouSure")}
       />
     </Grid>
   );

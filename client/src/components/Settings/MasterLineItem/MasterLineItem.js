@@ -4,6 +4,7 @@ import Header from "../Header/Header";
 import Table from "../Tables/MasterLineTable";
 import Pagination from "@mui/material/Pagination";
 import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
+import { t } from 'i18next';
 
 function MasterLine() {
 
@@ -46,7 +47,7 @@ function MasterLine() {
 
   return (
     <div style={{padding:"20px"}}>
-      <Header title="Master Line Item"   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
+      <Header title={t("Settings.master")}   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
       <Table setUpdateModalOpen={setUpdateModalOpen} page={page} setTotalEntries={setTotalEntries} setTotalPages={setTotalPages} searchInput={debouncedValue} />
 
       <Box mt={2} mb={2}>

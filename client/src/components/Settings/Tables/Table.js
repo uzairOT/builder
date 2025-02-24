@@ -23,6 +23,8 @@ import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const dummyData = [
   {
@@ -69,6 +71,7 @@ function CustomTable({
   setTotalPages,
   refreshData,
 }) {
+  const {t} = useTranslation()
   const showEmailAndRecords = title === "subcontractor";
   const [assignRoleDelete, { isLoading: deleteUserLoading }] =
     useDeleteAssignRoleMutation();
@@ -168,11 +171,11 @@ function CustomTable({
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={tableCellStyle}>Profile Pic</TableCell>
-                <TableCell sx={tableCellStyle}>Name</TableCell>
-                <TableCell sx={tableCellStyle}>Job/Project</TableCell>
-                <TableCell sx={tableCellStyle}>Phone Number</TableCell>
-                <TableCell sx={tableCellStyle}>Email</TableCell>
+                <TableCell sx={tableCellStyle}>{t("Settings.Table.picture")}</TableCell>
+                <TableCell sx={tableCellStyle}>{t("Settings.Table.name")}</TableCell>
+                <TableCell sx={tableCellStyle}>{t("Settings.Table.project")}</TableCell>
+                <TableCell sx={tableCellStyle}>{t("Settings.Table.phone")}</TableCell>
+                <TableCell sx={tableCellStyle}>{t("Settings.Table.email")}</TableCell>
                 {/* <TableCell sx={tableCellStyle}>Country</TableCell> */}
                 {/* <TableCell sx={tableCellStyle}>Project Status</TableCell> */}
                 {/* {showEmailAndRecords && (
@@ -180,11 +183,11 @@ function CustomTable({
                   Email <br /> Records
                 </TableCell>
               )} */}
-                <TableCell sx={tableCellStyle}>Action</TableCell>
+                <TableCell sx={tableCellStyle}>{t("Settings.Table.action")}</TableCell>
               </TableRow>
             </TableHead>
             {error ? (
-              <Stack p={2}>{"Something went wrong!"}</Stack>
+              <Stack p={2}>{t("Settings.Table.error")}</Stack>
             ) : (
               <TableBody>
                 {isLoading ? (
@@ -259,7 +262,7 @@ function CustomTable({
                       }}
                     >
                       <Typography paddingTop={30} paddingBottom={30}>
-                        No Records
+                      {t("Settings.Table.noRecords")}
                       </Typography>
                     </TableCell>
                   </TableRow>
@@ -352,7 +355,7 @@ function CustomTable({
           handleClose={handleClose}
           handleConfirmDelete={handleConfirmDelete}
           isLoading={deleteUserLoading}
-          text={"user"}
+          text={t("Settings.Table.areYouSureUser")}
         />
       </Grid>
     </>

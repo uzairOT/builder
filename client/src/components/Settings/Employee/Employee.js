@@ -6,13 +6,14 @@ import Pagination from "@mui/material/Pagination";
 import AddModal from '../../dialogues/Settings/AddModal';
 import UpdateModal from '../../dialogues/Settings/UpdateModal';
 import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
+import { useTranslation } from 'react-i18next';
 
 
 
 
 function Employee() {
   
-
+  const {t} = useTranslation();
   const [userId, setUserId] = useState();
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
@@ -67,7 +68,7 @@ function Employee() {
 //console.log(userId)
   return (
     <div style={{padding:"20px"}}>
-      <Header title="Employee"   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
+      <Header title={t("Settings.employee")}   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
       <CustomTable refreshData={refreshData} setUpdateModalOpen={setUpdateModalOpen} userId={userId} setUserId={setUserId} searchInput={debouncedValue} setTotalEntries={setTotalEntries} setTotalPages={setTotalPages} page={page}/>
 
       <Box mt={2} mb={2}>
@@ -85,8 +86,8 @@ function Employee() {
         </Typography>
         <Pagination count={totalPages} variant="outlined" shape="rounded" page={page}  onChange={handlePageChange} sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Employee"} refreshData={refreshData} setRefreshDat={setRefreshData} open={isAddModalOpen} onClose={handleCloseAddModal} />
-      <UpdateModal title={"Employee"} refreshData={refreshData} setRefreshData={setRefreshData} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} />
+      <AddModal title={t("Settings.employee")} refreshData={refreshData} setRefreshDat={setRefreshData} open={isAddModalOpen} onClose={handleCloseAddModal} />
+      <UpdateModal title={t("Settings.employee")} refreshData={refreshData} setRefreshData={setRefreshData} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} />
     </div>
   );
 }

@@ -33,8 +33,10 @@ import { uploadToS3 } from "../../../utils/S3";
 import axios from "axios";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import { Close } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
+  const {t} = useTranslation()
   const [image, setImage] = useState(null);
   const local = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(local);
@@ -190,7 +192,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
           alignItems={"center"}
           mr={5}
         >
-          <DialogTitle sx={headingStyle}>Add {title}</DialogTitle>
+          <DialogTitle sx={headingStyle}>{t("Button.add")} {title}</DialogTitle>
           <IconButton
             style={{ width: "30px", height: "30px" }}
             onClick={onClose}
@@ -298,7 +300,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
             </Grid> */}
             <Grid item xs={12} sm={6}>
               {/* Projects input */}
-              <Typography variant="body1">Project</Typography>
+              <Typography variant="body1">{t("Settings.modal.project")}</Typography>
               {/* <TextField
               select 
                 error={Boolean(errors.project)} // Simplified error handling
@@ -345,7 +347,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
                         <Typography
                           style={{ fontSize: "1rem", color: "#969a9c" }}
                         >
-                          Project
+                          {t("Settings.modal.project")}
                         </Typography>
                       );
                     }
@@ -361,7 +363,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
                       errors.project && touched.project
                         ? "1px solid #d32f2f"
                         : "1px solid #E0E4EC",
-                    placeholder: "Project",
+                    placeholder: t("Settings.modal.project"),
                   }}
                 >
                   {projectNames?.map((projectName) => (
@@ -410,11 +412,11 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
             </Grid> */}
             <Grid item xs={12} sm={6}>
               {/* Email input */}
-              <Typography variant="body1">Email</Typography>
+              <Typography variant="body1">{t("Settings.modal.email")}</Typography>
               <TextField
                 sx={{ mr: 3 }}
                 error={errors.email ? true : false}
-                placeholder="Email"
+                placeholder={t("Settings.modal.email")}
                 name={"email"}
                 value={values.email}
                 onChange={handleChange}
@@ -492,7 +494,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
           <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center" }}>
             <Button
               type={"submit"}
-              buttonText="Add New"
+              buttonText={t("Button.addNew")}
               color="#ffffff"
               backgroundColor={isSubmitting ? "gray" : "#4C8AB1"}
               width="150px"
@@ -504,7 +506,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
           </Grid>
           <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center" }}>
             <Button
-              buttonText="Reset"
+              buttonText={t("Button.reset")}
               color="#4C8AB1"
               border={"1px solid #4C8AB1"}
               width="150px"

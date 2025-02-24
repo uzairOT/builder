@@ -596,6 +596,8 @@
   },
   "Button": {
     "add": "Add",
+    "update": "Update",
+    "submit": "Submitting",
     "back": "Back",
     "next": "Next",
     "skip": "Skip",
@@ -606,7 +608,9 @@
     "save": "Save",
     "saveAs": "Save as",
     "filter": "Filter",
-    "new": "New"
+    "new": "New",
+    "addNew": "Add New",
+    "reset": "Reset"
   },
   "AssignProject": {
     "title1": "Add new project",
@@ -858,6 +862,136 @@
       "monthly": "Monthly",
       "yearly": "Yearly",
       "discount": "Discounted price"
+    }
+  },
+  "Settings": {
+    "admin":"Admin",
+    "client": "Client",
+    "projectManager": "Project Manager",
+    "employee": "Employee",
+    "subcontractor": "Subcontractor",
+    "supplier": "Supplier",
+    "others":"Others",
+    "coupon": "Coupon",
+    "master":"Master Line Item",
+    "modal": {
+      "project": "Project",
+      "email": "Email"
+    },
+    "Tabs": {
+      "profile": "Profile",
+      "passwordAndNoti": "Passwords & Notifications",
+      "others": "Others"
+    },
+    "Profile": {
+      "heading1": "My Profile",
+      "form": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "Email",
+        "phoneNumber": "Phone Number",
+        "phoneValidation": "Phone is not valid",
+        "button1": "Update Profile",
+        "button2": "Delete Profile",
+        "button3": "Change Profile",
+        "areYouSure": "delete your profile?",
+        "placeholder": "Please enter your first name",
+        "placeholder2": "Please enter your last name",
+        "placeholder3": "Please enter your email"
+      }
+    },
+    "Password": {
+      "heading1": "Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "heading2": "Notifications",
+      "subheading1": "Team Notification",
+      "list1": "Employee",
+      "list2": "Supplier",
+      "list3": "Subcontractor",
+      "button1": "Update Profile",
+      "placeholder": "Enter Current Password",
+      "placeholder1": "Enter New Password",
+      "placeholder2": "Confirm your password here",
+      "validation1": "Password must be at least 8 characters long",
+      "validation2": "Passwords dont match"
+    },
+    "Others": {
+      "heading1": "Connect to Quickbooks"
+    },
+    "SideBar": {
+      "profile": "Profile",
+      "master": "Master Line Items",
+      "units": "Units",
+      "admin": "Admin",
+      "projectManager": "Project Manager",
+      "client": "Clients",
+      "employee": "Employee",
+      "subcontractor": "Subcontractor",
+      "supplier": "Supplier",
+      "others": "Other",
+      "account": "Accounts",
+      "coupon": "Coupon"
+    },
+    "masterTable":{
+      "name": "Name",
+      "description": "Description",
+      "unit": "Unit",
+      "unitPrice": "Unit Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "profit": "Profit",
+      "totalCost":"Total Cost",
+      "notes": "Notes",
+      "action": "Action",
+      "error": "Something went wrong!",
+      "noRecords": "No Records",
+      "modal":{
+        "heading": "Update Master Line Item",
+        "heading1": "Master Line Item",
+        "areYouSure": "delete this line item",
+        "lineItem": "Line Item",
+        "description": "Description",
+        "unit": "Unit",
+        "unitPrice": "Unit Price",
+        "quantity": "Quantity",
+        "actualCost": "Actual Cost",
+        "clientCost": "Client Cost",
+        "start": "Start",
+        "end": "End",
+        "profit": "Profit",
+        "totalCost": "Total Cost",
+        "notes": "Notes",
+        "percentage": "Percentage",
+        "placeholder1": "Select Unit",
+        "placeholder2": "Type your notes here..."
+      }
+    },
+    "UnitsTable": {
+      "unit": "Unit",
+      "action": "Action",
+      "error": "Something went wrong!",
+      "areYouSure": "delete this unit",
+      "modal": {
+        "addUnit": "Add Unit",
+        "editUnit": "Edit Unit",
+        "unit": "Unit",
+        "placeholder1": "Unit",
+        "button": "Add Unit",
+        "button1": "Edit Unit" 
+      }
+    },
+    "Table": {
+      "picture": "Profile Pic",
+      "name": "Name",
+      "project": "Job/Project",
+      "phone": "Phone number",
+      "email": "Email",
+      "action": "Action",
+      "noRecords": "No Records",
+      "error": "Something went wrong!",
+      "areYouSureUser": "delete this user"
     }
   }
 }

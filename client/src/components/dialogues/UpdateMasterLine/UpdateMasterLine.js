@@ -49,6 +49,7 @@ import {
 } from "../../../redux/apis/Project/userProjectApiSlice";
 import CreateableSelect from "react-select/creatable";
 import { Close } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 function UpdateMasterLine({
   handleUpdateOpen,
@@ -57,9 +58,7 @@ function UpdateMasterLine({
   MasterLineItem,
   userId,
 }) {
-  // const { data, isLoading, isSuccess } = useGetMasterLineItemQuery({
-  //   MasterLineItemId: MasterLineItem,
-  // });
+  const {t} = useTranslation();
   const [open, setOpen] = useState(false);
   const [addPhaseLine] = useAddPhaseLineMutation();
   const [updateMasterLine] = useUpdateMasterLineItemMutation();
@@ -249,9 +248,33 @@ function UpdateMasterLine({
     control: (styles) => ({
       ...styles,
       ...inputStyle,
-      marginBottom: "0",
-      height: "",
-      padding: "4px",
+      marginLeft: "8px",
+      height: "", // Keep this as it was
+      padding: "4px", // Keep this as it was,
+      overflow: "auto",
+      width: "calc(100%)",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      // height: "90px",
+      // overflowY: "scroll",
+      // marginTop: "0px", // Adjust the top margin of the menu
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      height: "90px",
+      overflowY: "scroll",
+      marginTop: "0px", // Adjust the top margin of the menu
+    }),
+    option: (provided) => ({
+      ...provided,
+      padding: "5px 10px", // Adjust the padding of each option
+      // overflowY: "scroll",
+    }),
+
+    indicatorsContainer: (provided) => ({
+      ...provided,
+      // overflow: "auto",
     }),
   };
   // const handleSetUnit = async (selectedOption, actionType) => {
@@ -432,7 +455,7 @@ function UpdateMasterLine({
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <DialogTitle sx={typoTitle}>Update Master Line Item</DialogTitle>
+            <DialogTitle sx={typoTitle}>{t("Settings.masterTable.modal.heading")}</DialogTitle>
             <IconButton
               style={{ width: "30px", height: "30px" }}
               onClick={handleClickClose}
@@ -440,8 +463,8 @@ function UpdateMasterLine({
               <Close />
             </IconButton>
           </Stack>
-          <DialogContent sx={{ padding: "3rem", paddingTop: "1rem" }}>
-            <Typography sx={typoText}>Master Line Item</Typography>
+          <DialogContent sx={{ padding: "0rem", paddingTop: "1rem" }}>
+            <Typography sx={typoText}>{t("Settings.masterTable.modal.heading1")}</Typography>
             <>
               {/* <Autocomplete
                 freeSolo
@@ -495,7 +518,7 @@ function UpdateMasterLine({
                 onChange={(e) => setPhaseName(e.target.value)}
               />
 
-              <Typography sx={typoText}>Description</Typography>
+              <Typography sx={typoText}>{t("Settings.masterTable.modal.description")}</Typography>
               <TextField
                 inputProps={{ maxLength: 50 }}
                 sx={{ ...inputStyle }}
@@ -510,15 +533,15 @@ function UpdateMasterLine({
               />
               <Box sx={parallelBox}>
                 <Box sx={innerBox}>
-                  <Typography sx={typoText}>Unit</Typography>
-                  <Box mt={"8px"} mb={"8px"}>
+                  <Typography sx={typoText}>{t("Settings.masterTable.modal.unit")}</Typography>
+                  <Box mt={"8px"} mb={"8px"}  width={"calc(100% - 16px)"}>
                     <CreateableSelect
                       ref={creatableRef}
                       defaultInputValue={
                         MasterLineItem ? MasterLineItem?.unit : unit
                       }
                       // value={findValueInData(unit)}
-                      placeholder={"Select Unit"}
+                      placeholder={t("Settings.masterTable.modal.placeholder1")}
                       styles={selectStyles}
                       // defaultValue={unit}
                       onChange={handleSetUnit}
@@ -551,9 +574,9 @@ function UpdateMasterLine({
                   </TextField> */}
                 </Box>
                 <Box sx={innerBox}>
-                  <Typography sx={typoText}>Quantity</Typography>
+                  <Typography sx={typoText}>{t("Settings.masterTable.modal.quantity")}</Typography>
                   <TextField
-                    sx={{ ...inputStyle, ...leftSpace }}
+                    sx={{ ...inputStyle, width: "calc(100% - 34px)"  }}
                     required
                     margin="dense"
                     id="quantity"
@@ -570,7 +593,7 @@ function UpdateMasterLine({
                   />
                 </Box>
               </Box>
-              <Typography sx={typoText}>Unit Price</Typography>
+              <Typography sx={typoText}>{t("Settings.masterTable.modal.unitPrice")}</Typography>
               <TextField
                 sx={inputStyle}
                 required
@@ -588,7 +611,7 @@ function UpdateMasterLine({
                 }
               />
 
-              <Typography sx={typoText}>Actual Cost</Typography>
+              <Typography sx={typoText}>{t("Settings.masterTable.modal.actualCost")}</Typography>
               <TextField
                 sx={inputStyle}
                 required
@@ -599,7 +622,7 @@ function UpdateMasterLine({
                 variant="standard"
                 value={formData.total}
               />
-              <Typography sx={typoText}>Client Cost</Typography>
+              <Typography sx={typoText}>{t("Settings.masterTable.modal.clientCost")}</Typography>
               <TextField
                 sx={inputStyle}
                 placeholder="200"
@@ -619,10 +642,10 @@ function UpdateMasterLine({
               />
               <Box sx={parallelBox}>
                 <Box sx={innerBox}>
-                  <Typography sx={typoText}>Profit</Typography>
+                  <Typography sx={typoText}>{t("Settings.masterTable.modal.profit")}</Typography>
 
                   <TextField
-                    sx={{ ...inputStyle, marginLeft: "18px" }}
+                    sx={{ ...inputStyle, width: "calc(100% - 34px)" }}
                     placeholder="4"
                     required
                     margin="dense"
@@ -640,9 +663,9 @@ function UpdateMasterLine({
                   />
                 </Box>
                 <Box sx={innerBox}>
-                  <Typography sx={typoText}>Percentage</Typography>
+                  <Typography sx={typoText}>{t("Settings.masterTable.modal.percentage")}</Typography>
                   <TextField
-                    sx={{ ...inputStyle, marginLeft: "18px" }}
+                    sx={{ ...inputStyle, width: "calc(100% - 34px)" }}
                     placeholder="2"
                     required
                     margin="dense"
@@ -712,7 +735,7 @@ function UpdateMasterLine({
                 </Box>
               </Box> */}
 
-              <Typography sx={typoText}>Notes</Typography>
+              <Typography sx={typoText}>{t("Settings.masterTable.modal.notes")}</Typography>
               <TextField
                 inputProps={{ maxLength: 50 }}
                 sx={{ ...inputStyle, height: "5rem" }}
@@ -731,7 +754,7 @@ function UpdateMasterLine({
           </DialogContent>
           <DialogActions sx={generalBox}>
             <Button sx={{ ...actionButton, ...doneButton }} type="submit">
-              Done
+            {t("Button.done")}
             </Button>
           </DialogActions>
         </Dialog>
@@ -746,7 +769,7 @@ const typoTitle = {
   color: "#4C8AB1",
 };
 const inputStyle = {
-  width: "100%", // Set width to 100% for responsiveness
+  width: "calc(100% - 20px)", // Set width to 100% for responsiveness
   height: "1.8rem",
   marginBottom: "0.5rem",
   alignSelf: "center",
@@ -756,7 +779,7 @@ const inputStyle = {
   borderRadius: "12px",
   color: "#202227",
   fontFamily: "var(--main-font-family)",
-  paddingLeft: "-1.5rem",
+  // paddingLeft: "-1.5rem",
   backgroundColor: "#EDF2F6",
   outline: "none !important",
   "& input": {
@@ -767,13 +790,13 @@ const inputStyle = {
 const generalBox = {
   display: "flex",
   justifyContent: "center",
-  marginTop: "1rem",
+  marginTop: "0.1rem",
 };
 
 const paperPropsStyle = {
   borderRadius: "1rem",
-  width: { lg: "25%", md: "50%", sm: "100%", xs: "100%" },
-  padding: "0.5rem", // Change background color here
+  width: { lg: "30%", md: "50%", sm: "100%", xs: "100%" },
+  padding: "1rem", // Change background color here
 };
 
 const typoText = {
@@ -784,13 +807,13 @@ const typoText = {
 const doneButton = {
   height: "70%",
   width: "7rem",
-  marginTop: "-3rem",
+  // marginTop: "0.1srem",
   marginBottom: "1.5rem",
 };
 
 const parallelBox = {
   display: "flex",
-  gap: "2rem",
+  gap: "1rem",
   justifyContent: "center",
   alignItems: "center",
 };

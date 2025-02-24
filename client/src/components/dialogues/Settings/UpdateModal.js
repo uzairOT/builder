@@ -23,6 +23,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 import { Close } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 function UpdateModal({
   title,
@@ -32,6 +33,7 @@ function UpdateModal({
   setRefreshData,
   refreshData
 }) {
+  const {t} = useTranslation()
   const [image, setImage] = useState(null);
   const local = localStorage.getItem('userInfo');
   const currentUser = JSON.parse(local);
@@ -131,7 +133,7 @@ function UpdateModal({
           alignItems={"center"}
           mr={5}
         >
-          <DialogTitle sx={headingStyle}>Update {title}</DialogTitle>
+          <DialogTitle sx={headingStyle}>{t("Button.update")} {title}</DialogTitle>
           <IconButton
             style={{ width: "30px", height: "30px" }}
             onClick={onClose}
@@ -224,7 +226,7 @@ function UpdateModal({
             </Grid> */}
             <Grid item xs={12}  sm={6}>
               {/* Projects input */}
-              <Typography variant="body1">Project</Typography>
+              <Typography variant="body1">{t("Settings.modal.project")}</Typography>
               {/* <TextField
                 error={errors.project ? true : false}
                 value={values.project}
@@ -257,7 +259,7 @@ function UpdateModal({
                         <Typography
                           style={{ fontSize: "1rem", color: "#969a9c" }}
                         >
-                          Project
+                          {t("Settings.modal.project")}
                         </Typography>
                       );
                     }
@@ -273,7 +275,7 @@ function UpdateModal({
                       errors.project && touched.project
                         ? "1px solid #d32f2f"
                         : "1px solid #E0E4EC",
-                    placeholder: "Project",
+                    placeholder: t("Settings.modal.project"),
                   }}
                 >
                   {projectNames?.map((projectName) => (
@@ -312,7 +314,7 @@ function UpdateModal({
             </Grid> */}
             <Grid item xs={12}  sm={6}>
               {/* Email input */}
-              <Typography variant="body1">Email</Typography>
+              <Typography variant="body1">{t("Settings.modal.email")}</Typography>
               <TextField
                 error={errors.email ? true : false}
                 value={values.email}
@@ -392,7 +394,7 @@ function UpdateModal({
           </Grid>
           <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center" }}>
             <Button
-              buttonText="Reset"
+              buttonText={t("Button.reset")}
               color="#4C8AB1"
               border={"1px solid #4C8AB1"}
               width="150px"

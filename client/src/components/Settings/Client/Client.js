@@ -7,9 +7,10 @@ import AddModal from '../../dialogues/Settings/AddModal';
 import UpdateModal from '../../dialogues/Settings/UpdateModal';
 import { useOutletContext } from 'react-router-dom';
 import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
+import { useTranslation } from 'react-i18next';
 function Client() {
 
-
+  const {t} = useTranslation()
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
   const [page, setPage]= useState(1);
@@ -63,7 +64,7 @@ function Client() {
 
   return (
     <div style={{padding:"20px"}}>
-      <Header title="Client"   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
+      <Header title={t("Settings.client")}   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
       <CustomTable setUpdateModalOpen={setUpdateModalOpen} refreshData={refreshData} setUserId={setUserId} searchInput={debouncedValue}  setTotalEntries={setTotalEntries} setTotalPages={setTotalPages} page={page}/>
 
       <Box mt={2} mb={2}>
@@ -81,8 +82,8 @@ function Client() {
         </Typography>
         <Pagination count={totalPages} variant="outlined" shape="rounded" page={page}  onChange={handlePageChange}  sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Client"} open={isAddModalOpen} refreshData={refreshData}  setRefreshData={setRefreshData} onClose={handleCloseAddModal} userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton}/>
-      <UpdateModal title={"Client"} open={isUpdateModalOpen} refreshData={refreshData} setRefreshData={setRefreshData} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo}/>
+      <AddModal title={t("Settings.client")} open={isAddModalOpen} refreshData={refreshData}  setRefreshData={setRefreshData} onClose={handleCloseAddModal} userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton}/>
+      <UpdateModal title={t("Settings.client")} open={isUpdateModalOpen} refreshData={refreshData} setRefreshData={setRefreshData} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo}/>
     </div>
   );
 }

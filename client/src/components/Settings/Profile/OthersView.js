@@ -4,13 +4,14 @@ import axios from 'axios';
 import { getTokenFromLocalStorage } from '../../../redux/apis/apiSlice';
 import { ReactComponent as QuickBooksLogo } from '../../../assets/quickbooks-logo1.svg'
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 
 const PAYMENT_URL = "https://builderbuilder.net/payment/authUri";
 
 const OthersView = () => {
+    const {t} = useTranslation()
     const user = useSelector((state) => state.auth.userInfo);
-    console.log(user)
     const handleConnectToQuickbooks = async () => {
         try {
             const response = await axios.post(PAYMENT_URL, {
@@ -31,7 +32,7 @@ const OthersView = () => {
     return (
         <>
             <Typography sx={headings} variant="h5" gutterBottom>
-                Connect to QuickBooks
+                {t("Settings.Others.heading1")}
             </Typography>
             <Button
                 onClick={handleConnectToQuickbooks}
@@ -65,7 +66,7 @@ const OthersView = () => {
                         fontWeight: '500',
                     }}
                 >
-                    Connect to QuickBooks
+                    {t("Settings.Others.heading1")}
                 </Typography>
             </Button>
         </>

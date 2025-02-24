@@ -26,9 +26,10 @@ import {
 import { useSelector } from "react-redux";
 import { Close } from "@mui/icons-material";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const AddUnitModal = ({ open, onClose, unit, refetch }) => {
-  // console.log(unit);
+  const {t} = useTranslation()
   const userInfo = useSelector((state) => state.auth.userInfo);
   const [addUnit] = useAddUnitMutation();
   const handleClose = () => {
@@ -85,7 +86,7 @@ const AddUnitModal = ({ open, onClose, unit, refetch }) => {
           alignItems={"center"}
           mr={1}
         >
-          <DialogTitle sx={headingStyle}>Add Unit</DialogTitle>
+          <DialogTitle sx={headingStyle}>{t("Settings.UnitsTable.modal.addUnit")}</DialogTitle>
           <IconButton
             style={{ width: "30px", height: "30px" }}
             onClick={handleClose}
@@ -98,10 +99,10 @@ const AddUnitModal = ({ open, onClose, unit, refetch }) => {
         >
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <Typography variant="body1">Unit</Typography>
+              <Typography variant="body1">{t("Settings.UnitsTable.modal.unit")}</Typography>
               <TextField
                 error={errors.label ? true : false}
-                placeholder="Unit"
+                placeholder={t("Settings.UnitsTable.modal.placeholder1")}
                 name={"label"}
                 value={values.label}
                 onChange={handleChange}
@@ -143,7 +144,7 @@ const AddUnitModal = ({ open, onClose, unit, refetch }) => {
               >
                 <Button
                   type={"submit"}
-                  buttonText="Add Unit"
+                  buttonText={t("Settings.UnitsTable.modal.button")}
                   color="#ffffff"
                   backgroundColor={isSubmitting ? "gray" : "#4C8AB1"}
                   width="150px"

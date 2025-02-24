@@ -6,13 +6,14 @@ import Pagination from "@mui/material/Pagination";
 import AddModal from '../../dialogues/Settings/AddModal';
 import UpdateModal from '../../dialogues/Settings/UpdateModal';
 import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
+import { useTranslation } from 'react-i18next';
 
 
 
 
 function Others() {
   
-
+  const {t} = useTranslation();
   const [userId, setUserId] = useState();
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
@@ -67,7 +68,7 @@ function Others() {
 //console.log(userId)
   return (
     <div style={{padding:"20px"}}>
-      <Header title="Others"   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
+      <Header title={t("Settings.others")}   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
       <CustomTable refreshData={refreshData} setUpdateModalOpen={setUpdateModalOpen} userId={userId} setUserId={setUserId} searchInput={debouncedValue} setTotalEntries={setTotalEntries} setTotalPages={setTotalPages} page={page}/>
 
       <Box mt={2} mb={2}>
@@ -85,8 +86,8 @@ function Others() {
         </Typography>
         <Pagination count={totalPages} variant="outlined" shape="rounded" page={page}  onChange={handlePageChange} sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Others"} refreshData={refreshData} setRefreshDat={setRefreshData} open={isAddModalOpen} onClose={handleCloseAddModal} />
-      <UpdateModal title={"Others"} refreshData={refreshData} setRefreshData={setRefreshData} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} />
+      <AddModal title={t("Settings.others")} refreshData={refreshData} setRefreshDat={setRefreshData} open={isAddModalOpen} onClose={handleCloseAddModal} />
+      <UpdateModal title={t("Settings.others")} refreshData={refreshData} setRefreshData={setRefreshData} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} />
     </div>
   );
 }

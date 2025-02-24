@@ -26,6 +26,7 @@ import {
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Close } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 const CouponModal = ({
   open,
@@ -40,6 +41,7 @@ const CouponModal = ({
   couponCode,
   couponValue,
 }) => {
+  const {t} = useTranslation()
   const handleClose = () => {
     if (updateOpen) {
       updateClose();
@@ -122,7 +124,7 @@ const CouponModal = ({
             mr={5}
           >
             <DialogTitle sx={headingStyle}>
-              {open ? "Add" : updateOpen ? "Update" : ""} {title}
+              {open ? t("Button.add") : updateOpen ? t("Button.update") : ""} {title}
             </DialogTitle>
             <IconButton
               style={{ width: "30px", height: "30px" }}

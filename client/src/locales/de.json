@@ -582,6 +582,7 @@
   },
   "Button": {
     "add": "Hinzufügen",
+    "update": "Aktualisieren",
     "back": "Zurück",
     "next": "Weiter",
     "skip": "Überspringen",
@@ -591,7 +592,10 @@
     "done": "Fertig",
     "save": "Speichern",
     "saveAs": "Speichern als",
-    "filter": "Filter"
+    "filter": "Filter",
+    "new": "Neu",
+    "addNew": "Neu hinzufügen",
+    "reset": "Zurücksetzen"
   },
   "AssignProject": {
     "title1": "Neues Projekt hinzufügen",
@@ -818,10 +822,12 @@
       "Business Pro": {
         "planPackage": "Promo-Code - Aktiviert\n- 500\n- 440\n10 Benutzer"
       },
-      "Free Trial": { "planPackage": "Kostenloser Plan\n- 10\n- 5\n3 Benutzer" },
-      "Enterprise": { 
-        "planPackage": "10+ Benutzer\n- 10\n- 5\n", 
-        "body1": "Ein Enterprise-Plan für Benutzer, die das volle Potenzial der App ausschöpfen möchten. Kontaktieren Sie uns und wir melden uns bei Ihnen!" 
+      "Free Trial": {
+        "planPackage": "Kostenloser Plan\n- 10\n- 5\n3 Benutzer"
+      },
+      "Enterprise": {
+        "planPackage": "10+ Benutzer\n- 10\n- 5\n",
+        "body1": "Ein Enterprise-Plan für Benutzer, die das volle Potenzial der App ausschöpfen möchten. Kontaktieren Sie uns und wir melden uns bei Ihnen!"
       },
       "amountOfPhotos": "Anzahl der Fotos",
       "amountOfFiles": "Anzahl der Dateien",
@@ -846,6 +852,136 @@
       "monthly": "Monatlich",
       "yearly": "Jährlich",
       "discount": "Reduzierter Preis"
+    }
+  },
+  "Settings": {
+    "admin": "Admin",
+    "client": "Kunde",
+    "projectManager": "Projektmanager",
+    "employee": "Mitarbeiter",
+    "subcontractor": "Subunternehmer",
+    "supplier": "Lieferant",
+    "others": "Andere",
+    "coupon": "Gutschein",
+    "master": "Master-Position",
+    "modal": {
+      "project": "Projekt",
+      "email": "E-Mail"
+    },
+    "Tabs": {
+      "profile": "Profil",
+      "passwordAndNoti": "Passwörter & Benachrichtigungen",
+      "others": "Andere"
+    },
+    "Profile": {
+      "heading1": "Mein Profil",
+      "form": {
+        "firstName": "Vorname",
+        "lastName": "Nachname",
+        "email": "E-Mail",
+        "phoneNumber": "Telefonnummer",
+        "phoneValidation": "Telefonnummer ist nicht gültig",
+        "button1": "Profil aktualisieren",
+        "button2": "Profil löschen",
+        "button3": "Profil ändern",
+        "areYouSure": "Ihr Profil löschen?",
+        "placeholder": "Bitte geben Sie Ihren Vornamen ein",
+        "placeholder2": "Bitte geben Sie Ihren Nachnamen ein",
+        "placeholder3": "Bitte geben Sie Ihre E-Mail-Adresse ein"
+      }
+    },
+    "Password": {
+      "heading1": "Passwort",
+      "currentPassword": "Aktuelles Passwort",
+      "newPassword": "Neues Passwort",
+      "confirmPassword": "Passwort bestätigen",
+      "heading2": "Benachrichtigungen",
+      "subheading1": "Team-Benachrichtigung",
+      "list1": "Mitarbeiter",
+      "list2": "Lieferant",
+      "list3": "Subunternehmer",
+      "button1": "Profil aktualisieren",
+      "placeholder": "Aktuelles Passwort eingeben",
+      "placeholder1": "Neues Passwort eingeben",
+      "placeholder2": "Passwort hier bestätigen",
+      "validation1": "Das Passwort muss mindestens 8 Zeichen lang sein",
+      "validation2": "Passwörter stimmen nicht überein"
+    },
+    "Others": {
+      "heading1": "Mit QuickBooks verbinden"
+    },
+    "SideBar": {
+      "profile": "Profil",
+      "master": "Hauptpositionen",
+      "units": "Einheiten",
+      "admin": "Administrator",
+      "projectManager": "Projektmanager",
+      "client": "Kunden",
+      "employee": "Mitarbeiter",
+      "subcontractor": "Subunternehmer",
+      "supplier": "Lieferant",
+      "others": "Andere",
+      "account": "Konten",
+      "coupon": "Gutschein"
+    },
+    "masterTable": {
+      "name": "Name",
+      "description": "Beschreibung",
+      "unit": "Einheit",
+      "unitPrice": "Stückpreis",
+      "quantity": "Menge",
+      "total": "Gesamt",
+      "profit": "Gewinn",
+      "totalCost": "Gesamtkosten",
+      "notes": "Notizen",
+      "action": "Aktion",
+      "error": "Etwas ist schiefgelaufen!",
+      "noRecords": "Keine Einträge",
+      "modal": {
+        "heading": "Master-Posten aktualisieren",
+        "heading1": "Master-Posten",
+        "areYouSure": "diesen Posten löschen",
+        "lineItem": "Posten",
+        "description": "Beschreibung",
+        "unit": "Einheit",
+        "unitPrice": "Stückpreis",
+        "quantity": "Menge",
+        "actualCost": "Tatsächliche Kosten",
+        "clientCost": "Kundenkosten",
+        "start": "Start",
+        "end": "Ende",
+        "profit": "Gewinn",
+        "totalCost": "Gesamtkosten",
+        "notes": "Notizen",
+        "percentage": "Prozentsatz",
+        "placeholder1": "Einheit auswählen",
+        "placeholder2": "Geben Sie hier Ihre Notizen ein..."
+      }
+    },
+    "UnitsTable": {
+      "unit": "Einheit",
+      "action": "Aktion",
+      "error": "Etwas ist schief gelaufen!",
+      "areYouSure": "diese Einheit löschen",
+      "modal": {
+        "addUnit": "Einheit hinzufügen",
+        "editUnit": "Einheit bearbeiten",
+        "unit": "Einheit",
+        "placeholder1": "Einheit",
+        "button": "Einheit hinzufügen",
+        "button1": "Einheit bearbeiten"
+      }
+    },
+    "Table": {
+      "picture": "Profilbild",
+      "name": "Name",
+      "project": "Job/Projekt",
+      "phone": "Telefonnummer",
+      "email": "E-Mail",
+      "action": "Aktion",
+      "noRecords": "Keine Einträge",
+      "error": "Etwas ist schief gelaufen!",
+      "areYouSureUser": "diesen Benutzer löschen"
     }
   }
 }

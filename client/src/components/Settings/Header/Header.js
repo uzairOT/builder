@@ -70,7 +70,7 @@ function Header({ title, OpenAddModal, searchInput, setSearchInput }) {
           backgroundColor="#E7E7E7"
         />
 
-        {!(title ==='Master Line Item' || title==="Permission Access" || title===t("ProjectPermissions.header")) && <Button
+        {!(title ===t("Settings.master") || title==="Permission Access" || title===t("ProjectPermissions.header")) && <Button
           onClick={OpenAddModal}
           buttonText={t("Button.add")}
           color="#ffffff"

@@ -9,8 +9,10 @@ import UpdateModal from '../../dialogues/Settings/UpdateModal';
 import { useOutletContext } from 'react-router-dom';
 import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function Subcontractor() {
+  const {t} = useTranslation()
   const [isTemplateView, setTemplateView] = useState(false);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
@@ -68,7 +70,7 @@ function Subcontractor() {
       <EmailTemplate setTemplateView={setTemplateView} />
     ) : (<>
      <div style={{padding:"20px"}}>
-      <Header title="Subcontractor"   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
+      <Header title={t("Settings.subcontractor")}   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
       <CustomTable title={"subcontractor"} refreshData={refreshData} setUpdateModalOpen={setUpdateModalOpen} setUserId={setUserId} setTemplateView={setTemplateView} searchInput={debouncedValue} setTotalEntries={setTotalEntries} setTotalPages={setTotalPages} page={page}/>
 
       <Box mt={2} mb={2}>
@@ -86,8 +88,8 @@ function Subcontractor() {
         </Typography>
         <Pagination count={totalPages} variant="outlined" shape="rounded" page={page}  onChange={handlePageChange}  sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Subcontractor"} refreshData={refreshData} setRefreshData={setRefreshData} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} />
-      <UpdateModal title={"Subcontractor"} refreshData={refreshData} setRefreshData={setRefreshData} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo} />
+      <AddModal title={t("Settings.subcontractor")} refreshData={refreshData} setRefreshData={setRefreshData} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} />
+      <UpdateModal title={t("Settings.subcontractor")} refreshData={refreshData} setRefreshData={setRefreshData} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo} />
     </div>
     </>) }
     </>

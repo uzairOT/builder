@@ -3,15 +3,17 @@ import { Typography, Divider, Box } from '@mui/material';
 import Profile from './ProfileView';
 import PasswordNotifications from './PasswordAndNotifications';
 import Others from './OthersView'; // Example new component for "Others"
+import { useTranslation } from 'react-i18next';
 
 function ProfileView() {
   const [currentState, setCurrentState] = useState('Profile');
+  const {t} = useTranslation()
 
   // Define the tabs and their associated components
   const tabs = [
-    { label: 'Profile', key: 'Profile', component: <Profile /> },
-    { label: 'Passwords & Notifications', key: 'PasswordNotifications', component: <PasswordNotifications /> },
-    { label: 'Others', key: 'Others', component: <Others /> }, // Add more tabs here as needed
+    { label: t("Settings.Tabs.profile"), key: 'Profile', component: <Profile /> },
+    { label: t("Settings.Tabs.passwordAndNoti"), key: 'PasswordNotifications', component: <PasswordNotifications /> },
+    { label: t("Settings.Tabs.others"), key: 'Others', component: <Others /> }, // Add more tabs here as needed
   ];
 
   const getTabStyle = (key) => ({

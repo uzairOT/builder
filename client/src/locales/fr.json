@@ -582,6 +582,7 @@
   },
   "Button": {
     "add": "Ajouter",
+    "update": "Mettre à jour",
     "back": "Retour",
     "next": "Suivant",
     "skip": "Omettre",
@@ -591,7 +592,10 @@
     "done": "Terminé",
     "save": "Enregistrer",
     "saveAs": "Enregistrer comme",
-    "filter": "Filtrer"
+    "filter": "Filtrer",
+    "new": "Nouveau",
+    "addNew": "Ajouter nouveau",
+    "reset": "Réinitialiser"
   },
   "AssignProject": {
     "title1": "Ajouter un Nouveau Projet",
@@ -818,10 +822,12 @@
       "Business Pro": {
         "planPackage": "Code promo - Activé\n- 500\n- 440\n10 Utilisateurs"
       },
-      "Free Trial": { "planPackage": "Plan gratuit\n- 10\n- 5\n3 Utilisateurs" },
-      "Enterprise": { 
-        "planPackage": "10+ Utilisateurs\n- 10\n- 5\n", 
-        "body1": "Un plan Enterprise pour les utilisateurs qui souhaitent maximiser le potentiel de l'application. Contactez-nous et nous vous répondrons !" 
+      "Free Trial": {
+        "planPackage": "Plan gratuit\n- 10\n- 5\n3 Utilisateurs"
+      },
+      "Enterprise": {
+        "planPackage": "10+ Utilisateurs\n- 10\n- 5\n",
+        "body1": "Un plan Enterprise pour les utilisateurs qui souhaitent maximiser le potentiel de l'application. Contactez-nous et nous vous répondrons !"
       },
       "amountOfPhotos": "Nombre de photos",
       "amountOfFiles": "Nombre de fichiers",
@@ -846,6 +852,136 @@
       "monthly": "Mensuel",
       "yearly": "Annuel",
       "discount": "Prix réduit"
+    }
+  },
+  "Settings": {
+    "admin": "Administrateur",
+    "client": "Client",
+    "projectManager": "Chef de projet",
+    "employee": "Employé",
+    "subcontractor": "Sous-traitant",
+    "supplier": "Fournisseur",
+    "others": "Autres",
+    "coupon": "Coupon",
+    "master": "Article maître",
+    "modal": {
+      "project": "Projet",
+      "email": "E-mail"
+    },
+    "Tabs": {
+      "profile": "Profil",
+      "passwordAndNoti": "Mots de Passe & Notifications",
+      "others": "Autres"
+    },
+    "Profile": {
+      "heading1": "Mon Profil",
+      "form": {
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "E-mail",
+        "phoneNumber": "Numéro de Téléphone",
+        "phoneValidation": "Le téléphone n'est pas valide",
+        "button1": "Mettre à Jour le Profil",
+        "button2": "Supprimer le Profil",
+        "button3": "Modifier le Profil",
+        "areYouSure": "Supprimer votre profil?",
+        "placeholder": "Veuillez entrer votre prénom",
+        "placeholder2": "Veuillez entrer votre nom",
+        "placeholder3": "Veuillez entrer votre e-mail"
+      }
+    },
+    "Password": {
+      "heading1": "Mot de Passe",
+      "currentPassword": "Mot de Passe Actuel",
+      "newPassword": "Nouveau Mot de Passe",
+      "confirmPassword": "Confirmer le Mot de Passe",
+      "heading2": "Notifications",
+      "subheading1": "Notification de l'Équipe",
+      "list1": "Employé",
+      "list2": "Fournisseur",
+      "list3": "Sous-traitant",
+      "button1": "Mettre à Jour le Profil",
+      "placeholder": "Entrez le Mot de Passe Actuel",
+      "placeholder1": "Entrez le Nouveau Mot de Passe",
+      "placeholder2": "Confirmez votre mot de passe ici",
+      "validation1": "Le mot de passe doit contenir au moins 8 caractères",
+      "validation2": "Les mots de passe ne correspondent pas"
+    },
+    "Others": {
+      "heading1": "Se connecter à QuickBooks"
+    },
+    "SideBar": {
+      "profile": "Profil",
+      "master": "Éléments Principaux",
+      "units": "Unités",
+      "admin": "Administrateur",
+      "projectManager": "Chef de Projet",
+      "client": "Clients",
+      "employee": "Employé",
+      "subcontractor": "Sous-traitant",
+      "supplier": "Fournisseur",
+      "others": "Autre",
+      "account": "Comptes",
+      "coupon": "Coupon"
+    },
+    "masterTable": {
+      "name": "Nom",
+      "description": "Description",
+      "unit": "Unité",
+      "unitPrice": "Prix Unitaire",
+      "quantity": "Quantité",
+      "total": "Total",
+      "profit": "Profit",
+      "totalCost": "Coût Total",
+      "notes": "Notes",
+      "action": "Action",
+      "error": "Quelque chose s'est mal passé !",
+      "noRecords": "Aucun enregistrement",
+      "modal": {
+        "heading": "Mettre à jour l'élément de ligne maître",
+        "heading1": "Élément de ligne maître",
+        "areYouSure": "supprimer cet élément de ligne",
+        "lineItem": "Élément de ligne",
+        "description": "Description",
+        "unit": "Unité",
+        "unitPrice": "Prix Unitaire",
+        "quantity": "Quantité",
+        "actualCost": "Coût Réel",
+        "clientCost": "Coût Client",
+        "start": "Début",
+        "end": "Fin",
+        "profit": "Profit",
+        "totalCost": "Coût Total",
+        "notes": "Notes",
+        "percentage": "Pourcentage",
+        "placeholder1": "Sélectionner une unité",
+        "placeholder2": "Tapez vos notes ici..."
+      }
+    },
+    "UnitsTable": {
+      "unit": "Unité",
+      "action": "Action",
+      "error": "Quelque chose s'est mal passé!",
+      "areYouSure": "supprimer cette unité",
+      "modal": {
+        "addUnit": "Ajouter une unité",
+        "editUnit": "Modifier l'unité",
+        "unit": "Unité",
+        "placeholder1": "Unité",
+        "button": "Ajouter une unité",
+        "button1": "Modifier l'unité"
+      }
+    },
+    "Table": {
+      "picture": "Photo de profil",
+      "name": "Nom",
+      "project": "Travail/Projet",
+      "phone": "Numéro de téléphone",
+      "email": "E-mail",
+      "action": "Action",
+      "noRecords": "Aucun enregistrement",
+      "error": "Quelque chose s'est mal passé!",
+      "areYouSureUser": "supprimer cet utilisateur"
     }
   }
 }

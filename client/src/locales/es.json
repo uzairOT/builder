@@ -582,6 +582,7 @@
   },
   "Button": {
     "add": "Agregar",
+    "update": "Actualizar",
     "back": "Volver",
     "next": "Siguiente",
     "skip": "Omitir",
@@ -591,7 +592,10 @@
     "done": "Hecho",
     "save": "Guardar",
     "saveAs": "Guardar como",
-    "filter": "Filtro"
+    "filter": "Filtro",
+    "new": "Nuevo",
+    "addNew": "Agregar nuevo",
+    "reset": "Restablecer"
   },
   "AssignProject": {
     "title1": "Agregar nuevo proyecto",
@@ -818,17 +822,19 @@
       "Business Pro": {
         "planPackage": "Código promocional - Activado\n- 500\n- 440\n10 Usuarios"
       },
-      "Free Trial": { "planPackage": "Plan gratuito\n- 10\n- 5\n3 Usuarios" },
-      "Enterprise": { 
-        "planPackage": "10+ Usuarios\n- 10\n- 5\n", 
-        "body1": "Un plan Enterprise para usuarios que quieren maximizar el potencial de la aplicación. ¡Contáctenos y le responderemos!" 
+      "Free Trial": {
+        "planPackage": "Plan gratuito\n- 10\n- 5\n3 Usuarios"
+      },
+      "Enterprise": {
+        "planPackage": "10+ Usuarios\n- 10\n- 5\n",
+        "body1": "Un plan Enterprise para usuarios que quieren maximizar el potencial de la aplicación. ¡Contáctenos y le responderemos!"
       },
       "amountOfPhotos": "Cantidad de fotos",
       "amountOfFiles": "Cantidad de archivos",
       "upTo": "Hasta",
       "body1": "Escala tu negocio, aumenta la productividad y mantén a tu equipo conectado",
       "listHeading": "Plan de suscripción",
-       "contactUs": "Contáctenos",
+      "contactUs": "Contáctenos",
       "perMonth": "por mes",
       "perYear": "por año",
       "expiryDate": "Fecha de vencimiento"
@@ -846,6 +852,136 @@
       "monthly": "Mensual",
       "yearly": "Anual",
       "discount": "Precio con descuento"
+    }
+  },
+  "Settings": {
+    "admin": "Administrador",
+    "client": "Cliente",
+    "projectManager": "Gerente de proyecto",
+    "employee": "Empleado",
+    "subcontractor": "Subcontratista",
+    "supplier": "Proveedor",
+    "others": "Otros",
+    "coupon": "Cupón",
+    "master": "Ítem maestro",
+    "modal": {
+      "project": "Proyecto",
+      "email": "Correo electrónico"
+    },
+    "Tabs": {
+      "profile": "Perfil",
+      "passwordAndNoti": "Contraseñas y Notificaciones",
+      "others": "Otros"
+    },
+    "Profile": {
+      "heading1": "Mi Perfil",
+      "form": {
+        "firstName": "Nombre",
+        "lastName": "Apellido",
+        "email": "Correo Electrónico",
+        "phoneNumber": "Número de Teléfono",
+        "phoneValidation": "El teléfono no es válido",
+        "button1": "Actualizar Perfil",
+        "button2": "Eliminar Perfil",
+        "button3": "Cambiar Perfil",
+        "areYouSure": "¿Eliminar tu perfil?",
+        "placeholder": "Por favor, ingrese su nombre",
+        "placeholder2": "Por favor, ingrese su apellido",
+        "placeholder3": "Por favor, ingrese su correo electrónico"
+      }
+    },
+    "Password": {
+      "heading1": "Contraseña",
+      "currentPassword": "Contraseña Actual",
+      "newPassword": "Nueva Contraseña",
+      "confirmPassword": "Confirmar Contraseña",
+      "heading2": "Notificaciones",
+      "subheading1": "Notificación del Equipo",
+      "list1": "Empleado",
+      "list2": "Proveedor",
+      "list3": "Subcontratista",
+      "button1": "Actualizar Perfil",
+      "placeholder": "Ingrese la Contraseña Actual",
+      "placeholder1": "Ingrese la Nueva Contraseña",
+      "placeholder2": "Confirme su contraseña aquí",
+      "validation1": "La contraseña debe tener al menos 8 caracteres",
+      "validation2": "Las contraseñas no coinciden"
+    },
+    "Others": {
+      "heading1": "Conectar con QuickBooks"
+    },
+    "SideBar": {
+      "profile": "Perfil",
+      "master": "Elementos Principales",
+      "units": "Unidades",
+      "admin": "Administrador",
+      "projectManager": "Gerente de Proyecto",
+      "client": "Clientes",
+      "employee": "Empleado",
+      "subcontractor": "Subcontratista",
+      "supplier": "Proveedor",
+      "others": "Otros",
+      "account": "Cuentas",
+      "coupon": "Cupón"
+    },
+    "masterTable": {
+      "name": "Nombre",
+      "description": "Descripción",
+      "unit": "Unidad",
+      "unitPrice": "Precio Unitario",
+      "quantity": "Cantidad",
+      "total": "Total",
+      "profit": "Ganancia",
+      "totalCost": "Costo Total",
+      "notes": "Notas",
+      "action": "Acción",
+      "error": "¡Algo salió mal!",
+      "noRecords": "No hay registros",
+      "modal": {
+        "heading": "Actualizar Elemento de Línea Maestro",
+        "heading1": "Elemento de Línea Maestro",
+        "areYouSure": "eliminar este elemento de línea",
+        "lineItem": "Elemento de Línea",
+        "description": "Descripción",
+        "unit": "Unidad",
+        "unitPrice": "Precio Unitario",
+        "quantity": "Cantidad",
+        "actualCost": "Costo Real",
+        "clientCost": "Costo del Cliente",
+        "start": "Inicio",
+        "end": "Fin",
+        "profit": "Ganancia",
+        "totalCost": "Costo Total",
+        "notes": "Notas",
+        "percentage": "Porcentaje",
+        "placeholder1": "Seleccionar unidad",
+        "placeholder2": "Escribe tus notas aquí..."
+      }
+    },
+    "UnitsTable": {
+      "unit": "Unidad",
+      "action": "Acción",
+      "error": "¡Algo salió mal!",
+      "areYouSure": "eliminar esta unidad",
+      "modal": {
+        "addUnit": "Agregar Unidad",
+        "editUnit": "Editar Unidad",
+        "unit": "Unidad",
+        "placeholder1": "Unidad",
+        "button": "Agregar Unidad",
+        "button1": "Editar Unidad"
+      }
+    },
+    "Table": {
+      "picture": "Foto de perfil",
+      "name": "Nombre",
+      "project": "Trabajo/Proyecto",
+      "phone": "Número de teléfono",
+      "email": "Correo electrónico",
+      "action": "Acción",
+      "noRecords": "No hay registros",
+      "error": "¡Algo salió mal!",
+      "areYouSureUser": "eliminar este usuario"
     }
   }
 }

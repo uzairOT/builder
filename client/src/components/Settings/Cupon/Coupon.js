@@ -8,8 +8,10 @@ import { useSelector } from "react-redux";
 import { useDeleteUserCouponsMutation, useGetCreateUserCouponsMutation, useGetUserCouponsMutation, useUpdateUserCouponsMutation } from "../../../redux/apis/Coupon/CouponApiSlice";
 import { fetchUserCoupons } from "./apis/fetchUserCoupon";
 import QueryDebouncer from "../../../utils/QueryDebouncer/QueryDebouncer";
+import { useTranslation } from "react-i18next";
 
 function Coupon() {
+  const {t} = useTranslation()
   const [searchInput, setSearchInput] = useState("");
   const debouncedValue =  QueryDebouncer(searchInput,500);
   const user = useSelector(state => state.auth.userInfo);
@@ -72,7 +74,7 @@ function Coupon() {
   //console.log(userId)
   return (
     <div style={{ padding: "20px" }}>
-      <Header title="Coupon" OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput} />
+      <Header title={t("Settings.coupon")} OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput} />
       <CustomTable
         setUpdateModalOpen={setUpdateModalOpen}
         setCouponCode={setCouponCode}
@@ -103,7 +105,7 @@ function Coupon() {
         <Pagination count={data?.totalPages} variant="outlined" shape="rounded"  page={page} onChange={handlePageChange} sx={paginationStyle}/>
       </Box>
       <CouponModal
-        title={"Coupon"}
+        title={t("Settings.coupon")}
         open={isAddModalOpen}
         updateOpen={isUpdateModalOpen}
         onClose={handleCloseAddModal}

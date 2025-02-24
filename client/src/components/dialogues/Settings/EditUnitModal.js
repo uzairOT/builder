@@ -22,10 +22,10 @@ import {
 import { useEditUnitMutation } from "../../../redux/apis/Project/userProjectApiSlice";
 import { Close } from "@mui/icons-material";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const EditUnitModal = ({ open, onClose, unit, refetch, userId }) => {
-  // console.log(unit);
-
+  const {t} = useTranslation()
   const [editUnit] = useEditUnitMutation();
   const onSubmit = async (values, action) => {
     // console.log(unit);
@@ -70,7 +70,7 @@ const EditUnitModal = ({ open, onClose, unit, refetch, userId }) => {
           alignItems={"center"}
           mr={1}
         >
-          <DialogTitle sx={headingStyle}>Edit Unit</DialogTitle>
+          <DialogTitle sx={headingStyle}>{t("Settings.UnitsTable.modal.editUnit")}</DialogTitle>
           <IconButton
             style={{ width: "30px", height: "30px" }}
             onClick={onClose}
@@ -83,10 +83,10 @@ const EditUnitModal = ({ open, onClose, unit, refetch, userId }) => {
         >
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <Typography variant="body1">Unit</Typography>
+              <Typography variant="body1">{t("Settings.UnitsTable.modal.unit")}</Typography>
               <TextField
                 error={errors.label ? true : false}
-                placeholder="Unit"
+                placeholder={t("Settings.UnitsTable.modal.placeholder1")}
                 name={"label"}
                 value={values.label}
                 onChange={handleChange}
@@ -128,7 +128,7 @@ const EditUnitModal = ({ open, onClose, unit, refetch, userId }) => {
               >
                 <Button
                   type={"submit"}
-                  buttonText="Edit Unit"
+                  buttonText={t("Settings.UnitsTable.modal.button1")}
                   color="#ffffff"
                   backgroundColor={isSubmitting ? "gray" : "#4C8AB1"}
                   width="150px"
