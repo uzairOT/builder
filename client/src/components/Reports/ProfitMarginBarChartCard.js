@@ -16,8 +16,9 @@ import {
 } from "../../redux/apis/Reports/reportsApiSlice";
 import { useParams } from "react-router-dom";
 import { formatMoney } from "../../utils/Formatters/moneyFormat";
-
+import { useTranslation } from 'react-i18next';
 const ProfitMarginBarChartCard = () => {
+  const {t} = useTranslation()
   let dataUser = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(dataUser);
   const currentUser = userInfo?.user;
@@ -191,9 +192,9 @@ const ProfitMarginBarChartCard = () => {
             maxWidth: "250px",
           }}
         >
-          <MenuItem value="total">Total Cost/Margin</MenuItem>
+          <MenuItem value="total">{t("ProjectReports.ProfitMarginBarChartCard.title1")}</MenuItem>
           {/* <MenuItem value="month">Monthly</MenuItem> */}
-          <ListSubheader>Phases</ListSubheader>
+          <ListSubheader>{t("ProjectReports.ProfitMarginBarChartCard.title2")}</ListSubheader>
           {lineItemsData?.lineItems?.map((phase) => {
             return <MenuItem value={phase.id}>{phase.phase_name}</MenuItem>;
           })}
@@ -212,7 +213,7 @@ const ProfitMarginBarChartCard = () => {
           fontWeight={"500"}
           fontSize={"13px"}
         >
-          Profit Margin
+          {t("ProjectReports.ProfitMarginBarChartCard.title3")}
         </Typography>
       </Stack>
       <Divider variant="fullWidth" />
@@ -242,7 +243,7 @@ const ProfitMarginBarChartCard = () => {
                 fontSize={{ xl: 16, lg: 14, md: 16, xs: 16 }}
                 sx={{ textAlign: "left" }}
               >
-                Total
+                {t("ProjectReports.ProfitMarginBarChartCard.title4")}
               </Typography>
               <Typography
                 // textAlign={"center"}
@@ -265,7 +266,7 @@ const ProfitMarginBarChartCard = () => {
                 fontSize={{ xl: 16, lg: 14, md: 16, xs: 16 }}
                 sx={{ textAlign: "left" }}
               >
-                Profit Margin
+                {t("ProjectReports.ProfitMarginBarChartCard.title3")}
               </Typography>
               <Typography
                 sx={{ whiteSpace: "nowrap", textAlign: "left" }}
@@ -304,7 +305,7 @@ const ProfitMarginBarChartCard = () => {
               display: selectValue === "total" ? "none" : "initial"
             }}
           >
-            <MenuItem value="all">Total Line Items</MenuItem>
+            <MenuItem value="all">{t("ProjectReports.ProfitMarginBarChartCard.title5")}</MenuItem>
             {lineItems.map((lineItem) =>{ 
               return (<MenuItem value={lineItem.id}>{lineItem.title}</MenuItem>)
             })}

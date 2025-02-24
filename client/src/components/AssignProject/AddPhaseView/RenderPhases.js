@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Stack, CircularProgress, Typography } from "@mui/material";
 import PhaseCard from "../AddPhaseCard/AddPhaseCard"; // adjust the import as needed
-
+import { useTranslation } from "react-i18next";
 // A common style for the phase card container
 const commonStackStyle = {
   cursor: "pointer",
@@ -37,6 +37,7 @@ function RenderPhases({
   pathCheck,
   rowCheckboxes,
 }) {
+  const { t } = useTranslation();
   // Helper function to show the loading spinner
   const renderLoading = () => (
     <Stack height="44vh" justifyContent="center" alignItems="center">
@@ -93,7 +94,7 @@ function RenderPhases({
             textAlign: "center",
           }}
         >
-          No Phases Available
+          {t("ProjectInitialProposal.noPhases")}
         </div>
       )}
     </Box>
@@ -151,7 +152,7 @@ function RenderPhases({
             textAlign: "center",
           }}
         >
-          No Phases Available
+          {t("ProjectInitialProposal.noPhases")}
         </div>
       )}
     </Box>
@@ -162,7 +163,7 @@ function RenderPhases({
     <Box
       sx={{
         height: adminProjectView
-          ? view === "Generate Invoice"
+          ? view === t("ProjectInvoices.title1")
             ? "calc(93vh - 140px)"
             : (changeOrderView || InitialProposalAndChange) &&
               !(changeOrderView && InitialProposalAndChange)
@@ -214,15 +215,11 @@ function RenderPhases({
           }}
         >
           <Typography>
-            No{" "}
-            <span>
               {changeOrderView
-                ? " Change"
+                ? t("ProjectWorkOrder.title6")
                 : pathCheck.includes("assignproject")
-                ? " "
-                : " Approved"}
-            </span>{" "}
-            Phases Available
+                ? t("ProjectInitialProposal.noPhases")
+                : t("ProjectWorkOrder.title7")}
           </Typography>
         </div>
       )}

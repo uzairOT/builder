@@ -24,7 +24,7 @@ import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import LocationPicker from "../../UI/LocationPicker/LocationPicker";
 import { styled } from '@mui/material/styles';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
-
+import { useTranslation } from "react-i18next";
 const colors = [
   "#FFF",
   "#93D0EC",
@@ -58,6 +58,7 @@ const LightTooltip = styled(({ className, ...props }) => (
   },
 }));
 function ProjectFormFields({ showLocationWarning }) {
+  const { t } = useTranslation();
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTab = useMediaQuery("(max-width:900px)");
   const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
@@ -104,7 +105,7 @@ function ProjectFormFields({ showLocationWarning }) {
               style={{ ...labelStyle, ...labelDisplay, ...labelResponsiveFont }}
               htmlFor="projectName"
             >
-              Project Name
+              {t("AssignProject.ProjectFormFields.title1")}
             </label>
             <input
               className="placeholder"
@@ -116,7 +117,7 @@ function ProjectFormFields({ showLocationWarning }) {
                 ...borderRadiusResponsive,
                 ...labelResponsiveFont,
               }}
-              placeholder="ex: Skyrise Sanctuary"
+              placeholder={t("AssignProject.ProjectFormFields.placeholder")}
               value={projectName}
               onChange={handleProjectNameChange}
               required
@@ -128,10 +129,10 @@ function ProjectFormFields({ showLocationWarning }) {
                 style={{ ...labelStyle, ...labelDisplay, ...labelResponsiveFont }}
                 htmlFor="location"
               >
-                Project Location
+                {t("AssignProject.ProjectFormFields.title2")}
               </label>
               {showLocationWarning && <Stack>
-                <LightTooltip title='Valid location is required.' placement="top">
+                <LightTooltip title={t("AssignProject.ProjectFormFields.locationWarning")} placement="top">
                   <WarningRoundedIcon sx={{ color: '#EC3710' }} />
                 </LightTooltip>
               </Stack>}
@@ -202,7 +203,7 @@ function ProjectFormFields({ showLocationWarning }) {
                 }}
                 htmlFor="start_time"
               >
-                Start Time
+                {t("AssignProject.ProjectFormFields.title3")}
               </label>
               <Box
                 sx={{
@@ -241,7 +242,7 @@ function ProjectFormFields({ showLocationWarning }) {
                 }}
                 htmlFor="end_time"
               >
-                End Time
+                {t("AssignProject.ProjectFormFields.title4")}
               </label>
               <Box
                 sx={{
@@ -283,7 +284,7 @@ function ProjectFormFields({ showLocationWarning }) {
                 }}
                 htmlFor="email"
               >
-                Select Color
+                {t("AssignProject.ProjectFormFields.title5")}
               </label>
               <Stack
                 direction={"row"}

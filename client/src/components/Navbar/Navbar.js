@@ -58,6 +58,13 @@ import InvoiceNotification from "./InvoiceNotification";
 import { toast } from "react-toastify";
 import ApprovalNotification from "./ApprovalNoifications";
 import i18n from "../../i18n";
+const languageOptions = {
+  en: "English",
+  fr: "French",
+  es: "Spanish",
+  zh: "Mandarin",
+  de: "German",
+};
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -335,69 +342,6 @@ const Navbar = () => {
                   onClick={(e) => handleTabChange(e, 5)}
                 />
               </Tabs>
-              <ClickAwayListener onClickAway={handleClickAway}>
-                <Box
-                  sx={{
-                    position: "relative",
-                    display: "flex",
-                    alignItems: "center",
-                    ml: 2,
-                    cursor: "pointer",
-                  }}
-                >
-                  <IconButton onClick={handleDropdownToggle}>
-                    <TranslateIcon sx={{ color: "#4C8AB1" }} />
-                  </IconButton>
-                  {dropdownOpen && (
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: "40px", // Adjust for spacing below the icon
-                        right: 0,
-                        backgroundColor: "white",
-                        boxShadow: "0px 8px 16px 0px rgba(0,0,0,0.2)",
-                        zIndex: 9999, // High z-index to ensure it appears above
-                        borderRadius: "8px",
-                        overflow: "hidden",
-                        animation: "fadeIn 0.3s ease-out",
-                        minWidth: "150px",
-                        "@keyframes fadeIn": {
-                          from: {
-                            opacity: 0,
-                            transform: "translateY(-10px)",
-                          },
-                          to: { opacity: 1, transform: "translateY(0)" },
-                        },
-                      }}
-                    >
-                      {["en", "fr", "es", "zh", "de"].map((lang) => (
-                        <MenuItem
-                          key={lang}
-                          onClick={() => i18n.changeLanguage(lang)}
-                          sx={{
-                            padding: "10px 20px",
-                            fontSize: "14px",
-                            color:"rgb(76, 138, 177)",
-                            "&:hover": {
-                              backgroundColor: "rgba(0, 0, 0, 0.05)",
-                            },
-                          }}
-                        >
-                          {lang === "en"
-                            ? "English"
-                            : lang === "fr"
-                            ? "French"
-                            : lang === "es"
-                            ? "Spanish"
-                            : lang === "zh"
-                            ? "Mandarin"
-                            : "German"}
-                        </MenuItem>
-                      ))}
-                    </Box>
-                  )}
-                </Box>
-              </ClickAwayListener>
 
               <Box
                 display={"flex"}
@@ -405,6 +349,62 @@ const Navbar = () => {
                 alignItems={"center"}
                 gap={1}
               >
+                <ClickAwayListener onClickAway={handleClickAway}>
+                  <Box
+                    sx={{
+                      position: "relative",
+                      display: "flex",
+                      alignItems: "center",
+                      ml: 2,
+                      cursor: "pointer",
+                    }}
+                  >
+                    <IconButton onClick={handleDropdownToggle}>
+                      <TranslateIcon sx={{ color: "#4C8AB1" }} />
+                    </IconButton>
+                    {dropdownOpen && (
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: "40px", // Adjust for spacing below the icon
+                          right: 0,
+                          backgroundColor: "white",
+                          boxShadow: "0px 8px 16px 0px rgba(0,0,0,0.2)",
+                          zIndex: 9999, // High z-index to ensure it appears above
+                          borderRadius: "8px",
+                          overflow: "hidden",
+                          animation: "fadeIn 0.3s ease-out",
+                          minWidth: "150px",
+                          "@keyframes fadeIn": {
+                            from: {
+                              opacity: 0,
+                              transform: "translateY(-10px)",
+                            },
+                            to: { opacity: 1, transform: "translateY(0)" },
+                          },
+                        }}
+                      >
+                        {
+                          Object.entries(languageOptions).map(([lang, label]) => (
+                            <MenuItem
+                              key={lang}
+                              onClick={() => i18n.changeLanguage(lang)}
+                              sx={{
+                                padding: "10px 20px",
+                                fontSize: "14px",
+                                color: "rgb(76, 138, 177)",
+                                "&:hover": {
+                                  backgroundColor: "rgba(0, 0, 0, 0.05)",
+                                },
+                              }}
+                            >
+                              {label}
+                            </MenuItem>
+                          ))}
+                      </Box>
+                    )}
+                  </Box>
+                </ClickAwayListener>
                 <ClickAwayListener onClickAway={handlePopperClose}>
                   <Box sx={{ position: "relative" }}>
                     <IconButton
@@ -459,18 +459,18 @@ const Navbar = () => {
                     >
                       <>
                         {Array.isArray(approvalData?.data) &&
-                        approvalData.data.length > 0
+                          approvalData.data.length > 0
                           ? approvalData.data.map((notification, index) => (
-                              <ApprovalNotification
-                                key={index}
-                                approvalRefetchCall={approvalRefetchCall}
-                                userId={userId}
-                                index={index}
-                                setExpanded={setExpanded}
-                                notification={notification}
-                                expanded={expanded}
-                              />
-                            ))
+                            <ApprovalNotification
+                              key={index}
+                              approvalRefetchCall={approvalRefetchCall}
+                              userId={userId}
+                              index={index}
+                              setExpanded={setExpanded}
+                              notification={notification}
+                              expanded={expanded}
+                            />
+                          ))
                           : null}
 
                         {invoiceNotification && (
@@ -481,45 +481,45 @@ const Navbar = () => {
                         )}
 
                         {Array.isArray(teamNotifications) &&
-                        teamNotifications.length > 0
+                          teamNotifications.length > 0
                           ? teamNotifications
-                              .slice(0, 3)
-                              .map((teamNotification, index) => (
-                                <TeamNotifications
-                                  key={index}
-                                  teamNotification={teamNotification}
-                                  index={index}
-                                  userId={userId}
-                                  refetch={handleTeamNotificationsRefetch}
-                                />
-                              ))
+                            .slice(0, 3)
+                            .map((teamNotification, index) => (
+                              <TeamNotifications
+                                key={index}
+                                teamNotification={teamNotification}
+                                index={index}
+                                userId={userId}
+                                refetch={handleTeamNotificationsRefetch}
+                              />
+                            ))
                           : null}
 
                         {Array.isArray(notificationsArr) &&
-                        notificationsArr.length > 0
+                          notificationsArr.length > 0
                           ? notificationsArr
-                              .slice(0, 3)
-                              .map((notification, index) => (
-                                <Notification
-                                  key={notification.workOrder_id}
-                                  notification={notification}
-                                  refetch={refetch}
-                                  userId={userId}
-                                  index={index}
-                                  setExpanded={setExpanded}
-                                  expanded={expanded}
-                                />
-                              ))
+                            .slice(0, 3)
+                            .map((notification, index) => (
+                              <Notification
+                                key={notification.workOrder_id}
+                                notification={notification}
+                                refetch={refetch}
+                                userId={userId}
+                                index={index}
+                                setExpanded={setExpanded}
+                                expanded={expanded}
+                              />
+                            ))
                           : null}
 
                         {/* Check if all notification arrays are empty and display "No Unread Notifications" */}
                         {(!Array.isArray(approvalData?.data) ||
                           approvalData.data.length === 0) &&
-                        (!Array.isArray(teamNotifications) ||
-                          teamNotifications.length === 0) &&
-                        (!Array.isArray(notificationsArr) ||
-                          notificationsArr.length === 0) &&
-                        !invoiceNotification ? (
+                          (!Array.isArray(teamNotifications) ||
+                            teamNotifications.length === 0) &&
+                          (!Array.isArray(notificationsArr) ||
+                            notificationsArr.length === 0) &&
+                          !invoiceNotification ? (
                           <div
                             style={{
                               backgroundColor: "#F2F2F2",

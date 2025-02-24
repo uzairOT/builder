@@ -4,8 +4,9 @@ import CircleIcon from "@mui/icons-material/Circle";
 import { useGetProjectDeadlineStatsMutation } from "../../redux/apis/Reports/reportsApiSlice";
 import moment from "moment";
 import { useParams } from "react-router-dom";
-
+import { useTranslation } from 'react-i18next';
 const OverBudgetPieChart = () => {
+  const {t} = useTranslation()
   let dataUser = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(dataUser);
   const currentUser = userInfo?.user;
@@ -41,7 +42,7 @@ const OverBudgetPieChart = () => {
           fontWeight={"500"}
           fontSize={{ xl: "18px", lg: "15px", md: "18px", xs: "18px" }}
         >
-          Upcoming Deadlines
+          {t("ProjectReports.UpcomingDeadlines.title1")}
         </Typography>
         {/* <Typography
           fontFamily={'var(--main-font-family)'}
@@ -88,7 +89,7 @@ const OverBudgetPieChart = () => {
               fontSize={{ xl: "14px", lg: "12px", md: "14px", xs: "14px" }}
               fontWeight="bold"
             >
-              Project Name
+              {t("ProjectReports.UpcomingDeadlines.title2")}
             </Typography>
             {projects.map((project, index) => (
               <Typography
@@ -119,7 +120,7 @@ const OverBudgetPieChart = () => {
               fontSize={{ xl: "14px", lg: "12px", md: "14px", xs: "14px" }}
               fontWeight="bold"
             >
-              Deadline
+              {t("ProjectReports.UpcomingDeadlines.title3")}
             </Typography>
             {projects.map((project, index) => (
               <Typography

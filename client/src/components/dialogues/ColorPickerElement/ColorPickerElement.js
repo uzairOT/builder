@@ -37,22 +37,8 @@ import {
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Close from "@mui/icons-material/Close";
-//import "react-toastify/dist/ReactToastify.css";
-const colors = [
-  "#FFF",
-  "#93D0EC",
-  "#9BDFEB",
-  "#9FF2CA",
-  "#E5F29F",
-  "#F3DE9E",
-  "#F5C79F",
-  "#F9B4A1",
-  "#FBA8A4",
-  "#F9A0CB",
-  "#FCA8F1",
-  "#DA9CF0",
-  "#ADA1F5",
-];
+import { useTranslation } from 'react-i18next'
+
 
 function ColorPickerElement({
   handleUpdateOpen,
@@ -67,6 +53,7 @@ function ColorPickerElement({
   InitialProposalView,
   formattedView,
 }) {
+  const { t } = useTranslation()
   const dispatch = useDispatch();
   const localUser = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(localUser);
@@ -88,18 +75,18 @@ function ColorPickerElement({
     setColorMode((prevMode) => (prevMode === "rgba" ? "hex" : "rgba"));
   };
 
-  const handleClickOpen = () => {
-    //console.log('handle Click open run')
-    if (PhaseHeading === "Update Phase") {
-      handleUpdateOpen();
-    } else {
-      handleAddOpen();
-    }
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   //console.log('handle Click open run')
+  //   if (PhaseHeading === "Update Phase") {
+  //     handleUpdateOpen();
+  //   } else {
+  //     handleAddOpen();
+  //   }
+  //   setOpen(true);
+  // };
 
   const handleClickClose = () => {
-    if (PhaseHeading === "Update Phase") {
+    if (PhaseHeading === t("PhaseModal.updatePhase")) {
       handleUpdateClose();
     } else {
       handleAddClose();
@@ -118,7 +105,7 @@ function ColorPickerElement({
     const updatedPhaseData = {};
     const lowerCasePhaseName = phaseName.toLowerCase();
 
-    if (PhaseHeading === "Update Phase") {
+    if (PhaseHeading === t("PhaseModal.updatePhase")) {
       if (phaseData.phaseName !== lowerCasePhaseName) {
         updatedPhaseData.phaseName = lowerCasePhaseName;
       }
@@ -212,7 +199,7 @@ function ColorPickerElement({
             </IconButton>
           </Stack>
           <DialogContent sx={{ padding: "0rem 1.5rem 3rem 1.5rem" }}>
-            <Typography sx={typoText}>Phase</Typography>
+            <Typography sx={typoText}>{t("PhaseModal.phase")}</Typography>
             <TextField
               inputProps={{ maxLength: 50 }}
               sx={{
@@ -231,7 +218,7 @@ function ColorPickerElement({
               value={phaseName}
               onChange={handlePhaseName}
             />
-            <Typography sx={typoText}>Select Color</Typography>
+            <Typography sx={typoText}>{t("PhaseModal.selectColor")}</Typography>
             {/* Req change to display an array of 12 colors */}
             {/* <Stack direction={"row"} alignItems={"center"} flexWrap={'wrap'} justifyContent={'center'} gap={2} p={1}>
                 {colors.map((color1) => {
@@ -291,7 +278,7 @@ function ColorPickerElement({
               type="submit"
               onClick={handleSubmit}
               disabled={
-                PhaseHeading === "Update Phase" ? updateLoading : isLoading
+                PhaseHeading === t("PhaseModal.updatePhase") ? updateLoading : isLoading
               }
             >
               {PhaseHeading}

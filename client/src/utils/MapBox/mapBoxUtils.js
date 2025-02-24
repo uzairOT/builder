@@ -12,7 +12,7 @@ mapboxgl.accessToken = "pk.eyJ1Ijoicml6d2Fub3QiLCJhIjoiY20wYzkwZHlyMDBtdDJrcHV0Z
  * @param {object} geocoderContainerRef - The reference to the geocoder container element.
  * @param {function} onLocationSelect - Callback function to handle location selection, receiving place name, latitude, and longitude.
  */
-export const initializeMapbox = (mapContainerRef, geocoderContainerRef, onLocationSelect) => {
+export const initializeMapbox = (mapContainerRef, geocoderContainerRef, onLocationSelect, t) => {
   // Check if map has already been initialized
   if (mapContainerRef.current && mapContainerRef.current.childNodes.length === 0) {
     const map = new mapboxgl.Map({
@@ -25,7 +25,7 @@ export const initializeMapbox = (mapContainerRef, geocoderContainerRef, onLocati
     const geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl,
-      placeholder: "Search for location...",
+      placeholder: t("AssignProject.ProjectFormFields.placeholder1"),
       marker: false,
       
     });

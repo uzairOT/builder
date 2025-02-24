@@ -35,6 +35,7 @@ import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice
 import { fetchEvents } from "../../redux/slices/Events/eventsSlice";
 import CloseIcon from "@mui/icons-material/Close";
 import AutoDeleteIcon from "@mui/icons-material/AutoDelete";
+import { useTranslation } from "react-i18next";
 
 const NotificationDetailModal = ({
   rowCheckboxes,
@@ -48,7 +49,7 @@ const NotificationDetailModal = ({
   data1,
 }) => {
   const { data } = useGetTeamMembersQuery(notification.WorkOrderReq.projectId);
-
+  const {t} = useTranslation()
   const [done, setDone] = useState(false);
   const [disable, setDisable] = useState(true);
   const [updateWorkOrder] = useUpdateRequestWorkOrderMutation();
@@ -159,8 +160,8 @@ const NotificationDetailModal = ({
               fontWeight={"600"}
             >
               {notification?.WorkOrderReq?.changeOrder
-                ? "Change Order Details"
-                : "Work Order Details"}
+                ? t("NotificationDetailModal.Heading1")
+                : t("NotificationDetailModal.Heading2")}
             </Typography>
             <IconButton onClick={handleClose}>
               <CloseIcon />
@@ -182,7 +183,7 @@ const NotificationDetailModal = ({
                 fontSize={{ xl: 16, md: 14, lg: 14, sm: 12, xs: 12 }}
                 fontFamily={"var(--main-font-family)"}
               >
-                <strong>Subject: </strong>{" "}
+                <strong>{t("NotificationDetailModal.Subject")}: </strong>{" "}
                 <label style={{ wordBreak: "break-all", maxWidth: "90%" }}>
                   {notification.WorkOrderReq.subject}
                 </label>
@@ -193,7 +194,7 @@ const NotificationDetailModal = ({
                 fontFamily={"var(--main-font-family)"}
                 fontWeight={"200"}
               >
-                <strong>Description: </strong>{" "}
+                <strong>{t("NotificationDetailModal.Description")}: </strong>{" "}
                 <label style={{ wordBreak: "break-all", maxWidth: "90%" }}>
                   {notification.WorkOrderReq.description}
                 </label>
@@ -219,7 +220,7 @@ const NotificationDetailModal = ({
               >
                 <Stack>
                   <Typography sx={themeStyle.headingText}>
-                    Phases
+                  {t("NotificationDetailModal.Phases")}
                     <Typography
                       sx={{
                         ...themeStyle.headingText,
@@ -248,7 +249,7 @@ const NotificationDetailModal = ({
                 </Stack>
                 <Stack>
                   <Typography sx={themeStyle.headingText}>
-                    Line Item
+                  {t("NotificationDetailModal.LineItem")}
                     <Typography
                       sx={{
                         ...themeStyle.headingText,
@@ -375,7 +376,7 @@ const NotificationDetailModal = ({
                 <>
                   <Stack spacing={1}>
                     <Typography pt={1} sx={themeStyle.headingText}>
-                      Date Started
+                    {t("NotificationDetailModal.dateStarted")}
                     </Typography>
                     <Typography
                       sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
@@ -418,7 +419,7 @@ const NotificationDetailModal = ({
                   </Stack>
                   <Stack spacing={1} pt={2}>
                     <Typography pt={1} sx={themeStyle.headingText}>
-                      Date Ended
+                    {t("NotificationDetailModal.dateEnded")}
                     </Typography>
                     <Typography
                       sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
@@ -489,7 +490,7 @@ const NotificationDetailModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Created By
+                  {t("NotificationDetailModal.createdBy")}
                 </Typography>
                 <Box sx={themeStyle.avatarBox}>
                   <Avatar
@@ -517,7 +518,7 @@ const NotificationDetailModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Assigned
+                  {t("NotificationDetailModal.assigned")}
                 </Typography>
                 <Box sx={themeStyle.avatarBox}>
                   <Stack direction={"row"} pr={1}>
@@ -563,7 +564,7 @@ const NotificationDetailModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Notes
+                  {t("NotificationDetailModal.notes")}
                 </Typography>
                 <Typography
                   style={{ wordBreak: "break-all", maxWidth: "90%" }}
@@ -581,7 +582,7 @@ const NotificationDetailModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Status
+                  {t("NotificationDetailModal.status")}
                 </Typography>
                 <Typography
                   fontFamily={"var(--main-font-family)"}
@@ -597,7 +598,7 @@ const NotificationDetailModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Priority
+                  {t("NotificationDetailModal.priority")}
                 </Typography>
                 <Typography
                   fontFamily={"var(--main-font-family)"}
@@ -609,7 +610,7 @@ const NotificationDetailModal = ({
                       : "#4C8AB1"
                   }
                 >
-                  {notification.WorkOrderReq.priority}
+                  {t(`NotificationDetailModal.${notification.WorkOrderReq.priority}`)}
                 </Typography>
 
                 <hr style={themeStyle.hrLine} />
@@ -632,7 +633,7 @@ const NotificationDetailModal = ({
                       disabled={disable}
                       handleOnClick={handleCompleteWorkOrder}
                     >
-                      Complete Work Order
+                      {t("NotificationDetailModal.button")}
                     </BuilderProButton>
                   </Stack>
                 )}

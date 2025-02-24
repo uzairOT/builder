@@ -14,6 +14,7 @@ import {
 import React, { cloneElement, useState } from "react";
 import CheckSharpIcon from "@mui/icons-material/CheckSharp";
 import EnterpriseUs from "./EnterpriseUs";
+import { useTranslation } from "react-i18next";
 
 const EnterpriseCard = ({
   planType,
@@ -22,6 +23,7 @@ const EnterpriseCard = ({
   // currentPlan,
   // setCurrentPakage,
 }) => {
+  const {t} = useTranslation()
   const plan = (() => {
     switch (planType) {
       default:
@@ -30,7 +32,7 @@ const EnterpriseCard = ({
           color: "#3E226C",
           yearCost: 5,
           monthCost: 1,
-          planPackage: ["10+ Users", "10", "5", false],
+          planPackage: [...(t(`Subscription.SubscriptionCard.Enterprise.planPackage`).split("\n")), false],
         };
     }
   })();
@@ -56,7 +58,7 @@ const EnterpriseCard = ({
   // };
 
   const generateList = (renderItem) => {
-    return ["Up to"].map((value, index) =>
+    return [t("Subscription.SubscriptionCard.upTo")].map((value, index) =>
       cloneElement(renderItem(value, index), { key: value, value: value })
     );
   };
@@ -74,13 +76,12 @@ const EnterpriseCard = ({
             sx={{ backgroundColor: "white" }}
           />
           <Typography p={1} pl={3} sx={themeStyle.subtitle}>
-            A Enterprise Plan for users who want to maximize the app potential
-            contact us and we will get back to you!
+           {t("Subscription.SubscriptionCard.Enterprise.body1")}
           </Typography>
         </Stack>
         <Stack px={2}>
           <Typography sx={{ ...themeStyle.bodyText, fontWeight: 600 }} pl={1}>
-            Prescription Plan
+          {t("Subscription.SubscriptionCard.listHeading")}
           </Typography>
           <List>
             {generateList((value, index) => {
@@ -134,7 +135,7 @@ const EnterpriseCard = ({
             }}
             onClick={() => setModalOpen(true)}
           >
-            Contact Us
+            {t("Subscription.SubscriptionCard.contactUs")}
           </Button>
 
           <Modal

@@ -71,6 +71,16 @@ import PolicyPage from "./components/LandingPageComponents/PrivacyPolicy/index.j
 import TermsPage from "./components/LandingPageComponents/Terms/index.js";
 import PermissionAccess from "./components/Settings/PermissionAccess/Permissions.js";
 import ConnectQuickBooksPage from "./pages/QuickBookConnection/QuickBookConnectionPage.js";
+import { useTranslation } from "react-i18next";
+import moment from "moment";
+import dayjs from 'dayjs';
+import 'dayjs/locale/de';
+import 'dayjs/locale/en';
+import 'dayjs/locale/es';
+import 'dayjs/locale/fr';
+import 'dayjs/locale/zh';
+import 'moment/min/locales';
+import { localeMapping } from "./utils/MomentLocales/locales.js";
 const SetNewPassword = lazy(() => import("./components/Login/ForgotPassword/SetNewPassword.js"));
 const ErrorPage = lazy(() => import("./pages/Error/Error.js"));
 const InvoicePayment = lazy(() => import("./components/dialogues/GenerateInvoice/InvoicePayment/InvoicePayment.js"));
@@ -112,15 +122,19 @@ function App() {
   const forecast = useSelector(getForecast);
   const dailyForecast = useMemo(() => forecast.dailyForecast || [], [forecast]);
   const dispatch = useDispatch();
-
+  const {t, i18n} = useTranslation();
+  const currentLanguage = i18n.language;
+  moment.locale(localeMapping[currentLanguage]);
+  dayjs.locale(localeMapping[currentLanguage]);
   useEffect(() => {
     if (isAuthenticated && currentUser) {
-
+      
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
           let lat = position.coords.latitude;
           let lon = position.coords.longitude;
-
+          
+          console.log(lat, lon)
           dispatch(setLatLon({ lat, lon }));
           dispatch(setDefaultLocation(false));
           if (dailyForecast.length < 1) {
@@ -138,13 +152,14 @@ function App() {
             }
           }
         }
-        );
-      }
+      );
     }
-  }, [dailyForecast, query.temperatureUnit, query.lat, isAuthenticated, currentUser]);
+  }
+}, [dailyForecast, query.temperatureUnit, query.lat, isAuthenticated, currentUser, currentLanguage]);
 
-  const fetchWeather = useCallback(async (lat, lon) => {
-    // setLoading(true);
+const fetchWeather = useCallback(async (lat, lon) => {
+  // setLoading(true);
+  console.log(currentLanguage)
     dispatch(setForecastLoading(true));
 
     try {
@@ -152,7 +167,7 @@ function App() {
         lat: lat,
         lon: lon,
         units: query.temperatureUnit,
-      });
+      }, currentLanguage);
       dispatch(setDailyForecast(data));
       dispatch(setForecastLoading(false));
     } catch (error) {
@@ -161,7 +176,7 @@ function App() {
     } finally {
       dispatch(setForecastLoading(false));
     }
-  }, [query.temperatureUnit]);
+  }, [query.temperatureUnit, currentLanguage]);
 
   // useEffect(() => {
   //   if (dailyForecast.length > 1) {
@@ -224,11 +239,11 @@ function App() {
                     <Route path="chat" element={<Chat />} />
                     <Route
                       path="project-report"
-                      element={<>Project reports are only accessible to team</>}
+                      element={<>{t("PermisionsMessage.reportsMsg")}</>}
                     />
                     <Route
                       path="notes"
-                      element={<>Project notes are only accessible to team</>}
+                      element={<>{t("PermissionMessage.notes")}</>}
                     />
                     <Route
                       path="initial-proposal"
@@ -289,7 +304,7 @@ function App() {
               <Route path="coupon" element={<Coupon />} />
               {/* -- */}
               <Route path="masterline" element={<MasterLineItem />} />
-              <Route path="permissions" element={<PermissionAccess />} />
+              {/* <Route path="permissions" element={<PermissionAccess />} /> */}
               <Route path="units" element={<Units />} />
             </Route>
           </Route>

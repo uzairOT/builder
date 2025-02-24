@@ -5,7 +5,7 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setMonth } from "../../../redux/slices/Project/projectWeather";
-
+import { useTranslation } from "react-i18next";
 const CustomToolbarProjects = ({
   toolbar,
   setEventView,
@@ -17,6 +17,7 @@ const CustomToolbarProjects = ({
   const [activeHeader, setActiveHeader] = useState("Work Order");
   const [showGanttChart, setShowGanttChart] = useState(false);
   const dispatch = useDispatch();
+  const {t} = useTranslation();
   // const goToDayView = (view) => {
   //   setShowGanttChart(false)
   //   toolbar.onView(view);
@@ -160,11 +161,11 @@ const CustomToolbarProjects = ({
           <Stack direction={"row"} alignItems={"center"}>
             {pathCheck.includes("/change-order") ? (
               <Typography sx={themeStyle.toolbarTitle} pl={2}>
-                Change Order
+                {t('CustomProjectToolbar.title1')}
               </Typography>
             ) : (
               <Typography sx={themeStyle.toolbarTitle} pl={2}>
-                Work Order
+                {t('CustomProjectToolbar.title2')}
               </Typography>
             )}
             {toolbar.view === "month" && (
@@ -197,7 +198,7 @@ const CustomToolbarProjects = ({
                     handleActiveHeader("Work Order");
                   }}
                 >
-                  Work Order
+                  {t('CustomProjectToolbar.title2')}
                 </Button>
                 <Button
                   sx={{
@@ -213,7 +214,7 @@ const CustomToolbarProjects = ({
                     handleActiveHeader("Notes");
                   }}
                 >
-                  Weather/notes
+                  {t('CustomProjectToolbar.title3')}
                 </Button>
                 <Button
                   sx={{
@@ -229,7 +230,7 @@ const CustomToolbarProjects = ({
                     handleActiveHeader("Chart");
                   }}
                 >
-                  Gantt chart
+                  {t('CustomProjectToolbar.title4')}
                 </Button>
               </Stack>
             )}
@@ -257,7 +258,7 @@ const CustomToolbarProjects = ({
                     handleActiveHeader("Work Order");
                   }}
                 >
-                  Work Order
+                  {t('CustomProjectToolbar.title2')}
                 </Button>
                 <Button
                   sx={{
@@ -273,7 +274,7 @@ const CustomToolbarProjects = ({
                     handleActiveHeader("Notes");
                   }}
                 >
-                  Weather/ Notes
+                  {t('CustomProjectToolbar.title3')}
                 </Button>
                 <Button
                   sx={{
@@ -289,7 +290,7 @@ const CustomToolbarProjects = ({
                     handleActiveHeader("Chart");
                   }}
                 >
-                  Gantt chart
+                  {t('CustomProjectToolbar.title4')}
                 </Button>
               </Stack>
             )}
@@ -316,7 +317,7 @@ const CustomToolbarProjects = ({
                     handleActiveHeader("Chart");
                   }}
                 >
-                  Gantt chart
+                  {t('CustomProjectToolbar.title4')}
                 </Button>
               </Stack>
             )}
@@ -343,7 +344,7 @@ const CustomToolbarProjects = ({
                     handleActiveHeader("Chart");
                   }}
                 >
-                  Gantt chart
+                  {t('CustomProjectToolbar.title4')}
                 </Button>
               </Stack>
             )}
@@ -362,7 +363,7 @@ const CustomToolbarProjects = ({
               }}
               onClick={() => handelViewChange("day")}
             >
-              Day
+              {t('CustomProjectToolbar.title5')}
             </Button>
             <Button
               sx={{
@@ -379,7 +380,7 @@ const CustomToolbarProjects = ({
               }}
               onClick={() => handelViewChange("week")}
             >
-              Week
+              {t('CustomProjectToolbar.title6')}
             </Button>
             <Button
               sx={{
@@ -393,7 +394,7 @@ const CustomToolbarProjects = ({
               }}
               onClick={() => handelViewChange("month")}
             >
-              Month
+              {t('CustomProjectToolbar.title7')}
             </Button>
           </Box>
           {/* )} */}

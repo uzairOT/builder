@@ -223,12 +223,12 @@ function MasterLineTable({
                     </TableCell>
                     <TableCell sx={tableCellValueStyle}>${row.total}</TableCell>
                     <TableCell sx={tableCellValueStyle}>
-                      ${row?.margin}
+                      ${row?.margin ? row?.margin : 0}
                     </TableCell>
                     {/* <TableCell sx={tableCellValueStyle}>{moment(row.start_day).format('YYYY-MM-DD')}</TableCell>
               <TableCell sx={tableCellValueStyle}>{moment(row.end_day).format('YYYY-MM-DD')}</TableCell> */}
                     <TableCell sx={tableCellValueStyle}>
-                      ${Number(row?.total) + Number(row?.margin)}
+                      ${isNaN(Number(row?.total) + Number(row?.margin)) ? 0 : Number(row?.total) + Number(row?.margin)}
                     </TableCell>
                     <TableCell sx={tableCellNotesStyle}>{row.notes}</TableCell>
                     <TableCell sx={tableCellValueStyle}>

@@ -23,12 +23,13 @@ import {
 } from "../../redux/apis/Permissions/permissionsApiSlice";
 import { socket } from "../../socket";
 import { setPermissionsState } from "../../redux/slices/Permissions/permissionsSlice";
-
+import { useTranslation } from "react-i18next";
 const Layout2 = () => {
   const params = useParams();
   const { id: currentProjectId } = params;
   const { data } = useGetProjectDataQuery({ projectId: currentProjectId });
   const isAuthenticated = useSelector((state) => state.auth.userInfo);
+  const { t } = useTranslation();
   const userId = isAuthenticated ? isAuthenticated.user.id : null;
   const [getUserRole, { isLoading }] = useGetProjectUserRoleMutation();
   const userRole = useSelector(getUserRoleFromRedux);
@@ -141,7 +142,7 @@ const Layout2 = () => {
         >
           <Paper sx={{ height: "100%", borderRadius: "14px" }}>
             <Typography sx={themeStyle.title} p={2} pb={1.5}>
-              Projects Dashboard
+              {t("userProject.title0")}
             </Typography>
             <ProjectsSidebar />
           </Paper>

@@ -12,13 +12,13 @@ import {
   useGetOutstandingInvoicesMutation,
 } from "../../redux/apis/Reports/reportsApiSlice";
 import { useParams } from "react-router-dom";
-
+import { useTranslation } from 'react-i18next';
 const BudgetPieChartCard = () => {
   const [open, setOpen] = useState(false);
   const [generateInvoice, setGenerateInvoice] = useState(false);
   const [shareToClient, setShareToClient] = useState(false);
   const [done, setDone] = useState(false);
-
+  const {t} = useTranslation()
   const [getOutstandingInvoices, { data, error, isLoading }] =
     useGetOutstandingInvoicesMutation();
   let dataUser = localStorage.getItem("userInfo");
@@ -119,7 +119,7 @@ const BudgetPieChartCard = () => {
           fontWeight={"500"}
           color={"#4C8AB1"}
         >
-          Outstanding Invoices
+          {t("ProjectReports.OutstandingInvoices.title1")}
         </Typography>
         <Typography
           color={"#606060"}
@@ -152,7 +152,7 @@ const BudgetPieChartCard = () => {
           fontSize={{xl:'12px', lg:"11px",md:'12px',xs:'12px',}}
           color={"#4F4F4F"}
         >
-          Total
+          {t("ProjectReports.OutstandingInvoices.title2")}
         </Typography>
         <Stack
           direction={"row"}
@@ -167,7 +167,7 @@ const BudgetPieChartCard = () => {
             />
             <Stack direction={"column"}>
               <Typography fontFamily={'var(--main-font-family)'} fontSize={"12px"}>
-                Unpaid
+                {t("ProjectReports.OutstandingInvoices.title5")}
               </Typography>
               <Typography
                 textAlign={"center"}
@@ -184,7 +184,7 @@ const BudgetPieChartCard = () => {
             />
             <Stack direction={"column"}>
               <Typography fontFamily={'var(--main-font-family)'} fontSize={"12px"}>
-                OverDue
+                {t("ProjectReports.OutstandingInvoices.title3")}
               </Typography>
               <Typography
                 textAlign={"center"}
@@ -201,7 +201,7 @@ const BudgetPieChartCard = () => {
             />
             <Stack direction={"column"}>
               <Typography fontFamily={'var(--main-font-family)'} fontSize={"12px"}>
-                Paid
+                {t("ProjectReports.OutstandingInvoices.title4")}
               </Typography>
               <Typography
                 textAlign={"center"}
@@ -242,7 +242,7 @@ const BudgetPieChartCard = () => {
                 fontWeight={"600"}
                 color={"#4C8AB1"}
               >
-                Generate Invoice
+                {t("ProjectInvoices.title1")}
               </Typography>
               <Stack direction={"row"} alignItems={"center"}>
                 <BuilderProButton
@@ -251,7 +251,7 @@ const BudgetPieChartCard = () => {
                   fontSize={"16px"}
                   fontFamily={'var(--main-font-family)'}
                 >
-                  Download Invoice
+                  {t("ProjectInvoices.downloadInvoice")}
                 </BuilderProButton>
               </Stack>
             </Stack>
@@ -365,7 +365,7 @@ const BudgetPieChartCard = () => {
                   handleGenerateInvoice();
                 }}
               >
-                Generate Invoice
+                {t("ProjectInvoices.title1")}
               </Button>
             </Stack>
           </Box>

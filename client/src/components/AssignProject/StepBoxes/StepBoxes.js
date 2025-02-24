@@ -5,10 +5,11 @@ import {
   selectProjectForm,
   setBuildType,
 } from "../../../redux/slices/projectFormSlice";
-
+import { useTranslation } from "react-i18next";
 function StepBoxes() {
   const [selectedBox, setSelectedBox] =useState(null);
   const { buildType } = useSelector(selectProjectForm);
+  const { t } = useTranslation();
   //console.log(buildType)
   const dispatch = useDispatch();
 
@@ -18,9 +19,9 @@ function StepBoxes() {
     dispatch(setBuildType(value));
   };
   const boxes = [
-    { label: "Remodel", background: "#4C8AB1", name: "remodel" },
-    { label: "New Build", background: "#4C8AB1", name: "newbuild" },
-    { label: "Commercial", background: "#4C8AB1", name: "commercial" },
+    { label: t("StepBoxes.title1"), background: "#4C8AB1", name: "remodel" },
+    { label: t("StepBoxes.title2"), background: "#4C8AB1", name: "newbuild" },
+    { label: t("StepBoxes.title3"), background: "#4C8AB1", name: "commercial" },
   ];
 
   useEffect(() => {

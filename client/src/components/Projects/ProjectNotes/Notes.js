@@ -10,8 +10,10 @@ import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
 import { useEffect } from 'react';
 
 // import { usePermissionCheck } from '../../Settings/PermissionAccess/PermissionCheck';
+import { useTranslation } from 'react-i18next';
 
 const Notes = () => {
+    const {t} = useTranslation()
     const [selectedButton, setSelectedButton] = useState(-1);
     const { id } = useParams();
     const [searchInput, setSearchInput] = useState('');
@@ -37,7 +39,7 @@ const Notes = () => {
     <Stack flex={1}>
     <Paper sx={{borderRadius:'14px', height:'99%'}} >
       <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} p={2} >
-        <Typography fontSize={{xl:'22px', lg:"18px",md:'22px',xs:'22px',}} fontFamily={'var(--main-font-family)'} fontWeight={'600'} color={'#4C8AB1'}>Notes</Typography>
+        <Typography fontSize={{xl:'22px', lg:"18px",md:'22px',xs:'22px',}} fontFamily={'var(--main-font-family)'} fontWeight={'600'} color={'#4C8AB1'}>{t("ProjectNotes.title1")}</Typography>
         <Stack direction={'row'} alignItems={'center'}>
             <NotesModal q={debouncedValue}/>
         </Stack>
@@ -45,7 +47,7 @@ const Notes = () => {
       <Search
           value={searchInput}
           onChange={handleSearchInputChange}
-          placeholder={`Search Notes`}
+          placeholder={t("ProjectNotes.placeholder")}
           backgroundColor="#E7E7E7"
         />
       <Stack direction={'row'} justifyContent={'flex-start'} alignItems={'center'} p={2}>

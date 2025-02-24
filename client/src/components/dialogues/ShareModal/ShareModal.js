@@ -35,7 +35,7 @@ import { toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notification
 import { formatMoney } from "../../../utils/Formatters/moneyFormat";
 import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
 import { useFormik } from "formik";
-
+import { useTranslation } from "react-i18next";
 const ShareModal = ({
   setShareToClient,
   setDone,
@@ -51,7 +51,7 @@ const ShareModal = ({
   const currentUser = userInfo?.user;
   const [currentPayment, setCurrentPayment] = useState([[]]);
   const [percentage, setPercentage] = useState([[]]);
-
+  const {t} = useTranslation()
   const location = useLocation();
   const [errorState, setErrorState] = useState([]);
   const pathSegments = location.pathname.split("/");
@@ -284,7 +284,7 @@ const ShareModal = ({
       }
     });
   }, [data, userRoleAuth.userRole]);
-  console.log(filterTeam);
+
   return (
     <>
       <Modal open={true} onClose={setShareToClient}>
@@ -309,7 +309,7 @@ const ShareModal = ({
                   fontSize={{ sm: "20px", xs: "16px" }}
                   whiteSpace={"nowrap"}
                 >
-                  Send to
+                    {t("InvoiceModal.ShareModal.sendTo")}
                 </Typography>
                 <Box height={"22.91px"}></Box>
               </Box>
@@ -320,7 +320,7 @@ const ShareModal = ({
                     fullWidth
                     id="email"
                     name="email"
-                    placeholder="Email"
+                    placeholder={t("InvoiceModal.ShareModal.email")}
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -350,7 +350,7 @@ const ShareModal = ({
                     fullWidth
                     id="notes"
                     name="notes"
-                    placeholder="Notes"
+                    placeholder={t("InvoiceModal.ShareModal.notes")}
                     value={formik.values.notes}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -493,7 +493,7 @@ const ShareModal = ({
                 );
               })
             ) : (
-              <Typography p={2}>No client was assigned</Typography>
+              <Typography p={2}>{t("InvoiceModal.ShareModal.noClientAssigned")}</Typography>
             )}
           </Stack>
           <Stack justifyContent={"center"} alignItems={"flex-start"}>
@@ -505,32 +505,32 @@ const ShareModal = ({
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell sx={tableCellStyles}>Title</TableCell>
+                      <TableCell sx={tableCellStyles}>{t("InvoiceModal.ShareModal.table.title1")}</TableCell>
                       <TableCell
                         sx={{
                           ...tableCellStyles,
                           display: { sm: "table-cell", xs: "none" },
                         }}
                       >
-                        Total Cost
+                        {t("InvoiceModal.ShareModal.table.title2")}
                       </TableCell>
-                      <TableCell sx={tableCellStyles}>Remaining</TableCell>
+                      <TableCell sx={tableCellStyles}>{t("InvoiceModal.ShareModal.table.title3")}</TableCell>
                       <TableCell
                         sx={{
                           ...tableCellStyles,
                           display: { sm: "table-cell", xs: "none" },
                         }}
                       >
-                        Invoice Pending
+                        {t("InvoiceModal.ShareModal.table.title4")}
                       </TableCell>
-                      <TableCell sx={tableCellStyles}>Payment</TableCell>
+                      <TableCell sx={tableCellStyles}>{t("InvoiceModal.ShareModal.table.title5")}</TableCell>
                       <TableCell
                         sx={{
                           ...tableCellStyles,
                           display: { sm: "table-cell", xs: "none" },
                         }}
                       >
-                        Percentage
+                        {t("InvoiceModal.ShareModal.table.title6")}
                       </TableCell>
                       {/* <TableCell sx={tableCellStyles}>Action</TableCell> */}
                     </TableRow>
@@ -565,19 +565,19 @@ const ShareModal = ({
                               sx={{ display: { sm: "table-cell", xs: "none" } }}
                             >
                               <Typography sx={tableCellStyles}>
-                                Total Cost: ${formatMoney(totalCost)}
+                                {t("InvoiceModal.ShareModal.table.title2")}: ${formatMoney(totalCost)}
                               </Typography>
                             </TableCell>
                             <TableCell>
                               <Typography sx={tableCellStyles}>
-                                Remaining: ${formatMoney(row.paymentPending)}
+                                {t("InvoiceModal.ShareModal.table.title3")}: ${formatMoney(row.paymentPending)}
                               </Typography>
                             </TableCell>
                             <TableCell
                               sx={{ display: { sm: "table-cell", xs: "none" } }}
                             >
                               <Typography sx={tableCellStyles}>
-                                Invoice Pending: $
+                                {t("InvoiceModal.ShareModal.table.title4")}: $
                                 {formatMoney(row.pendingAmount)}
                               </Typography>
                             </TableCell>
@@ -719,7 +719,7 @@ const ShareModal = ({
               {isLoading ? (
                 <CircularProgress size={"18px"} />
               ) : (
-                <Typography>Send</Typography>
+                <Typography>{t("InvoiceModal.ShareModal.send")}</Typography>
               )}
             </BuilderProButton>
           </Stack>

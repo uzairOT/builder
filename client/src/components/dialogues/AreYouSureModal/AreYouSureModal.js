@@ -8,15 +8,17 @@ import {
   CircularProgress,
 } from "@mui/material";
 import YellowBtn from "../../UI/button";
-
+import { useTranslation } from "react-i18next";
 function AreYouSureModal({
   open,
   handleClose,
   handleConfirmDelete,
   isLoading,
   text,
-  question='Are you sure you want to delete this',
+  question = ""
 }) {
+  const {t} = useTranslation()
+  const defaultQuestion = t("AreYouSureModal.title1");
   const handleClickClose = () => {
     handleClose();
   };
@@ -41,7 +43,7 @@ function AreYouSureModal({
         {/* </Stack> */}
         <DialogContent>
           <DialogContentText sx={typoTect} id="alert-dialog-slide-description">
-          <span dangerouslySetInnerHTML={{ __html: question }} /> {text}?
+          <span dangerouslySetInnerHTML={{ __html: question || defaultQuestion }} /> {text}?
           </DialogContentText>
         </DialogContent>
 
@@ -70,7 +72,7 @@ function AreYouSureModal({
             }}
             onClick={() => handleConfirmDelete(false)}
           >
-            Cancel
+            {t("Button.cancel")}
           </Button>
           <Button
             sx={{
@@ -85,7 +87,7 @@ function AreYouSureModal({
             }}
             onClick={() => handleConfirmDelete(true)}
           >
-            {isLoading ? <CircularProgress size={"1.25rem"} /> : "Yes"}
+            {isLoading ? <CircularProgress size={"1.25rem"} /> : t("Button.yes")}
           </Button>
         </DialogActions>
       </Dialog>

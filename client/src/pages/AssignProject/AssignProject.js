@@ -21,8 +21,10 @@ import dayjs from "dayjs";
 import { authUserRole } from "../../redux/slices/auth/userRoleSlice";
 import { useCheckProjectDuplicationMutation } from "../../redux/apis/Project/projectApiSlice";
 import { getBackButtonProjectId } from "../../redux/slices/Project/handlingProjectFlowSlice";
+import { useTranslation } from "react-i18next";
 
 function AssignProject() {
+  const { t } = useTranslation();
   const local = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(local);
   // console.log(currentUser);
@@ -131,9 +133,9 @@ function AssignProject() {
           <div>
             <Header handlePreviousStep={handlePreviousStep} step={0} />
             <StepTitles
-              stepHeading={"Step 1 of 3"}
-              Heading={"Add new project"}
-              stepDiscription={"Select your project type"}
+              stepHeading={t("AssignProject.step1")}
+              Heading={t("AssignProject.title1")}
+              stepDiscription={t("AssignProject.title2")}
             />
             <StepBoxes />
 
@@ -150,7 +152,7 @@ function AssignProject() {
                     handleProjectChange("New");
                   }}
                 >
-                  New Project
+                  {t("AssignProject.newProject")}
                 </Button>
                 {/* <Typography sx={orTypo}>OR</Typography>
                 <Button
@@ -178,7 +180,7 @@ function AssignProject() {
                   }}
                   onClick={() => handleProjectChange("New")}
                 >
-                  New Project
+                  {t("AssignProject.newProject")}
                 </Button>
               </Box>
             )}

@@ -31,13 +31,14 @@ import {
   getIsSaveAs,
   setBackButtonProjectId,
 } from "../../../redux/slices/Project/handlingProjectFlowSlice";
-
+import { useTranslation } from "react-i18next";
 function AssignNewProjectStep2({
   onNextStep,
   setProjectId,
   // isSaveAs,
   projectId,
 }) {
+  const { t } = useTranslation();
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTab = useMediaQuery("(max-width:900px)");
   const userInfo = useSelector((state) => state.auth.userInfo);
@@ -202,10 +203,10 @@ function AssignNewProjectStep2({
   return (
     <>
       <StepTitles
-        stepHeading={"Step 2 of 3"}
-        Heading={"Invite your team to"}
+        stepHeading={t("AssignNewProjectStep2.title1")}
+        Heading={t("AssignNewProjectStep2.title2")}
         projectName={projectName}
-        stepDiscription={`Accepting the invitation grants access to a secure project workspace in BuilderBUILDER PRO`}
+        stepDiscription={t("AssignNewProjectStep2.title3")}
       />
 
       {users.map((user, index) => (
@@ -233,7 +234,7 @@ function AssignNewProjectStep2({
           startIcon={<AddCircleOutlineIcon />}
           onClick={handleAddUser}
         >
-          Add Another Email
+          {t("AssignNewProjectStep2.addAnotherEmail")}
         </Button>
         {/* <Button
           sx={buttonLnks}
@@ -256,11 +257,11 @@ function AssignNewProjectStep2({
           {isLoading || isEditLoading ? (
             <CircularProgress size={"1.25rem"} />
           ) : (
-            "Next"
+            t("Button.next")
           )}
         </Button>
         <Button sx={{ ...YellowBtn, ...buttonStyle }} onClick={handleSkip}>
-          Skip
+          {t("Button.skip")}
         </Button>
       </Box>
 

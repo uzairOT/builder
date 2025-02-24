@@ -16,6 +16,7 @@ import {
   Stack,
 } from "@mui/material";
 import { CloseRounded } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 const style = {
   position: "absolute",
@@ -46,6 +47,7 @@ const AssignTeamMembers = ({
   setSuperAdminId,
   createdBy
 }) => {
+  const {t} = useTranslation()
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
   //console.log("location: ", location, " projectId: ", projectId);
@@ -95,7 +97,7 @@ const AssignTeamMembers = ({
         <Box sx={style}>
           <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {hideCheck ? "Assigned Users" : "Assign Users"}
+            {hideCheck ? t("AssignTeamMembers.heading1") : t("AssignTeamMembers.heading2")}
           </Typography>
           <IconButton onClick={handleClose}>
             <CloseRounded />
@@ -107,16 +109,16 @@ const AssignTeamMembers = ({
               <TableHead>
                 <TableRow>
                   {!hideCheck && <TableCell></TableCell>}
-                  <TableCell>Name</TableCell>
-                  <TableCell>Role</TableCell>
-                  <TableCell>Email</TableCell>
+                  <TableCell>{t("AssignTeamMembers.table.title1")}</TableCell>
+                  <TableCell>{t("AssignTeamMembers.table.title2")}</TableCell>
+                  <TableCell>{t("AssignTeamMembers.table.title3")}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {team?.length < 2 ? (
                   <TableRow>
                     <TableCell></TableCell>
-                    <TableCell>No Team Members</TableCell>
+                    <TableCell>{t("AssignTeamMembers.noMembers")}</TableCell>
                     <TableCell></TableCell>
                     <TableCell></TableCell>
                   </TableRow>
@@ -149,7 +151,7 @@ const AssignTeamMembers = ({
                             <TableCell>
                               {row.firstName} {row.lastName}
                             </TableCell>
-                            <TableCell>{row.role}</TableCell>
+                            <TableCell>{t(`ProjectTeam.role.${row.role}`)}</TableCell>
                             <TableCell>{row.email}</TableCell>
                           </TableRow>
                         );
@@ -182,7 +184,7 @@ const AssignTeamMembers = ({
                           <TableCell>
                             {row.firstName} {row.lastName}
                           </TableCell>
-                          <TableCell>{row.role}</TableCell>
+                          <TableCell>{t(`ProjectTeam.role.${row.role}`)}</TableCell>
                           <TableCell>{row.email}</TableCell>
                         </TableRow>
                       );

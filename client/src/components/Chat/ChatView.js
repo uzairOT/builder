@@ -39,6 +39,7 @@ import {
   setTotalPages,
 } from "../../redux/slices/Project/userProjectsSlice";
 import { Chat } from "@mui/icons-material";
+import { useTranslation } from 'react-i18next';
 let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
 const currentUser = userInfo?.user;
@@ -59,6 +60,7 @@ function ChatView({
   setIsLoadingChat,
   projectImage,
 }) {
+  const {t} = useTranslation()
   const userRoleProject = useSelector(getUserRoleFromRedux);
   const [openModal, setOpenModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -623,7 +625,7 @@ function ChatView({
                   <Chat sx={{ fontSize: 50, color: "gray", mb: 2 }} />{" "}
                   {/* Chat icon */}
                   <Typography variant="h6" sx={{ color: "gray" }}>
-                    No chat available...
+                    {t("ProjectChat.noChatAvailable")}
                   </Typography>
                 </Box>
               ) : (
@@ -869,7 +871,7 @@ function ChatView({
           />
           <TextField
             name="message"
-            placeholder="Please enter message"
+            placeholder={t("ProjectChat.placeholder")}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             sx={InputStyle}
@@ -903,7 +905,7 @@ function ChatView({
                   paddingX: { sm: "18px", xs: "10px" },
                 }}
               >
-                Team
+                {t("ProjectChat.team")}
               </Button>
               <Button
                 type="button"
@@ -922,7 +924,7 @@ function ChatView({
                   paddingX: { sm: "18px", xs: "10px" },
                 }}
               >
-                All
+                {t("ProjectChat.team+client")}
               </Button>
             </Box>
           )}

@@ -9,9 +9,10 @@ import TotalDaysAllottedView from "./TotalDaysAllottedView";
 import ProjectsInvoices from "../Projects/ProjectInvoices/ProjectsInvoices";
 import SubcontractorBillingChart from "./SubcontractorInvoices";
 import MonthlyMarginChart from "./MonthlyMarginChart";
-
+import { useTranslation } from 'react-i18next';
 
 const Reports = () => {
+  const {t} = useTranslation()
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -31,7 +32,7 @@ const Reports = () => {
             fontWeight={"600"}
             color={"#4C8AB1"}
           >
-            Reports
+            {t("ProjectReports.title1")}
           </Typography>
           <Stack direction={"row"} alignItems={"center"}>
             {/* <SearchIcon  sx={{color: '#535353C9'}}/> */}
@@ -42,7 +43,7 @@ const Reports = () => {
               fontFamily={"var(--main-font-family)"}
               handleOnClick={handleOpen}
             >
-              Invoice History
+              {t("ProjectReports.invoiceHistory")}
             </BuilderProButton>
           </Stack>
         </Stack>

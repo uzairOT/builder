@@ -10,8 +10,10 @@ import {
 } from "@mui/material";
 import { useGetProjectChangeOrderQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const ChangeOrder = ({ value }) => {
+  const { t } = useTranslation();
   const params = useParams();
   const { id: currentProjectId } = params;
   const currentUser = localStorage.getItem("userInfo");
@@ -37,10 +39,10 @@ const ChangeOrder = ({ value }) => {
         <TableHead>
           <TableRow>
             {/* <TableCell sx={themeStyle.tableHeader}></TableCell> */}
-            <TableCell sx={themeStyle.tableHeader}>Subject</TableCell>
-            <TableCell sx={themeStyle.tableHeader}>Description</TableCell>
+            <TableCell sx={themeStyle.tableHeader}>{t("ProjectLayoutChangeOrder.table1")}</TableCell>
+            <TableCell sx={themeStyle.tableHeader}>{t("ProjectLayoutChangeOrder.table2")}</TableCell>
             {/* <TableCell sx={tableCellStyle}>Margin</TableCell> */}
-            <TableCell sx={themeStyle.tableHeader}>priority</TableCell>
+            <TableCell sx={themeStyle.tableHeader}>{t("ProjectLayoutChangeOrder.table3")}</TableCell>
             {/* <TableCell sx={themeStyle.tableHeader}>Total</TableCell> */}
             {/* <TableCell sx={themeStyle.tableHeader}>Start</TableCell> */}
             {/* <TableCell sx={themeStyle.tableHeader}>End</TableCell> */}

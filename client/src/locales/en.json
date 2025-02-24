@@ -18,7 +18,7 @@
   },
   "aboutus": {
     "text1": "Building Smarter Solutions for Construction Professionals",
-    "text2": "Hello and welcome! Our journey in the construction industry began in 2004, inspired by our founder, a third-generation construction professional. With a passion for excellence and innovation, the National Property Institute was established. Over the years, we’ve encountered the same challenges as many in our field—juggling the demands of on-site work with the complexities of office management. We needed a solution that could seamlessly bridge both worlds, and that’s how BuilderBUILDER PRO was born. BuilderBUILDER PRO is more than just construction management software; it’s a tool forged from our firsthand experiences. Designed to streamline project management and enhance collaboration, it empowers you to efficiently manage your projects, whether you're on-site or in the office. We’re proud to introduce BuilderBUILDER PRO and excited to help you build smarter, faster, and more efficiently. BuilderBUILDER PRO will make you good, better and best!",
+    "text2": "Hello and welcome! Our journey in the construction industry began in 2004, inspired by our founder, a third-generation construction professional. With a passion for excellence and innovation, the National Property Institute was established. Over the years, we've encountered the same challenges as many in our field—juggling the demands of on-site work with the complexities of office management. We needed a solution that could seamlessly bridge both worlds, and that's how BuilderBUILDER PRO was born. BuilderBUILDER PRO is more than just construction management software; it's a tool forged from our firsthand experiences. Designed to streamline project management and enhance collaboration, it empowers you to efficiently manage your projects, whether you're on-site or in the office. We're proud to introduce BuilderBUILDER PRO and excited to help you build smarter, faster, and more efficiently. BuilderBUILDER PRO will make you good, better and best!",
     "cards": {
       "title1": "Vision",
       "title2": "Mission",
@@ -43,10 +43,10 @@
       "title2": "Real-Time Collaboration",
       "title3": "Scalable & Flexible",
       "title4": "Innovative & Reliability",
-      "desc1": "Manage all aspects of your projects seamlessly with BuilderBUILDER PRO’s complete toolkit.",
+      "desc1": "Manage all aspects of your projects seamlessly with BuilderBUILDER PRO's complete toolkit.",
       "desc2": "Stay connected and make decisions faster with our live updates and collaborative tools",
       "desc3": "Grow effortlessly with customizable features and adaptable pricing plans.",
-      "desc4": "Trust BuilderBUILDER PRO’s cutting-edge technology for reliable project management innovations."
+      "desc4": "Trust BuilderBUILDER PRO's cutting-edge technology for reliable project management innovations."
     }
   },
   "whatwedo": {
@@ -115,7 +115,7 @@
   },
   "contactus": {
     "title1": "Contact Us",
-    "title2": "Let’s talk on something great together",
+    "title2": "Let's talk on something great together",
     "title3": "Have something in mind that you think we'd be a great fit for it? We'd love to know what you're thinking.",
     "title4": "Get in",
     "title5": "Touch",
@@ -175,7 +175,7 @@
     "title3": "We're proud to share the positive feedback from our valued customers. Here's what they have to say about their experiences with us.",
     "title4": "BuilderBUILDER PRO has transformed the way we manage our construction projects. The intuitive interface and robust features have saved us time and money while improving our overall project quality.",
     "title5": "John D., Construction Manager",
-    "title6": "With BuilderBUILDER PRO, our team can collaborate seamlessly, whether we’re in the office or on-site. It’s a game-changer for our workflow and project success.",
+    "title6": "With BuilderBUILDER PRO, our team can collaborate seamlessly, whether we're in the office or on-site. It's a game-changer for our workflow and project success.",
     "title7": "Sarah L., Project Coordinator",
     "title8": "Numbers are telling our story",
     "title9": "Our platform is designed by construction professionals for construction professionals, offering unmatched functionality, ease of use, and mobile accessibility.",
@@ -192,6 +192,7 @@
     "title6": "© Copyright 2024, All Rights Reserved by BuilderBUILDER PRO"
   },
   "userProject": {
+    "title0": "Projects Dashboard",
     "title1": "User Projects",
     "title2": "All Listed Projects",
     "title3": "Remodel",
@@ -215,19 +216,648 @@
       "title10": "Add New Project",
       "title11": "Humidity",
       "title12": "Wind speed",
-      "title13": "Feels like:"
+      "title13": "Feels like:",
+      "dropdown": {
+        "title1": "Fahrenheit",
+        "title2": "Celsius"
+      }
     },
     "processcard": {
-        "title1": "Client Name:",
-        "title2": "No Client Name",
-        "title3": "Pending Invoice",
-        "title4": "Unread Messages",
-        "title5": "Project Progress",
-        "title6": "Project Cost",
-        "title7": "Profit Details",
-        "title8": "Projected Profit",
-        "title9": "Margin",
-        "title10": "Progress"
+      "title1": "Client Name:",
+      "title2": "No Client Name",
+      "title3": "Pending Invoice",
+      "title4": "Unread Messages",
+      "title5": "Project Progress",
+      "title6": "Project Cost",
+      "title7": "Profit Details",
+      "title8": "Projected Profit",
+      "title9": "Margin",
+      "title10": "Progress"
+    }
+  },
+  "CustomToolbar": {
+    "title1": "Work Order",
+    "title2": "Weather/Notes",
+    "title3": "day",
+    "title4": "week",
+    "title5": "month"
+  },
+  "CustomEvent": {
+    "title1": "Work Order: ",
+    "title2": "Notes: "
+  },
+  "CustomProjectToolbar": {
+    "title1": "Change Order",
+    "title2": "Work Order",
+    "title3": "Weather/Notes",
+    "title4": "Gantt Chart",
+    "title5": "Day",
+    "title6": "Week",
+    "title7": "Month"
+  },
+  "GanttChart": {
+    "title1": "Gantt Chart",
+    "title2": "Generating your chart...",
+    "title3": "Go Fullscreen",
+    "title4": "Close Fullscreen"
+  },
+  "ProjectInfo": {
+    "title1": "Start",
+    "title2": "End"
+  },
+  "ProjectTeam": {
+    "title1": "Project Team",
+    "title2": "Pending Invitations",
+    "title3": "No pending invitations.",
+    "title4": "Invite",
+    "title5": "Add",
+    "role": {
+      "Superadmin": "Super Admin",
+      "Admin": "Admin",
+      "Subcontractor": "Subcontractor",
+      "Client": "Client",
+      "Employee": "Employee",
+      "Supplier": "Supplier",
+      "Others": "Others"
+    }
+  },
+  "ProjectLayoutChangeOrder": {
+    "title1": "Change Order",
+    "title2": "Change Order Request",
+    "title3": "Approved",
+    "title4": "Pending",
+    "title5": "Rejected",
+    "table1": "Subject",
+    "table2": "Description",
+    "table3": "Priority"
+  },
+  "ProjectNavbar": {
+    "title1": "Initial Proposal",
+    "title2": "Images",
+    "title3": "Permit",
+    "title4": "Drawing & Files",
+    "title5": "Work Order",
+    "title6": "Chat",
+    "title7": "Notes",
+    "title8": "Project Report",
+    "title9": "Change Order",
+    "title10": "Invoices",
+    "title11": "Project Permissions"
+  },
+  "ProjectInitialProposal": {
+    "title1": "Initial Proposal",
+    "title2": "Change Order",
+    "title3": "Work Order",
+    "title4": "Export Phases",
+    "button1": "Edit",
+    "button2": "Delete",
+    "button3": "Send Approval",
+    "button4": "Pending Approval",
+    "button5": "Add Phases",
+    "noPhases": "No Phases Added"
+  },
+  "ProjectFiles": {
+    "text1": "items",
+    "button1": "Add",
+    "button2": "Delete",
+    "noImagesOrFilesFound": "No images or files found.",
+    "clickOrDragFileHere": "Click or Drag your file here",
+    "addImagePlaceholder": "Add Image Here .....",
+    "unset": "Unset",
+    "set": "Set",
+    "primary": "Primary",
+    "ProjectImages": {
+      "title1": "Images",
+      "title2": "image"
+    },
+    "ProjectPermit": {
+      "title1": "Permit",
+      "title2": "permit"
+    },
+    "ProjectDrawingFiles": {
+      "title1": "Drawing & Files",
+      "title2": "drawing"
+    }
+  },
+  "ProjectWorkOrder": {
+    "Tab1": "New Work Order",
+    "Tab2": "Work Order Logs",
+    "title1": "Work Order",
+    "title2": "Work Order Logs",
+    "title3": "Approved",
+    "title4": "Pending",
+    "title5": "Rejected",
+    "title6": "No Change Order Phases Available",
+    "title7": "No Approved Phases Available",
+    "button1": "Edit",
+    "button2": "Delete",
+    "button3": "Add Phase",
+    "button4": "Add",
+    "button5": "AI Generated",
+    "button6": "AI",
+    "table": {
+      "title1": "Subject",
+      "title2": "Description",
+      "title3": "Priority",
+      "title4": "Total",
+      "title5": "Start",
+      "title6": "End",
+      "title7": "Status",
+      "title8": "Notes",
+      "title9": "Detail"
+    }
+  },
+  "RequestWorkOrder": {
+    "title1": "Submit Work Order",
+    "title2": "Submit Change Order",
+    "title3": "Selected Phases",
+    "form": {
+      "title1": "Subject",
+      "title2": "Description",
+      "title3": "Created By",
+      "title4": "Assigned",
+      "title5": "Notes",
+      "title6": "Set Priority",
+      "title7": "Date Started",
+      "title8": "Date Ended",
+      "urgent": "Urgent",
+      "normal": "Normal",
+      "title11": "Created Date",
+      "placeholder": "Type your subject...",
+      "placeholder1": "Type your description here...",
+      "placeholder2": "Type your notes here..."
+    }
+  },
+  "PermisionsMessage": {
+    "submitChangeOrder": "You currently don't have permission to submit a change order",
+    "submitWorkOrder": "You currently don't have permission to submit a work order",
+    "noPermission": "You don't have permission to access this feature",
+    "notAuthorized": "You are not authorized!",
+    "reportsMsg": "Project reports are only accessible to team.",
+    "notes": "Project notes are only accessible to team."
+  },
+  "ProjectChat": {
+    "title1": "Chat",
+    "title2": "Project Chat:",
+    "dropDown": "Start New Conversation",
+    "tab1": "Group Chat",
+    "tab2": "Private Chat",
+    "noChatAvailable": "No chat available...",
+    "team": "Team",
+    "team+client": "All",
+    "placeholder": "Please enter message"
+  },
+  "ProjectNotes": {
+    "title1": "Notes",
+    "placeholder": "Search Notes",
+    "addNotes": "Add Notes",
+    "editNotes": "Edit Notes",
+    "noPreview": "No preview available",
+    "placeholder1": "Type Note Subject...",
+    "placeholder2": "Type your text here...",
+    "noNotesAdded": "No Notes Added",
+    "pleaseAddNote": "Please add a note to view its details."
+  },
+  "ProjectReports": {
+    "title1": "Reports",
+    "invoiceHistory": "Invoice History",
+    "totalProjects": {
+      "title1": "Total Projects",
+      "title2": "Done",
+      "title3": "Remaining"
+    },
+    "totalDaysAllotted": {
+      "title1": "Total Days Allotted",
+      "title2": "Work Days spent",
+      "title3": "Work Days Remaining",
+      "title4": "Work Days Overdue"
+    },
+    "OutstandingInvoices": {
+      "title1": "Outstanding Invoices",
+      "title2": "Total Invoices",
+      "title3": "Overdue",
+      "title4": "Paid",
+      "title5": "Unpaid"
+    },
+    "ProfitMarginBarChartCard": {
+      "title1": "Total Cost/Margin",
+      "title2": "Phases",
+      "title3": "Profit Margin",
+      "title4": "Total",
+      "title5": "Total Line Items"
+    },
+    "SubcontractorBillingChart": {
+      "title1": "Subcontractor Billing Overview",
+      "amount": "Amount",
+      "status": "Status",
+      "due": "Due",
+      "noData": "No data available"
+    },
+    "PaidTransactionsCard": {
+      "title1": "Paid Transactions",
+      "title2": "Total Payment Done",
+      "noData": "No data available"
+    },
+    "MonthlyMarginChart": {
+      "title1": "Monthly Margin",
+      "title2": "Monthly Avg. Margin",
+      "loadingChart": "Loading Chart...",
+      "noData": "No data available",
+      "title3": "Monthly Report",
+      "title4": "Month",
+      "title5": "Work Order Total / Margin",
+      "title6": "Payment Pending",
+      "tooltip": {
+        "title1": "Monthly Cost",
+        "title2": "Monthly Margin",
+        "title3": "Monthly Margin Trend",
+        "title4": "Payment Pending"
+      }
+    },
+    "TotalCostPieChart": {
+      "title1": "Total Cost",
+      "title2": "US Dollars",
+      "title3": "Spent Amount",
+      "title4": "Remaining Amount",
+      "title5": "Current Expected Margins"
+    },
+    "UpcomingDeadlines": {
+      "title1": "Upcoming Deadlines",
+      "title2": "Project Name",
+      "title3": "Deadline"
+    }
+  },
+  "PhaseCard": {
+    "approved": "Approved",
+    "pending": "Pending",
+    "declined": "Declined",
+    "not approved": "Not Approved",
+    "changeApproved": "Change Approved",
+    "changePending": "Change Pending",
+    "changeDeclined": "Change Declined",
+    "addLineItem": "Add Line Item",
+    "listOfLineItems": "List of Line Items",
+    "price": "Price",
+    "lineItem": "Line Item",
+    "unit": "Unit",
+    "start": "Start",
+    "end": "End",
+    "profit": "Profit",
+    "totalCost": "Total Cost",
+    "notes": "Notes",
+    "updateStatus": "Update Status",
+    "teamStatus": "Team Status",
+    "action": "Action",
+    "invoice": "Invoice",
+    "status": "Status",
+    "noLineItemsAdded": "No line items added",
+    "Not Requested": "Not Requested",
+    "Work Order Not requested": "Work Order Not requested",
+    "Work Order declined": "Work Order declined",
+    "Change Order Not requested": "Change Order Not requested",
+    "Change Order declined": "Change Order declined",
+    "Change Order approved": "Change Order approved",
+    "Work Order complete": "Work Order complete",
+    "Work Order approved": "Work Order approved",
+    "Work Order Requested": "Work Order Requested",
+    "Change Order Requested": "Change Order Requested",
+    "tooltip": {
+      "lineItemCompleted": "Line item completed",
+      "lineItemApproved": "Line item approved"
+    },
+    "details": "Details"
+  },
+  "ProjectChangeOrder": {
+    "title1": "Submit Change Order",
+    "title2": "Change Order Logs"
+  },
+  "WorkOrder": {
+    "approved": "Approved",
+    "pending": "Pending",
+    "declined": "Declined"
+  },
+  "ProjectInvoices": {
+    "title1": "Generate Invoice",
+    "title2": "View Invoice History",
+    "title3": "Invoice",
+    "paid": "Paid",
+    "unpaid": "Unpaid",
+    "overdue": "Overdue",
+    "addQuickbooks": "Add to Quickbooks",
+    "downloadInvoice": "Download Invoice",
+    "generated": "Generated",
+    "notGenerated": "Not Generated",
+    "export": "Export Invoices",
+    "table": {
+      "title1": "Select",
+      "title2": "Invoice Number",
+      "title3": "Invoice Date",
+      "title4": "Invoice Due",
+      "title5": "Invoice Status",
+      "title6": "Invoice Bill",
+      "title7": "Payment Method",
+      "title8": "Invoice Notes",
+      "title9": "Invoice Details",
+      "title10": "View Notes",
+      "title11": "Paid",
+      "title12": "Details",
+      "noNotesAvailable": "No notes available",
+      "paid": "Paid",
+      "unpaid": "Unpaid",
+      "overdue": "Overdue"
+    }
+  },
+  "ProjectPermissions": {
+    "header": "Project Permissions",
+    "labels": {
+      "Initial Proposal Approval": "Initial Proposal Approval",
+      "Project Management": "Project Management",
+      "Submit Change Order": "Submit Change Order",
+      "Change Order Approval": "Change Order Approval",
+      "Submit Work Order": "Submit Work Order",
+      "Work Order Approval": "Work Order Approval",
+      "Project Report": "Project Report",
+      "Generate Invoice": "Generate Invoice"
+    },
+    "roles": {
+      "admin": "Admin",
+      "projectManager": "Project Manager",
+      "client": "Client",
+      "employee": "Employee",
+      "subcontractor": "Subcontractor",
+      "supplier": "Supplier",
+      "others": "Others"
+    },
+    "dialogTitle": "Permission Update",
+    "dialogMessage": "Applying permission, please wait..."
+  },
+  "Search": {
+    "placeholder": "Search"
+  },
+  "Button": {
+    "add": "Add",
+    "back": "Back",
+    "next": "Next",
+    "skip": "Skip",
+    "cancel": "Cancel",
+    "close": "Close",
+    "yes": "Yes",
+    "done": "Done",
+    "save": "Save",
+    "saveAs": "Save as",
+    "filter": "Filter",
+    "new": "New"
+  },
+  "AssignProject": {
+    "title1": "Add new project",
+    "title2": "Select your project type",
+    "step1": "Step 1 of 3",
+    "step2": "Step 2 of 3",
+    "step3": "Step 3 of 3",
+    "newProject": "New Project",
+    "ProjectFormFields": {
+      "title1": "Project Name",
+      "title2": "Location",
+      "title3": "Start Date",
+      "title4": "End Date",
+      "title5": "Project Color",
+      "placeholder": "ex: Skyrise Sanctuary",
+      "placeholder1": "Search for location...",
+      "locationWarning": "Please enter a valid location"
+    }
+  },
+  "AssignNewProjectStep2": {
+    "title1": "Step 2 of 3",
+    "title2": "Invite your team to",
+    "title3": "Accepting the invitation grants access to a secure project workspace in BuilderBUILDER PRO",
+    "addAnotherEmail": "Add Another Email",
+    "SelectRole": "Select Role",
+    "footer": {
+      "saveToReturnBackToEditYourProject": "Save to return back to edit your project.",
+      "saveAsToStartADuplicateProjectWithTheSameLineItemsAndPhases": "Save as to start a duplicate project with the same line items and phases."
+    }
+  },
+  "AssignNewProjectStep3": {
+    "title1": "Step 3 of 3",
+    "title2": "Plan your project",
+    "title3": "Divide your project in phases and add line items to phases."
+  },
+  "SelectColorModal": {
+    "TapToSelectColor": "Tap to Select Color",
+    "title1": "Select Color",
+    "Done": "Done"
+  },
+  "StepBoxes": {
+    "title1": "Remodel",
+    "title2": "New Build",
+    "title3": "Commercial"
+  },
+  "SkipInvite": {
+    "title1": "Skip without inviting?",
+    "title2": "Are you sure you want to skip this step without inviting?"
+  },
+  "GenerativeAiDialogue": {
+    "title1": "Generate with AI",
+    "title2": "Description",
+    "placeholder1": "Type your description here...",
+    "title3": "Project Size",
+    "title4": "Project Profit",
+    "placeholder2": "ex: 50 Sq. Yds",
+    "placeholder3": "ex: 25%",
+    "body1": "Provide a detailed description of your project to generate a suggested breakdown of phases and associated line items using AI. Processing may take up to 30 seconds.",
+    "warning": "Warning: This will rewrite your previously saved phases and line Items.",
+    "button1": "Generate"
+  },
+  "PhaseModal": {
+    "addPhase": "Add Phase",
+    "updatePhase": "Update Phase",
+    "selectColor": "Select Color",
+    "phase": "Phase",
+    "areYouSure": "delete this phase"
+  },
+  "InvoiceModal": {
+    "title1": "Invoice",
+    "GenerateInvoice": {
+      "generating": "Generating...",
+      "downloadInvoice": "Download Invoice",
+      "form": {
+        "title1": "Company",
+        "title2": "Name",
+        "title3": "Biller",
+        "Invoice#": "Invoice#",
+        "invoiceDate": "Invoice Date",
+        "dueDate": "Due Date",
+        "Notes": "Notes",
+        "footer": {
+          "footer1": "It was great doing business with you",
+          "footer2": "Terms and Conditions",
+          "footer3": "Please make payments before the due date"
+        }
+      }
+    },
+    "PopUp": {
+      "generatingInvoice": "Generating Invoice",
+      "pleaseWait": "Please Wait...",
+      "invoiceGeneratedSuccessfully": "Invoice Generated Successfully!"
+    },
+    "ShareModal": {
+      "sendTo": "Send to",
+      "email": "Email",
+      "notes": "Notes",
+      "noClientAssigned": "No client was assigned",
+      "send": "Send",
+      "table": {
+        "title1": "Title",
+        "title2": "Total Cost",
+        "title3": "Remaining",
+        "title4": "Invoice Pending",
+        "title5": "Payment",
+        "title6": "Percentage"
+      }
+    }
+  },
+  "AreYouSureModal": {
+    "title1": "Are you sure you want to"
+  },
+  "LineItemTeamStatus": {
+    "title1": "Team Status Details",
+    "table": {
+      "title1": "Name",
+      "title2": "Email",
+      "title3": "Role",
+      "title4": "Status",
+      "done": "DONE",
+      "pending": "PENDING"
+    }
+  },
+  "LineItemDetailModal": {
+    "title1": "Description",
+    "title2": "Unit",
+    "title3": "Quantity",
+    "title4": "Unit Price",
+    "title5": "Total",
+    "title6": "Start Day",
+    "title7": "End Day",
+    "title8": "Notes"
+  },
+  "LineItem": {
+    "addLineItem": "Add Line Item",
+    "updateLineItem": "Update Line Item",
+    "areYouSure": "delete this line item",
+    "lineItem": "Line Item",
+    "description": "Description",
+    "unit": "Unit",
+    "unitPrice": "Unit Price",
+    "quantity": "Quantity",
+    "actualCost": "Actual Cost",
+    "clientCost": "Client Cost",
+    "start": "Start",
+    "end": "End",
+    "profit": "Profit",
+    "totalCost": "Total Cost",
+    "notes": "Notes",
+    "percentage": "Percentage",
+    "placeholder": "Enter description",
+    "placeholder1": "Select Unit",
+    "placeholder2": "Type your notes here..."
+  },
+  "NotificationDetailModal": {
+    "Heading1": "Work Order Details",
+    "Heading2": "Changer Order Details",
+    "Subject": "Subject",
+    "Description": "Description",
+    "Phases": "Phases",
+    "LineItem": "Line Item",
+    "dateStarted": "Date Stated",
+    "dateEnded": "Date Ended",
+    "createdBy": "Created By",
+    "assigned": "Assigned",
+    "notes": "Notes",
+    "status": "Status",
+    "priority": "Priority",
+    "urgent": "Urgent",
+    "normal": "Normal",
+    "button": "Complete Work Order"
+  },
+  "AssignTeamMembers": {
+    "heading1": "Assigned Users",
+    "heading2": "Assign Users",
+    "noMembers": "No Team Members",
+    "table": {
+      "title1": "Name",
+      "title2": "Role",
+      "title3": "Email"
+    }
+  },
+  "ProjectList": {
+    "heading1": "Project List",
+    "heading2": "All projects are displayed here",
+    "areYouSure": "delete this project",
+    "noClient": "No Client Name",
+    "Search": "Search Project",
+    "export": "Export Projects",
+    "table": {
+      "ProfilePicture": "Profile Picture",
+      "Client": "Client",
+      "Project": "Project",
+      "StartDate": "Start Date",
+      "EndDate": "End Date",
+      "Action": "Action",
+      "ViewDetails": "View Details"
+    },
+    "remodel": "Remodel",
+    "newbuild": "New Build",
+    "commercial": "Commercial",
+    "footer1": "Showing data",
+    "footer2": "to",
+    "footer3": "of",
+    "footer4": "entries"
+  },
+  "Subscription": {
+    "heading1": "Subscription",
+    "heading2": "Payment History",
+    "noPaymentHistory": "No payment history available.",
+    "areYouSure": "This process may take 5-10 days.<br />Are you sure you want to refund",
+    "currentPlan": "Your current plan",
+    "updatePlan": "Update Plan",
+    "choosePlan": "Choose Plan",
+    "historyCard": {
+      "plan": "Plan",
+      "status": "Status",
+      "refund": "Request a Refund"
+    },
+    "SubscriptionCard": {
+      "Business +": {
+        "planPackage": "Promo code - Enabled\n- 50\n- 40\n3 Users"
+      },
+      "Business Pro": {
+        "planPackage": "Promo code - Enabled\n- 500\n- 440\n10 Users"
+      },
+      "Free Trial": { "planPackage": "Free Plan\n- 10\n- 5\n3 Users" },
+      "Enterprise": { "planPackage": "10+ Users\n- 10\n- 5\n", "body1": "A Enterprise Plan for users who want to maximize the app potential contact us and we will get back to you!" },
+      "amountOfPhotos": "Amount of photos",
+      "amountOfFiles": "Amount of files",
+      "upTo": "Up to",
+      "body1": "Scale your business, increase productivity, and keep your teams connected",
+      "listHeading": "Prescription Plan",
+      "contactUs": "Contact Us",
+      "perMonth": "per month",
+      "perYear": "per year",
+      "expiryDate": "Expiry Date"
+    },
+    "form": {
+      "orgInfo": "1. Organization info",
+      "orgName": "Organization Name",
+      "address": "Address Line 1",
+      "placeholder": "Street address",
+      "promo": "Have a promo code?",
+      "placeholder1": "Enter promo code",
+      "button": "Apply Code",
+      "paymentMethod": "2. Payment Method",
+      "choosePlan": "Chosen Plan",
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "discount": "Discounted price"
     }
   }
 }

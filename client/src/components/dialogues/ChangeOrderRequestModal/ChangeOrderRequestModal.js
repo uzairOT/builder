@@ -47,7 +47,7 @@ import {
   updateCheckedItems,
 } from "../../../redux/slices/Project/projectInitialProposal";
 import { useProjectPermissionCheck } from "../../Projects/ProjectPermissions/ProjectsPermissionCheck";
-
+import { useTranslation } from "react-i18next";
 
 
 const ChangeOrderRequestModal = ({
@@ -78,6 +78,7 @@ const ChangeOrderRequestModal = ({
   const [description, setDescription] = useState(
     changeOrder ? checkedRow?.description : ""
   );
+  const { t } = useTranslation();
   // const {  refetch: refetchProjectTeam } =
   //   useGetTeamMembersQuery(projectId);
   // const [superAdminId, setSuperAdminId] = useState();
@@ -534,7 +535,7 @@ const ChangeOrderRequestModal = ({
           <Tooltip
             title={
               !changeOrderPermission
-                ? "You currently don't have permission to submit a change order"
+                ? t("PermisionsMessage.submitChangeOrder")
                 : ""
             }
             arrow
@@ -556,7 +557,7 @@ const ChangeOrderRequestModal = ({
                   padding={{ sm: "6px 32px 6px 32px", xs: "5px 20px 5px 20px" }}
                   handleOnClick={isButtonDisabled ? showToast : handleOpen}
                 >
-                  Submit Change Order
+                  {t("RequestWorkOrder.title2")}
                 </BuilderProButton>
               </Stack>
             </span>
@@ -585,7 +586,7 @@ const ChangeOrderRequestModal = ({
               fontSize={"22px"}
               fontWeight={"600"}
             >
-              {"Submit Change Order"}
+              {t("RequestWorkOrder.title2")}
             </Typography>
             <IconButton onClick={handleClose}>
               <CloseIcon />
@@ -626,7 +627,7 @@ const ChangeOrderRequestModal = ({
                         // changeOrderSelected={changeOrderSelected}
                         refetchChangeOrder={refetch}
                         adminProjectView={true}
-                        view="Selected Phases"
+                        view={t("RequestWorkOrder.title3")}
                         changeOrderSelectedView={true}
                         handleUpdateOpen={handleUpdateOpen}
                         handleAddOpen={handleAddOpen}
@@ -649,13 +650,13 @@ const ChangeOrderRequestModal = ({
                         ...themeStyle.rightheadings,
                       }}
                     >
-                      Subject:{" "}
+                      {t("RequestWorkOrder.form.title1")}:{" "}
                     </Typography>{" "}
                     <input
                       maxlength="50"
                       required
                       value={subject}
-                      placeholder="Type your subject..."
+                      placeholder={t("RequestWorkOrder.form.placeholder")}
                       type="text"
                       style={{
                         ...themeStyle.inputFields,
@@ -678,12 +679,12 @@ const ChangeOrderRequestModal = ({
                         ...themeStyle.rightheadings,
                       }}
                     >
-                      Description:{" "}
+                      {t("RequestWorkOrder.form.title2")}:{" "}
                     </Typography>{" "}
                     <input
                       maxlength="50"
                       value={description}
-                      placeholder="Type your description..."
+                      placeholder={t("RequestWorkOrder.form.placeholder1")}
                       type="text"
                       multiple
                       style={{
@@ -702,7 +703,7 @@ const ChangeOrderRequestModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Created By
+                  {t("RequestWorkOrder.form.title3")}
                 </Typography>
                 <Box sx={themeStyle.avatarBox}>
                   {changeOrder ? (
@@ -744,7 +745,7 @@ const ChangeOrderRequestModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Notes
+                  {t("RequestWorkOrder.form.title5")}
                 </Typography>
                 <Typography
                   fontFamily={"var(--main-font-family)"}
@@ -754,7 +755,7 @@ const ChangeOrderRequestModal = ({
                   <input
                     maxlength="50"
                     value={notes}
-                    placeholder="Type your notes..."
+                    placeholder={t("RequestWorkOrder.form.placeholder2")}
                     type="text"
                     multiple
                     style={{
@@ -772,7 +773,7 @@ const ChangeOrderRequestModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Set Priority
+                  {t("RequestWorkOrder.form.title6")}
                 </Typography>
                 <Select
                   displayEmpty
@@ -802,7 +803,7 @@ const ChangeOrderRequestModal = ({
                       </Stack>
                     );
                   }}
-                  value={priority}
+                  value={t(`RequestWorkOrder.form.${priority}`)}
                   onChange={handlePriorityChange}
                   IconComponent={KeyboardArrowDownIcon}
                   sx={{
@@ -833,15 +834,15 @@ const ChangeOrderRequestModal = ({
                     />
                   }
                 >
-                  <MenuItem value={"urgent"}>Urgent</MenuItem>
-                  <MenuItem value={"normal"}>Normal</MenuItem>
+                  <MenuItem value={"urgent"}>{t("RequestWorkOrder.form.urgent")}</MenuItem>
+                  <MenuItem value={"normal"}>{t("RequestWorkOrder.form.normal")}</MenuItem>
                 </Select>
                 <hr style={themeStyle.hrLine} />
               </Box>
 
               <Stack spacing={1} pt={2} ml={2}>
                 <Typography pt={1} sx={themeStyle.headingText}>
-                  Created Date
+                  {t("RequestWorkOrder.form.title11")}
                 </Typography>
                 <Typography
                   sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
@@ -899,7 +900,7 @@ const ChangeOrderRequestModal = ({
                   <Tooltip
                     title={
                       !changeOrderPermission
-                        ? "You currently don't have permission to submit a change order"
+                        ? t("PermisionsMessage.submitChangeOrder")
                         : ""
                     }
                     arrow
@@ -916,7 +917,7 @@ const ChangeOrderRequestModal = ({
                         handleOnClick={handleRequest}
                         marginLeft={"0px"}
                       >
-                        Submit Change Order
+                        {t("RequestWorkOrder.title2")}
                       </BuilderProButton>
                     </span>
                   </Tooltip>
@@ -934,7 +935,7 @@ const ChangeOrderRequestModal = ({
                 <Tooltip
                   title={
                     !changeOrderPermission
-                      ? "You currently don't have permission to submit a change order"
+                      ? t("PermisionsMessage.submitChangeOrder")
                       : ""
                   }
                   arrow
@@ -951,7 +952,7 @@ const ChangeOrderRequestModal = ({
                       marginLeft={"0px"}
                       disabled={loading}
                     >
-                      Submit Change Order
+                      {t("RequestWorkOrder.title2")}
                     </BuilderProButton>
                   </span>
                 </Tooltip>

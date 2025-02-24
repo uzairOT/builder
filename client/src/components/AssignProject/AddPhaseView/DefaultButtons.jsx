@@ -9,10 +9,11 @@ import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ChangeOrderRequestModal from "../../dialogues/ChangeOrderRequestModal/ChangeOrderRequestModal";
-
+import { useTranslation } from "react-i18next";
 const DefaultButtons = ({ authUserRole, view, isLoading, handleAddPhase, handleGenAiDialogue, handleEditPhase, handleOpenModal, rowCheckboxes, adminProjectView , setRowCheckboxes, fetchData, refetchChangeOrder, changeOrderView, selectedProjectData}) => {
   const location = useLocation();
   const pathCheck = location.pathname;
+  const { t } = useTranslation();
   const theme = useTheme();
   const downView = useMediaQuery(theme.breakpoints.down("lg"));
   const phases = useSelector((state) => state.projectInitialProposal.phases);
@@ -42,14 +43,14 @@ const DefaultButtons = ({ authUserRole, view, isLoading, handleAddPhase, handleG
             sm: "1rem 2rem",
             xs: "0rem 0.10rem",
           },}}  >
-          {view === "Change Order" && pathCheck.includes("initial-proposal") ? (
+          {view === t("ProjectInitialProposal.title2") && pathCheck.includes("initial-proposal") ? (
             <></>
           ) : (
             <>
             <Stack direction={'row'} justifyContent={'center'} alignItems={"center"} gap={0.5}>
               <Tooltip
                 title={
-                  projectManagementPermission ? "" : "You are not authorized!"
+                  projectManagementPermission ? "" : t("PermisionsMessage.noPermission")
                 }
                 arrow
               >
@@ -76,24 +77,24 @@ const DefaultButtons = ({ authUserRole, view, isLoading, handleAddPhase, handleG
                           : { lg: "18px", xs: "16px" },}}>
                     {downView
                       ?phaseLengthZero
-                        ? "Add Phase"
+                        ? t("ProjectWorkOrder.button3")
                         : mobileView
                         ? ""
-                        : "Add"
-                      : "Add Phase"}
+                        : t("ProjectWorkOrder.button4")
+                      : t("ProjectWorkOrder.button3")}
                       </Typography>
                   </Button>
                 </Stack>
               </Tooltip>
               <Tooltip
                 title={
-                  projectManagementPermission ? "" : "You are not authorized!"
+                  projectManagementPermission ? "" : t("PermisionsMessage.noPermission")
                 }
                 arrow
               >
 
               </Tooltip>
-              {view !== "Change Order" &&<Stack justifyContent={'center'} alignItems={'center'}>
+              {view !== t("ProjectInitialProposal.title2") &&<Stack justifyContent={'center'} alignItems={'center'}>
                   <Button
                     disabled={!projectManagementPermission}
                     sx={{
@@ -115,18 +116,18 @@ const DefaultButtons = ({ authUserRole, view, isLoading, handleAddPhase, handleG
                           : { lg: "18px", xs: "16px" },}}>
                     {downView
                       ? phaseLengthZero
-                      ? "AI Generated"
+                      ? t("ProjectWorkOrder.button5")
                       : mobileView
                       ? ""
-                      : "AI"
-                      : "AI Generated"}
+                      : t("ProjectWorkOrder.button6")
+                      : t("ProjectWorkOrder.button5")}
                       </Typography>
                   </Button>
                 </Stack>}
               </Stack>
               <Tooltip
                 title={
-                  projectManagementPermission ? "" : "You are not authorized!"
+                  projectManagementPermission ? "" : t("PermisionsMessage.noPermission")
                 }
                 arrow
               >
@@ -154,15 +155,15 @@ const DefaultButtons = ({ authUserRole, view, isLoading, handleAddPhase, handleG
                         display: { md: "block", xs: "none" },
                       }}
                     >
-                      Edit
+                      {t("ProjectInitialProposal.button1")}
                     </Typography>
                   </Button>
                 </span>
               </Tooltip>
-              {view !== "Change Order" && (
+              {view !== t("ProjectInitialProposal.title2") && (
                 <Tooltip
                   title={
-                    projectManagementPermission ? "" : "You are not authorized!"
+                    projectManagementPermission ? "" : t("PermisionsMessage.noPermission")
                   }
                   arrow
                 >
@@ -188,7 +189,7 @@ const DefaultButtons = ({ authUserRole, view, isLoading, handleAddPhase, handleG
                           display: { md: "block", xs: "none" },
                         }}
                       >
-                        Delete
+                        {t("ProjectInitialProposal.button2")}
                       </Typography>
                     </Button>
                   </span>

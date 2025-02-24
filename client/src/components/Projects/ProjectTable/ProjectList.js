@@ -46,6 +46,7 @@ import { toast } from "react-toastify";
 import XLSX from "xlsx-js-style";
 import { currencyFormatter, headerFormatter } from "../../../utils/Formatters/excelFormatters";
 import { Excel } from "../../../assets/FileSvg/excel";
+import { useTranslation } from "react-i18next";
 
 const ProjectList = ({
   rows,
@@ -56,14 +57,15 @@ const ProjectList = ({
   currentUserId,
 }) => {
   const navigate = useNavigate();
+  const {t} = useTranslation();
   const [deleteProject, { isLoading: deletingProjectLoading }] =
     useDeleteUserProjectMutation();
   const dispatch = useDispatch();
   const tableHeader = [
-    { id: "clientName", title: "Client" },
-    { id: "projectName", title: "Project" },
-    { id: "start_time", title: "Start Date" },
-    { id: "end_time", title: "End Date" },
+    { id: "clientName", title: t("ProjectList.table.Client") },
+    { id: "projectName", title: t("ProjectList.table.Project") },
+    { id: "start_time", title: t("ProjectList.table.StartDate") },
+    { id: "end_time", title: t("ProjectList.table.EndDate") },
     // { id: "phoneNumber", title: "" },
     // { id: "approvedPrice", title: "" },
     // { id: "collected", title: "" },
@@ -260,7 +262,7 @@ const ProjectList = ({
               fontSize={{ md: "22px", xs: "18px" }}
               fontWeight={"600"}
             >
-              Project List
+              {t("ProjectList.heading1")}
             </Typography>
             <Typography
               color={"#4C8AB1"}
@@ -268,12 +270,12 @@ const ProjectList = ({
               fontSize={{ md: "14px", xs: "11px" }}
               fontWeight={"400"}
             >
-              All projects are displayed here
+              {t("ProjectList.heading2")}
             </Typography>
           </Stack>
           {/* Buttons Remodel And Filter */}
           <Stack direction={"row"} height={"35px"}>
-            <Tooltip title="Export projects" placement="top">
+            <Tooltip title={t("ProjectList.export")} placement="top">
               <Box sx={{ cursor: "pointer" }} onClick={handleExportProject}>
                 <Excel
                   fill={"#4C8AB1"}
@@ -299,7 +301,7 @@ const ProjectList = ({
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
-                    {filter}
+                    {t(`ProjectList.${filter}`)}
                   </Typography>
                 </BuilderProButton>
               ))}
@@ -317,7 +319,7 @@ const ProjectList = ({
                 fontSize={"14px"}
                 display={{ md: "inline-block", xs: "none" }}
               >
-                Filter
+                {t("Button.filter")}
               </Typography>
             </BuilderProButton>
             <Popover
@@ -359,7 +361,7 @@ const ProjectList = ({
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
-                    Remodel
+                    {t("ProjectList.remodel")}
                   </Typography>
                 </Button>
                 <Button
@@ -381,7 +383,7 @@ const ProjectList = ({
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
-                    New Build
+                    {t("ProjectList.newbuild")}
                   </Typography>
                 </Button>
                 <Button
@@ -403,7 +405,7 @@ const ProjectList = ({
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
-                    Commercial
+                    {t("ProjectList.commercial")}
                   </Typography>
                 </Button>
               </Stack>
@@ -452,7 +454,7 @@ const ProjectList = ({
               }}
             // disabled={open}
             >
-              Add{" "}
+              {t("Button.add")}{" "}
               <Box
                 component={"span"}
                 sx={{
@@ -460,7 +462,7 @@ const ProjectList = ({
                   marginLeft: { md: "3px", xs: "0px" },
                 }}
               >
-                New
+                {t("Button.new")}
               </Box>
             </BuilderProButton>
           </Stack>
@@ -527,7 +529,7 @@ const ProjectList = ({
                     sx={themeStyle.tableCell}
                     style={{ borderBottom: "1px solid #A1A1A1" }}
                   >
-                    Profile Picture
+                    {t("ProjectList.table.ProfilePicture")}
                   </TableCell>
                   {tableHeader.map((header) => (
                     <TableCell
@@ -542,8 +544,8 @@ const ProjectList = ({
                     sx={themeStyle.tableCell}
                     style={{ borderBottom: "1px solid #A1A1A1" }}
                   >
-                    Action
-                  </TableCell>
+                    {t("ProjectList.table.Action")}
+                    </TableCell>
                   <TableCell
                     sx={themeStyle.tableCell}
                     style={{ borderBottom: "1px solid #A1A1A1" }}
@@ -569,7 +571,7 @@ const ProjectList = ({
                           />
                         </TableCell>
                         <TableCell sx={themeStyle.tableCell}>
-                          {row.clientName ? row.clientName : "No Client Name"}
+                          {row.clientName ? row.clientName : t("ProjectList.noClient")}
                         </TableCell>
                         <TableCell sx={themeStyle.tableCell}>
                           {row.projectName}
@@ -658,7 +660,7 @@ const ProjectList = ({
                               pl={1}
                               width={"80px"}
                             >
-                              View Details
+                              {t("ProjectList.table.ViewDetails")}
                             </Typography>
                           </Link>
                         </TableCell>
@@ -672,7 +674,7 @@ const ProjectList = ({
       </Stack>
       <Stack pl={1}>
         <Typography variant="body1" sx={paginationTextStyle}>
-          Showing data {startIndex} to {endIndex} of {totalCount} entries
+          {t("ProjectList.footer1")} {startIndex} {t("ProjectList.footer2")} {endIndex} {t("ProjectList.footer3")} {totalCount} {t("ProjectList.footer4")}
         </Typography>
       </Stack>
       <Stack justifyContent={"flex-end"} alignItems={"flex-end"} p={1}>
@@ -697,7 +699,7 @@ const ProjectList = ({
         handleClose={handleOpenModalClose}
         handleConfirmDelete={handleConfirmDelete}
         isLoading={deletingProjectLoading}
-        text={"project"}
+        text={t("ProjectList.areYouSure")}
       />
     </Stack>
   );

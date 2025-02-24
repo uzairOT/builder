@@ -1,7 +1,9 @@
 import { Paper, Stack, Tooltip, Typography } from '@mui/material'
 import React from 'react'
 import moment from 'moment-timezone';
+import { useTranslation } from 'react-i18next';
 const PaymentHistoryCard = ({data, handleOpenModal}) => {
+  const {t} = useTranslation();
    // Format the date as MM/DD/YYYY using moment
    const dateString = moment(data.date).format('MM/DD/YYYY');
 
@@ -18,9 +20,9 @@ const PaymentHistoryCard = ({data, handleOpenModal}) => {
     <Paper style={{borderRadius: '14px', padding:'8px', paddingLeft:'24px'}}>
         <Typography sx={themeStyle.title} >{dateString}</Typography>
         <Typography sx={themeStyle.subtitle} >{data.payment}</Typography>
-        <Typography sx={themeStyle.footer} >Plan: {data.plan}</Typography>
-        {(!isRefundable && (data.status !== 'success')) && <Typography sx={themeStyle.footer} >Status: {data.status}</Typography>}
-        {(isRefundable && data.plan !== 'Free Trial') && <Tooltip title="Refund window is 3 days" placement='top-end'><Typography sx={themeStyle.refund} onClick={()=>handleOpenModal({id: data.id, payment:data.amount, paymentIntentId: data.paymentIntentId})}>Request a Refund</Typography></Tooltip>}
+        <Typography sx={themeStyle.footer} >{t("Subscription.historyCard.plan")}: {data.plan}</Typography>
+        {(!isRefundable && (data.status !== 'success')) && <Typography sx={themeStyle.footer} >{t("Subscription.historyCard.status")}: {data.status}</Typography>}
+        {(isRefundable && data.plan !== 'Free Trial') && <Tooltip title="Refund window is 3 days" placement='top-end'><Typography sx={themeStyle.refund} onClick={()=>handleOpenModal({id: data.id, payment:data.amount, paymentIntentId: data.paymentIntentId})}>{t("Subscription.historyCard.refund")}</Typography></Tooltip>}
     </Paper>
   )
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Box, Typography, Table, TableBody, TableRow, TableCell, styled, Divider, TableHead, Button, Avatar } from '@mui/material';
-
+import { useTranslation } from 'react-i18next';
 const StyledModal = styled(Modal)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -46,6 +46,7 @@ const StyledStatusCell = styled(StyledTableCell)(({ theme, status }) => ({
 }));
 
 const LineItemTeamStatus = ({ modalOpen, setModalOpen, UserLineItemStatuses }) => {
+  const {t} = useTranslation()
   const handleClose = () => {
     setModalOpen(false);
   };
@@ -60,16 +61,16 @@ const LineItemTeamStatus = ({ modalOpen, setModalOpen, UserLineItemStatuses }) =
       >
         <StyledPaper>
           <Typography variant="h6" id="modal-modal-title">
-            Team Status Details
+            {t("LineItemTeamStatus.title1")}
           </Typography>
           <StyledTable>
             <TableHead>
               <TableRow>
                 <StyledTableHeaderCell></StyledTableHeaderCell>
-                <StyledTableHeaderCell>Name</StyledTableHeaderCell>
-                <StyledTableHeaderCell>Email</StyledTableHeaderCell>
-                <StyledTableHeaderCell>Role</StyledTableHeaderCell>
-                <StyledTableHeaderCell>Status</StyledTableHeaderCell>
+                <StyledTableHeaderCell>{t("LineItemTeamStatus.table.title1")}</StyledTableHeaderCell>
+                <StyledTableHeaderCell>{t("LineItemTeamStatus.table.title2")}</StyledTableHeaderCell>
+                <StyledTableHeaderCell>{t("LineItemTeamStatus.table.title3")}</StyledTableHeaderCell>
+                <StyledTableHeaderCell>{t("LineItemTeamStatus.table.title4")}</StyledTableHeaderCell>
               </TableRow>
             </TableHead>
             <TableBody >
@@ -85,8 +86,8 @@ const LineItemTeamStatus = ({ modalOpen, setModalOpen, UserLineItemStatuses }) =
                     {user.User.firstName} {user.User.lastName}
                   </StyledTableCell>
                   <StyledTableCell>{user.User.email}</StyledTableCell>
-                  <StyledTableCell>{user.User.ProjectMembers[0]?.role}</StyledTableCell>
-                  <StyledTableCell ><Button sx={{borderRadius:'28px' , backgroundColor: user.status === 'pending' ? '#FFDADA' : '#16C09821',  color: user.status === 'pending' ? '#DF0404' : '#008767',}}>{user.status}</Button></StyledTableCell>
+                  <StyledTableCell>{t(`ProjectPermissions.roles.${user.User.ProjectMembers[0]?.role}`)}</StyledTableCell>
+                  <StyledTableCell ><Button sx={{borderRadius:'28px' , backgroundColor: user.status === 'pending' ? '#FFDADA' : '#16C09821',  color: user.status === 'pending' ? '#DF0404' : '#008767',}}>{t(`LineItemTeamStatus.table.${user.status}`)}</Button></StyledTableCell>
                 </TableRow>)
               })}
             </TableBody>

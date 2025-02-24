@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Typography, Box ,Hidden } from "@mui/material";
 import Button from "../../UI/CustomButton";
 import Search from "../../UI/CustomSearchInput";
-
+import { useTranslation } from "react-i18next";
 function Header({ title, OpenAddModal, searchInput, setSearchInput }) {
- 
+  const { t } = useTranslation();
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -66,13 +66,13 @@ function Header({ title, OpenAddModal, searchInput, setSearchInput }) {
           value={searchInput}
           onChange={handleSearchInputChange}
           onKeyPress={handleKeyPress}
-          placeholder={`Search ${title}`}
+          placeholder={`${t("Search.placeholder")} ${title}`}
           backgroundColor="#E7E7E7"
         />
 
-        {!(title ==='Master Line Item' || title==="Permission Access" || title==="Project Permissions") && <Button
+        {!(title ==='Master Line Item' || title==="Permission Access" || title===t("ProjectPermissions.header")) && <Button
           onClick={OpenAddModal}
-          buttonText="Add"
+          buttonText={t("Button.add")}
           color="#ffffff"
           backgroundColor="#FFAC00"
           // width="112px"

@@ -6,7 +6,7 @@ import { useGetProjectChangeOrderQuery } from "../../redux/apis/Project/projectA
 import AddPhaseView from "../../components/AssignProject/AddPhaseView/AddPhaseView";
 import { useSelector } from "react-redux";
 import { getUserRoleFromRedux } from "../../redux/slices/auth/userRoleSlice";
-
+import { useTranslation } from "react-i18next";
 const ChangeOrder = () => {
   const params = useParams();
   const { id: currentProjectId } = params;
@@ -14,6 +14,7 @@ const ChangeOrder = () => {
   const currentUser = localStorage.getItem("userInfo");
   const user = JSON.parse(currentUser);
   const authUserRole = useSelector(getUserRoleFromRedux);
+  const { t } = useTranslation();
   // const { project } = useGetProjectDataQuery({ projectId: currentProjectId });
   const { data, refetch } = useGetProjectChangeOrderQuery({
     projectId: currentProjectId,
@@ -69,7 +70,7 @@ const ChangeOrder = () => {
             }}
           >
             <Tab
-              label="Submit Change Order"
+              label={t("ProjectChangeOrder.title1")}
               sx={{
                 textTransform: "capitalize",
                 fontFamily: "var(--main-font-family)",
@@ -84,7 +85,7 @@ const ChangeOrder = () => {
               }}
             />
             <Tab
-              label="Change Order Logs"
+              label={t("ProjectChangeOrder.title2")}
               sx={{
                 textTransform: "capitalize",
                 fontFamily: "var(--main-font-family)",
@@ -129,7 +130,7 @@ const ChangeOrder = () => {
                     refetchChangeOrder={refetch}
                     projectId={currentProjectId}
                     adminProjectView={true}
-                    view={"Change Order"}
+                    view={t("ProjectInitialProposal.title2")}
                     authUserRole={authUserRole.userRole}
                     changeOrderView={true}
                   />

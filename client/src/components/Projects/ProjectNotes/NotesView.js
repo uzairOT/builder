@@ -1,4 +1,4 @@
-import { Paper, Stack } from "@mui/material";
+import { Paper, Stack, CircularProgress } from "@mui/material";
 import React from "react";
 import TaskCalenderView from "../../Dashboard/TaskCalenderView/TaskCalenderView";
 import Notes from "./Notes";
@@ -28,7 +28,7 @@ const NotesView = () => {
       <Stack flex={1}>
         <Paper sx={{ borderRadius: "14px", height: "calc(92vh - 70px)" }}>
           {loading ? (
-            <>Loading</>
+            <><CircularProgress /></>
           ) : (
             <TaskCalenderView
               dailyForecast={dailyForecast}

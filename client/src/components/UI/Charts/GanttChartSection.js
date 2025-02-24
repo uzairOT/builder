@@ -11,7 +11,7 @@ import { allUserProjects, setGanttChart } from "../../../redux/slices/Project/us
 import loader from "../../../assets/gifs/loader.gif";
 import { useParams } from "react-router-dom";
 import actionButton from "../actionButton";
-
+import { useTranslation } from "react-i18next";
 const options = {
   chart: {
     id: "gantt-chart",
@@ -49,7 +49,17 @@ const options = {
   },
   xaxis: {
     type: "datetime",
+    // labels: {
+    //   formatter: function (value) {
+    //     console.log("Original X-Axis value:", value); // Log the original value
+
+    //     // If you need to format the label only, pass the raw timestamp to ApexCharts
+    //     // Use moment just to format it for display purposes
+    //     return moment(value).format("MM-DD-YYYY"); // Keep the timestamp for the chart, format it for display
+    //   },
+    // },
   },
+  
   legend: {
     position: "top",
   },
@@ -59,6 +69,7 @@ const options = {
 export const GanttChartSection = () => {
   const params = useParams()
   const projects = useSelector(allUserProjects)
+  const {t} = useTranslation();
   const [open, setOpen] = useState(false);
   const currentProject = useMemo(() => {
     return projects[0].find(project => project.id === Number(params.id));
@@ -98,10 +109,10 @@ export const GanttChartSection = () => {
 
   return (
     <Box sx={{ padding: 2 }} ref={chartContainerRef}>
-      <Typography variant="h6">Gantt Chart</Typography>
+      <Typography variant="h6">{t('GanttChart.title1')}</Typography>
       {isLoading ? <Stack justifyContent={'center'} alignItems={'center'}>
         <img src={loader} alt="Loading animation"></img>
-        <Typography>Generating your chart...</Typography>
+        <Typography>{t('GanttChart.title2')}</Typography>
       </Stack> : chartData && <>
         <ReactApexChart
           ref={chartRef} // Attach the chart reference
@@ -132,7 +143,7 @@ export const GanttChartSection = () => {
             },
           }}
         >
-          Go Fullscreen
+          {t('GanttChart.title3')}
         </Button>
         {/* Fullscreen Modal */}
         <Modal open={open} onClose={handleClose}>
@@ -170,7 +181,7 @@ export const GanttChartSection = () => {
                 background: "#4C8AB1",
               }}
             >
-              Close Fullscreen
+              {t('GanttChart.title4')}
             </Button>
           </Box>
         </Modal>

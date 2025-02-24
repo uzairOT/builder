@@ -5,7 +5,7 @@ import { useGetSubcontractorInvoicesMutation } from "../../redux/apis/Reports/re
 import { useParams } from "react-router-dom";
 import moment from "moment-timezone";
 import CustomTooltip from "../UI/Tooltip/CustomTooltip";
-
+import { useTranslation } from 'react-i18next';
 const SubcontractorBillingChart = () => {
   let dataUser = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(dataUser);
@@ -14,6 +14,7 @@ const SubcontractorBillingChart = () => {
   const { id } = useParams();
   const projectId = id;
   const [invoiceData, setInvoiceData] = useState([]);
+  const {t} = useTranslation()
   const [
     getSubcontractorInvoices,
     { data: subcontractorInvoices, isLoading: isLoadingSubcontractorInvoices },
@@ -101,9 +102,9 @@ const SubcontractorBillingChart = () => {
               <table style={{ width: '100%', fontSize: '12px', marginTop: '5px' }}>
                 <thead>
                   <tr>
-                    <th style={{ textAlign: 'left', padding: '3px' }}>Amount</th>
-                    <th style={{ textAlign: 'left', padding: '3px' }}>Status</th>
-                    <th style={{ textAlign: 'left', padding: '3px' }}>Due</th>
+                    <th style={{ textAlign: 'left', padding: '3px' }}>{t("ProjectReports.SubcontractorBillingChart.amount")}</th>
+                    <th style={{ textAlign: 'left', padding: '3px' }}>{t("ProjectReports.SubcontractorBillingChart.status")}</th>
+                    <th style={{ textAlign: 'left', padding: '3px' }}>{t("ProjectReports.SubcontractorBillingChart.due")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -146,9 +147,9 @@ const SubcontractorBillingChart = () => {
     xaxis: { categories: labels },
     yaxis: { title: { text: "Invoice Amount ($)" } },
     tooltip: { enabled: false }, // Disable built-in tooltip
-    title: { text: "Subcontractor Billing Overview", align: "center" },
+    title: { text: t("ProjectReports.SubcontractorBillingChart.title1"), align: "center" },
     noData: {
-      text: "No data available",
+      text: t("ProjectReports.SubcontractorBillingChart.noData"),
       style: {
         fontSize: "16px",
         color: "#666",
@@ -176,7 +177,7 @@ const SubcontractorBillingChart = () => {
             variant="h6"
             p={1}
           >
-            Subcontractor Billing Overview
+            {t("ProjectReports.SubcontractorBillingChart.title1")}
           </Typography>
           <Divider variant="fullWidth" />
           <Chart

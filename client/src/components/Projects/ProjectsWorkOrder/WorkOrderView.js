@@ -9,13 +9,14 @@ import { allEvents } from "../../../redux/slices/Events/eventsSlice";
 import { getForecast } from "../../../redux/slices/DailyForecast/dailyForecastSlice";
 import { useGetProjectChangeOrderQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
-
+import { useTranslation } from 'react-i18next'
 const WorkOrderView = () => {
   const [changeView, setChangeView] = useState(false);
   const authUserRole = useSelector(getUserRoleFromRedux);
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
   const events = allEvent.events;
+  const {t} = useTranslation()
   const params = useParams();
   const { id: currentProjectId } = params;
   const currentUser = localStorage.getItem("userInfo");
@@ -63,7 +64,7 @@ const WorkOrderView = () => {
           }}
         >
           <Tab
-            label="New Work Order"
+            label={t("ProjectWorkOrder.Tab1")}
             sx={{
               textTransform: "capitalize",
               fontFamily: "var(--main-font-family)",
@@ -79,7 +80,7 @@ const WorkOrderView = () => {
             }}
           />
           <Tab
-            label="Work Order Logs"
+            label={t("ProjectWorkOrder.Tab2")}
             sx={{
               textTransform: "capitalize",
               fontFamily: "var(--main-font-family)",
@@ -123,7 +124,7 @@ const WorkOrderView = () => {
                   refetchChangeOrder={refetch}
                   projectId={id}
                   adminProjectView={true}
-                  view={"Work Order"}
+                  view={t("ProjectWorkOrder.title1")}
                   authUserRole={authUserRole.userRole}
                   selectedProjectData={selectedProjectData}
                 />
@@ -144,7 +145,7 @@ const WorkOrderView = () => {
           <Stack justifyContent={"flex-start"}>
             <ProjectsChangeOrder
               workOrder={true}
-              view={"Work Order Logs"}
+              view={t("ProjectWorkOrder.title2")}
               setChangeView={() => setSelectedTab(0)}
               data={data}
               refetch={refetch}

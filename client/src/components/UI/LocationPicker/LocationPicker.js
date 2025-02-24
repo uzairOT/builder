@@ -2,7 +2,9 @@ import { Box, Stack } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import mapboxgl from "mapbox-gl";
 import { initializeMapbox } from '../../../utils/MapBox/mapBoxUtils';
+import { useTranslation } from 'react-i18next';
 const LocationPicker = ({isMobile, handleLocationChange}) => {
+    const { t } = useTranslation();
     const [location, setLocation] = useState({
         location: '',
         latitude: '',
@@ -23,7 +25,8 @@ const LocationPicker = ({isMobile, handleLocationChange}) => {
                     latitude: lat,
                     longitude: lng,
                 });
-            }
+            },
+            t
         );
     
         mapInstanceRef.current = map;

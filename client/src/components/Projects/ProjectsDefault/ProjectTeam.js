@@ -35,6 +35,7 @@ import {  SupervisorAccountRounded } from "@mui/icons-material";
 // import { usePermissionCheck } from "../../Settings/PermissionAccess/PermissionCheck";
 import { useSelector } from "react-redux";
 //import "react-toastify/dist/ReactToastify.css";
+import { useTranslation } from "react-i18next";
 
 const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
   const [open, setOpen] = useState(null);
@@ -44,6 +45,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
   const openPendingInvitations = Boolean(openPending);
   const [email, setEmail] = useState("");
   const [error, setError] = useState(false);
+  const {t} = useTranslation();
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
   const role = useSelector((state) => state.userRole.userRole);
@@ -158,7 +160,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
   return (
     <Stack pl={{ xl: 3, lg: 3, md: 1 }}>
       <Stack direction={"row"} sx={{ justifyContent: "space-between" }} pr={1}>
-        <Typography sx={themeStyle.title}>Project Team</Typography>
+        <Typography sx={themeStyle.title}>{t("ProjectTeam.title1")}</Typography>
 
         <Stack
           direction={"row"}
@@ -173,7 +175,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
                 fontFamily={"var(--main-font-family)"}
                 fontSize={"15px"}
               >
-                Pending Invitations
+                {t("ProjectTeam.title2")}
               </BuilderProButton>
             </Badge>
           ) : (
@@ -187,7 +189,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
             handleOnClick={handleShare}
             sx={{ fontSize: { xl: 12, lg: 10, m: 12, xs: 12 } }}
           >
-            {true ? "Add" : ""}
+            {true ? <Typography sx={{ fontSize: { xl: 14, lg: 14, m: 14, xs: 14 }, marginLeft: "4px" }}>{t("ProjectTeam.title5")}</Typography> : ""}
           </BuilderProButton>
         </Stack>
       </Stack>
@@ -234,7 +236,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
                         justifyContent={"space-between"}
                       >
                         <Typography sx={themeStyle.subTitle}>
-                          {roleFormat(role)}
+                          {t(`ProjectTeam.role.${role}`)}
                         </Typography>
                         {/* <Stack
                           direction={"row"}
@@ -343,7 +345,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
           alignItems={"center"}
         >
           <Typography sx={{ p: 2 }} color={"#4C8AB1"}>
-            Invite
+            {t("ProjectTeam.title4")}
           </Typography>
           <IconButton onClick={handleClose}>
             <CloseIcon sx={{ p: 2, color: "#535353", fontSize: "19px" }} />
@@ -474,7 +476,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
             variant={"contained"}
             handleOnClick={handleInviteUser}
           >
-            <Typography>Invite</Typography>
+            <Typography sx={{ fontSize: { xl: 14, lg: 14, m: 14, xs: 14, marginLeft: "4px" } }}>{t("ProjectTeam.title4")}</Typography>
           </BuilderProButton>
         </Stack>
 
@@ -558,7 +560,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
         {pendingInvitations?.length > 0 && (
           <>
             <Typography variant="h6" sx={{ padding: "7px" }}>
-              Pending Invitations
+              {t("ProjectTeam.title2")}
             </Typography>
             <Divider />
             <List>
@@ -590,7 +592,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
         )}
         {pendingInvitations?.length === 0 && (
           <Typography variant="body2" sx={{ padding: "10px" }}>
-            No pending invitations.
+            {t("ProjectTeam.title3")}
           </Typography>
         )}
       </Popover>

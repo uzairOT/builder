@@ -12,7 +12,7 @@ import {
 } from "react-colorful";
 import { useDispatch } from "react-redux";
 import { setProjectColor } from "../../../redux/slices/projectFormSlice";
-
+import { useTranslation } from "react-i18next";
 const style = {
   position: "absolute",
   top: "50%",
@@ -40,6 +40,7 @@ const styles = {
   },
 };
 export default function ColorPicker({ editModal, handleProjectColorChange }) {
+  const { t } = useTranslation();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -68,7 +69,7 @@ export default function ColorPicker({ editModal, handleProjectColorChange }) {
   return (
     <div>
       <Typography onClick={handleOpen} color={"#4C8AB1"} sx={styles.link}>
-        Tap to Select Color
+        {t("SelectColorModal.TapToSelectColor")}
       </Typography>
 
       <Modal
@@ -79,7 +80,7 @@ export default function ColorPicker({ editModal, handleProjectColorChange }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography sx={typoText}>Select Color</Typography>
+          <Typography sx={typoText}>{t("SelectColorModal.title1")}</Typography>
           <div
             className="custom-pointers example"
             style={{ display: "flex", flexDirection: "column" }}
@@ -117,7 +118,7 @@ export default function ColorPicker({ editModal, handleProjectColorChange }) {
               type="submit"
               onClick={handleChangeColor}
             >
-              Done
+              {t("SelectColorModal.Done")}
             </Button>
           </div>
         </Box>

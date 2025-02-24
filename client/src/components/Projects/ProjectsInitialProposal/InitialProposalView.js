@@ -4,13 +4,13 @@ import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
-
+import { useTranslation } from "react-i18next";
 const InitialProposalView = () => {
   // const loader = useLoaderData();
   const authUserRole = useSelector(getUserRoleFromRedux);
   const { id } = useParams();
   const projectId = id;
-
+  const { t } = useTranslation();
 
 
   return (
@@ -83,7 +83,7 @@ const InitialProposalView = () => {
               projectId={projectId}
               InitialProposalView={true}
               adminProjectView={true}
-              view={"Initial Proposal"}
+              view={t("ProjectInitialProposal.title1")}
               authUserRole={authUserRole.userRole}
             />
           </Stack>
@@ -102,7 +102,7 @@ const InitialProposalView = () => {
                 InitialProposalAndChange={true}
                 projectId={projectId}
                 adminProjectView={true}
-                view={"Change Order"}
+                view={t("ProjectInitialProposal.title2")}
                 authUserRole={authUserRole.userRole}
                 changeOrderView={true}
               />

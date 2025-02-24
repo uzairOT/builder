@@ -4,8 +4,10 @@ import ProjectsSidebar from "../../components/Projects/ProjectsDashboard/Project
 import Profile from "../../components/Dashboard/ProfileView/Profile";
 import Reports from "../../components/Reports/Reports";
 import ReportsSideBar from "../../components/Reports/ReportsSideBar";
+import { useTranslation } from "react-i18next";
 
 const ReportsPage = () => {
+  const {t} = useTranslation()
   return (
     <>
       <Grid
@@ -24,7 +26,7 @@ const ReportsPage = () => {
               p={2}
               pb={1.5}
             >
-              Reports
+              {t("ProjectReports.title1")}
             </Typography>
             <Profile reports={true} />
             <ProjectsSidebar reports={true} />

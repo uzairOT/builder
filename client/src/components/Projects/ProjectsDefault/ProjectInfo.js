@@ -5,7 +5,7 @@ import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import { AvTimer } from "@mui/icons-material";
-
+import { useTranslation } from "react-i18next";
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
@@ -20,7 +20,8 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   width: "60%",
 }));
 
-const ProjectInfo = ({ data }) => {
+const ProjectInfo = ({ data, projectName }) => {
+  const { t } = useTranslation();
   // console.log(data);
   const totalCompletedLineItems = data?.totalCompletedLineItems;
   const totalLineItems = data?.totalLineItems;
@@ -29,13 +30,13 @@ const ProjectInfo = ({ data }) => {
   // console.log(percentage)
   return (
     <Stack height={"205px"} >
-      <Typography sx={themeStyle.title}>Burrow - Home Build</Typography>
+      <Typography sx={themeStyle.title}>{projectName}</Typography>
       <Stack direction={"row"} width={{md:"60%", xs:"65%"}} pl={{md:0,xs:2}} justifyContent={"space-between"}  >
         <Typography sx={themeStyle.label} >
-          Start
+          {t("ProjectInfo.title1")} 
         </Typography>
         <Typography sx={themeStyle.label} >
-          End
+          {t("ProjectInfo.title2")}
         </Typography>
       </Stack>
       <Stack direction={"row"} pt={0.5} sx={{alignItems:"center", pl:2}}>

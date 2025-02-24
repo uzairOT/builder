@@ -26,6 +26,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
 import GenerateInvoice from "../../dialogues/GenerateInvoice/GenerateInvoice";
+import { useTranslation } from "react-i18next";
 const dummyData = [
   {
     id: 1,
@@ -83,6 +84,7 @@ function InvoicesTable({
   setPhaseItems,
   paidInvoices,
 }) {
+  const { t } = useTranslation();
   // console.log('INSIDE WORKORDER: ',data)
   const [open, setOpen] = useState(false);
   const [invoicePaid, { isLoading }] = usePaidInvoiceMutation();
@@ -135,18 +137,18 @@ function InvoicesTable({
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={tableCellStyle}>Select</TableCell>
-              <TableCell sx={tableCellStyle}>Invoice Number</TableCell>
-              <TableCell sx={tableCellStyle}>Invoice Date</TableCell>
-              <TableCell sx={tableCellStyle}>Invoice Due</TableCell>
-              <TableCell sx={tableCellStyle}>Invoice Status</TableCell>
-              <TableCell sx={tableCellStyle}>Invoice Bill</TableCell>
-              <TableCell sx={tableCellStyle}>Payment Method</TableCell>
-              <TableCell sx={tableCellStyle}>Invoice Notes</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title1")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title2")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title3")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title4")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title5")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title6")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title7")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title8")}</TableCell>
               {!paidInvoices && (
-                <TableCell sx={tableCellStyle}>Invoice Paid</TableCell>
+                <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title11")}</TableCell>
               )}
-              <TableCell sx={tableCellStyle}>Invoice Details</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title12")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -173,7 +175,7 @@ function InvoicesTable({
                     {moment(item.InvoiceDueDate).format("MM/DD/YYYY")}
                   </TableCell>
                   <TableCell sx={tableCellValueStyle}>
-                    {item.InvoiceStatus}
+                    {t(`ProjectInvoices.table.${item.InvoiceStatus}`)}
                   </TableCell>
                   <TableCell sx={tableCellValueStyle}>
                     {item.InvoiceBill}
@@ -183,8 +185,8 @@ function InvoicesTable({
                   </TableCell>
                   {/* Apply the Tooltip directly to a specific cell */}
                   <TableCell sx={tableCellValueStyle}>
-                    <Tooltip title={item?.notes || "No notes available"}>
-                      <span>{item?.notes ? "View Notes" : "-"}</span>
+                    <Tooltip title={item?.notes || t("ProjectInvoices.table.noNotesAvailable")}>
+                      <span>{item?.notes ? t("ProjectInvoices.table.title10") : "-"}</span>
                     </Tooltip>
                   </TableCell>
                   {!paidInvoices && (
@@ -198,7 +200,7 @@ function InvoicesTable({
                         handleOnClick={() => handleOnClick(item.id, item.Admin.id)}
                         disabled={isLoading}
                       >
-                        Paid
+                        {t("ProjectInvoices.table.title11")}
                       </BuilderProButton>
                     </TableCell>
                   )}
@@ -212,7 +214,7 @@ function InvoicesTable({
                       handleOnClick={() => handleOnClickDetails(item)}
                       disabled={isLoading}
                     >
-                      Details
+                      {t("ProjectInvoices.table.title12")}
                     </BuilderProButton>
                   </TableCell>
                 </TableRow>

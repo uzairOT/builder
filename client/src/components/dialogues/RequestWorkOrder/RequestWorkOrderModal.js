@@ -56,7 +56,7 @@ import {
   updateCheckedItems,
 } from "../../../redux/slices/Project/projectInitialProposal";
 import { useProjectPermissionCheck } from "../../Projects/ProjectPermissions/ProjectsPermissionCheck";
-
+import { useTranslation } from 'react-i18next'
 
 const RequestWorkOrderModal = ({
   rowCheckboxes,
@@ -77,6 +77,7 @@ const RequestWorkOrderModal = ({
   const [done, setDone] = useState(false);
   const [showLineItems, setShowLineItems] = useState(false);
   const { addPhase } = useSelector(selectAddPhase);
+  const {t} = useTranslation()
   const [updateRow, setUpdateRow] = useState(rowCheckboxes);
   const [priority, setPriority] = useState("normal");
   const [status, setStatus] = useState("pending");
@@ -569,10 +570,10 @@ const RequestWorkOrderModal = ({
             title={
               changeOrderView
                 ? !changeOrderPermission
-                  ? "You currently don't have permission to submit a change order"
+                  ? t("PermisionsMessage.submitChangeOrder")
                   : ""
                 : !workOrderPermission
-                  ? "You currently don't have permission to submit a work order"
+                  ? t("PermisionsMessage.submitWorkOrder")
                   : ""
             }
             arrow
@@ -599,8 +600,8 @@ const RequestWorkOrderModal = ({
                   handleOnClick={isButtonDisabled ? showToast : handleOpen}
                 >
                   {changeOrderView
-                    ? "Submit Change Order"
-                    : "Submit Work Order"}
+                    ? t("RequestWorkOrder.title2")
+                    : t("RequestWorkOrder.title1")}
                 </BuilderProButton>
               </Stack>
             </span>
@@ -629,7 +630,7 @@ const RequestWorkOrderModal = ({
               fontSize={"22px"}
               fontWeight={"600"}
             >
-              {changeOrderView ? "Submit Change Order" : "Submit Work Order"}
+              {changeOrderView ? t("RequestWorkOrder.title2") : t("RequestWorkOrder.title1")}
             </Typography>
             <IconButton onClick={handleClose}>
               <CloseIcon />
@@ -653,7 +654,7 @@ const RequestWorkOrderModal = ({
               width={"calc(100% - 48px)"}
             >
               <Typography fontFamily={"var(--main-font-family)"}>
-                <strong>Subject: </strong>{" "}
+                <strong>{t("RequestWorkOrder.form.title1")}: </strong>{" "}
                 <input
                   maxlength="50"
                   required
@@ -669,7 +670,7 @@ const RequestWorkOrderModal = ({
                 fontFamily={"var(--main-font-family)"}
                 fontWeight={"200"}
               >
-                <strong>Description: </strong>{" "}
+                <strong>{t("RequestWorkOrder.form.title2")}: </strong>{" "}
                 <input
                   maxlength="50"
                   value={description}
@@ -887,7 +888,7 @@ const RequestWorkOrderModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Created By
+                  {t("RequestWorkOrder.form.title3")}
                 </Typography>
                 <Box sx={themeStyle.avatarBox}>
                   {changeOrder ? (
@@ -931,7 +932,7 @@ const RequestWorkOrderModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Assigned
+                  {t("RequestWorkOrder.form.title4")}
                 </Typography>
                 <Box sx={themeStyle.avatarBox}>
                   <Stack direction={"row"} pr={1}>
@@ -982,7 +983,7 @@ const RequestWorkOrderModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Notes
+                  {t("RequestWorkOrder.form.title5")}
                 </Typography>
                 <Typography
                   fontFamily={"var(--main-font-family)"}
@@ -1010,7 +1011,7 @@ const RequestWorkOrderModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Set Priority
+                  {t("RequestWorkOrder.form.title6")}
                 </Typography>
                 <Select
                   displayEmpty
@@ -1079,7 +1080,7 @@ const RequestWorkOrderModal = ({
 
               <Stack spacing={1} ml={2}>
                 <Typography pt={1} sx={themeStyle.headingText}>
-                  Date Started
+                  {t("RequestWorkOrder.form.title7")}
                 </Typography>
                 <Typography
                   sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
@@ -1134,7 +1135,7 @@ const RequestWorkOrderModal = ({
               </Stack>
               <Stack spacing={1} pt={2} ml={2}>
                 <Typography pt={1} sx={themeStyle.headingText}>
-                  Date Ended
+                  {t("RequestWorkOrder.form.title8")}
                 </Typography>
                 <Typography
                   sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
@@ -1292,10 +1293,10 @@ const RequestWorkOrderModal = ({
                   title={
                     changeOrderView
                       ? !changeOrderPermission
-                        ? "You currently don't have permission to submit a change order"
+                        ? t("PermisionsMessage.submitChangeOrder")
                         : ""
                       : !workOrderPermission
-                        ? "You currently don't have permission to submit a work order"
+                        ? t("PermisionsMessage.submitWorkOrder")
                         : ""
                   }
                   arrow

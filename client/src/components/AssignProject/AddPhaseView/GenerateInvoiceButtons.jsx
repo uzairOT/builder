@@ -4,9 +4,11 @@ import { useSelector } from "react-redux";
 import { useProjectPermissionCheck } from "../../Projects/ProjectPermissions/ProjectsPermissionCheck";
 import { buttonBox } from "./stylingObjects";
 import actionButton from "../../UI/actionButton";
+import { useTranslation } from "react-i18next";
 
 //HEADER BUTTONS
 const GenerateInvoiceButtons = ({handleGenerateInvoice}) => {
+  const { t } = useTranslation();
   const permissionsState = useSelector(
     (state) => state?.permissions?.permissions
   );
@@ -23,7 +25,7 @@ const GenerateInvoiceButtons = ({handleGenerateInvoice}) => {
           title={
             GenerateInvoicePermission
               ? ""
-              : "You don't have permission to access this feature"
+              : t("ProjectInvoices.noPermission")
           }
           arrow
         >
@@ -36,7 +38,7 @@ const GenerateInvoiceButtons = ({handleGenerateInvoice}) => {
               }}
               onClick={handleGenerateInvoice}
             >
-              Generate Invoice
+              {t("ProjectInvoices.title1")}
             </Button>
           </span>
         </Tooltip>

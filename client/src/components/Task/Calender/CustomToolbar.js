@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import { useTranslation } from "react-i18next";
 
 const CustomToolbar = ({
   toolbar,
@@ -9,6 +10,7 @@ const CustomToolbar = ({
   dailyForecast,
   toolbarKey,
 }) => {
+  const {t} = useTranslation();
   const [activeButton, setActiveButton] = useState("day");
   const [activeHeader, setActiveHeader] = useState("Work Order");
   useEffect(() => {
@@ -131,7 +133,7 @@ const CustomToolbar = ({
             sx={themeStyle.toolbarTitle}
             pl={{ xl: 1, lg: 2, md: 2, xs: 2.5 }}
           >
-            Work Order
+            {t('CustomToolbar.title1')}
           </Typography>
           <Box element="div" style={themeStyle.toolbarButtonGroup}>
             <Button
@@ -144,9 +146,9 @@ const CustomToolbar = ({
                 backgroundColor: activeButton === "day" ? "#4C8AB1" : "",
                 color: activeButton === "day" ? "#FFF" : "",
               }}
-              onClick={() => goToDayView("day")}
+              onClick={() => goToDayView('day')}
             >
-              Day
+              {t("CustomToolbar.title3")}
             </Button>
             <Button
               sx={{
@@ -158,9 +160,9 @@ const CustomToolbar = ({
                 backgroundColor: activeButton === "week" ? "#4C8AB1" : "",
                 color: activeButton === "week" ? "#FFF" : "",
               }}
-              onClick={() => goToWeekView("week")}
+              onClick={() => goToWeekView('week')}
             >
-              Week
+              {t("CustomToolbar.title4")}
             </Button>
             <Button
               sx={{
@@ -173,10 +175,10 @@ const CustomToolbar = ({
                 color: activeButton === "month" ? "#FFF" : "",
               }}
               onClick={() =>{ 
-                goToMonthView("month")
-                handleActiveHeader("Work Order");}}
+                goToMonthView('month')
+                handleActiveHeader(t('CustomToolbar.title1'));}}
             >
-              Month
+              {t("CustomToolbar.title5")}
             </Button>
           </Box>
         </Stack>
@@ -202,96 +204,8 @@ const CustomToolbar = ({
               <ArrowRightIcon style={{ color: "#797979" }} />
             </IconButton>
           </Stack>
-          {toolbar.view === "month" && (
-            <Stack
-              direction={"row"}
-              spacing={1}
-              pr={0.5}
-              justifyContent={"center"}
-              alignItems={"center"}
-            >
-              <Button
-                sx={{
-                  fontSize: "0.7rem",
-                }}
-                style={{
-                  textTransform: "capitalize",
-                  ...themeStyle.toolbarButton,
-                  padding: "7px",
-                  backgroundColor:
-                    activeHeader === "Work Order" ? "#4C8AB1" : "",
-                  color: activeHeader === "Work Order" ? "#FFF" : "",
-                }}
-                onClick={() => {
-                  handleActiveHeader("Work Order");
-                }}
-              >
-                Work Order
-              </Button>
-              {/* <Button
-                sx={{
-                  fontSize: "0.7rem",
-                }}
-                style={{
-                  textTransform: "capitalize",
-                  ...themeStyle.toolbarButton,
-                  padding: "7px",
-                  backgroundColor: activeHeader === "Notes" ? "#4C8AB1" : "",
-                  color: activeHeader === "Notes" ? "#FFF" : "",
-                }}
-                onClick={() => {
-                  handleActiveHeader("Notes");
-                }}
-              >
-                Weather/ Notes
-              </Button> */}
-            </Stack>
-          )}
-          {toolbar.view === "day" && (
-            <Stack
-              direction={"row"}
-              spacing={1}
-              pr={1}
-              justifyContent={"center"}
-              alignItems={"center"}
-            >
-              <Button
-                sx={{
-                  fontSize: "0.7rem",
-                }}
-                style={{
-                  textTransform: "capitalize",
-                  ...themeStyle.toolbarButton,
-                  padding: "7px",
-                  backgroundColor:
-                    activeHeader === "Work Order" ? "#4C8AB1" : "",
-                  color: activeHeader === "Work Order" ? "#FFF" : "",
-                }}
-                onClick={() => {
-                  handleActiveHeader("Work Order");
-                }}
-              >
-                Work Order
-              </Button>
-              <Button
-                sx={{
-                  fontSize: "0.7rem",
-                }}
-                style={{
-                  textTransform: "capitalize",
-                  ...themeStyle.toolbarButton,
-                  padding: "7px",
-                  backgroundColor: activeHeader === "Notes" ? "#4C8AB1" : "",
-                  color: activeHeader === "Notes" ? "#FFF" : "",
-                }}
-                onClick={() => {
-                  handleActiveHeader("Notes");
-                }}
-              >
-                Weather/Notes
-              </Button>
-            </Stack>
-          )}
+          {toolbar.view === "month" && monthToolbar({themeStyle, activeHeader, handleActiveHeader, t})}
+          {toolbar.view === "day" && dayToolbar({themeStyle, activeHeader, handleActiveHeader, t})}
         </Stack>
         {}
       </div>
@@ -300,3 +214,101 @@ const CustomToolbar = ({
 };
 
 export default CustomToolbar;
+
+
+const monthToolbar = ({themeStyle, activeHeader, handleActiveHeader, t}) => {
+
+  return (
+    <Stack
+    direction={"row"}
+    spacing={1}
+    pr={0.5}
+    justifyContent={"center"}
+    alignItems={"center"}
+  >
+    <Button
+      sx={{
+        fontSize: "0.7rem",
+      }}
+      style={{
+        textTransform: "capitalize",
+        ...themeStyle.toolbarButton,
+        padding: "7px",
+        backgroundColor:
+          activeHeader === "Work Order" ? "#4C8AB1" : "",
+        color: activeHeader === "Work Order" ? "#FFF" : "",
+      }}
+      onClick={() => {
+        handleActiveHeader("Work Order");
+      }}
+    >
+      {t('CustomToolbar.title1')}
+    </Button>
+    <Button
+      sx={{
+        fontSize: "0.7rem",
+      }}
+      style={{
+        textTransform: "capitalize",
+        ...themeStyle.toolbarButton,
+        padding: "7px",
+        backgroundColor: activeHeader === "Notes" ? "#4C8AB1" : "",
+        color: activeHeader === "Notes" ? "#FFF" : "",
+      }}
+      onClick={() => {
+        handleActiveHeader("Notes");
+      }}
+    >
+      {t('CustomToolbar.title2')}
+    </Button>
+  </Stack>
+  )
+}
+
+const dayToolbar = ({themeStyle, activeHeader, handleActiveHeader, t}) => {
+  return (
+    <Stack
+    direction={"row"}
+    spacing={1}
+    pr={1}
+    justifyContent={"center"}
+    alignItems={"center"}
+  >
+    <Button
+      sx={{
+        fontSize: "0.7rem",
+      }}
+      style={{
+        textTransform: "capitalize",
+        ...themeStyle.toolbarButton,
+        padding: "7px",
+        backgroundColor:
+          activeHeader === "Work Order" ? "#4C8AB1" : "",
+        color: activeHeader === "Work Order" ? "#FFF" : "",
+      }}
+      onClick={() => {
+        handleActiveHeader("Work Order");
+      }}
+    >
+      {t('CustomToolbar.title1')}
+    </Button>
+    <Button
+      sx={{
+        fontSize: "0.7rem",
+      }}
+      style={{
+        textTransform: "capitalize",
+        ...themeStyle.toolbarButton,
+        padding: "7px",
+        backgroundColor: activeHeader === "Weather/Notes" ? "#4C8AB1" : "",
+        color: activeHeader === "Weather/Notes" ? "#FFF" : "",
+      }}
+      onClick={() => {
+        handleActiveHeader("Weather/Notes");
+      }}
+    >
+      {t('CustomToolbar.title2')}
+    </Button>
+  </Stack>
+  )
+}

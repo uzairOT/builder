@@ -16,6 +16,7 @@ import {
 } from "../../../redux/slices/Project/userProjectsSlice";
 import { addInitialPhase } from "../../../redux/slices/Project/projectInitialProposal";
 import { authUserRole } from "../../../redux/slices/auth/userRoleSlice";
+import { useTranslation } from "react-i18next";
 
 const ProjectsSidebar = ({ reports }) => {
   const [activeBtn, setActiveBtn] = useState("remodel");
@@ -32,7 +33,7 @@ const ProjectsSidebar = ({ reports }) => {
   };
   const pinnedProject  = useSelector(getPinnedProject);
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
   const handleClick = async (projectId, pathTo, e) => {
     // console.log(path);
     // console.log(pathTo);
@@ -73,7 +74,7 @@ const ProjectsSidebar = ({ reports }) => {
       <Stack p={2}>
         {/* PROJECT DASHBOARD */}
         <Typography sx={themeStyle.subtile} pb={1.5}>
-          User Projects
+          {t("userProject.title1")}
         </Typography>
         <Divider
           variant="fullWidth"
@@ -82,7 +83,7 @@ const ProjectsSidebar = ({ reports }) => {
 
         {/* LIST OF PROJECTS */}
         <Typography sx={themeStyle.listTitle} pt={1.5} pb={4}>
-          All listed Projects
+          {t("userProject.title2")}
         </Typography>
 
         {/* BUTTON STACK */}
@@ -109,7 +110,7 @@ const ProjectsSidebar = ({ reports }) => {
               fontFamily={"var(--main-font-family)"}
               width={"100%"}
             >
-              Remodel
+              {t("userProject.title3")}
             </Typography>
           </BuilderProButton>
           <BuilderProButton
@@ -128,7 +129,7 @@ const ProjectsSidebar = ({ reports }) => {
               fontFamily={"var(--main-font-family)"}
               width={"100%"}
             >
-              New build
+              {t("userProject.title4")}
             </Typography>
           </BuilderProButton>
           <BuilderProButton
@@ -146,7 +147,7 @@ const ProjectsSidebar = ({ reports }) => {
               color={"black"}
               fontFamily={"var(--main-font-family)"}
             >
-              Commercial
+              {t("userProject.title5")}
             </Typography>
           </BuilderProButton>
         </Stack>
@@ -221,7 +222,7 @@ const ProjectsSidebar = ({ reports }) => {
                 navigate("/assignproject");
               }}
             >
-              Add New Project
+              {t("userProject.title10")}
             </BuilderProButton>
           </Stack>
         </Stack>

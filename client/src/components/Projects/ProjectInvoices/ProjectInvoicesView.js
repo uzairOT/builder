@@ -6,9 +6,11 @@ import { useSelector } from "react-redux";
 import { useGetProjectChangeOrderQuery } from "../../../redux/apis/Project/projectApiSlice";
 import ProjectsInvoices from "./ProjectsInvoices";
 import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
+import { useTranslation } from "react-i18next";
 
-const ProjectInvoicesView = () => {
+const ProjectInvoicesView = () => { 
   const [changeView, setChangeView] = useState(false);
+  const { t } = useTranslation();
   // const allEvent = useSelector(allEvents);
   const userRole = useSelector(getUserRoleFromRedux);
   // const role = useSelector((state) => state.userRole.userRole);
@@ -78,7 +80,7 @@ const ProjectInvoicesView = () => {
               }}
             >
               <Tab
-                label="Generate Invoice"
+                label={t("ProjectInvoices.title1")}
                 sx={{
                   textTransform: "capitalize",
                   fontFamily: "var(--main-font-family)",
@@ -96,7 +98,7 @@ const ProjectInvoicesView = () => {
                 }}
               />
               <Tab
-                label="View Invoice History"
+                label={t("ProjectInvoices.title2")}
                 sx={{
                   textTransform: "capitalize",
                   fontFamily: "var(--main-font-family)",
@@ -128,7 +130,7 @@ const ProjectInvoicesView = () => {
                     refetchChangeOrder={refetch}
                     projectId={id}
                     adminProjectView={true}
-                    view={"Generate Invoice"}
+                    view={t("ProjectInvoices.title1")}
                   />
                 )}
               </Stack>
@@ -139,7 +141,6 @@ const ProjectInvoicesView = () => {
                     <ProjectsInvoices
                       userRole={userRole}
                       workOrder={true}
-                      view={"Work Order Logs"}
                       setChangeView={setChangeView}
                       data={data}
                       refetch={refetch}
@@ -181,7 +182,7 @@ const ProjectInvoicesView = () => {
               }}
             >
               <Tab
-                label="Generate Invoice"
+                label={t("ProjectInvoices.title1")}
                 sx={{
                   textTransform: "capitalize",
                   fontFamily: "var(--main-font-family)",
@@ -199,7 +200,7 @@ const ProjectInvoicesView = () => {
                 }}
               />
               <Tab
-                label="View Invoice History"
+                label={t("ProjectInvoices.title2")}
                 sx={{
                   textTransform: "capitalize",
                   fontFamily: "var(--main-font-family)",
@@ -231,7 +232,7 @@ const ProjectInvoicesView = () => {
                     refetchChangeOrder={refetch}
                     projectId={id}
                     adminProjectView={true}
-                    view={"Generate Invoice"}
+                    view={t("ProjectInvoices.title1")}
                   />
                 )}
               </Stack>
@@ -242,7 +243,6 @@ const ProjectInvoicesView = () => {
                     <ProjectsInvoices
                       userRole={userRole}
                       workOrder={true}
-                      view={"Work Order Logs"}
                       setChangeView={setChangeView}
                       data={data}
                       refetch={refetch}

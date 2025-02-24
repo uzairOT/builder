@@ -4,6 +4,7 @@ import SubscriptionCard from "../UI/Card/SubscriptionCard";
 import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 import EnterpriseCard from "../UI/Card/EnterpriseCard";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const SubscriptionPlans = ({
   setCurrentPlan,
@@ -13,6 +14,7 @@ const SubscriptionPlans = ({
   currentPayment,
   setRefundPlan
 }) => {
+  const {t} = useTranslation()
   const [expiryDate, setExpiryDate] = useState(null)
   let userData = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(userData);
@@ -51,7 +53,7 @@ const SubscriptionPlans = ({
       {currentPayment.length > 0 ? (
         <>
           <Typography sx={themeStyle.title} pl={1}>
-            Your Current Plan
+            {t("Subscription.currentPlan")}
           </Typography>
           <Stack spacing={2} pb={1} p={1}>
             <SubscriptionCard current={true} planType={currentPayment} expiryDate={expiryDate}/>
@@ -63,7 +65,7 @@ const SubscriptionPlans = ({
       )}
 
       <Typography sx={themeStyle.title} pb={2}>
-        {currentPayment ? "Update Plan" : "Choose plan"}
+        {currentPayment ? t("Subscription.updatePlan") : t("Subscription.choosePlan")}
       </Typography>
       <Grid container spacing={4} p={1}>
         <Grid item xs={12}>

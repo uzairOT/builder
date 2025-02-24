@@ -4,8 +4,10 @@ import ReportsPieChart from "./ReportsPieChart";
 import CircleIcon from "@mui/icons-material/Circle";
 import { useGetReportsStatsMutation } from "../../redux/apis/Reports/reportsApiSlice";
 import { useParams } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const TotalProjects = () => {
+  const {t} = useTranslation()
   let dataUser = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(dataUser);
   const currentUser = userInfo?.user;
@@ -75,7 +77,7 @@ const TotalProjects = () => {
             fontFamily={'var(--main-font-family)'}
             p={1}
           >
-            Total Projects
+            {t("ProjectReports.totalProjects.title1")}
           </Typography>
           <Stack direction={"row"}>
             <Stack flex={1}>
@@ -90,7 +92,7 @@ const TotalProjects = () => {
               <Stack direction={"row"} spacing={1} alignItems={"center"}>
                 <CircleIcon sx={{ color: "#45A5F6", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
                 <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"12px",md:"12px",xs:"12px"}}>
-                  Done
+                  {t("ProjectReports.totalProjects.title2")}
                 </Typography>
               </Stack>
               <Typography
@@ -103,7 +105,7 @@ const TotalProjects = () => {
               <Stack direction={"row"} spacing={1} alignItems={"center"}>
                 <CircleIcon sx={{ color: "#DDE6FE", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
                 <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"12px",md:"12px",xs:"12px"}}>
-                  Remaining
+                  {t("ProjectReports.totalProjects.title3")}
                 </Typography>
               </Stack>
               <Typography
@@ -131,7 +133,7 @@ const TotalProjects = () => {
                       fontFamily={'var(--main-font-family)'}
                       fontSize={{xl:"12px",lg:"12px",md:"12px",xs:"12px"}}
                     >
-                      Done
+                      {t("ProjectReports.totalProjects.title2")}
                     </Typography>
                   </Stack>
                   <Typography textAlign={"right"}>
@@ -145,7 +147,7 @@ const TotalProjects = () => {
                       fontFamily={'var(--main-font-family)'}
                       fontSize={{xl:"12px",lg:"12px",md:"12px",xs:"12px"}}
                     >
-                      Remaining
+                      {t("ProjectReports.totalProjects.title3")}
                     </Typography>
                   </Stack>
                   <Typography textAlign={"center"}>

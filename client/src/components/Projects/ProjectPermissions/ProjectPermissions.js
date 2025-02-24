@@ -23,7 +23,7 @@ import Header from "../../Settings/Header/Header";
 import { useGetProjectPermissionsListMutation } from "../../../redux/apis/Permissions/permissionsApiSlice";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import { useTranslation } from "react-i18next";
 const formatRoleName = (role) => {
   return role
     .replace(/([A-Z])/g, " $1")
@@ -31,6 +31,7 @@ const formatRoleName = (role) => {
 };
 
 const ProjectsPermissionAccess = () => {
+  const { t } = useTranslation();
   const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [dataLoading, setDataLoading] = useState(true);
@@ -154,7 +155,7 @@ const ProjectsPermissionAccess = () => {
     <>
       <Grid p={1}>
         <Header
-          title="Project Permissions"
+          title={t("ProjectPermissions.header")}
           searchInput={searchInput}
           setSearchInput={setSearchInput}
           OpenAddModal={() => {}}
@@ -189,7 +190,7 @@ const ProjectsPermissionAccess = () => {
                     width: 150,
                   }}
                 >
-                  {formatRoleName(role)}
+                  {t(`ProjectPermissions.roles.${role}`)}
                 </TableCell>
               ))}
             </TableRow>
@@ -237,7 +238,7 @@ const ProjectsPermissionAccess = () => {
                           width: 250,
                         }}
                       >
-                        {perm.name}
+                        {t(`ProjectPermissions.labels.${perm.name}`)}
                       </TableCell>
                     </Tooltip>
                     {roles.map((role) => (
@@ -280,7 +281,7 @@ const ProjectsPermissionAccess = () => {
             color: "#4C8AB1",
           }}
         >
-          Permission Update
+          {t("ProjectPermissions.dialogTitle")}
         </DialogTitle>
         <DialogContent>
           {loading ? (
@@ -293,7 +294,7 @@ const ProjectsPermissionAccess = () => {
             >
               <img src={loader} alt="Loading" />
               <Typography variant="h6" style={{ marginTop: "16px" }}>
-                Applying permission, please wait...
+                {t("ProjectPermissions.dialogMessage")}
               </Typography>
             </Grid>
           ) : (

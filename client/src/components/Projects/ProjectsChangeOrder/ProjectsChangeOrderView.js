@@ -10,12 +10,13 @@ import { getForecast } from "../../../redux/slices/DailyForecast/dailyForecastSl
 import { useGetProjectChangeOrderQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { ref } from "yup";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
-
+import { useTranslation } from "react-i18next";
 const ProjectsChangeOrderView = () => {
   const [changeView, setChangeView] = useState(false);
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
   const events = allEvent.events;
+  const { t } = useTranslation();
   const params = useParams();
   const { id: currentProjectId } = params;
   const currentUser = localStorage.getItem("userInfo");
@@ -88,7 +89,7 @@ const ProjectsChangeOrderView = () => {
                   refetchChangeOrder={refetch}
                   projectId={id}
                   adminProjectView={true}
-                  view={"Change Order"}
+                  view={t("ProjectInitialProposal.title2")}
                 />
               </Stack>
             </>

@@ -28,8 +28,8 @@ const WeatherAppCurrentForecast = () => {
     const fetchWeather = async () => {
       try {
         const data = await getFormattedWeatherData({
-          lat: "36.7783",
-          lon: "119.4179",
+          lat: query.lat,
+          lon: query.lon,
           units: query.temperatureUnit,
         });
         //console.log(data);
@@ -40,8 +40,6 @@ const WeatherAppCurrentForecast = () => {
     };
     fetchWeather();
   }, [query]);
-
-  useEffect(() => {}, []);
 
   return (
     <Box
@@ -78,7 +76,7 @@ const WeatherAppCurrentForecast = () => {
           >
             <Box
               component="img"
-              src={getWeatherIcon(currentWeather.details)}
+              src={getWeatherIcon(currentWeather?.details)}
               alt="SunnyWindy"
               sx={themeStyle.image}
             />
@@ -109,8 +107,8 @@ const WeatherAppCurrentForecast = () => {
               value={query.temperatureUnit}
               onChange={handleUnitChange}
             >
-              <MenuItem value="imperial">Fahrenheit</MenuItem>
-              <MenuItem value="metric">Celsius</MenuItem>
+              <MenuItem value="imperial">{t('userProject.weather.dropdown.title1')}</MenuItem>
+              <MenuItem value="metric">{t('userProject.weather.dropdown.title2')}</MenuItem>
             </Select>
           </Box>
         </Box>

@@ -1,8 +1,9 @@
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import CircleIcon from "@mui/icons-material/Circle";
-
+import { useTranslation } from 'react-i18next';
 const TotalDaysAllotted = ({ data }) => {
+  const {t} = useTranslation()
   // let dataUser = localStorage.getItem("userInfo");
   // let userInfo = JSON.parse(dataUser);
   // const currentUser = userInfo?.user;
@@ -33,7 +34,7 @@ const TotalDaysAllotted = ({ data }) => {
         p={1}
         pl={2}
       >
-        Total Projects
+        {t("ProjectReports.totalDaysAllotted.title1")}
       </Typography>
       <Typography
         fontSize={{ xl: "27px", lg: "24px", md: "27px", xs: "27px" }}
@@ -69,7 +70,7 @@ const TotalDaysAllotted = ({ data }) => {
           <Stack direction={"row"} spacing={1} alignItems={"center"}>
             <CircleIcon sx={{ color: "#2D9CDB",  fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
             <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"12px",md:"12px",xs:"12px"}}>
-              Work Days spent
+              {t("ProjectReports.totalDaysAllotted.title2")}
             </Typography>
           </Stack>
           <Typography fontSize={{xl:"16px",lg:"14px",xl:"16px",xl:"16px"}} textAlign={"right"}>
@@ -80,7 +81,7 @@ const TotalDaysAllotted = ({ data }) => {
           <Stack direction={"row"} spacing={1} alignItems={"center"}>
             <CircleIcon sx={{ color: "#90BE6D", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
             <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"12px",md:"12px",xs:"12px"}}>
-              Work Days Remaining
+              {t("ProjectReports.totalDaysAllotted.title3")}
             </Typography>
           </Stack>
           <Typography fontSize={{xl:"16px",lg:"14px",xl:"16px",xl:"16px"}} textAlign={"center"}>
@@ -91,7 +92,7 @@ const TotalDaysAllotted = ({ data }) => {
           <Stack direction={"row"} spacing={1} alignItems={"center"}>
             <CircleIcon sx={{ color: "#F94144", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
             <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"12px",md:"12px",xs:"12px"}}>
-              Work Days Overdue
+              {t("ProjectReports.totalDaysAllotted.title4")}
             </Typography>
           </Stack>
           <Typography fontSize={{xl:"16px",lg:"14px",xl:"16px",xl:"16px"}} textAlign={"center"}>

@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import { getUserRoleFromRedux } from "../../redux/slices/auth/userRoleSlice";
 import { useProjectPermissionCheck } from "./ProjectPermissions/ProjectsPermissionCheck";
 import { useGetProjectDataQuery } from "../../redux/apis/Project/projectApiSlice";
+import { t } from "i18next";
 
 const ProjectsNavbar = ({ project }) => {
   const location = useLocation();
@@ -45,49 +46,49 @@ const ProjectsNavbar = ({ project }) => {
 
   const navLinks = [
     {
-      title: "Initial Proposal",
+      title: t("ProjectNavbar.title1"),
       path: `initial-proposal`,
     },
     {
-      title: "Images",
+      title: t("ProjectNavbar.title2"),
       path: "images",
     },
     {
-      title: "Permit",
+      title: t("ProjectNavbar.title3"),
       path: "permit",
     },
     {
-      title: "Drawing & Files",
+      title: t("ProjectNavbar.title4"),
       path: "drawing-files",
     },
     ...(data?.data?.initialProposalApproved === false
       ? [
           {
-            title: "Work Order",
+            title: t("ProjectNavbar.title5"),
             path: "",
             disabled: true,
           },
         ]
       : [
           {
-            title: "Work Order",
+            title: t("ProjectNavbar.title5"),
             path: "work-order",
             disabled: false,
           },
         ]),
 
     {
-      title: "Chat",
+      title: t("ProjectNavbar.title6"),
       path: "chat",
     },
     {
-      title: "Notes",
+      title: t("ProjectNavbar.title7"),
       path: "notes",
     },
     ...(projectReportPermission
       ? [
           {
-            title: "Project Report",
+            title: t("ProjectNavbar.title8"),
             path: "project-report",
           },
         ]
@@ -95,27 +96,27 @@ const ProjectsNavbar = ({ project }) => {
     ...(data?.data?.initialProposalApproved === false
       ? [
           {
-            title: "Change Order",
+            title: t("ProjectNavbar.title9"),
             path: "",
             disabled: true,
           },
         ]
       : [
           {
-            title: "Change Order",
+            title: t("ProjectNavbar.title9"),
             path: "change-order",
             disabled: false,
           },
         ]),
 
     {
-      title: "Invoices",
+      title: t("ProjectNavbar.title10"),
       path: "invoices",
     },
     ...(userId === project?.userId
       ? [
           {
-            title: "Project Permissions",
+            title: t("ProjectNavbar.title11"),
             path: "project-permissions",
           },
         ]
@@ -184,6 +185,7 @@ const ProjectsNavbar = ({ project }) => {
         pr={2}
         pl={1}
         display={{ xl: "flex", lg: "none", md: "none", sm: "none", xs: "none" }}
+        // minWidth={'80vw'}
       >
         {navLinks.map((navlink, index) => {
           if (

@@ -19,6 +19,7 @@ import actionButton from "../../UI/actionButton";
 import AddIcon from "@mui/icons-material/Add";
 import { buttonBox } from "./stylingObjects";
 import { Excel } from "../../../assets/FileSvg/excel";
+import { useTranslation } from "react-i18next";
 
 //HEADER BUTTONS
 const InitialProposalButtons = ({
@@ -37,6 +38,7 @@ const InitialProposalButtons = ({
   const downView = useMediaQuery(theme.breakpoints.down("lg"));
   const mobileView = useMediaQuery(theme.breakpoints.down("md"));
   const currentRoute = location.pathname;
+  const {t} = useTranslation()
   const initialPhases = useSelector(
     (state) => state.projectInitialProposal.initialPhases
   );
@@ -79,7 +81,7 @@ const InitialProposalButtons = ({
         {initalApproved && (
           <>
             <Stack direction={"row"} sx={buttonBox}>
-            <Tooltip title="Export phases" placement="top">
+            <Tooltip title={t("ProjectInitialProposal.title4")} placement="top">
                 <Box sx={{ cursor: "pointer" }} onClick={handleExportPhases}>
                   <Excel
                     fill={"#4C8AB1"}
@@ -92,7 +94,7 @@ const InitialProposalButtons = ({
                 title={
                   changeOrderPermission
                     ? ""
-                    : "You don't have permission to access this feature"
+                    : t("PermisionsMessage.noPermission")
                 }
                 arrow
               >
@@ -110,7 +112,7 @@ const InitialProposalButtons = ({
                     }}
                     handleOnClick={handleChangeOpen}
                   >
-                    Change Order
+                    {t("ProjectInitialProposal.title2")}
                   </BuilderProButton>
                 </span>
               </Tooltip>
@@ -119,7 +121,7 @@ const InitialProposalButtons = ({
                 title={
                   workOrderPermission
                     ? ""
-                    : "You don't have permission to access this feature"
+                    : t("PermisionsMessage.noPermission")
                 }
                 arrow
               >
@@ -137,7 +139,7 @@ const InitialProposalButtons = ({
                     }}
                     handleOnClick={handleWorkOpen}
                   >
-                    Work Order
+                    {t("ProjectInitialProposal.title3")}
                   </BuilderProButton>
                 </span>
               </Tooltip>
@@ -153,7 +155,7 @@ const InitialProposalButtons = ({
                   title={
                     projectManagementPermission
                       ? ""
-                      : "You don't have permission to access this feature"
+                      : t("PermisionsMessage.noPermission")
                   }
                   arrow
                 >
@@ -182,7 +184,7 @@ const InitialProposalButtons = ({
                       onClick={handleAddPhase}
                     >
                       {downView && <AddIcon />}
-                      {downView ? (mobileView ? "" : "Add") : "Add Phase"}
+                      {downView ? (mobileView ? "" : t("Button.add")) : t("ProjectInitialProposal.button5")}
                     </Button>
                   </span>
                 </Tooltip>
@@ -190,7 +192,7 @@ const InitialProposalButtons = ({
                   title={
                     projectManagementPermission
                       ? ""
-                      : "You don't have permission to access this feature"
+                      : t("PermisionsMessage.noPermission")
                   }
                   arrow
                 >
@@ -217,7 +219,7 @@ const InitialProposalButtons = ({
                           display: { md: "block", xs: "none" },
                         }}
                       >
-                        Edit
+                        {t("ProjectInitialProposal.button1")}
                       </Typography>
                     </Button>
                   </span>
@@ -227,7 +229,7 @@ const InitialProposalButtons = ({
                   title={
                     projectManagementPermission
                       ? ""
-                      : "You don't have permission to access this feature"
+                      : t("PermisionsMessage.noPermission")
                   }
                   arrow
                 >
@@ -254,7 +256,7 @@ const InitialProposalButtons = ({
                           display: { md: "block", xs: "none" },
                         }}
                       >
-                        Delete
+                        {t("ProjectInitialProposal.button2")}
                       </Typography>
                     </Button>
                   </span>
@@ -266,7 +268,7 @@ const InitialProposalButtons = ({
               title={
                 ProjectApprovalSendPermission
                   ? ""
-                  : "You don't have permission to access this feature"
+                  : t("PermisionsMessage.noPermission")
               }
               arrow
             >
@@ -293,7 +295,7 @@ const InitialProposalButtons = ({
                       display: { md: "block", xs: "none" },
                     }}
                   >
-                    {initialPending ? "Pending" : "Send Approval"}
+                    {initialPending ? t("ProjectInitialProposal.button4") : t("ProjectInitialProposal.button3")}
                   </Typography>
                 </Button>
               </span>

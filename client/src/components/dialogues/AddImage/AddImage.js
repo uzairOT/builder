@@ -24,7 +24,7 @@ import filePlaceHolder from "../../../assets/FileSvg/file.svg";
 import CloseIcon from "@mui/icons-material/Close";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import CheckIcon from "@mui/icons-material/Check";
-
+import { useTranslation } from 'react-i18next'
 function AddImage({
   handleOpen,
   handleClose,
@@ -33,9 +33,11 @@ function AddImage({
   fetchData,
   showDelete,
   setShowDelete,
-  projectOrganizationId
+  projectOrganizationId,
+  view
 }) {
   const [open, setOpen] = useState(false);
+  const {t} = useTranslation()
   const [image, setImage] = useState(null);
   const [primary, setPrimary] = useState(null);
   const objectFit = { objectFit: image ? "cover" : "none" };
@@ -249,7 +251,7 @@ function AddImage({
           alignItems={"center"}
         >
           <DialogTitle sx={themeStyle.typoTitle}>
-            <span style={{ textTransform: "capitalize" }}>Add {heading}</span>
+            <span style={{ textTransform: "capitalize" }}>{t("ProjectFiles.button1")} {view}</span>
           </DialogTitle>
           <IconButton onClick={handleClickClose}>
             <CloseIcon />
@@ -302,7 +304,7 @@ function AddImage({
                   </>
                 )}
                 <Typography sx={themeStyle.avatarText}>
-                  {image ? "" : "Click or Drag your file here"}
+                  {image ? "" : t("ProjectFiles.clickOrDragFileHere")}
                 </Typography>
               </div>
             </label>
@@ -314,7 +316,7 @@ function AddImage({
               maxLength={1000}
               style={themeStyle.inputStyle}
               // required
-              placeholder="Type Note Here ....."
+              placeholder={t("ProjectFiles.addImagePlaceholder")}
               margin="dense"
               id="notes"
               name="notes"
@@ -342,7 +344,7 @@ function AddImage({
                     fontSize={"12px"}
                     pl={primary ? "" : "13px"}
                   >
-                    {primary ? "Unset" : "Set"} Primary
+                    {primary ? t("ProjectFiles.unset") : t("ProjectFiles.set")} {t("ProjectFiles.primary")}
                   </Typography>
 
                   <Switch
@@ -373,7 +375,7 @@ function AddImage({
             {loading ? (
               <CircularProgress size={"20px"} sx={{ color: "white" }} />
             ) : (
-              "Add"
+              t("ProjectFiles.button1")
             )}
           </Button>
         </DialogActions>

@@ -1,5 +1,6 @@
 import React from "react";
 import LineItemElement from "../LineItemElement/LineItemElement";
+import { useTranslation } from "react-i18next";
 function AddLineDialogue({
   phaseData,
   handleAddOpen,
@@ -11,6 +12,7 @@ function AddLineDialogue({
   showAddLine,
   changeOrderView
 }) {
+  const {t} = useTranslation()
   return (
     <div>
       <LineItemElement
@@ -18,7 +20,7 @@ function AddLineDialogue({
         InitialProposalView={InitialProposalView}
         projectId={projectId}
         phaseData={phaseData}
-        LineHeading={"Add Line Item"}
+        LineHeading={t("LineItem.addLineItem")}
         handleAddOpen={handleAddOpen}
         handleAddClose={handleAddClose}
         handleAddRow={handleAddRow}

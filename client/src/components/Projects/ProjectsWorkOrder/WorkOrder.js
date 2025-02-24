@@ -12,7 +12,8 @@ import NotificationDetailModal from "../../Navbar/NotificationDetailModal";
 import { useGetWorkOrderDetailsMutation } from "../../../redux/apis/Project/projectApiSlice";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import moment from 'moment';
-
+import { useTranslation } from 'react-i18next'; 
+import { formatMoney } from "../../../utils/Formatters/moneyFormat";
 function WorkOrder({
   setUpdateModalOpen,
   data,
@@ -22,6 +23,7 @@ function WorkOrder({
   status,
   setPhaseItems
 }) {
+  const {t} = useTranslation()
   // console.log('INSIDE WORKORDER: ',data)
   const [open, setOpen] = useState(false);
   const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation();
@@ -55,18 +57,18 @@ function WorkOrder({
         <TableHead>
           <TableRow>
             {/* {workOrder ? <></> : <TableCell sx={tableCellStyle}>Select</TableCell>} */}
-            <TableCell sx={tableCellStyle}>Subject</TableCell>
-            <TableCell sx={tableCellStyle}>Description</TableCell>
+            <TableCell sx={tableCellStyle}>{t("ProjectWorkOrder.table.title1")}</TableCell>
+            <TableCell sx={tableCellStyle}>{t("ProjectWorkOrder.table.title2")}</TableCell>
             {/* <TableCell sx={tableCellStyle}>Unit</TableCell> */}
             {/* <TableCell sx={tableCellStyle}>Margin</TableCell> */}
-            <TableCell sx={tableCellStyle}>priority</TableCell>
-            <TableCell sx={tableCellStyle}>Total</TableCell>
-            <TableCell sx={tableCellStyle}>Start</TableCell>
-            <TableCell sx={tableCellStyle}>End</TableCell>
+            <TableCell sx={tableCellStyle}>{t("ProjectWorkOrder.table.title3")}</TableCell>
+            <TableCell sx={tableCellStyle}>{t("ProjectWorkOrder.table.title4")}</TableCell>
+            <TableCell sx={tableCellStyle}>{t("ProjectWorkOrder.table.title5")}</TableCell>
+            <TableCell sx={tableCellStyle}>{t("ProjectWorkOrder.table.title6")}</TableCell>
             {/* <TableCell sx={tableCellStyle}>Quantity</TableCell> */}
             {/* <TableCell sx={tableCellStyle}>Unit Price</TableCell> */}
-            <TableCell sx={tableCellStyle}>Status</TableCell>
-            <TableCell sx={tableCellStyle}>Notes</TableCell>
+            <TableCell sx={tableCellStyle}>{t("ProjectWorkOrder.table.title7")}</TableCell>
+            <TableCell sx={tableCellStyle}>{t("ProjectWorkOrder.table.title8")}</TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
@@ -96,13 +98,13 @@ function WorkOrder({
                   <TableCell sx={tableCellValueStyle}>
                     {item.priority}
                   </TableCell>
-                  <TableCell sx={tableCellValueStyle}>{item.total}</TableCell>
+                  <TableCell sx={tableCellValueStyle}>${formatMoney(item.total)}</TableCell>
                   <TableCell sx={{...tableCellValueStyle, whiteSpace:'nowrap'}}>
                     {moment(item.start_day).format('MM/DD/YYYY, h:mm a')}
                   </TableCell>
                   <TableCell sx={{...tableCellValueStyle, whiteSpace:'nowrap'}}>{moment(item.end_day).format('MM/DD/YYYY, h:mm a')}</TableCell>
                   <TableCell sx={tableCellValueStyle}>
-                  {item.version> 1 ? `change order ${item.status}` : item.status}
+                  {item.version> 1 ? `change order ${item.status}` : t(`WorkOrder.${item.status}`)}
                     {/* <Button
                       buttonText= // Assuming status property represents the status
                       color={item.status === "pending" ? "#DF0404" : "#000000"} // Adjust colors based on status
@@ -125,7 +127,7 @@ function WorkOrder({
                       marginLeft={"5px"}
                       handleOnClick={() => handleOnClick(item.id)}
                     >
-                      Detail
+                      {t("ProjectWorkOrder.table.title9")}
                     </BuilderProButton>
                   
                   </TableCell>

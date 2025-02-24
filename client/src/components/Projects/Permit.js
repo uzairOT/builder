@@ -19,7 +19,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 import { useDeleteProjectFileMutation } from "../../redux/apis/Project/projectApiSlice";
 import { toast } from "react-toastify";
+import { useTranslation } from 'react-i18next'
 function Permit({ view, type, projectOrganizationId }) {
+  const {t} = useTranslation()
   const placeholderImg = `https://source.unsplash.com/random/100x100`;
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -91,7 +93,7 @@ function Permit({ view, type, projectOrganizationId }) {
     <div style={{ width: "100%", borderRadius: "14px", marginBottom: '14px' }}>
       <Box sx={themeStyle.titleBox}>
         <Typography sx={themeStyle.titleTypo}>
-          {view} ({RecentfileUrls?.length} items){" "}
+          {view} ({RecentfileUrls?.length} {t("ProjectFiles.text1")}){" "}
         </Typography>
         <Stack
           direction={{ sm: "row", xs: "column" }}
@@ -100,7 +102,7 @@ function Permit({ view, type, projectOrganizationId }) {
           alignItems={"center"}
         >
           <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>
-            Add
+            {t("ProjectFiles.button1")}
           </Button>
 
           <Button
@@ -116,7 +118,7 @@ function Permit({ view, type, projectOrganizationId }) {
             }}
             onClick={handleSetShowDelete}
           >
-            Delete
+            {t("ProjectFiles.button2")}
           </Button>
 
         </Stack>
@@ -165,7 +167,7 @@ function Permit({ view, type, projectOrganizationId }) {
                   gap={2}
                 >
                   <Typography variant="body1" color="textSecondary">
-                    No images or files found.
+                    {t("ProjectFiles.noImagesOrFilesFound")}
                   </Typography>
                   {isLoading && <CircularProgress size={'16px'} />}
                 </Box>
@@ -362,6 +364,7 @@ function Permit({ view, type, projectOrganizationId }) {
           handleOpen={handleOpen}
           handleClose={handleClose}
           heading={type}
+          view={type === 'image' ? t("ProjectFiles.ProjectImages.title1") : type === 'permit' ? t("ProjectFiles.ProjectPermit.title1") : t("ProjectFiles.ProjectDrawingFiles.title1")}
           fetchData={fetchData}
           projectOrganizationId={projectOrganizationId}
         ></AddImage>

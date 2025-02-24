@@ -5,8 +5,10 @@ import CircleIcon from "@mui/icons-material/Circle";
 import { useGetLineItemMarginsMutation, useGetProjectCostStatsMutation } from "../../redux/apis/Reports/reportsApiSlice";
 import { useParams } from "react-router-dom";
 import { formatMoney } from "../../utils/Formatters/moneyFormat";
+import { useTranslation } from 'react-i18next';
 
 const TotalCostPieChart = () => {
+  const {t} = useTranslation()
   let dataUser = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(dataUser);
   const currentUser = userInfo?.user;
@@ -42,7 +44,7 @@ const TotalCostPieChart = () => {
           fontWeight={"500"}
           fontSize={{ xl: "18px", lg: "15px", md: "18px", xs: "18px" }}
         >
-          Total Cost
+          {t("ProjectReports.TotalCostPieChart.title1")}
         </Typography>
         <Typography
           fontFamily={'var(--main-font-family)'}
@@ -57,7 +59,7 @@ const TotalCostPieChart = () => {
           fontSize={{ xl: "12px", lg: "11px", md: "12px", xs: "12px" }}
           color={"#4F4F4F"}
         >
-          US Dollars
+          {t("ProjectReports.TotalCostPieChart.title2")}
         </Typography>
       </Stack>
       <Divider variant="fullWidth" />
@@ -76,7 +78,7 @@ const TotalCostPieChart = () => {
                 fontFamily={'var(--main-font-family)'}
                 fontSize={{ xl: "12px", lg: "11px", md: "12px", xs: "12px" }}
               >
-                Spent Amount
+                {t("ProjectReports.TotalCostPieChart.title3")}
               </Typography>
             </Stack>
             <Typography textAlign={"right"}>
@@ -90,7 +92,7 @@ const TotalCostPieChart = () => {
                 fontFamily={'var(--main-font-family)'}
                 fontSize={{ xl: "12px", lg: "11px", md: "12px", xs: "12px" }}
               >
-                Current Expected Margin
+                {t("ProjectReports.TotalCostPieChart.title5")}
               </Typography>
             </Stack>
             <Typography textAlign={"right"}>
@@ -104,7 +106,7 @@ const TotalCostPieChart = () => {
                 fontFamily={'var(--main-font-family)'}
                 fontSize={{ xl: "12px", lg: "11px", md: "12px", xs: "12px" }}
               >
-                Remaining Amount
+                {t("ProjectReports.TotalCostPieChart.title4")}
               </Typography>
             </Stack>
             <Typography textAlign={"center"}>

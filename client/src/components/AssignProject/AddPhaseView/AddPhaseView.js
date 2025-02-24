@@ -51,6 +51,7 @@ import GenerativeAiDialogue from "../../dialogues/GenerativeAIDialogue/Generativ
 import { currencyFormatter, headerFormatter } from "../../../utils/Formatters/excelFormatters";
 import XLSX from "xlsx-js-style";
 import RenderPhases from "./RenderPhases";
+import { useTranslation } from "react-i18next";
 //import "react-toastify/dist/ReactToastify.css";
 
 function AddPhaseView({
@@ -103,6 +104,7 @@ function AddPhaseView({
   const newChangePath = `/projects/${projectId}/change-order`;
   const newWorkPath = `/projects/${projectId}/work-order`;
   const navigate = useNavigate();
+  const { t } = useTranslation();
   // const projects = useSelector(
   //   (state) => state.userProjects.projects
   // );
@@ -519,15 +521,15 @@ function AddPhaseView({
               </Typography>
             )}
           </Stack>
-          {view === "Initial Proposal" ? (
+          {view === t("ProjectInitialProposal.title1") ? (
             <>
             <InitialProposalButtons handleExportPhases={handleExportPhases} handleChangeOpen={handleChangeOpen} handleWorkOpen={handleWorkOpen} isLoading={isLoading} handleAddPhase={handleAddPhase} handleEditPhase={handleEditPhase} handleOpenModal={handleOpenModal} handleSendApproval={handleSendApproval} isLoadingSendApproval={isLoadingSendApproval}/>
             </>
-          ) : view === "Generate Invoice" ? (
+          ) : view === t("ProjectInvoices.title1") ? (
             <>
             <GenerateInvoiceButtons handleGenerateInvoice={handleGenerateInvoice}/>
             </>
-          ) : view === "Work Order" ? (
+          ) : view === t("ProjectWorkOrder.title1") ? (
             <>
               <WorkOrderButtons adminProjectView={adminProjectView} rowCheckboxes={rowCheckboxes} setRowCheckboxes={setRowCheckboxes} phases={phases} fetchData={fetchData} refetchChangeOrder={refetchChangeOrder} changeOrderView={changeOrderView} selectedProjectData={selectedProjectData} />
             </>
@@ -550,7 +552,7 @@ function AddPhaseView({
             />
           )}
         </Stack>
-        {view !== "Initial Proposal" &&
+        {view !== t("ProjectInitialProposal.title1") &&
           (authUserRole === "superadmin" ||
             authUserRole === "" ||
             authUserRole === "projectManager" ||
@@ -636,7 +638,7 @@ function AddPhaseView({
           handleClose={handleOpenModalClose}
           handleConfirmDelete={handlePhaseDelete}
           isLoading={isDeletePhaseLoading}
-          text={"Phase"}
+          text={t("PhaseModal.areYouSure")}
         />
       )}
     </>

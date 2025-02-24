@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { socket } from "../../../socket";
 import { useParams } from "react-router-dom";
 import { toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
-
+import { useTranslation } from "react-i18next";
 const LineItemDetailModal = ({
   modalOpen,
   setModalOpen,
@@ -16,6 +16,7 @@ const LineItemDetailModal = ({
   userRole,
   userId
 }) => {
+  const {t} = useTranslation()
   const {id} = useParams();
   const [updateStatus, { isLoading }] = useUpdateUserLineItemStatusMutation();
   const dispatch = useDispatch();
@@ -69,28 +70,28 @@ const LineItemDetailModal = ({
       {lineItem?.title}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>Description:</strong> {lineItem?.description}
+      <strong>{t("LineItemDetailModal.title1")}:</strong> {lineItem?.description}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>Unit:</strong> {lineItem?.unit}
+      <strong>{t("LineItemDetailModal.title2")}:</strong> {lineItem?.unit}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>Quantity:</strong> {lineItem?.quantity}
+      <strong>{t("LineItemDetailModal.title3")}:</strong> {lineItem?.quantity}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>Unit Price:</strong> {lineItem?.unit_price}
+      <strong>{t("LineItemDetailModal.title4")}:</strong> {lineItem?.unit_price}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>Total:</strong> {lineItem?.total}
+      <strong>{t("LineItemDetailModal.title5")}:</strong> {lineItem?.total}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>Start Day:</strong> {new Date(lineItem?.start_day).toLocaleDateString()}
+      <strong>{t("LineItemDetailModal.title6")}:</strong> {new Date(lineItem?.start_day).toLocaleDateString()}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>End Day:</strong> {new Date(lineItem?.end_day).toLocaleDateString()}
+      <strong>{t("LineItemDetailModal.title7")}:</strong> {new Date(lineItem?.end_day).toLocaleDateString()}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>Notes:</strong> {lineItem?.notes}
+      <strong>{t("LineItemDetailModal.title8")}:</strong> {lineItem?.notes}
     </Typography>
           <Stack
             direction={"row"}
@@ -104,7 +105,7 @@ const LineItemDetailModal = ({
               handleOnClick={handleClose}
               marginLeft={"0px"}
             >
-              Close
+              {t("Button.close")}
             </BuilderProButton>
             <Stack>
               {(userRole) ? (
@@ -116,7 +117,7 @@ const LineItemDetailModal = ({
                   marginLeft={"0px"}
                   disabled={isLoading || disableButton()}
                 >
-                  Done
+                  {t("Button.done")}
                 </BuilderProButton>
               ) : (
                 <></>

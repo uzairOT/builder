@@ -2,7 +2,7 @@ import { Divider, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useGetTotalProjectTransactionMutation } from "../../redux/apis/Reports/reportsApiSlice";
 import { useParams } from "react-router-dom";
-
+import { useTranslation } from 'react-i18next';
 const PaidTransactionsCard = () => {
   let dataUser = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(dataUser);
@@ -11,6 +11,7 @@ const PaidTransactionsCard = () => {
   const [totalPayment, setTotalPayment] = useState(0);
   const { id } = useParams();
   const projectId = id;
+  const {t} = useTranslation()
   const [getTotalProjectTransaction, { data, error, isLoading }] =
     useGetTotalProjectTransactionMutation();
 
@@ -45,7 +46,7 @@ const PaidTransactionsCard = () => {
             fontWeight={"500"}
             color={"#4C8AB1"}
           >
-            Paid Transactions
+            {t("ProjectReports.PaidTransactionsCard.title1")}
           </Typography>
         </Stack>
         <Divider variant="fullWidth" />
@@ -74,7 +75,7 @@ const PaidTransactionsCard = () => {
                   ${transaction?.PaymentAmount}
                 </Typography>
               </Stack>
-            )) : <>No data available</>}
+            )) : <Typography fontFamily={'var(--main-font-family)'} fontWeight={"500"} fontSize={{ xl: "16px", lg: "13px", md: "16px", xs: "16px" }} color={"#5B5B5B"}>{t("ProjectReports.PaidTransactionsCard.noData")}</Typography>}
         </Stack>
       </Stack>
       <Stack>
@@ -86,7 +87,7 @@ const PaidTransactionsCard = () => {
             fontSize={{ xl: "16px", lg: "13px", md: "16px", xs: "16px" }}
             color={"#5B5B5B"}
           >
-            Total Payment Done
+            {t("ProjectReports.PaidTransactionsCard.title2")}
           </Typography>
           <Typography
             fontFamily={'var(--main-font-family)'}

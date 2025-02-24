@@ -6,6 +6,7 @@ import GenerateInvoiceTable from './GenerateInvoiceTable';
 import BuilderProNavbarLogo from "../../Navbar/assets/svgs/builder-pro-logo-navbar.svg";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 const options = {
   // default is `save`
   method: 'save',
@@ -44,6 +45,7 @@ const options = {
 
 
 const GenerateInvoice = ({open, handleClose,invoiceData}) => {
+  const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
   const isInvoiceData = Boolean(invoiceData)
   const targetRef = useRef();
@@ -105,7 +107,7 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
                 fontWeight={"600"}
                 color={"#4C8AB1"}
               >
-                Invoice
+                {t("InvoiceModal.title1")}
               </Typography>
               <Stack
                 direction={"row"}
@@ -123,7 +125,7 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
                   }}
                   disabled={!isInvoiceData || loading}
                 >
-                  {loading ? <Stack direction={'row'} justifyContent={'center'} alignItems={'center'} gap={2}>Generating... <CircularProgress size={'16px'} sx={{color:'white'}}/></Stack>: 'Download Invoice'}
+                  {loading ? <Stack direction={'row'} justifyContent={'center'} alignItems={'center'} gap={2}>{t("InvoiceModal.GenerateInvoice.generating")} <CircularProgress size={'16px'} sx={{color:'white'}}/></Stack>: t("InvoiceModal.GenerateInvoice.downloadInvoice")}
                 </BuilderProButton>
               </Stack>
             </Stack>
@@ -188,14 +190,14 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
                 >
                   <Stack spacing={1}>
                     <Typography sx={modalStyle}>
-                      Company:{" "}
+                      {t("InvoiceModal.GenerateInvoice.form.title1")}:{" "}
                       {invoiceData?.invoiceCompleteObj?.Admin?.companyName}
                     </Typography>
                     <Typography sx={modalStyle}>
-                      Name: {invoiceData?.invoiceCompleteObj?.Client ? invoiceData?.invoiceCompleteObj?.Client?.firstName : invoiceData?.invoiceCompleteObj?.email}
+                      {t("InvoiceModal.GenerateInvoice.form.title2")}: {invoiceData?.invoiceCompleteObj?.Client ? invoiceData?.invoiceCompleteObj?.Client?.firstName : invoiceData?.invoiceCompleteObj?.email}
                     </Typography>
                     <Typography sx={modalStyle}>
-                      Biller: {invoiceData?.invoiceCompleteObj?.Admin?.firstName}
+                      {t("InvoiceModal.GenerateInvoice.form.title3")}: {invoiceData?.invoiceCompleteObj?.Admin?.firstName}
                     </Typography>
                     {/* <Typography sx={modalStyle}>Company Address</Typography>
                 <Typography sx={modalStyle}>City,State Zip</Typography>
@@ -204,13 +206,13 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
                   <Stack direction={"row"} spacing={4}>
                     <Stack spacing={1}>
                       <Typography sx={modalStyle} fontWeight={"bold"}>
-                        Invoice#
+                        {t("InvoiceModal.GenerateInvoice.form.Invoice#")}
                       </Typography>
                       <Typography sx={modalStyle} fontWeight={"bold"}>
-                        Invoice Date
+                        {t("InvoiceModal.GenerateInvoice.form.invoiceDate")}
                       </Typography>
                       <Typography sx={modalStyle} fontWeight={"bold"}>
-                        Due Date
+                        {t("InvoiceModal.GenerateInvoice.form.dueDate")}
                       </Typography>
                     </Stack>
                     <Stack spacing={1}>
@@ -274,18 +276,18 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
                 >
                   <Stack>
                     <Typography sx={modalStyle} fontWeight={"bold"}>
-                      Notes
+                      {t("InvoiceModal.GenerateInvoice.form.Notes")}
                     </Typography>
                     <Typography sx={modalStyle}>
-                      It was great doing business with you
+                      {t("InvoiceModal.GenerateInvoice.form.footer.footer1")}
                     </Typography>
                   </Stack>
                   <Stack>
                     <Typography sx={modalStyle} fontWeight={"bold"}>
-                      Terms and Condition
+                      {t("InvoiceModal.GenerateInvoice.form.footer.footer2")}
                     </Typography>
                     <Typography sx={modalStyle}>
-                      Please make payments before the due date
+                      {t("InvoiceModal.GenerateInvoice.form.footer.footer3")}
                     </Typography>
                   </Stack>
                 </Stack>

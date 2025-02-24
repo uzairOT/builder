@@ -10,7 +10,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import "../../../App.css";
 import "./StepFormField.css";
-
+import { useTranslation } from "react-i18next";
 function ProjectFormFields({
   index,
   email,
@@ -21,6 +21,7 @@ function ProjectFormFields({
   userInfo,
   usersLength
 }) {
+  const { t } = useTranslation();
   const MAX_EMAIL_LENGTH = 50;
   const isSmallMobile = useMediaQuery("(max-width:500px)");
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -110,28 +111,28 @@ function ProjectFormFields({
                 // helperText={'Select user role'}
               >
                 <MenuItem sx={{ ...menuItem }} value={"none"} disabled>
-                  Select Role
+                  {t("AssignNewProjectStep2.SelectRole")}
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"admin"}>
-                  Admin
+                  {t("ProjectPermissions.roles.admin")}
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"projectManager"}>
-                  Project Manager
+                  {t("ProjectPermissions.roles.projectManager")}
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"client"}>
-                  Client
+                  {t("ProjectPermissions.roles.client")}
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"subcontractor"}>
-                  Subcontractor
+                  {t("ProjectPermissions.roles.subcontractor")}
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"supplier"}>
-                  Supplier
+                  {t("ProjectPermissions.roles.supplier")}
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"employee"}>
-                  Employee
+                  {t("ProjectPermissions.roles.employee")}
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"others"}>
-                  Others
+                  {t("ProjectPermissions.roles.others")}
                 </MenuItem>
               </TextField>
             </Box>

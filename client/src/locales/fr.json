@@ -190,5 +190,662 @@
     "title4": "BuilderBUILDER PRO est la solution de gestion de construction de premier plan, conçue pour vous aider à rationaliser vos projets du début à la fin. Avec nos outils puissants et nos fonctionnalités, vous pouvez gérer tous les aspects de vos projets de construction avec facilité et efficacité.",
     "title5": "Installer l'application",
     "title6": "© Copyright 2024, Tous droits réservés par BuilderBUILDER PRO"
+  },
+  "userProject": {
+    "title0": "Tableau de bord des projets",
+    "title1": "Projets de l'utilisateur",
+    "title2": "Tous les projets répertoriés",
+    "title3": "Rénovation",
+    "title4": "Nouvelle construction",
+    "title5": "Commercial",
+    "title6": "Nom du client :",
+    "title7": "Total cumulé du chantier :",
+    "title8": "Localisation :",
+    "title9": "Organisation :",
+    "title10": "Ajouter un nouveau projet",
+    "weather": {
+      "title1": "Bonjour",
+      "title2": "Bon après-midi",
+      "title3": "Bonsoir",
+      "title4": "Activez la localisation pour obtenir la météo de votre région.",
+      "title11": "Humidité",
+      "title12": "Vitesse du vent",
+      "title13": "Ressenti :",
+      "dropdown": {
+        "title1": "Fahrenheit",
+        "title2": "Celsius"
+      }
+    },
+    "processcard": {
+      "title1": "Nom du client :",
+      "title2": "Aucun nom de client",
+      "title3": "Facture en attente",
+      "title4": "Messages non lus",
+      "title5": "Progression du projet",
+      "title6": "Coût du projet",
+      "title7": "Détails des bénéfices",
+      "title8": "Bénéfice prévu",
+      "title9": "Marge",
+      "title10": "Progression"
+    }
+  },
+  "CustomToolbar": {
+    "title1": "Ordre de travail",
+    "title2": "Météo/Notes",
+    "title3": "jour",
+    "title4": "semaine",
+    "title5": "mois"
+  },
+  "CustomEvent": {
+    "title1": "Ordre de travail: ",
+    "title2": "Notes: "
+  },
+  "CustomProjectToolbar": {
+    "title1": "Ordre de changement",
+    "title2": "Ordre de travail",
+    "title3": "Météo/Notes",
+    "title4": "Diagramme de Gantt",
+    "title5": "Jour",
+    "title6": "Semaine",
+    "title7": "Mois"
+  },
+  "GanttChart": {
+    "title1": "Diagramme de Gantt",
+    "title2": "Génération de votre diagramme...",
+    "title3": "Passer en plein écran",
+    "title4": "Fermer le plein écran"
+  },
+  "ProjectInfo": {
+    "title1": "Début",
+    "title2": "Fin"
+  },
+  "ProjectTeam": {
+    "title1": "Équipe du projet",
+    "title2": "Invitations en attente",
+    "title3": "Aucune invitation en attente.",
+    "title4": "Inviter",
+    "title5": "Ajouter",
+    "role": {
+      "Superadmin": "Super Admin",
+      "Admin": "Administrateur",
+      "Subcontractor": "Sous-traitant",
+      "Client": "Client",
+      "Employee": "Employé",
+      "Supplier": "Fournisseur",
+      "Others": "Autres"
+    }
+  },
+  "ProjectLayoutChangeOrder": {
+    "title1": "Ordre de changement",
+    "title2": "Demande d'ordre de changement",
+    "title3": "Approuvé",
+    "title4": "En attente",
+    "title5": "Rejeté",
+    "table1": "Sujet",
+    "table2": "Description",
+    "table3": "Priorité"
+  },
+  "ProjectNavbar": {
+    "title1": "Proposition Initiale",
+    "title2": "Images",
+    "title3": "Permis",
+    "title4": "Plans & Fichiers",
+    "title5": "Ordre de Travail",
+    "title6": "Chat",
+    "title7": "Notes",
+    "title8": "Rapport de Projet",
+    "title9": "Ordre de Changement",
+    "title10": "Factures",
+    "title11": "Autorisations du Projet"
+  },
+  "ProjectInitialProposal": {
+    "title1": "Proposition Initiale",
+    "title2": "Ordre de Changement",
+    "title3": "Ordre de Travail",
+    "title4": "Exporter les phases",
+    "button1": "Modifier",
+    "button2": "Supprimer",
+    "button3": "Approuver",
+    "button4": "En attente",
+    "button5": "Ajouter des Phases",
+    "noPhases": "Aucune phase ajoutée"
+  },
+  "ProjectFiles": {
+    "text1": "Éléments",
+    "button1": "Ajouter",
+    "button2": "Supprimer",
+    "noImagesOrFilesFound": "Aucune image ou fichier trouvé.",
+    "clickOrDragFileHere": "Cliquez ou faites glisser votre fichier ici",
+    "addImagePlaceholder": "Ajouter une image ici .....",
+    "unset": "Désactiver",
+    "set": "Définir",
+    "primary": "Principal",
+    "ProjectImages": {
+      "title1": "Images",
+      "title2": "Image"
+    },
+    "ProjectPermit": {
+      "title1": "Permis",
+      "title2": "Permis"
+    },
+    "ProjectDrawingFiles": {
+      "title1": "Plans & Fichiers"
+    }
+  },
+  "ProjectWorkOrder": {
+    "Tab1": "Nouvel Ordre de Travail",
+    "Tab2": "Logs des Ordres de Travail",
+    "title1": "Ordre de Travail",
+    "title2": "Logs des Ordres de Travail",
+    "title3": "Approuvé",
+    "title4": "En attente",
+    "title5": "Rejeté",
+    "title6": "Aucune phases d'ordre de changement disponibles",
+    "title7": "Aucune phases d'ordre de changement approuvées disponibles",
+    "button1": "Modifier",
+    "button2": "Supprimer",
+    "button3": "Ajouter une Phase",
+    "button4": "Ajouter",
+    "button5": "Généré par IA",
+    "button6": "IA",
+    "table": {
+      "title1": "Sujet",
+      "title2": "Description",
+      "title3": "Priorité",
+      "title4": "Total",
+      "title5": "Début",
+      "title6": "Fin",
+      "title7": "Statut",
+      "title8": "Notes",
+      "title9": "Detail"
+    }
+  },
+  "RequestWorkOrder": {
+    "title1": "Soumettre un Ordre de Travail",
+    "title2": "Soumettre un Ordre de Changement",
+    "form": {
+      "title1": "Sujet",
+      "title2": "Description",
+      "title3": "Créé par",
+      "title4": "Assigné à",
+      "title5": "Notes",
+      "title6": "Définir la priorité",
+      "title7": "Date de début",
+      "title8": "Date de fin",
+      "urgent": "Dringend",
+      "normal": "Normal",
+      "title11": "Date de création",
+      "placeholder": "Type votre sujet...",
+      "placeholder1": "Type votre description ici...",
+      "placeholder2": "Type vos notes ici..."
+    }
+  },
+  "PermisionsMessage": {
+    "submitChangeOrder": "Vous n'avez pas la permission de soumettre un ordre de changement",
+    "submitWorkOrder": "Vous n'avez pas la permission de soumettre un ordre de travail",
+    "reportsMsg": "Les rapports du projet sont uniquement accessibles à l'équipe.",
+    "notes": "Les notes du projet sont uniquement accessibles à l'équipe."
+  },
+  "ProjectChat": {
+    "title1": "Chat",
+    "title2": "Chat du Projet :",
+    "dropDown": "Démarrer une Nouvelle Conversation",
+    "tab1": "Chat de Groupe",
+    "tab2": "Chat Privé",
+    "noChatAvailable": "Aucune conversation disponible...",
+    "team": "Équipe",
+    "team+client": "Tous",
+    "placeholder": "Veuillez entrer un message"
+  },
+  "ProjectNotes": {
+    "title1": "Notes",
+    "placeholder": "Rechercher des Notes",
+    "addNotes": "Ajouter des Notes",
+    "editNotes": "Modifier les Notes",
+    "noPreview": "Aperçu non disponible",
+    "placeholder1": "Saisissez le sujet de la note...",
+    "placeholder2": "Tapez votre texte ici...",
+    "noNotesAdded": "Aucune note ajoutée",
+    "pleaseAddNote": "Veuillez ajouter une note pour voir ses détails."
+  },
+  "ProjectReports": {
+    "title1": "Rapports",
+    "invoiceHistory": "Historique des Factures",
+    "totalProjects": {
+      "title1": "Projets Totaux",
+      "title2": "Terminés",
+      "title3": "Restants"
+    },
+    "totalDaysAllotted": {
+      "title1": "Total des Jours Alloués",
+      "title2": "Jours de Travail Passés",
+      "title3": "Jours de Travail Restants",
+      "title4": "Jours de Travail en Retard"
+    },
+    "OutstandingInvoices": {
+      "title1": "Factures en Attente",
+      "title2": "Total des Factures",
+      "title3": "En Retard",
+      "title4": "Payées",
+      "title5": "Non Payées"
+    },
+    "ProfitMarginBarChartCard": {
+      "title1": "Coût/Marge Total",
+      "title2": "Phases",
+      "title3": "Marge Bénéficiaire",
+      "title4": "Total",
+      "title5": "Total des Articles"
+    },
+    "SubcontractorBillingChart": {
+      "title1": "Aperçu de la Facturation des Sous-traitants",
+      "amount": "Montant",
+      "status": "Statut",
+      "due": "Échéance",
+      "noData": "Aucune donnée disponible"
+    },
+    "PaidTransactionsCard": {
+      "title1": "Transactions Payées",
+      "title2": "Paiement Total Effectué",
+      "noData": "Aucune donnée disponible"
+    },
+    "MonthlyMarginChart": {
+      "title1": "Marge Mensuelle",
+      "title2": "Marge Moyenne Mensuelle",
+      "loadingChart": "Chargement du Graphique...",
+      "noData": "Aucune donnée disponible",
+      "title3": "Rapport Mensuel",
+      "title4": "Mois",
+      "title5": "Total de Ordre de Travail/Marge",
+      "title6": "Paiement en Attente",
+      "tooltip": {
+        "title1": "Coût Mensuel",
+        "title2": "Marge Mensuelle",
+        "title3": "Tendance de Marge Mensuelle",
+        "title4": "Paiement en Attente"
+      }
+    },
+    "TotalCostPieChart": {
+      "title1": "Coût Total",
+      "title2": "Dollars américains",
+      "title3": "Montant Dépensé",
+      "title4": "Montant Restant",
+      "title5": "Marge Actuelle Prévue"
+    },
+    "UpcomingDeadlines": {
+      "title1": "Féchées à Venir",
+      "title2": "Nom du Projet",
+      "title3": "Date d'échéance"
+    }
+  },
+  "PhaseCard": {
+    "approved": "Approuvé",
+    "pending": "En attente",
+    "declined": "Rejeté",
+    "not approved": "Non Approuvé",
+    "changeApproved": "Ordre de Changement Approuvé",
+    "changePending": "Ordre de Changement en Attente",
+    "changeDeclined": "Ordre de Changement Rejeté",
+    "addLineItem": "Ajouter un Article",
+    "listOfLineItems": "Liste des Articles",
+    "price": "Prix",
+    "lineItem": "Article",
+    "unit": "Unité",
+    "start": "Début",
+    "end": "Fin",
+    "profit": "Profit",
+    "totalCost": "Coût Total",
+    "notes": "Notes",
+    "updateStatus": "Mettre à Jour le Statut",
+    "teamStatus": "Statut de l'Équipe",
+    "action": "Action",
+    "invoice": "Facture",
+    "status": "Statut",
+    "noLineItemsAdded": "Aucun article ajouté",
+    "Not Requested": "Non demandé",
+    "Work Order Not requested": "Ordre de Travail Non demandé",
+    "Work Order declined": "Ordre de Travail Rejeté",
+    "Change Order Not requested": "Ordre de Changement Non demandé",
+    "Change Order declined": "Ordre de Changement Rejeté",
+    "Change Order approved": "Ordre de Changement Approuvé",
+    "Work Order complete": "Ordre de Travail terminé",
+    "Work Order approved": "Ordre de Travail approuvé",
+    "Work Order Requested": "Ordre de Travail demandé",
+    "Change Order Requested": "Ordre de Changement demandé",
+    "details": "Détails"
+  },
+  "ProjectChangeOrder": {
+    "title1": "Soumettre un Ordre de Changement",
+    "title2": "Logs des Ordres de Changement"
+  },
+  "WorkOrder": {
+    "approved": "Approuvé",
+    "pending": "En attente",
+    "declined": "Rejeté"
+  },
+  "ProjectInvoices": {
+    "title1": "Générer une Facture",
+    "title2": "Historique des Factures",
+    "title3": "Facture",
+    "paid": "Payé",
+    "unpaid": "Non Payé",
+    "overdue": "En retard",
+    "addQuickbooks": "Ajouter à Quickbooks",
+    "downloadInvoice": "Télécharger la Facture",
+    "generated": "Généré",
+    "notGenerated": "Non Généré",
+    "export": "Exporter les factures",
+    "table": {
+      "title1": "Sélectionner",
+      "title2": "Numéro de Facture",
+      "title3": "Date de Facture",
+      "title4": "Échéance de Facture",
+      "title5": "Statut de Facture",
+      "title6": "Montant de la Facture",
+      "title7": "Méthode de Paiement",
+      "title8": "Notes de Facture",
+      "title9": "Détails de Facture",
+      "title10": "Voir les Notes",
+      "title11": "Payé",
+      "title12": "Détails",
+      "noNotesAvailable": "Aucune note disponible",
+      "paid": "Payé",
+      "unpaid": "Non Payé",
+      "overdue": "En Retard"
+    }
+  },
+  "ProjectPermissions": {
+    "header": "Autorisations du Projet",
+    "labels": {
+      "Initial Proposal Approval": "Approbation de la Proposition Initiale",
+      "Project Management": "Gestion de Projets",
+      "Submit Change Order": "Soumettre un Ordre de Changement",
+      "Change Order Approval": "Approbation de l'Ordre de Changement",
+      "Submit Work Order": "Soumettre un Ordre de Travail",
+      "Work Order Approval": "Approbation de l'Ordre de Travail",
+      "Project Report": "Rapports de Projets",
+      "Generate Invoice": "Générer une Facture"
+    },
+    "roles": {
+      "admin": "Administrateur",
+      "projectManager": "Chef de Projet",
+      "client": "Client",
+      "employee": "Employé",
+      "subcontractor": "Sous-traitant",
+      "supplier": "Fournisseur",
+      "others": "Autres"
+    },
+    "dialogTitle": "Mise à Jour des Autorisations",
+    "dialogMessage": "Mise à jour des autorisations, veuillez patienter..."
+  },
+  "Search": {
+    "placeholder": "Rechercher"
+  },
+  "Button": {
+    "add": "Ajouter",
+    "back": "Retour",
+    "next": "Suivant",
+    "skip": "Omettre",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "yes": "Oui",
+    "done": "Terminé",
+    "save": "Enregistrer",
+    "saveAs": "Enregistrer comme",
+    "filter": "Filtrer"
+  },
+  "AssignProject": {
+    "title1": "Ajouter un Nouveau Projet",
+    "title2": "Sélectionner le Type de Projet",
+    "step1": "Étape 1 de 3",
+    "step2": "Étape 2 de 3",
+    "step3": "Étape 3 de 3",
+    "newProject": "Nouveau Projet",
+    "ProjectFormFields": {
+      "title1": "Nom du Projet",
+      "title2": "Emplacement",
+      "title3": "Date de début",
+      "title4": "Date de fin",
+      "title5": "Couleur du Projet",
+      "placeholder": "ex: Skyrise Sanctuary",
+      "placeholder1": "Rechercher un emplacement...",
+      "locationWarning": "Veuillez entrer une emplacement valide."
+    }
+  },
+  "AssignNewProjectStep2": {
+    "title1": "Étape 2 de 3",
+    "title2": "Inviter votre équipe à",
+    "title3": "Accepter l'invitation accorde l'accès à un espace de travail de projet sécurisé dans BuilderBUILDER PRO",
+    "addAnotherEmail": "Ajouter une autre adresse e-mail",
+    "SelectRole": "Sélectionner le Rôle",
+    "footer": {
+      "saveToReturnBackToEditYourProject": "Enregistrer pour revenir à la modification de votre projet.",
+      "saveAsToStartADuplicateProjectWithTheSameLineItemsAndPhases": "Enregistrer comme, pour démarrer un projet dupliqué avec les mêmes articles et phases."
+    }
+  },
+  "AssignNewProjectStep3": {
+    "title1": "Étape 3 de 3",
+    "title2": "Planifier votre projet",
+    "title3": "Divisez votre projet en phases et ajoutez des articles aux phases."
+  },
+  "SelectColorModal": {
+    "TapToSelectColor": "Appuyez pour sélectionner une couleur",
+    "title1": "Sélectionner une couleur",
+    "Done": "Terminé"
+  },
+  "StepBoxes": {
+    "title1": "Rénovation",
+    "title2": "Nouvelle Construction",
+    "title3": "Commercial"
+  },
+  "SkipInvite": {
+    "title1": "Omettre sans inviter?",
+    "title2": "Êtes-vous sûr de vouloir omettre cette étape sans inviter?"
+  },
+  "GenerativeAiDialogue": {
+    "title1": "Générer avec IA",
+    "title2": "Description",
+    "placeholder1": "Écrivez votre description ici...",
+    "title3": "Taille du projet",
+    "title4": "Profit du projet",
+    "placeholder2": "ex: 50 Sq. Yds",
+    "placeholder3": "ex: 25%",
+    "body1": "Écrivez une description détaillée de votre projet pour générer une division suggérée en phases et articles associés en utilisant l'IA. Le traitement peut prendre jusqu'à 30 secondes.",
+    "warning": "Attention: Cela écrasera vos phases et articles précédemment enregistrés.",
+    "button1": "Générer"
+  },
+  "PhaseModal": {
+    "addPhase": "Ajouter une Phase",
+    "updatePhase": "Mettre à Jour la Phase",
+    "selectColor": "Sélectionner une Couleur",
+    "phase": "Phase",
+    "areYouSure": "supprimer cette phase"
+  },
+  "InvoiceModal": {
+    "title1": "Facture",
+    "GenerateInvoice": {
+      "generating": "Génération...",
+      "downloadInvoice": "Télécharger la Facture",
+      "form": {
+        "title1": "Entreprise",
+        "title2": "Nom",
+        "title3": "Émetteur de la Facture",
+        "Invoice#": "Facture#",
+        "invoiceDate": "Date de Facture",
+        "dueDate": "Date d'Échéance",
+        "Notes": "Notes",
+        "footer": {
+          "footer1": "Ce fut un plaisir de faire affaire avec vous",
+          "footer2": "Termes et Conditions",
+          "footer3": "Veuillez effectuer les paiements avant la date d'échéance"
+        }
+      }
+    },
+    "PopUp": {
+      "generatingInvoice": "Génération de la Facture",
+      "pleaseWait": "Veuillez patienter...",
+      "invoiceGeneratedSuccessfully": "Facture générée avec succès !"
+    },
+    "ShareModal": {
+      "sendTo": "Envoyer à",
+      "email": "E-mail",
+      "notes": "Notes",
+      "noClientAssigned": "Aucun client assigné",
+      "send": "Envoyer",
+      "table": {
+        "title1": "Titre",
+        "title2": "Coût Total",
+        "title3": "Restant",
+        "title4": "Facture en Attente",
+        "title5": "Paiement",
+        "title6": "Pourcentage"
+      }
+    }
+  },
+  "AreYouSureModal": {
+    "title1": "Êtes-vous sûr de vouloir"
+  },
+  "LineItemTeamStatus": {
+    "title1": "Détails du Statut de l'Équipe",
+    "table": {
+      "title1": "Nom",
+      "title2": "E-mail",
+      "title3": "Rôle",
+      "title4": "Statut",
+      "done": "TERMINÉ",
+      "pending": "EN ATTENTE"
+    }
+  },
+  "LineItemDetailModal": {
+    "title1": "Description",
+    "title2": "Unité",
+    "title3": "Quantité",
+    "title4": "Prix Unitaire",
+    "title5": "Total",
+    "title6": "Date de Début",
+    "title7": "Date de Fin",
+    "title8": "Notes"
+  },
+  "LineItem": {
+    "addLineItem": "Ajouter un élément",
+    "updateLineItem": "Mettre à jour l'élément",
+    "areYouSure": "Supprimer cet élément",
+    "lineItem": "Élément",
+    "description": "Description",
+    "unit": "Unité",
+    "unitPrice": "Prix unitaire",
+    "quantity": "Quantité",
+    "actualCost": "Coût réel",
+    "clientCost": "Coût du client",
+    "start": "Début",
+    "end": "Fin",
+    "profit": "Profit",
+    "totalCost": "Coût total",
+    "notes": "Notes",
+    "percentage": "Pourcentage",
+    "placeholder": "Entrez une description",
+    "placeholder1": "Sélectionner une unité",
+    "placeholder2": "Tapez vos notes ici..."
+  },
+  "NotificationDetailModal": {
+    "Heading1": "Détails de l'Ordre de Travail",
+    "Heading2": "Détails de l'Ordre de Modification",
+    "Subject": "Sujet",
+    "Description": "Description",
+    "Phases": "Phases",
+    "LineItem": "Élément",
+    "dateStarted": "Date de début",
+    "dateEnded": "Date de fin",
+    "createdBy": "Créé par",
+    "assigned": "Assigné",
+    "notes": "Notes",
+    "status": "Statut",
+    "priority": "Priorité",
+    "urgent": "Urgent",
+    "normal": "Normal",
+    "button": "Terminer l'Ordre de Travail"
+  },
+  "AssignTeamMembers": {
+    "heading1": "Utilisateurs Assignés",
+    "heading2": "Assigner des Utilisateurs",
+    "noMembers": "Aucun membre de l'équipe",
+    "table": {
+      "title1": "Nom",
+      "title2": "Rôle",
+      "title3": "E-mail"
+    }
+  },
+  "ProjectList": {
+    "heading1": "Liste des Projets",
+    "heading2": "Tous les projets sont affichés ici",
+    "areYouSure": "Supprimer ce projet?",
+    "noClient": "Aucun nom de client",
+    "Search": "Rechercher un projet",
+    "export": "Exporter les projets",
+    "table": {
+      "ProfilePicture": "Photo de Profil",
+      "Client": "Client",
+      "Project": "Projet",
+      "StartDate": "Date de Début",
+      "EndDate": "Date de Fin",
+      "Action": "Action",
+      "ViewDetails": "Voir les Détails"
+    },
+    "remodel": "Rénovation",
+    "newbuild": "Nouvelle Construction",
+    "commercial": "Commercial",
+    "footer1": "Affichage des données",
+    "footer2": "à",
+    "footer3": "de",
+    "footer4": "entrées"
+  },
+  "Subscription": {
+    "heading1": "Abonnement",
+    "heading2": "Historique des paiements",
+    "noPaymentHistory": "Aucun historique de paiement disponible.",
+    "areYouSure": "Ce processus peut prendre 5 à 10 jours.<br />Êtes-vous sûr de vouloir demander un remboursement ?",
+    "currentPlan": "Votre plan actuel",
+    "updatePlan": "Mettre à jour le plan",
+    "choosePlan": "Choisir un plan",
+    "historyCard": {
+      "plan": "Plan",
+      "status": "Statut",
+      "refund": "Demander un remboursement"
+    },
+    "SubscriptionCard": {
+      "Business +": {
+        "planPackage": "Code promo - Activé\n- 50\n- 40\n3 Utilisateurs"
+      },
+      "Business Pro": {
+        "planPackage": "Code promo - Activé\n- 500\n- 440\n10 Utilisateurs"
+      },
+      "Free Trial": { "planPackage": "Plan gratuit\n- 10\n- 5\n3 Utilisateurs" },
+      "Enterprise": { 
+        "planPackage": "10+ Utilisateurs\n- 10\n- 5\n", 
+        "body1": "Un plan Enterprise pour les utilisateurs qui souhaitent maximiser le potentiel de l'application. Contactez-nous et nous vous répondrons !" 
+      },
+      "amountOfPhotos": "Nombre de photos",
+      "amountOfFiles": "Nombre de fichiers",
+      "contactUs": "Contactez-nous",
+      "upTo": "Jusqu'à",
+      "body1": "Développez votre entreprise, augmentez votre productivité et gardez votre équipe connectée",
+      "listHeading": "Plan d'abonnement",
+      "perMonth": "par mois",
+      "perYear": "par an",
+      "expiryDate": "Date d'expiration"
+    },
+    "form": {
+      "orgInfo": "1. Informations sur l'organisation",
+      "orgName": "Nom de l'organisation",
+      "address": "Ligne d'adresse 1",
+      "placeholder": "Adresse",
+      "promo": "Vous avez un code promo ?",
+      "placeholder1": "Entrez le code promo",
+      "button": "Appliquer le code",
+      "paymentMethod": "2. Mode de paiement",
+      "choosePlan": "Plan choisi",
+      "monthly": "Mensuel",
+      "yearly": "Annuel",
+      "discount": "Prix réduit"
+    }
   }
 }

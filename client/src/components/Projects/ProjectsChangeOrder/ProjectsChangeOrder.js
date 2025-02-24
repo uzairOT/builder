@@ -5,10 +5,11 @@ import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab, { tabClasses } from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
-
+import { useTranslation } from 'react-i18next';
 
 const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) => {
   const [checkedRow, setCheckedRow] = useState(null);
+  const {t} = useTranslation()
   // const [getWorkOrder, {isLoading}] = useGetWorkOrderDetailsMutation()
   const [phaseItems, setPhaseItems ] = useState();
 
@@ -16,30 +17,6 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
   const handleChangeView = () => {
     setChangeView(true);
   }
-  const rowCheckboxes = {
-    phase: {
-      id: 2,
-      rows: [
-        {
-          id: 10,
-          phase_id: 2,
-          title: "Line1",
-          description: "Lorem ipsum",
-          unit: "sqft",
-          // Add other properties as needed
-        },
-        {
-          id: 11,
-          phase_id: 2,
-          title: "Line2",
-          description: "Lorem ipsum",
-          unit: "sqft",
-          // Add other properties as needed
-        },
-        // Add more rows as needed
-      ],
-    },
-  };
 
   return (
     <>
@@ -52,7 +29,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
           fontSize={{xl:'22px', lg:"18px",md:'22px',xs:'22px',}}
           fontWeight={"600"}
         >
-          {workOrder ? view : 'Change Order'}
+          {workOrder ? view : t("ProjectChangeOrder.title2")}
         </Typography>
         <Tabs defaultValue={0} sx={{ backgroundColor: "transparent",overflowX:"auto" }}>
           <Stack direction={{sm:"row", xs:"column-reverse"}} gap={{sm:"0", xs:"1rem"}} justifyContent={"space-between"}>
@@ -76,7 +53,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
                   fontSize:{xl:'15px', lg:"12px",md:'15px',xs:'11px',}
                 }}
               >
-                Approved
+                {t("ProjectWorkOrder.title3")}
               </Tab>
               <Tab
                 sx={{
@@ -85,7 +62,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
 
                 }}
               >
-                Pending
+                {t("ProjectWorkOrder.title4")}
               </Tab>
               
               <Tab
@@ -95,7 +72,7 @@ const ProjectsChangeOrder = ({ setChangeView, workOrder, view, data, refetch }) 
 
                 }}
               >
-                Declined
+                {t("ProjectWorkOrder.title5")}
               </Tab>
             </TabList>
             <Stack direction={"row"} justifyContent={'flex-end'} style={{ paddingRight: "16px" }}>

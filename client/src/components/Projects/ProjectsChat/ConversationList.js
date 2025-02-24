@@ -27,6 +27,7 @@ import TabPanel from "@mui/joy/TabPanel";
 import Tabs from "@mui/joy/Tabs";
 import Tab from "@mui/joy/Tab";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
+import { useTranslation } from 'react-i18next';
 let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
 const currentUser = userInfo?.user;
@@ -45,6 +46,7 @@ const ConversationList = ({
   chatUser,
   setIsLoading,
 }) => {
+  const {t} = useTranslation()
   const [projectName,
     projectLocation,
     SuperAdminId,
@@ -133,7 +135,7 @@ const ConversationList = ({
   return (
     <Stack>
       <Typography fontFamily={"var(--main-font-family)"} variant="h6" pl={2}>
-        Chat
+        {t("ProjectChat.title1")}
       </Typography>
       <Stack direction={"row"} width={"100%"}>
         <Button
@@ -185,12 +187,12 @@ const ConversationList = ({
                 ml={0.6}
                 color={"white"}
               >
-                Start New Conversation
+                {t("ProjectChat.dropDown")}
               </Typography>
             </MenuItem>
             <MenuItem value={id} disabled={value === id}>
               <Typography fontFamily={"var(--main-font-family)"}>
-                Project Chat: {projectName}
+                {t("ProjectChat.title2")} {projectName}
               </Typography>
             </MenuItem>
             {team?.team?.filter((user) => user.role !== "Superadmin").map((user, index) => {
@@ -231,7 +233,7 @@ const ConversationList = ({
                 fontFamily: "var(--main-font-family)",
               }}
             >
-              Group Chat
+              {t("ProjectChat.tab1")}
             </Typography>
           </Tab>
           <Tab sx={{ width: "100%" }}>
@@ -241,7 +243,7 @@ const ConversationList = ({
                 fontFamily: "var(--main-font-family)",
               }}
             >
-              Private Chat
+              {t("ProjectChat.tab2")}
             </Typography>
           </Tab>
         </TabList>

@@ -13,7 +13,7 @@ import {
   setSkipInvite,
 } from "../../../redux/slices/projectFormSlice";
 import { toast } from "react-toastify";
-
+import { useTranslation } from "react-i18next";
 function SkipInvite({
   handleOpen,
   handleClose,
@@ -21,6 +21,7 @@ function SkipInvite({
   isMobile,
   isLoading,
 }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const emailCheck = useSelector(
@@ -83,7 +84,7 @@ function SkipInvite({
                 sx={typoTect}
                 id="alert-dialog-slide-description"
               >
-                Are you sure you want to skip this step without inviting ?
+                {t("SkipInvite.title2")}
               </DialogContentText>
             </DialogContent>
             <DialogActions
@@ -103,13 +104,13 @@ function SkipInvite({
                 }}
                 onClick={handleClose}
               >
-                Cancel
+                {t("Button.cancel")}
               </Button>
               <Button
                 sx={{ ...YellowBtn, padding: "1rem 1rem" }}
                 onClick={handleSkip}
               >
-                {isLoading ? <CircularProgress size={"1.25rem"} /> : "Yes"}
+                {isLoading ? <CircularProgress size={"1.25rem"} /> : t("Button.yes")}
               </Button>
             </DialogActions>
           </Dialog>
@@ -138,7 +139,7 @@ function SkipInvite({
               id="alert-dialog-slide-description"
               pt={1}
             >
-              Are you sure you want to skip this step without inviting ?
+              {t("SkipInvite.title2")}
             </DialogContentText>
           </DialogContent>
           <DialogActions
@@ -164,7 +165,7 @@ function SkipInvite({
               }}
               onClick={handleClose}
             >
-              Cancel
+              {t("Button.cancel")}
             </Button>
             <Button
               sx={{
@@ -180,7 +181,7 @@ function SkipInvite({
               onClick={handleSkip}
               // disabled={isLoading}
             >
-              {isLoading ? <CircularProgress size={"1.25rem"} /> : "Yes"}
+                {isLoading ? <CircularProgress size={"1.25rem"} /> : t("Button.yes")}
             </Button>
           </DialogActions>
         </Dialog>

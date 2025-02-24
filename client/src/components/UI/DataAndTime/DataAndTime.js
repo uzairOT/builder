@@ -1,35 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
+import moment from "moment-timezone";
 
 const DateAndTime = () => {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentMoment, setCurrentMoment] = useState(
+    moment()
+  );
 
   useEffect(() => {
-    setInterval(() => {
-      setCurrentDate(new Date());
+    const intervalId = setInterval(() => {
+      setCurrentMoment(moment());
     }, 1000);
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
     <Box sx={themeStyle.contianer}>
       <Typography variant="h2" sx={themeStyle.time}>
-        {currentDate.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        })}
+        {currentMoment.format("hh:mm A")}
       </Typography>
       <Typography variant="subtitle1" sx={themeStyle.date}>
-        {currentDate.toLocaleDateString([], {
-          weekday: "long",
-          day: "numeric",
-          month: "short",
-        })}
+        {currentMoment.format("dddd, D MMM")}
       </Typography>
     </Box>
   );
 };
-
 export default DateAndTime;
 
 const themeStyle = {

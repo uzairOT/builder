@@ -16,6 +16,8 @@ import {
 import QueryDebouncer from "../../../utils/QueryDebouncer/QueryDebouncer";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
+
 
 const Search = styled("div")(({ theme }) => ({
   display: "flex",
@@ -73,7 +75,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab, projectsPage }) => {
-  const fetchPinnedProjectToggle = useSelector(state =>  state.userProjects.fetchPinnedProjectToggle)
+  const { t } = useTranslation();
+  const fetchPinnedProjectToggle = useSelector(state => state.userProjects.fetchPinnedProjectToggle)
   const filter = selectedFilters ? selectedFilters.join(",") : "";
   const [searchQuery, setSearchQuery] = React.useState("");
   const debouncedValue = QueryDebouncer(searchQuery, 500);
@@ -86,10 +89,10 @@ const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab, projectsPa
   // console.log(selectedTab);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { data: pinnedProject, refetch: refetchPinnedProject, isLoading1} =
-  useGetUserPinnedProjectQuery({
-    userId: UserId,
-  });
+  const { data: pinnedProject, refetch: refetchPinnedProject, isLoading1 } =
+    useGetUserPinnedProjectQuery({
+      userId: UserId,
+    });
   const { data, refetch, isLoading2, error, isSuccess } =
     useGetUserProjectsQuery({
       userId: UserId,
@@ -97,7 +100,7 @@ const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab, projectsPa
       filter: filter,
       page: page,
     });
-    const isLoading = isLoading1 || isLoading2;
+  const isLoading = isLoading1 || isLoading2;
 
   React.useEffect(() => {
     if (selectedTab === 0 || selectedTab === 1 || selectedTab === 2) {
@@ -146,7 +149,7 @@ const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab, projectsPa
   React.useEffect(() => {
     refetchPinnedProject();
     refetchProjects()
-}, [fetchPinnedProjectToggle]);
+  }, [fetchPinnedProjectToggle]);
   return (
     <>
       <Search>
@@ -154,7 +157,7 @@ const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab, projectsPa
           <SearchIcon style={{ color: "#535353C9" }} />
         </SearchIconWrapper>
         <StyledInputBase
-          placeholder="Search Project"
+          placeholder={t("ProjectList.Search")}
           inputProps={{ "aria-label": "search" }}
           sx={{ width: { xl: "300px", lg: "200px" } }}
           value={searchQuery}

@@ -7,7 +7,7 @@ import Drizzle from './assets/images/drizzle.png'
 import Clear from './assets/images/sunny.png'
 import { useSelector } from 'react-redux';
 import { getWeatherIcon } from '../../../utils/weatherFunctions';
-
+import moment from "moment";
 
 const WeatherAppDailyForecast = ({ forecast }) => {
   const query = useSelector(state => state.dailyForecast.query);
@@ -37,7 +37,7 @@ const WeatherAppDailyForecast = ({ forecast }) => {
     return (
         <Stack key={forecast.id} justifyContent='center' alignItems='center' pr={{xl:2, lg:1, md:2, xs:2}}>
             <Paper sx={themeStyle.dailyForecastBubble}>
-                <Typography sx={themeStyle.dailyForecastBubbleText}>{forecast.day}</Typography>
+                <Typography sx={themeStyle.dailyForecastBubbleText}>{moment(forecast.day).format('ddd')}</Typography>
                 <Divider variant="fullWidth" />
                 <Box
                     component="img"

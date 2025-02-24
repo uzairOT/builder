@@ -18,11 +18,12 @@ import { useProjectGenAIMutation } from "../../../redux/apis/Project/projectApiS
 import { GoogleGenerativeAI } from "@google/generative-ai"; // Adjust based on the actual package name
 import { toast } from "react-toastify";
 import loader from "../../../assets/gifs/loader.gif";
-
+import { useTranslation } from "react-i18next";
 const createConstructionPrompt = (
   projectDescription,
   projectSize,
-  projectProfit
+  projectProfit,
+  language
 ) => {
   return `
 # Construction Project Estimation Generator
@@ -34,6 +35,7 @@ Generate accurate phase and line item data for construction projects in valid JS
 - Project Description: ${projectDescription}
 - Project Size: ${projectSize}
 - Profit Margin: ${projectProfit}%
+- Language: ${language}
 
 ## Validation Criteria
 1. FIRST check if the project is construction-related (e.g., buildings, infrastructure, renovations, new build, remodel, commercial, residential, etc.)
@@ -49,6 +51,7 @@ Generate accurate phase and line item data for construction projects in valid JS
 1. Create 2-5 logical construction phases
 2. Phase Names: Use standard construction terminology (e.g., "Site Preparation", "Foundation Work")
 3. Colors: Random dark hex colors (#000000 to #7F7F7F)
+4. Language: the name of the phases and line item should be in ${language}
 
 ### Line Items
 For each phase, include 3-8 items with:
@@ -100,12 +103,14 @@ For ${projectSize} project:
 2. Ensure construction-specific terminology
 3. Verify JSON syntax before responding
 4. Re-check project relevance
+5. Language: the name of the phases and line item should be in ${language}
 
 PROCESSING PROJECT: "${projectDescription}"
 `;
 };
 
 function GenerativeAiDialogue({ closeGenAiDialogue, projectId, fetchData }) {
+  const { t, i18n } = useTranslation();
   const [aiPrompt, setAiPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [projectSize, setProjectSize] = useState("");
@@ -135,7 +140,7 @@ function GenerativeAiDialogue({ closeGenAiDialogue, projectId, fetchData }) {
         return;
       }
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-001" });
-      const userPrompt = createConstructionPrompt(aiPrompt, projectSize, projectProfit);
+      const userPrompt = createConstructionPrompt(aiPrompt, projectSize, projectProfit, i18n.language);
       const result = await model.generateContent([userPrompt]);
       const response = await result.response;
       const text = await response.text();
@@ -180,7 +185,7 @@ function GenerativeAiDialogue({ closeGenAiDialogue, projectId, fetchData }) {
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <DialogTitle sx={typoTitle}>Generate with AI</DialogTitle>
+            <DialogTitle sx={typoTitle}>{t("GenerativeAiDialogue.title1")}</DialogTitle>
             <IconButton
               style={{ width: "40px", height: "40px" }}
               onClick={handleClickClose}
@@ -189,7 +194,7 @@ function GenerativeAiDialogue({ closeGenAiDialogue, projectId, fetchData }) {
             </IconButton>
           </Stack>
           <DialogContent sx={{ padding: "0rem 1.5rem 3rem 1.5rem" }}>
-            <Typography sx={typoText}>Description</Typography>
+            <Typography sx={typoText}>{t("GenerativeAiDialogue.title2")}</Typography>
             <TextField
               inputProps={{ maxLength: 150 }}
               sx={{
@@ -202,7 +207,7 @@ function GenerativeAiDialogue({ closeGenAiDialogue, projectId, fetchData }) {
               margin="dense"
               id="aiPrompt"
               name="aiPrompt"
-              placeholder={"ex: I want to remodel my kitchen"}
+              placeholder={t("GenerativeAiDialogue.placeholder1")}
               // label="Email Address"
               type="text"
               variant="standard"
@@ -211,7 +216,7 @@ function GenerativeAiDialogue({ closeGenAiDialogue, projectId, fetchData }) {
             />
             <Stack direction={"row"} justifyContent={"space-between"}>
               <Stack alignItems={"start"} justifyContent={"flex-start"}>
-                <Typography sx={typoText}>Project Size</Typography>
+                <Typography sx={typoText}>{t("GenerativeAiDialogue.title3")}</Typography>
                 <TextField
                   inputProps={{ maxLength: 150 }}
                   sx={{
@@ -222,7 +227,7 @@ function GenerativeAiDialogue({ closeGenAiDialogue, projectId, fetchData }) {
                   margin="dense"
                   id="projectSize"
                   name="projectSize"
-                  placeholder={"50 Sq. Yds"}
+                  placeholder={t("GenerativeAiDialogue.placeholder2")}
                   // label="Email Address"
                   type="text"
                   variant="standard"
@@ -231,7 +236,7 @@ function GenerativeAiDialogue({ closeGenAiDialogue, projectId, fetchData }) {
                 />
               </Stack>
               <Stack>
-                <Typography sx={typoText}>Project Profit</Typography>
+                <Typography sx={typoText}>{t("GenerativeAiDialogue.title4")}</Typography>
                 <TextField
                   inputProps={{ maxLength: 150 }}
                   sx={{
@@ -242,7 +247,7 @@ function GenerativeAiDialogue({ closeGenAiDialogue, projectId, fetchData }) {
                   margin="dense"
                   id="projectProfit"
                   name="projectProfit"
-                  placeholder={"25%"}
+                  placeholder={t("GenerativeAiDialogue.placeholder3")}
                   // label="Email Address"
                   type="text"
                   variant="standard"
@@ -252,13 +257,10 @@ function GenerativeAiDialogue({ closeGenAiDialogue, projectId, fetchData }) {
               </Stack>
             </Stack>
             <Typography sx={typoText}>
-              Provide a detailed description of your project to generate a
-              suggested breakdown of phases and associated line items using AI.
-              Processing may take up to 30 seconds.
+              {t("GenerativeAiDialogue.body1")}
             </Typography>
             <Typography sx={{ ...typoText, color: "red", fontSize: "14px" }}>
-              Warning: This will rewrite your previously saved phases and line
-              Items.
+              {t("GenerativeAiDialogue.warning")}
             </Typography>
           </DialogContent>
           <DialogActions sx={generalBox}>
@@ -277,7 +279,7 @@ function GenerativeAiDialogue({ closeGenAiDialogue, projectId, fetchData }) {
                   <img src={loader} alt="loading gif" width={"50px"}></img>
                 </>
               ) : (
-                "Generate"
+                t("GenerativeAiDialogue.button1")
               )}
             </Button>
           </DialogActions>

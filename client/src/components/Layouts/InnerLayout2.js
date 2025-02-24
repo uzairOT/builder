@@ -13,11 +13,12 @@ import ChangeOrderRequest from "../dialogues/ChangeOrderRequest/ChangeOrderReque
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useProjectPermissionCheck } from "../Projects/ProjectPermissions/ProjectsPermissionCheck";
-
+import { useTranslation } from "react-i18next";
 const InnerLayout2 = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const userInfo = useSelector((state) => state.auth.userInfo);
+  const { t } = useTranslation();
   const userId = userInfo.user.id;
   const [open, setOpen] = useState(false);
   const [
@@ -69,6 +70,7 @@ const InnerLayout2 = () => {
               projectId={id}
               userId={userId}
               projectOrganizationId={projectOrganizationId}
+              projectName={projectName}
             />
           </Paper>
         </Stack>
@@ -103,7 +105,7 @@ const InnerLayout2 = () => {
                 pr={1}
               >
                 <Typography pl={3} color={"#4C8AB1"}>
-                  Change Order
+                  {t("ProjectLayoutChangeOrder.title1")}
                 </Typography>
                 <Tooltip
                   title={
@@ -132,7 +134,7 @@ const InnerLayout2 = () => {
                       backgroundColor={"#4C8AB1"}
                       handleOnClick={handleOpen}
                     >
-                      Change Order Request
+                      {t("ProjectLayoutChangeOrder.title2")}
                     </BuilderProButton>
                   </span>
                 </Tooltip>
@@ -158,7 +160,7 @@ const InnerLayout2 = () => {
                       fontSize: { xl: "15px", lg: "13px", md: 15, xs: 15 },
                     }}
                   >
-                    Approved
+                    {t("ProjectLayoutChangeOrder.title3")}
                   </Tab>
                   <Tab
                     sx={{
@@ -166,7 +168,7 @@ const InnerLayout2 = () => {
                       fontSize: { xl: "15px", lg: "13px", md: 15, xs: 15 },
                     }}
                   >
-                    Pending
+                    {t("ProjectLayoutChangeOrder.title4")}
                   </Tab>
                   <Tab
                     sx={{
@@ -174,7 +176,7 @@ const InnerLayout2 = () => {
                       fontSize: { xl: "15px", lg: "13px", md: 15, xs: 15 },
                     }}
                   >
-                    Declined
+                    {t("ProjectLayoutChangeOrder.title5")}
                   </Tab>
                 </TabList>
                 <TabPanel

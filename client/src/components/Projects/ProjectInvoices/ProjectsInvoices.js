@@ -1,5 +1,6 @@
 import {
   Box,
+  CircularProgress,
   IconButton,
   Stack,
   Tooltip,
@@ -23,9 +24,10 @@ import BuilderProButton from "../../UI/Button/BuilderProButton";
 import axios from "axios";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import { toast } from "react-toastify";
-
+import { useTranslation } from "react-i18next";
 const ADD_INVOICE_URL = "https://builderbuilder.net/payment/addInvoiceToQuickBooks";
 const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
+  const { t } = useTranslation();
   const params = useParams();
   const { id: currentProjectId } = params;
   const currentUser = localStorage.getItem("userInfo");
@@ -38,6 +40,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
   const [checkedRow, setCheckedRow] = useState(null);
   // const [getWorkOrder, {isLoading}] = useGetWorkOrderDetailsMutation()
   const [phaseItems, setPhaseItems] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   
 
   const handleExportInvoices = () => {
@@ -80,6 +83,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
 
   const handleConnectToQuickbooks  = async () => {
     try {
+      setIsLoading(true);
         const response = await axios.post(ADD_INVOICE_URL, {
           projectId: currentProjectId,
           userId: user.user.id,
@@ -91,10 +95,11 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
           },
         });
         toast.success(response?.data?.message)
+        setIsLoading(false);
     } catch (error) {
       console.error('Error fetching authUri:', error);
       toast.error(error?.response?.data?.message)
-
+      setIsLoading(false);
     }
   }
 
@@ -114,7 +119,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
             fontSize={"22px"}
             fontWeight={"600"}
           >
-            Invoices
+            {t("ProjectInvoices.title3")}
           </Typography>
           {isModal && (
             <Stack alignItems={"flex-end"}>
@@ -149,7 +154,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
                   fontSize: "15px",
                 }}
               >
-                Paid
+                {t("ProjectInvoices.paid")}
               </Tab>
               <Tab
                 sx={{
@@ -157,7 +162,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
                   fontSize: "15px",
                 }}
               >
-                Unpaid
+                {t("ProjectInvoices.unpaid")}
               </Tab>
 
               <Tab
@@ -166,11 +171,11 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
                   fontSize: "15px",
                 }}
               >
-                Overdue
+                {t("ProjectInvoices.overdue")}
               </Tab>
             </TabList>
             <Stack direction={"row"} style={{ paddingRight: "16px" }} justifyContent={'center'} alignItems={'center'} gap={2}>
-            <Tooltip title="Export invoices" placement="top">
+            <Tooltip title={t("ProjectInvoices.export")} placement="top">
                 <Box sx={{ cursor: "pointer" }} onClick={handleExportInvoices}>
                   <Excel
                     fill={"#4C8AB1"}
@@ -191,7 +196,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
                     }}
                     handleOnClick={handleConnectToQuickbooks}
                   >
-                    Add to quickbooks
+                        {isLoading ? <CircularProgress size={20} /> : t("ProjectInvoices.addQuickbooks")}
                   </BuilderProButton>
             </Stack>
           </Stack>

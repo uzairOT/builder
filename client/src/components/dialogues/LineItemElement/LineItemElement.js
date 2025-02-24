@@ -19,6 +19,7 @@ import {
   IconButton,
   InputAdornment,
   CircularProgress,
+  Chip,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
 import "../../../App.css";
@@ -40,7 +41,7 @@ import {
 } from "../../../redux/apis/Project/userProjectApiSlice";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import { toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
-
+import { useTranslation } from "react-i18next";
 function AddLineElement({
   phaseData,
   handleAddOpen,
@@ -70,6 +71,7 @@ function AddLineElement({
   // const { data, isLoading, isSuccess } = useGetLineItemQuery({
   //   lineItemId: LineItem,
   // });
+  const {t} = useTranslation()
   const [open, setOpen] = useState(false);
   const [addPhaseLine, { isLoading: addIsLoading }] = useAddPhaseLineMutation();
   const [updatePhaseLine, { isLoading: updateIsLoading }] =
@@ -179,7 +181,7 @@ function AddLineElement({
   };
 
   const handleClickClose = () => {
-    if (LineHeading === "Update Line Item") {
+    if (LineHeading === t("LineItem.updateLineItem")) {
       handleUpdateClose();
     } else {
       handleAddClose();
@@ -374,7 +376,7 @@ function AddLineElement({
       return;
     }
 
-    if (LineHeading === "Update Line Item") {
+    if (LineHeading === t("LineItem.updateLineItem")) {
       //console.log("updading..")
       const lineItemId = LineItem.id;
       const data1 = {
@@ -769,7 +771,7 @@ function AddLineElement({
             </IconButton>
           </Stack>
           <DialogContent sx={{ padding: "0rem 3rem 0rem 3rem" }}>
-            <Typography sx={typoText}>Line Item</Typography>
+            <Typography sx={typoText}>{t("LineItem.lineItem")}</Typography>
             <>
               <Autocomplete
                 disabled={isLoading}
@@ -778,14 +780,45 @@ function AddLineElement({
                 id="phaseName"
                 // maxLength={}
                 // openOnFocus
+                  getOptionLabel={(option) =>
+                    typeof option === "string"
+                      ? option
+                      : option?.template
+                      ? `${option.title}`
+                      : option.title
+                  }
                 options={
-                  autoComplete ? autoComplete.map((option) => option.title) : []
+                  autoComplete ? autoComplete.map((option) => option) : []
                 } // Add your options here
+                renderOption={(props, option) => (
+                  <Box
+                    component="li"
+                    {...props}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      width: "100%",
+                      paddingY: 0.5,
+                    }}
+                  >
+                    <span>{option.title}</span>
+                    {option.template && (
+                      <Chip
+                        label="Template"
+                        color="primary"
+                        size="small"
+                        variant="outlined"
+                        sx={{ marginLeft: 1 }}
+                      />
+                    )}
+                  </Box>
+                )}
                 value={phaseName}
                 name="phaseName"
                 onChange={(event, newValue) => {
                   const selectedOption = autoComplete?.find(
-                    (option) => option.title === newValue
+                    (option) => option.title === newValue.title
                   );
                   if (selectedOption) {
                     setAutoCompleteEvent(event);
@@ -811,7 +844,7 @@ function AddLineElement({
                   } else {
                     // Handle case where newValue is not found in autoComplete
                   }
-                  setPhaseName(newValue);
+                  setPhaseName(newValue.title);
                 }}
                 renderInput={(params) => (
                   <TextField
@@ -848,7 +881,7 @@ function AddLineElement({
                 onChange={(e) => setPhaseName(e.target.value)}
               /> */}
 
-              <Typography sx={typoText}>Description</Typography>
+              <Typography sx={typoText}>{t("LineItem.description")}</Typography>
               <TextField
                 sx={{ ...inputStyle }}
                 margin="dense"
@@ -857,20 +890,20 @@ function AddLineElement({
                 type="text"
                 variant="standard"
                 value={formData.description}
-                placeholder="Enter description"
+                placeholder={t("LineItem.placeholder")}
                 onChange={(e) => setDescription(e.target.value)}
                 inputProps={{ maxLength: 50 }}
               />
               <Box sx={parallelBox}>
                 <Box sx={innerBox}>
-                  <Typography sx={{ ...typoText }}>Unit</Typography>
+                  <Typography sx={{ ...typoText }}>{t("LineItem.unit")}</Typography>
                   <Box mt={"8px"} mb={"8px"}>
                     <CreateableSelect
                       ref={creatableRef}
                       defaultInputValue={LineItem ? LineItem?.unit : unit}
                       // value={findValueInData(unit)}
                       inputProps={{ maxLength: 10 }}
-                      placeholder={"Select Unit"}
+                      placeholder={t("LineItem.placeholder1")}
                       styles={selectStyles}
                       // defaultValue={unit}
                       onChange={handleSetUnit}
@@ -905,7 +938,7 @@ function AddLineElement({
                   </TextField> */}
                 </Box>
                 <Box sx={innerBox}>
-                  <Typography sx={typoText}>Quantity</Typography>
+                  <Typography sx={typoText}>{t("LineItem.quantity")}</Typography>
                   <TextField
                     inputProps={{
                       maxLength: 50,
@@ -935,7 +968,7 @@ function AddLineElement({
                   />
                 </Box>
               </Box>
-              <Typography sx={typoText}>Unit Price</Typography>
+              <Typography sx={typoText}>{t("LineItem.unitPrice")}</Typography>
               <TextField
                 inputProps={{
                   maxLength: 50,
@@ -968,7 +1001,7 @@ function AddLineElement({
                 }}
               />
 
-              <Typography sx={typoText}>Actual Cost</Typography>
+              <Typography sx={typoText}>{t("LineItem.actualCost")}</Typography>
               <TextField
                 inputProps={{
                   onWheel: (event) => event.target.blur(),
@@ -988,7 +1021,7 @@ function AddLineElement({
                   ),
                 }}
               />
-              <Typography sx={typoText}>Client Cost</Typography>
+              <Typography sx={typoText}>{t("LineItem.clientCost")}</Typography>
               <TextField
                 inputProps={{
                   onWheel: (event) => event.target.blur(),
@@ -1011,7 +1044,7 @@ function AddLineElement({
               />
               <Box sx={parallelBox}>
                 <Box sx={innerBox}>
-                  <Typography sx={typoText}>Profit</Typography>
+                  <Typography sx={typoText}>{t("LineItem.profit")}</Typography>
 
                   <TextField
                     sx={{ ...inputStyle, marginLeft: "18px" }}
@@ -1032,7 +1065,7 @@ function AddLineElement({
                   />
                 </Box>
                 <Box sx={innerBox}>
-                  <Typography sx={typoText}>Percentage</Typography>
+                  <Typography sx={typoText}>{t("LineItem.percentage")}</Typography>
                   <TextField
                     sx={{ ...inputStyle, marginLeft: "18px" }}
                     placeholder="2"
@@ -1122,11 +1155,11 @@ function AddLineElement({
                 </Box>
               </Box> */}
 
-              <Typography sx={typoText}>Notes</Typography>
+              <Typography sx={typoText}>{t("LineItem.notes")}</Typography>
               <TextField
                 inputProps={{ maxLength: 150 }}
                 sx={{ ...inputStyle, height: "3.5rem" }}
-                placeholder="Enter your Notes"
+                placeholder={t("LineItem.placeholder2")}
                 margin="dense"
                 id="longDescription"
                 name="longDescription"
@@ -1151,7 +1184,7 @@ function AddLineElement({
                   sx={{ fontSize: "14px", color: "white" }}
                 />
               ) : (
-                "Done"
+                t("Button.done")
               )}
             </Button>
           </DialogActions>

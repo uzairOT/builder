@@ -29,6 +29,7 @@ import CheckoutForm from "./CheckoutForm";
 import { useVerifyCouponMutation } from "../../../redux/apis/Coupon/CouponApiSlice";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -67,6 +68,7 @@ const PaymentModal = ({
   const [paymentType, setPaymentType] = useState("Monthly");
   const [verifyCoupon, { isLoading }] = useVerifyCouponMutation();
   const [amount, setAmount] = useState();
+  const {t} = useTranslation()
   const handlePaymentTypeChange = (event) => {
     setPaymentType(event.target.value);
   };
@@ -220,11 +222,11 @@ const PaymentModal = ({
             fontSize={"18px"}
             fontWeight={"500"}
           >
-            1. Organization info
+            {t("Subscription.form.orgInfo")}
           </Typography>
           <Stack pt={2} spacing={1}>
             <label id="organizationName" style={themeStyle.inputLabels}>
-              Organization Name
+              {t("Subscription.form.orgName")}
             </label>
             <TextField
               sx={{
@@ -262,7 +264,7 @@ const PaymentModal = ({
               )}
             ></Autocomplete> */}
             <label id="address" style={themeStyle.inputLabels}>
-              Address Line 1
+            {t("Subscription.form.address")}
             </label>
             <OutlinedInput
               sx={{
@@ -274,7 +276,7 @@ const PaymentModal = ({
               // inputProps={{maxLength:1}}
               id="address"
               name="address"
-              placeholder={"Street address"}
+              placeholder={t("Subscription.form.placeholder")}
               variant="outlined"
               size="small"
               value={values.address}
@@ -284,7 +286,7 @@ const PaymentModal = ({
           <Stack p={1} py={4} spacing={1}>
             <Stack flex={1} direction={"row"} spacing={1}>
               <Typography fontFamily={"var(--main-font-family)"} color={"gray"}>
-                Have a promo code?
+              {t("Subscription.form.promo")}
               </Typography>
               <HelpIcon
                 fontSize={"small"}
@@ -294,7 +296,7 @@ const PaymentModal = ({
             <Stack flex={1} direction={"row"} spacing={1}>
               <OutlinedInput
                 variant={"outlined"}
-                placeholder="Enter promo code"
+                placeholder={t("Subscription.form.placeholder1")}
                 size="small"
                 sx={{
                   width: "67%",
@@ -321,7 +323,7 @@ const PaymentModal = ({
                     }}
                     fontSize={{ xl: 14, lg: 11 }}
                   >
-                    Apply Code{" "}
+                    {t("Subscription.form.button")}{" "}
                   </Typography>
                 )}
               </PromoCodeButton>
@@ -338,7 +340,7 @@ const PaymentModal = ({
               fontSize={"18px"}
               fontWeight={"500"}
             >
-              2. Payment Method
+              {t("Subscription.form.paymentMethod")}
             </Typography>
             <Stack direction={"row"} alignItems={"center"} spacing={0.5}>
               <LockIcon fontSize="12px" />
@@ -359,7 +361,7 @@ const PaymentModal = ({
                   fontFamily: "var(--main-font-family)",
                 }}
               >
-                Chosen Plan:{" "}
+                {t("Subscription.form.choosePlan")}:{" "}
               </b>
               {currentPakage}
             </Typography>
@@ -378,12 +380,12 @@ const PaymentModal = ({
                 <FormControlLabel
                   value="Monthly"
                   control={<Radio size="small" />}
-                  label="Monthly"
+                  label={t("Subscription.form.monthly")}
                 />
                 <FormControlLabel
                   value="Yearly"
                   control={<Radio size="small" />}
-                  label="Yearly"
+                  label={t("Subscription.form.yearly")}
                 />
               </RadioGroup>
             </FormControl>
@@ -393,7 +395,7 @@ const PaymentModal = ({
             <Stack direction={"row"} justifyContent={"space-between"}>
               <Stack direction={"row"} gap={1}>
                 <Typography>
-                  <b>Discounted price: </b>
+                  <b>{t("Subscription.form.discount")}: </b>
                 </Typography>
                 <Typography>{discounted ? `${newAmount}$    ` : ""}</Typography>
               </Stack>

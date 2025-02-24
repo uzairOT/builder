@@ -7,8 +7,8 @@ const initialState = {
     dailyForecast: [],
     temperatureUnit: 'imperial',
     query: {
-        lat: '',
-        lon: '',
+        lat: '37.269175000000004',
+        lon: '-119.30661',
         temperatureUnit: 'imperial'
     },
     defaultLocation: true

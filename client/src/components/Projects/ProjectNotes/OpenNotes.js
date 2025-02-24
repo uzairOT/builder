@@ -18,8 +18,10 @@ import {
 import { toast } from "react-toastify";
 import { fileTypeIcons } from "../../dialogues/AddImage/assets/fileTypes";
 import { handleDownload } from "../../../utils/S3";
+import { useTranslation } from 'react-i18next';
 
 const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
+  const {t} = useTranslation()
   const isNoteSelected = Boolean(notes);
   const [showEditModal, setShowEditModal] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -283,10 +285,10 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
               textAlign={"center"}
             >
               <Typography fontSize={"24px"} fontWeight={"700"}>
-                No Notes Added
+                {t("ProjectNotes.noNotesAdded")}
               </Typography>
               <Typography fontSize={"15px"} fontWeight={"500"} pt={2}>
-                Please add a note to view its details.
+                {t("ProjectNotes.pleaseAddNote")}
               </Typography>
             </Stack>
           </>

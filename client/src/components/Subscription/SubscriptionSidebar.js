@@ -5,6 +5,7 @@ import PaymentHistoryCard from "../UI/Card/PaymentHistoryCard";
 import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 import AreYouSureModal from "../dialogues/AreYouSureModal/AreYouSureModal";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 let userData = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(userData);
@@ -15,6 +16,7 @@ const SubscriptionSidebar = () => {
   const [open, setOpen] = useState(false)
   const [refundPlan, setRefundPlan] = useState();
   const [loading, setLoading] = useState(false);
+  const {t} = useTranslation();
 
   const handleOpenModal = (refundAmount) => {
     setRefundPlan(refundAmount)
@@ -89,11 +91,11 @@ const SubscriptionSidebar = () => {
     <>
       <Paper sx={{ height: "100%", borderRadius: "14px" }}>
         <Typography sx={themeStyle.title} p={2} pb={1.5}>
-          Subscription
+          {t("Subscription.heading1")}
         </Typography>
         <Profile />
         <Typography sx={themeStyle.subtitle} p={2} pb={1.5}>
-          Payment History
+        {t("Subscription.heading2")}
         </Typography>
         <Box sx={themeStyle.scrollable} overflow={"hidden"} pb={0.5}>
           <Stack px={2} spacing={1}>
@@ -115,7 +117,7 @@ const SubscriptionSidebar = () => {
               ))
             ) : (
               <Typography fontFamily={"var(--main-font-family)"}>
-                No payment history available.
+                {t("Subscription.noPaymentHistory")}
               </Typography>
             )}
           </Stack>
@@ -123,7 +125,7 @@ const SubscriptionSidebar = () => {
       </Paper>
       <AreYouSureModal
         open={open}
-        question={`This process may take 5-10 days.<br />Are you sure you want to refund`}
+        question={`${t("Subscription.areYouSure")}`}
         handleConfirmDelete={handleConfirm}
         isLoading={loading}
       />

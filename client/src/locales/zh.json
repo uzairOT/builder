@@ -192,6 +192,7 @@
     "title6": "© 版权 2024，所有权利保留，BuilderBUILDER PRO"
   },
   "userProject": {
+    "title0": "用户项目",
     "title1": "用户项目",
     "title2": "所有列出的项目",
     "title3": "翻新",
@@ -215,7 +216,11 @@
       "title10": "添加新项目",
       "title11": "湿度",
       "title12": "风速",
-      "title13": "体感温度："
+      "title13": "体感温度：",
+      "dropdown": {
+        "title1": "华氏度",
+        "title2": "摄氏度"
+      }
     },
     "processcard": {
       "title1": "客户名称：",
@@ -228,6 +233,625 @@
       "title8": "预计利润",
       "title9": "利润率",
       "title10": "进度"
+    }
+  },
+  "CustomToolbar": {
+    "title1": "工单",
+    "title2": "天气/笔记",
+    "title3": "日",
+    "title4": "周",
+    "title5": "月"
+  },
+  "CustomEvent": {
+    "title1": "工单: ",
+    "title2": "笔记: "
+  },
+  "CustomProjectToolbar": {
+    "title1": "变更订单",
+    "title2": "工单",
+    "title3": "天气/笔记",
+    "title4": "甘特图",
+    "title5": "日",
+    "title6": "周",
+    "title7": "月"
+  },
+  "GanttChart": {
+    "title1": "甘特图",
+    "title2": "生成你的图表...",
+    "title3": "全屏显示",
+    "title4": "关闭全屏"
+  },
+  "ProjectInfo": {
+    "title1": "开始",
+    "title2": "结束"
+  },
+  "ProjectTeam": {
+    "title1": "项目团队",
+    "title2": "待处理邀请",
+    "title3": "没有待处理邀请。",
+    "title4": "邀请",
+    "title5": "添加",
+    "role": {
+      "Superadmin": "超级管理员",
+      "Admin": "管理员",
+      "Subcontractor": "分包商",
+      "Client": "客户",
+      "Employee": "员工",
+      "Supplier": "供应商",
+      "Others": "其他"
+    }
+  },
+  "ProjectLayoutChangeOrder": {
+    "title1": "变更订单",
+    "title2": "变更订单请求",
+    "title3": "已批准",
+    "title4": "待处理",
+    "title5": "已拒绝",
+    "table1": "主题",
+    "table2": "描述",
+    "table3": "优先级"
+  },
+  "ProjectNavbar": {
+    "title1": "初步提案",
+    "title2": "图片",
+    "title3": "许可证",
+    "title4": "图纸与文件",
+    "title5": "工单",
+    "title6": "聊天",
+    "title7": "笔记",
+    "title8": "项目报告",
+    "title9": "变更订单",
+    "title10": "发票",
+    "title11": "项目权限"
+  },
+  "ProjectInitialProposal": {
+    "title1": "初步提案",
+    "title2": "变更订单",
+    "title3": "工单",
+    "title4": "导出阶段",
+    "button1": "编辑",
+    "button2": "删除",
+    "button3": "批准",
+    "button4": "待批准",
+    "button5": "添加阶段",
+    "noPhases": "未添加阶段"
+  },
+  "ProjectFiles": {
+    "text1": "项目",
+    "button1": "添加",
+    "button2": "删除",
+    "noImagesOrFilesFound": "未找到图片或文件。",
+    "clickOrDragFileHere": "点击或拖拽您的文件到这里",
+    "addImagePlaceholder": "在此添加图片 .....",
+    "unset": "取消设置",
+    "set": "设定",
+    "primary": "主要",
+    "ProjectImages": {
+      "title1": "图片",
+      "title2": "图片"
+    },
+    "ProjectPermit": {
+      "title1": "许可证",
+      "title2": "许可证"
+    },
+    "ProjectDrawingFiles": {
+      "title1": "图纸与文件"
+    }
+  },
+  "ProjectWorkOrder": {
+    "Tab1": "新工单",
+    "Tab2": "工单日志",
+    "title1": "工单",
+    "title2": "工单日志",
+    "title3": "已批准",
+    "title4": "待处理",
+    "title5": "已拒绝",
+    "title6": "没有可用的变更订单阶段",
+    "title7": "没有可用的已批准变更订单阶段",
+    "button1": "编辑",
+    "button2": "删除",
+    "button3": "添加阶段",
+    "button4": "添加",
+    "button5": "AI生成",
+    "button6": "AI",
+    "table": {
+      "title1": "主题",
+      "title2": "描述",
+      "title3": "优先级",
+      "title4": "总",
+      "title5": "开始",
+      "title6": "结束",
+      "title7": "状态",
+      "title8": "备注",
+      "title9": "详情"
+    }
+  },
+  "RequestWorkOrder": {
+    "title1": "提交工单",
+    "title2": "提交变更订单",
+    "form": {
+      "title1": "主题",
+      "title2": "描述",
+      "title3": "创建人",
+      "title4": "分配给",
+      "title5": "备注",
+      "title6": "设置优先级",
+      "title7": "开始日期",
+      "title8": "结束日期",
+      "urgent": "紧急",
+      "normal": "正常",
+      "title11": "创建日期",
+      "placeholder": "请输入您的主题...",
+      "placeholder1": "请输入您的描述...",
+      "placeholder2": "请输入您的备注..."
+    }
+  },
+  "PermisionsMessage": {
+    "submitChangeOrder": "您当前没有权限提交变更订单",
+    "submitWorkOrder": "您当前没有权限提交工单",
+    "reportsMsg": "项目报告仅团队可访问。",
+    "notes": "项目备注仅团队可访问。"
+  },
+  "ProjectChat": {
+    "title1": "聊天",
+    "title2": "项目聊天：",
+    "dropDown": "开始新对话",
+    "tab1": "群聊",
+    "tab2": "私人聊天",
+    "noChatAvailable": "没有可用的聊天。",
+    "team": "团队",
+    "team+client": "所有",
+    "placeholder": "请输入消息"
+  },
+  "ProjectNotes": {
+    "title1": "笔记",
+    "placeholder": "搜索笔记",
+    "addNotes": "添加笔记",
+    "editNotes": "编辑笔记",
+    "noPreview": "无法预览",
+    "placeholder1": "输入笔记主题...",
+    "placeholder2": "在此输入您的文本...",
+    "noNotesAdded": "未添加笔记",
+    "pleaseAddNote": "请添加笔记以查看详细信息。"
+  },
+  "ProjectReports": {
+    "title1": "报告",
+    "invoiceHistory": "发票历史",
+    "totalProjects": {
+      "title1": "总项目数",
+      "title2": "已完成",
+      "title3": "剩余"
+    },
+    "totalDaysAllotted": {
+      "title1": "分配的总天数",
+      "title2": "已用工作日",
+      "title3": "剩余工作日",
+      "title4": "逾期工作日"
+    },
+    "OutstandingInvoices": {
+      "title1": "未结发票",
+      "title2": "发票总数",
+      "title3": "逾期",
+      "title4": "已支付",
+      "title5": "未支付"
+    },
+    "ProfitMarginBarChartCard": {
+      "title1": "总成本/利润",
+      "title2": "阶段",
+      "title3": "利润率",
+      "title4": "总计",
+      "title5": "总项目数"
+    },
+    "SubcontractorBillingChart": {
+      "title1": "分包商账单概览",
+      "amount": "金额",
+      "status": "状态",
+      "due": "到期",
+      "noData": "暂无数据"
+    },
+    "PaidTransactionsCard": {
+      "title1": "已支付交易",
+      "title2": "总支付金额",
+      "noData": "暂无数据"
+    },
+    "MonthlyMarginChart": {
+      "title1": "月利润率",
+      "title2": "月均利润率",
+      "loadingChart": "正在加载图表...",
+      "noData": "暂无数据",
+      "title3": "月报告",
+      "title4": "月",
+      "title5": "工单总数/利润率",
+      "title6": "待支付",
+      "tooltip": {
+        "title1": "月成本",
+        "title2": "月利润率",
+        "title3": "月利润率趋势",
+        "title4": "待支付"
+      }
+    },
+    "TotalCostPieChart": {
+      "title1": "总成本",
+      "title2": "美元",
+      "title3": "已支出金额",
+      "title4": "剩余金额",
+      "title5": "当前预计利润率"
+    },
+    "UpcomingDeadlines": {
+      "title1": "即将到期的截止日期",
+      "title2": "项目名称",
+      "title3": "截止日期"
+    }
+  },
+  "PhaseCard": {
+    "approved": "已批准",
+    "pending": "待处理",
+    "declined": "已拒绝",
+    "not approved": "未批准",
+    "changeApproved": "变更订单已批准",
+    "changePending": "变更订单待处理",
+    "changeDeclined": "变更订单已拒绝",
+    "addLineItem": "添加项目",
+    "listOfLineItems": "项目列表",
+    "price": "价格",
+    "lineItem": "项目",
+    "unit": "单位",
+    "start": "开始",
+    "end": "结束",
+    "profit": "利润",
+    "totalCost": "总成本",
+    "notes": "备注",
+    "updateStatus": "更新状态",
+    "teamStatus": "团队状态",
+    "action": "操作",
+    "invoice": "发票",
+    "status": "状态",
+    "noLineItemsAdded": "未添加项目",
+    "Not Requested": "未请求",
+    "Work Order Not requested": "工单未请求",
+    "Work Order declined": "工单已拒绝",
+    "Change Order Not requested": "变更订单未请求",
+    "Change Order declined": "变更订单已拒绝",
+    "Change Order approved": "变更订单已批准",
+    "Work Order complete": "工单已完成",
+    "Work Order approved": "工单已批准",
+    "Work Order Requested": "工单请求",
+    "Change Order Requested": "变更订单请求",
+    "details": "详情"
+  },
+  "ProjectChangeOrder": {
+    "title1": "提交变更订单",
+    "title2": "变更订单日志"
+  },
+  "WorkOrder": {
+    "approved": "已批准",
+    "pending": "待处理",
+    "declined": "已拒绝"
+  },
+  "ProjectInvoices": {
+    "title1": "生成发票",
+    "title2": "发票历史",
+    "title3": "发票",
+    "paid": "已支付",
+    "unpaid": "未支付",
+    "overdue": "逾期",
+    "addQuickbooks": "添加到Quickbooks",
+    "downloadInvoice": "下载发票",
+    "generated": "已生成",
+    "notGenerated": "未生成",
+    "export": "导出发票",
+    "table": {
+      "title1": "选择",
+      "title2": "发票编号",
+      "title3": "发票日期",
+      "title4": "发票到期",
+      "title5": "发票状态",
+      "title6": "发票金额",
+      "title7": "支付方式",
+      "title8": "发票备注",
+      "title9": "发票详情",
+      "title10": "查看备注",
+      "title11": "已支付",
+      "title12": "详情",
+      "noNotesAvailable": "暂无备注",
+      "paid": "已支付",
+      "unpaid": "未支付",
+      "overdue": "逾期"
+    }
+  },
+  "ProjectPermissions": {
+    "header": "项目权限",
+    "labels": {
+      "Initial Proposal Approval": "初步提案审批",
+      "Project Management": "项目管理",
+      "Submit Change Order": "提交变更订单",
+      "Change Order Approval": "变更订单审批",
+      "Submit Work Order": "提交工单",
+      "Work Order Approval": "工单审批",
+      "Project Report": "项目报告",
+      "Generate Invoice": "生成发票"
+    },
+    "roles": {
+      "admin": "管理员",
+      "projectManager": "项目经理",
+      "client": "客户",
+      "employee": "员工",
+      "subcontractor": "分包商",
+      "supplier": "供应商",
+      "others": "其他"
+    },
+    "dialogTitle": "更新权限",
+    "dialogMessage": "正在更新权限，请稍候..."
+  },
+  "Search": {
+    "placeholder": "搜索"
+  },
+  "Button": {
+    "add": "添加",
+    "back": "返回",
+    "next": "下一步",
+    "skip": "跳过",
+    "cancel": "取消",
+    "yes": "是",
+    "done": "完成",
+    "save": "保存",
+    "saveAs": "保存为",
+    "close": "关闭",
+    "filter": "筛选"
+  },
+  "AssignProject": {
+    "title1": "添加新项目",
+    "title2": "选择项目类型",
+    "step1": "步骤1/3",
+    "step2": "步骤2/3",
+    "step3": "步骤3/3",
+    "newProject": "新项目",
+    "ProjectFormFields": {
+      "title1": "项目名称",
+      "title2": "位置",
+      "title3": "开始日期",
+      "title4": "结束日期",
+      "title5": "项目颜色",
+      "placeholder": "ex: Skyrise Sanctuary",
+      "placeholder1": "搜索位置...",
+      "locationWarning": "请输入有效的位置"
+    }
+  },
+  "AssignNewProjectStep2": {
+    "title1": "步骤2/3",
+    "title2": "邀请您的团队",
+    "title3": "接受邀请授予对BuilderBUILDER PRO中安全项目工作区的访问权限",
+    "addAnotherEmail": "添加另一个电子邮件",
+    "SelectRole": "选择角色",
+    "footer": {
+      "saveToReturnBackToEditYourProject": "保存以返回编辑您的项目。",
+      "saveAsToStartADuplicateProjectWithTheSameLineItemsAndPhases": "保存为，以启动一个具有相同项目和阶段的重复项目。"
+    }
+  },
+  "AssignNewProjectStep3": {
+    "title1": "步骤3/3",
+    "title2": "计划您的项目",
+    "title3": "将您的项目分成阶段并添加项目到阶段。"
+  },
+  "SelectColorModal": {
+    "TapToSelectColor": "点击选择颜色",
+    "title1": "选择颜色",
+    "Done": "完成"
+  },
+  "StepBoxes": {
+    "title1": "翻新",
+    "title2": "新建",
+    "title3": "商业"
+  },
+  "SkipInvite": {
+    "title1": "跳过邀请？",
+    "title2": "您确定要跳过此步骤而不邀请吗？"
+  },
+  "GenerativeAiDialogue": {
+    "title1": "使用AI生成",
+    "title2": "描述",
+    "placeholder1": "在此输入您的描述...",
+    "title3": "项目大小",
+    "title4": "项目利润",
+    "placeholder2": "ex: 50 Sq. Yds",
+    "placeholder3": "ex: 25%",
+    "body1": "提供您的项目详细描述，使用AI生成建议的阶段和相关项目。处理可能需要30秒。",
+    "warning": "警告：这将重写您之前保存的阶段和项目。",
+    "button1": "生成"
+  },
+  "PhaseModal": {
+    "addPhase": "添加阶段",
+    "updatePhase": "更新阶段",
+    "selectColor": "选择颜色",
+    "phase": "阶段",
+    "areYouSure": "删除此阶段"
+  },
+  "InvoiceModal": {
+    "title1": "发票",
+    "GenerateInvoice": {
+      "generating": "正在生成...",
+      "downloadInvoice": "下载发票",
+      "form": {
+        "title1": "公司",
+        "title2": "姓名",
+        "title3": "开票人",
+        "Invoice#": "发票编号",
+        "invoiceDate": "开票日期",
+        "dueDate": "到期日期",
+        "Notes": "备注",
+        "footer": {
+          "footer1": "很高兴与您合作",
+          "footer2": "条款和条件",
+          "footer3": "请在到期日前付款"
+        }
+      }
+    },
+    "PopUp": {
+      "generatingInvoice": "正在生成发票",
+      "pleaseWait": "请稍等...",
+      "invoiceGeneratedSuccessfully": "发票生成成功！"
+    },
+    "ShareModal": {
+      "sendTo": "发送至",
+      "email": "电子邮件",
+      "notes": "备注",
+      "noClientAssigned": "未分配客户",
+      "send": "发送",
+      "table": {
+        "title1": "标题",
+        "title2": "总成本",
+        "title3": "剩余",
+        "title4": "待处理发票",
+        "title5": "付款",
+        "title6": "百分比"
+      }
+    }
+  },
+  "AreYouSureModal": {
+    "title1": "您确定要"
+  },
+  "LineItemTeamStatus": {
+    "title1": "团队状态详情",
+    "table": {
+      "title1": "姓名",
+      "title2": "电子邮件",
+      "title3": "角色",
+      "title4": "状态",
+      "done": "完成",
+      "pending": "待处理"
+    }
+  },
+  "LineItemDetailModal": {
+    "title1": "描述",
+    "title2": "单位",
+    "title3": "数量",
+    "title4": "单价",
+    "title5": "总价",
+    "title6": "开始日期",
+    "title7": "结束日期",
+    "title8": "备注"
+  },
+  "LineItem": {
+    "addLineItem": "添加项目",
+    "updateLineItem": "更新项目",
+    "areYouSure": "删除此项目",
+    "lineItem": "项目",
+    "description": "描述",
+    "unit": "单位",
+    "unitPrice": "单价",
+    "quantity": "数量",
+    "actualCost": "实际成本",
+    "clientCost": "客户成本",
+    "start": "开始",
+    "end": "结束",
+    "profit": "利润",
+    "totalCost": "总成本",
+    "notes": "备注",
+    "percentage": "百分比",
+    "placeholder": "输入描述",
+    "placeholder1": "选择单位",
+    "placeholder2": "在此输入您的备注..."
+  },
+  "NotificationDetailModal": {
+    "Heading1": "工单详情",
+    "Heading2": "变更单详情",
+    "Subject": "主题",
+    "Description": "描述",
+    "Phases": "阶段",
+    "LineItem": "项目",
+    "dateStarted": "开始日期",
+    "dateEnded": "结束日期",
+    "createdBy": "创建者",
+    "assigned": "分配给",
+    "notes": "备注",
+    "status": "状态",
+    "priority": "优先级",
+    "urgent": "紧急",
+    "normal": "普通",
+    "button": "完成工单"
+  },
+  "AssignTeamMembers": {
+    "heading1": "已分配用户",
+    "heading2": "分配用户",
+    "noMembers": "没有团队成员",
+    "table": {
+      "title1": "姓名",
+      "title2": "角色",
+      "title3": "电子邮件"
+    }
+  },
+  "ProjectList": {
+    "heading1": "项目列表",
+    "heading2": "所有项目都在这里显示",
+    "areYouSure": "删除此项目?",
+    "noClient": "没有客户名称",
+    "Search": "搜索项目",
+    "export": "导出项目",
+    "table": {
+      "ProfilePicture": "头像",
+      "Client": "客户",
+      "Project": "项目",
+      "StartDate": "开始日期",
+      "EndDate": "结束日期",
+      "Action": "操作",
+      "ViewDetails": "查看详情"
+    },
+    "remodel": "翻新",
+    "newbuild": "新建",
+    "commercial": "商业",
+    "footer1": "显示数据",
+    "footer2": "至",
+    "footer3": "共",
+    "footer4": "条记录"
+  },
+  "Subscription": {
+    "heading1": "订阅",
+    "heading2": "付款记录",
+    "noPaymentHistory": "暂无付款记录。",
+    "areYouSure": "此过程可能需要 5-10 天。<br />您确定要申请退款吗？",
+    "currentPlan": "您的当前计划",
+    "updatePlan": "更新计划",
+    "choosePlan": "选择计划",
+    "historyCard": {
+      "plan": "计划",
+      "status": "状态",
+      "refund": "申请退款"
+    },
+    "SubscriptionCard": {
+      "Business +": {
+        "planPackage": "促销代码 - 已启用\n- 50\n- 40\n3 个用户"
+      },
+      "Business Pro": {
+        "planPackage": "促销代码 - 已启用\n- 500\n- 440\n10 个用户"
+      },
+      "Free Trial": { "planPackage": "免费计划\n- 10\n- 5\n3 个用户" },
+      "Enterprise": { 
+        "planPackage": "10+ 用户\n- 10\n- 5\n", 
+        "body1": "适用于希望充分利用应用程序潜力的用户的企业计划。联系我们，我们会尽快回复您！" 
+      },
+      "amountOfPhotos": "照片数量",
+      "amountOfFiles": "文件数量",
+      "upTo": "最多",
+      "body1": "扩展您的业务，提高生产力，并保持团队联系",
+      "contactUs": "联系我们",
+      "listHeading": "订阅计划",
+      "perMonth": "每月",
+      "perYear": "每年",
+      "expiryDate": "到期日期"
+    },
+    "form": {
+      "orgInfo": "1. 组织信息",
+      "orgName": "组织名称",
+      "address": "地址行 1",
+      "placeholder": "街道地址",
+      "promo": "有促销代码吗？",
+      "placeholder1": "输入促销代码",
+      "button": "应用代码",
+      "paymentMethod": "2. 付款方式",
+      "choosePlan": "选择的计划",
+      "monthly": "每月",
+      "yearly": "每年",
+      "discount": "折扣价格"
     }
   }
 }

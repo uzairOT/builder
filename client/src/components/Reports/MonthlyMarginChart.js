@@ -5,8 +5,9 @@ import { useParams } from 'react-router-dom';
 import { formatMoney } from '../../utils/Formatters/moneyFormat';
 import CircleIcon from "@mui/icons-material/Circle";
 import Chart from 'react-apexcharts';
-
+import { useTranslation } from 'react-i18next';
 const MonthlyMarginChart = () => {
+  const {t} = useTranslation()
   let dataUser = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(dataUser);
   const currentUser = userInfo?.user;
@@ -32,7 +33,7 @@ const MonthlyMarginChart = () => {
           variant="h6"
           p={1}
         >
-          Monthly Margin
+          {t("ProjectReports.MonthlyMarginChart.title1")}
         </Typography>
         <Divider variant="fullWidth" />
         <Stack direction={"row"} spacing={1}>
@@ -49,7 +50,7 @@ const MonthlyMarginChart = () => {
                 fontSize={{ xl: 16, lg: 14, md: 16, xs: 16 }}
                 sx={{ textAlign: "left" }}
               >
-                Monthly Avg. Margin
+                {t("ProjectReports.MonthlyMarginChart.title2")}
               </Typography>
               <Typography
                 // textAlign={"center"}
@@ -63,15 +64,15 @@ const MonthlyMarginChart = () => {
             </Stack>
           </Stack>
 
-      <MonthlyChart monthlyReport={monthlyMarginData?.monthlyReport} isLoadingMonthlyMargin={isLoadingMonthlyMargin} />
+      <MonthlyChart t={t} monthlyReport={monthlyMarginData?.monthlyReport} isLoadingMonthlyMargin={isLoadingMonthlyMargin} />
       </CardContent>
     </Card>
   )
 
 }
 
-const MonthlyChart = ({ monthlyReport, isLoadingMonthlyMargin }) => {
-  console.log(monthlyReport);
+const MonthlyChart = ({ t, monthlyReport, isLoadingMonthlyMargin }) => {
+
   // Show a loader while data is loading
   if (isLoadingMonthlyMargin) {
     return (
@@ -85,7 +86,7 @@ const MonthlyChart = ({ monthlyReport, isLoadingMonthlyMargin }) => {
       >
         <CircularProgress />
         <Typography variant="h6" mt={2}>
-          Loading Chart...
+          {t("ProjectReports.MonthlyMarginChart.loadingChart")}
         </Typography>
       </Box>
     );
@@ -93,7 +94,7 @@ const MonthlyChart = ({ monthlyReport, isLoadingMonthlyMargin }) => {
 
   // Check if monthlyReport exists and has data
   if (!monthlyReport || monthlyReport.length === 0) {
-    return <Typography>No data available.</Typography>;
+    return <Typography fontFamily={'var(--main-font-family)'} p={2} textAlign={"center"} fontWeight={"500"} fontSize={{ xl: "16px", lg: "13px", md: "16px", xs: "16px" }} color={"#5B5B5B"}>{t("ProjectReports.MonthlyMarginChart.noData")}</Typography>;
   }
 
   // Extract month labels from the monthlyReport array
@@ -119,22 +120,22 @@ const MonthlyChart = ({ monthlyReport, isLoadingMonthlyMargin }) => {
   // Define series for a combination chart:
   const series = [
     {
-      name: 'Monthly Cost',
+      name: t("ProjectReports.MonthlyMarginChart.tooltip.title1"),
       type: 'column',
       data: workOrderTotals,
     },
     {
-      name: 'Montly Margin',
+      name: t("ProjectReports.MonthlyMarginChart.tooltip.title2"),
       type: 'column',
       data: workOrderMargins,
     },
     {
-      name: 'Montly Margin',
+      name: t("ProjectReports.MonthlyMarginChart.tooltip.title3"),
       type: 'line',
       data: workOrderMargins,
     },
     {
-      name: 'Payment Pending',
+      name: t("ProjectReports.MonthlyMarginChart.tooltip.title4"),
       type: 'line',
       data: paymentPendings,
     },
@@ -156,7 +157,7 @@ const MonthlyChart = ({ monthlyReport, isLoadingMonthlyMargin }) => {
       width: [0, 0,2, 2], // Thicker stroke for the line series (payment pending)
     },
     title: {
-      text: 'Monthly Report',
+      text: t("ProjectReports.MonthlyMarginChart.title3"),
       align: 'center',
       style: {
         fontSize: '18px',
@@ -166,13 +167,13 @@ const MonthlyChart = ({ monthlyReport, isLoadingMonthlyMargin }) => {
     xaxis: {
       categories: categories,
       title: {
-        text: 'Month',
+        text: t("ProjectReports.MonthlyMarginChart.title4"),
       },
     },
     yaxis: [
       {
         title: {
-          text: 'Work Order Total / Margin',
+          text: t("ProjectReports.MonthlyMarginChart.title5"),
         },
         labels: {
           formatter: val => `$${val}`,
@@ -181,7 +182,7 @@ const MonthlyChart = ({ monthlyReport, isLoadingMonthlyMargin }) => {
       {
         opposite: true,
         title: {
-          text: 'Payment Pending',
+          text: t("ProjectReports.MonthlyMarginChart.title6"),
         },
         labels: {
           formatter: val => `$${val}`,
@@ -199,7 +200,7 @@ const MonthlyChart = ({ monthlyReport, isLoadingMonthlyMargin }) => {
       position: 'top',
     },
     noData: {
-      text: 'Loading data...',
+      text: t("ProjectReports.MonthlyMarginChart.loadingChart"),
     },
   };
 

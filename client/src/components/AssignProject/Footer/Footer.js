@@ -24,8 +24,9 @@ import {
   setBackButtonProjectId,
   setIsSaveAs,
 } from "../../../redux/slices/Project/handlingProjectFlowSlice";
-
+import { useTranslation } from "react-i18next";
 function Footer({ onNextStep, projectId }) {
+  const { t } = useTranslation();
   const phases = useSelector((state) => state.projectInitialProposal.phases);
   const [loading, setLoading] = useState(false);
 
@@ -108,7 +109,7 @@ function Footer({ onNextStep, projectId }) {
             sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}
             onClick={handleDone}
           >
-            Done
+            {t("Button.done")}
           </Button>
 
           <Button
@@ -119,7 +120,7 @@ function Footer({ onNextStep, projectId }) {
             }}
             onClick={handleSave}
           >
-            Save
+            {t("Button.save")}
           </Button>
           <Button
             variant="outlined"
@@ -129,16 +130,15 @@ function Footer({ onNextStep, projectId }) {
             }}
             onClick={handleSaveAs}
           >
-            Save as
+            {t("Button.saveAs")}
           </Button>
         </Box>
         <Stack mt={1} justifyContent={"center"} alignItems={"center"}>
           <Typography sx={{ ...redText }}>
-            Save to return back to edit your project.
+            {t("AssignNewProjectStep2.footer.saveToReturnBackToEditYourProject")}
           </Typography>
           <Typography sx={{ ...redText }}>
-            Save as to start a duplicate project with the same line items and
-            phases.
+            {t("AssignNewProjectStep2.footer.saveAsToStartADuplicateProjectWithTheSameLineItemsAndPhases")}
           </Typography>
         </Stack>
         <div>

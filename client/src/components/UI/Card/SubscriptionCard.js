@@ -11,6 +11,7 @@ import {
 import React, { cloneElement, useState } from "react";
 import CheckSharpIcon from "@mui/icons-material/CheckSharp";
 import moment from 'moment'
+import { useTranslation } from "react-i18next";
 
 const SubscriptionCard = ({
   planType,
@@ -20,6 +21,7 @@ const SubscriptionCard = ({
   expiryDate,
   setCurrentPakage,
 }) => {
+  const { t } = useTranslation()
   const plan = (() => {
     switch (planType) {
       case "Business +":
@@ -28,7 +30,8 @@ const SubscriptionCard = ({
           color: "#22506C",
           costMonth: 39.99,
           costAnnum: 399,
-          planPackage: ["Promo code - Enabled", "- 50", "- 40", "3 Users", true],
+          planPackage: [...(t(`Subscription.SubscriptionCard.${planType}.planPackage`).split("\n")), true],
+          planId: planType
         };
       case "Business Pro":
         return {
@@ -36,15 +39,17 @@ const SubscriptionCard = ({
           color: "#226C6C",
           costMonth: 319,
           costAnnum: 2799,
-          planPackage: ["Promo code - Enabled", "- 500", "- 440", "10 Users", true],
+          planPackage: [...(t(`Subscription.SubscriptionCard.${planType}.planPackage`).split("\n")), true],
+          planId: planType
         };
-        case "Free Trial":
-          return {
-            name: "30 Day Free Trial",
-            color: "#4C8AB1",
-            cost: 0,
-            planPackage: ["Free Plan", "- 10", "- 5","3 Users" ,false],
-          };
+      case "Free Trial":
+        return {
+          name: "30 Day Free Trial",
+          color: "#4C8AB1",
+          cost: 0,
+          planPackage: [...(t(`Subscription.SubscriptionCard.${planType}.planPackage`).split("\n")), false],
+          planId: planType
+        };
       default:
         return {
           name: "Free Plan",
@@ -57,9 +62,9 @@ const SubscriptionCard = ({
   const generateList = (renderItem) => {
     return [
       "",
-      "Amount of photos",
-      "Amount of files",
-      "Up to ",
+      t("Subscription.SubscriptionCard.amountOfPhotos"),
+      t("Subscription.SubscriptionCard.amountOfFiles"),
+      t("Subscription.SubscriptionCard.upTo"),
       // "Yearly plan option",
       // "Monthly plan option",
     ].map((value, index) =>
@@ -96,13 +101,12 @@ const SubscriptionCard = ({
             sx={{ backgroundColor: "white" }}
           />
           <Typography p={1} pl={3} sx={themeStyle.subtitle}>
-            Scale your business, increase productivity, and keep your teams
-            connected
+            {t("Subscription.SubscriptionCard.body1")}
           </Typography>
         </Stack>
         <Stack px={2}>
           <Typography sx={{ ...themeStyle.bodyText, fontWeight: 600 }} pl={1}>
-            Prescription Plan
+          {t("Subscription.SubscriptionCard.listHeading")}
           </Typography>
           <List>
             {generateList((value, index) => {
@@ -126,12 +130,11 @@ const SubscriptionCard = ({
                       fontSize: { xl: "14px", lg: "12px" },
                     }}
                     sx={{ ...themeStyle.bodyText, marginLeft: "-8px" }}
-                    primary={`${value}  ${
-                      typeof plan.planPackage[index] === "boolean"
+                    primary={`${value}  ${typeof plan.planPackage[index] === "boolean"
                         ? ""
                         : `${plan.planPackage[index]}`
-                    }`}
-                    // secondary={secondary ? `Secondary text: ${value}` : null}
+                      }`}
+                  // secondary={secondary ? `Secondary text: ${value}` : null}
                   />
                 </ListItem>
               );
@@ -140,18 +143,18 @@ const SubscriptionCard = ({
         </Stack>
       </Stack>
       <Stack p={1} px={4} gap={2}>
-        {!current && 
-        <Stack direction={{lg:'row', md:'row', sm: 'row', xs:'row'}} justifyContent={'space-between'}>
-        <Typography sx={themeStyle.bodyTitle} color={plan.color}>
-          ${plan.costMonth}<span> per month</span>
-        </Typography>
-        <Typography sx={themeStyle.bodyTitle} color={plan.color}>
-          ${plan.costAnnum}<span> per year</span>
-        </Typography>
-        </Stack>
+        {!current &&
+          <Stack direction={{ lg: 'row', md: 'row', sm: 'row', xs: 'row' }} justifyContent={'space-between'}>
+            <Typography sx={themeStyle.bodyTitle} color={plan.color}>
+              ${plan.costMonth}<span> {t("Subscription.SubscriptionCard.perMonth")}</span>
+            </Typography>
+            <Typography sx={themeStyle.bodyTitle} color={plan.color}>
+              ${plan.costAnnum}<span> {t("Subscription.SubscriptionCard.perYear")}</span>
+            </Typography>
+          </Stack>
         }
         {/* { current ? <Typography sx={themeStyle.bodyText} >Last Paid: 12/12/2024</Typography> : <Typography sx={themeStyle.bodyText} >per person/month, when billed monthly</Typography>} */}
-        { current && <Typography sx={{...themeStyle.bodyText, color:'black'}} >Expiry Date: {moment(expiryDate).format("MM/DD/YYYY")}</Typography>}
+        {current && <Typography sx={{ ...themeStyle.bodyText, color: 'black' }} >{t("Subscription.SubscriptionCard.expiryDate")}: {moment(expiryDate).format("MM/DD/YYYY")}</Typography>}
       </Stack>
     </Paper>
   );

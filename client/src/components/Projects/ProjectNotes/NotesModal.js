@@ -23,12 +23,13 @@ import { fileTypeIcons } from "../../dialogues/AddImage/assets/fileTypes";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CloseIcon from "@mui/icons-material/Close";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
+import { useTranslation } from 'react-i18next';
 //import "react-toastify/dist/ReactToastify.css";
 
 const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
   const [open, setOpen] = useState(false);
   const { id } = useParams();
-
+  const {t} = useTranslation()
   const [noteSubject, setNoteSubject] = useState(notes ? notes?.subject : "");
   const [noteBody, setNoteBody] = useState(notes ? notes?.content : "");
 
@@ -190,7 +191,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
     fontFamily={'var(--main-font-family)'}
     handleOnClick={handleOpen}
   >
-    Add Notes
+    {t("ProjectNotes.addNotes")}
   </BuilderProButton>
 )}
 
@@ -207,7 +208,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
               fontSize={"24px"}
               fontWeight={"500"}
             >
-              {showEditModal ? "Edit" : "Add"} Notes
+              {showEditModal ? t("ProjectNotes.editNotes") : t("ProjectNotes.addNotes")}
             </Typography>
             <IconButton onClick={handleClose}>
               <CloseIcon fontSize={"small"} />
@@ -218,7 +219,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
               variant="soft"
               value={noteSubject}
               onChange={handleNoteSubject}
-              placeholder="Type Note Subject..."
+              placeholder={t("ProjectNotes.placeholder1")}
               sx={{
                 '.MuiInput-input':{
                   marginBottom:'0px'
@@ -232,7 +233,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
               value={noteBody}
               onChange={handleNoteBody}
               variant="soft"
-              placeholder="Type your text here..."
+              placeholder={t("ProjectNotes.placeholder2")}
             />
           </Stack>
             <Typography component='p' fontSize={'10px'} p={0} m={0} mt={0} textAlign={'right'}>{noteBody?.length}/1500</Typography>
@@ -303,7 +304,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
                       }}
                     />
                   ) : (
-                    <>no preview</>
+                    <>{t("ProjectNotes.noPreview")}</>
                   )}
                 </Stack>
               );
@@ -346,7 +347,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
               handleOnClick={handleSubmit}
               disabled={isLoading}
             >
-              {isLoading ? <CircularProgress size={"18px"} /> : showEditModal ? "Edit Notes" : "Add Notes"}
+              {isLoading ? <CircularProgress size={"18px"} /> : showEditModal ? t("ProjectNotes.editNotes") : t("ProjectNotes.addNotes")}
             </BuilderProButton>
           </Stack>
         </Stack>

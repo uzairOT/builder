@@ -62,7 +62,7 @@ import {
   isCheckBoxRestricted,
   isNotAdmin,
 } from "./constants/checkArray";
-
+import { useTranslation } from "react-i18next";
 const initialRows = [
   {
     phaseName: "Item 1",
@@ -125,6 +125,7 @@ const AddPhaseCard = ({
   handleAddChangeLineItem,
   handleDeleteChangeLineItem,
 }) => {
+  const { t } = useTranslation();
   const [selectAll, setSelectAll] = useState(false); // State to track the checked state of the checkbox in the table head
   const [showAddLine, setShowAddLine] = useState(false);
   const [showUpdateLine, setShowUpdateLine] = useState(false);
@@ -476,7 +477,7 @@ const AddPhaseCard = ({
                   marginRight: 2,
                   marginLeft: 2,
                 }}
-                label={phaseData?.status}
+                label={t(`PhaseCard.${phaseData?.status}`)}
                 color={
                   phaseData?.status === "approved" ||
                   phaseData?.status === "change approved"
@@ -599,7 +600,7 @@ const AddPhaseCard = ({
                             title={
                               projectManagementPermission
                                 ? ""
-                                : "You are not authorized!"
+                                : t("ProjectPermissions.notAuthorized")
                             }
                             arrow
                           >
@@ -644,7 +645,7 @@ const AddPhaseCard = ({
                                   },
                                 }}
                               >
-                                Add Line Item
+                                {t("PhaseCard.addLineItem")}
                               </Typography>
                             </Button>
                           </Tooltip>
@@ -693,7 +694,7 @@ const AddPhaseCard = ({
                       "@media (max-width: 600px)": { display: "none" },
                     }}
                   >
-                    Add Line Item
+                    {t("PhaseCard.addLineItem")}
                   </Typography>
                 </Button>
               </>
@@ -722,7 +723,7 @@ const AddPhaseCard = ({
                       </>
                     )}
 
-                  {(view === "Change Order" ||
+                  {(view === t("ProjectInitialProposal.title2") ||
                     pathCheck.includes("/assignproject")) &&
                   !pathCheck.includes("/initial-proposal") ? (
                     <>
@@ -738,7 +739,7 @@ const AddPhaseCard = ({
                         title={
                           projectManagementPermission
                             ? ""
-                            : "You are not authorized!"
+                            : t("ProjectPermissions.notAuthorized")
                         }
                         arrow
                       >
@@ -784,7 +785,7 @@ const AddPhaseCard = ({
                               },
                             }}
                           >
-                            Add Line Item
+                            {t("PhaseCard.addLineItem")}
                           </Typography>
                         </Button>
                       </Tooltip>
@@ -797,7 +798,7 @@ const AddPhaseCard = ({
                     title={
                       ProjectApprovalSendPermission
                         ? ""
-                        : "You don't have permission to access this feature"
+                        : t("ProjectPermissions.notAuthorized")
                     }
                     arrow
                   >
@@ -875,7 +876,7 @@ const AddPhaseCard = ({
 
         <Grid item sx={tableGrid}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography sx={listOfLineText}>List of Line Items </Typography>
+            <Typography sx={listOfLineText}>{t("PhaseCard.listOfLineItems")}</Typography>
 
             <Box>
               {hasAdminPrivileges.includes(userRoleAuth.userRole) && (
@@ -890,7 +891,7 @@ const AddPhaseCard = ({
                     textOverflow: "ellipsis",
                   }}
                 >
-                  Price: ${formatMoney(totalCost)}
+                  {t("PhaseCard.price")}: ${formatMoney(totalCost)}
                 </Typography>
               )}
             </Box>
@@ -920,7 +921,7 @@ const AddPhaseCard = ({
                     ></TableCell>
                   </>
 
-                  <TableCell sx={{ ...tableHeadings }}>Line Item</TableCell>
+                  <TableCell sx={{ ...tableHeadings }}>{t("PhaseCard.lineItem")}</TableCell>
 
                   {/* <TableCell sx={tableHeadings}>Description</TableCell> */}
                   <TableCell
@@ -929,7 +930,7 @@ const AddPhaseCard = ({
                       display: changeOrderSelectedView ? "none" : "",
                     }}
                   >
-                    Unit
+                    {t("PhaseCard.unit")}
                   </TableCell>
                   {/* {!(
                     userRoleAuth.userRole === "client" ||
@@ -953,7 +954,7 @@ const AddPhaseCard = ({
                         width: "60px",
                       }}
                     >
-                      Start
+                      {t("PhaseCard.start")}
                     </TableCell>
                   )}
                   {!(path === "assignproject" || changeOrderSelectedView) && (
@@ -965,7 +966,7 @@ const AddPhaseCard = ({
                         width: "60px",
                       }}
                     >
-                      End
+                      {t("PhaseCard.end")}
                     </TableCell>
                   )}
                   {!(
@@ -980,7 +981,7 @@ const AddPhaseCard = ({
                         display: changeOrderSelectedView ? "none" : "",
                       }}
                     >
-                      Profit
+                      {t("PhaseCard.profit")}
                     </TableCell>
                   )}
                   <TableCell
@@ -989,7 +990,7 @@ const AddPhaseCard = ({
                       display: changeOrderSelectedView ? "none" : "",
                     }}
                   >
-                    Total Cost
+                    {t("PhaseCard.totalCost")}
                   </TableCell>
                   {/* {(userRoleAuth.userRole === "superadmin" ||
                     userRoleAuth.userRole === "admin" ||
@@ -1002,23 +1003,23 @@ const AddPhaseCard = ({
                       display: changeOrderSelectedView ? "none" : "",
                     }}
                   >
-                    Notes
+                    {t("PhaseCard.notes")}
                   </TableCell>
                   {adminProjectView && (
                     <>
                       <TableCell sx={tableHeadings}>
-                        {view === "Generate Invoice"
-                          ? "Invoice"
+                        {view === t("ProjectInvoices.title1")
+                          ? t("PhaseCard.invoice")
                           : pathCheck.includes("/initial-proposal")
                           ? ""
-                          : "Status"}
+                          : t("PhaseCard.status")}
                       </TableCell>
 
                       {hasAdminPrivileges.includes(userRoleAuth.userRole) && (
-                        <TableCell sx={tableHeadings}>Team Status</TableCell>
+                        <TableCell sx={tableHeadings}>{t("PhaseCard.teamStatus")}</TableCell>
                       )}
-                      {view === "Work Order" && (
-                        <TableCell sx={tableHeadings}>Update Status</TableCell>
+                      {view === t("ProjectWorkOrder.title1") && (
+                        <TableCell sx={tableHeadings}>{t("PhaseCard.updateStatus")}</TableCell>
                       )}
                     </>
                   )}
@@ -1030,7 +1031,7 @@ const AddPhaseCard = ({
                       phaseData.status === "not approved" ||
                       phaseData.status === "declined") &&
                     !pathCheck.includes("/invoices") && (
-                      <TableCell sx={tableHeadings}>Action</TableCell>
+                      <TableCell sx={tableHeadings}>{t("PhaseCard.action")}</TableCell>
                     )}
                 </TableRow>
 
@@ -1047,7 +1048,7 @@ const AddPhaseCard = ({
                       sx={{ border: "none" }}
                     >
                       <Typography sx={{ fontSize: "1.2rem" }} padding={9}>
-                        No line items added
+                        {t("PhaseCard.noLineItemsAdded")}
                       </Typography>
                     </TableCell>
                   </TableRow>
@@ -1077,7 +1078,7 @@ const AddPhaseCard = ({
                       [...hasAdminPrivileges, ""].includes(
                         userRoleAuth.userRole
                       ) &&
-                      (view === "Change Order" ||
+                      (view === t("ProjectInitialProposal.title2") ||
                         changeOrderSelectedView ||
                         InitialProposalView ||
                         pathCheck.includes("/assignproject")) &&
@@ -1164,14 +1165,14 @@ const AddPhaseCard = ({
                           {!InitialProposalView && (
                             <>
                               {!(path === "assignproject") &&
-                                !(view === "Generate Invoice") &&
+                                !(view === t("ProjectInvoices.title1")) &&
                                 // (row.status === "Work Order Not requested" ||
                                 //   row.status === "Work Order declined" ||
                                 //   row.status === "Change Order Not requested" ||
                                 //   row.status === "Change Order declined")
                                 //   &&
-                                (view === "Change Order" ||
-                                  view === "Work Order") &&
+                                (view === t("ProjectInitialProposal.title2") ||
+                                  view === t("ProjectWorkOrder.title1")) &&
                                 !pathCheck.includes("initial-proposal") && (
                                   <>
                                     {(() => {
@@ -1192,7 +1193,7 @@ const AddPhaseCard = ({
                                           ? status
                                           : phaseStatus
                                       }`;
-                                      const tooltipIsApprovedMessage =  status === 'Work Order complete' ? "Line item completed" : "Line item approved";
+                                      const tooltipIsApprovedMessage =  status === 'Work Order complete' ? t("PhaseCard.tooltip.lineItemCompleted") : t("PhaseCard.tooltip.lineItemApproved");
 
                                       if (isPending || isRestricted) {
                                         return (
@@ -1238,7 +1239,7 @@ const AddPhaseCard = ({
                                 )}
                             </>
                           )}
-                          {view === "Generate Invoice" &&
+                          {view === t("ProjectInvoices.title1") &&
                             !(row.paymentPending === "0") && (
                               <Checkbox
                                 // checked={checkedRow === row}
@@ -1370,11 +1371,11 @@ const AddPhaseCard = ({
                         </TableCell>
                         {adminProjectView && (
                           <>
-                            {view === "Generate Invoice" ? (
+                            {view === t("ProjectInvoices.title1") ? (
                               <TableCell sx={tableCell}>
                                 {row.invoiceExists
-                                  ? "generated"
-                                  : "not generated"}
+                                  ? t("ProjectInvoices.generated")
+                                  : t("ProjectInvoices.notGenerated")}
                               </TableCell>
                             ) : pathCheck.includes("/initial-proposal") ? (
                               <TableCell
@@ -1398,12 +1399,12 @@ const AddPhaseCard = ({
                                         textTransform: "capitalize",
                                       }}
                                     >
-                                      {row.status}
+                                      {t(`PhaseCard.${row.status}`)}
                                     </Typography>
                                   }
                                   arrow
                                 >
-                                  {row.status}
+                                  {t(`PhaseCard.${row.status}`)}
                                 </Tooltip>
                               </TableCell>
                             )}
@@ -1438,11 +1439,11 @@ const AddPhaseCard = ({
                                     row?.UserLineItemStatuses?.length < 1
                                   }
                                 >
-                                  Details
+                                  {t("PhaseCard.details")}
                                 </Button>
                               </TableCell>
                             )}
-                            {view === "Work Order" && (
+                            {view === t("ProjectWorkOrder.title1") && (
                               <TableCell sx={tableCell}>
                                 <IconButton
                                   onClick={() => {
@@ -1482,7 +1483,7 @@ const AddPhaseCard = ({
                                 title={
                                   projectManagementPermission
                                     ? ""
-                                    : "You are not authorized!"
+                                    : t("ProjectInvoices.notAuthorized")
                                 }
                                 arrow
                               >
@@ -1505,7 +1506,7 @@ const AddPhaseCard = ({
                                 title={
                                   projectManagementPermission
                                     ? ""
-                                    : "You are not authorized!"
+                                    : t("ProjectInvoices.notAuthorized")
                                 }
                                 arrow
                               >
@@ -1588,7 +1589,7 @@ const AddPhaseCard = ({
             handleClose={handleOpenModalClose}
             handleConfirmDelete={handleConfirmDelete}
             isLoading={isLoading}
-            text={"Line Item"}
+            text={t("LineItem.areYouSure")}
           />
         )}
       </Grid>
