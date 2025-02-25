@@ -58,6 +58,7 @@ import InvoiceNotification from "./InvoiceNotification";
 import { toast } from "react-toastify";
 import ApprovalNotification from "./ApprovalNoifications";
 import i18n from "../../i18n";
+import { useTranslation } from "react-i18next";
 const languageOptions = {
   en: "English",
   fr: "French",
@@ -66,7 +67,10 @@ const languageOptions = {
   de: "German",
 };
 
+const routes = ["dashboard", "projects", "reports", "", "subscription", "settings"];
+
 const Navbar = () => {
+  const {t} = useTranslation()
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [open, setOpen] = useState(null);
@@ -189,7 +193,7 @@ const Navbar = () => {
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
-    const lowercasedValue = `${event.target.textContent}`.toLowerCase();
+    const lowercasedValue = `${routes[newValue]}`.toLowerCase();
     navigate(lowercasedValue === "dashboard" ? "/dashboard" : lowercasedValue);
   };
   const handleLogout = () => {
@@ -314,17 +318,17 @@ const Navbar = () => {
                 centered
               >
                 <Tab
-                  label="Dashboard"
+                  label={t("Navbar.dashboard")}
                   style={themeStyle.getTabColor(0)}
                   onClick={(e) => handleTabChange(e, 0)}
                 />
                 <Tab
-                  label="Projects"
+                  label={t("Navbar.projects")}
                   style={themeStyle.getTabColor(1)}
                   onClick={(e) => handleTabChange(e, 1)}
                 />
                 <Tab
-                  label="Reports"
+                  label={t("Navbar.reports")}
                   style={themeStyle.getTabColor(2)}
                   onClick={(e) => handleTabChange(e, 2)}
                 />
@@ -332,12 +336,12 @@ const Navbar = () => {
                   <SearchBar selectedTab={selectedTab} />
                 </Box>
                 <Tab
-                  label="Subscription"
+                  label={t("Navbar.subscription")}
                   style={themeStyle.getTabColor(4)}
                   onClick={(e) => handleTabChange(e, 4)}
                 />
                 <Tab
-                  label="Settings"
+                  label={t("Navbar.settings")}
                   style={themeStyle.getTabColor(5)}
                   onClick={(e) => handleTabChange(e, 5)}
                 />

@@ -3,8 +3,10 @@ import moment from "moment-timezone";
 import React from "react";
 import BuilderProButton from "../UI/Button/BuilderProButton";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const InvoiceNotification = ({ data, setInvoiceNotification }) => {
+  const { t } = useTranslation
   const navigate = useNavigate()
   // console.log(data)
 
@@ -16,23 +18,23 @@ const InvoiceNotification = ({ data, setInvoiceNotification }) => {
         fontFamily={'var(--main-font-family)'}
         fontSize={"12px"}
       >
-        New Invoice: {data?.data?.InvoiceNumber}
+        {t("InvoiceNotification.newInvoice")}: {data?.data?.InvoiceNumber}
       </Typography>
       <Typography variant="body2" fontFamily={'var(--main-font-family)'} fontSize={"14px"}>
-        A new invoice (INV-{data?.data?.InvoiceNumber}) has been created for{" "}
-        {data?.data?.Client?.firstName} by {data?.data?.Admin?.firstName}.
+        {t("InvoiceNotification.body.part1")} (INV-{data?.data?.InvoiceNumber}) {t("InvoiceNotification.body.part2")}{" "}
+        {data?.data?.Client?.firstName} {t("InvoiceNotification.body.part3")} {data?.data?.Admin?.firstName}.
       </Typography>
       <Typography fontFamily={'var(--main-font-family)'} fontSize={"14px"}>
-        Please review the invoice and make a payment by:
+        {t("InvoiceNotification.body2")}
       </Typography>
       <Typography>
         {moment(data?.data?.InvoiceDueDate).format("MM/DD/YYYY")}.
       </Typography>
       <Typography fontFamily={'var(--main-font-family)'} fontSize={"14px"}>
-        Please check your email.
+        {t("InvoiceNotification.body3")}
       </Typography>
       <Stack alignItems={"flex-end"}>
-        
+
         <BuilderProButton
           variant={"contained"}
           backgroundColor={"#4C8AB1"}
@@ -43,11 +45,11 @@ const InvoiceNotification = ({ data, setInvoiceNotification }) => {
           handleOnClick={() => {
             navigate(`/invoicePayment/${data?.data?.id}/${data?.data?.Admin.id}/${data?.data?.InvoiceBill}`)
             setInvoiceNotification(null);
-            }}
-            >
-          Pay Invoice
+          }}
+        >
+          {t("InvoiceNotification.button")}
         </BuilderProButton>
-         
+
       </Stack>
     </Stack>
   );

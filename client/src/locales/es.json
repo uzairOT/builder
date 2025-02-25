@@ -191,6 +191,13 @@
     "title5": "Instalar aplicación",
     "title6": "© Copyright 2024, Todos los derechos reservados por BuilderBUILDER PRO"
   },
+  "Navbar": {
+    "dashboard": "Panel de Control",
+    "projects": "Proyectos",
+    "reports": "Informes",
+    "subscription": "Suscripción",
+    "settings": "Configuraciones"
+  },
   "userProject": {
     "title0": "Proyecto de usuario",
     "title1": "Proyectos de usuario",
@@ -583,6 +590,8 @@
   "Button": {
     "add": "Agregar",
     "update": "Actualizar",
+    "upload": "Subir",
+    "submitting": "Enviando",
     "back": "Volver",
     "next": "Siguiente",
     "skip": "Omitir",
@@ -982,6 +991,104 @@
       "noRecords": "No hay registros",
       "error": "¡Algo salió mal!",
       "areYouSureUser": "eliminar este usuario"
+    },
+    "Accounts": {
+      "heading1": "Cuentas",
+      "table": {
+        "accountImg": "Imagen de cuenta",
+        "accountName": "Nombre de cuenta",
+        "accountDetails": "Detalles de cuenta",
+        "accountLink": "Enlace de cuenta",
+        "action": "Acción",
+        "error": "¡Algo salió mal!",
+        "noRecords": "No hay registros"
+      }
+    },
+    "Coupon": {
+      "code": "Código",
+      "table": {
+        "couponId": "ID del cupón",
+        "couponCode": "Código de cupón",
+        "offAmount": "Monto de descuento",
+        "amount": "Cantidad",
+        "action": "Acción",
+        "error": "¡Algo salió mal!",
+        "noRecords": "No hay registros"
+      }
+    }
+  },
+  "ClientLayout": {
+    "RecentImages": {
+      "heading1": "Imágenes Recientes"
+    },
+    "ClientDefault": {
+      "totalCost": "Costo Total",
+      "projectedMargin": "Margen Proyectado",
+      "project": "Proyecto",
+      "projectName": "Nombre del Proyecto",
+      "projectLocation": "Ubicación del Proyecto",
+      "start": "Inicio",
+      "end": "Fin",
+      "activeWork": "Órdenes de Trabajo Activas:"
+    }
+  },
+  "ApprovalNotification": {
+    "title": "Notificaciones de Aprobación de Proyecto",
+    "message": "Le ha enviado una solicitud de aprobación para el proyecto:",
+    "actions": {
+      "decline": "Rechazar",
+      "approve": "Aprobar",
+      "details": "Detalles"
+    },
+    "declineReason": {
+      "label": "Motivo del rechazo",
+      "error": "Se requiere un motivo para el rechazo",
+      "submit": "Enviar"
+    }
+  },
+  "InvoiceNotification": {
+    "newInvoice": "Nueva Factura",
+    "body": {
+      "part1": "Se ha creado una nueva factura",
+      "part2": "para",
+      "part3": "por"
+    },
+    "body2": "Por favor, revise la factura y realice el pago antes de:",
+    "body3": "Por favor, revise su correo electrónico.",
+    "button": "Pagar Factura"
+  },
+  "TeamNotifications": {
+    "title": "Notificaciones del Equipo",
+    "body": "Tiene una notificación para el proyecto",
+    "button": "Marcar como leído",
+    "body2": "completó la tarea asignada",
+    "body3": "de la fase",
+    "declined": "rechazado",
+    "approved": "aprobado",
+    "changeOrder": "orden de cambio",
+    "workOrder": "orden de trabajo"
+  },
+  "WorkOrderNotification": {
+    "title": "Notificaciones de Órdenes de Trabajo/Cambio",
+    "subtitle": {
+      "part1": "Le ha enviado una",
+      "changeOrder": "solicitud de orden de cambio",
+      "workOrder": "solicitud de orden de trabajo",
+      "part2": "del proyecto"
+    },
+    "table": {
+      "subject": "Asunto",
+      "description": "Descripción",
+      "priority": "Prioridad",
+      "start": "Inicio",
+      "end": "Fin",
+      "status": "Estado",
+      "notes": "Notas"
+    },
+    "actions": {
+      "decline": "Rechazar",
+      "approve": "Aprobar",
+      "detail": "Detalles"
     }
   }
 }

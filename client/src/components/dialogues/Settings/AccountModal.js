@@ -30,6 +30,7 @@ import { Close } from "@mui/icons-material";
 import axios from "axios";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import { uploadToS3 } from "../../../utils/S3";
+import { useTranslation } from "react-i18next";
 
 const AccountModal = ({
   open,
@@ -44,6 +45,7 @@ const AccountModal = ({
   account,
   updateUserAccount,
 }) => {
+  const {t} = useTranslation()
   const [fileName, setFileName] = useState("");
   const [fileType, setFileType] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
@@ -215,7 +217,7 @@ const AccountModal = ({
             mr={5}
           >
             <DialogTitle sx={headingStyle}>
-              {open ? "Add" : updateOpen ? "Update" : ""} {title}
+              {open ? t("Button.add") : updateOpen ? t("Button.update") : ""} {title}
             </DialogTitle>
             <IconButton
               style={{ width: "30px", height: "30px" }}
@@ -275,17 +277,17 @@ const AccountModal = ({
 
                     {/* Text */}
                     <Typography variant="body1" sx={labelStyle}>
-                      {image ? <></> : "Upload your photo"}
+                      {image ? <></> : `${t("Button.upload")} ${t("Settings.Accounts.table.accountImg")}`}
                     </Typography>
                   </label>
                 </div>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography variant="body1">Account Name</Typography>
+                <Typography variant="body1">{t("Settings.Accounts.table.accountName")}</Typography>
                 <TextField
                   error={errors.accountName ? true : false}
                   value={values.accountName}
-                  placeholder="John Doe"
+                  placeholder={t("Settings.Accounts.table.accountName")}
                   fullWidth
                   name={"accountName"}
                   inputProps={{
@@ -308,12 +310,12 @@ const AccountModal = ({
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography variant="body1">Account Link</Typography>
+                <Typography variant="body1">{t("Settings.Accounts.table.accountLink")}</Typography>
                 <TextField
                   type="text"
                   error={errors.accountLink ? true : false}
                   value={values.accountLink}
-                  placeholder="Account Link"
+                  placeholder={t("Settings.Accounts.table.accountLink")}
                   fullWidth
                   name={"accountLink"}
                   inputProps={{
@@ -339,14 +341,14 @@ const AccountModal = ({
             </Grid>
             <Grid container spacing={4}>
               <Grid item xs={12} sm={12}>
-                <Typography variant="body1">Account Details</Typography>
+                <Typography variant="body1">{t("Settings.Accounts.table.accountDetails")}</Typography>
                 <TextField
                   // padding={1}
                   multiline
                   minRows={4}
                   error={errors.accountType ? true : false}
                   value={values.accountType}
-                  placeholder="Account Details"
+                  placeholder={t("Settings.Accounts.table.accountDetails")}
                   fullWidth
                   name={"accountType"}
                   InputProps={{
@@ -395,10 +397,10 @@ const AccountModal = ({
               <Button
                 buttonText={
                   isSubmitting
-                    ? "Submitting"
+                    ? t("Button.submitting")
                     : updateOpen
-                    ? "Update Account"
-                    : "Add Account"
+                    ? `${t("Button.update")} ${title}`
+                    : `${t("Button.add")} ${title}`
                 }
                 color="#ffffff"
                 backgroundColor={isSubmitting ? "gray" : "#4C8AB1"}
@@ -418,7 +420,7 @@ const AccountModal = ({
               sx={{ textAlign: "center" }}
             >
               <Button
-                buttonText="Reset"
+                buttonText={t("Button.reset")}
                 color="#4C8AB1"
                 border={"1px solid #4C8AB1"}
                 width="150px"

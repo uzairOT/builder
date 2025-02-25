@@ -191,6 +191,13 @@
     "title5": "Install App",
     "title6": "© Copyright 2024, All Rights Reserved by BuilderBUILDER PRO"
   },
+  "Navbar": {
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "reports": "Reports",
+    "subscription": "Subscription",
+    "settings": "Settings"
+  },
   "userProject": {
     "title0": "Projects Dashboard",
     "title1": "User Projects",
@@ -597,7 +604,8 @@
   "Button": {
     "add": "Add",
     "update": "Update",
-    "submit": "Submitting",
+    "upload": "Upload",
+    "submitting": "Submitting",
     "back": "Back",
     "next": "Next",
     "skip": "Skip",
@@ -837,8 +845,13 @@
       "Business Pro": {
         "planPackage": "Promo code - Enabled\n- 500\n- 440\n10 Users"
       },
-      "Free Trial": { "planPackage": "Free Plan\n- 10\n- 5\n3 Users" },
-      "Enterprise": { "planPackage": "10+ Users\n- 10\n- 5\n", "body1": "A Enterprise Plan for users who want to maximize the app potential contact us and we will get back to you!" },
+      "Free Trial": {
+        "planPackage": "Free Plan\n- 10\n- 5\n3 Users"
+      },
+      "Enterprise": {
+        "planPackage": "10+ Users\n- 10\n- 5\n",
+        "body1": "A Enterprise Plan for users who want to maximize the app potential contact us and we will get back to you!"
+      },
       "amountOfPhotos": "Amount of photos",
       "amountOfFiles": "Amount of files",
       "upTo": "Up to",
@@ -865,15 +878,15 @@
     }
   },
   "Settings": {
-    "admin":"Admin",
+    "admin": "Admin",
     "client": "Client",
     "projectManager": "Project Manager",
     "employee": "Employee",
     "subcontractor": "Subcontractor",
     "supplier": "Supplier",
-    "others":"Others",
+    "others": "Others",
     "coupon": "Coupon",
-    "master":"Master Line Item",
+    "master": "Master Line Item",
     "modal": {
       "project": "Project",
       "email": "Email"
@@ -934,7 +947,7 @@
       "account": "Accounts",
       "coupon": "Coupon"
     },
-    "masterTable":{
+    "masterTable": {
       "name": "Name",
       "description": "Description",
       "unit": "Unit",
@@ -942,12 +955,12 @@
       "quantity": "Quantity",
       "total": "Total",
       "profit": "Profit",
-      "totalCost":"Total Cost",
+      "totalCost": "Total Cost",
       "notes": "Notes",
       "action": "Action",
       "error": "Something went wrong!",
       "noRecords": "No Records",
-      "modal":{
+      "modal": {
         "heading": "Update Master Line Item",
         "heading1": "Master Line Item",
         "areYouSure": "delete this line item",
@@ -979,7 +992,7 @@
         "unit": "Unit",
         "placeholder1": "Unit",
         "button": "Add Unit",
-        "button1": "Edit Unit" 
+        "button1": "Edit Unit"
       }
     },
     "Table": {
@@ -992,6 +1005,104 @@
       "noRecords": "No Records",
       "error": "Something went wrong!",
       "areYouSureUser": "delete this user"
+    },
+    "Accounts": {
+      "heading1": "Accounts",
+      "table": {
+        "accountImg": "Account Image",
+        "accountName": "Account Name",
+        "accountDetails": "Account Details",
+        "accountLink": "Account Link",
+        "action": "Action",
+        "error": "Something went wrong!",
+        "noRecords": "No Records"
+      }
+    },
+    "Coupon": {
+      "code": "Code",
+      "table": {
+        "couponId": "Coupon ID",
+        "couponCode": "Coupon Code",
+        "offAmount": "Off Amount",
+        "amount": "Amount",
+        "action": "Action",
+        "error": "Something went wrong!",
+        "noRecords": "No Records"
+      }
+    }
+  },
+  "ClientLayout": {
+    "RecentImages": {
+      "heading1": "Recent Images"
+    },
+    "ClientDefault": {
+      "totalCost": "Total Cost",
+      "projectedMargin": " Projected Margin",
+      "project": "Project",
+      "projectName": "Project Name",
+      "projectLocation": "Project Location",
+      "start": "Start",
+      "end": "End",
+      "activeWork": "Active Work Orders:"
+    }
+  },
+  "ApprovalNotification": {
+    "title": "Project Approval Notifications",
+    "message": "Sent you approval request of project:",
+    "actions": {
+      "decline": "Decline",
+      "approve": "Approve",
+      "details": "Details"
+    },
+    "declineReason": {
+      "label": "Reason for disapproval",
+      "error": "Reason for disapproval is required",
+      "submit": "Submit"
+    }
+  },
+  "InvoiceNotification": {
+    "newInvoice": "New Invoice",
+    "body": {
+      "part1": "A new invoice",
+      "part2": "has been created for",
+      "part3": "by"
+    },
+    "body2": "Please review the invoice and make a payment by:",
+    "body3": "Please check your email.",
+    "button": "Pay Invoice"
+  },
+  "TeamNotifications": {
+    "title": "Team Notifications",
+    "body": "You have a notification for project",
+    "button": "Mark as read",
+    "body2": "completed the assigned task",
+    "body3": "of phase",
+    "declined": "declined",
+    "approved": "approved",
+    "changeOrder": "change order",
+    "workOrder": "work order"
+  },
+  "WorkOrderNotification": {
+    "title": "Work/Change Order Notifications",
+    "subtitle": {
+      "part1": "Sent you a",
+      "changeOrder": "change order request",
+      "workOrder": "work order request",
+      "part2": "of project"
+    },
+    "table": {
+      "subject": "Subject",
+      "description": "Description",
+      "priority": "Priority",
+      "start": "Start",
+      "end": "End",
+      "status": "Status",
+      "notes": "Notes"
+    },
+    "actions": {
+      "decline": "Decline",
+      "approve": "Approve",
+      "detail": "Detail"
     }
   }
 }

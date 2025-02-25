@@ -7,8 +7,10 @@ import { useGetTotalProjectProfitMarginMutation } from "../../../redux/apis/Repo
 import { useEffect } from "react";
 import { useState } from "react";
 import { formatMoney } from "../../../utils/Formatters/moneyFormat";
+import { useTranslation } from "react-i18next";
 
 function WhatsHappeningCard() {
+  const {t} = useTranslation();
   const { id } = useParams();
   const [projectName, projectLocation] = useOutletContext();
   const userInfo = useSelector((state) => state.auth.userInfo);
@@ -73,8 +75,8 @@ function WhatsHappeningCard() {
                 <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}><Typography sx={themeStyle.label}>{item?.phase_name}</Typography><Typography sx={themeStyle.price}>${formatMoney(item?.totalCost)}</Typography></Stack>
             )
         })}
-        <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}><Typography sx={themeStyle.label}>Total Cost</Typography><Typography sx={themeStyle.price}>${formatMoney(data?.totalCost)}</Typography></Stack>
-        <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}><Typography sx={themeStyle.label}>Projected Margin</Typography><Typography sx={themeStyle.price}>${formatMoney(data?.totalMargin)}</Typography></Stack>
+        <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}><Typography sx={themeStyle.label}>{t("ClientLayout.ClientDefault.totalCost")}</Typography><Typography sx={themeStyle.price}>${formatMoney(data?.totalCost)}</Typography></Stack>
+        <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}><Typography sx={themeStyle.label}>{t("ClientLayout.ClientDefault.totalCost")}</Typography><Typography sx={themeStyle.price}>${formatMoney(data?.totalMargin)}</Typography></Stack>
     </Stack>
     </>
   );

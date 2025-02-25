@@ -19,6 +19,7 @@ import {
 } from "../../redux/apis/NotificationsApproval/NotificationApprovalApiSlice";
 import { toast } from "react-toastify";
 import {  useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function ApprovalNotification({
   index,
@@ -28,6 +29,7 @@ function ApprovalNotification({
   notification,
   approvalRefetchCall,
 }) {
+  const {t} = useTranslation();
   // const [checkedRow, setCheckedRow] = useState(null);
   // const [open, setOpen] = useState(false);
   // const [data1, setData1] = useState(null);
@@ -171,7 +173,7 @@ function ApprovalNotification({
               fontSize={"12px"}
               sx={{ textDecoration: "underline", fontWeight: "600" }}
             >
-              Project Approval Notifications:
+              {t("ApprovalNotification.title")}
             </Typography>
           )}
           <Stack
@@ -193,7 +195,7 @@ function ApprovalNotification({
               fontFamily={"var(--main-font-family)"}
               fontSize={"12px"}
             >
-              Sent you approval request of project:{" "}
+              {t("ApprovalNotification.message")}:{" "}
               <span style={{ fontWeight: 700 }}>
                 {notification?.Project?.projectName}
               </span>
@@ -209,7 +211,7 @@ function ApprovalNotification({
                 fontFamily={"var(--main-font-family)"}
                 handleOnClick={handleDecline}
               >
-                Decline
+                {t("ApprovalNotification.actions.decline")}
               </BuilderProButton>
               <BuilderProButton
                 variant={"contained"}
@@ -219,7 +221,7 @@ function ApprovalNotification({
                 marginLeft={"5px"}
                 handleOnClick={handleAccept}
               >
-                Approve
+                {t("ApprovalNotification.actions.approve")}
               </BuilderProButton>
               <BuilderProButton
                 variant={"contained"}
@@ -229,7 +231,7 @@ function ApprovalNotification({
                 marginLeft={"5px"}
                 handleOnClick={handleDetails}
               >
-                Details
+                {t("ApprovalNotification.actions.details")}
               </BuilderProButton>
             </Stack>
           </Stack>
@@ -244,7 +246,7 @@ function ApprovalNotification({
               <TextField
                 required
                 fullWidth
-                label="Reason for disapproval"
+                label={t("ApprovalNotification.declineReason.label")}
                 value={declineReason}
                 onChange={(e) => setDeclineReason(e.target.value)}
                 multiline
@@ -254,7 +256,7 @@ function ApprovalNotification({
                 error={!declineReason && showError} // Adds error state
                 helperText={
                   !declineReason && showError
-                    ? "Reason for disapproval is required"
+                    ? t("ApprovalNotification.declineReason.error")
                     : ""
                 } // Shows error message
               />
@@ -265,7 +267,7 @@ function ApprovalNotification({
                 fontFamily={"var(--main-font-family)"}
                 handleOnClick={handleSubmitReason}
               >
-                Submit
+                {t("ApprovalNotification.declineReason.submit")}
               </BuilderProButton>
             </Box>
           )}

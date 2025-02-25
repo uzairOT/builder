@@ -23,6 +23,7 @@ import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice
 import { toggleWorkOrderDeclineRecall } from "../../redux/slices/Notifications/notificationSlice";
 import { socket } from "../../socket";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 function Notification({
   notification,
@@ -32,6 +33,7 @@ function Notification({
   setExpanded,
   expanded,
 }) {
+  const { t } = useTranslation()
   const [updateWorkOrder] = useUpdateRequestWorkOrderMutation();
 
   const [checkedRow, setCheckedRow] = useState(null);
@@ -113,7 +115,7 @@ function Notification({
     }
   };
   const isExpanded = expanded === index;
-  const handleModalClick = () => {};
+  const handleModalClick = () => { };
   const rowCheckboxes = {
     phase: {
       id: 2,
@@ -154,7 +156,7 @@ function Notification({
               fontSize={"12px"}
               sx={{ textDecoration: "underline", fontWeight: "600" }}
             >
-              Work/Change Order Notifications:
+              {t("WorkOrderNotification.title")}:
             </Typography>
           )}
 
@@ -178,11 +180,11 @@ function Notification({
               fontFamily={"var(--main-font-family)"}
               fontSize={"12px"}
             >
-              Sent you a{" "}
+              {t("WorkOrderNotification.subtitle.part1")}
               {notification.WorkOrderReq.changeOrder
-                ? "change order request"
-                : "work order request"}{" "}
-              of project:
+                ? t("WorkOrderNotification.subtitle.changeOrder")
+                : t("WorkOrderNotification.subtitle.workOrder")}{" "}
+              {t("WorkOrderNotification.subtitle.part2")}:
               <span style={{ fontWeight: 700 }}>
                 {notification.projectName}{" "}
               </span>
@@ -200,7 +202,7 @@ function Notification({
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
-                        Subject
+                        {t("WorkOrderNotification.table.subject")}
                       </Typography>
                     }
                     secondaryTypographyProps={{ sx: textSecondaryStyle }}
@@ -211,7 +213,7 @@ function Notification({
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
-                        Description
+                        {t("WorkOrderNotification.table.description")}
                       </Typography>
                     }
                     secondaryTypographyProps={{ sx: textSecondaryStyle }}
@@ -222,7 +224,7 @@ function Notification({
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
-                        Priority
+                        {t("WorkOrderNotification.table.priority")}
                       </Typography>
                     }
                     secondaryTypographyProps={{ sx: textSecondaryStyle }}
@@ -248,7 +250,7 @@ function Notification({
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
-                        Start
+                        {t("WorkOrderNotification.table.start")}
                       </Typography>
                     }
                     secondaryTypographyProps={{ sx: textSecondaryStyle }}
@@ -261,7 +263,7 @@ function Notification({
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
-                        End
+                        {t("WorkOrderNotification.table.end")}
                       </Typography>
                     }
                     secondaryTypographyProps={{ sx: textSecondaryStyle }}
@@ -274,7 +276,7 @@ function Notification({
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
-                        Status
+                        {t("WorkOrderNotification.table.status")}
                       </Typography>
                     }
                     secondaryTypographyProps={{ sx: textSecondaryStyle }}
@@ -285,7 +287,7 @@ function Notification({
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
-                        Notes
+                        {t("WorkOrderNotification.table.notes")}
                       </Typography>
                     }
                     secondaryTypographyProps={{ sx: textSecondaryStyle }}
@@ -304,7 +306,7 @@ function Notification({
                 fontFamily={"var(--main-font-family)"}
                 handleOnClick={handleDecline}
               >
-                Decline
+                {t("WorkOrderNotification.actions.decline")}
               </BuilderProButton>
               <BuilderProButton
                 variant={"contained"}
@@ -314,7 +316,7 @@ function Notification({
                 marginLeft={"5px"}
                 handleOnClick={handleAccept}
               >
-                Approve
+                {t("WorkOrderNotification.actions.approve")}
               </BuilderProButton>
               <BuilderProButton
                 variant={"contained"}
@@ -326,7 +328,7 @@ function Notification({
                   handleOnClick(notification.WorkOrderReq.workOrderId)
                 }
               >
-                Detail
+                {t("WorkOrderNotification.actions.detail")}
               </BuilderProButton>
               {open ? (
                 <NotificationDetailModal

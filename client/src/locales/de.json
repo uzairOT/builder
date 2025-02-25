@@ -191,6 +191,13 @@
     "title5": "App installieren",
     "title6": "© Copyright 2024, Alle Rechte vorbehalten von BuilderBUILDER PRO"
   },
+  "Navbar": {
+    "dashboard": "Dashboard",
+    "projects": "Projekte",
+    "reports": "Berichte",
+    "subscription": "Abonnement",
+    "settings": "Einstellungen"
+  },
   "userProject": {
     "title0": "Projektübersicht",
     "title1": "Benutzerprojekte",
@@ -583,6 +590,8 @@
   "Button": {
     "add": "Hinzufügen",
     "update": "Aktualisieren",
+    "upload": "Hochladen",
+    "submitting": "Wird gesendet",
     "back": "Zurück",
     "next": "Weiter",
     "skip": "Überspringen",
@@ -982,6 +991,104 @@
       "noRecords": "Keine Einträge",
       "error": "Etwas ist schief gelaufen!",
       "areYouSureUser": "diesen Benutzer löschen"
+    },
+    "Accounts": {
+      "heading1": "Konten",
+      "table": {
+        "accountImg": "Kontobild",
+        "accountName": "Kontoname",
+        "accountDetails": "Kontodetails",
+        "accountLink": "Kontolink",
+        "action": "Aktion",
+        "error": "Etwas ist schief gelaufen!",
+        "noRecords": "Keine Einträge"
+      }
+    },
+    "Coupon": {
+      "code": "Code",
+      "table": {
+        "couponId": "Gutschein-ID",
+        "couponCode": "Gutscheincode",
+        "offAmount": "Rabattbetrag",
+        "amount": "Betrag",
+        "action": "Aktion",
+        "error": "Etwas ist schief gelaufen!",
+        "noRecords": "Keine Einträge"
+      }
+    }
+  },
+  "ClientLayout": {
+    "RecentImages": {
+      "heading1": "Neueste Bilder"
+    },
+    "ClientDefault": {
+      "totalCost": "Gesamtkosten",
+      "projectedMargin": "Prognostizierte Marge",
+      "project": "Projekt",
+      "projectName": "Projektname",
+      "projectLocation": "Projektstandort",
+      "start": "Start",
+      "end": "Ende",
+      "activeWork": "Aktive Arbeitsaufträge:"
+    }
+  },
+  "ApprovalNotification": {
+    "title": "Projektgenehmigungsbenachrichtigungen",
+    "message": "Hat Ihnen eine Genehmigungsanfrage für das Projekt gesendet:",
+    "actions": {
+      "decline": "Ablehnen",
+      "approve": "Genehmigen",
+      "details": "Details"
+    },
+    "declineReason": {
+      "label": "Grund für die Ablehnung",
+      "error": "Grund für die Ablehnung ist erforderlich",
+      "submit": "Einreichen"
+    }
+  },
+  "InvoiceNotification": {
+    "newInvoice": "Neue Rechnung",
+    "body": {
+      "part1": "Eine neue Rechnung",
+      "part2": "wurde erstellt für",
+      "part3": "von"
+    },
+    "body2": "Bitte überprüfen Sie die Rechnung und zahlen Sie bis:",
+    "body3": "Bitte überprüfen Sie Ihre E-Mail.",
+    "button": "Rechnung bezahlen"
+  },
+  "TeamNotifications": {
+    "title": "Team-Benachrichtigungen",
+    "body": "Sie haben eine Benachrichtigung für das Projekt",
+    "button": "Als gelesen markieren",
+    "body2": "hat die zugewiesene Aufgabe abgeschlossen",
+    "body3": "der Phase",
+    "declined": "abgelehnt",
+    "approved": "genehmigt",
+    "changeOrder": "Änderungsauftrag",
+    "workOrder": "Arbeitsauftrag"
+  },
+  "WorkOrderNotification": {
+    "title": "Arbeits-/Änderungsauftragsbenachrichtigungen",
+    "subtitle": {
+      "part1": "Hat Ihnen eine",
+      "changeOrder": "Änderungsauftragsanfrage gesendet",
+      "workOrder": "Arbeitsauftragsanfrage gesendet",
+      "part2": "für das Projekt"
+    },
+    "table": {
+      "subject": "Betreff",
+      "description": "Beschreibung",
+      "priority": "Priorität",
+      "start": "Start",
+      "end": "Ende",
+      "status": "Status",
+      "notes": "Notizen"
+    },
+    "actions": {
+      "decline": "Ablehnen",
+      "approve": "Genehmigen",
+      "detail": "Details"
     }
   }
 }

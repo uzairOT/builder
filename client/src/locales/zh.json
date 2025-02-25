@@ -191,6 +191,13 @@
     "title5": "安装应用",
     "title6": "© 版权 2024，所有权利保留，BuilderBUILDER PRO"
   },
+  "Navbar": {
+    "dashboard": "仪表板",
+    "projects": "项目",
+    "reports": "报告",
+    "subscription": "订阅",
+    "settings": "设置"
+  },
   "userProject": {
     "title0": "用户项目",
     "title1": "用户项目",
@@ -589,6 +596,8 @@
   "Button": {
     "add": "添加",
     "update": "更新",
+    "upload": "上传",
+    "submitting": "提交中",
     "back": "返回",
     "next": "下一步",
     "skip": "跳过",
@@ -988,6 +997,104 @@
       "noRecords": "没有记录",
       "error": "发生错误！",
       "areYouSureUser": "删除此用户"
+    },
+    "Accounts": {
+      "heading1": "账户",
+      "table": {
+        "accountImg": "账户图片",
+        "accountName": "账户名称",
+        "accountDetails": "账户详情",
+        "accountLink": "账户链接",
+        "action": "操作",
+        "error": "出现错误！",
+        "noRecords": "没有记录"
+      }
+    },
+    "Coupon": {
+      "code": "代码",
+      "table": {
+        "couponId": "优惠券 ID",
+        "couponCode": "优惠码",
+        "offAmount": "折扣金额",
+        "amount": "金额",
+        "action": "操作",
+        "error": "出现错误！",
+        "noRecords": "没有记录"
+      }
+    }
+  },
+  "ClientLayout": {
+    "RecentImages": {
+      "heading1": "最新图片"
+    },
+    "ClientDefault": {
+      "totalCost": "总成本",
+      "projectedMargin": "预计利润",
+      "project": "项目",
+      "projectName": "项目名称",
+      "projectLocation": "项目位置",
+      "start": "开始",
+      "end": "结束",
+      "activeWork": "当前工单："
+    }
+  },
+  "ApprovalNotification": {
+    "title": "项目审批通知",
+    "message": "向您发送了项目审批请求：",
+    "actions": {
+      "decline": "拒绝",
+      "approve": "批准",
+      "details": "详情"
+    },
+    "declineReason": {
+      "label": "拒绝理由",
+      "error": "需要提供拒绝理由",
+      "submit": "提交"
+    }
+  },
+  "InvoiceNotification": {
+    "newInvoice": "新发票",
+    "body": {
+      "part1": "一张新发票",
+      "part2": "已创建，适用于",
+      "part3": "由"
+    },
+    "body2": "请查看发票并在以下日期前付款：",
+    "body3": "请检查您的电子邮件。",
+    "button": "支付发票"
+  },
+  "TeamNotifications": {
+    "title": "团队通知",
+    "body": "您有一个项目的通知",
+    "button": "标记为已读",
+    "body2": "完成了分配的任务",
+    "body3": "阶段",
+    "declined": "已拒绝",
+    "approved": "已批准",
+    "changeOrder": "变更单",
+    "workOrder": "工作单"
+  },
+  "WorkOrderNotification": {
+    "title": "工作/变更单通知",
+    "subtitle": {
+      "part1": "向您发送了",
+      "changeOrder": "变更单请求",
+      "workOrder": "工作单请求",
+      "part2": "项目的"
+    },
+    "table": {
+      "subject": "主题",
+      "description": "描述",
+      "priority": "优先级",
+      "start": "开始",
+      "end": "结束",
+      "status": "状态",
+      "notes": "备注"
+    },
+    "actions": {
+      "decline": "拒绝",
+      "approve": "批准",
+      "detail": "详情"
     }
   }
 }

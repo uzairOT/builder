@@ -14,8 +14,10 @@ import {
 } from "../../../redux/apis/Account/AccountApiSlice";
 import { fetchUserCoupons } from "../Cupon/apis/fetchUserCoupon";
 import AccountModal from "../../dialogues/Settings/AccountModal";
+import { useTranslation } from "react-i18next";
 
 const Accounts = () => {
+  const {t} = useTranslation();
   const [searchInput, setSearchInput] = useState("");
   const debouncedValue = QueryDebouncer(searchInput, 500);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
@@ -85,7 +87,7 @@ const Accounts = () => {
   return (
     <div style={{ padding: "20px" }}>
       <Header
-        title="Accounts"
+        title={t("Settings.Accounts.heading1")}
         OpenAddModal={OpenAddModal}
         searchInput={searchInput}
         setSearchInput={setSearchInput}
@@ -125,7 +127,7 @@ const Accounts = () => {
         />
       </Box>
       <AccountModal
-        title={"Account"}
+        title={t("Settings.Accounts.heading1")}
         open={isAddModalOpen}
         updateOpen={isUpdateModalOpen}
         onClose={handleCloseAddModal}

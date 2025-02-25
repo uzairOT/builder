@@ -455,7 +455,7 @@ function UpdateMasterLine({
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <DialogTitle sx={typoTitle}>{t("Settings.masterTable.modal.heading")}</DialogTitle>
+            <DialogTitle sx={typoTitle} width={'20ch'}>{t("Settings.masterTable.modal.heading")}</DialogTitle>
             <IconButton
               style={{ width: "30px", height: "30px" }}
               onClick={handleClickClose}

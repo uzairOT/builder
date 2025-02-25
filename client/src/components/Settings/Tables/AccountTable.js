@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import EditIcon from "../../../assets/settings/edit.png";
 import DeleteIcon from "../../../assets/settings/delete.png";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const tableCellStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
@@ -50,6 +51,7 @@ function AmountTable({
   deleteUserAccount,
   error,
 }) {
+  const {t} = useTranslation()
   const userInfo = useSelector((state) => state.auth.userInfo);
 
   const handleUpdateOpen = (row) => {
@@ -84,16 +86,16 @@ function AmountTable({
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={tableCellStyle}>Account Image</TableCell>
-              <TableCell sx={tableCellStyle}>Account Name</TableCell>
-              <TableCell sx={tableCellStyle}>Account Details</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.Accounts.table.accountImg")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.Accounts.table.accountName")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.Accounts.table.accountDetails")}</TableCell>
               {/* <TableCell sx={tableCellStyle}>Account Number</TableCell> */}
-              <TableCell sx={tableCellStyle}>Account Link</TableCell>
-              <TableCell sx={tableCellStyle}>Action</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.Accounts.table.accountLink")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.Accounts.table.action")}</TableCell>
             </TableRow>
           </TableHead>
           {error ? (
-            <Stack p={2}>{"Something went wrong!"}</Stack>
+            <Stack p={2}>{t("Settings.Accounts.table.error")}</Stack>
           ) : (
             <TableBody>
               {isLoading ? (
@@ -132,7 +134,7 @@ function AmountTable({
                     }}
                   >
                     <Typography paddingTop={30} paddingBottom={30}>
-                      No Records
+                    {t("Settings.Accounts.table.noRecords")}
                     </Typography>
                   </TableCell>
                 </TableRow>

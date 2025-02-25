@@ -6,9 +6,10 @@ import axios from 'axios';
 import { getTokenFromLocalStorage } from '../../../redux/apis/apiSlice';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-
+import { useTranslation } from 'react-i18next';
 
 function RecentImagesAndComments() {
+    const {t} = useTranslation()
     const theme = useTheme();
     const { id } = useParams();
     const [recentFilesUrls, setRecentFilesUrls] = useState([]);
@@ -51,7 +52,7 @@ function RecentImagesAndComments() {
 
             </Box>
             <Typography sx={themeStyle.typoText}>
-                Recent Images
+                {t("ClientLayout.RecentImages.heading1")}
             </Typography>
             <Grid container justifyContent={'flex-start'} alignItems={'center'}>
                 {slicedUrls?.map((url, index) => {

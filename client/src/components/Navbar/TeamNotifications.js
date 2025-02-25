@@ -9,8 +9,10 @@ import {
 import React from "react";
 import BuilderProButton from "../UI/Button/BuilderProButton";
 import { useUpdateTeamStatusNotificationsMutation } from "../../redux/apis/Project/workOrderApiSlice";
+import { useTranslation } from "react-i18next";
 
 const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
+  const { t } = useTranslation();
   const [updateRead] = useUpdateTeamStatusNotificationsMutation();
 
   const handleMarkRead = async () => {
@@ -43,7 +45,7 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                     fontSize={"12px"}
                     sx={{ textDecoration: "underline", fontWeight: "600" }}
                   >
-                    Team Notifications:
+                    {t("TeamNotifications.title")}:
                   </Typography>
                 )}
                 <Stack
@@ -66,7 +68,7 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                       fontFamily={"var(--main-font-family)"}
                       fontSize={"13px"}
                     >
-                      You have a notification for project{" "}
+                      {t("TeamNotifications.body")}{" "}
                       <b>{teamNotification.projectName}</b>
                     </Typography>
                   </div>
@@ -74,22 +76,12 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
               </Stack>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography
-                fontFamily={"var(--main-font-family)"}
-                fontSize={"12px"}
-              >
-                <b>{teamNotification.user?.firstName}</b>(
-                {teamNotification.user?.ProjectMembers[0]?.role}){" "}
-                {teamNotification?.workOrderVersion < 0
-                  ? "declined"
-                  : "approved"}{" "}
-                {teamNotification?.workOrderVersion > 1 ? "change" : "work"}{" "}
-                order
+              <Typography fontFamily="var(--main-font-family)" fontSize="12px">
+                <b>{teamNotification.user?.firstName}</b>
+                ({teamNotification.user?.ProjectMembers[0]?.role})
+                {teamNotification?.workOrderVersion < 0 ? t("TeamNotifications.declined") : t("TeamNotifications.approved")}
+                {teamNotification?.workOrderVersion > 1 ? t("TeamNotifications.changeOrder") : t("TeamNotifications.workOrder")}
               </Typography>
-              {/* <Typography fontFamily={'var(--main-font-family)'} fontSize={"12px"}>
-                <b>{teamNotification?.phase?.LineItems[0]?.title || ""}</b> of
-                phase <b>{teamNotification?.phase.phase_name}</b>.
-              </Typography> */}
               <Stack alignItems={"flex-end"}>
                 <BuilderProButton
                   variant={"contained"}
@@ -100,7 +92,7 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                   alignSelf={"right"}
                   handleOnClick={handleMarkRead}
                 >
-                  Mark as Read
+                  {t("TeamNotifications.button")}
                 </BuilderProButton>
               </Stack>
             </AccordionDetails>
@@ -120,7 +112,7 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                     fontSize={"12px"}
                     sx={{ textDecoration: "underline", fontWeight: "600" }}
                   >
-                    Team Notifications:
+                    {t("TeamNotifications.title")}:
                   </Typography>
                 )}
                 <Stack
@@ -143,7 +135,7 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                       fontFamily={"var(--main-font-family)"}
                       fontSize={"13px"}
                     >
-                      You have a notification for project{" "}
+                      {t("TeamNotifications.title")}{" "}
                       <b>{teamNotification.projectName}</b>
                     </Typography>
                   </div>
@@ -156,15 +148,14 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                 fontSize={"12px"}
               >
                 <b>{teamNotification.user?.firstName}</b>(
-                {teamNotification.user?.ProjectMembers[0]?.role}) completed the
-                assigned task
+                {t(`ProjectTeam.role.${teamNotification.user?.ProjectMembers[0]?.role}`)}) {t("TeamNotifications.body2")}
               </Typography>
               <Typography
                 fontFamily={"var(--main-font-family)"}
                 fontSize={"12px"}
               >
-                <b>{teamNotification?.phase?.LineItems[0]?.title || ""}</b> of
-                phase <b>{teamNotification?.phase.phase_name}</b>.
+                <b>{teamNotification?.phase?.LineItems[0]?.title || ""}</b> {t("TeamNotifications.body3")}
+                <b>{teamNotification?.phase.phase_name}</b>.
               </Typography>
               <Stack alignItems={"flex-end"}>
                 <BuilderProButton
@@ -176,7 +167,7 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                   alignSelf={"right"}
                   handleOnClick={handleMarkRead}
                 >
-                  Mark as Read
+                  {t("TeamNotifications.button")}
                 </BuilderProButton>
               </Stack>
             </AccordionDetails>

@@ -17,6 +17,7 @@ import {
 } from "../../../../redux/apis/Admin/assignRoleApiSlice";
 import EditIcon from "../../../../assets/settings/edit.png";
 import DeleteIcon from "../../../../assets/settings/delete.png";
+import { useTranslation } from "react-i18next";
 
 const dummyData = [
   {
@@ -65,6 +66,7 @@ function CustomTable({
   isError,
   deleteCoupon,
 }) {
+  const {t} = useTranslation();
   const showEmailAndRecords = title === "subcontractor";
   const [assignRoleDelete] = useDeleteAssignRoleMutation();
   const local = localStorage.getItem("userInfo");
@@ -103,15 +105,15 @@ function CustomTable({
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell sx={tableCellStyle}>Coupon Id</TableCell>
-            <TableCell sx={tableCellStyle}>Coupon Code</TableCell>
-            <TableCell sx={tableCellStyle}>Off Amount</TableCell>
+            <TableCell sx={tableCellStyle}>{t("Settings.Coupon.table.couponId")}</TableCell>
+            <TableCell sx={tableCellStyle}>{t("Settings.Coupon.table.couponCode")}</TableCell>
+            <TableCell sx={tableCellStyle}>{t("Settings.Coupon.table.offAmount")}</TableCell>
             <TableCell></TableCell>
-            <TableCell sx={tableCellStyle}>Action</TableCell>
+            <TableCell sx={tableCellStyle}>{t("Settings.Coupon.table.action")}</TableCell>
           </TableRow>
         </TableHead>
         {isError ? (
-          <Stack p={2}>{"Something went wrong!"}</Stack>
+          <Stack p={2}>{t("Settings.Coupon.table.error")}</Stack>
         ) : (
           <TableBody>
             {isLoading ? (
@@ -178,7 +180,7 @@ function CustomTable({
                   }}
                 >
                   <Typography paddingTop={30} paddingBottom={30}>
-                    No Records
+                  {t("Settings.Coupon.table.noRecords")}
                   </Typography>
                 </TableCell>
               </TableRow>

@@ -243,7 +243,7 @@ const fetchWeather = useCallback(async (lat, lon) => {
                     />
                     <Route
                       path="notes"
-                      element={<>{t("PermissionMessage.notes")}</>}
+                      element={<>{t("PermisionsMessage.notes")}</>}
                     />
                     <Route
                       path="initial-proposal"
