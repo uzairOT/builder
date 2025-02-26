@@ -133,24 +133,6 @@ const PaymentModal = ({
       });
   }, [amount]);
 
-  // useEffect(() => {
-  //   fetch("https://builderbuilder.net/payment/create-refund-intent", {
-  //     method: "POST",
-  //     headers: new Headers({
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${getTokenFromLocalStorage()}`,
-  //     }),
-  //     body: JSON.stringify({ amount }),
-  //   })
-  //     .then(async (result) => {
-  //       // console.log("-=-=-=-result ", result);
-  //       var { clientSecret } = await result.json();
-  //       setClientSecret(clientSecret);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, [amount]);
 
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });

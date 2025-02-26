@@ -44,7 +44,7 @@ const Navbar = () => {
   const handleNavigateToDashboard = () => {
     // console.log("navigate", userInfo);
     if (userParsedInfo?.user?.hasValidSubscription) {
-      navigate("/dashboard");
+      window.location.href ="/dashboard"
     } else {
       navigate("/subscription");
     }
@@ -54,7 +54,7 @@ const Navbar = () => {
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
-      sx={{ textAlign: "center", justifyContent: "center" }}
+      sx={{ textAlign: "center", justifyContent: "center", width:'60vw' }}
     >
       <List>
         {[

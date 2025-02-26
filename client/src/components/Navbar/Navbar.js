@@ -70,7 +70,7 @@ const languageOptions = {
 const routes = ["dashboard", "projects", "reports", "", "subscription", "settings"];
 
 const Navbar = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [open, setOpen] = useState(null);
@@ -110,6 +110,7 @@ const Navbar = () => {
     }
   };
   const { userInfo } = useSelector((state) => state.auth);
+  const [language, setLanguage] = useState(localStorage.getItem("language") || "en");
   let IsValidSub = userInfo?.user?.hasValidSubscription;
 
   const openNotification = Boolean(anchorEl);
@@ -117,6 +118,12 @@ const Navbar = () => {
 
   const location = useLocation();
   const path = location.pathname.split("/")[1];
+
+  useEffect(()=> {
+    if(!Object.keys(languageOptions).includes(language)) return;
+
+    i18n.changeLanguage(language)
+  }, [language])
 
   useEffect(() => {
     switch (path) {
@@ -251,13 +258,13 @@ const Navbar = () => {
       height: "92px",
       fontFamily: "var(--main-font-family)",
     },
-    logo: {
+    logo: () => ({
       fontFamily: "var(--main-font-family)",
       width: "85%",
       height: "100%",
       marginLeft: "8px",
       marginBottom: "0px",
-    },
+    }),
     tabs: {
       fontFamily: "var(--main-font-family)",
       // margin: "auto",
@@ -294,11 +301,11 @@ const Navbar = () => {
               sx={themeStyle.toolbar}
               style={{ maxHeight: "64px !important" }}
             >
-              {showHamburger && <NavbarDrawer />}
+              {showHamburger && <NavbarDrawer languageOptions={languageOptions} setLanguage={setLanguage}/>}
               <Link to="/">
                 <BuilderProNavbarLogo
                   aria-label="Builder Pro Logo"
-                  style={themeStyle.logo}
+                  style={themeStyle.logo()}
                   onClick={() => {
                     setSelectedTab(0);
                   }}
@@ -357,7 +364,7 @@ const Navbar = () => {
                   <Box
                     sx={{
                       position: "relative",
-                      display: "flex",
+                      display: showHamburger ? "none" : "flex",
                       alignItems: "center",
                       ml: 2,
                       cursor: "pointer",
@@ -392,7 +399,12 @@ const Navbar = () => {
                           Object.entries(languageOptions).map(([lang, label]) => (
                             <MenuItem
                               key={lang}
-                              onClick={() => i18n.changeLanguage(lang)}
+                              onClick={() => {
+                                setLanguage(lang)
+                                localStorage.setItem("language", lang)
+                                // i18n.changeLanguage(lang)
+                              }
+                              }
                               sx={{
                                 padding: "10px 20px",
                                 fontSize: "14px",
@@ -532,7 +544,7 @@ const Navbar = () => {
                               textAlign: "center",
                             }}
                           >
-                            No new notifications
+                            {t("Notification.noNewNotification")}
                           </div>
                         ) : null}
                       </>

@@ -1,109 +1,95 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Box } from '@mui/material';
 import builder1 from "../Signup/Assets/pngs/builderProYellowLogo.png";
 import builder2 from "../Signup/Assets/pngs/builderProWhiteLogo.png";
 import builder2Tab from "../Signup/Assets/pngs/builderProWhiteLogoTab.png";
 import builder2Mob from "../Signup/Assets/pngs/builderProWhiteLogoMob.png";
 
-
-
-
 function Splash() {
-const [showImage, setShowImage] = useState(false);
+    const [showImage, setShowImage] = useState(false);
     const [showNewImage, setShowNewImage] = useState(false);
     const [showSignupScreen, setShowSignupScreen] = useState(false);
+    const [builderImage, setBuilderImage] = useState(getBuilderImage());
 
+    const timeoutRef = useRef([]);
 
-    const getBuilderImage = () => {
-        // Get the current window width
+    function getBuilderImage() {
         const windowWidth = window.innerWidth;
-
-        // Choose the appropriate image based on the window width
-        if (windowWidth >= 900) {
-            return builder2; // Large screen view
-        } else if (windowWidth >= 600) {
-            return builder2Tab; // Tablet view
-        } else {
-            return builder2Mob; // Mobile view
-        }
-    };
+        if (windowWidth >= 900) return builder2;
+        if (windowWidth >= 600) return builder2Tab;
+        return builder2Mob;
+    }
 
     useEffect(() => {
-        const timer1 = setTimeout(() => {
-            setShowImage(true);
-        }, 2000);
-        const timer2 = setTimeout(() => {
-            setShowNewImage(true);
-        }, 3000);
-        const timer3 = setTimeout(() => {
-            setShowSignupScreen();
-        }, 4500);
+        function handleResize() {
+            setBuilderImage(getBuilderImage());
+        }
+
+        window.addEventListener("resize", handleResize);
+        
+        timeoutRef.current.push(
+            setTimeout(() => setShowImage(true), 2000),
+            setTimeout(() => setShowNewImage(true), 3000),
+            setTimeout(() => setShowSignupScreen(true), 4500)
+        );
 
         return () => {
-            clearTimeout(timer1);
-            clearTimeout(timer2);
-            clearTimeout(timer3);
+            window.removeEventListener("resize", handleResize);
+            timeoutRef.current.forEach(clearTimeout);
         };
     }, []);
 
-
-
-
-
     return (
-      
+        <Box
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: "100vh",
+                width: '100vw',
+                backgroundColor: showNewImage ? '#4C8AB1' : '#FFF',
+                transition: 'background-color 1s ease-in-out',
+                overflow: 'hidden',
+            }}
+        >
+            {/* First Image */}
             <Box
                 sx={{
-                    display: 'flex',
-                    // contain: "content",
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: { lg: '100vh', md: "100vh", sm: "100vh", xs: "100vh" },
-                    // height: "100%",
-                    width: '100wh',
-                    backgroundColor: showNewImage ? '#4C8AB1' : '#FFF',
-                    transition: 'background-color 1s ease-in-out',
-
-                    overflow: 'hidden',
-
-                    // border: "2px solid black"
+                    transition: 'transform 1s ease-in-out, opacity 1s ease-in-out',
+                    transform: showImage ? 'scale(0.2)' : 'scale(1)',
+                    opacity: showNewImage ? 0 : 1,
+                    visibility: showNewImage ? 'hidden' : 'visible',
+                    position: "absolute"
                 }}
             >
-                <Box
-                    sx={{
-                        transition: 'transform 1s ease-in-out, opacity 1s ease-in-out',
-                        transform: showImage ? 'scale(0.2)' : 'scale(1)',
-                        opacity: showNewImage ? 0 : 1,
-                        display: showNewImage ? 'none' : 'block',
-                    }}
-                >
-                    {showImage && (
-                        <img
-                            src={builder1}
-                            alt="Builder Logo"
-                            style={{ width: '100%', height: '100%' }}
-                        />
-                    )}
-                </Box>
-
-                <Box
-                    sx={{
-                        transition: 'transform 1s ease-in-out, opacity 1s ease-in-out',
-                        transform: showNewImage ? 'scale(1)' : 'scale(0.2)',
-                        opacity: showSignupScreen ? 0 : 1,
-                        display: showSignupScreen ? 'none' : 'block',
-
-                    }}
-                >
-                    {showNewImage && (
-                        <img
-                            src={getBuilderImage()}
-                            alt="Builder Logo"
-                            style={{ width: '100%', height: '100%', overflow: "hidden" }}
-                        />
-                    )}
-                </Box>
-                </Box>
+                {showImage && (
+                    <img
+                        src={builder1}
+                        alt="Builder Logo"
+                        style={{ maxWidth: '100%', height: 'auto' }}
+                    />
                 )}
+            </Box>
 
-export default Splash
+            {/* Second Image */}
+            <Box
+                sx={{
+                    transition: 'transform 1s ease-in-out, opacity 1s ease-in-out',
+                    transform: showNewImage ? 'scale(1)' : 'scale(0.2)',
+                    opacity: showSignupScreen ? 0 : 1,
+                    visibility: showSignupScreen ? 'hidden' : 'visible',
+                }}
+            >
+                {showNewImage && (
+                    <img
+                        src={builderImage}
+                        alt="Builder Logo"
+                        style={{ maxWidth: '100%', height: 'auto' }}
+                    />
+                )}
+            </Box>
+        </Box>
+    );
+}
+
+export default Splash;

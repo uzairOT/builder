@@ -1090,5 +1090,8 @@
       "approve": "Genehmigen",
       "detail": "Details"
     }
+  },
+  "Notification": {
+    "noNewNotification": "Keine neuen Benachrichtigungen"
   }
 }

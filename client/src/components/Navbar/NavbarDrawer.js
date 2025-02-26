@@ -5,12 +5,18 @@ import {
   List,
   ListItemButton,
   ListItemText,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import React, { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
+import i18n from "../../i18n";
+import { use } from "react";
+import { useTranslation } from "react-i18next";
 
-const NavbarDrawer = () => {
+const NavbarDrawer = ({ languageOptions, setLanguage }) => {
+  const {t} = useTranslation();
   const [openMenu, setOpenMenu] = useState(false);
 
   return (
@@ -30,7 +36,7 @@ const NavbarDrawer = () => {
             style={{ textDecoration: "none", color: "gray" }}
           >
             <ListItemButton onClick={() => setOpenMenu(false)}>
-              <ListItemText>Dashboard</ListItemText>
+              <ListItemText>{t("Navbar.dashboard")}</ListItemText>
             </ListItemButton>
           </Link>
           <Divider variant="fullWidth"></Divider>
@@ -39,13 +45,13 @@ const NavbarDrawer = () => {
             style={{ textDecoration: "none", color: "gray" }}
           >
             <ListItemButton onClick={() => setOpenMenu(false)}>
-              <ListItemText>Projects</ListItemText>
+              <ListItemText>{t("Navbar.projects")}</ListItemText>
             </ListItemButton>
           </Link>
           <Divider variant="fullWidth"></Divider>
           <Link to="/reports" style={{ textDecoration: "none", color: "gray" }}>
             <ListItemButton onClick={() => setOpenMenu(false)}>
-              <ListItemText>Reports</ListItemText>
+              <ListItemText>{t("Navbar.reports")}</ListItemText>
             </ListItemButton>
           </Link>
           {/* <Divider variant="fullWidth"></Divider>
@@ -60,7 +66,7 @@ const NavbarDrawer = () => {
             style={{ textDecoration: "none", color: "gray" }}
           >
             <ListItemButton onClick={() => setOpenMenu(false)}>
-              <ListItemText>Subscription</ListItemText>
+              <ListItemText>{t("Navbar.subscription")}</ListItemText>
             </ListItemButton>
           </Link>
           <Divider variant="fullWidth"></Divider>
@@ -69,10 +75,31 @@ const NavbarDrawer = () => {
             style={{ textDecoration: "none", color: "gray" }}
           >
             <ListItemButton onClick={() => setOpenMenu(false)}>
-              <ListItemText>Settings</ListItemText>
+              <ListItemText>{t("Navbar.settings")}</ListItemText>
             </ListItemButton>
           </Link>
           <Divider variant="fullWidth"></Divider>
+          
+          <Select
+            value={i18n.language}
+            label="Select language"
+            onChange={(e) => {
+              setLanguage(e.target.value);
+              localStorage.setItem("language", e.target.value)
+            }}
+            displayEmpty
+            inputProps={{ "aria-label": "Select language" }}
+            sx={{
+              color: "#4C8AB1",
+              "& .MuiSelect-icon": { color: "#4C8AB1" }, // Styles the dropdown icon
+            }}
+          >
+            {Object.entries(languageOptions).map(([lang, label]) => (
+              <MenuItem key={lang} value={lang}>
+                {label}
+              </MenuItem>
+            ))}
+          </Select>
         </List>
       </Drawer>
       <IconButton onClick={() => setOpenMenu(!openMenu)}>

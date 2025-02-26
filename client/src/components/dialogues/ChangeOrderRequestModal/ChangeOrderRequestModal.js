@@ -613,11 +613,11 @@ const ChangeOrderRequestModal = ({
                 direction={{ xl: "row", lg: "row", md: "row", xs: "row" }}
                 justifyContent={"space-around"}
                 spacing={0.2}
-                p={1}
+                // p={1}
               >
                 <Stack
                   // maxWidth={"80%"}
-                  width={"100%"}
+                 
                   //  maxHeight={"30%"}
                   flex={1}
                 >

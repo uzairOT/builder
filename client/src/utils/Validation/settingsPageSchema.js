@@ -1,8 +1,4 @@
-import { Password } from '@mui/icons-material';
 import * as yup from 'yup';
-
-const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-const SUPPORTD_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
 
 export const settingsSchema = yup.object().shape({
     project: yup.object().required(),

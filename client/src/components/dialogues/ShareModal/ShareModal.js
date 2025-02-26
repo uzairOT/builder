@@ -313,7 +313,7 @@ const ShareModal = ({
                 </Typography>
                 <Box height={"22.91px"}></Box>
               </Box>
-              <Stack direction={{ md: "row", xs: "column" }} gap={1}>
+              <Stack direction={{ md: "row", xs: "column" }} gap={{sm:1, xs:0}}>
                 <Box width={{ sm: "300px", xs: "180px" }}>
                   {/* Email input */}
                   <TextField
@@ -378,7 +378,8 @@ const ShareModal = ({
             </Box>
           </Stack>
           <Divider variant="fullWidth" />
-          <Stack height={"250px"} overflow={"auto"}>
+          <Typography>Users:</Typography>
+          <Stack height={"300px"} sx={{overflowY:'scroll'}}>
             {filterTeam?.length > 0 ? (
               filterTeam?.map((user, index) => {
                 // if (userRoleAuth.userRole === "supplier") {
@@ -400,7 +401,7 @@ const ShareModal = ({
                 //   }
                 // }
                 return (
-                  <Stack p={0.5}>
+                  <Stack p={{sm:0.5, xs:0}}>
                     <Container justifyContent="center" display="flex">
                       <Stack
                         sx={{}}
@@ -408,7 +409,7 @@ const ShareModal = ({
                         direction="row"
                         alignItems="center"
                         justifyContent={"center"}
-                        pb={1}
+                        pb={{sm:1, xs:0}}
                         onClick={() =>
                           handleUserSelect(() => {
                             if (selectedUser.userId === user.userId) {
@@ -423,7 +424,7 @@ const ShareModal = ({
                           direction="row"
                           justifyContent="space-between"
                           alignItems="center"
-                          p={2}
+                          p={{sm:2, xs:1}}
                           gap={1}
                           border={
                             selectedUser.userId === user.userId
@@ -500,7 +501,7 @@ const ShareModal = ({
             {
               <TableContainer
                 component={Paper}
-                style={{ height: "300px", backgroundColor: "transparent" }}
+                style={{ height: "250px", backgroundColor: "transparent" }}
               >
                 <Table>
                   <TableHead>
@@ -754,6 +755,8 @@ const style = {
   boxShadow: 24,
   p: 1,
   borderRadius: "14px",
+  width:{md:"fit-content",xs:'95%'},
+  height:'600px'
   // overflowX: "auto",
 };
 

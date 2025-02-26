@@ -1096,5 +1096,8 @@
       "approve": "批准",
       "detail": "详情"
     }
+  },
+  "Notification": {
+    "noNewNotification": "没有新通知"
   }
 }

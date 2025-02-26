@@ -1104,5 +1104,8 @@
       "approve": "Approve",
       "detail": "Detail"
     }
+  },
+  "Notification": {
+    "noNewNotification": "No new notifications"
   }
 }

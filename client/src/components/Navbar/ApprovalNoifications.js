@@ -18,7 +18,7 @@ import {
   useDeclinePhaseMutation,
 } from "../../redux/apis/NotificationsApproval/NotificationApprovalApiSlice";
 import { toast } from "react-toastify";
-import {  useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 function ApprovalNotification({
@@ -37,7 +37,7 @@ function ApprovalNotification({
   const [showError, setShowError] = useState(false);
   const [showReasonField, setShowReasonField] = useState(false);
   // const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation();
-
+  const location = useLocation();
   const [approvePhases] = useApprovePhaseMutation();
   const [declinePhases] = useDeclinePhaseMutation();
   const [approveInitialPhases] = useApproveInitialPhasesMutation();
@@ -154,14 +154,21 @@ function ApprovalNotification({
     }
   };
   const handleDetails = async () => {
-    setExpanded(false);
+    // setExpanded(false);
     navigate(newPath);
+    if(newPath === location.pathname) {
+      toast.info("You are already on the project details page.");
+
+    } else{
+
+      toast.info("Redirecting to project details page");
+    }
   };
 
   return (
     <Accordion
       disableGutters
-      // expanded={isExpanded}
+      expanded={showReasonField}
       // onChange={handleAccordionChange(index)}
     >
       <AccordionSummary>
@@ -195,7 +202,7 @@ function ApprovalNotification({
               fontFamily={"var(--main-font-family)"}
               fontSize={"12px"}
             >
-              {t("ApprovalNotification.message")}:{" "}
+              {t("ApprovalNotification.message")}{" "}
               <span style={{ fontWeight: 700 }}>
                 {notification?.Project?.projectName}
               </span>
@@ -242,7 +249,7 @@ function ApprovalNotification({
           <Divider />
 
           {showReasonField && (
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ display: "flex", alignItems: "center", }}>
               <TextField
                 required
                 fullWidth
@@ -258,7 +265,16 @@ function ApprovalNotification({
                   !declineReason && showError
                     ? t("ApprovalNotification.declineReason.error")
                     : ""
-                } // Shows error message
+                }
+                sx={
+                  {
+                    border: "1px solid #4C8AB1", // Default border color
+                    borderRadius: "4px",
+                  }
+                }
+                InputLabelProps={{
+                  style: { color: '#4C8AB1', fontWeight: '', marginTop:'10px' } // Apply your custom styles here
+              }}
               />
               <BuilderProButton
                 variant={"contained"}
