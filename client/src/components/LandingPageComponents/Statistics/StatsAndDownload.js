@@ -138,10 +138,11 @@ const styles = {
     lineHeight: 1,
   },
   subHeading: {
-    textAlign: { md: "left", xs: "center" },
+    textAlign: { md: "justify", xs: "justify" },
     fontFamily: "var(--main-font-family)",
     marginBottom: "20px",
     color: "gray",
+    hyphens: "auto"
   },
   statsGrid: {
     justifyContent: "center",

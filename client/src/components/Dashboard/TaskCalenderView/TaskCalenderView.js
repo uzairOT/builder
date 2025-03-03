@@ -60,7 +60,7 @@ const TaskCalenderView = ({ dailyForecast, eventsArr }) => {
             alignSelf: "flex-start",
             marginBottom: "-64px",
             marginTop: "18px",
-            marginLeft: "5px",
+            marginLeft: "0px",
           }}
         >
           <IconButton onClick={toggleDrawer}>

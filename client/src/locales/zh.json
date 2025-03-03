@@ -10,7 +10,14 @@
     "text8": "协作！",
     "text9": "专业！",
     "text10": "优秀！",
-    "text11": "BuilderBUILDER PRO 是您的全方位解决方案，帮助您高效管理从头到尾的建筑项目。为那些追求精确、组织性和结果的专业人士设计，BuilderBUILDER PRO 提供强大的功能，简化项目管理的各个方面。"
+    "text11": "BuilderBUILDER PRO 是您的全方位解决方案，帮助您高效管理从头到尾的建筑项目。为那些追求精确、组织性和结果的专业人士设计，BuilderBUILDER PRO 提供强大的功能，简化项目管理的各个方面。",
+    "navbar": {
+      "home": "主页",
+      "about": "关于我们",
+      "features": "功能",
+      "contact": "联系我们",
+      "faqs": "常见问题"
+    }
   },
   "buttons": {
     "btn1": "安排演示",
@@ -808,6 +815,17 @@
       "EndDate": "结束日期",
       "Action": "操作",
       "ViewDetails": "查看详情"
+    },
+    "editModal": {
+      "title1": "编辑项目",
+      "title2": "项目名称",
+      "title3": "位置",
+      "title4": "开始日期",
+      "title5": "结束日期",
+      "title6": "项目颜色",
+      "title7": "更新项目",
+      "title8": "编辑阶段",
+      "uploadPhoto": "上传照片"
     },
     "remodel": "翻新",
     "newbuild": "新建",

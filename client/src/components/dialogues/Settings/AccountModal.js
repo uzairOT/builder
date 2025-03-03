@@ -220,7 +220,7 @@ const AccountModal = ({
               {open ? t("Button.add") : updateOpen ? t("Button.update") : ""} {title}
             </DialogTitle>
             <IconButton
-              style={{ width: "30px", height: "30px" }}
+              style={{ width: "30px", height: "30px", marginTop: '20px' }}
               onClick={handleClose}
             >
               <Close />
@@ -229,7 +229,7 @@ const AccountModal = ({
           <DialogContent
             sx={{
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "start",
               margin: "30px",
               flexDirection: "column",
               gap: "16px",
@@ -249,11 +249,12 @@ const AccountModal = ({
                   borderRadius: "18px",
                   justifyContent: "center",
                   margin: "20px",
-                  height: "180px"
+                  height: "180px",
+                  padding: "0px !important",
                 }}
               >
                 <div
-                  style={{ textAlign: "center", width: "100%", height: "100%" }}
+                  style={{ textAlign: "center", width: "100%", height: "100%" , display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}
                   onDragOver={(e) => e.preventDefault()}
                   onDragEnter={(e) => e.preventDefault()}
                   onDrop={handleDrop}
@@ -273,6 +274,7 @@ const AccountModal = ({
                       alt=""
                       width={"120px"}
                       height={"100px"}
+                     
                     />
 
                     {/* Text */}
@@ -290,6 +292,9 @@ const AccountModal = ({
                   placeholder={t("Settings.Accounts.table.accountName")}
                   fullWidth
                   name={"accountName"}
+                  sx={{
+                    width: "calc(100% - 20px)",
+                  }}
                   inputProps={{
                     style: {
                       ...InputStyle,
@@ -318,6 +323,9 @@ const AccountModal = ({
                   placeholder={t("Settings.Accounts.table.accountLink")}
                   fullWidth
                   name={"accountLink"}
+                  sx={{
+                    width: "calc(100% - 20px)",
+                  }}
                   inputProps={{
                     style: {
                       ...InputStyle,
@@ -356,6 +364,9 @@ const AccountModal = ({
                       padding:0
                     }
                   }}
+                  sx={{
+                    width: "calc(100% - 20px)",
+                  }}
                   inputProps={{
                     style: {
                       ...InputStyle,
@@ -392,7 +403,7 @@ const AccountModal = ({
               sm={12}
               md={6}
               lg={6}
-              sx={{ textAlign: "center" }}
+              sx={{ textAlign: "center", }}
             >
               <Button
                 buttonText={
@@ -417,7 +428,7 @@ const AccountModal = ({
               sm={12}
               md={6}
               lg={6}
-              sx={{ textAlign: "center" }}
+              sx={{ textAlign: "center",margin:'0px' }}
             >
               <Button
                 buttonText={t("Button.reset")}
@@ -442,7 +453,7 @@ const InputStyle = {
   fontFamily: 'var(--main-font-family)',
   border: "1px solid #E0E4EC",
   padding: "10px",
-  width: { xl: "250px", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
+  width: { xl: "250px", lg: "100%", md: "100%", sm: "calc(100% - 20px) ", xs: "calc(100% - 20px)" },
   "& .MuiOutlinedInputRoot": {
     "& fieldset": {
       border: "none",

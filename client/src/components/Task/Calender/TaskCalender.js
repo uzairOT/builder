@@ -20,7 +20,7 @@ import { GanttChartSection } from "../../UI/Charts/GanttChartSection";
 moment.tz.setDefault("UTC");
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
-const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClient, eventsArr, coordinates }) => {
+const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClient, eventsArr, coordinates , selectedProjectData}) => {
   const { id } = useParams();
   const [monthEventView, setMonthEventView] = useState(true);
   const [eventView, setEventView] = useState('Work Order')
@@ -55,7 +55,7 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
   eventViewRef.current = eventView;
 
   const currentDate = moment();
-  const chart = () => <GanttChartSection />;
+  const chart = () => <GanttChartSection selectedProjectData={selectedProjectData}/>;
   chart.title = () => 'Chart';
   const views = {
     month: true,

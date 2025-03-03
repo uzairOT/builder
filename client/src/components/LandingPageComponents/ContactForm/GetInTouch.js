@@ -446,6 +446,8 @@ const styles = {
     fontWeight: 400,
     color: "#454245",
     mb: 3,
+    textAlign:"center",
+    hyphens: "auto"
   },
   TouchFont: {
     fontFamily: "var(--main-font-family)",

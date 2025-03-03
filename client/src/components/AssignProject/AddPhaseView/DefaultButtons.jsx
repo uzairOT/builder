@@ -27,11 +27,14 @@ const DefaultButtons = ({ authUserRole, view, isLoading, handleAddPhase, handleG
     pathCheck
   );
   const phaseLengthZero =  phases[0]?.length < 1
+
+  //ONLY THESE USERS ARE ALLOW TO SEE THE BUTTONS
   const userRoleCheck =
     authUserRole === "superadmin" ||
     authUserRole === "" ||
     authUserRole === "projectManager" ||
-    authUserRole === "admin";
+    authUserRole === "admin"||
+    authUserRole === "client";
 
   return (
     <>

@@ -699,7 +699,7 @@ const RequestWorkOrderModal = ({
                 direction={{ xl: "row", lg: "row", md: "row", xs: "row" }}
                 justifyContent={"space-around"}
                 spacing={0.2}
-                p={1}
+                p={{sm: 1, xs:0}}
               >
                 {!changeOrderView && (
                   <Stack flex={1}>
@@ -868,7 +868,7 @@ const RequestWorkOrderModal = ({
                         // changeOrderSelected={changeOrderSelected}
                         refetchChangeOrder={refetch}
                         adminProjectView={true}
-                        view="Selected Phases"
+                        view={t("RequestWorkOrder.title3")}
                         changeOrderSelectedView={true}
                         handleUpdateOpen={handleUpdateOpen}
                         handleAddOpen={handleAddOpen}

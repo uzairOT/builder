@@ -440,7 +440,7 @@ const AddPhaseCard = ({
                               alignItems: "center",
                             }}
                           >
-                            CO
+                            <Typography fontSize={{md: '16px'}} display={{sm:'initial', xs:"none"}}>CO</Typography>
                             <ModeEditIcon sx={{ fontSize: "0.980rem" }} />
                           </span>
                         }
@@ -1153,7 +1153,7 @@ const AddPhaseCard = ({
                                           alignItems: "center",
                                         }}
                                       >
-                                        CO
+                                        <Typography fontSize={{md: '16px', xs:'10px'}}>CO</Typography>
                                         <ModeEditIcon
                                           sx={{ fontSize: "0.980rem" }}
                                         />

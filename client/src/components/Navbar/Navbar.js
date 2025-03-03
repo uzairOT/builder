@@ -259,7 +259,6 @@ const Navbar = () => {
       fontFamily: "var(--main-font-family)",
     },
     logo: () => ({
-      fontFamily: "var(--main-font-family)",
       width: "85%",
       height: "100%",
       marginLeft: "8px",
@@ -305,7 +304,7 @@ const Navbar = () => {
               <Link to="/">
                 <BuilderProNavbarLogo
                   aria-label="Builder Pro Logo"
-                  style={themeStyle.logo()}
+                  // style={themeStyle.logo()}
                   onClick={() => {
                     setSelectedTab(0);
                   }}

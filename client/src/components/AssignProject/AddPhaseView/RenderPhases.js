@@ -64,6 +64,7 @@ function RenderPhases({
             style={{
               ...slectedCardStyle,
               ...commonStackStyle,
+              margin: "0rem",
               boxShadow:
                 selectedPhaseId === phase.id
                   ? `0 0 0 2px #1B1B1B, 0 5px 20px ${phase.color}`

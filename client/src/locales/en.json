@@ -10,7 +10,14 @@
     "text8": "COLABORATIVE!",
     "text9": "PROFESSIONAL!",
     "text10": "GOOD!",
-    "text11": "BuilderBUILDER PRO is your all-in-one solution to efficiently manage construction projects from start to finish. Designed for professionals who demand precision, organization, and results, BuilderBUILDER PRO offers robust features to streamline every aspect of your project management."
+    "text11": "BuilderBUILDER PRO is your all-in-one solution to efficiently manage construction projects from start to finish. Designed for professionals who demand precision, organization, and results, BuilderBUILDER PRO offers robust features to streamline every aspect of your project management.",
+    "navbar": {
+      "home": "Home",
+      "about": "About Us",
+      "features": "Features",
+      "contact": "Contact Us",
+      "faqs": "FAQ's"
+    } 
   },
   "buttons": {
     "btn1": "Schedule a Demo",
@@ -775,7 +782,7 @@
   },
   "NotificationDetailModal": {
     "Heading1": "Work Order Details",
-    "Heading2": "Changer Order Details",
+    "Heading2": "Change Order Details",
     "Subject": "Subject",
     "Description": "Description",
     "Phases": "Phases",
@@ -816,6 +823,17 @@
       "EndDate": "End Date",
       "Action": "Action",
       "ViewDetails": "View Details"
+    },
+    "editModal": {
+      "title1": "Edit Project",
+      "title2": "Project Name",
+      "title3": "Location",
+      "title4": "Start Date",
+      "title5": "End Date",
+      "title6": "Project Color",
+      "title7": "Update Project",
+      "title8": "Edit phase",
+      "uploadPhoto": "Upload your photo"
     },
     "remodel": "Remodel",
     "newbuild": "New Build",

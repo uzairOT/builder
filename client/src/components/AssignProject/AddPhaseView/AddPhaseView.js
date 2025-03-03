@@ -493,7 +493,7 @@ function AddPhaseView({
   };
   return (
     <>
-      <Grid container sx={{ ...firstGrid, width: "100%" }}>
+      <Grid container sx={{ ...firstGrid, width: view === t("RequestWorkOrder.title3") ? "100%" : "calc(100% - 32px)" }}>
         <Stack
           direction={"row"}
           justifyContent={view ? "space-between" : "center"}

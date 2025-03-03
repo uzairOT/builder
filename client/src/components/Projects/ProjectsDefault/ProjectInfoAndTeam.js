@@ -29,7 +29,7 @@ const ProjectInfoAndTeam = ({projectId, userId, SuperAdminId, projectOrganizatio
 
   return (
     <Stack direction={{xl:'row', lg:'row', md:'column'}}>
-        <Stack width={'100%'}  p={1} pl={3}><ProjectInfo data={data} projectName={projectName} /></Stack>
+        <Stack width={'calc(100% - 32px)'}  p={1} pl={3}><ProjectInfo data={data} projectName={projectName} /></Stack>
         <Divider sx={{borderWidth:'0.8px', color:'#E4E4E4'}} />
         <Stack width={'100%'}  p={1} pl={0} pr={0} ><ProjectTeam SuperAdminId={SuperAdminId} projectOrganizationId={projectOrganizationId}/></Stack>
     </Stack>

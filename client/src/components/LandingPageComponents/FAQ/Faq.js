@@ -126,6 +126,8 @@ const styles = {
     fontSize: { md: "36px", sm: "36px", xs: "18px" },
     fontWeight: 500,
     marginBottom: 2,
+    textAlign: "jutiify",
+    hyphens: "auto"
   },
   DecsFont: {
     fontFamily: "var(--main-font-family)",
@@ -154,6 +156,8 @@ const styles = {
     fontSize: { md: "16px", sm: "16px", xs: "14px" },
     fontWeight: 400,
     color: "#454245",
+    textAlign: "justify",
+    hyphens: "auto"
   },
   contactSection: {
     marginTop: "32px",

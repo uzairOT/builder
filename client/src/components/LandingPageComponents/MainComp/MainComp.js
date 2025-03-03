@@ -76,7 +76,7 @@ const MainContent = () => {
             </Typography>
             <Stack sx={{ margin: { xs: "20px 0", md: "20px 0" }, }}>
 
-              <Typography component="div" sx={styles.heading2}>
+              <Typography component="div" sx={styles.heading2} px={{sm: 0, xs:2}}>
               {t('landingPage.text2')} {mdView && 'more '}
               </Typography>
               <Stack direction={'row'} alignItems={'center'} justifyContent={mdView ? 'center': ''} gap={1.5}>
@@ -199,9 +199,10 @@ const styles = {
     fontWeight: 500,
     fontSize: { lg: "22px", xs: "16px" },
     lineHeight: 1,
+    
   },
   heading2: {
-    textAlign: { md: "left", xs: "center" },
+    textAlign: { md: "justify", xs: "justify" },
     maxWidth: "100%",
     color: "black",
     fontFamily: "var(--main-font-family)",
@@ -238,7 +239,8 @@ const styles = {
     fontWeight: 400,
     fontSize: { lg: "16px", xs: "14px" },
     textAlign: 'justify',
-    paddingX: { md: 0, xs: 4 }
+    paddingX: { md: 0, xs: 4 },
+    hyphens: "auto"
   },
   demoButton: {
     color: "white",

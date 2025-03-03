@@ -197,17 +197,19 @@ const styles = {
   },
   featureDesc: {
 
-    textAlign: { md: "justify", xs: "left" },
+    textAlign: { md: "justify", xs: "justify" },
     fontFamily: "var(--main-font-family)",
     fontSize: { md: "16px", sm: "16px", xs: "14px" },
     fontWeight: 400,
     color: "#454245",
+    hyphens: "auto"
   },
   sectionTitle: {
     fontFamily: "var(--main-font-family)",
     fontSize: { md: "36px", sm: "36px", xs: "18px" },
     fontWeight: 500,
     marginBottom: 2,
+    textAlign:'justify'
   },
   sectionDescription: {
     maxWidth: "100%",
@@ -216,7 +218,8 @@ const styles = {
     fontSize: { md: "16px", sm: "16px", xs: "14px" },
     margin: "0 auto",
     color: "#666666",
-    textAlign:'left'
+    textAlign:'justify',
+    hyphens: "auto"
   },
   gridContainer: {
     marginTop: 10,
@@ -242,13 +245,14 @@ const styles = {
     marginTop: 2,
   },
   cardDescription: {
-    textAlign: { md: "left", xs: "center" },
+    textAlign: { md: "justify", xs: "justify" },
     marginTop: 1,
     fontSize: { md: "16px", sm: "16px", xs: "14px" },
     fontWeight: 400,
     fontFamily: "var(--main-font-family)",
     color: "#666666",
-  },
+    hyphens: "auto"
+    },
   decorationTopLeft: {
     position: "absolute",
     top: -70,

@@ -14,7 +14,7 @@ import {
   setTotalPages,
 } from "../../../redux/slices/Project/userProjectsSlice";
 import QueryDebouncer from "../../../utils/QueryDebouncer/QueryDebouncer";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
@@ -76,6 +76,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab, projectsPage }) => {
   const { t } = useTranslation();
+  const {id}  = useParams()
   const fetchPinnedProjectToggle = useSelector(state => state.userProjects.fetchPinnedProjectToggle)
   const filter = selectedFilters ? selectedFilters.join(",") : "";
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -98,7 +99,7 @@ const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab, projectsPa
       userId: UserId,
       q: debouncedValue,
       filter: filter,
-      page: page,
+      page: id ? "" : page,
     });
   const isLoading = isLoading1 || isLoading2;
 
@@ -122,7 +123,7 @@ const SearchBar = ({ selectedFilters, page = 1, setPage, selectedTab, projectsPa
         dispatch(setError(error));
       }
     }
-  }, [data, dispatch, error, isLoading, selectedTab]);
+  }, [data, dispatch, error, isLoading, selectedTab, id]);
 
   const refetchProjects = async () => {
     const res = await refetch({

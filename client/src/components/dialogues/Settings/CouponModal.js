@@ -210,7 +210,7 @@ const CouponModal = ({
               sm={12}
               md={6}
               lg={6}
-              sx={{ textAlign: "center" }}
+              sx={{ textAlign: "center", margin:'0px' }}
             >
               <Button
                 buttonText={
@@ -235,7 +235,7 @@ const CouponModal = ({
               sm={12}
               md={6}
               lg={6}
-              sx={{ textAlign: "center" }}
+              sx={{ textAlign: "center", margin:'0px' }}
             >
               <Button
                 buttonText={t("Button.reset")}

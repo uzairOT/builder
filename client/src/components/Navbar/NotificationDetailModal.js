@@ -178,7 +178,7 @@ const NotificationDetailModal = ({
               xs: "column",
             }}
           >
-            <Stack p={3} pr={0} spacing={1} width={"100%"}>
+            <Stack p={3} pr={0} spacing={1} width={"calc(100% - 24px)"}>
               <Typography
                 fontSize={{ xl: 16, md: 14, lg: 14, sm: 12, xs: 12 }}
                 fontFamily={"var(--main-font-family)"}

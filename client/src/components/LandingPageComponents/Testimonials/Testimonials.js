@@ -110,6 +110,8 @@ const styles = {
     fontSize: { md: "24.5px", sm: "24.5px", xs: "18px" },
     fontWeight: 500,
     color: "#454245",
+    textAlign: "left",
+    hyphens: "auto"
   },
   container: {
     padding: "32px",

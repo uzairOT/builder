@@ -765,7 +765,7 @@ function UpdateMasterLine({
 
 const typoTitle = {
   fontFamily: "var(--main-font-family)",
-  fontSize: "1.5rem",
+  fontSize: {md:"1.5rem", xs:"1.2rem"},
   color: "#4C8AB1",
 };
 const inputStyle = {

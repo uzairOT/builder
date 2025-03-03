@@ -40,8 +40,10 @@ import {
 } from "../../../redux/slices/Project/userProjectsSlice";
 import CloseIcon from "@mui/icons-material/Close";
 import ColorPicker from "../ColorPickerProject/ColorPicker";
+import { useTranslation } from "react-i18next";
 
 function EditProjectModal({ title, open, onClose, project, page }) {
+  const {t} = useTranslation();
   const [image, setImage] = useState(null);
   const [phone, setPhone] = useState("");
   const local = localStorage.getItem("userInfo");
@@ -235,7 +237,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
       <ToastContainer />
       <Dialog open={open} onClose={onClose} maxWidth="md" sx={{}}>
         <DialogTitle sx={headingStyle}>
-          <Typography sx={headingStyleText}>Edit Project</Typography>
+          <Typography sx={headingStyleText}>{t("ProjectList.editModal.title1")}</Typography>
           <IconButton onClick={onClose}>
             <CloseIcon />
           </IconButton>
@@ -256,10 +258,11 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                 justifyContent: "center",
                 margin: "20px",
                 height: "180px",
+                padding: "0px !important",
               }}
             >
               <div
-                style={{ textAlign: "center", width: "100%", height: "100%" }}
+                style={{ textAlign: "center", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}
                 onDragOver={(e) => e.preventDefault()}
                 onDragEnter={(e) => e.preventDefault()}
                 onDrop={handleDrop}
@@ -283,14 +286,14 @@ function EditProjectModal({ title, open, onClose, project, page }) {
 
                   {/* Text */}
                   <Typography variant="body1" sx={labelStyle}>
-                    {image ? <></> : "Upload your photo"}
+                    {image ? <></> : t("ProjectList.editModal.uploadPhoto")}
                   </Typography>
                 </label>
               </div>
             </Grid>
             <Grid item xs={12} sm={6} xl={6} lg={6}>
               {/* Projects input */}
-              <Typography variant="body1">Project Name</Typography>
+              <Typography variant="body1">{t("ProjectList.editModal.title2")}</Typography>
               <TextField
                 error={Boolean(errors.project)} // Simplified error handling
                 placeholder="Skyscraper"
@@ -298,6 +301,9 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                 value={values.project}
                 onChange={handleChange}
                 fullWidth
+                sx={{
+                  width: "calc(100% - 20px)",
+                }}
                 inputProps={{
                   style: {
                     ...InputStyle,
@@ -318,7 +324,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
 
             <Grid item xs={12} sm={6}>
               {/* Name input */}
-              <Typography variant="body1">Location</Typography>
+              <Typography variant="body1">{t("ProjectList.editModal.title3")}</Typography>
               <TextField
               disabled
                 error={errors.location ? true : false}
@@ -326,6 +332,9 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                 name={"location"}
                 value={values.location}
                 fullWidth
+                sx={{
+                  width: "calc(100% - 20px)",
+                }}
                 inputProps={{
                   style: {
                     ...InputStyle,
@@ -345,10 +354,10 @@ function EditProjectModal({ title, open, onClose, project, page }) {
             </Grid>
 
             <Grid item xs={12} sm={6} xl={6} lg={6}>
-              <Typography variant="body1">Start Time</Typography>
+              <Typography variant="body1">{t("ProjectList.editModal.title4")}</Typography>
               <Box
                 sx={{
-                  width: "100%", // Set width to 100% for responsiveness
+                  width: "100%",// Set width to 100% for responsiveness
                   alignSelf: "center",
                   fontSize: "14px",
                   // border: "1px solid #ccc",
@@ -360,7 +369,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <MobileDatePicker
                     sx={{
-                      width: "100%",
+                      width: "calc(100% - 20px)",
                       ".MuiOutlinedInput-notchedOutline ": {
                         border: "1px solid #ccc !important",
                         borderRadius: "12px",
@@ -375,10 +384,10 @@ function EditProjectModal({ title, open, onClose, project, page }) {
               </Box>
             </Grid>
             <Grid item xs={12} sm={6} xl={6} lg={6}>
-              <Typography variant="body1">End Time</Typography>
+              <Typography variant="body1">{t("ProjectList.editModal.title5")}</Typography>
               <Box
                 sx={{
-                  width: "100%", // Set width to 100% for responsiveness
+                  width: "calc(100% - 20px)", // Set width to 100% for responsiveness
                   alignSelf: "center",
                   fontSize: "14px",
                   // border: "1px solid #ccc",
@@ -559,7 +568,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                     color={"#4C8AB1"}
                     sx={styles.link}
                   >
-                    Edit phases
+                    {t("ProjectList.editModal.title8")}
                   </Typography>
                 </Stack>
               </Stack>
@@ -579,7 +588,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
           >
             <Button
               type={"submit"}
-              buttonText="Update Project"
+              buttonText={t("ProjectList.editModal.title7")}
               color="#ffffff"
               backgroundColor={isSubmitting ? "gray" : "#4C8AB1"}
               width="150px"

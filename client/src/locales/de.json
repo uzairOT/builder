@@ -10,7 +10,14 @@
     "text8": "KOLLABORATIV!",
     "text9": "PROFESSIONELL!",
     "text10": "GUT!",
-    "text11": "BuilderBUILDER PRO ist Ihre All-in-One-Lösung, um Bauprojekte von Anfang bis Ende effizient zu verwalten. Entwickelt für Fachleute, die Präzision, Organisation und Ergebnisse verlangen, bietet BuilderBUILDER PRO robuste Funktionen, um jeden Aspekt des Projektmanagements zu optimieren."
+    "text11": "BuilderBUILDER PRO ist Ihre All-in-One-Lösung, um Bauprojekte von Anfang bis Ende effizient zu verwalten. Entwickelt für Fachleute, die Präzision, Organisation und Ergebnisse verlangen, bietet BuilderBUILDER PRO robuste Funktionen, um jeden Aspekt des Projektmanagements zu optimieren.",
+    "navbar": {
+      "home": "Startseite",
+      "about": "Über uns",
+      "features": "Funktionen",
+      "contact": "Kontakt",
+      "faqs": "FAQ's"
+    }
   },
   "buttons": {
     "btn1": "Demo planen",
@@ -802,6 +809,17 @@
       "EndDate": "Enddatum",
       "Action": "Aktion",
       "ViewDetails": "Details anzeigen"
+    },
+    "editModal": {
+      "title1": "Projekt bearbeiten",
+      "title2": "Projektname",
+      "title3": "Standort",
+      "title4": "Startdatum",
+      "title5": "Enddatum",
+      "title6": "Projektfarbe",
+      "title7": "Projekt aktualisieren",
+      "title8": "Phase bearbeiten",
+      "uploadPhoto": "Foto hochladen"
     },
     "remodel": "Renovierung",
     "newbuild": "Neubau",

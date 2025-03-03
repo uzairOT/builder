@@ -194,7 +194,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
         >
           <DialogTitle sx={headingStyle}>{t("Button.add")} {title}</DialogTitle>
           <IconButton
-            style={{ width: "30px", height: "30px" }}
+            style={{ width: "30px", height: "30px", marginTop: "20px" }}
             onClick={onClose}
           >
             <Close />
@@ -486,6 +486,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
           sx={{
             display: "flex",
             justifyContent: "center",
+            alignItems: "center",
             mb: 2,
             flexDirection: { xs: "column", sm: "row" },
             gap: { xs: 1, sm: 0 },
@@ -500,11 +501,12 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
               width="150px"
               height="44px"
               borderRadius="50px"
+              fontSize={"13px"}
               onClick={handleSubmit}
               disabled={isSubmitting}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center" }}>
+          <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center", margin:'0px' }}>
             <Button
               buttonText={t("Button.reset")}
               color="#4C8AB1"
@@ -545,6 +547,7 @@ const headingStyle = {
   fontWeight: "500",
   fontSize: "22px",
   color: "#4C8AB1",
+  width:'17ch'
 };
 const labelStyle = {
   marginTop: "10px",

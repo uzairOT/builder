@@ -79,7 +79,7 @@ export const GanttChartSection = () => {
   const [generateProjectGanttChart, { isLoading }] = useProjectGanttChartMutation();
   const chartContainerRef = useRef(null);
   const dispatch = useDispatch();
-
+console.log(chartData)
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -106,18 +106,22 @@ export const GanttChartSection = () => {
       generateGanttChart();
     }
   }, []);
-
+  
+  const safeChartData = (chartData || []).map(series => ({
+    ...series,
+    data: Array.isArray(series.data) ? series.data : []
+  }));
   return (
     <Box sx={{ padding: 2 }} ref={chartContainerRef}>
       <Typography variant="h6">{t('GanttChart.title1')}</Typography>
       {isLoading ? <Stack justifyContent={'center'} alignItems={'center'}>
         <img src={loader} alt="Loading animation"></img>
         <Typography>{t('GanttChart.title2')}</Typography>
-      </Stack> : chartData && <>
+      </Stack> : safeChartData && <>
         <ReactApexChart
           ref={chartRef} // Attach the chart reference
           options={options}
-          series={chartData}
+          series={safeChartData ? safeChartData : []}
           type="rangeBar"
           height={350}
         />
@@ -163,7 +167,7 @@ export const GanttChartSection = () => {
             <div style={{ width: "90%", height: "90%" }}>
               <ReactApexChart
                 options={options}
-                series={chartData}
+                series={safeChartData}
                 type="rangeBar"
                 height={"100%"}
               />

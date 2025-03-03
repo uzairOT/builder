@@ -49,7 +49,6 @@ const isPhoneValid = (phone) => {
 };
 
 const Invitation = () => {
-  const isLG = useMediaQuery("(min-width: 1280px)");
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");

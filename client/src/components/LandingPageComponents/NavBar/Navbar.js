@@ -20,7 +20,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Buildericn } from "../assets/svg";
 import { useNavigate } from "react-router-dom";
 import TranslateIcon from "@mui/icons-material/Translate";
+import { useTranslation } from "react-i18next";
 const Navbar = () => {
+  const {t} = useTranslation()
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -58,10 +60,10 @@ const Navbar = () => {
     >
       <List>
         {[
-          { text: "About Us", path: "/#about" },
-          { text: "Features", path: "/#features" },
-          { text: "Contact", path: "/#contact" },
-          { text: "FAQs", path: "/#faqs" },
+          { text: t("landingPage.navbar.home"), path: "/#about" },
+          { text: t("landingPage.navbar.about"), path: "/#features" },
+          { text: t("landingPage.navbar.features"), path: "/#contact" },
+          { text: t("landingPage.navbar.contact"), path: "/#faqs" },
         ].map(({ text, path }) => (
           <ListItem button key={text} component="a" href={path}>
             <ListItemText primary={text} />
@@ -165,7 +167,7 @@ const Navbar = () => {
             href="/"
             sx={styles.navItemFont}
           >
-            Home
+            {t("landingPage.navbar.home")}
           </Typography>
           <Typography
             variant="body1"
@@ -173,7 +175,7 @@ const Navbar = () => {
             href="/#about"
             sx={styles.navItemFont}
           >
-            About Us
+           {t("landingPage.navbar.about")}
           </Typography>
           <Typography
             variant="body1"
@@ -181,7 +183,7 @@ const Navbar = () => {
             href="/#features"
             sx={styles.navItemFont}
           >
-            Features
+            {t("landingPage.navbar.features")}
           </Typography>
           <Typography
             variant="body1"
@@ -189,7 +191,7 @@ const Navbar = () => {
             href="/#contact"
             sx={styles.navItemFont}
           >
-            Contact
+            {t("landingPage.navbar.contact")}
           </Typography>
           <Typography
             variant="body1"
@@ -197,7 +199,7 @@ const Navbar = () => {
             href="/#faqs"
             sx={styles.navItemFont}
           >
-            FAQs
+            {t("landingPage.navbar.faqs")}
           </Typography>
           <ClickAwayListener onClickAway={handleClickAway}>
           <Typography

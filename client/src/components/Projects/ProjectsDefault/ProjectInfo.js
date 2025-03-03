@@ -45,7 +45,7 @@ const ProjectInfo = ({ data, projectName }) => {
           {totalCompletedLineItems}/{totalLineItems}
         </Typography>
       </Stack>
-      <Stack spacing={0.5} pt={1} pb={1.2} pl={1.2} width={"100%"} height={"205px"} sx={{overflowY:"auto"}}>
+      <Stack spacing={0.5} pt={1} pb={1.2} pl={1.2} width={"calc(100% - 8px)"} height={"205px"} sx={{overflowY:"auto"}}>
         {activeWorkOrders?.map((workOrder) => {
           return (
             <>
@@ -124,7 +124,7 @@ const themeStyle = {
   text: {
     fontFamily: 'var(--main-font-family)',
     fontSize: "14px",
-    width: "160px",
+    width: "15ch",
     color: "#202227",
   },
   label: {

@@ -70,15 +70,7 @@ function Header({ title, OpenAddModal, searchInput, setSearchInput }) {
           backgroundColor="#E7E7E7"
         />
 
-        {!(title ===t("Settings.master") || title==="Permission Access" || title===t("ProjectPermissions.header")) && <Button
-          onClick={OpenAddModal}
-          buttonText={t("Button.add")}
-          color="#ffffff"
-          backgroundColor="#FFAC00"
-          // width="112px"
-          height="38px"
-          borderRadius="50px"
-        />}
+
 {/* 
         <Button
           buttonText="Block"
@@ -89,6 +81,15 @@ function Header({ title, OpenAddModal, searchInput, setSearchInput }) {
           borderRadius="50px"
         /> */}
       </Hidden>
+      {!(title ===t("Settings.master") || title==="Permission Access" || title===t("ProjectPermissions.header")) && <Button
+          onClick={OpenAddModal}
+          buttonText={t("Button.add")}
+          color="#ffffff"
+          backgroundColor="#FFAC00"
+          // width="112px"
+          height="38px"
+          borderRadius="50px"
+        />}
       </Box>
     </Box>
   );

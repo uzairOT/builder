@@ -329,7 +329,8 @@ const styles = {
     fontSize: { md: "16px", sm: "16px", xs: "14px" },
     fontWeight: 400,
     color: "#454245",
-    textAlign: "left",
+    textAlign: "justify",
+    hyphens: "auto"
   },
   CardTitle: {
     fontFamily: "var(--main-font-family)",
@@ -341,6 +342,8 @@ const styles = {
     fontSize: { md: "18px", sm: "18px", xs: "16px" },
     fontWeight: 400,
     color: "#454245",
+    textAlign: "justify",
+    hyphens: "auto"
   },
   container: {
     mt: { xl: 20, lg: 45, md: 20, xs: 2 },

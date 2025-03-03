@@ -13,10 +13,6 @@ import EmailIcon from "@mui/icons-material/Email";
 import {
   ArrowUp,
   BuilderIcnSm,
-  DownloadAppStore,
-  DownloadGooglePlay,
-  FooterBotomRibbon,
-  FooterTopRibbon,
 } from "../assets/svg";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -38,8 +34,6 @@ const popEffect = {
 const Footer = () => {
   const { t } = useTranslation();
   const [sendContactForm] = useSendContactFormMutation();
-  const navigate = useNavigate();
-
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -383,6 +377,8 @@ const styles = {
   },
   footerDesc: {
     fontFamily: "var(--main-font-family)",
+    textAlign:"justify",
+    hyphens: "auto"
   },
   footerCopyright: {
     fontFamily: "var(--main-font-family)",
