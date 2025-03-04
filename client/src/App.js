@@ -2,34 +2,10 @@ import {
   Route,
   createRoutesFromElements,
 } from "react-router-dom";
-import React, { lazy, Suspense, useCallback, useEffect, useMemo } from "react";
+import React, { Suspense, useCallback, useEffect, useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Layout3 from "./components/Layouts/Layout3";
-import Profile from "./components/Settings/Profile/Profile";
-import Admin from "./components/Settings/Admin/Admin";
-import ProjectManager from "./components/Settings/ProjectManager/ProjectManager";
-import Client from "./components/Settings/Client/Client";
-import Subcontractor from "./components/Settings/Subcontractor/Subcontractor";
-import SupplierList from "./components/Settings/SupplierList/SupplierList";
-import MasterLineItem from "./components/Settings/MasterLineItem/MasterLineItem";
-import Drawing from "./components/ClientDashboard/Drawing/Drawing";
-import Images from "./components/ClientDashboard/Images/Images";
-import ClientDashboardCards from "./components/ClientDashboard/ClientDashboardCards/ClientDashboardCards";
-import DailyLog from "./components/ClientDashboard/DailyLog/DailyLog";
-import PageLoader from "./components/UI/Loaders/PageLoader/PageLoader";
-import InnerLayout2 from "./components/Layouts/InnerLayout2";
-import ProjectsDefault from "./components/Projects/ProjectsDefault/ProjectsDefault";
-import InitialProposalView, {
-  projectUserRoleAuth,
-} from "./components/Projects/ProjectsInitialProposal/InitialProposalView";
-import WorkOrderView from "./components/Projects/ProjectsWorkOrder/WorkOrderView";
-import NotesView from "./components/Projects/ProjectNotes/NotesView";
-import Layout1 from "./components/Layouts/Layout1";
-import ProjectsTable from "./pages/Projects/ProjectsTable";
-import Layout2 from "./components/Layouts/Layout2";
 import Subscription from "./pages/Subscription/Subscription";
 import { useDispatch, useSelector } from "react-redux";
-import Invitation from "./pages/InvitationView/Invitation";
 import { ToastContainer } from "react-toastify";
 //import "react-toastify/dist/ReactToastify.css";
 import { getFormattedFiveDayWeather } from "./services/WeatherService.js";
@@ -48,30 +24,9 @@ import {
   setLatLon,
   setDefaultLocation,
 } from "./redux/slices/DailyForecast/dailyForecastSlice.js";
-import GoogleLogin from "./components/Login/GoogleLogin/GoogleLogin.js";
 import Help from "./pages/Help/Help.jsx";
 import PrivacyTerms from "./pages/PrivacyTerms/PrivacyTerms.jsx";
-import ChangeOrder from "./pages/Projects/ChangeOrder.js";
-import Employee from "./components/Settings/Employee/Employee.js";
-import NoInternetConnection from "./pages/NoInternetPage/NoInternetConnection.js";
-import Units from "./components/Settings/Units/Units.js";
-import ClientLayout from "./components/Layouts/ClientLayout.js";
 import { getUserRoleFromRedux } from "./redux/slices/auth/userRoleSlice.js";
-import Completion from "./components/dialogues/PaymentModal/Completion.js";
-import ChatViewMain from "./components/Projects/ProjectsChat/ChatViewMain.js";
-import PermitClient from "./components/ClientDashboard/Permit/Permit";
-import NotFound from "./pages/NotFound/NotFound.js";
-import ProjectInvoicesView from "./components/Projects/ProjectInvoices/ProjectInvoicesView.js";
-import Coupon from "./components/Settings/Cupon/Coupon.js";
-import Accounts from "./components/Settings/Accounts/Accounts.js";
-import Others from "./components/Settings/Others/Others.js";
-import Chat from "./components/Projects/ProjectsChat/Chat.js";
-import MainHome from "./components/LandingPageComponents/MainHome.js";
-import PolicyPage from "./components/LandingPageComponents/PrivacyPolicy/index.js";
-import TermsPage from "./components/LandingPageComponents/Terms/index.js";
-import PermissionAccess from "./components/Settings/PermissionAccess/Permissions.js";
-import ConnectQuickBooksPage from "./pages/QuickBookConnection/QuickBookConnectionPage.js";
-import { useTranslation } from "react-i18next";
 import moment from "moment";
 import dayjs from 'dayjs';
 import 'dayjs/locale/de';
@@ -80,35 +35,16 @@ import 'dayjs/locale/es';
 import 'dayjs/locale/fr';
 import 'dayjs/locale/zh';
 import 'moment/min/locales';
+import MainHome from "./components/LandingPageComponents/MainHome.js";
+import PolicyPage from "./components/LandingPageComponents/PrivacyPolicy/index.js";
+import TermsPage from "./components/LandingPageComponents/Terms/index.js";
 import { localeMapping } from "./utils/MomentLocales/locales.js";
-const SetNewPassword = lazy(() => import("./components/Login/ForgotPassword/SetNewPassword.js"));
-const ErrorPage = lazy(() => import("./pages/Error/Error.js"));
-const InvoicePayment = lazy(() => import("./components/dialogues/GenerateInvoice/InvoicePayment/InvoicePayment.js"));
-const PasswordReset = lazy(() => import("./components/Login/ForgotPassword/PasswordReset.js"))
-const VerifyCode = lazy(() => import("./components/Login/ForgotPassword/VerifyCode.js"))
-const ForgotPassword = lazy(() => import("./components/Login/ForgotPassword/ForgotPassword.js"))
-const AssignProject = lazy(() => import("./pages/AssignProject/AssignProject"))
-const Signup = lazy(() => import("./pages/Signup/Signup"))
-const Login = lazy(() => import("./pages/Login/Login"))
-const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
-const ReportsPage = lazy(() => import("./pages/Reports/ReportsPage"));
-const ImagesView = lazy(() =>
-  import("./components/Projects/ProjectsImages/ImagesView")
-);
-const PermitView = lazy(() =>
-  import("./components/Projects/ProjectsPermit/PermitView")
-);
-const DrawingFilesView = lazy(() =>
-  import("./components/Projects/ProjectsDrawingFiles/DrawingFilesView")
-);
-
-const ProjectPermissionsView = lazy(() =>
-  import("./components/Projects/ProjectPermissions/ProjectPermissionsView.js")
-);
-
-const ReportView = lazy(() =>
-  import("./components/Projects/ProjectsReport/ReportView")
-);
+import { useTranslation } from "react-i18next";
+import { projectUserRoleAuth } from "./components/Projects/ProjectsInitialProposal/InitialProposalView";
+import PageLoader from "./components/UI/Loaders/PageLoader/PageLoader";
+import NoInternetConnection from "./pages/NoInternetPage/NoInternetConnection.js";
+// Lazy-loaded components
+import { Auth, Settings, Projects, Dashboard, Layouts, Pages, Modals } from "./config/lazyImports";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.userInfo);
@@ -198,45 +134,45 @@ const fetchWeather = useCallback(async (lat, lon) => {
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacypolicy" element={<PolicyPage />} />
 
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/userinfo" element={<GoogleLogin />} />
-        <Route path="/assignproject" element={<AssignProject />} />
-        <Route path="/forgetpassword" element={<ForgotPassword />} />
-        <Route path="/verifycode" element={<VerifyCode />} />
-        <Route path="/passwordreset" element={<PasswordReset />} />
-        <Route path="/setnewpassword" element={<SetNewPassword />} />
+        <Route path="/signup" element={<Auth.Signup />} />
+        <Route path="/login" element={<Auth.Login />} />
+        <Route path="/userinfo" element={<Auth.GoogleLogin />} />
+        <Route path="/assignproject" element={<Pages.AssignProject />} />
+        <Route path="/forgetpassword" element={<Auth.ForgotPassword />} />
+        <Route path="/verifycode" element={<Auth.VerifyCode />} />
+        <Route path="/passwordreset" element={<Auth.PasswordReset />} />
+        <Route path="/setnewpassword" element={<Auth.SetNewPassword />} />
         <Route path="/help" element={<Help />} />
         <Route path="/privacyandterms" element={<PrivacyTerms />} />
         <Route
           path="/invoicePayment/:invoiceId/:adminId/:totalAmount"
-          element={<InvoicePayment />}
+          element={<Modals.InvoicePayment />}
         />
 
         {/* <Route path="/subscribe" element={<NewSubscription />} /> */}
 
         {isAuthenticated && currentUser ? (
-          <Route path="/" element={<Layout1 />}>
-            <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/" element={<Layouts.Layout1 />}>
+            <Route path="/dashboard" element={<Dashboard.Main />} />
             <Route
               path="/projects"
-              element={<ProjectsTable />}
+              element={<Projects.Table />}
               loader={() => {
                 return null;
               }}
             />
-            <Route path="/projects/:id" element={<Layout2 />}>
+            <Route path="/projects/:id" element={<Layouts.Layout2 />}>
               {userRole.userRole === "client" ? (
                 <>
-                  <Route path="" element={<ClientLayout />}>
-                    <Route path="" element={<ClientDashboardCards />} />
-                    <Route path="permit" element={<PermitClient />} />
-                    <Route path="drawing-files" element={<Drawing />} />
-                    <Route path="images" element={<Images />} />
-                    <Route path="change-order" element={<ChangeOrder />} />
+                  <Route path="" element={<Layouts.ClientLayout />}>
+                    <Route path="" element={<Dashboard.ClientCards />} />
+                    <Route path="permit" element={<Dashboard.PermitClient />} />
+                    <Route path="drawing-files" element={<Dashboard.ClientDrawing />} />
+                    <Route path="images" element={<Dashboard.ClientImages />} />
+                    <Route path="change-order" element={<Projects.ChangeOrder />} />
                     {/* <Route path="invoices" element={<Invoices />} /> */}
-                    <Route path="dailylog" element={<DailyLog />} />
-                    <Route path="chat" element={<Chat />} />
+                    <Route path="dailylog" element={<Dashboard.DailyLog />} />
+                    <Route path="chat" element={<Projects.Chat />} />
                     <Route
                       path="project-report"
                       element={<>{t("PermisionsMessage.reportsMsg")}</>}
@@ -247,73 +183,73 @@ const fetchWeather = useCallback(async (lat, lon) => {
                     />
                     <Route
                       path="initial-proposal"
-                      element={<InitialProposalView />}
+                      element={<Projects.InitialProposalView />}
                     // loader={projectUserRoleAuth}
                     />
-                    <Route path="work-order" element={<WorkOrderView />} />
-                    <Route path="invoices" element={<ProjectInvoicesView />} />
+                    <Route path="work-order" element={<Projects.WorkOrderView />} />
+                    <Route path="invoices" element={<Projects.InvoicesView />} />
                   </Route>
                 </>
               ) : (
                 <>
-                  <Route path="" element={<InnerLayout2 />}>
-                    <Route path="" element={<ProjectsDefault />} />
-                    <Route path="images" element={<ImagesView />} />
-                    <Route path="permit" element={<PermitView />} />
+                  <Route path="" element={<Layouts.InnerLayout2 />}>
+                    <Route path="" element={<Projects.Default />} />
+                    <Route path="images" element={<Projects.ImagesView />} />
+                    <Route path="permit" element={<Projects.PermitView />} />
                     <Route
                       path="drawing-files"
-                      element={<DrawingFilesView />}
+                      element={<Projects.DrawingFilesView />}
                     />
                   </Route>
                   <Route
                     path="initial-proposal"
-                    element={<InitialProposalView />}
+                    element={<Projects.InitialProposalView />}
                     loader={projectUserRoleAuth}
                   />
-                  <Route path="work-order" element={<WorkOrderView />} />
-                  <Route path="chat" element={<ChatViewMain />} />
-                  <Route path="notes" element={<NotesView />} />
-                  <Route path="project-report" element={<ReportView />} />
-                  <Route path="change-order" element={<ChangeOrder />}></Route>
-                  <Route path="invoices" element={<ProjectInvoicesView />} />
+                  <Route path="work-order" element={<Projects.WorkOrderView />} />
+                  <Route path="chat" element={<Projects.ChatViewMain />} />
+                  <Route path="notes" element={<Projects.NotesView />} />
+                  <Route path="project-report" element={<Projects.ReportView />} />
+                  <Route path="change-order" element={<Projects.ChangeOrder />}></Route>
+                  <Route path="invoices" element={<Projects.InvoicesView />} />
                   <Route
                     path="project-permissions"
-                    element={<ProjectPermissionsView />}
+                    element={<Projects.PermissionsView />}
                   />
                 </>
               )}
             </Route>
-            <Route path="reports" element={<ReportsPage />} />
+            <Route path="reports" element={<Pages.Reports />} />
             <Route path="subscription" element={<Subscription />} />
-            <Route path="/completion" element={<Completion />} />
-            <Route path="/connect-quickbooks" element={<ConnectQuickBooksPage />} />
-            <Route path="/error" element={<ErrorPage />} />
-            <Route path="/settings" element={<Layout3 />}>
-              <Route index element={<Profile />} />
-              <Route path="" element={<Profile />} />
-              <Route path="admin" element={<Admin />} />
-              <Route path="projectManager" element={<ProjectManager />} />
-              <Route path="client" element={<Client />} />
-              <Route path="employee" element={<Employee />} />
-              <Route path="subcontractor" element={<Subcontractor />} />
-              <Route path="supplier" element={<SupplierList />} />
-              <Route path="others" element={<Others />} />
+            <Route path="/completion" element={<Modals.Completion />} />
+            <Route path="/connect-quickbooks" element={<Pages.ConnectQuickBooksPage />} />
+            <Route path="/error" element={<Pages.Error />} />
+            <Route path="/settings" element={<Layouts.Layout3 />}>
+              <Route index element={<Settings.Profile />} />
+              <Route path="" element={<Settings.Profile />} />
+              <Route path="admin" element={<Settings.Admin />} />
+              <Route path="projectManager" element={<Settings.ProjectManager />} />
+              <Route path="client" element={<Settings.Client />} />
+              <Route path="employee" element={<Settings.Employee />} />
+              <Route path="subcontractor" element={<Settings.Subcontractor />} />
+              <Route path="supplier" element={<Settings.SupplierList />} />
+              <Route path="others" element={<Settings.Others />} />
               {/* Added by Zeeshan */}
-              <Route path="accounts" element={<Accounts />} />
+              <Route path="accounts" element={<Settings.Accounts />} />
 
-              <Route path="coupon" element={<Coupon />} />
+              <Route path="coupon" element={<Settings.Coupon />} />
               {/* -- */}
-              <Route path="masterline" element={<MasterLineItem />} />
+              <Route path="masterline" element={<Settings.MasterLineItem />} />
               {/* <Route path="permissions" element={<PermissionAccess />} /> */}
-              <Route path="units" element={<Units />} />
+              <Route path="units" element={<Settings.Units />} />
             </Route>
           </Route>
         ) : (
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Auth.Login />} />
         )}
         <Route
           path="/invitation/:invitationId/:email/:companyName"
-          element={<Invitation />}
+          element={<Pages.Invitation />}
         />
 
         {/* <Route path="/clientdashboard" element={<ClientDashboard />}>
@@ -326,7 +262,7 @@ const fetchWeather = useCallback(async (lat, lon) => {
           <Route path="dailylog" element={<DailyLog />} />
           <Route path="chats" element={<Chats />} />
         </Route> */}
-        <Route path="/*" element={<NotFound />} />
+        <Route path="/*" element={<Pages.NotFound />} />
       </>
     )
   );
