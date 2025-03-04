@@ -30,6 +30,7 @@ import { PhoneNumberUtil } from "google-libphonenumber";
 import "react-toastify/dist/ReactToastify.css";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
 import { useTranslation } from "react-i18next";
+import "react-international-phone/style.css";
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 

@@ -18,6 +18,7 @@ import { PhoneNumberUtil } from "google-libphonenumber";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { useTranslation } from 'react-i18next';
+import "react-international-phone/style.css";
 
 const popEffect = {
   hidden: { scale: 1 },

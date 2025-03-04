@@ -66,6 +66,7 @@
     "build": "react-scripts build",
     "build:prod": "react-scripts build && compress-cra -c ./compress-cra.json set \"GENERATE_SOURCEMAP=false\" ",
     "winBuild": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
+    "postbuild": "node scripts/compress.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
