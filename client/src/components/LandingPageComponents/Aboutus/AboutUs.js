@@ -225,7 +225,7 @@ const styles = {
     marginTop: 10,
   },
   card: {
-    height: { md: "250px", xs: "80%" },
+    height: { md: "280px", xs: "80%" },
     width: { md: "400px", xs: "80%" },
     padding: 3,
     backgroundColor: "#E4EEF4",

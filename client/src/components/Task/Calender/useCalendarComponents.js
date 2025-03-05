@@ -141,11 +141,12 @@ const useCalendarComponents = ({
         <CustomEventMonthWeatherNotes
           {...props}
           projectId={id}
+          setMonthEventView={setEventView}
           isDrawerOpen={isDrawerOpen}
           isProjectPage={isProjectPage}
         />
       ),
-    [id, isDrawerOpen, isProjectPage, monthEventView, eventViewRef]
+    [id, isDrawerOpen, isProjectPage, monthEventView, eventViewRef, setEventView]
   );
 
   return () => ({

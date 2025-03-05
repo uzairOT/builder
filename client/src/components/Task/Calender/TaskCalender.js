@@ -10,9 +10,10 @@ import { DateFormat } from "./DateFormat";
 import { useParams } from "react-router-dom";
 import { useGetProjectWeatherMutation } from "../../../redux/apis/Project/projectApiSlice";
 import useCalendarComponents from "./useCalendarComponents";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setIsLoadingProjectWeather, setProjectWeather } from "../../../redux/slices/Project/projectWeather";
 import { GanttChartSection } from "../../UI/Charts/GanttChartSection";
+
 
 
 
@@ -28,7 +29,11 @@ const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClien
     startDate: '', endDate: ''
   })
   const dispatch = useDispatch()
+
+
   const [getProjectWeather] =   useGetProjectWeatherMutation()
+
+
   const handleMonthRange = (startDate, endDate) => {
     const formatStartDate = moment(startDate).format('YYYY/MM/DD');
     const formatEndDate = moment(endDate).format('YYYY/MM/DD');

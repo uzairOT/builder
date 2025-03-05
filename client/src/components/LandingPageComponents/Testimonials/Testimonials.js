@@ -21,7 +21,7 @@ const InfoCard = ({ icon, title, description }) => {
           <Box sx={styles.icon}>{icon}</Box>
           <Typography sx={styles.CardDesc}>{description}</Typography>
         </Box>
-        <Typography sx={styles.cardTitle} mt={2}>
+        <Typography sx={styles.cardTitle} mt={1}>
           {title}
         </Typography>
       </Box>
@@ -117,7 +117,7 @@ const styles = {
     padding: "32px",
   },
   card: {
-    height: { md: "383px", xs: "100%" },
+    height: { md: "400px", xs: "100%" },
     width: { md: "400px", xs: "100%" },
     padding: 3,
     backgroundColor: "#E4EEF4",

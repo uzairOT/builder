@@ -210,7 +210,7 @@ const Footer = () => {
             xs={12}
             md={2}
             justifyContent={{ lg: "left", xs: "center" }}
-            textAlign={{ lg: "left", xs: "center" }}
+            textAlign={{ lg: "left", xs: "left" }}
           >
             <Typography variant="h6" gutterBottom style={styles.footerLinks}>
               Product

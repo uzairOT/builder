@@ -270,7 +270,7 @@ const dayToolbar = ({themeStyle, activeHeader, handleActiveHeader, t}) => {
     <Stack
     direction={"row"}
     spacing={1}
-    pr={1}
+    // pr={1}
     justifyContent={"center"}
     alignItems={"center"}
   >

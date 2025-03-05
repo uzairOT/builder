@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid, Stack, Typography } from "@mui/material";
 import {
   ComprehensiveIcn,
   ColabIcn,
@@ -61,21 +61,22 @@ const WhyChooseBuilder = () => {
           alignItems={"center"}
         >
           {features.map((feature, index) => (
-            <Grid item xs={12} md={3} key={index} alignItems={"center"}>
+            <Grid item xs={12} md={3} key={index}  alignItems={"center"} height={'280px'} gap={2}>
               <motion.div
                 initial="hidden"
                 whileHover="hover"
                 variants={popEffect}
               >
-                <Box textAlign="center">
-                  <Typography>{feature.icon}</Typography>
+                <Stack height={'100%'} justifyContent={'space-between'} alignItems={'center'}>
+                  <Box height={'80px'}>{feature.icon}</Box>
                   <Typography sx={styles.featureTitle} gutterBottom>
                     {feature.title}
                   </Typography>
                   <Typography sx={styles.featureDesc}>
                     {feature.description}
                   </Typography>
-                </Box>
+                </Stack>
+
               </motion.div>
             </Grid>
           ))}
@@ -112,6 +113,7 @@ const styles = {
     fontFamily: "var(--main-font-family)",
     fontSize: { md: "24px", sm: "24px", xs: "22px" },
     fontWeight: 500,
+    minHeight: '72px'
   },
   featureDesc: {
     fontFamily: "var(--main-font-family)",
