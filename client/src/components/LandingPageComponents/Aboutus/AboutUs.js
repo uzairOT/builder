@@ -23,13 +23,13 @@ const popEffect = {
 const SectionTitle = ({ subtitle, title, description }) => {
   return (
     <Container maxWidth="lg" sx={styles.sectionTitleContainer}>
-      <Typography variant="subtitle2" sx={styles.sectionSubtitle}>
+      <Typography component={'h2'} variant="subtitle2" sx={styles.sectionSubtitle}>
         {subtitle}
       </Typography>
-      <Typography variant="h5" sx={styles.sectionTitle}>
+      <Typography component={'h5'}  variant="h5" sx={styles.sectionTitle}>
         {title}
       </Typography>
-      <Typography variant="body1" sx={styles.sectionDescription}>
+      <Typography component={'p'}  variant="body1" sx={styles.sectionDescription}>
         {description}
       </Typography>
     </Container>
@@ -86,15 +86,15 @@ const AboutSection = () => {
   ];
 
   return (
-    <Box sx={styles.container}>
+    <Box component={'section'} sx={styles.container}>
       <Container>
-        <SectionTitle
-          subtitle="About Us"
-          title={t('aboutus.text1')}
-          description={t('aboutus.text2')}
-        />
+          <SectionTitle
+            subtitle="About Us"
+            title={t('aboutus.text1')}
+            description={t('aboutus.text2')}
+          />
         <Grid container spacing={4} sx={styles.gridContainer}>
-          <Grid item xs={12} md={6}>
+          <Grid component={'article'} item xs={12} md={6}>
             <motion.div
               initial="hidden"
               whileHover="hover"
@@ -108,7 +108,7 @@ const AboutSection = () => {
               />
             </motion.div>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid component={'article'} item xs={12} md={6}>
             <motion.div
               initial="hidden"
               whileHover="hover"
@@ -130,17 +130,17 @@ const AboutSection = () => {
         mt={20}
         gap={0}
         sx={{
-           alignItems:"center",
+          alignItems: "center",
           // padding: { lg: , xs: 2 },
           width: "100%",
-          maxWidth:'1200px',
+          maxWidth: '1200px',
           // backgroundColor: "#F7FAFC",
         }}
       >
         {features.map((feature, index) => (
           <>
-            <Grid item xs={12} lg={4} key={index} width={'100%'}>
-              <Box sx={{ display: "flex", justifyContent:"center", alignItems:"center", padding:3 }}>
+            <Grid component={'article'} item xs={12} lg={4} key={index} width={'100%'}>
+              <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", padding: 3 }}>
                 <motion.div
                   initial="hidden"
                   whileHover="hover"
@@ -148,10 +148,10 @@ const AboutSection = () => {
                 >
                   <Box>{feature.icon} </Box>
                   <Box>
-                    <Typography sx={styles.featureTitle} gutterBottom>
+                    <Typography component={'h2'} sx={styles.featureTitle} gutterBottom>
                       {feature.title}
                     </Typography>
-                    <Typography sx={styles.featureDesc}>
+                    <Typography component={'p'} sx={styles.featureDesc}>
                       {feature.description}
                     </Typography>
                   </Box>
@@ -169,11 +169,11 @@ export default AboutSection;
 
 const styles = {
   container: {
-    display:'flex',
-    flexDirection:'column',
-    justifyContent:'center',
-    alignItems:'center',
-    padding: { lg: 8, md: 10, xs: 4 },
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: { lg: 8, md: 10, sm: 4, xs: 0 },
     backgroundColor: "#ffffff",
     mt: { xl: 20, lg: 40, md: 2, xs: 2 },
   },
@@ -181,6 +181,7 @@ const styles = {
     textAlign: "center",
     marginBottom: 1,
     width: "100%",
+    padding: { sm: 2, xs: 1 },
   },
   sectionSubtitle: {
     fontFamily: "var(--main-font-family)",
@@ -202,14 +203,17 @@ const styles = {
     fontSize: { md: "16px", sm: "16px", xs: "14px" },
     fontWeight: 400,
     color: "#454245",
-    hyphens: "auto"
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   sectionTitle: {
     fontFamily: "var(--main-font-family)",
-    fontSize: { md: "36px", sm: "36px", xs: "18px" },
+    fontSize: { md: "36px", sm: "32px", xs: "18px" },
     fontWeight: 500,
     marginBottom: 2,
-    textAlign:'justify'
+    textAlign: 'justify',
+     hyphens: "auto",
+    wordBreak: "break-all"
   },
   sectionDescription: {
     maxWidth: "100%",
@@ -218,8 +222,9 @@ const styles = {
     fontSize: { md: "16px", sm: "16px", xs: "14px" },
     margin: "0 auto",
     color: "#666666",
-    textAlign:'justify',
-    hyphens: "auto"
+    textAlign: 'justify',
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   gridContainer: {
     marginTop: 10,
@@ -251,8 +256,9 @@ const styles = {
     fontWeight: 400,
     fontFamily: "var(--main-font-family)",
     color: "#666666",
-    hyphens: "auto"
-    },
+    hyphens: "auto",
+    wordBreak: "break-all"
+  },
   decorationTopLeft: {
     position: "absolute",
     top: -70,

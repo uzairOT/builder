@@ -5,6 +5,7 @@ const initialState = {
     ? JSON.parse(localStorage.getItem("userInfo"))
     : null,
   forgetPasswordEmail: "",
+  language: localStorage.getItem("language") || "en",
 };
 
 const authSlice = createSlice({
@@ -22,10 +23,13 @@ const authSlice = createSlice({
     setForgetPasswordEmail: (state, action) => {
       state.forgetPasswordEmail = action.payload;
     },
+    setLanguage: (state, action) => {
+      state.language = action.payload;
+      localStorage.setItem("language", action.payload);
   },
-});
+}});
 
-export const { setCredentials, logout, setForgetPasswordEmail } =
+export const { setCredentials, logout, setForgetPasswordEmail, setLanguage } =
   authSlice.actions;
 
 export default authSlice.reducer;

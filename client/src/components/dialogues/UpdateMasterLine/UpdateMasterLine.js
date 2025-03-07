@@ -183,7 +183,10 @@ function UpdateMasterLine({
       toast.warning("Please enter a valid date");
       return;
     }
-    // if (LineHeading === "Update Line Item") {
+    if (!!MasterLineItem?.template) {
+      toast.warning("You can't update a template");
+      return;
+    }
     //console.log("updading..")
     const MasterLineItemId = MasterLineItem.id;
     const data1 = {
@@ -456,6 +459,7 @@ function UpdateMasterLine({
             alignItems={"center"}
           >
             <DialogTitle sx={typoTitle} width={{sm:'20ch', xs:'17ch'}}>{t("Settings.masterTable.modal.heading")}</DialogTitle>
+            
             <IconButton
               style={{ width: "30px", height: "30px" }}
               onClick={handleClickClose}

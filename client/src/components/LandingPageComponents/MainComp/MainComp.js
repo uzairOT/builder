@@ -67,23 +67,23 @@ const MainContent = () => {
   }, [setCurrentIndex]);
  
   return (
-    <Grid container md={12} sx={styles.container}>
+    <Grid container component={'section'} md={12} sx={styles.container}>
       <Grid>
         <Grid container md={12}>
-          <Grid item md={10} xs={12}>
-            <Typography sx={styles.heading1}>
+          <Grid item component={'header'} md={10} xs={12}>
+            <Typography component={'h1'} sx={styles.heading1}>
             {t('landingPage.text1')}
             </Typography>
-            <Stack sx={{ margin: { xs: "20px 0", md: "20px 0" }, }}>
+            <Stack sx={{ margin: { xs: "20px 4px", md: "20px 0" }, }}>
 
-              <Typography component="div" sx={styles.heading2} px={{sm: 0, xs:2}}>
+              <Typography component="h2" sx={styles.heading2} px={{sm: 0, xs:2}}>
               {t('landingPage.text2')} {mdView && 'more '}
               </Typography>
               <Stack direction={'row'} alignItems={'center'} justifyContent={mdView ? 'center': ''} gap={1.5}>
-                {!mdView && <Typography component="div" sx={styles.heading2}>
+                {!mdView && <Typography component="h2" sx={styles.heading2}>
                   {t('landingPage.text3')}{" "}
                 </Typography>}
-                <Box height={mobView ? '25px' : '58px'} sx={styles.heading2}  style={{ paddingTop: '4px', overflow: 'hidden', display: 'inline-block' }}>
+                <Box component={'h2'} height={mobView ? '25px' : '58px'} sx={styles.heading2}  style={{ paddingTop: '4px', overflow: 'hidden', display: 'inline-block' }}>
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={texts[currentIndex].text}
@@ -105,7 +105,7 @@ const MainContent = () => {
               </Stack>
             </Stack>
 
-            <Typography component="div" sx={styles.bodyText}>
+            <Typography component="p" sx={styles.bodyText}>
             {t('landingPage.text11')}
             </Typography>
 
@@ -114,7 +114,7 @@ const MainContent = () => {
             </Button>
           </Grid>
 
-          <Grid item md={2} xs={12}>
+          <Grid item component={'aside'} md={2} xs={12}>
             <Typography component="div" sx={styles.downloadText}>
               {t('buttons.btn2')}
             </Typography>
@@ -165,7 +165,7 @@ const MainContent = () => {
         </Grid>
       </Grid>
 
-      <Box sx={styles.imageBox}>
+      <Box component={'figure'} sx={styles.imageBox}>
         <motion.div variants={fadeInUp}>
           <img
             src={devicesimg}
@@ -187,7 +187,7 @@ const styles = {
     backgroundPosition: "center",
     padding: { xl: 15, lg: 10, md: 5, xs: 0 },
     width: "100%",
-    height: "100vh",
+    height: {md:"100vh", xs:"70vh"},
     overflowX: "hidden",
     overflowY: "auto",
     justifyContent: { xs: "center", md: "left" },
@@ -207,7 +207,7 @@ const styles = {
     color: "black",
     fontFamily: "var(--main-font-family)",
     fontWeight: 700,
-    fontSize: { lg: "40px", md: "36px", sm: "40px", xs: "20px" },
+    fontSize: { lg: "40px", md: "32px", sm: "36px", xs: "20px" },
     lineHeight: 1.2,
   },
   motionDiv: {
@@ -240,7 +240,8 @@ const styles = {
     fontSize: { lg: "16px", xs: "14px" },
     textAlign: 'justify',
     paddingX: { md: 0, xs: 4 },
-    hyphens: "auto"
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   demoButton: {
     color: "white",

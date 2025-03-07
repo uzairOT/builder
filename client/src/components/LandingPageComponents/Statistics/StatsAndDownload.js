@@ -21,14 +21,14 @@ const backgroundImage = `url(${Elipse})`;
 const StatsAndDownload = () => {
   const { t } = useTranslation();
   return (
-    <Box sx={styles.section}>
+    <Box component={'section'} sx={styles.section}>
       <Grid container spacing={5} alignItems="center" justifyContent={"space"}>
         <Grid item xs={12} md={6} justifyContent={"center"}>
           <Container maxWidth={"sm"}>
-            <Typography sx={styles.heading}>
+            <Typography component={'h2'} sx={styles.heading}>
             {t('testimonials.title8')}
             </Typography>
-            <Typography sx={styles.subHeading}>
+            <Typography component={'p'} sx={styles.subHeading}>
             {t('testimonials.title9')}
             </Typography>
           </Container>
@@ -40,9 +40,9 @@ const StatsAndDownload = () => {
               whileHover="hover"
               variants={popEffect}
             >
-              <Box maxWidth={"sm"} sx={styles.statItem}>
-                <Typography sx={styles.statValue}>2M+</Typography>
-                <Typography sx={styles.statLabel}>
+              <Box component={'article'} maxWidth={"sm"} sx={styles.statItem}>
+                <Typography component={'h3'} sx={styles.statValue}>2M+</Typography>
+                <Typography component={'p'} sx={styles.statLabel}>
                 {t('testimonials.title10')}
                 </Typography>
               </Box>
@@ -52,9 +52,9 @@ const StatsAndDownload = () => {
               whileHover="hover"
               variants={popEffect}
             >
-              <Box maxWidth={"sm"} sx={styles.statItem}>
-                <Typography sx={styles.statValue}>46K+</Typography>
-                <Typography sx={styles.statLabel}>
+              <Box component={'article'} maxWidth={"sm"} sx={styles.statItem}>
+                <Typography component={'h3'} sx={styles.statValue}>46K+</Typography>
+                <Typography component={'p'} sx={styles.statLabel}>
                 {t('testimonials.title11')}
                 </Typography>
               </Box>
@@ -64,9 +64,9 @@ const StatsAndDownload = () => {
               whileHover="hover"
               variants={popEffect}
             >
-              <Box maxWidth={"sm"} sx={styles.statItem}>
-                <Typography sx={styles.statValue}>99%</Typography>
-                <Typography sx={styles.statLabel}>
+              <Box component={'article'} maxWidth={"sm"} sx={styles.statItem}>
+                <Typography component={'h3'} sx={styles.statValue}>99%</Typography>
+                <Typography component={'p'} sx={styles.statLabel}>
                 {t('testimonials.title12')}
                 </Typography>
               </Box>
@@ -142,7 +142,8 @@ const styles = {
     fontFamily: "var(--main-font-family)",
     marginBottom: "20px",
     color: "gray",
-    hyphens: "auto"
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   statsGrid: {
     justifyContent: "center",

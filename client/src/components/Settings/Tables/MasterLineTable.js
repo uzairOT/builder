@@ -11,6 +11,8 @@ import {
   Stack,
   Grid,
   Typography,
+  Chip,
+  Tooltip,
 } from "@mui/material";
 import EditIcon from "../../../assets/settings/edit.png";
 import { useGetMasterLineItemsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
@@ -83,7 +85,7 @@ function MasterLineTable({
   setTotalEntries,
   setTotalPages,
 }) {
-  const {t} =  useTranslation();
+  const { t } = useTranslation();
   const userInfo = useSelector((state) => state.auth.userInfo);
   const { data, isLoading, refetch, error } = useGetMasterLineItemsQuery({
     userId: userInfo.user.id,
@@ -138,7 +140,7 @@ function MasterLineTable({
               <TableCell sx={tableCellStyle}>{t("Settings.masterTable.name")}</TableCell>
               <TableCell sx={tableCellStyle}>{t("Settings.masterTable.description")}</TableCell>
               <TableCell sx={tableCellStyle}>
-              {t("Settings.masterTable.unit")}
+                {t("Settings.masterTable.unit")}
                 {/* <IconButton>
                 <Select
                   value={""}
@@ -205,7 +207,7 @@ function MasterLineTable({
                     }}
                   >
                     <Typography paddingTop={30} paddingBottom={30}>
-                    {t("Settings.masterTable.noRecords")}
+                      {t("Settings.masterTable.noRecords")}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -234,13 +236,19 @@ function MasterLineTable({
                     </TableCell>
                     <TableCell sx={tableCellNotesStyle}>{row.notes}</TableCell>
                     <TableCell sx={tableCellValueStyle}>
-                      <IconButton
+                      {row?.template ? <Tooltip title="Template"><Chip
+                        label="Template"
+                        color="primary"
+                        size="small"
+                        variant="outlined"
+
+                      /></Tooltip> : <IconButton
                         aria-label="edit"
                         size="small"
                         onClick={() => handleUpdateOpen(row)} // Pass row data to the function
                       >
                         <img src={EditIcon} alt="" style={{ width: "35px" }} />
-                      </IconButton>
+                      </IconButton>}
                       {/* <IconButton aria-label="delete" size="small">
                   <img src={DeleteIcon} alt="" style={{width:'35px'}} />
                 </IconButton> */}

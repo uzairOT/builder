@@ -21,12 +21,14 @@ import { Buildericn } from "../assets/svg";
 import { useNavigate } from "react-router-dom";
 import TranslateIcon from "@mui/icons-material/Translate";
 import { useTranslation } from "react-i18next";
+import { setLanguage } from "../../../redux/slices/authSlice";
+import { useDispatch } from "react-redux";
 const Navbar = () => {
   const {t} = useTranslation()
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const dispatch = useDispatch()
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
   };
@@ -60,10 +62,11 @@ const Navbar = () => {
     >
       <List>
         {[
-          { text: t("landingPage.navbar.home"), path: "/#about" },
-          { text: t("landingPage.navbar.about"), path: "/#features" },
-          { text: t("landingPage.navbar.features"), path: "/#contact" },
-          { text: t("landingPage.navbar.contact"), path: "/#faqs" },
+          { text: t("landingPage.navbar.home"), path: "/" },
+          { text: t("landingPage.navbar.about"), path: "/#about" },
+          { text: t("landingPage.navbar.features"), path: "/#features" },
+          { text: t("landingPage.navbar.contact"), path: "/#contact" },
+          { text: t("landingPage.navbar.faqs"), path: "/#faqs" },
         ].map(({ text, path }) => (
           <ListItem button key={text} component="a" href={path}>
             <ListItemText primary={text} />
@@ -138,12 +141,14 @@ const Navbar = () => {
     <AppBar
       position="static"
       color="transparent"
+      component={'nav'}
       elevation={0}
       sx={{ backgroundColor: "transparent", padding: "10px 0px" }}
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         {/* Logo */}
         <Box
+          component={'header'}
           sx={{
             display: "flex",
             alignItems: "center",
@@ -155,20 +160,25 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <Box
+          component={'ul'}
           sx={{
             display: { xs: "none", lg: "flex" },
             alignItems: "center",
             gap: 10,
+            listStyle: "none",
           }}
         >
+          <li>
           <Typography
             variant="body1"
             component="a"
             href="/"
             sx={styles.navItemFont}
-          >
+            >
             {t("landingPage.navbar.home")}
           </Typography>
+          </li>
+          <li>
           <Typography
             variant="body1"
             component="a"
@@ -177,22 +187,28 @@ const Navbar = () => {
           >
            {t("landingPage.navbar.about")}
           </Typography>
+          </li>
+          <li>
           <Typography
             variant="body1"
             component="a"
             href="/#features"
             sx={styles.navItemFont}
-          >
+            >
             {t("landingPage.navbar.features")}
           </Typography>
+          </li>
+          <li>
           <Typography
             variant="body1"
             component="a"
             href="/#contact"
             sx={styles.navItemFont}
-          >
+            >
             {t("landingPage.navbar.contact")}
           </Typography>
+          </li>
+          <li>
           <Typography
             variant="body1"
             component="a"
@@ -201,6 +217,7 @@ const Navbar = () => {
           >
             {t("landingPage.navbar.faqs")}
           </Typography>
+          </li>
           <ClickAwayListener onClickAway={handleClickAway}>
           <Typography
             variant="body1"
@@ -237,7 +254,9 @@ const Navbar = () => {
                 }}
               >
                 <MenuItem
-                  onClick={() => i18n.changeLanguage("en")}
+                  onClick={() => {
+                    dispatch(setLanguage("en"))
+                  }}
                   sx={{
                     padding: "10px 20px",
                     fontSize: "14px",
@@ -249,7 +268,9 @@ const Navbar = () => {
                   English
                 </MenuItem>
                 <MenuItem
-                  onClick={() => i18n.changeLanguage("fr")}
+                  onClick={() => {
+                    dispatch(setLanguage("fr"))
+                  }}
                   sx={{
                     padding: "10px 20px",
                     fontSize: "14px",
@@ -261,7 +282,9 @@ const Navbar = () => {
                   French
                 </MenuItem>
                 <MenuItem
-                  onClick={() => i18n.changeLanguage("es")}
+                  onClick={() => {
+                    dispatch(setLanguage("es"))
+                  }}
                   sx={{
                     padding: "10px 20px",
                     fontSize: "14px",
@@ -273,7 +296,9 @@ const Navbar = () => {
                   Spanish
                 </MenuItem>
                 <MenuItem
-                  onClick={() => i18n.changeLanguage("zh")}
+                  onClick={() => {
+                    dispatch(setLanguage("zh"))
+                  }}
                   sx={{
                     padding: "10px 20px",
                     fontSize: "14px",
@@ -301,8 +326,9 @@ const Navbar = () => {
           </Typography>
           </ClickAwayListener>
         </Box>
-
+          
         <Box
+          component={'section'}
           sx={{
             display: { xs: "none", lg: "flex" },
             alignItems: "center",
@@ -329,7 +355,7 @@ const Navbar = () => {
         </Box>
 
         {/* Mobile Menu */}
-        <Box sx={{ display: { xs: "flex", lg: "none" }, alignItems: "center" }}>
+        <Box  component={'aside'} sx={{ display: { xs: "flex", lg: "none" }, alignItems: "center" }}>
           <IconButton
             edge="start"
             color="inherit"

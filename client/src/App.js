@@ -45,6 +45,7 @@ import PageLoader from "./components/UI/Loaders/PageLoader/PageLoader";
 import NoInternetConnection from "./pages/NoInternetPage/NoInternetConnection.js";
 // Lazy-loaded components
 import { Auth, Settings, Projects, Dashboard, Layouts, Pages, Modals } from "./config/lazyImports";
+import { languageOptions } from "./config/languageConsts.js";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.userInfo);
@@ -59,6 +60,7 @@ function App() {
   const dailyForecast = useMemo(() => forecast.dailyForecast || [], [forecast]);
   const dispatch = useDispatch();
   const {t, i18n} = useTranslation();
+  const language = useSelector((state) => state.auth.language);
   const currentLanguage = i18n.language;
   moment.locale(localeMapping[currentLanguage]);
   dayjs.locale(localeMapping[currentLanguage]);
@@ -114,11 +116,11 @@ const fetchWeather = useCallback(async (lat, lon) => {
     }
   }, [query.temperatureUnit, currentLanguage]);
 
-  // useEffect(() => {
-  //   if (dailyForecast.length > 1) {
-  //     dispatch(fetchEvents({ userId: userId, dailyForecast: dailyForecast }));
-  //   }
-  // }, [userId, dailyForecast]);
+  useEffect(()=> {
+    if(!Object.keys(languageOptions).includes(language)) return;
+
+    i18n.changeLanguage(language)
+  }, [language])
 
   useEffect(() => {
     if (userId) {

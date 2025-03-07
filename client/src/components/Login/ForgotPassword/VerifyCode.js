@@ -21,8 +21,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setCredentials } from "../../../redux/slices/authSlice";
+import { useTranslation } from "react-i18next";
 
 const VerifyCode = () => {
+  const {t} = useTranslation()
   const location = useLocation();
   const dispatch = useDispatch();
   const { data } = location?.state || {};
@@ -141,6 +143,7 @@ const VerifyCode = () => {
             lg: "start",
             md: "center",
             sm: "center",
+            xs: 'center'
           },
         }}
       >
@@ -190,12 +193,9 @@ const VerifyCode = () => {
                     fontWeight: 550,
                   }}
                 >
-                  Verify Code
+                  {t("VerifyCode.title1")}
                 </Typography>
-                <Typography sx={{ mb: 1.5, mt: 1.5 }} color="text.secondary">
-                  We sent a verification code to your email. Enter the 5 digit
-                  code that
-                  <br /> mentioned in the email.
+                <Typography sx={{ mb: 1.5, mt: 1.5 }} dang  dangerouslySetInnerHTML={{__html: t("VerifyCode.title2")}} color="text.secondary">
                 </Typography>
               </Box>
               <Box>
@@ -208,7 +208,7 @@ const VerifyCode = () => {
                     fontFamily: "var(--main-font-family)",
                   }}
                 >
-                  Enter Code
+                  {t("VerifyCode.title5")}
                 </Typography>
                 <Box sx={{ display: "flex", gap: "10px", marginTop: "10px" }}>
                   {code.map((value, index) => (
@@ -252,13 +252,13 @@ const VerifyCode = () => {
                   }}
                 >
                   <Tooltip title="Did you check your spam section?">
-                    <spam>Didn’t receive a code? </spam>
+                    <spam>{t("VerifyCode.title3")}</spam>
                   </Tooltip>
                   <span
                     style={{ color: "#4C8AB1", cursor: "pointer" }}
                     onClick={resendHandler}
                   >
-                    Resend
+                    {t("VerifyCode.title4")}
                   </span>
                 </Typography>
               </Box>
@@ -272,7 +272,7 @@ const VerifyCode = () => {
                   onClick={submitHandler}
                   type="submit"
                 >
-                  {"Verify"}
+                  {t("VerifyCode.title6")}
                 </Button>
               </CardActions>
             </Container>

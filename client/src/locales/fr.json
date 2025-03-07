@@ -198,6 +198,15 @@
     "title5": "Installer l'application",
     "title6": "© Copyright 2024, Tous droits réservés par BuilderBUILDER PRO"
   },
+  "VerifyCode": {
+    "title1": "Vérifier le Code",
+    "title2": "Nous avons envoyé un code de vérification à votre e-mail. Entrez le code à 5 chiffres qui <br /> est mentionné dans l'e-mail.",
+    "title3": "Vous n'avez pas reçu le code ?",
+    "title4": "Renvoyer",
+    "title5": "Entrer le Code",
+    "title6": "Vérifier",
+    "title7": "Avez-vous vérifié votre dossier spam ?"
+  },
   "Navbar": {
     "dashboard": "Tableau de Bord",
     "projects": "Projets",
@@ -1089,7 +1098,7 @@
   "WorkOrderNotification": {
     "title": "Notifications des Ordres de Travail/Modification",
     "subtitle": {
-      "part1": "Vous a envoyé une",
+      "part1": "Vous a envoyé une ",
       "changeOrder": "demande d'ordre de modification",
       "workOrder": "demande d'ordre de travail",
       "part2": "du projet"

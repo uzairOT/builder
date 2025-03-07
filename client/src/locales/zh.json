@@ -198,6 +198,15 @@
     "title5": "安装应用",
     "title6": "© 版权 2024，所有权利保留，BuilderBUILDER PRO"
   },
+  "VerifyCode": {
+    "title1": "验证码验证",
+    "title2": "我们已将验证码发送到您的电子邮件。请输入电子邮件中提到的 5 位验证码。",
+    "title3": "没有收到验证码？",
+    "title4": "重新发送",
+    "title5": "输入验证码",
+    "title6": "验证",
+    "title7": "您检查过垃圾邮件文件夹了吗？"
+  },
   "Navbar": {
     "dashboard": "仪表板",
     "projects": "项目",
@@ -1095,7 +1104,7 @@
   "WorkOrderNotification": {
     "title": "工作/变更单通知",
     "subtitle": {
-      "part1": "向您发送了",
+      "part1": "向您发送了 ",
       "changeOrder": "变更单请求",
       "workOrder": "工作单请求",
       "part2": "项目的"

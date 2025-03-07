@@ -45,7 +45,7 @@ const popEffect = {
 
 const FeatureCard = ({ title, features, image, icon }) => {
   return (
-    <Box style={styles.card}>
+    <Box component={'article'} style={styles.card}>
       <Grid container sx={{ justifyContent: "center" }}>
         <Container
           maxWidth={"sm"}
@@ -55,7 +55,7 @@ const FeatureCard = ({ title, features, image, icon }) => {
           display="flex"
         >
           {icon && <icon.Component />}
-          <Typography sx={styles.CardTitle} gutterBottom>
+          <Typography component={'h5'} sx={styles.CardTitle} gutterBottom>
             {title}
           </Typography>
           <List>
@@ -68,7 +68,7 @@ const FeatureCard = ({ title, features, image, icon }) => {
                 <ListItemIcon>
                   <CheckIcn />
                 </ListItemIcon>
-                <ListItemText style={styles.CardDesc} primary={feature} />
+                <ListItemText primaryTypographyProps={{sx:styles.CardDesc}}  primary={feature} />
               </ListItem>
             ))}
           </List>
@@ -115,24 +115,26 @@ const BuilderFeatures = () => {
   const theme = useTheme();
   const xsView = useMediaQuery(theme.breakpoints.down("xs"));
   return (
-    <Grid style={styles.container}>
-      <Container maxWidth={"xl"} sx={{ textAlign: "center", mt: 4 }}>
-        <Typography sx={styles.titleFont}> {t("features.title1")}</Typography>
+    <Grid component={'section'} sx={styles.container}>
+      <Container maxWidth={"xl"} sx={{ textAlign: "center", mt: 4, paddingLeft: {sm: 2, xs: 0}, paddingRight: {sm: 2, xs: 0} }}>
+        <Typography component='h1' sx={styles.titleFont}> {t("features.title1")}</Typography>
         <Typography
+          component={'h4'}
           variant="h4"
           align="center"
           gutterBottom
-          style={styles.title}
+          sx={styles.title}
         >
           {t('features.title2')}{" "}
           <strong style={{ color: "#2E728F" }}>{t('features.title3')}</strong> {t('features.title4')}
         </Typography>
         <Container maxWidth={"lg"}>
           <Typography
+            component='p'
             variant="body1"
             align="center"
             paragraph
-            style={styles.DecsFont}
+            sx={styles.DecsFont}
           >
             {t('features.title5')}
           </Typography>
@@ -142,7 +144,7 @@ const BuilderFeatures = () => {
       <Grid container justifyContent="center" padding={2}>
         <Grid item xs={12} md={4}>
           <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
-            <Box>
+            <Box component={'figure'}>
               <img
                 src={DashboardFeature}
                 style={{
@@ -330,7 +332,8 @@ const styles = {
     fontWeight: 400,
     color: "#454245",
     textAlign: "justify",
-    hyphens: "auto"
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   CardTitle: {
     fontFamily: "var(--main-font-family)",
@@ -339,15 +342,15 @@ const styles = {
   },
   CardDesc: {
     fontFamily: "var(--main-font-family) !important",
-    fontSize: { md: "18px", sm: "18px", xs: "16px" },
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
     fontWeight: 400,
     color: "#454245",
     textAlign: "justify",
-    hyphens: "auto"
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   container: {
-    mt: { xl: 20, lg: 45, md: 20, xs: 2 },
-    padding: "32px",
+    padding: {sm:"32px", xs: 2},
   },
   title: {
     fontFamily: "var(--main-font-family)",

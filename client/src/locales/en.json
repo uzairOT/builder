@@ -198,6 +198,15 @@
     "title5": "Install App",
     "title6": "© Copyright 2024, All Rights Reserved by BuilderBUILDER PRO"
   },
+  "VerifyCode": {
+    "title1": "Verify Code",
+    "title2": "We sent a verification code to your email. Enter the 5 digit code that <br /> mentioned in the email.",
+    "title3": "Didn't receive the code?",
+    "title4": "Resend",
+    "title5": "Enter Code",
+    "title6": "Verify",
+    "title7": "Did you check your spam section?"
+  },
   "Navbar": {
     "dashboard": "Dashboard",
     "projects": "Projects",
@@ -1103,7 +1112,7 @@
   "WorkOrderNotification": {
     "title": "Work/Change Order Notifications",
     "subtitle": {
-      "part1": "Sent you a",
+      "part1": "Sent you a ",
       "changeOrder": "change order request",
       "workOrder": "work order request",
       "part2": "of project"

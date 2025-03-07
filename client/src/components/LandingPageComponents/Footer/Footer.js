@@ -8,6 +8,9 @@ import {
   Button,
   Link,
   InputAdornment,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import {
@@ -118,6 +121,7 @@ const Footer = () => {
             <Box sx={{ justifyContent: "center", display: "flex" }}>
               <Box sx={styles.newsletter}>
                 <Typography
+                  component={'h6'}
                   variant="h6"
                   sx={styles.newletterStyles}
                   style={{ color: "#000" }}
@@ -184,7 +188,7 @@ const Footer = () => {
                     onBlur={formik.handleBlur}
                     error={formik.touched.email && Boolean(formik.errors.email)}
                   />
-                  {formik.touched.email && <Typography sx={{color:'#d32f2f', fontSize:'0.75rem'}} p={0.5}>{formik.errors.email}</Typography>}
+                  {formik.touched.email && <Typography sx={{ color: '#d32f2f', fontSize: '0.75rem' }} p={0.5}>{formik.errors.email}</Typography>}
                 </form>
               </Box>
             </Box>
@@ -201,7 +205,7 @@ const Footer = () => {
             <Typography variant="h6" gutterBottom>
               <BuilderIcnSm />
             </Typography>
-            <Typography variant="body2" style={styles.footerDesc}>
+            <Typography component={'p'} variant="body2" style={styles.footerDesc}>
               {t('footer.title4')}
             </Typography>
           </Grid>
@@ -212,21 +216,42 @@ const Footer = () => {
             justifyContent={{ lg: "left", xs: "center" }}
             textAlign={{ lg: "left", xs: "left" }}
           >
-            <Typography variant="h6" gutterBottom style={styles.footerLinks}>
+            <Typography variant="h6" gutterBottom sx={styles.footerLinks}>
               Product
             </Typography>
-            <Typography style={styles.footerLinks}>
-              <ProtectedLink href="/dashboard">Dashboard</ProtectedLink>
-              <br />
-              <ProtectedLink href="/projects">Projects</ProtectedLink>
-              <br />
-              <ProtectedLink href="/reports">Reports</ProtectedLink>
-              <br />
-              <ProtectedLink href="/subscription">Subscription</ProtectedLink>
-              <br />
-              <ProtectedLink href="/settings">Settings</ProtectedLink>
-            </Typography>
+
+            <List sx={{ padding: 0 }}>
+              {[
+                { label: "Dashboard", href: "/dashboard" },
+                { label: "Projects", href: "/projects" },
+                { label: "Reports", href: "/reports" },
+                { label: "Subscription", href: "/subscription" },
+                { label: "Settings", href: "/settings" },
+              ].map((item, index) => (
+                <ListItem
+                  key={index}
+                  sx={{
+                    padding: "0px 0", // Reduced vertical padding
+                    minHeight: "unset", // Removes extra height
+                  }}
+                  component="li"
+                  disableGutters // Removes default MUI ListItem padding
+                >
+                  <ListItemText
+                    primary={<ProtectedLink href={item.href}>{item.label}</ProtectedLink>}
+                    primaryTypographyProps={{
+                      sx: {
+                        ...styles.footerLinks,
+                        margin: 0, // Removes extra margins
+                        lineHeight: 1.2, // Adjusts text spacing
+                      },
+                    }}
+                  />
+                </ListItem>
+              ))}
+            </List>
           </Grid>
+
           <Grid
             item
             xs={12}
@@ -377,8 +402,9 @@ const styles = {
   },
   footerDesc: {
     fontFamily: "var(--main-font-family)",
-    textAlign:"justify",
-    hyphens: "auto"
+    textAlign: "justify",
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   footerCopyright: {
     fontFamily: "var(--main-font-family)",

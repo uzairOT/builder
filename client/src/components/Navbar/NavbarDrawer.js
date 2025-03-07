@@ -14,11 +14,13 @@ import { Link } from "react-router-dom";
 import i18n from "../../i18n";
 import { use } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { setLanguage } from "../../redux/slices/authSlice";
 
-const NavbarDrawer = ({ languageOptions, setLanguage }) => {
+const NavbarDrawer = ({ languageOptions }) => {
   const {t} = useTranslation();
   const [openMenu, setOpenMenu] = useState(false);
-
+  const dispatch = useDispatch()
   return (
     <>
       <Drawer
@@ -84,7 +86,7 @@ const NavbarDrawer = ({ languageOptions, setLanguage }) => {
             value={i18n.language}
             label="Select language"
             onChange={(e) => {
-              setLanguage(e.target.value);
+              dispatch(setLanguage(e.target.value));
               localStorage.setItem("language", e.target.value)
             }}
             displayEmpty

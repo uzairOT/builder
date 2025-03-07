@@ -198,6 +198,15 @@
     "title5": "App installieren",
     "title6": "© Copyright 2024, Alle Rechte vorbehalten von BuilderBUILDER PRO"
   },
+  "VerifyCode": {
+    "title1": "Code verifizieren",
+    "title2": "Wir haben einen Bestätigungscode an Ihre E-Mail gesendet. Geben Sie den 5-stelligen Code ein, der <br /> in der E-Mail erwähnt wurde.",
+    "title3": "Code nicht erhalten?",
+    "title4": "Erneut senden",
+    "title5": "Code eingeben",
+    "title6": "Verifizieren",
+    "title7": "Haben Sie Ihren Spam-Ordner überprüft?"
+  },
   "Navbar": {
     "dashboard": "Dashboard",
     "projects": "Projekte",
@@ -1089,7 +1098,7 @@
   "WorkOrderNotification": {
     "title": "Arbeits-/Änderungsauftragsbenachrichtigungen",
     "subtitle": {
-      "part1": "Hat Ihnen eine",
+      "part1": "Hat Ihnen eine ",
       "changeOrder": "Änderungsauftragsanfrage gesendet",
       "workOrder": "Arbeitsauftragsanfrage gesendet",
       "part2": "für das Projekt"

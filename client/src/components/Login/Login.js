@@ -346,7 +346,7 @@ const Login = () => {
                   onBlur={handleBlur}
                   placeholder="Enter your password"
                 />
-                <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
+                <Box style={passwordEyeBox(errors.password ? 6 : 0)} onClick={togglePasswordVisibility}>
                   {passwordVisible ? <VisibilityOff /> : <Visibility />}
                   {!isMobile && (
                     <span style={{ marginLeft: "5px" }}>
@@ -600,20 +600,20 @@ const logoBox = {
   display: "flex",
 };
 
-const passwordEyeBox = {
+const passwordEyeBox =  (value) => ({
   position: "absolute",
-  top: "50%",
+  top: `calc(45% - ${value}px)`,
   right: "10px",
   transform: "translateY(-50%)",
   cursor: "pointer",
   opacity: "50%",
   display: "flex",
   alignItems: "center",
-};
+});
 const linkBox = {
   display: "flex",
   justifyContent: "space-between",
-  gap: { lg: "1rem", md: "5rem", sm: "3.5rem", xs: "5rem" },
+  gap: { lg: "1rem", md: "5rem", sm: "3.5rem", xs: "0rem" },
   marginTop: { lg: "2rem", md: "2rem", sm: "2rem", xs: "0.5rem" },
   marginBottom: {
     lg: "2rem",

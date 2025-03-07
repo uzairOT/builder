@@ -19,9 +19,9 @@ const InfoCard = ({ icon, title, description }) => {
       <Box sx={styles.card}>
         <Box>
           <Box sx={styles.icon}>{icon}</Box>
-          <Typography sx={styles.CardDesc}>{description}</Typography>
+          <Typography component={'h5'} sx={styles.CardDesc}>{description}</Typography>
         </Box>
-        <Typography sx={styles.cardTitle} mt={1}>
+        <Typography component={'p'} sx={styles.cardTitle} mt={1}>
           {title}
         </Typography>
       </Box>
@@ -32,20 +32,20 @@ const InfoCard = ({ icon, title, description }) => {
 export default function Testimonials() {
   const { t } = useTranslation();
   return (
-    <Grid p={5}>
-      <Typography align="center" gutterBottom sx={styles.titleFont}>
+    <Grid component={'section'} p={5}>
+      <Typography component={'h1'} align="center" gutterBottom sx={styles.titleFont}>
         {t("testimonials.title1")}
       </Typography>
 
-      <Typography align="center" sx={styles.SubtitleFont} gutterBottom>
+      <Typography component={'h2'} align="center" sx={styles.SubtitleFont} gutterBottom>
         {t("testimonials.title2")}
       </Typography>
-      <Typography align="center" sx={styles.DecsFont} gutterBottom>
+      <Typography component={'h3'} align="center" sx={styles.DecsFont} gutterBottom>
         {t("testimonials.title3")}{" "}
       </Typography>
       <Container>
-        <Grid container sx={styles.gridContainer} p={2} spacing={1}>
-          <Grid item xs={12} md={6}>
+        <Grid container sx={styles.gridContainer} p={{sm:2, xs:0}} spacing={1}>
+          <Grid component={'article'} item xs={12} md={6}>
             <motion.div
               initial="hidden"
               whileHover="hover"
@@ -111,7 +111,8 @@ const styles = {
     fontWeight: 500,
     color: "#454245",
     textAlign: "left",
-    hyphens: "auto"
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   container: {
     padding: "32px",

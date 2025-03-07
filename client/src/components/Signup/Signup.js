@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import GoogleLogin from "react-google-login";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -53,7 +53,6 @@ const SignupComp = () => {
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
   const [phoneIsValid, setPhoneIsValid] = useState(true);
-
   let heightValue;
   if (isMobile) {
     heightValue = "1rem";
@@ -105,6 +104,7 @@ const SignupComp = () => {
   const navigate = useNavigate();
   const [register, { isLoading }] = useRegisterMutation();
   const { userInfo } = useSelector((state) => state.auth);
+  const passwordInputField = useRef();
   let IsValidSub = userInfo?.user?.hasValidSubscription;
 
   const openInNewTab = (url) => {
@@ -261,9 +261,6 @@ const SignupComp = () => {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
 
-  // useEffect(() => {
-  //   console.log(values);
-  // }, [values]);
   return (
     <Grid container sx={{ ...firstGrid }}>
       <ToastContainer />
@@ -552,6 +549,8 @@ const SignupComp = () => {
 
               <Box style={{ position: "relative" }}>
                 <input
+                  autocomplete="off"
+                  ref={passwordInputField}
                   placeholder="Enter your password"
                   style={{
                     ...inputStyle,
@@ -569,7 +568,7 @@ const SignupComp = () => {
                 <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                   {errors.password && touched.password ? errors.password : ""}
                 </Typography>
-                <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
+                <Box style={passwordEyeBox(errors.password ? 6 : 0)} onClick={togglePasswordVisibility}>
                   {passwordVisible ? <VisibilityOff /> : <Visibility />}
                   {!isMobile && (
                     <span style={{ marginLeft: "5px" }}>
@@ -599,6 +598,7 @@ const SignupComp = () => {
               </label>
               <Box style={{ position: "relative" }}>
                 <input
+                  autocomplete="off" 
                   placeholder="Confirm your password"
                   style={{
                     ...inputStyle,
@@ -618,7 +618,7 @@ const SignupComp = () => {
                     ? errors.confirmPassword
                     : ""}
                 </Typography>
-                <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
+                <Box style={passwordEyeBox(errors.confirmPassword ? 6 : 0)} onClick={togglePasswordVisibility}>
                   {passwordVisible ? <VisibilityOff /> : <Visibility />}
                   {!isMobile && (
                     <span style={{ marginLeft: "5px" }}>
@@ -882,16 +882,16 @@ const subtitleStyle = {
   marginBottom: "0.2rem",
   marginTop: "0.2rem",
 };
-const passwordEyeBox = {
+const passwordEyeBox =  (value) => ({
   position: "absolute",
-  top: "45%",
+  top: `calc(45% - ${value}px)`,
   right: "10px",
   transform: "translateY(-50%)",
   cursor: "pointer",
   opacity: "50%",
   display: "flex",
   alignItems: "center",
-};
+});
 const linkBox = {
   display: "flex",
   paddingBottom: "1rem",

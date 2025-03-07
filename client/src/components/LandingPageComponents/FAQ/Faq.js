@@ -49,14 +49,14 @@ const FAQ = () => {
   };
 
   return (
-    <Box>
+    <Box component={'section'}>
       <Container style={styles.container}>
-        <Typography sx={styles.titleFont}>{t("faqs.title1")}</Typography>
+        <Typography component={'h1'} sx={styles.titleFont}>{t("faqs.title1")}</Typography>
 
-        <Typography sx={styles.SubtitleFont} align="center" gutterBottom>
+        <Typography component={'h2'} sx={styles.SubtitleFont} align="center" gutterBottom>
           {t("faqs.title2")}
         </Typography>
-        <Typography sx={styles.SubtitleFont} align="center" paragraph>
+        <Typography component={'h5'} sx={styles.SubtitleFont} align="center" paragraph>
           {t("faqs.title3")}
         </Typography>
         {faqData.map((item, index) => (
@@ -84,24 +84,25 @@ const FAQ = () => {
             </AccordionDetails>
           </Accordion>
         ))}
-        <Box style={styles.contactSection}>
+        <Box component={'aside'} style={styles.contactSection}>
           <AvatarGroup max={4} style={styles.avatarGroup}>
             <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
             <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
           </AvatarGroup>
           <Typography
+          component={'h3'}
             sx={styles.contactFirstHeading}
             align="center"
             gutterBottom
           >
             {t("faqs.title4")}
           </Typography>
-          <Typography sx={styles.Contactsecondheading} align="center">
+          <Typography component={'h5'} sx={styles.Contactsecondheading} align="center">
             {t("faqs.title5")}
           </Typography>
 
-          <Button style={styles.button} href="/#contact">
+          <Button component={'p'} style={styles.button} href="/#contact">
             {t("faqs.title6")}
           </Button>
         </Box>
@@ -127,7 +128,8 @@ const styles = {
     fontWeight: 500,
     marginBottom: 2,
     textAlign: "jutiify",
-    hyphens: "auto"
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   DecsFont: {
     fontFamily: "var(--main-font-family)",
@@ -157,7 +159,8 @@ const styles = {
     fontWeight: 400,
     color: "#454245",
     textAlign: "justify",
-    hyphens: "auto"
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   contactSection: {
     marginTop: "32px",

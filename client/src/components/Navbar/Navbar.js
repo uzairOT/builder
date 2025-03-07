@@ -59,6 +59,7 @@ import { toast } from "react-toastify";
 import ApprovalNotification from "./ApprovalNoifications";
 import i18n from "../../i18n";
 import { useTranslation } from "react-i18next";
+import { setLanguage } from "../../redux/slices/authSlice";
 const languageOptions = {
   en: "English",
   fr: "French",
@@ -110,7 +111,6 @@ const Navbar = () => {
     }
   };
   const { userInfo } = useSelector((state) => state.auth);
-  const [language, setLanguage] = useState(localStorage.getItem("language") || "en");
   let IsValidSub = userInfo?.user?.hasValidSubscription;
 
   const openNotification = Boolean(anchorEl);
@@ -119,11 +119,6 @@ const Navbar = () => {
   const location = useLocation();
   const path = location.pathname.split("/")[1];
 
-  useEffect(()=> {
-    if(!Object.keys(languageOptions).includes(language)) return;
-
-    i18n.changeLanguage(language)
-  }, [language])
 
   useEffect(() => {
     switch (path) {
@@ -300,7 +295,7 @@ const Navbar = () => {
               sx={themeStyle.toolbar}
               style={{ maxHeight: "64px !important" }}
             >
-              {showHamburger && <NavbarDrawer languageOptions={languageOptions} setLanguage={setLanguage}/>}
+              {showHamburger && <NavbarDrawer languageOptions={languageOptions} />}
               <Link to="/">
                 <BuilderProNavbarLogo
                   aria-label="Builder Pro Logo"
@@ -399,8 +394,7 @@ const Navbar = () => {
                             <MenuItem
                               key={lang}
                               onClick={() => {
-                                setLanguage(lang)
-                                localStorage.setItem("language", lang)
+                                dispatch(setLanguage(lang))
                                 // i18n.changeLanguage(lang)
                               }
                               }

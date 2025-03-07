@@ -43,16 +43,16 @@ const WhyChooseBuilder = () => {
     },
   ];
   return (
-    <Box mb={5}>
+    <Box component={'section'} mb={5}>
       <Container>
-        <Typography align="center" sx={styles.titleFont}>
+        <Typography component={'h1'} align="center" sx={styles.titleFont}>
           {t("chooseus.title1")}
         </Typography>
-        <Typography sx={styles.SubtitleFont} align="center">
+        <Typography component={'h2'} sx={styles.SubtitleFont} align="center">
           {t("chooseus.title2")}
         </Typography>
 
-        <Typography sx={styles.DecsFont}>{t("chooseus.title3")}</Typography>
+        <Typography component={'p'} sx={styles.DecsFont}>{t("chooseus.title3")}</Typography>
         <Grid
           container
           spacing={2}
@@ -61,7 +61,7 @@ const WhyChooseBuilder = () => {
           alignItems={"center"}
         >
           {features.map((feature, index) => (
-            <Grid item xs={12} md={3} key={index}  alignItems={"center"} height={'280px'} gap={2}>
+            <Grid component={'article'} item xs={12} md={3} key={index}  alignItems={"center"} height={'280px'} gap={{lg:2, md:1,xs:2}}>
               <motion.div
                 initial="hidden"
                 whileHover="hover"
@@ -69,10 +69,10 @@ const WhyChooseBuilder = () => {
               >
                 <Stack height={'100%'} justifyContent={'space-between'} alignItems={'center'}>
                   <Box height={'80px'}>{feature.icon}</Box>
-                  <Typography sx={styles.featureTitle} gutterBottom>
+                  <Typography component={'h2'} sx={styles.featureTitle} gutterBottom>
                     {feature.title}
                   </Typography>
-                  <Typography sx={styles.featureDesc}>
+                  <Typography component={'p'} sx={styles.featureDesc}>
                     {feature.description}
                   </Typography>
                 </Stack>
@@ -107,11 +107,12 @@ const styles = {
     fontSize: { md: "16px", sm: "16px", xs: "14px" },
     fontWeight: 400,
     color: "#454245",
-    hyphens: "auto"
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   featureTitle: {
     fontFamily: "var(--main-font-family)",
-    fontSize: { md: "24px", sm: "24px", xs: "22px" },
+    fontSize: { md: "18px", sm: "22px", xs: "22px" },
     fontWeight: 500,
     minHeight: '72px'
   },
@@ -121,6 +122,7 @@ const styles = {
     fontWeight: 400,
     color: "#454245",
     textAlign: "justify",
-    hyphens: "auto"
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
 };

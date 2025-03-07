@@ -371,8 +371,8 @@ function AddLineElement({
       return;
     }
     setRowCheckboxes({});
-    if (quantity <= 0 || unitPrice <= 0) {
-      toast.warning("Enter value greater than 0");
+    if (quantity < 0 || unitPrice < 0) {
+      toast.warning("Enter a valid value");
       return;
     }
 

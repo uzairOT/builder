@@ -154,7 +154,8 @@ const styles = {
     fontWeight: 400,
     color: "#454245",
     textAlign:'justify',
-    hyphens: "auto"
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   CardTitleFont: {
     fontFamily: "var(--main-font-family)",
@@ -167,7 +168,8 @@ const styles = {
     fontWeight: 400,
     color: "#454245",
     textAlign:'justify',
-    hyphens: "auto"
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   gridContainer: {
     marginTop: 1,

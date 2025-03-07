@@ -124,14 +124,14 @@ const CustomToolbar = ({
           alignItems={"center"}
           width={"100%"}
           p={1}
-          pl={{ xl: 4, lg: 2.5 }}
+          pl={{ xl: 4, lg: 3 }}
           mt={1}
           pt={2}
           pb={2}
         >
           <Typography
             sx={themeStyle.toolbarTitle}
-            pl={{ xl: 1, lg: 2, md: 2, xs: 2.5 }}
+            pl={{ xl: 1, lg: 2, md: 3, xs: 3 }}
           >
             {t('CustomToolbar.title1')}
           </Typography>

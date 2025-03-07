@@ -114,6 +114,7 @@ const GetInTouch = () => {
   return (
     <motion.div initial="hidden" whileHover="hover" variants={popEffect}>
       <Box
+        component={'section'}
         sx={{
           padding: "20px",
           maxWidth: "900px",
@@ -121,11 +122,11 @@ const GetInTouch = () => {
           textAlign: "center",
         }}
       >
-        <Typography sx={styles.titleFont}>{t('contactus.title1')}</Typography>
-        <Typography sx={styles.SubtitleFont}>
+        <Typography component={'h1'} sx={styles.titleFont}>{t('contactus.title1')}</Typography>
+        <Typography component={'h2'} sx={styles.SubtitleFont}>
         {t('contactus.title2')}
         </Typography>
-        <Typography sx={styles.DecsFont}>
+        <Typography component={'p'} sx={styles.DecsFont}>
         {t('contactus.title3')}
         </Typography>
         <Grid container spacing={2}>
@@ -448,7 +449,8 @@ const styles = {
     color: "#454245",
     mb: 3,
     textAlign:"center",
-    hyphens: "auto"
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   TouchFont: {
     fontFamily: "var(--main-font-family)",
@@ -467,10 +469,10 @@ const styles = {
 };
 
 const customPhoneStyles = {
-  borderRadius: "12px",
-  border: "1px solid #D8D8D8",
+  borderRadius: "0.5rem",
+  border: "1px solid #ccc",
   background: "#FFF",
-  width: "calc(100% - 8px)",
+  width: "calc(100% - 14px)",
   // height: heightValue,
   alignSelf: "stretch",
   paddingLeft: "8px",
