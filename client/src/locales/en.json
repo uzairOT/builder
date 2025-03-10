@@ -205,7 +205,8 @@
     "title4": "Resend",
     "title5": "Enter Code",
     "title6": "Verify",
-    "title7": "Did you check your spam section?"
+    "title7": "Did you check your spam section?",
+    "title8": "Back to log in"
   },
   "Navbar": {
     "dashboard": "Dashboard",

@@ -160,7 +160,7 @@ const buttonBox = {
   display: "flex",
   flexDirection: { xl: "row", lg: "row", md: "row", sm: "row", xs: "column" },
   justifyContent: "space-between",
-  gap: "2.3rem",
+  gap: {md:"2.3rem", xs:'0.5rem'},
 };
 const redText = {
   color: "#BE1D1D",
@@ -171,7 +171,8 @@ const redText = {
   fontWeight: 400,
   lineHeight: "150%", // 1.3125rem
   letterSpacing: "-0.00875rem",
-  display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
+  display: { lg: "flex", md: "flex", sm: "flex", xs: "flex" },
+  textAlign: "center",
 };
 const saveButton = {
   border: "1px solid #FFAC00",

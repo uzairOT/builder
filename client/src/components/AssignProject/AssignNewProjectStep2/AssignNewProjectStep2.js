@@ -226,7 +226,7 @@ function AssignNewProjectStep2({
         sx={{
           ...buttonBox,
           justifyContent: "space-evenly",
-          marginTop: "-1rem",
+          // marginTop: "-1rem",
         }}
       >
         <Button
@@ -248,7 +248,7 @@ function AssignNewProjectStep2({
       <Box sx={{ ...buttonBox, ...buttoncontainer }}>
         <Button
           disabled={isLoading || isEditLoading}
-          sx={{ ...YellowBtn, }}
+          sx={{ ...YellowBtn, ...buttonStyle}}
           onClick={() => {  
                handleNextStep();
 
@@ -291,7 +291,6 @@ const buttonBox = {
   flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "1.5rem",
   gap: "3rem",
 };
 
@@ -313,7 +312,8 @@ const buttonLnks = {
   fontFamily: "var(--main-font-family)",
   fontWeight: 500,
   height: "50%",
-  marginTop: "2rem",
+  marginTop: "1rem",
+  marginBottom: "1rem",
   textTransform: "none",
   color: "#4C8AB1",
   fontSize: { lg: "0.9rem", md: "0.9rem", sm: "0.8rem", xs: "0.6rem" },

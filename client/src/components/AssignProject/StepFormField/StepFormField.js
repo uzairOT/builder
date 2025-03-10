@@ -26,7 +26,7 @@ function ProjectFormFields({
   const isSmallMobile = useMediaQuery("(max-width:500px)");
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTab = useMediaQuery("(max-width:900px)");
-  const formWidth = { width: isMobile ? "75%" : isTab ? "65%" : "48%" };
+  const formWidth = { width: isMobile ? "90%" : isTab ? "65%" : "48%" };
   const borderRadiusResponsive = {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
@@ -85,7 +85,7 @@ function ProjectFormFields({
               )}
             </Box>
 
-            <Box sx={{ flex: 1 }}>
+            <Box sx={{ flex: 1,display:'flex' ,flexDirection:'row', minWidth:'190px' }}>
               <TextField
                 sx={{
                   ...inputStyle,
@@ -135,7 +135,6 @@ function ProjectFormFields({
                   {t("ProjectPermissions.roles.others")}
                 </MenuItem>
               </TextField>
-            </Box>
             <Box display={"flex"} alignItems={"center"} pb={"8px"}>
               {( usersLength > 1)? (
                 <IconButton
@@ -149,6 +148,7 @@ function ProjectFormFields({
                 <Box width={"40px"}></Box>
               )}
             </Box>
+            </Box>
           </Box>
         </form>
       </Box>
@@ -157,7 +157,7 @@ function ProjectFormFields({
 }
 
 const inputStyle = {
-  width: "100%", // Set width to 100% for responsiveness
+  width: "calc(100% - 16px)", // Set width to 100% for responsiveness
   height: "2rem",
   marginBottom: "0.5rem",
   alignSelf: "center",
@@ -169,13 +169,13 @@ const inputStyle = {
   paddingLeft: "-1.5rem",
 };
 const formBox = {
-  width: "100%",
+  // width: "100%",
   display: "flex",
   flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",
   marginTop: "0.5rem",
-  marginLeft: "2.5rem",
+  // marginLeft: "2rem",
 };
 
 const formInnerBox = {
@@ -187,8 +187,8 @@ const formInnerBox = {
 const fieldBox1 = {
   justifyContent: "space-between",
   flex: 4,
-  marginRight: "1rem",
-  marginLeft: "-1rem",
+  // marginRight: "1rem",
+  // marginLeft: "-1rem",
   position: "relative",
 };
 
@@ -198,7 +198,7 @@ const formStyle = {
 
 const counterTypo = {
   position: "absolute",
-  right: "-0.2rem",
+  right: "1rem",
   bottom: "1.5rem",
   fontSize: "0.8rem",
   color: "#B8B8B8",

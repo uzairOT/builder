@@ -493,13 +493,11 @@ function AddPhaseView({
   };
   return (
     <>
-      <Grid container sx={{ ...firstGrid, width: view === t("RequestWorkOrder.title3") ? "100%" : "calc(100% - 32px)" }}>
+      <Grid container sx={{ ...firstGrid, width: view === t("RequestWorkOrder.title3") ? "100%" : "calc(100%)" }}>
         <Stack
           direction={"row"}
           justifyContent={view ? "space-between" : "center"}
-          sx={{ borderBottom: "2px solid rgba(0, 0, 0, 0.2)", borderRadius: 1 }}
-
-        // sx={{ width: "100%" }}
+          sx={{ borderBottom: "2px solid rgba(0, 0, 0, 0.2)", borderRadius: 1, width: "100%" }}
         >
           <Stack sx={{ justifyContent: "center" }}>
             {adminProjectView && (
@@ -655,7 +653,7 @@ const firstGrid = {
     sm: "1rem 2rem",
     xs: "0rem 0rem",
   },
-  margin: "auto",
+  // margin: "auto",
   // border: "2px solid red",
 };
 

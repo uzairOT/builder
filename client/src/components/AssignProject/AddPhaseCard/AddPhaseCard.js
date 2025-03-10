@@ -611,7 +611,7 @@ const AddPhaseCard = ({
                                   background: "#4C8AB1",
                                   marginTop: "0.7rem",
                                   marginBottom: "1rem",
-                                  marginRight: { xl: "-8rem", xs: "0rem" },
+                                  marginRight: { xl: "0rem", xs: "0rem" },
                                   "@media (max-width: 600px)": {
                                     minWidth: 0,
                                     width: "2.5rem",
@@ -752,7 +752,7 @@ const AddPhaseCard = ({
                             background: "#4C8AB1",
                             marginTop: "0.7rem",
                             marginBottom: "1rem",
-                            marginRight: { xl: "-8rem", xs: "0rem" },
+                            marginRight: { xl: "0rem", xs: "0rem" },
                             marginLeft: "1rem",
                             "@media (max-width: 600px)": {
                               fontFamily: "var(--main-font-family)",
@@ -877,8 +877,10 @@ const AddPhaseCard = ({
         </Box>
 
         <Grid item sx={tableGrid}>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex", justifyContent:"space-between"}}>
+          <Box>
             <Typography sx={listOfLineText}>{t("PhaseCard.listOfLineItems")}</Typography>
+          </Box>
 
             <Box>
               {hasAdminPrivileges.includes(userRoleAuth.userRole) && (
@@ -888,12 +890,13 @@ const AddPhaseCard = ({
                     paddingRight: "1rem",
                     fontSize: "20px",
                     marginTop: "0",
-                    width: { sm: "100%", xs: "14ch" },
+                    width: { sm: "100%", xs: "100%" },
                     overflow: "hidden",
                     textOverflow: "ellipsis",
+                    wordBreak: 'break-word'
                   }}
                 >
-                  {t("PhaseCard.price")}: ${formatMoney(totalCost)}
+                {`${t("PhaseCard.price")}: ${formatMoney(totalCost)}`}
                 </Typography>
               )}
             </Box>
@@ -1049,7 +1052,7 @@ const AddPhaseCard = ({
                       align="center"
                       sx={{ border: "none" }}
                     >
-                      <Typography sx={{ fontSize: "1.2rem" }} padding={9}>
+                      <Typography sx={{fontSize:{ lg: "1.5rem", xs: "1rem" }}} padding={9}>
                         {t("PhaseCard.noLineItemsAdded")}
                       </Typography>
                     </TableCell>

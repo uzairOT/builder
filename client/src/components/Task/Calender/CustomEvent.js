@@ -1002,10 +1002,12 @@ const themeStyle = {
     textOverflow: "ellipsis",
     color: "#454545",
     fontFamily: 'var(--main-font-family)',
+    maxWidth:'103px',
+    wordBreak: 'break-word',
+    hyphens: 'auto'
   },
   eventText: (bgColor) =>({
     color: getContrastColor(bgColor),
-    // backgroundColor:'white',
     borderRadius:'4px',
     maxWidth:'60px',
   }),
@@ -1014,6 +1016,9 @@ const themeStyle = {
     textOverflow: "ellipsis",
     fontStyle: "italic",
     fontFamily: 'var(--main-font-family)',
+    maxWidth:'103px',
+    wordBreak: 'break-word',
+    hyphens: 'auto'
   },
   weather: {
     color: "#FFF",

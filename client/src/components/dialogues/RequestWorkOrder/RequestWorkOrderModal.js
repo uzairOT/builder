@@ -1078,7 +1078,7 @@ const RequestWorkOrderModal = ({
                 <hr style={themeStyle.hrLine} />
               </Box>
 
-              <Stack spacing={1} ml={2}>
+              <Stack spacing={1} ml={{sm:2, xs:1}}>
                 <Typography pt={1} sx={themeStyle.headingText}>
                   {t("RequestWorkOrder.form.title7")}
                 </Typography>
@@ -1126,6 +1126,8 @@ const RequestWorkOrderModal = ({
                               outline: "none",
                             },
                           },
+                          width: 'calc(100% - 16px)',
+                          minWidth: "250px"
                         }}
                       />
                     </DemoContainer>
@@ -1133,7 +1135,7 @@ const RequestWorkOrderModal = ({
                   {/* </Box> */}
                 </Typography>
               </Stack>
-              <Stack spacing={1} pt={2} ml={2}>
+              <Stack spacing={1} pt={2} ml={{sm:2, xs:1}}>
                 <Typography pt={1} sx={themeStyle.headingText}>
                   {t("RequestWorkOrder.form.title8")}
                 </Typography>
@@ -1185,6 +1187,8 @@ const RequestWorkOrderModal = ({
                               outline: "none",
                             },
                           },
+                          width: 'calc(100% - 16px)',
+                          minWidth: "250px"
                         }}
                       />
                     </DemoContainer>

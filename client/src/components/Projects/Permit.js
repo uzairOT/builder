@@ -421,7 +421,7 @@ const themeStyle = {
   titleTypo: {
     color: "#FFFFFF",
     fontFamily: 'var(--main-font-family)',
-    fontSize: { xl: "1.3rem", lg: 15, md: "1.3rem", xs: "1.3rem", },
+    fontSize: { xl: "1.3rem", lg: 15, md: "1.3rem", xs: "1rem", },
     margin: { sm: "1rem 2rem", xs: "2rem" },
   },
   buttonStyle: {

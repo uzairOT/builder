@@ -108,7 +108,7 @@ const InitialProposalButtons = ({
                     fontWeight={"600"}
                     padding={{
                       sm: "6px 32px 6px 32px",
-                      xs: "5px 20px 5px 20px",
+                      xs: "4px 14px 4px 14px",
                     }}
                     handleOnClick={handleChangeOpen}
                   >
@@ -173,11 +173,7 @@ const InitialProposalButtons = ({
                         fontSize:
                           initialLengthZero || isLoading ? "24px" : "18px",
                         width:
-                          initialLengthZero || isLoading
-                            ? "300px"
-                            : downView
-                            ? "40px"
-                            : "150px",
+                          initialLengthZero || isLoading ? (downView ? "40px" : "300px") : (downView ? "40px" : "150px"),
                         height:
                           initialLengthZero || isLoading ? "50px" : "40px",
                       }}

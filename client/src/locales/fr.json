@@ -205,7 +205,8 @@
     "title4": "Renvoyer",
     "title5": "Entrer le Code",
     "title6": "Vérifier",
-    "title7": "Avez-vous vérifié votre dossier spam ?"
+    "title7": "Avez-vous vérifié votre dossier spam ?",
+    "title8": "Retour à la connexion"
   },
   "Navbar": {
     "dashboard": "Tableau de Bord",

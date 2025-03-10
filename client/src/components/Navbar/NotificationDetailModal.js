@@ -410,6 +410,8 @@ const NotificationDetailModal = ({
                                 input: {
                                   fontFamily: "var(--main-font-family)",
                                 },
+                                width: 'calc(100% - 16px)',
+                                minWidth: "250px"
                               }}
                             />
                           </DemoContainer>
@@ -453,6 +455,8 @@ const NotificationDetailModal = ({
                                 input: {
                                   fontFamily: "var(--main-font-family)",
                                 },
+                                width: 'calc(100% - 16px)',
+                                 minWidth: "250px"
                               }}
                             />
                           </DemoContainer>
@@ -819,7 +823,7 @@ const themeStyle = {
   },
   dateBox: {
     display: "flex",
-    paddingLeft: "1.5rem",
+    paddingLeft: {sm:"1.5rem", xs: "0rem"},
     marginTop: "-1rem",
   },
 };

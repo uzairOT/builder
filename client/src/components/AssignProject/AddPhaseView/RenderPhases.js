@@ -51,7 +51,7 @@ function RenderPhases({
       sx={{
         height: "calc(78vh - 140px)",
         ...themeStyle.scrollable,
-        width: { xl: "100%", lg: "100%", md: "100%", sm: "100%", xs: "95vw" },
+        width: { xl: "100%", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
       }}
     >
       {initialPhases &&
@@ -95,7 +95,9 @@ function RenderPhases({
             textAlign: "center",
           }}
         >
+          <Typography sx={{fontSize:{ lg: "1.5rem", xs: "1rem" }}}>
           {t("ProjectInitialProposal.noPhases")}
+           </Typography>
         </div>
       )}
     </Box>
@@ -116,10 +118,10 @@ function RenderPhases({
         changeOrderSelected.map((phase, index) => (
           <Stack
             key={phase.id}
-            style={{
+            sx={{
               ...slectedCardStyle,
               ...commonStackStyle,
-              width: "95%",
+              width: "95%", //check on mobile
               boxShadow:
                 selectedPhaseId === phase.id
                   ? `0 0 0 2px #1B1B1B, 0 5px 20px ${phase.color}`
@@ -153,7 +155,9 @@ function RenderPhases({
             textAlign: "center",
           }}
         >
+          <Typography sx={{fontSize:{ lg: "1.5rem", xs: "1rem" }}}>
           {t("ProjectInitialProposal.noPhases")}
+           </Typography>
         </div>
       )}
     </Box>
@@ -172,7 +176,7 @@ function RenderPhases({
             : "calc(98vh - 300px)"
           : "",
         ...themeStyle.scrollable,
-        width: { xl: "100%", lg: "100%", md: "100%", sm: "100%", xs: "95vw" },
+        width: { xl: "100%", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
       }}
     >
       {phases &&
@@ -182,9 +186,10 @@ function RenderPhases({
         phases[0].map((phase, index) => (
           <Stack
             key={phase.id}
-            style={{
+            sx={{
               ...slectedCardStyle,
               ...commonStackStyle,
+              margin: {lg: "1rem", md: "1rem", sm: "1rem", xs: "0.2rem"},
               boxShadow:
                 selectedPhaseId === phase.id
                   ? `0 0 0 2px #1B1B1B, 0 5px 20px ${phase.color}`
@@ -215,7 +220,7 @@ function RenderPhases({
             textAlign: "center",
           }}
         >
-          <Typography>
+          <Typography sx={{fontSize:{ lg: "1.5rem", xs: "1rem" }}}>
               {changeOrderView
                 ? t("ProjectWorkOrder.title6")
                 : pathCheck.includes("assignproject")

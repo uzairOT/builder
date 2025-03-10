@@ -176,7 +176,7 @@ const VerifyCode = () => {
                 <ArrowBackIosIcon sx={{ fontSize: 16 }} />
               </div>
               <Typography sx={{ fontSize: 14 }} color="#4C8AB1" gutterBottom>
-                Back to log in
+              {t("VerifyCode.title8")}
               </Typography>
             </Box>
             <Container

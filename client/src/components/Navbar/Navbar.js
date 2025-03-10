@@ -529,16 +529,18 @@ const Navbar = () => {
                           (!Array.isArray(notificationsArr) ||
                             notificationsArr.length === 0) &&
                           !invoiceNotification ? (
-                          <div
-                            style={{
+                          <Box
+                            sx={{
                               backgroundColor: "#F2F2F2",
-                              padding: 15,
+                              padding: {sm:"15px", xs:'8px'},
                               borderRadius: "14px",
                               textAlign: "center",
                             }}
                           >
+                            <Typography sx={{fontSize:{sm:'16px', xs:'14px'}}}>
                             {t("Notification.noNewNotification")}
-                          </div>
+                            </Typography>
+                          </Box>
                         ) : null}
                       </>
                     </Popper>

@@ -170,10 +170,11 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
           {pendingInvitationsLength >= 1 ? (
             <Badge badgeContent={pendingInvitationsLength} color="warning">
               <BuilderProButton
+                marginLeft={"2px"}
                 variant={"outlined"}
                 handleOnClick={handleOpenPendingInvitations}
                 fontFamily={"var(--main-font-family)"}
-                fontSize={"15px"}
+                fontSize={{sm:"15px", xs:"11px"}}
               >
                 {t("ProjectTeam.title2")}
               </BuilderProButton>
@@ -189,7 +190,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
             handleOnClick={handleShare}
             sx={{ fontSize: { xl: 12, lg: 10, m: 12, xs: 12 } }}
           >
-            {true ? <Typography sx={{ fontSize: { xl: 14, lg: 14, m: 14, xs: 14 }, marginLeft: "4px" }}>{t("ProjectTeam.title5")}</Typography> : ""}
+            {true ? <Typography sx={{ fontSize: { xl: 14, lg: 14, md: 14, xs: 14 }, marginLeft: "4px" }}>{t("ProjectTeam.title5")}</Typography> : ""}
           </BuilderProButton>
         </Stack>
       </Stack>
@@ -389,16 +390,14 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
               {userType ? null : (
                 <InputLabel
                   id="demo-simple-select-label"
-                  style={{
-                    fontSize: "12px",
-                    top: "3px",
-                    fontFamily: "var(--main-font-family)",
-                    color: "#202227",
-                  }}
                   sx={{
                     "&.Mui-focused": {
                       display: "none",
                     },
+                    fontSize: {sm:"12px", xs:"9px"},
+                    top: "3px",
+                    fontFamily: "var(--main-font-family)",
+                    color: "#202227",
                   }}
                 >
                   Select Role

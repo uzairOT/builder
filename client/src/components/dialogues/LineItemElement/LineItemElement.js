@@ -770,7 +770,7 @@ function AddLineElement({
               <Close />
             </IconButton>
           </Stack>
-          <DialogContent sx={{ padding: "0rem 3rem 0rem 3rem" }}>
+          <DialogContent sx={{ padding: {sm:"0rem 3rem 0rem 3rem", xs: "0rem 1.5rem 0rem 1.5rem"} }}>
             <Typography sx={typoText}>{t("LineItem.lineItem")}</Typography>
             <>
               <Autocomplete

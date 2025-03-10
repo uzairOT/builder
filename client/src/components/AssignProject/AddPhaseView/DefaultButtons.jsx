@@ -65,6 +65,7 @@ const DefaultButtons = ({ authUserRole, view, isLoading, handleAddPhase, handleG
                       whiteSpace: "nowrap",
                       background: "#FFAC00",
                       height: 'initial',
+                      minWidth: { md:"120px",sm:'100px', xs:'64px'},
                       fontSize:
                        phaseLengthZero || isLoading
                           ? "40px"
@@ -105,7 +106,7 @@ const DefaultButtons = ({ authUserRole, view, isLoading, handleAddPhase, handleG
                       whiteSpace: "nowrap",
                       background: "#FFAC00",
                       height:'intial',
-                    
+                      minWidth: { md:"120px",sm:'100px', xs:'64px'},
                     //   height:
                     //    phaseLengthZero || isLoading ? "90px" : "40px",
                       display: isLoading ? "none" : "flex",
@@ -141,6 +142,7 @@ const DefaultButtons = ({ authUserRole, view, isLoading, handleAddPhase, handleG
                       ...actionButton,
                       display:
                        phaseLengthZero || isLoading ? "none" : "flex",
+                       minWidth: { md:"120px",sm:'100px', xs:'64px'},
                       fontSize: { lg: "18px", xs: "11px" },
                       alignSelf: "end"
                     }}
@@ -177,6 +179,7 @@ const DefaultButtons = ({ authUserRole, view, isLoading, handleAddPhase, handleG
                         ...actionButton,
                         display:
                          phaseLengthZero || isLoading ? "none" : "flex",
+                         minWidth: { md:"120px",sm:'100px', xs:'64px'},
                       }}
                       startIcon={
                         <DeleteOutlinedIcon
