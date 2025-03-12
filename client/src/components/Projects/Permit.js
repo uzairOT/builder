@@ -90,14 +90,14 @@ function Permit({ view, type, projectOrganizationId }) {
     fetchData();
   }, [id]);
   return (
-    <div style={{ width: "100%", borderRadius: "14px", marginBottom: '14px' }}>
+    <>
       <Box sx={themeStyle.titleBox}>
         <Typography sx={themeStyle.titleTypo}>
           {view} ({RecentfileUrls?.length} {t("ProjectFiles.text1")}){" "}
         </Typography>
         <Stack
           direction={{ sm: "row", xs: "column" }}
-          gap={2}
+          gap={{md:2, sm:1, xs:1}}
           justifyContent={"center"}
           alignItems={"center"}
         >
@@ -124,6 +124,7 @@ function Permit({ view, type, projectOrganizationId }) {
         </Stack>
       </Box>
       <Box
+      flex={1}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -131,7 +132,7 @@ function Permit({ view, type, projectOrganizationId }) {
           flexDirection: "column",
         }}
       >
-        <Box sx={themeStyle.permitBox}>
+        <Box flex={1} sx={themeStyle.permitBox}>
           {/* <Box sx={{ width: "15%" }}>
             <Typography
               sx={{ ...themeStyle.titleTypo, ...themeStyle.permitType }}
@@ -149,10 +150,12 @@ function Permit({ view, type, projectOrganizationId }) {
           </Box> */}
           {/* Render avatars dynamically with image URLs */}
           <Stack
+          flex={1}
             direction={"row"}
             flexWrap={"wrap"}
             maxWidth={"900px"}
-            maxHeight={"500px"}
+            overflow={"auto"}
+            maxHeight={{sm:"500px", xs:"200px"}}
             sx={scrollable}
           >
             {(RecentfileUrls?.length < 1 || isLoading) ? (
@@ -369,7 +372,7 @@ function Permit({ view, type, projectOrganizationId }) {
           projectOrganizationId={projectOrganizationId}
         ></AddImage>
       )}
-    </div>
+    </>
   );
 }
 
@@ -421,12 +424,12 @@ const themeStyle = {
   titleTypo: {
     color: "#FFFFFF",
     fontFamily: 'var(--main-font-family)',
-    fontSize: { xl: "1.3rem", lg: 15, md: "1.3rem", xs: "1rem", },
+    fontSize: { xl: "1.3rem", lg: 15, md: "1.3rem", xs: "0.9rem", },
     margin: { sm: "1rem 2rem", xs: "2rem" },
   },
   buttonStyle: {
-    padding: "0.7rem 0.1rem",
-    fontSize: { xl: "0.9rem", lg: "0.8rem", md: "0.9rem", sm: "0.9rem", xs: "0.9rem", },
+    padding: {md: "0.7rem 0.1rem", xs:"0.6rem 0.1rem"},
+    fontSize: { xl: "0.9rem", lg: "0.8rem", md: "0.9rem", sm: "0.8rem", xs: "0.8rem", },
     marginRight: "1rem",
     backgroundColor: "#FFFFFF",
     color: "#4C8AB1",
@@ -434,7 +437,7 @@ const themeStyle = {
     borderRadius: { lg: "2.5rem", md: "2.5rem", sm: "2.5rem", xs: "0.5rem" },
     cursor: "pointer",
     width: { lg: "auto", md: "auto", sm: "auto", xs: "100%" },
-    minWidth: "9.5rem",
+    minWidth: {sm:"9.5rem", xs:"8.5rem"},
     // maxWidth: "19.5rem",
     display: "flex",
     justifyContent: "center",

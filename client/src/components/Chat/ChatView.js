@@ -474,7 +474,7 @@ function ChatView({
             <Typography
               sx={{
                 fontFamily: "var(--main-font-family)",
-                fontSize: { xl: "15px", lg: "12px", md: "15px", xs: "15px" },
+                fontSize: { xl: "15px", lg: "12px", md: "14px", xs: "14px" },
                 fontWeight: 600,
               }}
             >
@@ -797,7 +797,7 @@ function ChatView({
                                       sx={{
                                         color: "text.primary",
                                         fontWeight: 500,
-                                        fontSize: "0.875rem",
+                                        fontSize: {md:"0.875rem", xs: "0.75rem"},
                                         maxWidth: "250px",
                                         overflow: "hidden",
                                         textOverflow: "ellipsis",
@@ -815,7 +815,9 @@ function ChatView({
                           {/* Time:{moment
                           .utc(msg.createdAt).tz(moment.tz.guess())
                           .format("MMM, D, YYYY HH:mm A")} || mesg:   */}
+                          <Typography fontSize={{md:"14px", xs:"12px"}}>
                           {msg.content}
+                          </Typography>
                           {/* <div ref={messageBoxRef} /> */}
                         </Box>
                         {isSender && (
@@ -979,6 +981,7 @@ export default ChatView;
 const InputStyle = {
   "& .MuiInputBase-input::placeholder": {
     fontFamily: "var(--main-font-family)",
+    fontSize: {sm: "14px", xs:'12px'}
   },
   width: "60%",
   backgroundColor: "#EDF2F6",

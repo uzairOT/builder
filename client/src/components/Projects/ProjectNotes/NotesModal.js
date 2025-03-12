@@ -220,6 +220,11 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
               value={noteSubject}
               onChange={handleNoteSubject}
               placeholder={t("ProjectNotes.placeholder1")}
+              slotProps={{
+                input:{
+                  maxLength: 150
+                }
+              }}
               sx={{
                 '.MuiInput-input':{
                   marginBottom:'0px'

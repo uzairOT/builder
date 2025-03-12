@@ -106,6 +106,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
         pt={2}
         justifyContent={"space-between"}
         height={{xl:"calc(92vh - 165px)", lg:"calc(92vh - 207px)", md:'calc(92vh - 203px)', sm:'calc(92vh - 203px)', xs:'calc(92vh - 203px)' }}
+        width={'inherit'}
       >
         {isNoteSelected ? (
           <>
@@ -126,6 +127,8 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                 fontSize={"24px"}
                 fontWeight={"700"}
                 color={"#202227"}
+                sx={{wordBreak:'break-all', hyphens:'auto'}}
+                
               >
                 {notes?.subject}
               </Typography>

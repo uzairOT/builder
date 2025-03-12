@@ -13,7 +13,7 @@ const VerticalTabs = ({ notes, handleSelectedButton , selectedButton}) => {
           return (
             <Button key={note.id} style={{borderRadius: '7px', height:'100%'}} sx={{ width: "100%", height: "100%", paddingLeft:'32px', '--ButtonGroup-separatorColor': 'white', backgroundColor: selectedButton === index ? '#EBF3F8' : '', }} onClick={()=>{handleSelectedButton(index)}}>
               <Stack width={"100%"}  height={'100%'} >
-                <Typography textAlign={"left"} fontSize={'16px'} fontWeight={'700'} color={'#202227'} height={'100%'}>{note?.subject}</Typography>
+                <Typography textAlign={"left"} textOverflow={"ellipsis"} overflow={"hidden"} width={"210px"} fontSize={'16px'} fontWeight={'700'} color={'#202227'} height={'100%'}>{note?.subject}</Typography>
                 <Typography
                  fontSize={'12px'}
                  fontWeight={'200'}
@@ -22,6 +22,7 @@ const VerticalTabs = ({ notes, handleSelectedButton , selectedButton}) => {
                   width={"200px"}
                   overflow={"hidden"}
                   whiteSpace={"nowrap"}
+
                   height={'100%'}
                 >
                   {note?.content}

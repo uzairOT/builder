@@ -79,9 +79,9 @@ const InnerLayout2 = () => {
         direction={{ xl: "row", lg: "row" }}
         pt={1}
         spacing={1}
-        sx={{ height: "calc(92vh - 295px)" }}
+        sx={{ height: {lg:"calc(92vh - 295px)", xs:"100%"} }}
       >
-        <Stack flex={2} height={"inherit"}>
+        <Stack flex={{sm:2, xs:1}} height={"inherit"}>
           <Outlet
             context={[
               SuperAdminId,

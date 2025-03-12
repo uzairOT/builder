@@ -159,7 +159,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
   // console.log("cantInvite: ", canInvite, role, SuperAdminId)
   return (
     <Stack pl={{ xl: 3, lg: 3, md: 1 }}>
-      <Stack direction={"row"} sx={{ justifyContent: "space-between" }} pr={1}>
+      <Stack direction={{xl:"row", lg:"column", xs:"row"}} sx={{ justifyContent: "space-between" }} pr={1}>
         <Typography sx={themeStyle.title}>{t("ProjectTeam.title1")}</Typography>
 
         <Stack
@@ -174,7 +174,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
                 variant={"outlined"}
                 handleOnClick={handleOpenPendingInvitations}
                 fontFamily={"var(--main-font-family)"}
-                fontSize={{sm:"15px", xs:"11px"}}
+                fontSize={{xl:"15px",lg:"12px",sm:"12px", xs:"11px"}}
               >
                 {t("ProjectTeam.title2")}
               </BuilderProButton>
@@ -187,10 +187,11 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
             backgroundColor={"#FFAC00"}
             variant={"contained"}
             Icon={BuilderProNavbarShare}
+            marginLeft={{sm:"15px", xs:"8px"}}
             handleOnClick={handleShare}
             sx={{ fontSize: { xl: 12, lg: 10, m: 12, xs: 12 } }}
           >
-            {true ? <Typography sx={{ fontSize: { xl: 14, lg: 14, md: 14, xs: 14 }, marginLeft: "4px" }}>{t("ProjectTeam.title5")}</Typography> : ""}
+            {true ? <Typography sx={{ fontSize: { xl: 14, lg: 12, md: 14, xs: 12 }, marginLeft: "4px" }}>{t("ProjectTeam.title5")}</Typography> : ""}
           </BuilderProButton>
         </Stack>
       </Stack>
@@ -345,7 +346,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
           justifyContent={"space-between"}
           alignItems={"center"}
         >
-          <Typography sx={{ p: 2 }} color={"#4C8AB1"}>
+          <Typography sx={{ p: 2, fontSize: {sm:16, xs:14} }} color={"#4C8AB1"}>
             {t("ProjectTeam.title4")}
           </Typography>
           <IconButton onClick={handleClose}>
@@ -380,6 +381,15 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
                   borderBottom: "none",
                   outline: "none",
                 },
+                "& input::placeholder": {
+                  fontSize: {
+                    xs: "12px", // Smallest screens
+                    sm: "14px", // Small screens
+                    md: "16px", // Medium and up
+                  },
+                  color: "#A9A9A9", // Optional: control placeholder color
+                  opacity: 1, // Ensure it's fully visible
+                },
               }}
               disableUnderline={true}
             />
@@ -398,6 +408,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
                     top: "3px",
                     fontFamily: "var(--main-font-family)",
                     color: "#202227",
+                    display: {sm:"block", xs:"none"},
                   }}
                 >
                   Select Role
@@ -475,7 +486,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
             variant={"contained"}
             handleOnClick={handleInviteUser}
           >
-            <Typography sx={{ fontSize: { xl: 14, lg: 14, m: 14, xs: 14, marginLeft: "4px" } }}>{t("ProjectTeam.title4")}</Typography>
+            <Typography sx={{ fontSize: { xl: 14, lg: 14, md: 14, xs: 12, marginLeft: "4px" } }}>{t("ProjectTeam.title4")}</Typography>
           </BuilderProButton>
         </Stack>
 
@@ -505,7 +516,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
                   ></img>
                   <Typography
                     color={"#202227"}
-                    fontSize={"14px"}
+                    fontSize={{sm:"14px", xs:"12px"}}
                     pl={2}
                     fontFamily={"var(--main-font-family)"}
                   >
@@ -514,7 +525,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
                 </Stack>
                 <Typography
                   fontFamily={"var(--main-font-family)"}
-                  fontSize={"14px"}
+                  fontSize={{sm:"14px", xs:"12px"}}
                   width={'110px'}
                 >
                   {roleFormat(user.role)}
@@ -558,7 +569,7 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
       >
         {pendingInvitations?.length > 0 && (
           <>
-            <Typography variant="h6" sx={{ padding: "7px" }}>
+            <Typography fontSize={{sm:"16px", xs:"14px"}} sx={{ padding: "7px" }}>
               {t("ProjectTeam.title2")}
             </Typography>
             <Divider />
@@ -567,12 +578,15 @@ const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
                 <ListItem key={pending.id}>
                   <ListItemText
                     primary={pending.userEmail}
+                    primaryTypographyProps={{
+                      fontSize: {sm:"14px", xs:"12px"},
+                    }}
                     secondary={
                       <>
-                        <Typography variant="body2" component="span">
+                        <Typography fontSize={{sm:"14px", xs:"12px"}} component="span">
                           ({pending.userRole})
                         </Typography>
-                        <Typography variant="body2" component="span">
+                        <Typography fontSize={{sm:"14px", xs:"12px"}} component="span">
                           {pending.userCompany}
                         </Typography>
                       </>
@@ -603,7 +617,7 @@ export default ProjectTeam;
 
 const themeStyle = {
   title: {
-    fontSize: "16px",
+    fontSize: {xl:"16px", lg:"14px", xs:"14px"},
     color: "#4C8AB1",
     fontFamily: "var(--main-font-family)",
     pl: { md: 0, xs: 2.5 },

@@ -7,7 +7,7 @@ const ImagesView = () => {
   const [SuperAdminId, projectOrganizationId] = useOutletContext()
   const {t} = useTranslation()
   return (
-    <Paper flex={2} style={{height:'100%', borderRadius:'14px'}}>
+    <Paper style={{height:'100%', borderRadius:'14px', display:"flex", flexDirection:"column"}}>
        <Permit view={t("ProjectFiles.ProjectImages.title1")} type={'image'}  projectOrganizationId={projectOrganizationId}/>
     </Paper>
   )
