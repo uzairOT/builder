@@ -30,6 +30,7 @@ import { Close } from "@mui/icons-material";
 import axios from "axios";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import { uploadToS3 } from "../../../utils/S3";
+import { useTranslation } from "react-i18next";
 
 const AccountModal = ({
   open,
@@ -44,6 +45,7 @@ const AccountModal = ({
   account,
   updateUserAccount,
 }) => {
+  const {t} = useTranslation()
   const [fileName, setFileName] = useState("");
   const [fileType, setFileType] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
@@ -96,7 +98,7 @@ const AccountModal = ({
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://3.135.107.71/project/file",
+          "https://builderbuilder.net/project/file",
           {
             fileName,
             fileType,
@@ -129,7 +131,7 @@ const AccountModal = ({
           userId: userId,
           accountImage: uploadedFileUrl,
         });
-        console.log(res);
+        // console.log(res);
         if (res?.error?.status === "FETCH_ERROR") {
           throw new Error("Network response was not OK");
         }
@@ -215,10 +217,10 @@ const AccountModal = ({
             mr={5}
           >
             <DialogTitle sx={headingStyle}>
-              {open ? "Add" : updateOpen ? "Update" : ""} {title}
+              {open ? t("Button.add") : updateOpen ? t("Button.update") : ""} {title}
             </DialogTitle>
             <IconButton
-              style={{ width: "30px", height: "30px" }}
+              style={{ width: "30px", height: "30px", marginTop: '20px' }}
               onClick={handleClose}
             >
               <Close />
@@ -227,7 +229,7 @@ const AccountModal = ({
           <DialogContent
             sx={{
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "start",
               margin: "30px",
               flexDirection: "column",
               gap: "16px",
@@ -247,11 +249,12 @@ const AccountModal = ({
                   borderRadius: "18px",
                   justifyContent: "center",
                   margin: "20px",
-                  height: "180px"
+                  height: "180px",
+                  padding: "0px !important",
                 }}
               >
                 <div
-                  style={{ textAlign: "center", width: "100%", height: "100%" }}
+                  style={{ textAlign: "center", width: "100%", height: "100%" , display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}
                   onDragOver={(e) => e.preventDefault()}
                   onDragEnter={(e) => e.preventDefault()}
                   onDrop={handleDrop}
@@ -271,23 +274,27 @@ const AccountModal = ({
                       alt=""
                       width={"120px"}
                       height={"100px"}
+                     
                     />
 
                     {/* Text */}
                     <Typography variant="body1" sx={labelStyle}>
-                      {image ? <></> : "Upload your photo"}
+                      {image ? <></> : `${t("Button.upload")} ${t("Settings.Accounts.table.accountImg")}`}
                     </Typography>
                   </label>
                 </div>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography variant="body1">Account Name</Typography>
+                <Typography variant="body1">{t("Settings.Accounts.table.accountName")}</Typography>
                 <TextField
                   error={errors.accountName ? true : false}
                   value={values.accountName}
-                  placeholder="John Doe"
+                  placeholder={t("Settings.Accounts.table.accountName")}
                   fullWidth
                   name={"accountName"}
+                  sx={{
+                    width: "calc(100% - 20px)",
+                  }}
                   inputProps={{
                     style: {
                       ...InputStyle,
@@ -308,14 +315,17 @@ const AccountModal = ({
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography variant="body1">Account Link</Typography>
+                <Typography variant="body1">{t("Settings.Accounts.table.accountLink")}</Typography>
                 <TextField
                   type="text"
                   error={errors.accountLink ? true : false}
                   value={values.accountLink}
-                  placeholder="Account Link"
+                  placeholder={t("Settings.Accounts.table.accountLink")}
                   fullWidth
                   name={"accountLink"}
+                  sx={{
+                    width: "calc(100% - 20px)",
+                  }}
                   inputProps={{
                     style: {
                       ...InputStyle,
@@ -339,20 +349,23 @@ const AccountModal = ({
             </Grid>
             <Grid container spacing={4}>
               <Grid item xs={12} sm={12}>
-                <Typography variant="body1">Account Details</Typography>
+                <Typography variant="body1">{t("Settings.Accounts.table.accountDetails")}</Typography>
                 <TextField
                   // padding={1}
                   multiline
                   minRows={4}
                   error={errors.accountType ? true : false}
                   value={values.accountType}
-                  placeholder="Account Details"
+                  placeholder={t("Settings.Accounts.table.accountDetails")}
                   fullWidth
                   name={"accountType"}
                   InputProps={{
                     style:{
                       padding:0
                     }
+                  }}
+                  sx={{
+                    width: "calc(100% - 20px)",
                   }}
                   inputProps={{
                     style: {
@@ -390,15 +403,15 @@ const AccountModal = ({
               sm={12}
               md={6}
               lg={6}
-              sx={{ textAlign: "center" }}
+              sx={{ textAlign: "center", }}
             >
               <Button
                 buttonText={
                   isSubmitting
-                    ? "Submitting"
+                    ? t("Button.submitting")
                     : updateOpen
-                    ? "Update Account"
-                    : "Add Account"
+                    ? `${t("Button.update")} ${title}`
+                    : `${t("Button.add")} ${title}`
                 }
                 color="#ffffff"
                 backgroundColor={isSubmitting ? "gray" : "#4C8AB1"}
@@ -415,10 +428,10 @@ const AccountModal = ({
               sm={12}
               md={6}
               lg={6}
-              sx={{ textAlign: "center" }}
+              sx={{ textAlign: "center",margin:'0px' }}
             >
               <Button
-                buttonText="Reset"
+                buttonText={t("Button.reset")}
                 color="#4C8AB1"
                 border={"1px solid #4C8AB1"}
                 width="150px"
@@ -437,10 +450,10 @@ const AccountModal = ({
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   border: "1px solid #E0E4EC",
   padding: "10px",
-  width: { xl: "250px", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
+  width: { xl: "250px", lg: "100%", md: "100%", sm: "calc(100% - 20px) ", xs: "calc(100% - 20px)" },
   "& .MuiOutlinedInputRoot": {
     "& fieldset": {
       border: "none",
@@ -449,7 +462,7 @@ const InputStyle = {
 };
 const labelStyle = {
   marginTop: "10px",
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "400",
   fontSize: "13px",
   color: "#535353C9",
@@ -459,7 +472,7 @@ const headingStyle = {
   marginTop: "20px",
   // marginBottom: "10px",
   marginLeft: "25px",
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "500",
   fontSize: "22px",
   color: "#4C8AB1",

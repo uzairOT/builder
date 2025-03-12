@@ -5,18 +5,20 @@ import HumidityImg from "./assets/images/humidity.png";
 import WindImg from "./assets/images/wind.png";
 import { getFormattedWeatherData } from "../../../services/WeatherService";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next';
 import {
   setDailyForecast,
   setTemperatureUnit,
 } from "../../../redux/slices/DailyForecast/dailyForecastSlice";
+import { getWeatherIcon } from "../../../utils/weatherFunctions";
 // import { setTemperatureUnit } from "../../../redux/slices/Weather/weatherSlice";
 // import { WiHumidity, WiStrongWind } from 'react-icons/wi';
 
 const WeatherAppCurrentForecast = () => {
+  const { t } = useTranslation();
   const query = useSelector((state) => state.dailyForecast.query);
   const dispatch = useDispatch();
   const [currentWeather, setCurrentWeather] = useState({});
-
   const handleUnitChange = (event) => {
     dispatch(setDailyForecast([]));
     dispatch(setTemperatureUnit(event.target.value));
@@ -26,8 +28,8 @@ const WeatherAppCurrentForecast = () => {
     const fetchWeather = async () => {
       try {
         const data = await getFormattedWeatherData({
-          lat: "34.0549",
-          lon: "118.2426",
+          lat: query.lat,
+          lon: query.lon,
           units: query.temperatureUnit,
         });
         //console.log(data);
@@ -39,8 +41,6 @@ const WeatherAppCurrentForecast = () => {
     fetchWeather();
   }, [query]);
 
-  useEffect(() => {}, []);
-
   return (
     <Box
       display={"flex"}
@@ -50,6 +50,7 @@ const WeatherAppCurrentForecast = () => {
           xl: "space-between",
           lg: "space-between",
           md: "center",
+          xs:'center'
         },
       }}
       width={"100%"}
@@ -63,7 +64,7 @@ const WeatherAppCurrentForecast = () => {
       >
         <Box
           display={"flex"}
-          justifyContent={"start"}
+          justifyContent={{md:"start", xs:'center'}}
           alignItems={"center"}
           width={"100%"}
         >
@@ -75,7 +76,7 @@ const WeatherAppCurrentForecast = () => {
           >
             <Box
               component="img"
-              src={SunnyWindy}
+              src={getWeatherIcon(currentWeather?.details)}
               alt="SunnyWindy"
               sx={themeStyle.image}
             />
@@ -85,7 +86,7 @@ const WeatherAppCurrentForecast = () => {
                 {query.temperatureUnit === "metric" ? "C" : "F"}
               </Typography>
               <Typography sx={{ ...themeStyle.text, fontSize: "13px" }}>
-                Feels like:{" "}
+              {t('userProject.weather.title13')}{" "}
                 <span sx={{ fontSize: "18px", display: "inline" }}>
                   {Math.round(
                     currentWeather?.feels_like ? currentWeather?.feels_like : 0
@@ -106,8 +107,8 @@ const WeatherAppCurrentForecast = () => {
               value={query.temperatureUnit}
               onChange={handleUnitChange}
             >
-              <MenuItem value="imperial">Fahrenheit</MenuItem>
-              <MenuItem value="metric">Celsius</MenuItem>
+              <MenuItem value="imperial">{t('userProject.weather.dropdown.title1')}</MenuItem>
+              <MenuItem value="metric">{t('userProject.weather.dropdown.title2')}</MenuItem>
             </Select>
           </Box>
         </Box>
@@ -119,8 +120,8 @@ const WeatherAppCurrentForecast = () => {
               xl: "left",
               lg: "left",
               md: "left",
-              sm: "left",
-              xs: "left",
+              sm: "center",
+              xs: "center",
             },
           }}
           width={"100%"}
@@ -138,7 +139,7 @@ const WeatherAppCurrentForecast = () => {
               {currentWeather?.humidity ? currentWeather?.humidity : 0}%
             </Typography>
             <Typography sx={{ ...themeStyle.text }} variant="body2">
-              Humidity
+            {t('userProject.weather.title11')}
             </Typography>
           </Stack>
 
@@ -156,7 +157,7 @@ const WeatherAppCurrentForecast = () => {
               {query.temperatureUnit === "metric" ? "m/s" : "mph"}
             </Typography>
             <Typography sx={{ ...themeStyle.text }} variant="body2">
-              Wind speed
+            {t('userProject.weather.title12')}
             </Typography>
           </Stack>
         </Box>
@@ -167,13 +168,14 @@ const WeatherAppCurrentForecast = () => {
 
 const themeStyle = {
   degreeDropdown: {
+    fontFamily: 'var(--main-font-family)',
     display: "flex",
     alignSelf: "flex-start",
     justifySelf: "flex-end",
   },
   degreeDropdownMenu: {
     borderRadius: "50px",
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     color: "#616161",
     fontSize: {md:"13px", xs:"11px"},
     height: "28px",
@@ -188,9 +190,13 @@ const themeStyle = {
   image: {
     width: "100px",
     height: "100px",
+    marginRight:'8px',
+    // marginBottom: '4px'
   },
   text: {
     color: "#4C8AB1",
+    fontFamily: 'var(--main-font-family)',
+
   },
 };
 

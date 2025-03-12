@@ -2,9 +2,11 @@ import { Box, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { socket } from "../../../socket";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 const ProgressCardHeader = ({ project }) => {
+  const { t } = useTranslation();
   const id = project?.id;
   let data = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(data);
@@ -28,7 +30,7 @@ const ProgressCardHeader = ({ project }) => {
   // async function markMessagesAsRead(id, userId) {
   //   try {
   //     const response = await axios.post(
-  //       "http://3.135.107.71/projectChat/unreadMessageCount",
+  //       "https://builderbuilder.net/projectChat/unreadMessageCount",
   //       {
   //         projectId: id,
   //         userId: userId,
@@ -46,17 +48,17 @@ const ProgressCardHeader = ({ project }) => {
   //   }
   // }
   useEffect(() => {
-    // console.log("`````", project.Invoices.length);
+    // console.log("Uread Message", project?.unreadMessages);
     // markMessagesAsRead(id, userId);
     setUnreadMsg(project?.unreadMessages);
-  }, []);
+  }, [project?.unreadMessages]);
 
   // Listen for unread message count updates
   const unreadMessageCountListener = (data) => {
     // Update the dashboard or UI with the unread message count
     // updateUnreadMessageCountUI(data.projectId, data.unreadMessageCount);
     setUnreadMsg(data?.unreadCount);
-    console.log("data.unreadMessageCount data.unreadMessageCount", data);
+    console.log("Message Check", data?.unreadCount);
   };
 
   socket.emit(`${userId}-${id}`);
@@ -80,7 +82,10 @@ const ProgressCardHeader = ({ project }) => {
             {project.projectName}
           </Typography>
           <Typography p={1} sx={{ fontSize: "15px", ...themeStyle.colorGray }}>
-            Client Name: {project.clientName ? project.clientName : "No Client Name" }
+            {t("userProject.processcard.title1")}{" "}
+            {project.clientName
+              ? project.clientName
+              : `${t("userProject.processcard.title2")}`}
           </Typography>
         </Box>
         <Box width={"40%"} pr={1}>
@@ -89,7 +94,7 @@ const ProgressCardHeader = ({ project }) => {
               p={1}
               sx={{ ...themeStyle.colorBlue, fontSize: "12px", width: "120px" }}
             >
-              Pending Invoice
+              {t("userProject.processcard.title3")}
             </Typography>
             <Box sx={themeStyle.badge}>
               <Typography
@@ -111,13 +116,13 @@ const ProgressCardHeader = ({ project }) => {
             direction={"row"}
             justifyContent={"right"}
             onClick={navigateToChat}
-            sx={{position:'relative',  cursor: "pointer" }}
+            sx={{ position: "relative", cursor: "pointer" }}
           >
             <Typography
               p={1}
               sx={{ ...themeStyle.colorBlue, fontSize: "12px", width: "120px" }}
             >
-              Unread Messages
+              {t("userProject.processcard.title4")}
             </Typography>
             <Box sx={themeStyle.badge}>
               <Typography
@@ -145,15 +150,15 @@ export default ProgressCardHeader;
 const themeStyle = {
   colorBlue: {
     color: "#4C8AB1",
-    fontFamily: "inherit",
+    fontFamily: "var(--main-font-family)",
   },
   colorGray: {
     color: "#535353C9",
-    fontFamily: "inherit",
+    fontFamily: "var(--main-font-family)",
   },
   badge: {
     display: "flex",
     color: "#FFF",
-    fontFamily: "inherit",
+    fontFamily: "var(--main-font-family)",
   },
 };

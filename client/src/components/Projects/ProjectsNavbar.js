@@ -1,12 +1,10 @@
 import {
-  Box,
-  Button,
   Divider,
   IconButton,
   Stack,
+  Tooltip,
   Typography,
   useMediaQuery,
-  useRadioGroup,
   useTheme,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -15,61 +13,118 @@ import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import ProjectNavbarDrawer from "./ProjectNavbarDrawer";
 import { useSelector } from "react-redux";
 import { getUserRoleFromRedux } from "../../redux/slices/auth/userRoleSlice";
+import { useProjectPermissionCheck } from "./ProjectPermissions/ProjectsPermissionCheck";
+import { useGetProjectDataQuery } from "../../redux/apis/Project/projectApiSlice";
+import { t } from "i18next";
 
 const ProjectsNavbar = ({ project }) => {
   const location = useLocation();
   const page = location.pathname.split("/")[3];
   const theme = useTheme();
-  const showHamburger = useMediaQuery(theme.breakpoints.down("lg"));
+  const showHamburger = useMediaQuery(theme.breakpoints.down("xl"));
   const navigate = useNavigate();
   const userRole = useSelector(getUserRoleFromRedux);
-  console.log(userRole)
+  const userOrganization = useSelector(
+    (state) => state?.auth?.userInfo?.user?.userOrganization
+  );
+  const params = useParams();
+  const userId = useSelector((state) => state?.auth?.userInfo?.user?.id);
+  const { id: currentProjectId } = params;
+  const { data } = useGetProjectDataQuery({ projectId: currentProjectId });
+  // console.log("Data Test ", data?.data?.initialProposalApproved);
+  const permissionsState = useSelector(
+    (state) => state?.permissions?.permissions
+  );
+  // const changeOrderCheck = useSelector(
+  //   (state) => state?.projectInitialProposal?.initialPhases
+  // );
+
+  const projectReportPermission = useProjectPermissionCheck(
+    "project-report",
+    permissionsState
+  );
+
   const navLinks = [
     {
-      title: "Initial Proposal",
+      title: t("ProjectNavbar.title1"),
       path: `initial-proposal`,
     },
     {
-      title: "Images",
+      title: t("ProjectNavbar.title2"),
       path: "images",
     },
     {
-      title: "Permit",
+      title: t("ProjectNavbar.title3"),
       path: "permit",
     },
     {
-      title: "Drawing & Files",
+      title: t("ProjectNavbar.title4"),
       path: "drawing-files",
     },
+    ...(data?.data?.initialProposalApproved === false
+      ? [
+          {
+            title: t("ProjectNavbar.title5"),
+            path: "",
+            disabled: true,
+          },
+        ]
+      : [
+          {
+            title: t("ProjectNavbar.title5"),
+            path: "work-order",
+            disabled: false,
+          },
+        ]),
+
     {
-      title: "Work Order",
-      path: "work-order",
-    },
-    {
-      title: "Chat",
+      title: t("ProjectNavbar.title6"),
       path: "chat",
     },
     {
-      title: "Notes",
+      title: t("ProjectNavbar.title7"),
       path: "notes",
     },
+    ...(projectReportPermission
+      ? [
+          {
+            title: t("ProjectNavbar.title8"),
+            path: "project-report",
+          },
+        ]
+      : []),
+    ...(data?.data?.initialProposalApproved === false
+      ? [
+          {
+            title: t("ProjectNavbar.title9"),
+            path: "",
+            disabled: true,
+          },
+        ]
+      : [
+          {
+            title: t("ProjectNavbar.title9"),
+            path: "change-order",
+            disabled: false,
+          },
+        ]),
+
     {
-      title: "Project Report",
-      path: "project-report",
-    },
-    {
-      title: "Change Order",
-      path: "change-order",
-    },
-    {
-      title: "Invoices",
+      title: t("ProjectNavbar.title10"),
       path: "invoices",
     },
+    ...(userId === project?.userId
+      ? [
+          {
+            title: t("ProjectNavbar.title11"),
+            path: "project-permissions",
+          },
+        ]
+      : []),
   ];
   const [selectedNav, setSelectedNav] = useState(navLinks.path);
   const handleNavClick = (path) => {
-    if(userRole.userRole === 'client'){
-      
+    if (userRole.userRole === "client") {
     }
     // setSelectedNav(path);
   };
@@ -77,9 +132,9 @@ const ProjectsNavbar = ({ project }) => {
     navigate(-1);
     // handleNavClick("");
   };
-  useEffect(()=>{
-   setSelectedNav(page)
-  },[page])
+  useEffect(() => {
+    setSelectedNav(page);
+  }, [page]);
 
   return (
     <Stack
@@ -96,27 +151,23 @@ const ProjectsNavbar = ({ project }) => {
           />
         </IconButton>
         {/* <img src={project?.image} alt='Project' width={'60px'} height={'35px'} style={{borderRadius: '12px'}}></img> */}
-        <Link
-          to={ ``}
-          // onClick={() => handleNavClick("")}
-          style={{ textDecoration: "none" }}
-        >
+        <Link to={``} style={{ textDecoration: "none" }}>
           <Typography
             sx={{
               color: "#494A4A",
-              fontSize: {xl:"20px",lg:"17px",md:"20px",xs:"20px"},
+              fontSize: { xl: "20px", lg: "17px", md: "20px", xs: "20px" },
               fontWeight: 600,
-              fontFamily: "Arial Rounded MT, sans-serif",
+              fontFamily: "var(--main-font-family)",
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
               maxWidth: {
-                xl:"19vw",
+                xl: "19vw",
                 lg: "19vw",
                 md: "50vw",
                 sm: "80vw",
                 xs: "70vw",
-              }, // Adjust this value based on your layout
+              },
             }}
           >
             {project?.projectName}
@@ -124,41 +175,61 @@ const ProjectsNavbar = ({ project }) => {
         </Link>
       </Stack>
 
-      {showHamburger && <ProjectNavbarDrawer navLinks={navLinks} />}
+      {showHamburger && (
+        <ProjectNavbarDrawer navLinks={navLinks} userRole={userRole} />
+      )}
       <Stack
         direction={"row"}
         alignItems={"center"}
-        spacing={1}
+        spacing={0.5}
         pr={2}
         pl={1}
-        display={{ xl: "flex", lg: "flex", md: "none", sm: "none", xs: "none" }}
+        display={{ xl: "flex", lg: "none", md: "none", sm: "none", xs: "none" }}
+        // minWidth={'80vw'}
       >
         {navLinks.map((navlink, index) => {
-          if(userRole.userRole 
-              === 'client' && (navlink.title === 'Notes' || navlink.title === 'Project Report' )){
+          if (
+            userRole?.userRole === "client" &&
+            (navlink.title === "Notes" || navlink.title === "Project Report")
+          ) {
             return <></>;
           }
           return (
             <React.Fragment key={index}>
-              <Link
-                to={`${navlink.path}`}
-                style={{ textDecoration: "none" }}
-                onClick={() => handleNavClick(navlink.path)}
-              >
-                <Typography
-                  color={selectedNav === navlink.path ? "#ffac00" : "#494A4A"}
-                  fontSize={{xl:"15px", lg:'11px'}}
-                  fontWeight={"400"}
-                  fontFamily={"Arial Rounded MT, sans-serif"}
-                  pr={1}
+              {navlink.disabled ? (
+                <Tooltip title="You can't access this while the initial phases are not approved">
+                  <Typography
+                    color="#A0A0A0"
+                    fontSize={{ xl: "15px", lg: "11px" }}
+                    fontWeight={"400"}
+                    fontFamily={"var(--main-font-family)"}
+                    pr={0.5}
+                    style={{ cursor: "not-allowed" }}
+                  >
+                    {navlink.title}
+                  </Typography>
+                </Tooltip>
+              ) : (
+                <Link
+                  to={`${navlink.path}`}
+                  style={{ textDecoration: "none" }}
+                  onClick={() => handleNavClick(navlink.path)}
                 >
-                  {navlink.title}
-                </Typography>
-              </Link>
+                  <Typography
+                    color={selectedNav === navlink.path ? "#ffac00" : "#494A4A"}
+                    fontSize={{ xl: "15px", lg: "11px" }}
+                    fontWeight={"400"}
+                    fontFamily={"var(--main-font-family)"}
+                    pr={0.5}
+                  >
+                    {navlink.title}
+                  </Typography>
+                </Link>
+              )}
               {index !== navLinks.length - 1 && (
                 <Divider
                   orientation="vertical"
-                  style={{ borderWidth: "1px" }}
+                  style={{ borderWidth: "1px", marginRight:'4px' }}
                   flexItem
                 />
               )}

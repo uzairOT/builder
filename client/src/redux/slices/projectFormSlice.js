@@ -8,6 +8,8 @@ const initialState = {
   workDone: '',
   estimatedPrice: '',
   location: '',
+  lat:0,
+  lng:0,
   clientName: '',
   projectColor:'#FFF',
   start_time: '',
@@ -33,6 +35,10 @@ const projectFormSlice = createSlice({
     },
     setLocation: (state, action) => {
       state.location = action.payload;
+    },
+    setLatLng: (state, action) => {
+      state.lat = action.payload.lat;
+      state.lng = action.payload.lng;
     },
     setClientName: (state, action) => {
       state.clientName = action.payload;
@@ -91,7 +97,8 @@ export const {
   resetUserAndRoleEmail,
   setEndTime,
   setStartTime,
-  setSkipInvite
+  setSkipInvite,
+  setLatLng
 } = projectFormSlice.actions;
 
 export const selectProjectForm = state => state.projectForm;

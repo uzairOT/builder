@@ -15,7 +15,8 @@ import {
   Checkbox,
   Stack,
 } from "@mui/material";
-import { useGetTeamMembersQuery } from "../../../redux/apis/Project/projectApiSlice";
+import { CloseRounded } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 const style = {
   position: "absolute",
@@ -43,8 +44,10 @@ const AssignTeamMembers = ({
   data,
   hideCheck,
   workOrderTeam,
-  setSuperAdminId
+  setSuperAdminId,
+  createdBy
 }) => {
+  const {t} = useTranslation()
   const location = useLocation();
   const projectId = location.pathname.split("/")[2];
   //console.log("location: ", location, " projectId: ", projectId);
@@ -53,11 +56,11 @@ const AssignTeamMembers = ({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  console.log(workOrderTeam);
-  console.log(data);
+  // console.log(createdBy);
+  //console.log(data);
 
   const team = data?.team;
-  console.log(team);
+  //console.log(team);
 
   const handleEmailCheckBoxes = (event, row) => {
     const { checked } = event.target;
@@ -92,25 +95,30 @@ const AssignTeamMembers = ({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {hideCheck ? "Assigned Users" : "Assign Users"}
+            {hideCheck ? t("AssignTeamMembers.heading1") : t("AssignTeamMembers.heading2")}
           </Typography>
+          <IconButton onClick={handleClose}>
+            <CloseRounded />
+          </IconButton>
+          </Stack>
           <Divider />
           <Box sx={{overflow:'auto'}}>
             <Table >
               <TableHead>
                 <TableRow>
                   {!hideCheck && <TableCell></TableCell>}
-                  <TableCell>Name</TableCell>
-                  <TableCell>Role</TableCell>
-                  <TableCell>Email</TableCell>
+                  <TableCell>{t("AssignTeamMembers.table.title1")}</TableCell>
+                  <TableCell>{t("AssignTeamMembers.table.title2")}</TableCell>
+                  <TableCell>{t("AssignTeamMembers.table.title3")}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {team?.length < 2 ? (
                   <TableRow>
                     <TableCell></TableCell>
-                    <TableCell>No Team Members</TableCell>
+                    <TableCell>{t("AssignTeamMembers.noMembers")}</TableCell>
                     <TableCell></TableCell>
                     <TableCell></TableCell>
                   </TableRow>
@@ -119,6 +127,10 @@ const AssignTeamMembers = ({
                     if (hideCheck) {
                       if (workOrderTeam.includes(`${row.userId}`)) {
                         if(row.role === 'Superadmin'){
+                          // setSuperAdminId(row.userId)
+                          return <></>
+                        }
+                        if(createdBy == row.userId){
                           // setSuperAdminId(row.userId)
                           return <></>
                         }
@@ -139,7 +151,7 @@ const AssignTeamMembers = ({
                             <TableCell>
                               {row.firstName} {row.lastName}
                             </TableCell>
-                            <TableCell>{row.role}</TableCell>
+                            <TableCell>{t(`ProjectTeam.role.${row.role}`)}</TableCell>
                             <TableCell>{row.email}</TableCell>
                           </TableRow>
                         );
@@ -149,6 +161,10 @@ const AssignTeamMembers = ({
                     } else {
                       if(row.role === 'Superadmin'){
                         setSuperAdminId(row.userId)
+                        return <></>
+                      }
+                      if(createdBy == row.userId){
+                        // setSuperAdminId(row.userId)
                         return <></>
                       }
                       return (
@@ -168,7 +184,7 @@ const AssignTeamMembers = ({
                           <TableCell>
                             {row.firstName} {row.lastName}
                           </TableCell>
-                          <TableCell>{row.role}</TableCell>
+                          <TableCell>{t(`ProjectTeam.role.${row.role}`)}</TableCell>
                           <TableCell>{row.email}</TableCell>
                         </TableRow>
                       );

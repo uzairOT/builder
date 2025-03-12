@@ -4,8 +4,10 @@ import ReportsPieChart from "./ReportsPieChart";
 import CircleIcon from "@mui/icons-material/Circle";
 import { useGetReportsStatsMutation } from "../../redux/apis/Reports/reportsApiSlice";
 import { useParams } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const TotalProjects = () => {
+  const {t} = useTranslation()
   let dataUser = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(dataUser);
   const currentUser = userInfo?.user;
@@ -19,14 +21,14 @@ const TotalProjects = () => {
   const fetchReportsStats = async () => {
     try {
       const result = await getReportsStats({ userId, projectId }).unwrap();
-      console.log("Success:", result);
+      // console.log("Success:", result);
     } catch (err) {
       console.error("Failed to fetch reports stats:", err);
     }
   };
 
   useEffect(() => {
-    console.log("090909()()()(userIduserIduserId", userId);
+    // console.log("090909()()()(userIduserIduserId", userId);
     fetchReportsStats();
   }, []);
   const remainingPercent =
@@ -57,58 +59,58 @@ const TotalProjects = () => {
 
   const completeProjectPercentage = Number.isNaN(data?.completedProjects / 100) ? '-' : data?.completedProjects / 100;
 
-  console.log("==-=-=-=-KPIIII", completeProjectPercentage);
+  // console.log("==-=-=-=-KPIIII", completeProjectPercentage);
 
   return (
     <>
       {isLoading ? (
         <Box sx={{ pt: 0.5 }}>
           <Skeleton />
-          <Skeleton />
-          <Skeleton />
+          {/* <Skeleton />
+          <Skeleton /> */}
         </Box>
       ) : (
         <Stack p={1}>
           <Typography
             fontSize={{xl:"15px", lg:"12px",md:"15px",xs:"15px"}}
             fontWeight={"500"}
-            fontFamily={"inherit"}
+            fontFamily={'var(--main-font-family)'}
             p={1}
           >
-            Total Projects
+            {t("ProjectReports.totalProjects.title1")}
           </Typography>
           <Stack direction={"row"}>
             <Stack flex={1}>
               <Typography
             fontSize={{xl:"27px", lg:"24px",md:"27px",xs:"27px"}}
             fontWeight={"500"}
-                fontFamily={"inherit"}
+                fontFamily={'var(--main-font-family)'}
                 p={"0px 8px 8px 8px"}
               >
                 {data?.totalProjects ? data.totalProjects : <Skeleton />}
               </Typography>
               <Stack direction={"row"} spacing={1} alignItems={"center"}>
                 <CircleIcon sx={{ color: "#45A5F6", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
-                <Typography fontFamily={"inherit"} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
-                  Done
+                <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"12px",md:"12px",xs:"12px"}}>
+                  {t("ProjectReports.totalProjects.title2")}
                 </Typography>
               </Stack>
               <Typography
                 pl={2}
-                fontFamily={"inherit"}
+                fontFamily={'var(--main-font-family)'}
                 fontSize={{xl:"18px",lg:"15px",md:"18px",xs:"18px"}}
               >
                 {data?.completedProjects}
               </Typography>
               <Stack direction={"row"} spacing={1} alignItems={"center"}>
                 <CircleIcon sx={{ color: "#DDE6FE", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
-                <Typography fontFamily={"inherit"} fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}>
-                  Remaining
+                <Typography fontFamily={'var(--main-font-family)'} fontSize={{xl:"12px",lg:"12px",md:"12px",xs:"12px"}}>
+                  {t("ProjectReports.totalProjects.title3")}
                 </Typography>
               </Stack>
               <Typography
                 pl={2}
-                fontFamily={"inherit"}
+                fontFamily={'var(--main-font-family)'}
                 fontSize={{xl:"18px",lg:"15px",md:"18px",xs:"18px"}}
               >
                 {data?.remainingProjects}
@@ -128,10 +130,10 @@ const TotalProjects = () => {
                   <Stack direction={"row"} spacing={1} alignItems={"center"}>
                     <CircleIcon sx={{ color: "#45A5F6", fontSize: {xl:"10px",lg:"8px",md:"10px",xs:"10px"} }} />
                     <Typography
-                      fontFamily={"inherit"}
-                      fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}
+                      fontFamily={'var(--main-font-family)'}
+                      fontSize={{xl:"12px",lg:"12px",md:"12px",xs:"12px"}}
                     >
-                      Done
+                      {t("ProjectReports.totalProjects.title2")}
                     </Typography>
                   </Stack>
                   <Typography textAlign={"right"}>
@@ -142,10 +144,10 @@ const TotalProjects = () => {
                   <Stack direction={"row"} spacing={1} alignItems={"center"}>
                     <CircleIcon sx={{ color: "#DDE6FE", fontSize:{xl:"10px",lg:"8px",md:"10px",xs:"10px"}}} />
                     <Typography
-                      fontFamily={"inherit"}
-                      fontSize={{xl:"12px",lg:"10px",md:"12px",xs:"12px"}}
+                      fontFamily={'var(--main-font-family)'}
+                      fontSize={{xl:"12px",lg:"12px",md:"12px",xs:"12px"}}
                     >
-                      Remaining
+                      {t("ProjectReports.totalProjects.title3")}
                     </Typography>
                   </Stack>
                   <Typography textAlign={"center"}>

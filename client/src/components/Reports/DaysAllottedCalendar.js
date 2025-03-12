@@ -96,18 +96,18 @@ const DaysAllottedCalendar = ({
       // Set the start range if it's not already set
       setStartRange(day);
       setEndRange(null);
-      console.log("Start Date:", day.format("YYYY-MM-DD"));
+      // console.log("Start Date:", day.format("YYYY-MM-DD"));
     } else if (!endRange) {
       // Set the end range if start range is already set
       setEndRange(day);
-      console.log("End Date:", day.format("YYYY-MM-DD"));
+      // console.log("End Date:", day.format("YYYY-MM-DD"));
     } else {
       // If both start and end ranges are already set, reset them
       setStartRange(day);
       setEndRange(null);
       setStartRange1(null);
       setEndRange1(null);
-      console.log("Start Date (Reset):", day.format("YYYY-MM-DD"));
+      // console.log("Start Date (Reset):", day.format("YYYY-MM-DD"));
     }
   };
 

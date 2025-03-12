@@ -1,13 +1,8 @@
 import {
   Avatar,
   Divider,
-  FormControl,
   IconButton,
-  Input,
   InputAdornment,
-  InputLabel,
-  MenuItem,
-  Select,
   Stack,
   TextField,
   Typography,
@@ -19,12 +14,13 @@ import {
   TableRow,
   Paper,
   CircularProgress,
+  Tooltip,
+  Container,
 } from "@mui/material";
 import * as yup from "yup";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import CloseIcon from "@mui/icons-material/Close";
-import LinkIcon from "@mui/icons-material/Link";
 import users from "./assets/data/users.json";
 import { Box, Modal } from "@mui/material";
 import {
@@ -39,7 +35,7 @@ import { toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notification
 import { formatMoney } from "../../../utils/Formatters/moneyFormat";
 import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
 import { useFormik } from "formik";
-
+import { useTranslation } from "react-i18next";
 const ShareModal = ({
   setShareToClient,
   setDone,
@@ -55,20 +51,18 @@ const ShareModal = ({
   const currentUser = userInfo?.user;
   const [currentPayment, setCurrentPayment] = useState([[]]);
   const [percentage, setPercentage] = useState([[]]);
-  const [userExits, setClientExists] = useState(false);
+  const {t} = useTranslation()
   const location = useLocation();
   const [errorState, setErrorState] = useState([]);
   const pathSegments = location.pathname.split("/");
   const [selectedUser, setSelectedUser] = useState("");
   const projectId = pathSegments[2];
   const userAuth = userRoleAuth.userRole === "supplier";
-  const { data, isError, refetch } = useGetProjectTeamQuery(projectId);
+  const { data } = useGetProjectTeamQuery(projectId);
   const [isLoading, setIsLoading] = useState(false);
-  const [clientInvoice, { data: invoiceData }] = useClientInvoiceMutation();
-  const [updatePhaseLine, { isLoading: updateIsLoading }] =
-    useUpdatePhaseLineMutation();
+  const [clientInvoice] = useClientInvoiceMutation();
+  const [updatePhaseLine] = useUpdatePhaseLineMutation();
   const rowsArray = Object.values(rowCheckboxes).flatMap(({ rows }) => rows);
-  console.log(userRoleAuth);
   const invoiceDataCall = async () => {
     try {
       const lineItemIds = rowsArray.flatMap((lineItem) => lineItem.id);
@@ -79,8 +73,8 @@ const ShareModal = ({
         projectId,
         supplier: userAuth,
         enteredEmail: formik?.values?.email,
+        notes: formik?.values?.notes,
       }).unwrap();
-      console.log("Success:", result);
       setInvoiceData(result);
       setRowCheckboxes({});
       dispatch(toggleWorkOrderDeclineRecall());
@@ -88,50 +82,12 @@ const ShareModal = ({
     } catch (err) {
       console.error("Failed to fetch reports stats:", err);
       toast.error(err?.data?.message || "Something went wrong!");
-      // setRowCheckboxes({})
-      // dispatch(toggleWorkOrderDeclineRecall())
       return false;
     }
   };
-  console.log("TEAMTEAMTEAMTEAMTEAMTEAM TEAMTEAMTEAMTEAMTEAM", currentPayment);
 
-  // useEffect(() => {
-  //   console.log("API CALLED090909()()()(userIduserIduserId");
-
-  // }, []);
-
-  //
-  const handleSetPayment = async (id, index, pendingPayment, outterIndex) => {
-    console.log(currentPayment[outterIndex][index]);
-    console.log(pendingPayment);
-    if (
-      parseFloat(currentPayment[outterIndex][index]) >
-      parseFloat(pendingPayment)
-    ) {
-      toast.error("Please enter a value less than the remaining cost");
-      return;
-    }
-    //on send button the line item will update against it and then the invoice will generate
-    try {
-      const res = await updatePhaseLine({
-        id: id,
-        currentPayment: currentPayment[outterIndex][index],
-        projectId: projectId,
-      });
-      toast.success("Payment has been set");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const team = data?.team;
-  const [open, setOpen] = useState(true);
-  const [userType, setUserType] = useState("");
   const handleClose = () => {
     setShareToClient(false);
-  };
-
-  const handleUserTypeChange = (event) => {
-    setUserType(event.target.value);
   };
 
   const handleChange = (
@@ -177,11 +133,18 @@ const ShareModal = ({
 
         return updatedErrorState;
       });
-
-      if (automated) {
-        const percentage =
-          (parseFloat(value) * 100) / parseFloat(pendingPayment);
-        handlePercentage(index, percentage, outerIndex, pendingPayment, false);
+      if (automated && value !== "") {
+        const numericValue = parseFloat(value) || 0; // Ensure numericValue is 0 if value is ""
+        const percentage = (numericValue * 100) / parseFloat(pendingPayment);
+        handlePercentage(
+          index,
+          percentage?.toFixed(2),
+          outerIndex,
+          pendingPayment,
+          false
+        );
+      } else if (value === "") {
+        handlePercentage(index, "0.00", outerIndex, pendingPayment, false); // Set to 0.00 for consistency
       }
 
       return updatedPayments;
@@ -190,6 +153,7 @@ const ShareModal = ({
   const formik = useFormik({
     initialValues: {
       email: "",
+      notes: "",
     },
     validationSchema: yup.object({
       email: yup
@@ -219,10 +183,14 @@ const ShareModal = ({
       }
       updatedPercentage[outerIndex][index] = value;
       if (automated) {
-        // console.log(automated);
-        // console.log()
         const payment = pendingPayment * (value / 100);
-        handleChange(index, payment, outerIndex, pendingPayment, false);
+        handleChange(
+          index,
+          payment?.toFixed(2),
+          outerIndex,
+          pendingPayment,
+          false
+        );
       }
       return updatedPercentage;
     });
@@ -230,24 +198,22 @@ const ShareModal = ({
 
   const handleUserSelect = (user) => {
     setSelectedUser(user);
-    // console.log("Selected user:", user);
   };
 
   const handleSend = async () => {
-    if (filterTeam?.length < 1) {
-      toast.warning("No User found");
-      return;
-    } else if (!selectedUser) {
-      toast.warning("Please select a user");
+    if (!formik.values.email && !selectedUser) {
+      toast.error("Please enter an email or select a team member.");
       return;
     }
+
+    // if (filterTeam.length < 1) {
+    //   toast.warning("No User found");
+    //   return;
+    // }
     setIsLoading(true);
-    console.log(lineItemData)
-    console.log(currentPayment)
     try {
       await handleSetAllPayments();
       const result = await invoiceDataCall();
-      console.log(result);
       if (result) {
         setDone(true);
         setShareToClient(false);
@@ -261,7 +227,7 @@ const ShareModal = ({
   const handleSetAllPayments = async () => {
     for (let i = 0; i < lineItemData.length; i++) {
       const { outerIndex, index, id, pendingPayment } = lineItemData[i];
-      if(!currentPayment[outerIndex][index]) {
+      if (!currentPayment[outerIndex][index]) {
         // toast.error("Please enter all fields");
         return;
       }
@@ -282,7 +248,6 @@ const ShareModal = ({
         console.log(err);
       }
     }
-    // toast.success("Succes");
   };
   const isValidIndex = (array, outerIndex, innerIndex) =>
     Array.isArray(array) &&
@@ -298,21 +263,31 @@ const ShareModal = ({
     if (!data?.team) return [];
 
     return data?.team.filter((user) => {
-      if (userRoleAuth.userRole === "supplier") {
+      if (
+        userRoleAuth.userRole === "supplier" ||
+        userRoleAuth.userRole === "subcontractor"
+      ) {
         return (
           user.role === "Superadmin" ||
-          user.role === "admin" ||
-          user.role === "projectManager"
+          user.role === "Admin" ||
+          user.role === "Project Manager"
         );
       } else {
-        return user.role === "Client";
+        return (
+          user.role === "Client" ||
+          user.role === "Admin" ||
+          user.role === "Project Manager" ||
+          user.role === "Subcontractor" ||
+          user.role === "Employee" ||
+          user.role === "Others"
+        );
       }
     });
   }, [data, userRoleAuth.userRole]);
 
   return (
     <>
-      <Modal open={open} onClose={setShareToClient}>
+      <Modal open={true} onClose={setShareToClient}>
         <Stack sx={style}>
           <Stack
             direction={"row"}
@@ -324,173 +299,239 @@ const ShareModal = ({
               justifyContent={"start"}
               alignItems={"center"}
               gap={1}
+              width={"100%"}
             >
-              <Typography
-                sx={{ p: 1 }}
-                color={"#4C8AB1"}
-                fontWeight={"500"}
-                fontSize={{ sm: "20px", xs: "16px" }}
-              >
-                Send to
-              </Typography>
-              <Box width={{ sm: "300px", xs: "150px" }}>
-                {/* Email input */}
-                {/* <Typography variant="body1">Email</Typography> */}
-                <TextField
-                  fullWidth
-                  id="email"
-                  name="email"
-                  placeholder="Email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.email && Boolean(formik.errors.email)}
-                  helperText={formik.touched.email ? formik.errors.email : ""}
-                  InputProps={{
-                    style: {
-                      ...InputStyle,
-                      border:
-                        formik.errors.email && formik.touched.email
-                          ? "1px solid #d32f2f"
-                          : "1px solid #E0E4EC",
-                    },
-                    maxLength: 50,
-                  }}
-                  inputProps={{
-                    style: {
-                      padding: "10px",
-                    },
-                  }}
-                />
+              <Box>
+                <Typography
+                  sx={{ p: 1 }}
+                  color={"#4C8AB1"}
+                  fontWeight={"500"}
+                  fontSize={{ sm: "20px", xs: "16px" }}
+                  whiteSpace={"nowrap"}
+                >
+                    {t("InvoiceModal.ShareModal.sendTo")}
+                </Typography>
+                <Box height={"22.91px"}></Box>
               </Box>
+              <Stack direction={{ md: "row", xs: "column" }} gap={{sm:1, xs:0}}>
+                <Box width={{ sm: "300px", xs: "180px" }}>
+                  {/* Email input */}
+                  <TextField
+                    fullWidth
+                    id="email"
+                    name="email"
+                    placeholder={t("InvoiceModal.ShareModal.email")}
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email ? formik.errors.email : ""}
+                    InputProps={{
+                      style: {
+                        ...InputStyle,
+                        border:
+                          formik.errors.email && formik.touched.email
+                            ? "1px solid #d32f2f"
+                            : "1px solid #E0E4EC",
+                      },
+                      maxLength: 50,
+                    }}
+                    inputProps={{
+                      style: {
+                        padding: "10px",
+                      },
+                    }}
+                  />
+                  {!formik.errors.email && <Box height={"22.91px"}></Box>}
+                </Box>
+                <Box width={{ sm: "300px", xs: "180px" }}>
+                  {/* Notes input */}
+                  <TextField
+                    fullWidth
+                    id="notes"
+                    name="notes"
+                    placeholder={t("InvoiceModal.ShareModal.notes")}
+                    value={formik.values.notes}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    InputProps={{
+                      style: {
+                        ...InputStyle,
+                      },
+                      maxLength: 50,
+                    }}
+                    inputProps={{
+                      style: {
+                        padding: "10px",
+                      },
+                    }}
+                  />
+                  <Box height={"22.91px"}></Box>
+                </Box>
+              </Stack>
             </Stack>
-            <IconButton onClick={handleClose}>
-              <CloseIcon sx={{ p: 2, color: "#535353", fontSize: "20px" }} />
-            </IconButton>
+            <Box>
+              <IconButton onClick={handleClose}>
+                <CloseIcon sx={{ p: 2, color: "#535353", fontSize: "20px" }} />
+              </IconButton>
+              <Box height={"22.91px"}></Box>
+            </Box>
           </Stack>
           <Divider variant="fullWidth" />
-          {data?.team.length > 0 ? (
-            filterTeam?.map((user, index) => {
-              // if (userRoleAuth.userRole === "supplier") {
-              //   if (
-              //     user.role === "Superadmin" ||
-              //     user.role === "admin" ||
-              //     user.role === "projectManager"
-              //   ) {
-              //     console.log(user);
-              //     // Continue to the main render if the role matches
-              //   } else {
-              //     return <></>; // Return an empty element if the role doesn't match
-              //   }
-              // } else {
-              //   if (user.role !== "Client") {
-              //     return <></>; // Return an empty element if the role doesn't match
-              //   } else {
-              //     setClientExists(true);
-              //   }
-              // }
-              return (
-                <Stack p={0.5} width={"100%"}>
-                  <Stack
-                    id={user.img}
-                    direction={"row"}
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                    pb={1}
-                    onClick={() =>
-                      handleUserSelect(() => {
-                        if (selectedUser.userId === user.userId) {
-                          return "";
-                        } else {
-                          return user;
+          <Typography>Users:</Typography>
+          <Stack height={"300px"} sx={{overflowY:'scroll'}}>
+            {filterTeam?.length > 0 ? (
+              filterTeam?.map((user, index) => {
+                // if (userRoleAuth.userRole === "supplier") {
+                //   if (
+                //     user.role === "Superadmin" ||
+                //     user.role === "admin" ||
+                //     user.role === "projectManager"
+                //   ) {
+                //     console.log(user);
+                //     // Continue to the main render if the role matches
+                //   } else {
+                //     return <></>; // Return an empty element if the role doesn't match
+                //   }
+                // } else {
+                //   if (user.role !== "Client") {
+                //     return <></>; // Return an empty element if the role doesn't match
+                //   } else {
+                //     setClientExists(true);
+                //   }
+                // }
+                return (
+                  <Stack p={{sm:0.5, xs:0}}>
+                    <Container justifyContent="center" display="flex">
+                      <Stack
+                        sx={{}}
+                        id={user.img}
+                        direction="row"
+                        alignItems="center"
+                        justifyContent={"center"}
+                        pb={{sm:1, xs:0}}
+                        onClick={() =>
+                          handleUserSelect(() => {
+                            if (selectedUser.userId === user.userId) {
+                              return "";
+                            } else {
+                              return user;
+                            }
+                          })
                         }
-                      })
-                    }
-                  >
-                    <Stack
-                      direction={"row"}
-                      justifyContent={"space-between"}
-                      alignItems={"center"}
-                      p={2}
-                      sx={{ cursor: "pointer" }}
-                      gap={1}
-                      border={
-                        selectedUser.userId === user.userId
-                          ? "2px solid black"
-                          : ""
-                      }
-                    >
-                      <Avatar
-                        src={user.img}
-                        alt="User Profile Pic"
-                        width={"32px"}
-                        height={"32px"}
-                        style={{ borderRadius: "50px" }}
-                      ></Avatar>
-                      <Typography
-                        color={"#202227"}
-                        fontSize={"14px"}
-                        pl={2}
-                        fontFamily={"Arial Rounded MT, sans-serif"}
                       >
-                        {user?.firstName}
-                      </Typography>
-                      <Typography
-                        fontFamily={"Arial Rounded MT, sans-serif"}
-                        fontSize={"14px"}
-                      >
-                        {user.role}
-                      </Typography>
-                      <Typography
-                        fontFamily={"Arial Rounded MT, sans-serif"}
-                        fontSize={"14px"}
-                      >
-                        {user.email}
-                      </Typography>
-                    </Stack>
-                  </Stack>
-                  {users.length - 1 === index ? <></> : <Divider />}
-                </Stack>
-              );
-            })
-          ) : (
-            <Typography p={2}>No Team Members were Assigned</Typography>
-          )}
+                        <Stack
+                          direction="row"
+                          justifyContent="space-between"
+                          alignItems="center"
+                          p={{sm:2, xs:1}}
+                          gap={1}
+                          border={
+                            selectedUser.userId === user.userId
+                              ? "2px solid black"
+                              : ""
+                          }
+                          sx={{
+                            cursor: "pointer",
+                            width: {
+                              xl: "370px",
+                              lg: "370px",
+                              md: "350px",
+                              xs: "340px",
+                            },
+                          }}
+                        >
+                          <Stack 
+                          direction={"row"}
+                          justifyContent="center"
+                          alignItems="center"
+                          gap={1}
+                          >
+                            <Avatar
+                              src={user.img}
+                              alt="User Profile Pic"
+                              sx={{
+                                width: "32px",
+                                height: "32px",
+                                borderRadius: "50px",
+                              }}
+                            />
+                            <Typography
+                              color="#202227"
+                              fontSize="14px"
+                              fontFamily="var(--main-font-family)"
+                            >
+                              {user?.firstName}
+                            </Typography>
+                          </Stack>
+                          <Typography
+                            fontFamily="var(--main-font-family)"
+                            fontSize="14px"
+                          >
+                            {user.role}
+                          </Typography>
+                          <Tooltip title={user.email} arrow>
+                            <Typography
+                              maxWidth="20ch"
+                              fontFamily="var(--main-font-family)"
+                              fontSize="14px"
+                              noWrap
+                              sx={{
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              {user.email}
+                            </Typography>
+                          </Tooltip>
+                        </Stack>
+                      </Stack>
+                    </Container>
 
-          <Stack justifyContent={"center"} alignItems={"flex-start"}>
-            {userAuth ? (
-              <></>
+                    {users.length - 1 === index ? <></> : <Divider />}
+                  </Stack>
+                );
+              })
             ) : (
-              <TableContainer component={Paper}>
+              <Typography p={2}>{t("InvoiceModal.ShareModal.noClientAssigned")}</Typography>
+            )}
+          </Stack>
+          <Stack justifyContent={"center"} alignItems={"flex-start"}>
+            {
+              <TableContainer
+                component={Paper}
+                style={{ height: "250px", backgroundColor: "transparent" }}
+              >
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell sx={tableCellStyles}>Title</TableCell>
+                      <TableCell sx={tableCellStyles}>{t("InvoiceModal.ShareModal.table.title1")}</TableCell>
                       <TableCell
                         sx={{
                           ...tableCellStyles,
                           display: { sm: "table-cell", xs: "none" },
                         }}
                       >
-                        Total Cost
+                        {t("InvoiceModal.ShareModal.table.title2")}
                       </TableCell>
-                      <TableCell sx={tableCellStyles}>Remaining</TableCell>
+                      <TableCell sx={tableCellStyles}>{t("InvoiceModal.ShareModal.table.title3")}</TableCell>
                       <TableCell
                         sx={{
                           ...tableCellStyles,
                           display: { sm: "table-cell", xs: "none" },
                         }}
                       >
-                        Invoice Pending
+                        {t("InvoiceModal.ShareModal.table.title4")}
                       </TableCell>
-                      <TableCell sx={tableCellStyles}>Payment</TableCell>
+                      <TableCell sx={tableCellStyles}>{t("InvoiceModal.ShareModal.table.title5")}</TableCell>
                       <TableCell
                         sx={{
                           ...tableCellStyles,
                           display: { sm: "table-cell", xs: "none" },
                         }}
                       >
-                        Percentage
+                        {t("InvoiceModal.ShareModal.table.title6")}
                       </TableCell>
                       {/* <TableCell sx={tableCellStyles}>Action</TableCell> */}
                     </TableRow>
@@ -500,11 +541,14 @@ const ShareModal = ({
                       phase.rows.map((row, index) => {
                         const totalCost =
                           Number(row.total) + Number(row.margin);
+                        const paymentPending = row.paymentPending
+                          ? row.paymentPending
+                          : 0;
                         lineItemData.push({
                           outerIndex,
                           index,
                           id: row.id,
-                          pendingPayment: row.paymentPending,
+                          pendingPayment: paymentPending,
                         });
                         return (
                           <TableRow key={row.id}>
@@ -522,19 +566,19 @@ const ShareModal = ({
                               sx={{ display: { sm: "table-cell", xs: "none" } }}
                             >
                               <Typography sx={tableCellStyles}>
-                                Total Cost: ${formatMoney(totalCost)}
+                                {t("InvoiceModal.ShareModal.table.title2")}: ${formatMoney(totalCost)}
                               </Typography>
                             </TableCell>
                             <TableCell>
                               <Typography sx={tableCellStyles}>
-                                Remaining: ${formatMoney(row.paymentPending)}
+                                {t("InvoiceModal.ShareModal.table.title3")}: ${formatMoney(row.paymentPending)}
                               </Typography>
                             </TableCell>
                             <TableCell
                               sx={{ display: { sm: "table-cell", xs: "none" } }}
                             >
                               <Typography sx={tableCellStyles}>
-                                Invoice Pending: $
+                                {t("InvoiceModal.ShareModal.table.title4")}: $
                                 {formatMoney(row.pendingAmount)}
                               </Typography>
                             </TableCell>
@@ -560,7 +604,7 @@ const ShareModal = ({
                                 helperText={
                                   isValidIndex(errorState, outerIndex, index) &&
                                   errorState[outerIndex][index]
-                                    ? "Enter below remaining"
+                                    ? "Enter below remaining cost"
                                     : ""
                                 }
                                 value={
@@ -572,15 +616,17 @@ const ShareModal = ({
                                     ? currentPayment[outerIndex][index]
                                     : ""
                                 }
-                                onChange={(e) =>
-                                  handleChange(
-                                    index,
-                                    e.target.value,
-                                    outerIndex,
-                                    row.paymentPending,
-                                    true
-                                  )
-                                }
+                                onChange={(e) => {
+                                  if (/^\d*\.?\d{0,2}$/.test(e.target.value)) {
+                                    handleChange(
+                                      index,
+                                      e.target.value,
+                                      outerIndex,
+                                      paymentPending,
+                                      true
+                                    );
+                                  }
+                                }}
                                 InputProps={{
                                   startAdornment: (
                                     <InputAdornment position="start">
@@ -611,22 +657,27 @@ const ShareModal = ({
                                 margin="dense"
                                 id="total"
                                 name="total"
-                                type="number"
+                                type="text"
                                 variant="standard"
                                 value={
                                   isValidIndex(percentage, outerIndex, index)
                                     ? percentage[outerIndex][index]
                                     : ""
                                 }
-                                onChange={(e) =>
-                                  handlePercentage(
-                                    index,
-                                    e.target.value,
-                                    outerIndex,
-                                    row.paymentPending,
-                                    true
-                                  )
-                                }
+                                onChange={(e) => {
+                                  let value = e.target.value;
+                                  console.log(value);
+                                  if (/^\d*\.?\d{0,2}$/.test(value)) {
+                                    // Pass the raw input value (string) to the handler
+                                    handlePercentage(
+                                      index,
+                                      value,
+                                      outerIndex,
+                                      row.paymentPending,
+                                      true
+                                    );
+                                  }
+                                }}
                                 InputProps={{
                                   startAdornment: (
                                     <InputAdornment position="start">
@@ -645,20 +696,6 @@ const ShareModal = ({
                                 }}
                               />
                             </TableCell>
-                            {/* <TableCell sx={tableCellStyles}>
-                              <BuilderProButton
-                                handleOnClick={() =>
-                                  handleSetPayment(
-                                    row.id,
-                                    index,
-                                    row.paymentPending,
-                                    outerIndex
-                                  )
-                                }
-                              >
-                                Set
-                              </BuilderProButton>
-                            </TableCell> */}
                           </TableRow>
                         );
                       })
@@ -666,87 +703,9 @@ const ShareModal = ({
                   </TableBody>
                 </Table>
               </TableContainer>
-            )}
+            }
           </Stack>
           <Divider variant="fullWidth" />
-          {/* <Stack direction={"row"} pl={4} pr={4} pt={2} pb={2} spacing={3}>
-            <Stack
-              direction={"row"}
-              border={"2px solid #FFAC00"}
-              borderRadius={"30px"}
-              pl={2}
-              width={"100%"}
-            >
-              <Input
-                placeholder="Select Person To Send Email To:"
-                aria-describedby="my-helper-text"
-                value={selectedUser?.firstName || ""}
-                onChange={(e) => setSelectedUser(e.target.value)}
-                sx={{
-                  "&::after": {
-                    borderBottom: "none",
-                  },
-                  "&:before": {
-                    borderBottom: "none",
-                  },
-                  "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before":
-                    {
-                      borderBottom: "none",
-                    },
-                  width: "90%",
-                }}
-              />
-              <FormControl
-                style={{ marginLeft: "5px", width: "120px" }}
-                size="small"
-                fullWidth
-              >
-                <InputLabel
-                  id="demo-simple-select-label"
-                  style={{
-                    fontSize: "12px",
-                    top: "3px",
-                    fontFamily: "Arial Rounded MT, sans-serif",
-                    color: "#202227",
-                  }}
-                  sx={{
-                    marginRight: "5px",
-                    paddingRight: "5px",
-                    "&.Mui-focused": {
-                      display: "none",
-                    },
-                    "&.MuiInputLabel-shrink": {
-                      display: "none",
-                    },
-                  }}
-                >
-                  Select Role
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={userType}
-                  label={userType}
-                  onChange={handleUserTypeChange}
-                  placeholder={`Client`}
-                  sx={{
-                    cursor: "pointer",
-                    ".css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
-                      border: "none",
-                    },
-                  }}
-                >
-                  <MenuItem value={"user"}>Client</MenuItem>
-                  <MenuItem value={"admin"}>Admin</MenuItem>
-                  <MenuItem value={"super admin"}>Super admin</MenuItem>
-                  <MenuItem value={"super admin"}>Project Manager</MenuItem>
-                  <MenuItem value={"super admin"}>Subcontractor</MenuItem>
-                  <MenuItem value={"super admin"}>Supplier</MenuItem>
-                  <MenuItem value={"super admin"}>Employee</MenuItem>
-                </Select>
-              </FormControl>
-            </Stack>
-          </Stack> */}
 
           <Stack direction={"row"} p={2} pl={3} justifyContent={"center"}>
             <BuilderProButton
@@ -761,20 +720,9 @@ const ShareModal = ({
               {isLoading ? (
                 <CircularProgress size={"18px"} />
               ) : (
-                <Typography>Send</Typography>
+                <Typography>{t("InvoiceModal.ShareModal.send")}</Typography>
               )}
             </BuilderProButton>
-            {/* <BuilderProButton
-              backgroundColor={"#FFAC00"}
-              variant={"contained"}
-              padding={"6px 32px 6px 32px"}
-              disabled={isLoading}
-              handleOnClick={() => {
-                handleSetAllPayments()
-              }}
-            >
-              <Typography>check object</Typography>
-            </BuilderProButton> */}
           </Stack>
         </Stack>
       </Modal>
@@ -786,7 +734,7 @@ export default ShareModal;
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: "var(--main-font-family)",
   border: "1px solid #E0E4EC",
   padding: "0px",
   width: { xl: "100%", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
@@ -807,15 +755,9 @@ const style = {
   boxShadow: 24,
   p: 1,
   borderRadius: "14px",
-  overflowX: "auto",
-};
-const label = {
-  fontSize: "12px",
-  fontFamily: "inherit",
-  maxWidth: { xl: "60px", lg: "60px", md: "70px", xs: "100%" },
-  minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
-  // overflow:'hidden',
-  // whitespace: 'nowrap'
+  width:{md:"fit-content",xs:'95%'},
+  height:'600px'
+  // overflowX: "auto",
 };
 
 const tableCellStyles = {

@@ -5,7 +5,7 @@ import ProjectTeam from './ProjectTeam'
 import { useGetWorkOrdersLineItemsProgressMutation } from '../../../redux/apis/Reports/reportsApiSlice'
 import { useEffect } from 'react'
 
-const ProjectInfoAndTeam = ({projectId, userId}) => {
+const ProjectInfoAndTeam = ({projectId, userId, SuperAdminId, projectOrganizationId, projectName}) => {
   const [getStatus, {data}] = useGetWorkOrdersLineItemsProgressMutation();
   const fetchStats = async () => {
     try {
@@ -14,10 +14,10 @@ const ProjectInfoAndTeam = ({projectId, userId}) => {
         projectId,
       }).unwrap();
       // setProjects(result);
-      console.log(
-        "Success useGetTotalProjectProfitMarginMutation Results Results Results:",
-        result
-      );
+      // console.log(
+      //   "Success useGetTotalProjectProfitMarginMutation Results Results Results:",
+      //   result
+      // );
     } catch (err) {
       console.error("Failed to fetch reports stats:", err);
     }
@@ -29,9 +29,9 @@ const ProjectInfoAndTeam = ({projectId, userId}) => {
 
   return (
     <Stack direction={{xl:'row', lg:'row', md:'column'}}>
-        <Stack width={'100%'}  p={1} pl={3}><ProjectInfo data={data} /></Stack>
+        <Stack width={'calc(100% - 32px)'}  p={1} pl={3}><ProjectInfo data={data} projectName={projectName} /></Stack>
         <Divider sx={{borderWidth:'0.8px', color:'#E4E4E4'}} />
-        <Stack width={'100%'}  p={1} pl={0} pr={0} ><ProjectTeam /></Stack>
+        <Stack width={'100%'}  p={1} pl={0} pr={0} ><ProjectTeam SuperAdminId={SuperAdminId} projectOrganizationId={projectOrganizationId}/></Stack>
     </Stack>
   )
 }

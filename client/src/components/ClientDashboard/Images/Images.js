@@ -1,15 +1,13 @@
 import React from 'react'
-import FileBox from '../FileBox/FileBox'
 import { Paper } from '@mui/material'
 import Permit from '../../Projects/Permit'
+import { useOutletContext } from 'react-router-dom'
 function Images() {
+  const [projectName, projectLocation, projectOrganizationId] = useOutletContext()
     return (
-        // <div style={{ width: "100%", marginBottom: "1rem" }}>
-        //     <FileBox titleHeading={"Images"} buttonName={"Add Images"} modalHeading={"Images"} />
-        // </div>
         <Paper flex={2} style={themeStyle.borders}>
-        <Permit view={'Images'} type={'image'}/>
-     </Paper>
+        <Permit view={'Images'} type={'image'} projectOrganizationId={projectOrganizationId}/>
+        </Paper>
     )
 }
 

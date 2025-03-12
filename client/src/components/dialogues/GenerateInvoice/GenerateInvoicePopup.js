@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import loader from "./assets/gifs/loader.gif";
-import { Box, Modal, Stack, Typography } from "@mui/material";
-import BuilderProButton from "../../UI/Button/BuilderProButton";
+// import loader from "./assets/gifs/loader.gif";
+import loader from "../../../assets/gifs/loader.gif";
+import { Modal, Stack, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const GenerateInvoicePopup = ({setGenerateInvoice, setShareToClient}) => {
   const [open, setOpen] = useState(true);
   const handleOpen = () => {
     setOpen(true);
   };
+  const {t} = useTranslation()
   const handleClose = () => {
     setOpen(false);
   };
@@ -22,9 +24,9 @@ const GenerateInvoicePopup = ({setGenerateInvoice, setShareToClient}) => {
   return (
       <Modal open={open} onClose={setGenerateInvoice}>
           <Stack sx={style} justifyContent={'center'} alignItems={'center'}>
-            <Typography fontWeight={'600'} fontSize={'22px'}>Generating Invoice</Typography>
+            <Typography fontWeight={'600'} fontSize={'22px'}>{t("InvoiceModal.PopUp.generatingInvoice")}</Typography>
         <img src={loader} alt="/"></img>
-            <Typography fontWeight={'600'} fontSize={'22px'}>Please Wait ... </Typography>
+            <Typography fontWeight={'600'} fontSize={'22px'}>{t("InvoiceModal.PopUp.pleaseWait")}</Typography>
          </Stack>
       </Modal>
   );

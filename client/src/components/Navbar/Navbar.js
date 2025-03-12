@@ -18,12 +18,10 @@ import {
   MenuItem,
   Badge,
   Popper,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
+  ClickAwayListener,
 } from "@mui/material";
+import TranslateIcon from "@mui/icons-material/Translate";
 import { ReactComponent as BuilderProNavbarLogo } from "./assets/svgs/builder-pro-logo-navbar.svg";
-// import { ReactComponent as BuilderProNavbarShare } from "./assets/svgs/builder-pro-navbar-share.svg";
 import { ReactComponent as BuilderProNavbarLogout } from "./assets/svgs/builder-pro-navbar-logout.svg";
 import React, { useEffect, useState } from "react";
 import SearchBar from "../UI/SearchBar/SearchBar";
@@ -37,6 +35,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useDispatch, useSelector } from "react-redux";
 import Notification from "./Notifications";
 import {
+  addApprovalNotifications,
   addNotifications,
   addTeamNotifications,
   selectNotifications,
@@ -47,6 +46,7 @@ import {
   setTeamNotifications,
 } from "../../redux/slices/Notifications/notificationSlice";
 import {
+  useGetApprovalNotificationsQuery,
   useGetNotificationsQuery,
   useGetNotificationsUnreadQuery,
   useGetTeamStatusNotificationsQuery,
@@ -56,14 +56,23 @@ import { socket } from "../../socket";
 import TeamNotifications from "./TeamNotifications";
 import InvoiceNotification from "./InvoiceNotification";
 import { toast } from "react-toastify";
-const local = localStorage.getItem("userInfo");
-const currentUser = JSON.parse(local);
+import ApprovalNotification from "./ApprovalNoifications";
+import i18n from "../../i18n";
+import { useTranslation } from "react-i18next";
+import { setLanguage } from "../../redux/slices/authSlice";
+const languageOptions = {
+  en: "English",
+  fr: "French",
+  es: "Spanish",
+  zh: "Mandarin",
+  de: "German",
+};
 
-// const socket = io("http://3.135.107.71", {
-//   query: { userId: currentUser?.user?.id },
-// });
+const routes = ["dashboard", "projects", "reports", "", "subscription", "settings"];
 
 const Navbar = () => {
+  const { t } = useTranslation()
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [open, setOpen] = useState(null);
   const [userType, setUserType] = useState("");
@@ -75,9 +84,7 @@ const Navbar = () => {
   const id = openShare ? "simple-popover" : undefined;
   const user = useSelector((state) => state.auth.userInfo);
   const userId = user.user.id;
-  //console.log(user);
   const dispatch = useDispatch();
-  // const { emit, on } = useSocket();
   const notifications = useSelector(selectNotifications);
   const teamNotifications = useSelector(selectTeamNotifications);
   const notificationsArr = useSelector(selectNotificationsArr);
@@ -88,18 +95,14 @@ const Navbar = () => {
   const { data: teamStatusData, refetch: refetchTeamStatusData } =
     useGetTeamStatusNotificationsQuery(userId);
   const [expanded, setExpanded] = useState(null);
+  const { data: approvalData, refetch: refetchApprovalNotifications } =
+    useGetApprovalNotificationsQuery(userId);
   const [invoiceNotification, setInvoiceNotification] = useState(null);
   const [updateNotificationRead] = useUpdateWorkOrderReadMutation();
   dispatch(setNotificationsArr(data?.data));
-  // if (teamNotifications ? teamNotifications.length < 1 : true) {
-  //   dispatch(setTeamNotifications(teamStatusData?.data));
-  // }
-
-  console.log("JOHN NOTIFICATION TEST", invoiceNotification);
   const handleClick = async (event) => {
     if (anchorEl) {
       setAnchorEl(null);
-      // setInvoiceNotification(null);
     } else {
       setAnchorEl(event.currentTarget);
       await updateNotificationRead({ userId });
@@ -107,12 +110,15 @@ const Navbar = () => {
       dispatch(setNotifications([]));
     }
   };
+  const { userInfo } = useSelector((state) => state.auth);
+  let IsValidSub = userInfo?.user?.hasValidSubscription;
 
   const openNotification = Boolean(anchorEl);
   const noti_id = open ? "simple-popper" : undefined;
 
   const location = useLocation();
   const path = location.pathname.split("/")[1];
+
 
   useEffect(() => {
     switch (path) {
@@ -135,28 +141,6 @@ const Navbar = () => {
         return;
     }
   }, [path]);
-  // useEffect(() => {
-  //   const socket = socketIOClient(ENDPOINT);
-
-  //   // Join room with user ID
-  //   socket.emit('join', userId);
-
-  //   socket.emit('getNotifications', userId);
-
-  //   socket.on('notifications', (data) => {
-  //     console.log("------------->", data);
-  //     dispatch(setNotifications(data))
-  //   });
-
-  //   socket.on('newNotification', (newNotification) => {
-  //     console.log("New Notification:", newNotification);
-  //     dispatch(setNotifications(prevNotifications => [...prevNotifications, newNotification]));
-  //   });
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
   const refetchCall = async () => {
     try {
       await refetch(userId);
@@ -164,24 +148,35 @@ const Navbar = () => {
       console.log("err:", err);
     }
   };
+  const approvalRefetchCall = async () => {
+    try {
+      await refetchApprovalNotifications(userId);
+      if (Array.isArray(approvalData?.data)) {
+        dispatch(addApprovalNotifications(approvalData?.data));
+      } else {
+        dispatch(addApprovalNotifications([]));
+      }
+    } catch (err) {
+      dispatch(addApprovalNotifications([]));
+      console.log("err:", err);
+    }
+  };
 
   useEffect(() => {
-    //listen for notifications
-    // console.log('=-------------------> notifications on')
-
     socket.emit("join", userId);
     socket.on("newNotification", async (data) => {
       await refetchCall();
       dispatch(addNotifications(data));
     });
+
+    socket.on("receiveNotifications", async (response) => {
+      await approvalRefetchCall();
+    });
     socket.on("statusDoneNotificationResponse", async (socketReponse) => {
-      console.log("SOCKET RESPONSE: ", socketReponse);
       dispatch(addTeamNotifications(socketReponse));
     });
     socket.on(`invoiceCreated${userId}`, async (socketReponse) => {
-      console.log("SOCKET RESPONSE INVOICE: ", socketReponse);
       setInvoiceNotification(socketReponse);
-      // dispatch(addTeamNotifications(socketReponse));
     });
     return () => {
       socket.off("newNotification", async (data) => {
@@ -189,34 +184,35 @@ const Navbar = () => {
         dispatch(addNotifications(data));
       });
       socket.off("statusDoneNotificationResponse", async (socketReponse) => {
-        console.log("SOCKET RESPONSE: ", socketReponse);
         dispatch(addTeamNotifications(socketReponse));
       });
-      socket.off(`sendInvoice${userId}`, async (socketReponse) => {
-        console.log("SOCKET RESPONSE: ", socketReponse);
+      socket.off(`invoiceCreated${userId}`, async (socketReponse) => {
         setInvoiceNotification(socketReponse);
-        // dispatch(addTeamNotifications(socketReponse));
       });
+      socket.off("receiveNotifications");
     };
   }, [dispatch]);
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
-    console.log(newValue, " navbar click");
-    const lowercasedValue = `${event.target.textContent}`.toLowerCase();
-    navigate(lowercasedValue === "dashboard" ? "/" : lowercasedValue);
+    const lowercasedValue = `${routes[newValue]}`.toLowerCase();
+    navigate(lowercasedValue === "dashboard" ? "/dashboard" : lowercasedValue);
   };
   const handleLogout = () => {
     localStorage.setItem("logout", Date.now());
     localStorage.clear(); // Clear the local storage after setting the logout item
     navigate("/login");
   };
-  // const handleShare = (e) => {
-  //   setOpen(e.currentTarget);
-  // };
   const handleClose = () => {
     setOpen(null);
   };
+
+  const handlePopperClose = async () => {
+    if (anchorEl) {
+      setAnchorEl(null);
+    }
+  };
+
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
@@ -229,7 +225,6 @@ const Navbar = () => {
   }, [teamStatusData]);
 
   useEffect(() => {
-    
     const handleStorageChange = (event) => {
       if (event.key === "logout") {
         // Handle logout in other tabs
@@ -254,21 +249,23 @@ const Navbar = () => {
     navbar: {
       background: "#FFF",
       boxShadow: "0px 1px 1.3px 0px rgba(0, 0, 0, 0.05)",
-      padding: "4px 16px 4px 16px",
+      padding: "4px 2px 4px 2px",
       height: "92px",
+      fontFamily: "var(--main-font-family)",
     },
-    logo: {
+    logo: () => ({
       width: "85%",
       height: "100%",
       marginLeft: "8px",
       marginBottom: "0px",
-    },
+    }),
     tabs: {
+      fontFamily: "var(--main-font-family)",
       // margin: "auto",
       display: { xl: "flex", lg: "flex", md: "none", sm: "none", xs: "none" },
     },
     getTabColor: (tabIndex) => ({
-      fontFamily: "inherit",
+      fontFamily: "var(--main-font-family)",
       color: selectedTab === tabIndex ? "#FFAC00" : "#4C8AB1",
       textTransform: "capitalize",
       fontSize: "17px",
@@ -280,349 +277,288 @@ const Navbar = () => {
     toolbar: {
       justifyContent: "space-between",
       height: "inherit",
+      boxShadow: "0 3px 6px rgba(0, 0, 0, 0.3)",
     },
   };
-
+  const handleClickAway = () => {
+    setDropdownOpen(false);
+  };
+  const handleDropdownToggle = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
   return (
     <>
-      <AppBar position="static" sx={themeStyle.navbar}>
-        <Toolbar
-          sx={themeStyle.toolbar}
-          style={{ maxHeight: "64px !important" }}
-        >
-          {showHamburger && <NavbarDrawer />}
-          <Link to="/">
-            <BuilderProNavbarLogo
-              aria-label="Builder Pro Logo"
-              style={themeStyle.logo}
-              onClick={() => {
-                setSelectedTab(0);
-              }}
-            />
-          </Link>
-          <Tabs
-            sx={themeStyle.tabs}
-            value={selectedTab}
-            // onClick={handleTabChange}
-            indicatorColor="#FFF"
-            centered
-          >
-            <Tab
-              label="Dashboard"
-              style={themeStyle.getTabColor(0)}
-              onClick={(e) => handleTabChange(e, 0)}
-            />
-            <Tab
-              label="Projects"
-              style={themeStyle.getTabColor(1)}
-              onClick={(e) => handleTabChange(e, 1)}
-            />
-            <Tab
-              label="Reports"
-              style={themeStyle.getTabColor(2)}
-              onClick={(e) => handleTabChange(e, 2)}
-            />
-            <Box sx={themeStyle.search}>
-              <SearchBar selectedTab={selectedTab} />
-            </Box>
-            <Tab
-              label="Subscription"
-              style={themeStyle.getTabColor(4)}
-              onClick={(e) => handleTabChange(e, 4)}
-            />
-            <Tab
-              label="Settings"
-              style={themeStyle.getTabColor(5)}
-              onClick={(e) => handleTabChange(e, 5)}
-            />
-          </Tabs>
-          <Box
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            gap={1}
-          >
-            <IconButton aria-label="bell-notifications" onClick={handleClick}>
-              <Badge
-                badgeContent={
-                  (data1?.count ? data1.count : 0) +
-                  notifications?.length +
-                  (teamNotifications?.length ? teamNotifications?.length : 0) +
-                  (invoiceNotification ? 1 : 0)
-                }
-                color="error"
-              >
-                <NotificationsIcon sx={{ color: "#4C8AB1" }} />
-              </Badge>
-            </IconButton>
-            <Popper
-              style={{
-                zIndex: "100",
-                backgroundColor: "white",
-                borderRadius: "14px",
-                
-              }}
-              sx={{width:{sm:'400px', xs:'300px'}}}
-              id={noti_id}
-              open={openNotification}
-              anchorEl={anchorEl}
-              placement="bottom-end"
+      {IsValidSub === true && (
+        <>
+          <AppBar position="static" sx={themeStyle.navbar}>
+            <Toolbar
+              sx={themeStyle.toolbar}
+              style={{ maxHeight: "64px !important" }}
             >
-              {invoiceNotification && (
-                <InvoiceNotification
-                  data={invoiceNotification}
-                  setInvoiceNotification={setInvoiceNotification}
-                />
-              )}
-              {Array.isArray(teamNotifications) ? (
-                teamNotifications.map((teamNotification, index) => {
-                  if (index < 3) {
-                    return (
-                      <div key={index}>
-                        <TeamNotifications
-                          teamNotification={teamNotification}
-                          index={index}
-                          userId={userId}
-                          refetch={handleTeamNotificationsRefetch}
-                        />
-                      </div>
-                    );
-                  } else {
-                    return index === 3 ? (
-                      <Stack textAlign={"right"}>
-                        <Typography
-                          fontFamily={"inherit"}
-                          fontSize={"12px"}
-                          sx={{
-                            textDecoration: "underline",
-                            fontWeight: "600",
-                          }}
-                        >
-                          +{teamNotifications?.length - 3} more team
-                          notifications
-                        </Typography>
-                      </Stack>
-                    ) : (
-                      <> </>
-                    );
-                  }
-                })
-              ) : (
-                <></>
-              )}
-              {Array.isArray(teamNotifications) && <Divider />}
-              {Array.isArray(notificationsArr) ? (
-                notificationsArr?.map((notification, index) => {
-                  if (index < 3) {
-                    return (
-                      <Notification
-                        key={notification.workOrder_id}
-                        notification={notification}
-                        refetch={refetch}
-                        userId={userId}
-                        index={index}
-                        setExpanded={setExpanded}
-                        expanded={expanded}
-                      ></Notification>
-                    );
-                  } else {
-                    return index === 3 ? (
-                      <Stack textAlign={"right"}>
-                        <Typography
-                          fontFamily={"inherit"}
-                          fontSize={"12px"}
-                          sx={{
-                            textDecoration: "underline",
-                            fontWeight: "600",
-                          }}
-                        >
-                          +{notificationsArr.length - 3} more work order
-                          notifications
-                        </Typography>
-                      </Stack>
-                    ) : (
-                      <> </>
-                    );
-                  }
-                })
-              ) : (
-                <div
-                  style={{
-                    backgroundColor: "#F2F2F2",
-                    padding: 15,
-                    borderRadius: "14px",
-                    textAlign:'center'
+              {showHamburger && <NavbarDrawer languageOptions={languageOptions} />}
+              <Link to="/">
+                <BuilderProNavbarLogo
+                  aria-label="Builder Pro Logo"
+                  // style={themeStyle.logo()}
+                  onClick={() => {
+                    setSelectedTab(0);
                   }}
-                >
-                  No new notifications
-                </div>
-              )}
-            </Popper>
-
-            <BuilderProButton
-              backgroundColor={"#4C8AB1"}
-              variant={"outlined"}
-              Icon={BuilderProNavbarLogout}
-              handleOnClick={handleLogout}
-            >
-              {responsiveButton ? "Logout" : ""}
-            </BuilderProButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <Popover
-        id={id}
-        open={openShare}
-        anchorEl={open}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "center",
-          horizontal: "right",
-        }}
-        slotProps={{
-          paper: {
-            sx: {
-              marginTop: "30px",
-              borderRadius: "15px",
-            },
-          },
-        }}
-      >
-        <Stack
-          direction={"row"}
-          justifyContent={"space-between"}
-          alignItems={"center"}
-        >
-          <Typography sx={{ p: 2 }} color={"#4C8AB1"}>
-            Invite
-          </Typography>
-          <IconButton onClick={handleClose}>
-            <CloseIcon sx={{ p: 2, color: "#535353", fontSize: "19px" }} />
-          </IconButton>
-        </Stack>
-        <Divider />
-        <Stack direction={"row"} pl={4} pr={4} pt={2} pb={2} spacing={3}>
-          <Stack
-            direction={"row"}
-            border={"2px solid #FFAC00"}
-            borderRadius={"30px"}
-            pl={2}
-          >
-            <Input
-              placeholder="Enter an Email to invite"
-              aria-describedby="my-helper-text"
-              sx={{
-                "&::after": {
-                  borderBottom: "none",
-                },
-                "&:before": {
-                  borderBottom: "none",
-                },
-                "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before": {
-                  borderBottom: "none",
-                },
-              }}
-            />
-            <FormControl
-              style={{ marginLeft: "5px", width: "120px" }}
-              size="small"
-            >
-              <InputLabel
-                id="demo-simple-select-label"
-                style={{
-                  fontSize: "12px",
-                  top: "3px",
-                  fontFamily: "Arial Rounded MT, sans-serif",
-                  color: "#202227",
-                }}
+                />
+              </Link>
+              <Tabs
                 sx={{
-                  "&.Mui-focused": {
-                    transform: "translate(14px, -1px) scale(0.75)",
+                  ...themeStyle.tabs,
+                  "& .MuiTabs-scroller": {
+                    overflow: "visible !important",
+                    position: "relative !important",
                   },
                 }}
+                value={selectedTab}
+                // onClick={handleTabChange}
+                indicatorColor="#FFF"
+                centered
               >
-                Select Role
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={userType}
-                label="Age"
-                onChange={handleUserTypeChange}
-                placeholder="Select Role"
-                sx={{
-                  "& .notchedOutline": {
-                    border: "none",
-                  },
-                }}
-              >
-                <MenuItem value={"user"}>User</MenuItem>
-                <MenuItem value={"admin"}>Admin</MenuItem>
-                <MenuItem value={"super admin"}>Super admin</MenuItem>
-              </Select>
-            </FormControl>
-          </Stack>
-          <BuilderProButton backgroundColor={"#FFAC00"} variant={"contained"}>
-            <Typography>Invite</Typography>
-          </BuilderProButton>
-        </Stack>
+                <Tab
+                  label={t("Navbar.dashboard")}
+                  style={themeStyle.getTabColor(0)}
+                  onClick={(e) => handleTabChange(e, 0)}
+                />
+                <Tab
+                  label={t("Navbar.projects")}
+                  style={themeStyle.getTabColor(1)}
+                  onClick={(e) => handleTabChange(e, 1)}
+                />
+                <Tab
+                  label={t("Navbar.reports")}
+                  style={themeStyle.getTabColor(2)}
+                  onClick={(e) => handleTabChange(e, 2)}
+                />
+                <Box sx={themeStyle.search}>
+                  <SearchBar selectedTab={selectedTab} />
+                </Box>
+                <Tab
+                  label={t("Navbar.subscription")}
+                  style={themeStyle.getTabColor(4)}
+                  onClick={(e) => handleTabChange(e, 4)}
+                />
+                <Tab
+                  label={t("Navbar.settings")}
+                  style={themeStyle.getTabColor(5)}
+                  onClick={(e) => handleTabChange(e, 5)}
+                />
+              </Tabs>
 
-        {users.map((user, index) => (
-          <Stack key={index} p={0.5} pl={2.5} pr={2.5}>
-            <Stack
-              id={user.img}
-              direction={"row"}
-              justifyContent={"space-between"}
-              alignItems={"center"}
-              pb={1}
-            >
-              <Stack
-                direction={"row"}
-                justifyContent={"space-between"}
+              <Box
+                display={"flex"}
+                justifyContent={"center"}
                 alignItems={"center"}
-                pl={2}
+                gap={1}
               >
-                <img
-                  src={user.img}
-                  alt="User Profile Pic"
-                  width={"32px"}
-                  height={"32px"}
-                  style={{ borderRadius: "50px" }}
-                ></img>
-                <Typography
-                  color={"#202227"}
-                  fontSize={"14px"}
-                  pl={2}
-                  fontFamily={"Arial Rounded MT, sans-serif"}
+                <ClickAwayListener onClickAway={handleClickAway}>
+                  <Box
+                    sx={{
+                      position: "relative",
+                      display: showHamburger ? "none" : "flex",
+                      alignItems: "center",
+                      ml: 2,
+                      cursor: "pointer",
+                    }}
+                  >
+                    <IconButton onClick={handleDropdownToggle}>
+                      <TranslateIcon sx={{ color: "#4C8AB1" }} />
+                    </IconButton>
+                    {dropdownOpen && (
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: "40px", // Adjust for spacing below the icon
+                          right: 0,
+                          backgroundColor: "white",
+                          boxShadow: "0px 8px 16px 0px rgba(0,0,0,0.2)",
+                          zIndex: 9999, // High z-index to ensure it appears above
+                          borderRadius: "8px",
+                          overflow: "hidden",
+                          animation: "fadeIn 0.3s ease-out",
+                          minWidth: "150px",
+                          "@keyframes fadeIn": {
+                            from: {
+                              opacity: 0,
+                              transform: "translateY(-10px)",
+                            },
+                            to: { opacity: 1, transform: "translateY(0)" },
+                          },
+                        }}
+                      >
+                        {
+                          Object.entries(languageOptions).map(([lang, label]) => (
+                            <MenuItem
+                              key={lang}
+                              onClick={() => {
+                                dispatch(setLanguage(lang))
+                                // i18n.changeLanguage(lang)
+                              }
+                              }
+                              sx={{
+                                padding: "10px 20px",
+                                fontSize: "14px",
+                                color: "rgb(76, 138, 177)",
+                                "&:hover": {
+                                  backgroundColor: "rgba(0, 0, 0, 0.05)",
+                                },
+                              }}
+                            >
+                              {label}
+                            </MenuItem>
+                          ))}
+                      </Box>
+                    )}
+                  </Box>
+                </ClickAwayListener>
+                <ClickAwayListener onClickAway={handlePopperClose}>
+                  <Box sx={{ position: "relative" }}>
+                    <IconButton
+                      aria-label="bell-notifications"
+                      onClick={handleClick}
+                    >
+                      <Badge
+                        badgeContent={
+                          (data1?.count ? data1.count : 0) +
+                          notifications?.length +
+                          (teamNotifications?.length
+                            ? teamNotifications?.length
+                            : 0) +
+                          (invoiceNotification ? 1 : 0) +
+                          (approvalData?.data?.length
+                            ? approvalData?.data?.length
+                            : 0)
+                        }
+                        color="success"
+                      >
+                        <NotificationsIcon sx={{ color: "#4C8AB1" }} />
+                      </Badge>
+                    </IconButton>
+                    <Popper
+                      style={{
+                        zIndex: "100",
+                        backgroundColor: "white",
+                        borderRadius: "14px",
+                      }}
+                      sx={{
+                        boxShadow: "0 3px 6px rgba(0, 0, 0, 0.9)",
+                        width: { sm: "400px", xs: "300px" },
+                        maxHeight: "610px",
+                        overflowY: "auto",
+                        overflowX: "hidden",
+                        scrollbarWidth: "thin", // For Firefox
+                        "&::-webkit-scrollbar": {
+                          width: "5px", // Width of the scrollbar
+                        },
+                        "&::-webkit-scrollbar-thumb": {
+                          backgroundColor: "rgba(0, 0, 0, 0.5)", // Color of the scrollbar thumb
+                          borderRadius: "10px", // Rounded corners for the scrollbar thumb
+                        },
+                        "&::-webkit-scrollbar-track": {
+                          backgroundColor: "transparent", // Background of the scrollbar track
+                        },
+                      }}
+                      id={noti_id}
+                      open={openNotification}
+                      anchorEl={anchorEl}
+                      placement="bottom-end"
+                    >
+                      <>
+                        {Array.isArray(approvalData?.data) &&
+                          approvalData.data.length > 0
+                          ? approvalData.data.map((notification, index) => (
+                            <ApprovalNotification
+                              key={index}
+                              approvalRefetchCall={approvalRefetchCall}
+                              userId={userId}
+                              index={index}
+                              setExpanded={setExpanded}
+                              notification={notification}
+                              expanded={expanded}
+                            />
+                          ))
+                          : null}
+
+                        {invoiceNotification && (
+                          <InvoiceNotification
+                            data={invoiceNotification}
+                            setInvoiceNotification={setInvoiceNotification}
+                          />
+                        )}
+
+                        {Array.isArray(teamNotifications) &&
+                          teamNotifications.length > 0
+                          ? teamNotifications
+                            .slice(0, 3)
+                            .map((teamNotification, index) => (
+                              <TeamNotifications
+                                key={index}
+                                teamNotification={teamNotification}
+                                index={index}
+                                userId={userId}
+                                refetch={handleTeamNotificationsRefetch}
+                              />
+                            ))
+                          : null}
+
+                        {Array.isArray(notificationsArr) &&
+                          notificationsArr.length > 0
+                          ? notificationsArr
+                            .slice(0, 3)
+                            .map((notification, index) => (
+                              <Notification
+                                key={notification.workOrder_id}
+                                notification={notification}
+                                refetch={refetch}
+                                userId={userId}
+                                index={index}
+                                setExpanded={setExpanded}
+                                expanded={expanded}
+                              />
+                            ))
+                          : null}
+
+                        {/* Check if all notification arrays are empty and display "No Unread Notifications" */}
+                        {(!Array.isArray(approvalData?.data) ||
+                          approvalData.data.length === 0) &&
+                          (!Array.isArray(teamNotifications) ||
+                            teamNotifications.length === 0) &&
+                          (!Array.isArray(notificationsArr) ||
+                            notificationsArr.length === 0) &&
+                          !invoiceNotification ? (
+                          <Box
+                            sx={{
+                              backgroundColor: "#F2F2F2",
+                              padding: {sm:"15px", xs:'8px'},
+                              borderRadius: "14px",
+                              textAlign: "center",
+                            }}
+                          >
+                            <Typography sx={{fontSize:{sm:'16px', xs:'14px'}}}>
+                            {t("Notification.noNewNotification")}
+                            </Typography>
+                          </Box>
+                        ) : null}
+                      </>
+                    </Popper>
+                  </Box>
+                </ClickAwayListener>
+                <BuilderProButton
+                  backgroundColor={"#4C8AB1"}
+                  variant={"outlined"}
+                  Icon={BuilderProNavbarLogout}
+                  handleOnClick={handleLogout}
                 >
-                  {user.name}
-                </Typography>
-              </Stack>
-              <Typography
-                fontFamily={"Arial Rounded MT, sans-serif"}
-                fontSize={"14px"}
-              >
-                {user.userType}
-              </Typography>
-            </Stack>
-            {users.length - 1 === index ? <></> : <Divider />}
-          </Stack>
-        ))}
-        <Divider />
-        <Stack direction={"row"} p={2} pl={3}>
-          <BuilderProButton
-            Icon={LinkIcon}
-            iconProps={{ transform: "rotate(135deg)" }}
-            variant={"text"}
-          >
-            Copy Link
-          </BuilderProButton>
-        </Stack>
-      </Popover>
+                  {responsiveButton ? "Log out" : ""}
+                </BuilderProButton>
+              </Box>
+            </Toolbar>
+          </AppBar>
+        </>
+      )}
     </>
   );
 };

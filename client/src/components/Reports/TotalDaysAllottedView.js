@@ -26,7 +26,7 @@ const TotalDaysAllottedView = () => {
         endRange,
         projectId,
       }).unwrap();
-      console.log("Success22:", result);
+      // console.log("Success22:", result);
     } catch (err) {
       console.error("Failed to fetch reports stats:", err);
     }

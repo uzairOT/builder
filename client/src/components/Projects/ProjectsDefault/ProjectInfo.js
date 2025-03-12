@@ -5,7 +5,7 @@ import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import { AvTimer } from "@mui/icons-material";
-
+import { useTranslation } from "react-i18next";
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
@@ -20,22 +20,23 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   width: "60%",
 }));
 
-const ProjectInfo = ({ data }) => {
-  console.log(data);
+const ProjectInfo = ({ data, projectName }) => {
+  const { t } = useTranslation();
+  // console.log(data);
   const totalCompletedLineItems = data?.totalCompletedLineItems;
   const totalLineItems = data?.totalLineItems;
   const activeWorkOrders = data?.workOrders;
   const percentage = Math.round((parseInt(totalCompletedLineItems) / parseInt(totalLineItems)) * 100);
-  console.log(percentage)
+  // console.log(percentage)
   return (
     <Stack height={"205px"} >
-      <Typography sx={themeStyle.title}>Burrow - Home Build</Typography>
+      <Typography sx={themeStyle.title}>{projectName}</Typography>
       <Stack direction={"row"} width={{md:"60%", xs:"65%"}} pl={{md:0,xs:2}} justifyContent={"space-between"}  >
         <Typography sx={themeStyle.label} >
-          Start
+          {t("ProjectInfo.title1")} 
         </Typography>
         <Typography sx={themeStyle.label} >
-          End
+          {t("ProjectInfo.title2")}
         </Typography>
       </Stack>
       <Stack direction={"row"} pt={0.5} sx={{alignItems:"center", pl:2}}>
@@ -44,7 +45,7 @@ const ProjectInfo = ({ data }) => {
           {totalCompletedLineItems}/{totalLineItems}
         </Typography>
       </Stack>
-      <Stack spacing={0.5} pt={1} pb={1.2} pl={1.2} width={"100%"} height={"205px"} sx={{overflowY:"auto"}}>
+      <Stack spacing={0.5} pt={1} pb={1.2} pl={1.2} width={"calc(100% - 8px)"} height={"205px"} sx={{overflowY:"auto"}}>
         {activeWorkOrders?.map((workOrder) => {
           return (
             <>
@@ -72,7 +73,7 @@ const ProjectInfo = ({ data }) => {
                   />
                 </Stack>
                 <Typography sx={themeStyle.text}>
-                  {workOrder.description}
+                  {workOrder.subject}
                 </Typography>
               </Stack>
             </>
@@ -118,16 +119,16 @@ const themeStyle = {
   title: {
     fontSize: "16px",
     color: "#4C8AB1",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
   },
   text: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "14px",
-    width: "160px",
+    width: "15ch",
     color: "#202227",
   },
   label: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     color: "#202227",
     fontSize:{xl:"13px", lg:12, md:12, xs:"12px"}
   },

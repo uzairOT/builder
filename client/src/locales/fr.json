@@ -1,0 +1,1125 @@
+{
+  "landingPage": {
+    "text1": "Votre gestion de construction de confiance",
+    "text2": "Utiliser BuilderBUILDER PRO vous rendra",
+    "text3": "plus",
+    "text4": "RENTABLE!",
+    "text5": "ORGANISÉ!",
+    "text6": "EFFICACE!",
+    "text7": "SIMPLIFIÉ!",
+    "text8": "COLLABORATIF!",
+    "text9": "PROFESSIONNEL!",
+    "text10": "BON !",
+    "text11": "BuilderBUILDER PRO est votre solution tout-en-un pour gérer efficacement les projets de construction de bout en bout. Conçu pour les professionnels exigeant précision, organisation et résultats, BuilderBUILDER PRO propose des fonctionnalités robustes pour rationaliser chaque aspect de la gestion de projet.",
+    "navbar": {
+      "home": "Accueil",
+      "about": "À propos de nous",
+      "features": "Fonctionnalités",
+      "contact": "Contactez-nous",
+      "faqs": "FAQ"
+    }
+  },
+  "buttons": {
+    "btn1": "Planifier une démo",
+    "btn2": "TÉLÉCHARGEZ MAINTENANT!"
+  },
+  "aboutus": {
+    "text1": "Construire des solutions plus intelligentes pour les professionnels de la construction",
+    "text2": "Bonjour et bienvenue! Notre aventure dans l'industrie de la construction a commencé en 2004, inspirée par notre fondateur, un professionnel de la construction de troisième génération. Animés par une passion pour l'excellence et l'innovation, l'Institut National de la Propriété a été créé. Au fil des ans, nous avons rencontré les mêmes défis que beaucoup dans notre domaine : jongler entre les exigences du travail sur le terrain et les complexités de la gestion de bureau. Nous avions besoin d'une solution capable de relier les deux mondes de manière transparente, et c'est ainsi que BuilderBUILDER PRO est né. BuilderBUILDER PRO est bien plus qu'un simple logiciel de gestion de construction ; c'est un outil forgé à partir de nos propres expériences. Conçu pour rationaliser la gestion de projet et améliorer la collaboration, il vous permet de gérer efficacement vos projets, que vous soyez sur le terrain ou au bureau. Nous sommes fiers de vous présenter BuilderBUILDER PRO et ravis de vous aider à construire plus intelligemment, plus rapidement et plus efficacement. BuilderBUILDER PRO vous rendra bon, meilleur et le meilleur !",
+    "cards": {
+      "title1": "Vision",
+      "title2": "Mission",
+      "desc1": "Révolutionner l'industrie de la construction en offrant des solutions de gestion innovantes et transparentes qui permettent aux professionnels de construire plus intelligemment, plus rapidement et plus efficacement.",
+      "desc2": "Notre mission est de simplifier la gestion de la construction grâce à des technologies de pointe, en garantissant des projets terminés dans les délais, dans les budgets et selon les normes de qualité les plus élevées."
+    },
+    "features": {
+      "title1": "Solution",
+      "title2": "Collaboration",
+      "title3": "Innovation",
+      "desc1": "BuilderBUILDER PRO propose une suite complète d'outils conçus pour rationaliser tous les aspects de la gestion de la construction. De la planification de projet à l'allocation des ressources en passant par la collaboration en temps réel et le suivi des progrès, notre logiciel assure un flux de travail fluide et efficace, accessible depuis n'importe quel appareil.",
+      "desc2": "Chez BuilderBUILDER PRO, nous croyons que les grands projets de construction reposent sur une forte collaboration. Notre plateforme favorise une communication et une coordination transparentes entre tous les intervenants, des architectes et ingénieurs aux entrepreneurs et clients, garantissant que tout le monde est sur la même longueur d'onde.",
+      "desc3": "L'innovation est au cœur de BuilderBUILDER PRO. Nous investissons continuellement dans les dernières technologies et intégrons des fonctionnalités avancées pour garder nos utilisateurs en avance sur leur temps, rendant la gestion de la construction plus efficace, transparente et adaptable aux exigences changeantes de l'industrie."
+    }
+  },
+  "chooseus": {
+    "title1": "Pourquoi choisir BuilderBUILDER PRO ?",
+    "title2": "Nous comprenons les défis uniques de l'industrie de la construction.",
+    "title3": "Notre plateforme est conçue par des professionnels de la construction pour des professionnels de la construction, offrant une fonctionnalité inégalée, une facilité d'utilisation et une accessibilité mobile. Avec BuilderBUILDER PRO, vous gagnez un partenaire engagé dans votre réussite, fournissant les outils nécessaires pour gérer vos projets avec confiance et précision.",
+    "features": {
+      "title1": "Solution complète",
+      "title2": "Collaboration en temps réel",
+      "title3": "Évolutif & Flexible",
+      "title4": "Innovation & Fiabilité",
+      "desc1": "Gérez tous les aspects de vos projets de manière transparente avec l'outil complet de BuilderBUILDER PRO.",
+      "desc2": "Restez connecté et prenez des décisions plus rapidement avec nos mises à jour en direct et nos outils de collaboration.",
+      "desc3": "Évoluez facilement avec des fonctionnalités personnalisables et des plans tarifaires adaptés.",
+      "desc4": "Faites confiance à la technologie de pointe de BuilderBUILDER PRO pour des innovations fiables en gestion de projet."
+    }
+  },
+  "whatwedo": {
+    "title1": "Ce que nous faisons",
+    "title2": "Libérez tout le potentiel de vos projets de construction",
+    "title3": "BuilderBUILDER PRO propose une suite complète de fonctionnalités conçues pour rationaliser et optimiser chaque aspect de la gestion de la construction. Découvrez comment nos outils puissants peuvent vous aider à réussir de la planification à l'achèvement.",
+    "features": {
+      "title1": "Tableau de bord",
+      "title2": "Événements de commande de travail",
+      "title3": "Abonnement",
+      "title4": "Rapports",
+      "title5": "Invitations d'équipe",
+      "title6": "Gestion des factures",
+      "desc1": "Accédez à des informations détaillées sur les projets, suivez les progrès et les coûts, gérez efficacement les tâches et recevez des mises à jour personnalisées avec des analyses en temps réel et une intégration météorologique.",
+      "desc2": "Aperçus détaillés des projets, y compris les éléments et les coûts, recevez des mises à jour météorologiques en temps réel et organisez des notes quotidiennes pour une gestion complète des informations.",
+      "desc3": "Affichez les détails actuels du plan et les dates de renouvellement, fournissez des dossiers de facturation transparents, mettez en évidence les avantages et caractéristiques du plan et offrez des options de mise à niveau claires.",
+      "desc4": "Suivez les coûts des projets, les factures et les marges bénéficiaires avec des graphiques intuitifs, surveillez les jours ouvrables pour respecter les délais et recevez des alertes automatiques pour une réalisation ponctuelle des projets.",
+      "desc5": "Créez facilement de nouveaux projets et invitez des membres de l'équipe à rejoindre votre espace de travail sécurisé, simplifiant ainsi l'initiation et la collaboration des projets.",
+      "desc6": "Générez facilement des factures détaillées avec des listes d'articles, téléchargez des PDF pour un partage pratique, accédez à l'historique des factures pour chaque projet et personnalisez les articles pour répondre aux besoins spécifiques du projet."
+    }
+  },
+  "features": {
+    "title1": "Fonctionnalités",
+    "title2": "Voici comment",
+    "title3": "BuilderBUILDER PRO",
+    "title4": "vous prépare à la meilleure gestion",
+    "title5": "Choisissez-nous pour un mélange harmonieux d'innovation, de fiabilité et de solutions centrées sur le client. Avec un historique de qualité inégalée, notre équipe dédiée veille à ce que votre expérience soit exceptionnelle.",
+    "features": {
+      "title1": "Tableau de bord",
+      "title2": "Événements de commande de travail",
+      "title3": "Abonnement",
+      "title4": "Rapports",
+      "title5": "Invitations d'équipe",
+      "title6": "Gestion des factures",
+      "desc1": {
+        "list1": "Accédez aux détails clés du projet tels que les noms des clients, les totaux des tâches et les emplacements avec des cartes interactives pour des mises à jour rapides.",
+        "list2": "Suivez les progrès en temps réel, analysez les coûts et projetez les bénéfices avec des outils avancés pour une prise de décision éclairée.",
+        "list3": "Utilisez un calendrier de tâches intuitif pour organiser, prioriser et optimiser vos tâches quotidiennes et la productivité de votre équipe."
+      },
+      "desc2": {
+        "list1": "Consultez des informations détaillées sur les projets, y compris les articles, les quantités, les taux et les coûts, le tout au même endroit.",
+        "list2": "Recevez les conditions météorologiques en direct pour les emplacements des projets afin de faciliter la planification et la programmation.",
+        "list3": "Conservez et organisez des notes quotidiennes pour chaque projet, garantissant que les mises à jour importantes sont facilement accessibles."
+      },
+      "desc3": {
+        "list1": "Affichez les détails du plan de l'utilisateur, y compris les jours restants et les dates de renouvellement.",
+        "list2": "Fournissez un historique transparent des paiements avec les dates, montants et noms des plans.",
+        "list3": "Mettez en évidence les avantages et caractéristiques actuels du plan, et proposez des options faciles pour les mises à niveau ou les modifications."
+      },
+      "desc4": {
+        "list1": "Suivez les coûts des projets, les factures et les marges bénéficiaires avec des graphiques et des tableaux intuitifs.",
+        "list2": "Surveillez les jours ouvrables dépensés, restants et en retard pour maintenir les projets dans les délais.",
+        "list3": "Recevez des alertes automatiques pour les échéances à venir afin de garantir une finalisation des projets à temps."
+      },
+      "desc5": {
+        "list1": "Créez rapidement de nouveaux projets avec une interface conviviale.",
+        "list2": "Invitez facilement les membres de l'équipe à collaborer sur vos projets.",
+        "list3": "Assurez un environnement protégé pour toutes les activités et données du projet."
+      },
+      "desc6": {
+        "list1": "Créez facilement des factures détaillées avec des listes d'articles, des quantités, des taux et des montants totaux pour les projets.",
+        "list2": "Proposez des factures PDF téléchargeables pour une conservation et un partage pratiques.",
+        "list3": "Accédez et gérez un historique de toutes les factures pour un projet, avec des options pour ajouter de nouveaux articles et consulter des informations détaillées sur les factures."
+      }
+    }
+  },
+  "contactus": {
+    "title1": "Contactez-nous",
+    "title2": "Parlons d'un projet formidable ensemble",
+    "title3": "Avez-vous quelque chose en tête qui, selon vous, nous conviendrait parfaitement ? Nous aimerions savoir ce que vous pensez.",
+    "title4": "Entrez en",
+    "title5": "Contact",
+    "form": {
+      "btn1": "Envoi...",
+      "name": "Prénom",
+      "lastName": "Nom de famille",
+      "email": "Adresse e-mail",
+      "phone": "Numéro de téléphone",
+      "message": "Message",
+      "submit": "Envoyer un message",
+      "title1": "Vous acceptez notre",
+      "title2": "politique de confidentialité"
+    },
+    "info": {
+      "title": "Informations de contact",
+      "address": "123 Rue Principale, Ville, État, Code Postal",
+      "phone": "+1 (123) 456-7890",
+      "email": "info@builderbuilderpro.com"
+    }
+  },
+  "faqs": {
+    "title1": "FAQ",
+    "title2": "Questions fréquemment posées",
+    "title3": "Tout ce que vous devez savoir sur le produit et la facturation.",
+    "title4": "Vous avez encore des questions ?",
+    "title5": "Vous ne trouvez pas la réponse que vous cherchez ? Veuillez discuter avec notre équipe amicale.",
+    "title6": "Contactez-nous",
+    "drawer1": {
+      "title": "Comment la fonctionnalité d'intégration météorologique aide-t-elle dans la gestion de projet ?",
+      "desc": "La fonctionnalité d'intégration des prévisions météorologiques fournit des mises à jour en temps réel, vous permettant de planifier les projets en toute confiance et d'ajuster les calendriers en fonction de toutes les conditions pouvant affecter votre flux de travail."
+    },
+    "drawer2": {
+      "title": "Où puis-je trouver mon historique de paiements ?",
+      "desc": "Vous pouvez trouver votre historique de paiements dans la section 'Facturation' ou 'Historique des paiements' sous le menu 'Compte' ou 'Paramètres'. Cette section vous fournira un aperçu détaillé de vos paiements et factures passés."
+    },
+    "drawer3": {
+      "title": "Quels indicateurs financiers sont disponibles dans la section des rapports ?",
+      "desc": "La section des rapports inclut divers indicateurs financiers tels que les budgets de projet, les répartition des dépenses, les états des résultats et les calculs de retour sur investissement (ROI). Ces indicateurs vous aident à analyser la santé financière de vos projets et à prendre des décisions éclairées."
+    },
+    "drawer4": {
+      "title": "Puis-je suivre les jours travaillés sur un projet ?",
+      "desc": "Oui, vous pouvez suivre les jours travaillés sur un projet en utilisant la fonctionnalité 'Suivi du temps' ou 'Chronologie du projet'. Cela vous permet de voir les jours et heures totaux enregistrés par les membres de l'équipe, vous aidant à surveiller la productivité et à gérer les délais du projet de manière efficace."
+    },
+    "drawer5": {
+      "title": "Comment puis-je recevoir des notifications pour les échéances de projet à venir ?",
+      "desc": "Pour recevoir des notifications pour les échéances de projet à venir, activez les notifications dans la section 'Paramètres'. Vous pouvez personnaliser les notifications pour qu'elles soient envoyées par email, alertes dans l'application ou notifications push afin de ne jamais manquer une échéance importante."
+    },
+    "drawer6": {
+      "title": "Comment puis-je inviter des membres de l'équipe à rejoindre un projet ?",
+      "desc": "Pour inviter des membres de l'équipe à rejoindre un projet, allez dans la section 'Gestion de projet' ou 'Équipe', puis cliquez sur 'Inviter des membres'. Entrez leurs adresses email, assignez des rôles et envoyez les invitations. Ils recevront un email avec des instructions pour rejoindre le projet."
+    }
+  },
+  "testimonials": {
+    "title1": "Témoignages",
+    "title2": "Ce que nos clients disent",
+    "title3": "Nous sommes fiers de partager les retours positifs de nos précieux clients. Voici ce qu'ils disent de leurs expériences avec nous.",
+    "title4": "BuilderBUILDER PRO a transformé la façon dont nous gérons nos projets de construction. L'interface intuitive et les fonctionnalités robustes nous ont permis de gagner du temps et de l'argent tout en améliorant la qualité globale de nos projets.",
+    "title5": "John D., Responsable de la construction",
+    "title6": "Avec BuilderBUILDER PRO, notre équipe peut collaborer de manière fluide, que nous soyons au bureau ou sur le terrain. C’est un changement majeur pour notre flux de travail et la réussite de nos projets.",
+    "title7": "Sarah L., Coordinatrice de projet",
+    "title8": "Les chiffres racontent notre histoire",
+    "title9": "Notre plateforme est conçue par des professionnels de la construction pour des professionnels de la construction, offrant une fonctionnalité inégalée, une facilité d'utilisation et une accessibilité mobile.",
+    "title10": "Tickets livrés ce mois",
+    "title11": "Taux de clients actifs",
+    "title12": "Taux de satisfaction des clients"
+  },
+  "footer": {
+    "title1": "Abonnez-vous à notre newsletter",
+    "title2": "Entrez votre email",
+    "title3": "Soumettre",
+    "title4": "BuilderBUILDER PRO est la solution de gestion de construction de premier plan, conçue pour vous aider à rationaliser vos projets du début à la fin. Avec nos outils puissants et nos fonctionnalités, vous pouvez gérer tous les aspects de vos projets de construction avec facilité et efficacité.",
+    "title5": "Installer l'application",
+    "title6": "© Copyright 2024, Tous droits réservés par BuilderBUILDER PRO"
+  },
+  "VerifyCode": {
+    "title1": "Vérifier le Code",
+    "title2": "Nous avons envoyé un code de vérification à votre e-mail. Entrez le code à 5 chiffres qui <br /> est mentionné dans l'e-mail.",
+    "title3": "Vous n'avez pas reçu le code ?",
+    "title4": "Renvoyer",
+    "title5": "Entrer le Code",
+    "title6": "Vérifier",
+    "title7": "Avez-vous vérifié votre dossier spam ?",
+    "title8": "Retour à la connexion"
+  },
+  "Navbar": {
+    "dashboard": "Tableau de Bord",
+    "projects": "Projets",
+    "reports": "Rapports",
+    "subscription": "Abonnement",
+    "settings": "Paramètres"
+  },
+  "userProject": {
+    "title0": "Tableau de bord des projets",
+    "title1": "Projets de l'utilisateur",
+    "title2": "Tous les projets répertoriés",
+    "title3": "Rénovation",
+    "title4": "Nouvelle construction",
+    "title5": "Commercial",
+    "title6": "Nom du client :",
+    "title7": "Total cumulé du chantier :",
+    "title8": "Localisation :",
+    "title9": "Organisation :",
+    "title10": "Ajouter un nouveau projet",
+    "weather": {
+      "title1": "Bonjour",
+      "title2": "Bon après-midi",
+      "title3": "Bonsoir",
+      "title4": "Activez la localisation pour obtenir la météo de votre région.",
+      "title11": "Humidité",
+      "title12": "Vitesse du vent",
+      "title13": "Ressenti :",
+      "dropdown": {
+        "title1": "Fahrenheit",
+        "title2": "Celsius"
+      }
+    },
+    "processcard": {
+      "title1": "Nom du client :",
+      "title2": "Aucun nom de client",
+      "title3": "Facture en attente",
+      "title4": "Messages non lus",
+      "title5": "Progression du projet",
+      "title6": "Coût du projet",
+      "title7": "Détails des bénéfices",
+      "title8": "Bénéfice prévu",
+      "title9": "Marge",
+      "title10": "Progression"
+    }
+  },
+  "CustomToolbar": {
+    "title1": "Ordre de travail",
+    "title2": "Météo/Notes",
+    "title3": "jour",
+    "title4": "semaine",
+    "title5": "mois"
+  },
+  "CustomEvent": {
+    "title1": "Ordre de travail: ",
+    "title2": "Notes: "
+  },
+  "CustomProjectToolbar": {
+    "title1": "Ordre de changement",
+    "title2": "Ordre de travail",
+    "title3": "Météo/Notes",
+    "title4": "Diagramme de Gantt",
+    "title5": "Jour",
+    "title6": "Semaine",
+    "title7": "Mois"
+  },
+  "GanttChart": {
+    "title1": "Diagramme de Gantt",
+    "title2": "Génération de votre diagramme...",
+    "title3": "Passer en plein écran",
+    "title4": "Fermer le plein écran"
+  },
+  "ProjectInfo": {
+    "title1": "Début",
+    "title2": "Fin"
+  },
+  "ProjectTeam": {
+    "title1": "Équipe du projet",
+    "title2": "Invitations en attente",
+    "title3": "Aucune invitation en attente.",
+    "title4": "Inviter",
+    "title5": "Ajouter",
+    "role": {
+      "Superadmin": "Super Admin",
+      "Admin": "Administrateur",
+      "Subcontractor": "Sous-traitant",
+      "Client": "Client",
+      "Employee": "Employé",
+      "Supplier": "Fournisseur",
+      "Others": "Autres"
+    }
+  },
+  "ProjectLayoutChangeOrder": {
+    "title1": "Ordre de changement",
+    "title2": "Demande d'ordre de changement",
+    "title3": "Approuvé",
+    "title4": "En attente",
+    "title5": "Rejeté",
+    "table1": "Sujet",
+    "table2": "Description",
+    "table3": "Priorité"
+  },
+  "ProjectNavbar": {
+    "title1": "Proposition Initiale",
+    "title2": "Images",
+    "title3": "Permis",
+    "title4": "Plans & Fichiers",
+    "title5": "Ordre de Travail",
+    "title6": "Chat",
+    "title7": "Notes",
+    "title8": "Rapport de Projet",
+    "title9": "Ordre de Changement",
+    "title10": "Factures",
+    "title11": "Autorisations du Projet"
+  },
+  "ProjectInitialProposal": {
+    "title1": "Proposition Initiale",
+    "title2": "Ordre de Changement",
+    "title3": "Ordre de Travail",
+    "title4": "Exporter les phases",
+    "button1": "Modifier",
+    "button2": "Supprimer",
+    "button3": "Approuver",
+    "button4": "En attente",
+    "button5": "Ajouter des Phases",
+    "noPhases": "Aucune phase ajoutée"
+  },
+  "ProjectFiles": {
+    "text1": "Éléments",
+    "button1": "Ajouter",
+    "button2": "Supprimer",
+    "noImagesOrFilesFound": "Aucune image ou fichier trouvé.",
+    "clickOrDragFileHere": "Cliquez ou faites glisser votre fichier ici",
+    "addImagePlaceholder": "Ajouter une image ici .....",
+    "unset": "Désactiver",
+    "set": "Définir",
+    "primary": "Principal",
+    "ProjectImages": {
+      "title1": "Images",
+      "title2": "Image"
+    },
+    "ProjectPermit": {
+      "title1": "Permis",
+      "title2": "Permis"
+    },
+    "ProjectDrawingFiles": {
+      "title1": "Plans & Fichiers"
+    }
+  },
+  "ProjectWorkOrder": {
+    "Tab1": "Nouvel Ordre de Travail",
+    "Tab2": "Logs des Ordres de Travail",
+    "title1": "Ordre de Travail",
+    "title2": "Logs des Ordres de Travail",
+    "title3": "Approuvé",
+    "title4": "En attente",
+    "title5": "Rejeté",
+    "title6": "Aucune phases d'ordre de changement disponibles",
+    "title7": "Aucune phases d'ordre de changement approuvées disponibles",
+    "button1": "Modifier",
+    "button2": "Supprimer",
+    "button3": "Ajouter une Phase",
+    "button4": "Ajouter",
+    "button5": "Généré par IA",
+    "button6": "IA",
+    "table": {
+      "title1": "Sujet",
+      "title2": "Description",
+      "title3": "Priorité",
+      "title4": "Total",
+      "title5": "Début",
+      "title6": "Fin",
+      "title7": "Statut",
+      "title8": "Notes",
+      "title9": "Detail"
+    }
+  },
+  "RequestWorkOrder": {
+    "title1": "Soumettre un Ordre de Travail",
+    "title2": "Soumettre un Ordre de Changement",
+    "form": {
+      "title1": "Sujet",
+      "title2": "Description",
+      "title3": "Créé par",
+      "title4": "Assigné à",
+      "title5": "Notes",
+      "title6": "Définir la priorité",
+      "title7": "Date de début",
+      "title8": "Date de fin",
+      "urgent": "Dringend",
+      "normal": "Normal",
+      "title11": "Date de création",
+      "placeholder": "Type votre sujet...",
+      "placeholder1": "Type votre description ici...",
+      "placeholder2": "Type vos notes ici..."
+    }
+  },
+  "PermisionsMessage": {
+    "submitChangeOrder": "Vous n'avez pas la permission de soumettre un ordre de changement",
+    "submitWorkOrder": "Vous n'avez pas la permission de soumettre un ordre de travail",
+    "reportsMsg": "Les rapports du projet sont uniquement accessibles à l'équipe.",
+    "notes": "Les notes du projet sont uniquement accessibles à l'équipe."
+  },
+  "ProjectChat": {
+    "title1": "Chat",
+    "title2": "Chat du Projet :",
+    "dropDown": "Démarrer une Nouvelle Conversation",
+    "tab1": "Chat de Groupe",
+    "tab2": "Chat Privé",
+    "noChatAvailable": "Aucune conversation disponible...",
+    "team": "Équipe",
+    "team+client": "Tous",
+    "placeholder": "Veuillez entrer un message"
+  },
+  "ProjectNotes": {
+    "title1": "Notes",
+    "placeholder": "Rechercher des Notes",
+    "addNotes": "Ajouter des Notes",
+    "editNotes": "Modifier les Notes",
+    "noPreview": "Aperçu non disponible",
+    "placeholder1": "Saisissez le sujet de la note...",
+    "placeholder2": "Tapez votre texte ici...",
+    "noNotesAdded": "Aucune note ajoutée",
+    "pleaseAddNote": "Veuillez ajouter une note pour voir ses détails."
+  },
+  "ProjectReports": {
+    "title1": "Rapports",
+    "invoiceHistory": "Historique des Factures",
+    "totalProjects": {
+      "title1": "Projets Totaux",
+      "title2": "Terminés",
+      "title3": "Restants"
+    },
+    "totalDaysAllotted": {
+      "title1": "Total des Jours Alloués",
+      "title2": "Jours de Travail Passés",
+      "title3": "Jours de Travail Restants",
+      "title4": "Jours de Travail en Retard"
+    },
+    "OutstandingInvoices": {
+      "title1": "Factures en Attente",
+      "title2": "Total des Factures",
+      "title3": "En Retard",
+      "title4": "Payées",
+      "title5": "Non Payées"
+    },
+    "ProfitMarginBarChartCard": {
+      "title1": "Coût/Marge Total",
+      "title2": "Phases",
+      "title3": "Marge Bénéficiaire",
+      "title4": "Total",
+      "title5": "Total des Articles"
+    },
+    "SubcontractorBillingChart": {
+      "title1": "Aperçu de la Facturation des Sous-traitants",
+      "amount": "Montant",
+      "status": "Statut",
+      "due": "Échéance",
+      "noData": "Aucune donnée disponible"
+    },
+    "PaidTransactionsCard": {
+      "title1": "Transactions Payées",
+      "title2": "Paiement Total Effectué",
+      "noData": "Aucune donnée disponible"
+    },
+    "MonthlyMarginChart": {
+      "title1": "Marge Mensuelle",
+      "title2": "Marge Moyenne Mensuelle",
+      "loadingChart": "Chargement du Graphique...",
+      "noData": "Aucune donnée disponible",
+      "title3": "Rapport Mensuel",
+      "title4": "Mois",
+      "title5": "Total de Ordre de Travail/Marge",
+      "title6": "Paiement en Attente",
+      "tooltip": {
+        "title1": "Coût Mensuel",
+        "title2": "Marge Mensuelle",
+        "title3": "Tendance de Marge Mensuelle",
+        "title4": "Paiement en Attente"
+      }
+    },
+    "TotalCostPieChart": {
+      "title1": "Coût Total",
+      "title2": "Dollars américains",
+      "title3": "Montant Dépensé",
+      "title4": "Montant Restant",
+      "title5": "Marge Actuelle Prévue"
+    },
+    "UpcomingDeadlines": {
+      "title1": "Féchées à Venir",
+      "title2": "Nom du Projet",
+      "title3": "Date d'échéance"
+    }
+  },
+  "PhaseCard": {
+    "approved": "Approuvé",
+    "pending": "En attente",
+    "declined": "Rejeté",
+    "not approved": "Non Approuvé",
+    "changeApproved": "Ordre de Changement Approuvé",
+    "changePending": "Ordre de Changement en Attente",
+    "changeDeclined": "Ordre de Changement Rejeté",
+    "addLineItem": "Ajouter un Article",
+    "listOfLineItems": "Liste des Articles",
+    "price": "Prix",
+    "lineItem": "Article",
+    "unit": "Unité",
+    "start": "Début",
+    "end": "Fin",
+    "profit": "Profit",
+    "totalCost": "Coût Total",
+    "notes": "Notes",
+    "updateStatus": "Mettre à Jour le Statut",
+    "teamStatus": "Statut de l'Équipe",
+    "action": "Action",
+    "invoice": "Facture",
+    "status": "Statut",
+    "noLineItemsAdded": "Aucun article ajouté",
+    "Not Requested": "Non demandé",
+    "Work Order Not requested": "Ordre de Travail Non demandé",
+    "Work Order declined": "Ordre de Travail Rejeté",
+    "Change Order Not requested": "Ordre de Changement Non demandé",
+    "Change Order declined": "Ordre de Changement Rejeté",
+    "Change Order approved": "Ordre de Changement Approuvé",
+    "Work Order complete": "Ordre de Travail terminé",
+    "Work Order approved": "Ordre de Travail approuvé",
+    "Work Order Requested": "Ordre de Travail demandé",
+    "Change Order Requested": "Ordre de Changement demandé",
+    "details": "Détails"
+  },
+  "ProjectChangeOrder": {
+    "title1": "Soumettre un Ordre de Changement",
+    "title2": "Logs des Ordres de Changement"
+  },
+  "WorkOrder": {
+    "approved": "Approuvé",
+    "pending": "En attente",
+    "declined": "Rejeté"
+  },
+  "ProjectInvoices": {
+    "title1": "Générer une Facture",
+    "title2": "Historique des Factures",
+    "title3": "Facture",
+    "paid": "Payé",
+    "unpaid": "Non Payé",
+    "overdue": "En retard",
+    "addQuickbooks": "Ajouter à Quickbooks",
+    "downloadInvoice": "Télécharger la Facture",
+    "generated": "Généré",
+    "notGenerated": "Non Généré",
+    "export": "Exporter les factures",
+    "table": {
+      "title1": "Sélectionner",
+      "title2": "Numéro de Facture",
+      "title3": "Date de Facture",
+      "title4": "Échéance de Facture",
+      "title5": "Statut de Facture",
+      "title6": "Montant de la Facture",
+      "title7": "Méthode de Paiement",
+      "title8": "Notes de Facture",
+      "title9": "Détails de Facture",
+      "title10": "Voir les Notes",
+      "title11": "Payé",
+      "title12": "Détails",
+      "noNotesAvailable": "Aucune note disponible",
+      "paid": "Payé",
+      "unpaid": "Non Payé",
+      "overdue": "En Retard"
+    }
+  },
+  "ProjectPermissions": {
+    "header": "Autorisations du Projet",
+    "labels": {
+      "Initial Proposal Approval": "Approbation de la Proposition Initiale",
+      "Project Management": "Gestion de Projets",
+      "Submit Change Order": "Soumettre un Ordre de Changement",
+      "Change Order Approval": "Approbation de l'Ordre de Changement",
+      "Submit Work Order": "Soumettre un Ordre de Travail",
+      "Work Order Approval": "Approbation de l'Ordre de Travail",
+      "Project Report": "Rapports de Projets",
+      "Generate Invoice": "Générer une Facture"
+    },
+    "roles": {
+      "admin": "Administrateur",
+      "projectManager": "Chef de Projet",
+      "client": "Client",
+      "employee": "Employé",
+      "subcontractor": "Sous-traitant",
+      "supplier": "Fournisseur",
+      "others": "Autres"
+    },
+    "dialogTitle": "Mise à Jour des Autorisations",
+    "dialogMessage": "Mise à jour des autorisations, veuillez patienter..."
+  },
+  "Search": {
+    "placeholder": "Rechercher"
+  },
+  "Button": {
+    "add": "Ajouter",
+    "update": "Mettre à jour",
+    "upload": "Télécharger",
+    "submitting": "Soumission en cours",
+    "back": "Retour",
+    "next": "Suivant",
+    "skip": "Omettre",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "yes": "Oui",
+    "done": "Terminé",
+    "save": "Enregistrer",
+    "saveAs": "Enregistrer comme",
+    "filter": "Filtrer",
+    "new": "Nouveau",
+    "addNew": "Ajouter nouveau",
+    "reset": "Réinitialiser"
+  },
+  "AssignProject": {
+    "title1": "Ajouter un Nouveau Projet",
+    "title2": "Sélectionner le Type de Projet",
+    "step1": "Étape 1 de 3",
+    "step2": "Étape 2 de 3",
+    "step3": "Étape 3 de 3",
+    "newProject": "Nouveau Projet",
+    "ProjectFormFields": {
+      "title1": "Nom du Projet",
+      "title2": "Emplacement",
+      "title3": "Date de début",
+      "title4": "Date de fin",
+      "title5": "Couleur du Projet",
+      "placeholder": "ex: Skyrise Sanctuary",
+      "placeholder1": "Rechercher un emplacement...",
+      "locationWarning": "Veuillez entrer une emplacement valide."
+    }
+  },
+  "AssignNewProjectStep2": {
+    "title1": "Étape 2 de 3",
+    "title2": "Inviter votre équipe à",
+    "title3": "Accepter l'invitation accorde l'accès à un espace de travail de projet sécurisé dans BuilderBUILDER PRO",
+    "addAnotherEmail": "Ajouter une autre adresse e-mail",
+    "SelectRole": "Sélectionner le Rôle",
+    "footer": {
+      "saveToReturnBackToEditYourProject": "Enregistrer pour revenir à la modification de votre projet.",
+      "saveAsToStartADuplicateProjectWithTheSameLineItemsAndPhases": "Enregistrer comme, pour démarrer un projet dupliqué avec les mêmes articles et phases."
+    }
+  },
+  "AssignNewProjectStep3": {
+    "title1": "Étape 3 de 3",
+    "title2": "Planifier votre projet",
+    "title3": "Divisez votre projet en phases et ajoutez des articles aux phases."
+  },
+  "SelectColorModal": {
+    "TapToSelectColor": "Appuyez pour sélectionner une couleur",
+    "title1": "Sélectionner une couleur",
+    "Done": "Terminé"
+  },
+  "StepBoxes": {
+    "title1": "Rénovation",
+    "title2": "Nouvelle Construction",
+    "title3": "Commercial"
+  },
+  "SkipInvite": {
+    "title1": "Omettre sans inviter?",
+    "title2": "Êtes-vous sûr de vouloir omettre cette étape sans inviter?"
+  },
+  "GenerativeAiDialogue": {
+    "title1": "Générer avec IA",
+    "title2": "Description",
+    "placeholder1": "Écrivez votre description ici...",
+    "title3": "Taille du projet",
+    "title4": "Profit du projet",
+    "placeholder2": "ex: 50 Sq. Yds",
+    "placeholder3": "ex: 25%",
+    "body1": "Écrivez une description détaillée de votre projet pour générer une division suggérée en phases et articles associés en utilisant l'IA. Le traitement peut prendre jusqu'à 30 secondes.",
+    "warning": "Attention: Cela écrasera vos phases et articles précédemment enregistrés.",
+    "button1": "Générer"
+  },
+  "PhaseModal": {
+    "addPhase": "Ajouter une Phase",
+    "updatePhase": "Mettre à Jour la Phase",
+    "selectColor": "Sélectionner une Couleur",
+    "phase": "Phase",
+    "areYouSure": "supprimer cette phase"
+  },
+  "InvoiceModal": {
+    "title1": "Facture",
+    "GenerateInvoice": {
+      "generating": "Génération...",
+      "downloadInvoice": "Télécharger la Facture",
+      "form": {
+        "title1": "Entreprise",
+        "title2": "Nom",
+        "title3": "Émetteur de la Facture",
+        "Invoice#": "Facture#",
+        "invoiceDate": "Date de Facture",
+        "dueDate": "Date d'Échéance",
+        "Notes": "Notes",
+        "footer": {
+          "footer1": "Ce fut un plaisir de faire affaire avec vous",
+          "footer2": "Termes et Conditions",
+          "footer3": "Veuillez effectuer les paiements avant la date d'échéance"
+        }
+      }
+    },
+    "PopUp": {
+      "generatingInvoice": "Génération de la Facture",
+      "pleaseWait": "Veuillez patienter...",
+      "invoiceGeneratedSuccessfully": "Facture générée avec succès !"
+    },
+    "ShareModal": {
+      "sendTo": "Envoyer à",
+      "email": "E-mail",
+      "notes": "Notes",
+      "noClientAssigned": "Aucun client assigné",
+      "send": "Envoyer",
+      "table": {
+        "title1": "Titre",
+        "title2": "Coût Total",
+        "title3": "Restant",
+        "title4": "Facture en Attente",
+        "title5": "Paiement",
+        "title6": "Pourcentage"
+      }
+    }
+  },
+  "AreYouSureModal": {
+    "title1": "Êtes-vous sûr de vouloir"
+  },
+  "LineItemTeamStatus": {
+    "title1": "Détails du Statut de l'Équipe",
+    "table": {
+      "title1": "Nom",
+      "title2": "E-mail",
+      "title3": "Rôle",
+      "title4": "Statut",
+      "done": "TERMINÉ",
+      "pending": "EN ATTENTE"
+    }
+  },
+  "LineItemDetailModal": {
+    "title1": "Description",
+    "title2": "Unité",
+    "title3": "Quantité",
+    "title4": "Prix Unitaire",
+    "title5": "Total",
+    "title6": "Date de Début",
+    "title7": "Date de Fin",
+    "title8": "Notes"
+  },
+  "LineItem": {
+    "addLineItem": "Ajouter un élément",
+    "updateLineItem": "Mettre à jour l'élément",
+    "areYouSure": "Supprimer cet élément",
+    "lineItem": "Élément",
+    "description": "Description",
+    "unit": "Unité",
+    "unitPrice": "Prix unitaire",
+    "quantity": "Quantité",
+    "actualCost": "Coût réel",
+    "clientCost": "Coût du client",
+    "start": "Début",
+    "end": "Fin",
+    "profit": "Profit",
+    "totalCost": "Coût total",
+    "notes": "Notes",
+    "percentage": "Pourcentage",
+    "placeholder": "Entrez une description",
+    "placeholder1": "Sélectionner une unité",
+    "placeholder2": "Tapez vos notes ici..."
+  },
+  "NotificationDetailModal": {
+    "Heading1": "Détails de l'Ordre de Travail",
+    "Heading2": "Détails de l'Ordre de Modification",
+    "Subject": "Sujet",
+    "Description": "Description",
+    "Phases": "Phases",
+    "LineItem": "Élément",
+    "dateStarted": "Date de début",
+    "dateEnded": "Date de fin",
+    "createdBy": "Créé par",
+    "assigned": "Assigné",
+    "notes": "Notes",
+    "status": "Statut",
+    "priority": "Priorité",
+    "urgent": "Urgent",
+    "normal": "Normal",
+    "button": "Terminer l'Ordre de Travail"
+  },
+  "AssignTeamMembers": {
+    "heading1": "Utilisateurs Assignés",
+    "heading2": "Assigner des Utilisateurs",
+    "noMembers": "Aucun membre de l'équipe",
+    "table": {
+      "title1": "Nom",
+      "title2": "Rôle",
+      "title3": "E-mail"
+    }
+  },
+  "ProjectList": {
+    "heading1": "Liste des Projets",
+    "heading2": "Tous les projets sont affichés ici",
+    "areYouSure": "Supprimer ce projet?",
+    "noClient": "Aucun nom de client",
+    "Search": "Rechercher un projet",
+    "export": "Exporter les projets",
+    "table": {
+      "ProfilePicture": "Photo de Profil",
+      "Client": "Client",
+      "Project": "Projet",
+      "StartDate": "Date de Début",
+      "EndDate": "Date de Fin",
+      "Action": "Action",
+      "ViewDetails": "Voir les Détails"
+    },
+    "editModal": {
+      "title1": "Modifier le projet",
+      "title2": "Nom du projet",
+      "title3": "Emplacement",
+      "title4": "Date de début",
+      "title5": "Date de fin",
+      "title6": "Couleur du projet",
+      "title7": "Mettre à jour le projet",
+      "title8": "Modifier la phase",
+      "uploadPhoto": "Téléchargez votre photo"
+    },
+    "remodel": "Rénovation",
+    "newbuild": "Nouvelle Construction",
+    "commercial": "Commercial",
+    "footer1": "Affichage des données",
+    "footer2": "à",
+    "footer3": "de",
+    "footer4": "entrées"
+  },
+  "Subscription": {
+    "heading1": "Abonnement",
+    "heading2": "Historique des paiements",
+    "noPaymentHistory": "Aucun historique de paiement disponible.",
+    "areYouSure": "Ce processus peut prendre 5 à 10 jours.<br />Êtes-vous sûr de vouloir demander un remboursement ?",
+    "currentPlan": "Votre plan actuel",
+    "updatePlan": "Mettre à jour le plan",
+    "choosePlan": "Choisir un plan",
+    "historyCard": {
+      "plan": "Plan",
+      "status": "Statut",
+      "refund": "Demander un remboursement"
+    },
+    "SubscriptionCard": {
+      "Business +": {
+        "planPackage": "Code promo - Activé\n- 50\n- 40\n3 Utilisateurs"
+      },
+      "Business Pro": {
+        "planPackage": "Code promo - Activé\n- 500\n- 440\n10 Utilisateurs"
+      },
+      "Free Trial": {
+        "planPackage": "Plan gratuit\n- 10\n- 5\n3 Utilisateurs"
+      },
+      "Enterprise": {
+        "planPackage": "10+ Utilisateurs\n- 10\n- 5\n",
+        "body1": "Un plan Enterprise pour les utilisateurs qui souhaitent maximiser le potentiel de l'application. Contactez-nous et nous vous répondrons !"
+      },
+      "amountOfPhotos": "Nombre de photos",
+      "amountOfFiles": "Nombre de fichiers",
+      "contactUs": "Contactez-nous",
+      "upTo": "Jusqu'à",
+      "body1": "Développez votre entreprise, augmentez votre productivité et gardez votre équipe connectée",
+      "listHeading": "Plan d'abonnement",
+      "perMonth": "par mois",
+      "perYear": "par an",
+      "expiryDate": "Date d'expiration"
+    },
+    "form": {
+      "orgInfo": "1. Informations sur l'organisation",
+      "orgName": "Nom de l'organisation",
+      "address": "Ligne d'adresse 1",
+      "placeholder": "Adresse",
+      "promo": "Vous avez un code promo ?",
+      "placeholder1": "Entrez le code promo",
+      "button": "Appliquer le code",
+      "paymentMethod": "2. Mode de paiement",
+      "choosePlan": "Plan choisi",
+      "monthly": "Mensuel",
+      "yearly": "Annuel",
+      "discount": "Prix réduit"
+    }
+  },
+  "Settings": {
+    "admin": "Administrateur",
+    "client": "Client",
+    "projectManager": "Chef de projet",
+    "employee": "Employé",
+    "subcontractor": "Sous-traitant",
+    "supplier": "Fournisseur",
+    "others": "Autres",
+    "coupon": "Coupon",
+    "master": "Article maître",
+    "modal": {
+      "project": "Projet",
+      "email": "E-mail"
+    },
+    "Tabs": {
+      "profile": "Profil",
+      "passwordAndNoti": "Mots de Passe & Notifications",
+      "others": "Autres"
+    },
+    "Profile": {
+      "heading1": "Mon Profil",
+      "form": {
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "E-mail",
+        "phoneNumber": "Numéro de Téléphone",
+        "phoneValidation": "Le téléphone n'est pas valide",
+        "button1": "Mettre à Jour le Profil",
+        "button2": "Supprimer le Profil",
+        "button3": "Modifier le Profil",
+        "areYouSure": "Supprimer votre profil?",
+        "placeholder": "Veuillez entrer votre prénom",
+        "placeholder2": "Veuillez entrer votre nom",
+        "placeholder3": "Veuillez entrer votre e-mail"
+      }
+    },
+    "Password": {
+      "heading1": "Mot de Passe",
+      "currentPassword": "Mot de Passe Actuel",
+      "newPassword": "Nouveau Mot de Passe",
+      "confirmPassword": "Confirmer le Mot de Passe",
+      "heading2": "Notifications",
+      "subheading1": "Notification de l'Équipe",
+      "list1": "Employé",
+      "list2": "Fournisseur",
+      "list3": "Sous-traitant",
+      "button1": "Mettre à Jour le Profil",
+      "placeholder": "Entrez le Mot de Passe Actuel",
+      "placeholder1": "Entrez le Nouveau Mot de Passe",
+      "placeholder2": "Confirmez votre mot de passe ici",
+      "validation1": "Le mot de passe doit contenir au moins 8 caractères",
+      "validation2": "Les mots de passe ne correspondent pas"
+    },
+    "Others": {
+      "heading1": "Se connecter à QuickBooks"
+    },
+    "SideBar": {
+      "profile": "Profil",
+      "master": "Éléments Principaux",
+      "units": "Unités",
+      "admin": "Administrateur",
+      "projectManager": "Chef de Projet",
+      "client": "Clients",
+      "employee": "Employé",
+      "subcontractor": "Sous-traitant",
+      "supplier": "Fournisseur",
+      "others": "Autre",
+      "account": "Comptes",
+      "coupon": "Coupon"
+    },
+    "masterTable": {
+      "name": "Nom",
+      "description": "Description",
+      "unit": "Unité",
+      "unitPrice": "Prix Unitaire",
+      "quantity": "Quantité",
+      "total": "Total",
+      "profit": "Profit",
+      "totalCost": "Coût Total",
+      "notes": "Notes",
+      "action": "Action",
+      "error": "Quelque chose s'est mal passé !",
+      "noRecords": "Aucun enregistrement",
+      "modal": {
+        "heading": "Mettre à jour l'élément de ligne maître",
+        "heading1": "Élément de ligne maître",
+        "areYouSure": "supprimer cet élément de ligne",
+        "lineItem": "Élément de ligne",
+        "description": "Description",
+        "unit": "Unité",
+        "unitPrice": "Prix Unitaire",
+        "quantity": "Quantité",
+        "actualCost": "Coût Réel",
+        "clientCost": "Coût Client",
+        "start": "Début",
+        "end": "Fin",
+        "profit": "Profit",
+        "totalCost": "Coût Total",
+        "notes": "Notes",
+        "percentage": "Pourcentage",
+        "placeholder1": "Sélectionner une unité",
+        "placeholder2": "Tapez vos notes ici..."
+      }
+    },
+    "UnitsTable": {
+      "unit": "Unité",
+      "action": "Action",
+      "error": "Quelque chose s'est mal passé!",
+      "areYouSure": "supprimer cette unité",
+      "modal": {
+        "addUnit": "Ajouter une unité",
+        "editUnit": "Modifier l'unité",
+        "unit": "Unité",
+        "placeholder1": "Unité",
+        "button": "Ajouter une unité",
+        "button1": "Modifier l'unité"
+      }
+    },
+    "Table": {
+      "picture": "Photo de profil",
+      "name": "Nom",
+      "project": "Travail/Projet",
+      "phone": "Numéro de téléphone",
+      "email": "E-mail",
+      "action": "Action",
+      "noRecords": "Aucun enregistrement",
+      "error": "Quelque chose s'est mal passé!",
+      "areYouSureUser": "supprimer cet utilisateur"
+    },
+    "Accounts": {
+      "heading1": "Comptes",
+      "table": {
+        "accountImg": "Image du compte",
+        "accountName": "Nom du compte",
+        "accountDetails": "Détails du compte",
+        "accountLink": "Lien du compte",
+        "action": "Action",
+        "error": "Quelque chose s'est mal passé !",
+        "noRecords": "Aucun enregistrement"
+      }
+    },
+    "Coupon": {
+      "code": "Code",
+      "table": {
+        "couponId": "ID du coupon",
+        "couponCode": "Code du coupon",
+        "offAmount": "Montant de la réduction",
+        "amount": "Montant",
+        "action": "Action",
+        "error": "Quelque chose s'est mal passé !",
+        "noRecords": "Aucun enregistrement"
+      }
+    }
+  },
+  "ClientLayout": {
+    "RecentImages": {
+      "heading1": "Images Récentes"
+    },
+    "ClientDefault": {
+      "totalCost": "Coût Total",
+      "projectedMargin": "Marge Prévue",
+      "project": "Projet",
+      "projectName": "Nom du Projet",
+      "projectLocation": "Emplacement du Projet",
+      "start": "Début",
+      "end": "Fin",
+      "activeWork": "Ordres de Travail Actifs :"
+    }
+  },
+  "ApprovalNotification": {
+    "title": "Notifications d'Approbation de Projet",
+    "message": "Vous a envoyé une demande d'approbation pour le projet :",
+    "actions": {
+      "decline": "Refuser",
+      "approve": "Approuver",
+      "details": "Détails"
+    },
+    "declineReason": {
+      "label": "Motif du refus",
+      "error": "Le motif du refus est requis",
+      "submit": "Soumettre"
+    }
+  },
+  "InvoiceNotification": {
+    "newInvoice": "Nouvelle Facture",
+    "body": {
+      "part1": "Une nouvelle facture",
+      "part2": "a été créée pour",
+      "part3": "par"
+    },
+    "body2": "Veuillez vérifier la facture et effectuer le paiement avant :",
+    "body3": "Veuillez vérifier votre e-mail.",
+    "button": "Payer la Facture"
+  },
+  "TeamNotifications": {
+    "title": "Notifications de l'Équipe",
+    "body": "Vous avez une notification pour le projet",
+    "button": "Marquer comme lu",
+    "body2": "a terminé la tâche assignée",
+    "body3": "de la phase",
+    "declined": "refusé",
+    "approved": "approuvé",
+    "changeOrder": "ordre de modification",
+    "workOrder": "ordre de travail"
+  },
+  "WorkOrderNotification": {
+    "title": "Notifications des Ordres de Travail/Modification",
+    "subtitle": {
+      "part1": "Vous a envoyé une ",
+      "changeOrder": "demande d'ordre de modification",
+      "workOrder": "demande d'ordre de travail",
+      "part2": "du projet"
+    },
+    "table": {
+      "subject": "Sujet",
+      "description": "Description",
+      "priority": "Priorité",
+      "start": "Début",
+      "end": "Fin",
+      "status": "Statut",
+      "notes": "Notes"
+    },
+    "actions": {
+      "decline": "Refuser",
+      "approve": "Approuver",
+      "detail": "Détails"
+    }
+  },
+  "Notification": {
+    "noNewNotification": "Aucune nouvelle notification"
+  }
+}

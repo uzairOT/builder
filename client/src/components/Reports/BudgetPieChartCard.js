@@ -2,7 +2,6 @@ import { Box, Button, Divider, Modal, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import BudgetPieChart from "./BudgetPieChart";
 import CircleIcon from "@mui/icons-material/Circle";
-import SelectMenuBarChart from "./SelectMenuBarChart";
 import BuilderProButton from "../UI/Button/BuilderProButton";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import GenerateInvoiceTable from "../dialogues/GenerateInvoice/GenerateInvoiceTable";
@@ -10,17 +9,16 @@ import GenerateInvoicePopup from "../dialogues/GenerateInvoice/GenerateInvoicePo
 import ShareModal from "../dialogues/ShareModal/ShareModal";
 import GenerateInvoiceDone from "../dialogues/GenerateInvoice/GenerateInvoiceDone";
 import {
-  useGetAllProjectsLineItemsMutation,
   useGetOutstandingInvoicesMutation,
 } from "../../redux/apis/Reports/reportsApiSlice";
 import { useParams } from "react-router-dom";
-
+import { useTranslation } from 'react-i18next';
 const BudgetPieChartCard = () => {
   const [open, setOpen] = useState(false);
   const [generateInvoice, setGenerateInvoice] = useState(false);
   const [shareToClient, setShareToClient] = useState(false);
   const [done, setDone] = useState(false);
-
+  const {t} = useTranslation()
   const [getOutstandingInvoices, { data, error, isLoading }] =
     useGetOutstandingInvoicesMutation();
   let dataUser = localStorage.getItem("userInfo");
@@ -63,7 +61,7 @@ const BudgetPieChartCard = () => {
         projectId,
       }).unwrap();
       setProjects(result);
-      console.log("Success 'fetchOutstandingInvoices':", result);
+      // console.log("Success 'fetchOutstandingInvoices':", result);
     } catch (err) {
       console.error("Failed to fetch reports stats:", err);
     }
@@ -117,15 +115,15 @@ const BudgetPieChartCard = () => {
       >
         <Typography
           fontSize={{xl:'20px', lg:"16px",md:'20px',xs:'20px',}}
-          fontFamily={"inherit"}
+          fontFamily={'var(--main-font-family)'}
           fontWeight={"500"}
           color={"#4C8AB1"}
         >
-          Outstanding Invoices
+          {t("ProjectReports.OutstandingInvoices.title1")}
         </Typography>
         <Typography
           color={"#606060"}
-          fontFamily={"inherit"}
+          fontFamily={'var(--main-font-family)'}
           fontWeight={"500"}
           fontSize={"13px"}
         >
@@ -142,7 +140,7 @@ const BudgetPieChartCard = () => {
         />
         <Typography
           pl={3}
-          fontFamily={"inherit"}
+          fontFamily={'var(--main-font-family)'}
           fontWeight={"500"}
           fontSize={{xl:'24px', lg:"21px",md:'24px',xs:'24px',}}
         >
@@ -150,11 +148,11 @@ const BudgetPieChartCard = () => {
         </Typography>
         <Typography
           pl={3}
-          fontFamily={"inherit"}
+          fontFamily={'var(--main-font-family)'}
           fontSize={{xl:'12px', lg:"11px",md:'12px',xs:'12px',}}
           color={"#4F4F4F"}
         >
-          Total
+          {t("ProjectReports.OutstandingInvoices.title2")}
         </Typography>
         <Stack
           direction={"row"}
@@ -168,12 +166,12 @@ const BudgetPieChartCard = () => {
               sx={{ color: "#F8961E", fontSize: "10px", paddingTop: "4px" }}
             />
             <Stack direction={"column"}>
-              <Typography fontFamily={"inherit"} fontSize={"12px"}>
-                Unpaid
+              <Typography fontFamily={'var(--main-font-family)'} fontSize={"12px"}>
+                {t("ProjectReports.OutstandingInvoices.title5")}
               </Typography>
               <Typography
-                textAlign={"left"}
-                fontFamily={"inherit"}
+                textAlign={"center"}
+                fontFamily={'var(--main-font-family)'}
                 fontWeight={"500"}
               >
                 {projects?.unpaidInvoices}
@@ -185,12 +183,12 @@ const BudgetPieChartCard = () => {
               sx={{ color: "#F94144", fontSize: "10px", paddingTop: "4px" }}
             />
             <Stack direction={"column"}>
-              <Typography fontFamily={"inherit"} fontSize={"12px"}>
-                OverDue
+              <Typography fontFamily={'var(--main-font-family)'} fontSize={"12px"}>
+                {t("ProjectReports.OutstandingInvoices.title3")}
               </Typography>
               <Typography
                 textAlign={"center"}
-                fontFamily={"inherit"}
+                fontFamily={'var(--main-font-family)'}
                 fontWeight={"500"}
               >
                 {projects?.overdueInvoices}
@@ -202,12 +200,12 @@ const BudgetPieChartCard = () => {
               sx={{ color: "green", fontSize: "10px", paddingTop: "4px" }}
             />
             <Stack direction={"column"}>
-              <Typography fontFamily={"inherit"} fontSize={"12px"}>
-                Paid
+              <Typography fontFamily={'var(--main-font-family)'} fontSize={"12px"}>
+                {t("ProjectReports.OutstandingInvoices.title4")}
               </Typography>
               <Typography
                 textAlign={"center"}
-                fontFamily={"inherit"}
+                fontFamily={'var(--main-font-family)'}
                 fontWeight={"500"}
               >
                 {projects?.paidInvoices}
@@ -240,20 +238,20 @@ const BudgetPieChartCard = () => {
             >
               <Typography
                 fontSize={"24px"}
-                fontFamily={"inherit"}
+                fontFamily={'var(--main-font-family)'}
                 fontWeight={"600"}
                 color={"#4C8AB1"}
               >
-                Generate Invoice
+                {t("ProjectInvoices.title1")}
               </Typography>
               <Stack direction={"row"} alignItems={"center"}>
                 <BuilderProButton
                   variant={"contained"}
                   backgroundColor={"#4C8AB1"}
                   fontSize={"16px"}
-                  fontFamily={"inherit"}
+                  fontFamily={'var(--main-font-family)'}
                 >
-                  Download Invoice
+                  {t("ProjectInvoices.downloadInvoice")}
                 </BuilderProButton>
               </Stack>
             </Stack>
@@ -356,18 +354,18 @@ const BudgetPieChartCard = () => {
                 sx={{
                   backgroundColor: "#4C8AB1",
                   borderRadius: "28px",
-                  fontFamily: "Arial Rounded MT, sans-serif",
+                  fontFamily: 'var(--main-font-family)',
                   textTransform: "capitalize",
                   fontSize: "16px",
                 }}
                 fontSize={"16px"}
-                fontFamily={"inherit"}
+                fontFamily={'var(--main-font-family)'}
                 onClick={() => {
                   handleClose();
                   handleGenerateInvoice();
                 }}
               >
-                Generate Invoice
+                {t("ProjectInvoices.title1")}
               </Button>
             </Stack>
           </Box>

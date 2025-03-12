@@ -13,6 +13,7 @@ import {
   Select,
   MenuItem,
   Input,
+  Tooltip,
 } from "@mui/material";
 import Button from "../../UI/CustomButton";
 import ChangeOrder from "../ProjectsDefault/ChangeOrder";
@@ -25,6 +26,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { getUserRoleFromRedux } from "../../../redux/slices/auth/userRoleSlice";
 import GenerateInvoice from "../../dialogues/GenerateInvoice/GenerateInvoice";
+import { useTranslation } from "react-i18next";
 const dummyData = [
   {
     id: 1,
@@ -80,19 +82,25 @@ function InvoicesTable({
   //   workOrder,
   refetch,
   setPhaseItems,
-  paidInvoices
+  paidInvoices,
 }) {
+  const { t } = useTranslation();
   // console.log('INSIDE WORKORDER: ',data)
   const [open, setOpen] = useState(false);
   const [invoicePaid, { isLoading }] = usePaidInvoiceMutation();
   const [invoiceData, setInvoiceData] = useState(null);
   const userRole = useSelector(getUserRoleFromRedux);
+  const userInfo = useSelector(state =>  state.auth.userInfo);
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleOnClick = async (id) => {
+  const handleOnClick = async (id, adminId) => {
     try {
+      if(adminId !== userInfo.user.id){
+        toast.warning("Only the person who generated the invoice can perform this action.");
+        return; // Exit the function to prevent further execution
+      }
       const res = await invoicePaid({ invoiceId: id });
       await refetch();
     } catch (error) {
@@ -100,12 +108,12 @@ function InvoicesTable({
       toast.error("Something went wrong");
     }
   };
-  const handleOnClickDetails = (item) =>{
+  const handleOnClickDetails = (item) => {
     setInvoiceData({
-      invoiceCompleteObj:item
+      invoiceCompleteObj: item,
     });
-    setOpen(true)
-  }
+    setOpen(true);
+  };
   const handleUnitChange = (event, id) => {
     const selectedUnit = event.target.value;
     // Assuming you have a function to update the unit value in your data structure
@@ -122,85 +130,104 @@ function InvoicesTable({
   };
   return (
     <>
-    <TableContainer
-      component={Paper}
-      sx={{ height: "80vh", scrollbarWidth: "thin", boxShadow: "none" }}
-    >
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell sx={tableCellStyle}>Select</TableCell>
-            <TableCell sx={tableCellStyle}>Invoice Number</TableCell>
-            <TableCell sx={tableCellStyle}>Invoice Date</TableCell>
-            <TableCell sx={tableCellStyle}>Invoice Due</TableCell>
-            <TableCell sx={tableCellStyle}>Invoice Status</TableCell>
-            <TableCell sx={tableCellStyle}>Invoice Bill</TableCell>
-            {!paidInvoices && !(userRole.userRole ==='client') &&<TableCell sx={tableCellStyle}>Invoice Paid</TableCell>}
-            <TableCell sx={tableCellStyle}>Invoice Details</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data?.map((item) => {
-            return (
-              <TableRow key={item.id}>
-                <TableCell sx={tableCellValueStyle}>
-                  <Checkbox
-                    checked={checkedRow === item}
-                    onChange={() => handleCheckboxChange(item, data)}
-                  />
-                </TableCell>
+      <TableContainer
+        component={Paper}
+        sx={{ height: "80vh", scrollbarWidth: "thin", boxShadow: "none" }}
+      >
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title1")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title2")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title3")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title4")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title5")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title6")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title7")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title8")}</TableCell>
+              {!paidInvoices && (
+                <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title11")}</TableCell>
+              )}
+              <TableCell sx={tableCellStyle}>{t("ProjectInvoices.table.title12")}</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data?.map((item) => {
+              return (
+                <TableRow key={item.id}>
+                  <TableCell sx={tableCellValueStyle}>
+                    <Checkbox
+                      checked={checkedRow === item}
+                      onChange={() => handleCheckboxChange(item, data)}
+                    />
+                  </TableCell>
 
-                <TableCell sx={tableCellValueStyle}>
-                  {item.InvoiceNumber}
-                </TableCell>
-                <TableCell sx={tableCellValueStyle}>
-                  {moment(item.InvoiceDate).format("MMM D, YYYY, h:mm a")}
-                </TableCell>
-                {/* <TableCell sx={tableCellValueStyle}>{item.LineItem.unit}</TableCell>
+                  <TableCell sx={tableCellValueStyle}>
+                    {item.InvoiceNumber}
+                  </TableCell>
+                  <TableCell sx={tableCellValueStyle}>
+                    {moment(item.InvoiceDate).format("MM/DD/YYYY")}
+                  </TableCell>
+                  {/* <TableCell sx={tableCellValueStyle}>{item.LineItem.unit}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.LineItem.margin}</TableCell>
     <TableCell sx={tableCellValueStyle}>{item.LineItem.projectProfile}</TableCell> */}
-                <TableCell sx={tableCellValueStyle}>
-                  {moment(item.InvoiceDueDate).format("MMM D, YYYY, h:mm a")}
-                </TableCell>
-                <TableCell sx={tableCellValueStyle}>
-                  {item.InvoiceStatus}
-                </TableCell>
-                <TableCell sx={tableCellValueStyle}>
-                  {item.InvoiceBill}
-                </TableCell>
-               {!paidInvoices && !(userRole.userRole ==='client') && <TableCell sx={TableButtonsStyle}>
-                  <BuilderProButton
-                    variant={"contained"}
-                    backgroundColor={"#4C8AB1"}
-                    fontSize={"11px"}
-                    fontFamily={"inherit"}
-                    marginLeft={"5px"}
-                    handleOnClick={() => handleOnClick(item.id)}
-                    disabled={isLoading}
-                  >
-                    Paid
-                  </BuilderProButton>
-                </TableCell>}
-                <TableCell sx={TableButtonsStyle}>
-                  <BuilderProButton
-                    variant={"contained"}
-                    backgroundColor={"#4C8AB1"}
-                    fontSize={"11px"}
-                    fontFamily={"inherit"}
-                    marginLeft={"5px"}
-                    handleOnClick={() => handleOnClickDetails(item)}
-                    disabled={isLoading}
-                  >
-                    Details
-                  </BuilderProButton>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    <GenerateInvoice open={open} handleClose={handleClose} invoiceData={invoiceData} />
+                  <TableCell sx={tableCellValueStyle}>
+                    {moment(item.InvoiceDueDate).format("MM/DD/YYYY")}
+                  </TableCell>
+                  <TableCell sx={tableCellValueStyle}>
+                    {t(`ProjectInvoices.table.${item.InvoiceStatus}`)}
+                  </TableCell>
+                  <TableCell sx={tableCellValueStyle}>
+                    {item.InvoiceBill}
+                  </TableCell>
+                  <TableCell sx={tableCellValueStyle}>
+                    {item?.ProjectPayments[0]?.PaymentMethod ? item?.ProjectPayments[0]?.PaymentMethod : "-"}
+                  </TableCell>
+                  {/* Apply the Tooltip directly to a specific cell */}
+                  <TableCell sx={tableCellValueStyle}>
+                    <Tooltip title={item?.notes || t("ProjectInvoices.table.noNotesAvailable")}>
+                      <span>{item?.notes ? t("ProjectInvoices.table.title10") : "-"}</span>
+                    </Tooltip>
+                  </TableCell>
+                  {!paidInvoices && (
+                    <TableCell sx={TableButtonsStyle}>
+                      <BuilderProButton
+                        variant={"contained"}
+                        backgroundColor={"#4C8AB1"}
+                        fontSize={"11px"}
+                        fontFamily={"var(--main-font-family)"}
+                        marginLeft={"5px"}
+                        handleOnClick={() => handleOnClick(item.id, item.Admin.id)}
+                        disabled={isLoading}
+                      >
+                        {t("ProjectInvoices.table.title11")}
+                      </BuilderProButton>
+                    </TableCell>
+                  )}
+                  <TableCell sx={TableButtonsStyle}>
+                    <BuilderProButton
+                      variant={"contained"}
+                      backgroundColor={"#4C8AB1"}
+                      fontSize={"11px"}
+                      fontFamily={"var(--main-font-family)"}
+                      marginLeft={"5px"}
+                      handleOnClick={() => handleOnClickDetails(item)}
+                      disabled={isLoading}
+                    >
+                      {t("ProjectInvoices.table.title12")}
+                    </BuilderProButton>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <GenerateInvoice
+        open={open}
+        handleClose={handleClose}
+        invoiceData={invoiceData}
+      />
     </>
   );
 }
@@ -211,10 +238,10 @@ const tableCellStyle = {
   textOverflow: "ellipsis",
   overflow: "hidden",
   fontWeight: 500,
-  fontSize: {xl:"14px", lg:'11px',md:'11px', xs:'11px'},
-  fontFamily: "inherit",
+  fontSize: { xl: "16px", lg: "13px", md: "13px", xs: "13px" },
+  fontFamily: "var(--main-font-family)",
   color: "#8C8C8C",
-  textAlign:'left',
+  textAlign: "left",
 };
 const tableCellValueStyle = {
   maxWidth: { xl: "80px", lg: "80px", md: "70px", xs: "100%" },
@@ -222,24 +249,22 @@ const tableCellValueStyle = {
   textOverflow: "ellipsis",
   overflow: "hidden",
   fontWeight: 400,
-  fontSize: {xl:"14px", lg:'11px',md:'11px', xs:'11px'},
+  fontSize: { xl: "16px", lg: "13px", md: "13px", xs: "13px" },
   borderBottom: "none",
-  fontFamily: "Montserrat",
+  fontFamily: "var(--main-font-family)",
   color: "#000000",
-  textAlign:'left',
+  textAlign: "left",
   justifyContent: "left",
-
-
 };
 
 const TableButtonsStyle = {
   textOverflow: "ellipsis",
   overflow: "hidden",
   fontWeight: 400,
-  fontSize: {xl:"14px", lg:'11px',md:'11px', xs:'11px'},
+  fontSize: { xl: "14px", lg: "11px", md: "11px", xs: "11px" },
   borderBottom: "none",
-  fontFamily: "Montserrat",
+  fontFamily: "var(--main-font-family)",
   color: "#000000",
-  textAlign:'left',
+  textAlign: "left",
   justifyContent: "left",
 };

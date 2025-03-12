@@ -7,8 +7,10 @@ import { useGetTotalProjectProfitMarginMutation } from "../../../redux/apis/Repo
 import { useEffect } from "react";
 import { useState } from "react";
 import { formatMoney } from "../../../utils/Formatters/moneyFormat";
+import { useTranslation } from "react-i18next";
 
 function WhatsHappeningCard() {
+  const {t} = useTranslation();
   const { id } = useParams();
   const [projectName, projectLocation] = useOutletContext();
   const userInfo = useSelector((state) => state.auth.userInfo);
@@ -24,10 +26,10 @@ function WhatsHappeningCard() {
         projectId,
       }).unwrap();
       setProjects(result);
-      console.log(
-        "Success useGetTotalProjectProfitMarginMutation Results Results Results:",
-        result
-      );
+      // console.log(
+      //   "Success useGetTotalProjectProfitMarginMutation Results Results Results:",
+      //   result
+      // );
     } catch (err) {
       console.error("Failed to fetch reports stats:", err);
     }
@@ -73,8 +75,8 @@ function WhatsHappeningCard() {
                 <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}><Typography sx={themeStyle.label}>{item?.phase_name}</Typography><Typography sx={themeStyle.price}>${formatMoney(item?.totalCost)}</Typography></Stack>
             )
         })}
-        <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}><Typography sx={themeStyle.label}>Total Cost</Typography><Typography sx={themeStyle.price}>${formatMoney(data?.totalCost)}</Typography></Stack>
-        <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}><Typography sx={themeStyle.label}>Projected Margin</Typography><Typography sx={themeStyle.price}>${formatMoney(data?.totalMargin)}</Typography></Stack>
+        <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}><Typography sx={themeStyle.label}>{t("ClientLayout.ClientDefault.totalCost")}</Typography><Typography sx={themeStyle.price}>${formatMoney(data?.totalCost)}</Typography></Stack>
+        <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}><Typography sx={themeStyle.label}>{t("ClientLayout.ClientDefault.totalCost")}</Typography><Typography sx={themeStyle.price}>${formatMoney(data?.totalMargin)}</Typography></Stack>
     </Stack>
     </>
   );
@@ -83,7 +85,7 @@ function WhatsHappeningCard() {
 const themeStyle = {
   heading: {
     color: "#4C8AB1",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "1.3rem",
     marginBottom: "1rem",
   },
@@ -95,7 +97,7 @@ const themeStyle = {
   },
   listItem: {
     color: "#000000",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     opacity: "70%",
     whiteSpace: "nowrap",
     paddingLeft: "2rem",
@@ -117,13 +119,13 @@ const themeStyle = {
   label: {
     fontSize: '20px',
     color: '#2F2F2F',
-    fontFamily: 'Montserrat, sans-serif',
+    fontFamily: 'var(--main-font-family)',
     fontWeight: '500',
 },
 price: {
     fontSize: '18px',
     color: '#4C8AB1',
-    fontFamily: 'Montserrat, sans-serif',
+    fontFamily: 'var(--main-font-family)',
     fontWeight: '600',
 }
 };

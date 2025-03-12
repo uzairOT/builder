@@ -4,24 +4,24 @@ import {
   Box,
   Typography,
   Button,
-  Avatar,
   CircularProgress,
   Stack,
   Modal,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import "../../App.css";
 import AddImage from "../dialogues/AddImage/AddImage";
 import { useParams } from "react-router-dom";
-import { fileTypeIcons } from "../dialogues/AddImage/assets/fileTypes";
 import { handleDownload } from "../../utils/S3";
 import filePlaceHolder from "../../assets/FileSvg/file.svg";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
-import NoImg from "../ClientDashboard/RecentImagesAndComments/assets/no-image.png";
 import { useDeleteProjectFileMutation } from "../../redux/apis/Project/projectApiSlice";
 import { toast } from "react-toastify";
-function Permit({ view, type }) {
+import { useTranslation } from 'react-i18next'
+function Permit({ view, type, projectOrganizationId }) {
+  const {t} = useTranslation()
   const placeholderImg = `https://source.unsplash.com/random/100x100`;
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -33,6 +33,7 @@ function Permit({ view, type }) {
   const [RecentfileUrls, setRecentFilesUrls] = useState([]);
   const [OlderfileUrls, setOlderFilesUrls] = useState([]);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [modalUrl, setModalUrl] = useState("");
   const [showDelete, setShowDelete] = useState(false);
@@ -48,8 +49,9 @@ function Permit({ view, type }) {
   const { id } = useParams();
   const fetchData = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.get(
-        `http://3.135.107.71/project/files/${type}/${id}`,
+        `https://builderbuilder.net/project/files/${type}/${id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -59,6 +61,7 @@ function Permit({ view, type }) {
       );
       //replace 123 with the project id
       // Assuming the response data is an array of file URLs
+      setIsLoading(false)
       setRecentFilesUrls(response.data.recentFiles);
       setOlderFilesUrls(response.data.olderFiles);
     } catch (error) {
@@ -75,8 +78,8 @@ function Permit({ view, type }) {
       const res = await deleteProjectFile({
         fileId: file.id,
         projectId: file.projectId,
-        });
-        toast.success("File Successfully deleted");
+      });
+      toast.success("File successfully deleted");
       await fetchData();
     } catch (error) {
       console.log("Something went wrong!");
@@ -87,40 +90,41 @@ function Permit({ view, type }) {
     fetchData();
   }, [id]);
   return (
-    <div style={{ width: "100%", borderRadius: "14px", marginBottom:'14px' }}>
+    <>
       <Box sx={themeStyle.titleBox}>
         <Typography sx={themeStyle.titleTypo}>
-          {view} ({RecentfileUrls?.length} items){" "}
+          {view} ({RecentfileUrls?.length} {t("ProjectFiles.text1")}){" "}
         </Typography>
         <Stack
-          direction={{sm:"row", xs:"column"}}
-          gap={2}
+          direction={{ sm: "row", xs: "column" }}
+          gap={{md:2, sm:1, xs:1}}
           justifyContent={"center"}
           alignItems={"center"}
         >
           <Button sx={{ ...themeStyle.buttonStyle }} onClick={handleOpen}>
-            Add 
+            {t("ProjectFiles.button1")}
           </Button>
-          
-            <Button
+
+          <Button
             variant="outlined"
             sx={{ ...themeStyle.buttonStyle, }}
-              fontSize={"12px"}
-              style={{
-                color: "white",
-                backgroundColor:'#FFAC00',
-                // fontWeight:'500'
-                // textDecoration: "underline",
-                // opacity: showDelete ? "" : "0.7",
-              }}
-              onClick={handleSetShowDelete}
-            >
-              Delete
-            </Button>
-        
+            fontSize={"12px"}
+            style={{
+              color: "white",
+              backgroundColor: '#FFAC00',
+              // fontWeight:'500'
+              // textDecoration: "underline",
+              // opacity: showDelete ? "" : "0.7",
+            }}
+            onClick={handleSetShowDelete}
+          >
+            {t("ProjectFiles.button2")}
+          </Button>
+
         </Stack>
       </Box>
       <Box
+      flex={1}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -128,7 +132,7 @@ function Permit({ view, type }) {
           flexDirection: "column",
         }}
       >
-        <Box sx={themeStyle.permitBox}>
+        <Box flex={1} sx={themeStyle.permitBox}>
           {/* <Box sx={{ width: "15%" }}>
             <Typography
               sx={{ ...themeStyle.titleTypo, ...themeStyle.permitType }}
@@ -146,13 +150,15 @@ function Permit({ view, type }) {
           </Box> */}
           {/* Render avatars dynamically with image URLs */}
           <Stack
+          flex={1}
             direction={"row"}
             flexWrap={"wrap"}
             maxWidth={"900px"}
-            maxHeight={"500px"}
+            overflow={"auto"}
+            maxHeight={{sm:"500px", xs:"200px"}}
             sx={scrollable}
           >
-            {RecentfileUrls?.length < 1 ? (
+            {(RecentfileUrls?.length < 1 || isLoading) ? (
               <>
                 <Box
                   display="flex"
@@ -161,10 +167,12 @@ function Permit({ view, type }) {
                   // height="100%" 
                   textAlign="center"
                   padding="2rem"
+                  gap={2}
                 >
                   <Typography variant="body1" color="textSecondary">
-                    No images or files found.
+                    {t("ProjectFiles.noImagesOrFilesFound")}
                   </Typography>
+                  {isLoading && <CircularProgress size={'16px'} />}
                 </Box>
               </>
             ) : (
@@ -173,7 +181,7 @@ function Permit({ view, type }) {
                   return <></>;
                 }
                 const fileType = url.fileUrl.split(".").pop().toLowerCase();
-                const fileName = url.fileUrl.split("/").pop().toLowerCase();
+                // const fileName = url.fileUrl.split("/").pop().toLowerCase();
                 const isImage = [
                   "jpg",
                   "jpeg",
@@ -209,6 +217,7 @@ function Permit({ view, type }) {
                           <DeleteIcon sx={{ color: "#EC3710" }} />
                         </IconButton>
                       </Box>
+                      <Tooltip title={url?.fileName || ''} placement="top">
                       <img
                         key={index}
                         alt={`Avatar ${index + 1}`}
@@ -222,9 +231,10 @@ function Permit({ view, type }) {
                         }}
                         download="image"
                       />
+                      </Tooltip>
                       <Typography
                         ml={"0.5rem"}
-                        fontFamily={"inherit"}
+                        fontFamily={'var(--main-font-family)'}
                         fontSize={"12px"}
                         width={"100px"}
                         whiteSpace={"nowrap"}
@@ -240,7 +250,7 @@ function Permit({ view, type }) {
                     <Box
                       onClick={() => {
                         if (showDelete) return false;
-                        handleDownload(url.fileUrl, fileName, setIsDownloading);
+                        handleDownload(url.fileUrl, url.fileName, setIsDownloading);
                       }}
                       style={{ cursor: "pointer" }}
                     >
@@ -259,6 +269,7 @@ function Permit({ view, type }) {
                           <DeleteIcon sx={{ color: "#EC3710" }} />
                         </IconButton>
                       </Box>
+                      <Tooltip title={url?.fileName || ''} placement="top">
                       <img
                         src={filePlaceHolder}
                         alt={`${fileType.toUpperCase()} File`}
@@ -271,9 +282,10 @@ function Permit({ view, type }) {
                             : "0rem 0.5rem 0rem 0.5rem",
                         }}
                       />
+                      </Tooltip>
                       <Typography
                         ml={"0.5rem"}
-                        fontFamily={"inherit"}
+                        fontFamily={'var(--main-font-family)'}
                         fontSize={"12px"}
                         width={"100px"}
                         whiteSpace={"nowrap"}
@@ -337,7 +349,7 @@ function Permit({ view, type }) {
                 }}
               />
               <Typography
-                fontFamily={"inherit"}
+                fontFamily={'var(--main-font-family)'}
                 fontSize={"12px"}
                 p={1}
                 textOverflow={"ellipsis"}
@@ -355,10 +367,12 @@ function Permit({ view, type }) {
           handleOpen={handleOpen}
           handleClose={handleClose}
           heading={type}
+          view={type === 'image' ? t("ProjectFiles.ProjectImages.title1") : type === 'permit' ? t("ProjectFiles.ProjectPermit.title1") : t("ProjectFiles.ProjectDrawingFiles.title1")}
           fetchData={fetchData}
+          projectOrganizationId={projectOrganizationId}
         ></AddImage>
       )}
-    </div>
+    </>
   );
 }
 
@@ -389,7 +403,7 @@ const scrollable = {
 };
 const themeStyle = {
   button: {
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "12px",
     fontStyle: "normal",
     fontWeight: 500,
@@ -409,13 +423,13 @@ const themeStyle = {
   },
   titleTypo: {
     color: "#FFFFFF",
-    fontFamily: "Arial Rounded MT, sans-serif",
-    fontSize: {xl:"1.3rem", lg:15,md:"1.3rem",xs:"1.3rem",},
-    margin: {sm:"1rem 2rem", xs:"2rem"},
+    fontFamily: 'var(--main-font-family)',
+    fontSize: { xl: "1.3rem", lg: 15, md: "1.3rem", xs: "0.9rem", },
+    margin: { sm: "1rem 2rem", xs: "2rem" },
   },
   buttonStyle: {
-    padding: "0.7rem 0.1rem",
-    fontSize: {xl:"0.9rem",lg:"0.8rem",md:"0.9rem",sm:"0.9rem",xs:"0.9rem",},
+    padding: {md: "0.7rem 0.1rem", xs:"0.6rem 0.1rem"},
+    fontSize: { xl: "0.9rem", lg: "0.8rem", md: "0.9rem", sm: "0.8rem", xs: "0.8rem", },
     marginRight: "1rem",
     backgroundColor: "#FFFFFF",
     color: "#4C8AB1",
@@ -423,7 +437,7 @@ const themeStyle = {
     borderRadius: { lg: "2.5rem", md: "2.5rem", sm: "2.5rem", xs: "0.5rem" },
     cursor: "pointer",
     width: { lg: "auto", md: "auto", sm: "auto", xs: "100%" },
-    minWidth: "9.5rem",
+    minWidth: {sm:"9.5rem", xs:"8.5rem"},
     // maxWidth: "19.5rem",
     display: "flex",
     justifyContent: "center",
@@ -433,7 +447,7 @@ const themeStyle = {
     "&:hover": {
       backgroundColor: "lightgray",
     },
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     lineHeight: "normal",
   },
   permitBox: {

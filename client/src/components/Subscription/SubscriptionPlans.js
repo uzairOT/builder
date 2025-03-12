@@ -2,13 +2,20 @@ import { Divider, Grid, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import SubscriptionCard from "../UI/Card/SubscriptionCard";
 import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
+import EnterpriseCard from "../UI/Card/EnterpriseCard";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const SubscriptionPlans = ({
   setCurrentPlan,
   currentPlan,
   setCurrentPakage,
+  setCurrentPayment,
+  currentPayment,
+  setRefundPlan
 }) => {
-  const [currentPayment, setCurrentPayment] = useState([]);
+  const {t} = useTranslation()
+  const [expiryDate, setExpiryDate] = useState(null)
   let userData = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(userData);
   const currentUser = userInfo?.user;
@@ -16,7 +23,7 @@ const SubscriptionPlans = ({
     const fetchCurrentPayment = async () => {
       try {
         const res = await fetch(
-          "http://3.135.107.71/payment/checkPaymentPlan",
+          "https://builderbuilder.net/payment/checkPaymentPlan",
           {
             method: "POST",
             headers: new Headers({
@@ -28,25 +35,28 @@ const SubscriptionPlans = ({
         );
         const data = await res.json();
         if (data.success) {
-          console.log("080808080--->", data?.payment?.planType);
           setCurrentPayment(data?.payment?.planType);
+          setExpiryDate(data?.payment.expiryDate)
+        }else{
+          toast.warning(data?.message)
         }
+        
       } catch (error) {
         console.error(error);
       }
     };
     fetchCurrentPayment();
-    console.log("currentPaymentcurrentPaymentcurrentPayment", currentPayment);
+    // console.log("currentPaymentcurrentPaymentcurrentPayment", currentPayment);
   }, []);
   return (
     <Stack p={1} pl={4}>
       {currentPayment.length > 0 ? (
         <>
           <Typography sx={themeStyle.title} pl={1}>
-            Your Current Plan
+            {t("Subscription.currentPlan")}
           </Typography>
           <Stack spacing={2} pb={1} p={1}>
-            <SubscriptionCard current={true} planType={currentPayment} />
+            <SubscriptionCard current={true} planType={currentPayment} expiryDate={expiryDate}/>
             <Divider />
           </Stack>
         </>
@@ -55,18 +65,10 @@ const SubscriptionPlans = ({
       )}
 
       <Typography sx={themeStyle.title} pb={2}>
-        {currentPayment ? "Update Plan" : "Choose plan"}
+        {currentPayment ? t("Subscription.updatePlan") : t("Subscription.choosePlan")}
       </Typography>
-      <Grid container spacing={4} p={1} >
-        <Grid item xl={6} lg={6}>
-          <SubscriptionCard
-            currentPlan={currentPlan}
-            setCurrentPlan={setCurrentPlan}
-            setCurrentPakage={setCurrentPakage}
-            planType={"Pro"}
-          />
-        </Grid>
-        <Grid item xl={6} lg={6}>
+      <Grid container spacing={4} p={1}>
+        <Grid item xs={12}>
           <SubscriptionCard
             currentPlan={currentPlan}
             setCurrentPlan={setCurrentPlan}
@@ -74,8 +76,17 @@ const SubscriptionPlans = ({
             planType={"Business +"}
           />
         </Grid>
-        <Grid item xl={6} lg={6}>
+        <Grid item xs={12}>
           <SubscriptionCard
+            currentPlan={currentPlan}
+            setCurrentPlan={setCurrentPlan}
+            setCurrentPakage={setCurrentPakage}
+            planType={"Business Pro"}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <EnterpriseCard
             currentPlan={currentPlan}
             setCurrentPlan={setCurrentPlan}
             setCurrentPakage={setCurrentPakage}
@@ -93,7 +104,7 @@ const themeStyle = {
   title: {
     fontSize: { xl: "28px", lg: "25px", md: "28px", xs: "28px" },
     fontWeight: "500",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     color: "#000000",
   },
 };

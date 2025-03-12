@@ -5,7 +5,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import Input from "@mui/joy/Input";
 import Textarea from "@mui/joy/Textarea";
@@ -23,17 +23,16 @@ import { fileTypeIcons } from "../../dialogues/AddImage/assets/fileTypes";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CloseIcon from "@mui/icons-material/Close";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
+import { useTranslation } from 'react-i18next';
 //import "react-toastify/dist/ReactToastify.css";
 
-const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
+const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
   const [open, setOpen] = useState(false);
   const { id } = useParams();
-  //console.log(notes);
+  const {t} = useTranslation()
   const [noteSubject, setNoteSubject] = useState(notes ? notes?.subject : "");
   const [noteBody, setNoteBody] = useState(notes ? notes?.content : "");
-  // const [fileName, setFileName] = useState("");
-  // const [fileType, setFileType] = useState("");
-  const [selectedFile, setSelectedFile] = useState("");
+
   const [images, setImages] = useState(notes ? notes.files : []);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -70,7 +69,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://3.135.107.71/project/file",
+          "https://builderbuilder.net/project/file",
           {
             fileName: selectedFile.name,
             fileType: selectedFile.type,
@@ -120,8 +119,8 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
     await Promise.all(promises).then((uploadFileToServer) => {
       urlArray.push(...uploadFileToServer);
     });
-    console.log(promises);
-    console.log(urlArray);
+    // console.log(promises);
+    // console.log(urlArray);
     const form = {
       subject: noteSubject,
       content: noteBody,
@@ -129,7 +128,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
       noteId: noteId,
       files: urlArray,
     };
-    console.log(form);
+    // console.log(form);
     if (showEditModal) {
       //console.log(noteId);
       const res = await editProjectNotes(form).unwrap();
@@ -176,23 +175,26 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
     imagesCopy.splice(index, 1);
     setImages(imagesCopy);
   };
-  useEffect(() => {
-    console.log(images);
-  }, [images]);
+  // useEffect(() => {
+  //   console.log(images);
+  // }, [images]);
+
 
   return (
     <>
-      {!showEditModal && (
-        <BuilderProButton
-          variant={"contained"}
-          backgroundColor={"#4C8AB1"}
-          fontSize={{xl:"11px",lg:"10px", md:"11px", xs:"11px"}}
-          fontFamily={"inherit"}
-          handleOnClick={handleOpen}
-        >
-          Add Notes
-        </BuilderProButton>
-      )}
+
+{!showEditModal && (
+  <BuilderProButton
+    variant={"contained"}
+    backgroundColor={"#4C8AB1"}
+    fontSize={{ xl: "13px", lg: "13px", md: "12px", xs: "12px" }}
+    fontFamily={'var(--main-font-family)'}
+    handleOnClick={handleOpen}
+  >
+    {t("ProjectNotes.addNotes")}
+  </BuilderProButton>
+)}
+
       <Modal open={showEditModal ? showEditModal : open} onClose={handleClose}>
         <Stack sx={style}>
           <Stack
@@ -202,11 +204,11 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
             alignItems={"center"}
           >
             <Typography
-              fontFamily={"inherit"}
+              fontFamily={'var(--main-font-family)'}
               fontSize={"24px"}
               fontWeight={"500"}
             >
-              {showEditModal ? "Edit" : "Add"} Notes
+              {showEditModal ? t("ProjectNotes.editNotes") : t("ProjectNotes.addNotes")}
             </Typography>
             <IconButton onClick={handleClose}>
               <CloseIcon fontSize={"small"} />
@@ -217,7 +219,12 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
               variant="soft"
               value={noteSubject}
               onChange={handleNoteSubject}
-              placeholder="Type Note Subject..."
+              placeholder={t("ProjectNotes.placeholder1")}
+              slotProps={{
+                input:{
+                  maxLength: 150
+                }
+              }}
               sx={{
                 '.MuiInput-input':{
                   marginBottom:'0px'
@@ -231,7 +238,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
               value={noteBody}
               onChange={handleNoteBody}
               variant="soft"
-              placeholder="Type your text here..."
+              placeholder={t("ProjectNotes.placeholder2")}
             />
           </Stack>
             <Typography component='p' fontSize={'10px'} p={0} m={0} mt={0} textAlign={'right'}>{noteBody?.length}/1500</Typography>
@@ -302,7 +309,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
                       }}
                     />
                   ) : (
-                    <>no preview</>
+                    <>{t("ProjectNotes.noPreview")}</>
                   )}
                 </Stack>
               );
@@ -341,10 +348,11 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q }) => {
               variant={"contained"}
               backgroundColor={"#4C8AB1"}
               fontSize={"11px"}
-              fontFamily={"inherit"}
+              fontFamily={'var(--main-font-family)'}
               handleOnClick={handleSubmit}
+              disabled={isLoading}
             >
-              {isLoading ? <CircularProgress size={"18px"} /> : showEditModal ? "Edit Notes" : "Add Notes"}
+              {isLoading ? <CircularProgress size={"18px"} /> : showEditModal ? t("ProjectNotes.editNotes") : t("ProjectNotes.addNotes")}
             </BuilderProButton>
           </Stack>
         </Stack>

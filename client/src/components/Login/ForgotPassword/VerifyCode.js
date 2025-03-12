@@ -8,6 +8,7 @@ import {
   CardContent,
   Container,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -20,8 +21,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setCredentials } from "../../../redux/slices/authSlice";
+import { useTranslation } from "react-i18next";
 
 const VerifyCode = () => {
+  const {t} = useTranslation()
   const location = useLocation();
   const dispatch = useDispatch();
   const { data } = location?.state || {};
@@ -33,9 +36,27 @@ const VerifyCode = () => {
   );
   const [code, setCode] = useState(["", "", "", "", ""]);
   const inputRefs = useRef([]);
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("userInfo")
+  //     ? JSON.parse(localStorage.getItem("userInfo")).token
+  //     : null;
+  //     const user = localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem("userInfo")).user : null
+  //   if (token) {
+  //     if(user.hasValidSubscription){
+  //       navigate("/assignproject");
+  //     }else{
+  //       navigate("/subscription");
+  //     }
+  //   }
+  //   if (forgetPasswordEmail === "") {
+  //     navigate("/login");
+  //   }
+  // }, [navigate]);
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("forgetPasswordEmail", forgetPasswordEmail);
+    // console.log("forgetPasswordEmail", forgetPasswordEmail);
     const otpString = code.join("");
     // Check if all verification code fields are filled
     if (code.some((value) => value === "")) {
@@ -50,17 +71,28 @@ const VerifyCode = () => {
       }).unwrap();
       toast.success("OTP matched successfully");
       if (data === "signup") {
-        console.log("wwwwwwwwwwwwwhhhhhhhhhhattttttttt::::", res);
-        dispatch(setCredentials({ ...res }));
+        // console.log("wwwwwwwwwwwwwhhhhhhhhhhattttttttt::::", res.data);
+        dispatch(setCredentials({ ...res.data }));
+        if (res.data.user.hasValidSubscription) {
+          setTimeout(() => {
+            window.location.href = "/assignproject";
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            window.location.href = "/subscription";
+          }, 1000);
+        }
         // navigate("/assignproject");
-        setTimeout(() => {
-          window.location.href = '/assignproject';
-        }, 1000); 
       } else {
         navigate("/setnewpassword");
       }
     } catch (err) {
-      toast.error(err?.data?.error || err.data.message || err.error || 'Something went wrong!');
+      toast.error(
+        err?.data?.error ||
+          err.data.message ||
+          err.error ||
+          "Something went wrong!"
+      );
     }
   };
   const handleInputChange = (index, value) => {
@@ -89,7 +121,7 @@ const VerifyCode = () => {
       const res = await resendOTP({ email: forgetPasswordEmail }).unwrap();
       toast.success("OTP resend successfully");
     } catch (err) {
-      toast.error(err?.data?.error || err.error || 'Something went wrong!');
+      toast.error(err?.data?.error || err.error || "Something went wrong!");
     }
   };
   return (
@@ -111,6 +143,7 @@ const VerifyCode = () => {
             lg: "start",
             md: "center",
             sm: "center",
+            xs: 'center'
           },
         }}
       >
@@ -143,7 +176,7 @@ const VerifyCode = () => {
                 <ArrowBackIosIcon sx={{ fontSize: 16 }} />
               </div>
               <Typography sx={{ fontSize: 14 }} color="#4C8AB1" gutterBottom>
-                Back To Log in
+              {t("VerifyCode.title8")}
               </Typography>
             </Box>
             <Container
@@ -156,16 +189,13 @@ const VerifyCode = () => {
                   sx={{
                     color: "#000000",
                     fontSize: "20px",
-                    fontFamily: "GT Walsheim Trial",
+                    fontFamily: "var(--main-font-family)",
                     fontWeight: 550,
                   }}
                 >
-                  Verify Code
+                  {t("VerifyCode.title1")}
                 </Typography>
-                <Typography sx={{ mb: 1.5, mt: 1.5 }} color="text.secondary">
-                  We sent a verification code to your email. Enter the 5 digit
-                  code that
-                  <br /> mentioned in the email.
+                <Typography sx={{ mb: 1.5, mt: 1.5 }} dang  dangerouslySetInnerHTML={{__html: t("VerifyCode.title2")}} color="text.secondary">
                 </Typography>
               </Box>
               <Box>
@@ -175,18 +205,19 @@ const VerifyCode = () => {
                     color: "#202227",
                     fontWeight: 500,
                     fontSize: "16px",
-                    fontFamily: "GT Walsheim Trial",
+                    fontFamily: "var(--main-font-family)",
                   }}
                 >
-                  Enter Code
+                  {t("VerifyCode.title5")}
                 </Typography>
                 <Box sx={{ display: "flex", gap: "10px", marginTop: "10px" }}>
                   {code.map((value, index) => (
                     <TextField
                     sx={{
-                      ".MuiOutlinedInput-notchedOutline ":{
-                        borderColor:'white'
-                      }
+                      // Target the notchedOutline element inside the OutlinedInput.
+                      "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+                        display:"none !important"
+                      },
                     }}
                       key={index}
                       inputRef={(el) => (inputRefs.current[index] = el)}
@@ -198,10 +229,11 @@ const VerifyCode = () => {
                           height: "80px",
                           fontSize: "20px",
                           textAlign: "center",
-                          border: "2px solid #E1E1E1",
+                          border: "2px solid grey",
                           borderRadius: "12px",
                         },
                       }}
+                      
                       value={value}
                       onChange={(e) => handleInputChange(index, e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e, index)}
@@ -214,31 +246,33 @@ const VerifyCode = () => {
                     color: "#202227",
                     fontWeight: 500,
                     fontSize: "16px",
-                    fontFamily: "GT Walsheim Trial",
+                    fontFamily: "var(--main-font-family)",
                     marginTop: "15px",
-                    textAlign:'center'
+                    textAlign: "center",
                   }}
                 >
-                  Didn’t receive a code?{" "}
+                  <Tooltip title="Did you check your spam section?">
+                    <spam>{t("VerifyCode.title3")}</spam>
+                  </Tooltip>
                   <span
                     style={{ color: "#4C8AB1", cursor: "pointer" }}
                     onClick={resendHandler}
                   >
-                    Resend
+                    {t("VerifyCode.title4")}
                   </span>
                 </Typography>
               </Box>
 
-              <CardActions sx={{display:'flex', justifyContent:'center'}}>
+              <CardActions sx={{ display: "flex", justifyContent: "center" }}>
                 <Button
                   sx={{
                     ...YellowBtn,
-                    alignSelf:'center'
+                    alignSelf: "center",
                   }}
                   onClick={submitHandler}
                   type="submit"
                 >
-                  {"Verify"}
+                  {t("VerifyCode.title6")}
                 </Button>
               </CardActions>
             </Container>

@@ -6,16 +6,17 @@ import axios from 'axios';
 import { getTokenFromLocalStorage } from '../../../redux/apis/apiSlice';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-
+import { useTranslation } from 'react-i18next';
 
 function RecentImagesAndComments() {
+    const {t} = useTranslation()
     const theme = useTheme();
     const { id } = useParams();
     const [recentFilesUrls, setRecentFilesUrls] = useState([]);
     const fetchData = async () => {
         try {
           const response = await axios.get(
-            `http://3.135.107.71/project/files/image/${id}`,
+            `https://builderbuilder.net/project/files/image/${id}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -35,7 +36,7 @@ function RecentImagesAndComments() {
       useEffect(() => {
         fetchData();
       }, [id]);
-      console.log(recentFilesUrls);
+    //   console.log(recentFilesUrls);
       const slicedUrls = recentFilesUrls?.recentFiles?.slice(0, 4);
     return (
         <Box display={{lg:'initial', xs:'none'}}>
@@ -51,9 +52,9 @@ function RecentImagesAndComments() {
 
             </Box>
             <Typography sx={themeStyle.typoText}>
-                Recent Images
+                {t("ClientLayout.RecentImages.heading1")}
             </Typography>
-            <Grid container gap={1} justifyContent={'center'}>
+            <Grid container justifyContent={'flex-start'} alignItems={'center'}>
                 {slicedUrls?.map((url, index) => {
                     return(
                         <Grid item xl={5.5}>
@@ -148,14 +149,14 @@ const themeStyle = {
         objectFit: 'contain'
     },
     typoText: {
-        fontFamily: 'Arial Rounded MT, sans-serif',
+        fontFamily: 'var(--main-font-family)',
         fontSize: '1.3rem',
         color: '#484848',
         margin: "1rem 0rem 0rem 1.5rem"
     },
 
     smallimgBox: {
-        
+        margin: "0.5rem",
         width: '100%',
         height: '200px',
         borderRadius: '14px',
@@ -182,7 +183,7 @@ const themeStyle = {
 
     },
     commentText: {
-        fontFamily: 'Arial Rounded MT, sans-serif',
+        fontFamily: 'var(--main-font-family)',
         fontSize: "1rem",
         color: "#484848",
         margin: "0.5rem"

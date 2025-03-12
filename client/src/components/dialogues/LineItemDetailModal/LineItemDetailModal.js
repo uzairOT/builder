@@ -1,15 +1,14 @@
-import { Box, Button, Modal, Stack, Typography } from "@mui/material";
+import { Box, Modal, Stack, Typography } from "@mui/material";
 import React from "react";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useUpdateUserLineItemStatusMutation } from "../../../redux/apis/Project/projectApiSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { socket } from "../../../socket";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
 import { toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
-
+import { useTranslation } from "react-i18next";
 const LineItemDetailModal = ({
   modalOpen,
   setModalOpen,
@@ -17,6 +16,7 @@ const LineItemDetailModal = ({
   userRole,
   userId
 }) => {
+  const {t} = useTranslation()
   const {id} = useParams();
   const [updateStatus, { isLoading }] = useUpdateUserLineItemStatusMutation();
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const LineItemDetailModal = ({
         phaseId: lineItem.phase_id,
         client: false
       }, (response) => {
-        console.log(response.data);
+        // console.log(response.data);
         dispatch(toggleWorkOrderDeclineRecall());
       });
       // console.log(res);
@@ -46,7 +46,7 @@ const LineItemDetailModal = ({
     }
     handleClose();
   };
-  console.log(lineItem)
+  // console.log(lineItem)
   const disableButton = () => {
     const userStatus = lineItem?.UserLineItemStatuses?.find( user => user.userId === userId);
     if(userStatus?.status === 'done'){
@@ -58,6 +58,7 @@ const LineItemDetailModal = ({
  
   return (
     <Modal
+    
       open={modalOpen}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
@@ -69,28 +70,28 @@ const LineItemDetailModal = ({
       {lineItem?.title}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>Description:</strong> {lineItem?.description}
+      <strong>{t("LineItemDetailModal.title1")}:</strong> {lineItem?.description}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>Unit:</strong> {lineItem?.unit}
+      <strong>{t("LineItemDetailModal.title2")}:</strong> {lineItem?.unit}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>Quantity:</strong> {lineItem?.quantity}
+      <strong>{t("LineItemDetailModal.title3")}:</strong> {lineItem?.quantity}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>Unit Price:</strong> {lineItem?.unit_price}
+      <strong>{t("LineItemDetailModal.title4")}:</strong> {lineItem?.unit_price}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>Total:</strong> {lineItem?.total}
+      <strong>{t("LineItemDetailModal.title5")}:</strong> {lineItem?.total}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>Start Day:</strong> {new Date(lineItem?.start_day).toLocaleDateString()}
+      <strong>{t("LineItemDetailModal.title6")}:</strong> {new Date(lineItem?.start_day).toLocaleDateString()}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>End Day:</strong> {new Date(lineItem?.end_day).toLocaleDateString()}
+      <strong>{t("LineItemDetailModal.title7")}:</strong> {new Date(lineItem?.end_day).toLocaleDateString()}
     </Typography>
     <Typography variant="body1" gutterBottom sx={typographyBody1Style}>
-      <strong>Notes:</strong> {lineItem?.notes}
+      <strong>{t("LineItemDetailModal.title8")}:</strong> {lineItem?.notes}
     </Typography>
           <Stack
             direction={"row"}
@@ -104,50 +105,22 @@ const LineItemDetailModal = ({
               handleOnClick={handleClose}
               marginLeft={"0px"}
             >
-              Close
+              {t("Button.close")}
             </BuilderProButton>
             <Stack>
-              {(userRole === "employee"|| userRole === "other") ? (
-                <>
-                  <BuilderProButton
-                    backgroundColor={"#4C8AB1"}
-                    variant={"contained"}
-                    Icon={CheckCircleOutlineIcon}
-                    handleOnClick={handleDone}
-                    marginLeft={"0px"}
-                    disabled={isLoading || disableButton()}
-                  >
-                    Done
-                  </BuilderProButton>
-                </>
-              ) : userRole === "subcontractor" ? (
-                <>
-                  <BuilderProButton
-                    backgroundColor={"#4C8AB1"}
-                    variant={"contained"}
-                    Icon={CheckCircleOutlineIcon}
-                    handleOnClick={handleDone}
-                    marginLeft={"0px"}
-                    disabled={isLoading || disableButton()}
-                  >
-                    Done
-                  </BuilderProButton>
-                </>
-              ) : userRole === "supplier" ? (
-                <> <BuilderProButton
-                backgroundColor={"#4C8AB1"}
-                variant={"contained"}
-                Icon={CheckCircleOutlineIcon}
-                handleOnClick={handleDone}
-                marginLeft={"0px"}
-                disabled={isLoading || disableButton()}
-              >
-                Done
-              </BuilderProButton></>
+              {(userRole) ? (
+                <BuilderProButton
+                  backgroundColor={"#4C8AB1"}
+                  variant={"contained"}
+                  Icon={CheckCircleOutlineIcon}
+                  handleOnClick={handleDone}
+                  marginLeft={"0px"}
+                  disabled={isLoading || disableButton()}
+                >
+                  {t("Button.done")}
+                </BuilderProButton>
               ) : (
-                <>
-                 
-                </>
+                <></>
               )}
             </Stack>
           </Stack>
@@ -173,7 +146,7 @@ const style = {
   wordWrap: 'break-word',
   wordBreak: 'break-all',
   overflowY:'auto',
-  height:'80vh'
+  maxHeight:'80vh'
 };
 
 

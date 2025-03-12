@@ -1,34 +1,33 @@
 import {
-  ButtonGroup,
+  Box,
+  CircularProgress,
   IconButton,
-  Paper,
   Stack,
+  Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import WorkOrder from "../ProjectsWorkOrder/WorkOrder";
+import React, { useState } from "react";
 import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab, { tabClasses } from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
-import BuilderProButton from "../../UI/Button/BuilderProButton";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
-import RequestWorkOrderModal from "../../dialogues/RequestWorkOrder/RequestWorkOrderModal";
 import {
-  useGetProjectChangeOrderQuery,
   useGetProjectInvoicesQuery,
-  useGetProjectWorkOrderQuery,
-  useGetWorkOrderDetailsMutation,
 } from "../../../redux/apis/Project/projectApiSlice";
-import { useGetRequestWorkOrderQuery } from "../../../redux/apis/Project/workOrderApiSlice";
 import { useParams } from "react-router-dom";
-import InvoicePayment from "../../dialogues/GenerateInvoice/InvoicePayment/InvoicePayment";
 import InvoicesTable from "./InvoicesTable";
 import CloseIcon from "@mui/icons-material/Close";
-
+import { currencyFormatter, headerFormatter } from "../../../utils/Formatters/excelFormatters";
+import XLSX from "xlsx-js-style";
+import { Excel } from "../../../assets/FileSvg/excel";
+import BuilderProButton from "../../UI/Button/BuilderProButton";
+import axios from "axios";
+import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
+const ADD_INVOICE_URL = "https://builderbuilder.net/payment/addInvoiceToQuickBooks";
 const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
+  const { t } = useTranslation();
   const params = useParams();
   const { id: currentProjectId } = params;
   const currentUser = localStorage.getItem("userInfo");
@@ -36,44 +35,77 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
   const { data, refetch } = useGetProjectInvoicesQuery({
     projectId: currentProjectId,
     userId: user.user.id,
-    client: userRole?.userRole,
   });
-  console.log(data);
+  // console.log(data);
   const [checkedRow, setCheckedRow] = useState(null);
   // const [getWorkOrder, {isLoading}] = useGetWorkOrderDetailsMutation()
   const [phaseItems, setPhaseItems] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  
 
-  //   const handleChangeView = () => {
-  //     setChangeView(true);
-  //   }
-  const rowCheckboxes = {
-    phase: {
-      id: 2,
-      rows: [
-        {
-          id: 10,
-          phase_id: 2,
-          title: "Line1",
-          description: "Lorem ipsum",
-          unit: "sqft",
-          // Add other properties as needed
-        },
-        {
-          id: 11,
-          phase_id: 2,
-          title: "Line2",
-          description: "Lorem ipsum",
-          unit: "sqft",
-          // Add other properties as needed
-        },
-        // Add more rows as needed
-      ],
-    },
+  const handleExportInvoices = () => {
+    const invoiceRows = [];
+  
+    const processInvoices = (invoices, status) => {
+      invoices.forEach((invoice) => {
+        invoice.InvoiceLineItems.forEach((lineItem) => {
+          invoiceRows.push({
+            InvoiceNumber: invoice.InvoiceNumber,
+            InvoiceDate: new Date(invoice.InvoiceDate).toLocaleDateString(),
+            InvoiceDueDate: new Date(invoice.InvoiceDueDate).toLocaleDateString(),
+            InvoiceStatus: status,
+            InvoiceBill: Number(invoice.InvoiceBill),
+            ClientName: invoice.Client?.firstName || "N/A",
+            ClientEmail: invoice.Client?.email || "N/A",
+            CompanyName: invoice.Client?.companyName || "N/A",
+            LineItemTitle: lineItem.LineItem?.title || "N/A",
+            LineItemQuantity: lineItem.LineItem?.quantity || "N/A",
+            LineItemUnitPrice: Number(lineItem.LineItem?.unit_price) || 0,
+            LineItemTotalAmount: Number(lineItem.totalAmount) || 0,
+          });
+        });
+      });
+    };
+  
+    processInvoices(data.paidInvoices, "Paid");
+    processInvoices(data.unpaidInvoices, "Unpaid");
+    processInvoices(data.overdueInvoices, "Overdue");
+
+    const worksheet = XLSX.utils.json_to_sheet(invoiceRows);
+
+    const currencyColumns = ["InvoiceBill", "LineItemUnitPrice", "LineItemTotalAmount"];
+    currencyFormatter(currencyColumns, invoiceRows, worksheet);
+    headerFormatter(worksheet);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
+    XLSX.writeFile(workbook, `Invoices-${new Date().toISOString().slice(0, 10)}.xlsx`);
   };
+
+  const handleConnectToQuickbooks  = async () => {
+    try {
+      setIsLoading(true);
+        const response = await axios.post(ADD_INVOICE_URL, {
+          projectId: currentProjectId,
+          userId: user.user.id,
+          organizationId: user.user.organization.organizationId
+        }, {
+          headers: {
+            'Authorization': `Bearer ${getTokenFromLocalStorage()}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        toast.success(response?.data?.message)
+        setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching authUri:', error);
+      toast.error(error?.response?.data?.message)
+      setIsLoading(false);
+    }
+  }
 
   return (
     <>
-      <Stack>
+      <Stack width="80x%">
         <Stack
           direction={"row"}
           justifyContent={"space-between"}
@@ -83,11 +115,11 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
             p={3}
             pb={2}
             color={"#4C8AB1"}
-            fontFamily={"inherit"}
+            fontFamily={"var(--main-font-family)"}
             fontSize={"22px"}
             fontWeight={"600"}
           >
-            Invoices
+            {t("ProjectInvoices.title3")}
           </Typography>
           {isModal && (
             <Stack alignItems={"flex-end"}>
@@ -118,57 +150,54 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
             >
               <Tab
                 sx={{
-                  fontFamily: "inherit",
+                  fontFamily: "var(--main-font-family)",
                   fontSize: "15px",
                 }}
               >
-                Paid
+                {t("ProjectInvoices.paid")}
               </Tab>
               <Tab
                 sx={{
-                  fontFamily: "inherit",
+                  fontFamily: "var(--main-font-family)",
                   fontSize: "15px",
                 }}
               >
-                Unpaid
+                {t("ProjectInvoices.unpaid")}
               </Tab>
 
               <Tab
                 sx={{
-                  fontFamily: "inherit",
+                  fontFamily: "var(--main-font-family)",
                   fontSize: "15px",
                 }}
               >
-                Overdue
+                {t("ProjectInvoices.overdue")}
               </Tab>
             </TabList>
-            <Stack direction={"row"} style={{ paddingRight: "16px" }}>
-              {/* {workOrder ? (
-                <>
-                <BuilderProButton
-                  backgroundColor={"#4C8AB1"}
-                  variant={"contained"}
-                  fontFamily={"inherit"}
-                  fontSize={"16px"}
-                  fontWeight={"600"}
-                  padding={{md:"6px 32px 6px 32px"}}
-                  handleOnClick={handleChangeView}
-                  
+            <Stack direction={"row"} style={{ paddingRight: "16px" }} justifyContent={'center'} alignItems={'center'} gap={2}>
+            <Tooltip title={t("ProjectInvoices.export")} placement="top">
+                <Box sx={{ cursor: "pointer" }} onClick={handleExportInvoices}>
+                  <Excel
+                    fill={"#4C8AB1"}
+                    width={"30px"}
+                    height={"30px"}
+                  />
+                </Box>
+              </Tooltip>
+            <BuilderProButton
+                    backgroundColor={"#FFAC00"}
+                    variant={"contained"}
+                    fontFamily={"var(--main-font-family)"}
+                    fontSize={{ lg: "12px", xs: "10px" }}
+                    fontWeight={"600"}
+                    padding={{
+                      sm: "6px 32px 6px 32px",
+                      xs: "5px 20px 5px 20px",
+                    }}
+                    handleOnClick={handleConnectToQuickbooks}
                   >
-                  Request New Work Order
-                </BuilderProButton>
-                  </>
-              ) : (
-                <RequestWorkOrderModal
-                  rowCheckboxes={rowCheckboxes}
-                  checkedRow={checkedRow}
-                  setCheckedRow={setCheckedRow}
-                  changeOrder={true}
-                  refetch={refetch}
-                  setPhaseItems={setPhaseItems}
-                  phaseItems={phaseItems}
-                />
-              )} */}
+                        {isLoading ? <CircularProgress size={20} /> : t("ProjectInvoices.addQuickbooks")}
+                  </BuilderProButton>
             </Stack>
           </Stack>
           <TabPanel
@@ -219,7 +248,7 @@ const ProjectsInvoices = ({ userRole, isModal, handleClose }) => {
         {/* <BuilderProButton
                   backgroundColor={"#4C8AB1"}
                   variant={"contained"}
-                  fontFamily={"inherit"}
+                  fontFamily={'var(--main-font-family)'}
                   fontSize={"16px"}
                   fontWeight={"600"}
                   handleOnClick={handleButton}

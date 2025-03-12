@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Grid,
   Typography,
   TextField,
   Stack,
-  Snackbar,
-  IconButton,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import AvatarImg from "../../../assets/settings/UploadProfileIcon.png";
@@ -14,12 +16,12 @@ import Button from "../../UI/CustomButton";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { uploadToS3 } from "../../../utils/S3";
+import i18n from "i18next";
 import {
   useUpdateProfileMutation,
   useDeleteUserProfileMutation,
 } from "../../../redux/apis/usersApiSlice";
 import { setCredentials } from "../../../redux/slices/authSlice";
-import { Textarea } from "@mui/joy";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { PhoneInput } from "react-international-phone";
@@ -27,6 +29,8 @@ import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import { PhoneNumberUtil } from "google-libphonenumber";
 import "react-toastify/dist/ReactToastify.css";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
+import { useTranslation } from "react-i18next";
+import "react-international-phone/style.css";
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
@@ -39,12 +43,16 @@ const isPhoneValid = (phone) => {
 };
 
 function ProfileView() {
+  const {t} = useTranslation()
+  const [selectedLanguage, setSelectedLanguage] = useState("");
   const user = useSelector((state) => state.auth.userInfo);
   const [fileName, setFileName] = useState("");
   const [fileType, setFileType] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
   const [image, setImage] = useState(user ? user.user.image : null);
-  const [phone, setPhone] = useState(user.user.phoneNumber ? user.user.phoneNumber : "");
+  const [phone, setPhone] = useState(
+    user.user.phoneNumber ? user.user.phoneNumber : ""
+  );
   const [phoneIsValid, setPhoneIsValid] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -58,7 +66,7 @@ function ProfileView() {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://3.135.107.71/project/file",
+          "https://builderbuilder.net/project/file",
           {
             fileName,
             fileType,
@@ -139,7 +147,7 @@ function ProfileView() {
     return Object.keys(newErrors).length === 0 && isValid;
   };
 
-  console.log(formData);
+  // console.log(formData);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -168,6 +176,7 @@ function ProfileView() {
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
+    if (!file) return;
     setFileName(file.name);
     setFileType(file.type);
     setSelectedFile(file);
@@ -180,12 +189,12 @@ function ProfileView() {
     }
   };
   const handleProfileImage = async () => {
-    toast.success("Profile Picture updated successfully", { toastId: "123" });
+    toast.success("Profile picture updated successfully", { toastId: "123" });
     handleSubmit("image");
   };
 
   const handleSubmit = async (image) => {
-    console.log(image);
+    // console.log(image);
     if (!validate()) {
       toast.error("Your phone number is not valid");
       return;
@@ -193,18 +202,17 @@ function ProfileView() {
     try {
       const fileUrl = await uploadFileToServer(selectedFile);
       const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
-     if (uploadedFileUrl) {
+      if (uploadedFileUrl) {
         const put = {
           ...formData,
           phoneNumber: phone,
           image: uploadedFileUrl,
         };
         const res = await updateProfile(put);
-        console.log(res);
+        // console.log(res);
         localStorage.setItem("userInfo", JSON.stringify(res.data));
         dispatch(setCredentials(res.data));
         if (image === "image") {
-
         } else {
           toast.success("Profile updated successfully");
         }
@@ -218,7 +226,6 @@ function ProfileView() {
         localStorage.setItem("userInfo", JSON.stringify(res.data));
         dispatch(setCredentials(res.data));
         if (image === "image") {
-          
         } else {
           toast.success("Profile updated successfully");
         }
@@ -247,6 +254,12 @@ function ProfileView() {
   //     handleSubmit();
   //   }
   // }, [selectedFile]);
+
+  // const handleLanguageChange = (event) => {
+  //   console.log(event.target.value);
+
+  //   setSelectedLanguage(event.target.value);
+  // };
   return (
     <Box sx={{ mb: 2 }}>
       <Grid container spacing={2}>
@@ -254,7 +267,12 @@ function ProfileView() {
           <Grid container spacing={2}>
             <Grid item xs={12} sx={Profile}>
               <Stack direction={"row"} alignItems={"center"} gap={1}>
-                <Typography variant="h5">My Profile</Typography>
+                <Typography
+                  sx={{ fontFamily: "var(--main-font-family)" }}
+                  variant="h5"
+                >
+                  {t("Settings.Profile.heading1")}
+                </Typography>
                 <Avatar
                   src={image ? image : AvatarImg}
                   alt={image ? "Uploaded Avatar" : "Placeholder Avatar"}
@@ -264,12 +282,14 @@ function ProfileView() {
             </Grid>
 
             <Grid item xs={12}>
-              <Typography>First Name</Typography>
+              <Typography sx={{ fontFamily: "var(--main-font-family)" }}>
+                {t("Settings.Profile.form.firstName")}
+              </Typography>
               <TextField
                 inputProps={{ maxLength: 50 }}
                 name="firstName"
                 type="text"
-                placeholder="Please enter your first name"
+                placeholder={t("Settings.Profile.form.placeholder")}
                 value={formData.firstName}
                 onChange={handleChange}
                 fullWidth
@@ -279,11 +299,13 @@ function ProfileView() {
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography>Last name</Typography>
+              <Typography sx={{ fontFamily: "var(--main-font-family)" }}>
+              {t("Settings.Profile.form.lastName")}
+              </Typography>
               <TextField
                 inputProps={{ maxLength: 50 }}
                 name="lastName"
-                placeholder="Please enter your last name"
+                placeholder={t("Settings.Profile.form.placeholder2")}
                 value={formData.lastName}
                 onChange={handleChange}
                 fullWidth
@@ -293,11 +315,13 @@ function ProfileView() {
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography>Email</Typography>
+              <Typography sx={{ fontFamily: "var(--main-font-family)" }}>
+                {t("Settings.Profile.form.email")}
+              </Typography>
               <TextField
                 inputProps={{ maxLength: 50 }}
                 name="email"
-                placeholder="Please enter your email"
+                placeholder={t("Settings.Profile.form.placeholder3")}
                 value={formData.email}
                 // onChange={handleChange}
                 fullWidth
@@ -305,19 +329,13 @@ function ProfileView() {
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography>Phone Number</Typography>
-              {/* <TextField
-                name="phoneNumber"
-                placeholder="Please enter your phone number"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                fullWidth
-                sx={InputStyle}
-              /> */}
+              <Typography sx={{ fontFamily: "var(--main-font-family)" }}>
+              {t("Settings.Profile.form.phoneNumber")}
+              </Typography>
               <PhoneInput
-                disableDialCodePrefill
+                // disableDialCodePrefill
                 style={{ ...customPhoneStyles }}
-                defaultCountry=""
+                defaultCountry="us"
                 name={"phoneNumber"}
                 value={phone}
                 onChange={(phone) => setPhone(phone)}
@@ -335,7 +353,7 @@ function ProfileView() {
                 inputStyle={{ ...customeInputStyles }}
                 inputProps={{
                   border: "none",
-                  placeholder: "+1 (123) 456-7890",
+                  // placeholder: "+1 (123) 456-7890",
                 }}
                 required
               />
@@ -343,39 +361,48 @@ function ProfileView() {
                 <Box>
                   <Typography
                     sx={{
+                      fontFamily: "var(--main-font-family)",
                       color: "#d32f2f",
                       fontSize: "12px",
                       marginLeft: "14px",
                       marginRight: "14px",
                       marginTop: "3px",
-                      fontFamily: 'inherit',
+                      fontFamily: "var(--main-font-family)",
                     }}
                   >
-                    Phone is not valid
+                    {t("Settings.Profile.form.phoneValidation")}
                   </Typography>
                 </Box>
               )}
             </Grid>
             {/* <Grid item xs={12}>
-              <Typography>Address</Typography>
-              <Textarea
-                name="address"
-                placeholder="Write your address here"
-                value={formData.address}
-                onChange={handleChange}
-                multiline
-                rows={4}
-                fullWidth
-                sx={textAreaStyle}
-              />
+              <Typography>Select Language</Typography>
+              <FormControl sx={{ mt: 1 }} fullWidth>
+                <InputLabel id="language-select-label">Language</InputLabel>
+                <Select
+                sx={InputStyle}
+                  labelId="language-select-label"
+                  id="language-select"
+                  value={selectedLanguage}
+                  onChange={handleLanguageChange}
+                  
+                  label="Language"
+                >
+                  <MenuItem value="English" onClick={()=>i18n.changeLanguage('en')}>English</MenuItem>
+                  <MenuItem value="French" onClick={()=>i18n.changeLanguage('fr')}>French</MenuItem>
+                </Select>
+              </FormControl>
             </Grid> */}
             <Grid item xs={12} sx={{ display: "flex", gap: 4, my: 6.1 }}>
               <Button
-                sx={{ whiteSpace: "nowrap" }}
-                buttonText="Update Profile"
+                sx={{
+                  whiteSpace: "nowrap",
+                  fontFamily: "var(--main-font-family)",
+                }}
+                buttonText={t("Settings.Profile.form.button1")}
                 color="#ffffff"
                 backgroundColor="#4C8AB1"
-                width="112px"
+                width="140px"
                 height="38px"
                 borderRadius="50px"
                 onClick={handleSubmit}
@@ -383,8 +410,11 @@ function ProfileView() {
                 disabled={isLoading}
               />
               <Button
-                buttonText="Delete Profile"
-                sx={{ whiteSpace: "nowrap" }}
+                buttonText={t("Settings.Profile.form.button2")}
+                sx={{
+                  whiteSpace: "nowrap",
+                  fontFamily: "var(--main-font-family)",
+                }}
                 // color="#4C8AB1"
                 color="red"
                 border={"1px solid red"}
@@ -425,7 +455,7 @@ function ProfileView() {
                 onChange={handleImageUpload}
                 style={{ display: "none", cursor: "pointer" }}
                 id="avatarInput"
-                multiple
+                // multiple
               />
               <label
                 htmlFor="avatarInput"
@@ -449,11 +479,14 @@ function ProfileView() {
             </div>
             <Typography variant="subtitle1" sx={changeProfile}>
               <Button
-                sx={{ whiteSpace: "nowrap" }}
-                buttonText="Change Profile"
+                sx={{
+                  whiteSpace: "nowrap",
+                  fontFamily: "var(--main-font-family)",
+                }}
+                buttonText={t("Settings.Profile.form.button3")}
                 color="#ffffff"
                 backgroundColor="#4C8AB1"
-                width="120px"
+                width="140px"
                 height="38px"
                 borderRadius="50px"
                 onClick={handleProfileImage}
@@ -465,7 +498,7 @@ function ProfileView() {
           <Box sx={{ display: "none", justifyContent: "center" }}>
             <Box>
               <Typography variant="body1" sx={TextStyle}>
-                First Name:
+                {t("Settings.Profile.form.firstName")}:
               </Typography>
               <Typography variant="body1" sx={ValueStyle}>
                 {formData.firstName}
@@ -473,7 +506,7 @@ function ProfileView() {
             </Box>
             <Box>
               <Typography variant="body1" sx={TextStyle}>
-                Last Name:
+              {t("Settings.Profile.form.lastName")}:
               </Typography>
               <Typography variant="body1" sx={ValueStyle}>
                 {formData.lastName}
@@ -481,7 +514,7 @@ function ProfileView() {
             </Box>
             <Box>
               <Typography variant="body1" sx={TextStyle}>
-                Email:
+              {t("Settings.Profile.form.email")}:
               </Typography>
               <Typography variant="body1" sx={ValueStyle}>
                 {formData.email}
@@ -489,7 +522,7 @@ function ProfileView() {
             </Box>
             <Box>
               <Typography variant="body1" sx={TextStyle}>
-                Phone No:
+              {t("Settings.Profile.form.phoneNumber")}:
               </Typography>
               <Typography variant="body1" sx={ValueStyle}>
                 {phone}
@@ -522,7 +555,7 @@ function ProfileView() {
           handleClose={handleOpenModalClose}
           handleConfirmDelete={handleDelete}
           // isLoading={deleteLoading}
-          text={"Profile"}
+          text={t("Settings.Profile.form.areYouSure")}
         />
       </Grid>
     </Box>
@@ -534,11 +567,15 @@ export default ProfileView;
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: "var(--main-font-family)",
   "& input": {
+    fontFamily: "var(--main-font-family)",
     border: "1px solid #E0E4EC",
     borderRadius: "8px",
     padding: "10px",
+  },
+  "& .MuiInputBase-input::placeholder": {
+    fontFamily: "var(--main-font-family)",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
@@ -562,7 +599,7 @@ const TextStyle = {
   color: "#202227",
   display: "inline-block",
   width: 100,
-  fontFamily: "GT Walsheim Trial",
+  fontFamily: "var(--main-font-family)",
   fontWeight: 400,
   marginBottom: "8px",
   fontSize: "1.2rem",
@@ -571,7 +608,7 @@ const ValueStyle = {
   whiteSpace: "nowrap",
   color: "#535353C9",
   display: "flex",
-  fontFamily: "GT Walsheim Trial",
+  fontFamily: "var(--main-font-family)",
   fontWeight: 400,
   marginBottom: "8px",
   overflow: "hidden",
@@ -580,7 +617,7 @@ const ValueStyle = {
 const Profile = {
   marginTop: "20px",
   marginBottom: "30px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontWeight: "700",
   color: "#4C8AB1",
 };

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Divider, Typography } from "@mui/material";
-import ChatView from "../../Chat/ChatView";
 import Header from "../Header/Header";
 import CustomTable from "../Tables/Table";
 import Pagination from "@mui/material/Pagination";
@@ -8,9 +7,10 @@ import AddModal from '../../dialogues/Settings/AddModal';
 import UpdateModal from '../../dialogues/Settings/UpdateModal';
 import { useOutletContext } from 'react-router-dom';
 import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
+import { useTranslation } from 'react-i18next';
 function Client() {
 
-
+  const {t} = useTranslation()
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
   const [page, setPage]= useState(1);
@@ -20,7 +20,7 @@ function Client() {
   const [searchInput, setSearchInput] = useState("");
   const debouncedValue =  QueryDebouncer(searchInput,500);
   const [refreshData, setRefreshData] = useState(true);
-  console.log(debouncedValue)
+  // console.log(debouncedValue)
   useEffect(()=>{
     //console.log(userInfo);
   },[userInfo])
@@ -64,7 +64,7 @@ function Client() {
 
   return (
     <div style={{padding:"20px"}}>
-      <Header title="Client"   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
+      <Header title={t("Settings.client")}   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
       <CustomTable setUpdateModalOpen={setUpdateModalOpen} refreshData={refreshData} setUserId={setUserId} searchInput={debouncedValue}  setTotalEntries={setTotalEntries} setTotalPages={setTotalPages} page={page}/>
 
       <Box mt={2} mb={2}>
@@ -82,8 +82,8 @@ function Client() {
         </Typography>
         <Pagination count={totalPages} variant="outlined" shape="rounded" page={page}  onChange={handlePageChange}  sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Client"} open={isAddModalOpen} refreshData={refreshData}  setRefreshData={setRefreshData} onClose={handleCloseAddModal} userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton}/>
-      <UpdateModal title={"Client"} open={isUpdateModalOpen} refreshData={refreshData} setRefreshData={setRefreshData} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo}/>
+      <AddModal title={t("Settings.client")} open={isAddModalOpen} refreshData={refreshData}  setRefreshData={setRefreshData} onClose={handleCloseAddModal} userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton}/>
+      <UpdateModal title={t("Settings.client")} open={isUpdateModalOpen} refreshData={refreshData} setRefreshData={setRefreshData} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo}/>
     </div>
   );
 }
@@ -92,7 +92,7 @@ export default Client;
 const tableCellStyle = {
   fontWeight: 400,
   fontSize: "14px",
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   color: "#8C8C8C",
 };
 // <div><ChatView /></div>
@@ -117,7 +117,7 @@ const paginationTextStyle = {
   },
   fontWeight: 400,
   fontSize: "14px",
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   color: "#8C8C8C",
 
 };

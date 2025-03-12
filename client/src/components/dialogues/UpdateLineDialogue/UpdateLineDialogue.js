@@ -1,5 +1,6 @@
 import React from "react";
 import LineItemElement from "../LineItemElement/LineItemElement";
+import { useTranslation } from "react-i18next";
 function UpdateLineDialogue({
   reqWorkOrderModal,
   InitialProposalView,
@@ -17,8 +18,10 @@ function UpdateLineDialogue({
   setRowCheckboxes,
   updateRow,
   setUpdateRow,
-  lineItemIndex
+  lineItemIndex,
+  addPhaseId
 }) {
+  const {t} = useTranslation()
   return (
     <div>
       <LineItemElement
@@ -29,7 +32,7 @@ function UpdateLineDialogue({
         projectId={projectId}
         setPhaseItems={setPhaseItems}
         adminProjectView={adminProjectView}
-        LineHeading={"Update Line Item"}
+        LineHeading={t("LineItem.updateLineItem")}
         handleUpdateOpen={handleUpdateOpen}
         lineItemIndex={lineItemIndex}
         handleUpdateClose={handleUpdateClose}
@@ -40,6 +43,7 @@ function UpdateLineDialogue({
         MasterLineItem={MasterLineItem}
         InitialProposalView={InitialProposalView}
         showUpdateLine={showUpdateLine}
+        addPhaseId={addPhaseId}
       />
     </div>
   );

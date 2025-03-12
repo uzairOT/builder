@@ -1,33 +1,51 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
 
-import { Box, Grid, Typography, Button, Stack } from "@mui/material";
-import { selectProjectForm } from "../../../redux/slices/projectFormSlice";
+import {
+  Box,
+  Grid,
+  Typography,
+  Button,
+  Stack,
+  LinearProgress,
+} from "@mui/material";
+import {
+  resetUserAndRoleEmail,
+  selectProjectForm,
+} from "../../../redux/slices/projectFormSlice";
 import YellowBtn from "../../UI/button";
 import FooterCircles from "../FooterCircles/FooterCircles";
 import "../../../App.css";
-import { addPhase } from "../../../redux/slices/Project/projectInitialProposal";
 import { useSetProjectToIncompleteMutation } from "../../../redux/apis/Project/userProjectApiSlice";
 import { toast } from "react-toastify";
 import { setCredentials } from "../../../redux/slices/authSlice";
-
+import {
+  setBackButtonProjectId,
+  setIsSaveAs,
+} from "../../../redux/slices/Project/handlingProjectFlowSlice";
+import { useTranslation } from "react-i18next";
 function Footer({ onNextStep, projectId }) {
+  const { t } = useTranslation();
   const phases = useSelector((state) => state.projectInitialProposal.phases);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
   const handleSaveAs = () => {
-    if(phases[0]?.length < 1){
-      toast.error('Please add atleast one phase');
+    if (phases[0]?.length < 1) {
+      toast.error("Please add at least one phase");
       return;
     }
-    onNextStep();
+    setLoading(true);
+    setTimeout(() => {
+      dispatch(setIsSaveAs(true));
+      dispatch(setBackButtonProjectId(null));
+      dispatch(resetUserAndRoleEmail());
+      onNextStep();
+      setLoading(false);
+    }, 300);
   };
-
   const [assignProject, { isLoading }] = useAssignProjectMutation();
   const [setProjectToIncomplete] = useSetProjectToIncompleteMutation();
   const Data = useSelector(selectProjectForm);
@@ -41,8 +59,8 @@ function Footer({ onNextStep, projectId }) {
     //console.log(res);
   };
   const handleDone = async () => {
-    if(phases[0]?.length < 1){
-      toast.error('Please add atleast one phase');
+    if (phases[0]?.length < 1) {
+      toast.error("Please add at least one phase");
       return;
     }
     try {
@@ -51,9 +69,16 @@ function Footer({ onNextStep, projectId }) {
         projectId: projectId,
         update: true,
       });
-      dispatch(setCredentials({...userdata, incompleteProject: res?.data.data}));
-      dispatch(addPhase([]));
-      navigate("/");
+      dispatch(
+        setCredentials({ ...userdata, incompleteProject: res?.data.data })
+      );
+      toast.success("Project added successfully!");
+      dispatch(setIsSaveAs(false));
+      dispatch(setBackButtonProjectId(null));
+      dispatch(resetUserAndRoleEmail());
+      setTimeout(()=>{
+        window.location.href ="/dashboard";
+      }, 100)
     } catch (error) {
       console.log(error);
     }
@@ -65,7 +90,9 @@ function Footer({ onNextStep, projectId }) {
         userId: userId,
         projectId: projectId,
       });
-      dispatch(setCredentials({...userdata, incompleteProject: res?.data.data}));
+      // dispatch(
+      //   setCredentials({ ...userdata, incompleteProject: res?.data.data })
+      // );
       toast.info(
         "Your project has been saved. You will return back here after you log in again."
       );
@@ -76,12 +103,13 @@ function Footer({ onNextStep, projectId }) {
   return (
     <div>
       <Grid item lg={12} sx={firstGrid}>
+        {loading && <LinearProgress />}
         <Box sx={buttonBox}>
           <Button
             sx={{ ...YellowBtn, padding: "1rem 3.5rem" }}
             onClick={handleDone}
           >
-            Done
+            {t("Button.done")}
           </Button>
 
           <Button
@@ -92,7 +120,7 @@ function Footer({ onNextStep, projectId }) {
             }}
             onClick={handleSave}
           >
-            Save
+            {t("Button.save")}
           </Button>
           <Button
             variant="outlined"
@@ -102,18 +130,16 @@ function Footer({ onNextStep, projectId }) {
             }}
             onClick={handleSaveAs}
           >
-            Save as
+            {t("Button.saveAs")}
           </Button>
         </Box>
-        <Stack mt={1} justifyContent={'center'} alignItems={'center'}>
-
-        <Typography sx={{ ...redText }}>
-          Save to return back to edit your project.
-        </Typography>
-        <Typography sx={{ ...redText }}>
-          Save as to start a duplicate project with the same line items and
-          phases.
-        </Typography>
+        <Stack mt={1} justifyContent={"center"} alignItems={"center"}>
+          <Typography sx={{ ...redText }}>
+            {t("AssignNewProjectStep2.footer.saveToReturnBackToEditYourProject")}
+          </Typography>
+          <Typography sx={{ ...redText }}>
+            {t("AssignNewProjectStep2.footer.saveAsToStartADuplicateProjectWithTheSameLineItemsAndPhases")}
+          </Typography>
         </Stack>
         <div>
           <FooterCircles width3="4rem" background3="#4C8AB1" />
@@ -132,20 +158,21 @@ const firstGrid = {
 };
 const buttonBox = {
   display: "flex",
-  flexDirection:{xl:"row",lg:"row",md:"row",sm:"row",xs:"column"},
+  flexDirection: { xl: "row", lg: "row", md: "row", sm: "row", xs: "column" },
   justifyContent: "space-between",
-  gap: "2.3rem",
+  gap: {md:"2.3rem", xs:'0.5rem'},
 };
 const redText = {
   color: "#BE1D1D",
   marginTop: "0rem",
-  fontFamily: "inherit",
+  fontFamily: "var(--main-font-family)",
   fontSize: "0.875rem",
   fontStyle: "normal",
   fontWeight: 400,
   lineHeight: "150%", // 1.3125rem
   letterSpacing: "-0.00875rem",
-  display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
+  display: { lg: "flex", md: "flex", sm: "flex", xs: "flex" },
+  textAlign: "center",
 };
 const saveButton = {
   border: "1px solid #FFAC00",

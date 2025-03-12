@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import FooterCircles from "../FooterCircles/FooterCircles";
 import YellowBtn from "../../UI/button";
 import StepTitles from "../StepTitles/StepTitles";
-import AttachFileSharpIcon from "@mui/icons-material/AttachFileSharp";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SkipInvite from "../../dialogues/SkipInvite/SkipInvite";
 
@@ -13,29 +11,34 @@ import {
   updateUserEmail,
   updateUserRole,
   selectUsers,
-  resetUserAndRoleEmail,
   removeUser,
-  setSkipInvite,
 } from "../../../redux/slices/projectFormSlice";
 
 import { Button, Box, useMediaQuery, CircularProgress } from "@mui/material";
 import StepFormField from "../StepFormField/StepFormField";
 import {
   selectProjectForm,
-  setProjectName,
-  setLocation,
 } from "../../../redux/slices/projectFormSlice";
-import { useAssignProjectMutation } from "../../../redux/apis/usersApiSlice";
+import {
+  useAssignProjectMutation,
+  useEditAssignProjectMutation,
+} from "../../../redux/apis/usersApiSlice";
 import { toast } from "react-toastify";
 //import "react-toastify/dist/ReactToastify.css";
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
-
+import {
+  getBackButtonProjectId,
+  getIsSaveAs,
+  setBackButtonProjectId,
+} from "../../../redux/slices/Project/handlingProjectFlowSlice";
+import { useTranslation } from "react-i18next";
 function AssignNewProjectStep2({
   onNextStep,
   setProjectId,
-  isSaveAs,
+  // isSaveAs,
   projectId,
 }) {
+  const { t } = useTranslation();
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTab = useMediaQuery("(max-width:900px)");
   const userInfo = useSelector((state) => state.auth.userInfo);
@@ -50,15 +53,22 @@ function AssignNewProjectStep2({
   const [emailCount, setEmailCount] = useState(1);
   const [showSkipInvite, setShowSkipInvite] = useState(false);
   const { projectName } = useSelector(selectProjectForm);
+  const isSaveAs = useSelector(getIsSaveAs);
   const { refetch } = useGetUserProjectsQuery({ userId: userInfo.user.id });
+  const local = localStorage.getItem("userInfo");
+  const currentUser = JSON.parse(local);
+  const organizationId = currentUser?.user?.organization?.organizationId;
+  const backButtonProjectId = useSelector(getBackButtonProjectId);
+  const [editAssignProject, { isLoading: isEditLoading }] =
+    useEditAssignProjectMutation();
 
   const handleAddEmail = () => {
     setEmailCount(emailCount + 1);
   };
 
   const handleSkip = () => {
-    dispatch(setSkipInvite());  
     setShowSkipInvite(true);
+   
   };
 
   const handleOpen = () => {
@@ -77,14 +87,47 @@ function AssignNewProjectStep2({
   };
   const Data = useSelector(selectProjectForm);
   const handleNextStep = () => {
-    if (Data.users[0].email === "") {
-      toast.warning("Please add your team's email");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+    const emailSet = new Set();
+    let hasInvalidEmail = false;
+    let hasDuplicateEmail = false;
+  
+    Data.users.forEach((user) => {
+      const isEmailInvalid = user.email === "" || !emailRegex.test(user.email);
+      const isEmailDuplicate = emailSet.has(user.email.toLowerCase());
+      
+      if (isEmailInvalid) {
+        hasInvalidEmail = true;
+      }
+      if (isEmailDuplicate) {
+        hasDuplicateEmail = true;
+      }
+      
+      emailSet.add(user.email.toLowerCase());
+    });
+  
+    if (hasDuplicateEmail) {
+      toast.warning("Same email is entered again");
       return;
     }
+  
+    if (hasInvalidEmail) {
+      toast.warning("Please add valid email addresses for team members");
+      return;
+    }
+  
+    if (Data.users.some((user) => user.role === "none" || user.role === "")) {
+      toast.warning("Please select a role for team members");
+      return;
+    }
+  
     handleCreateNewProject();
   };
+  
+  
 
-  console.log(Data);
+  // console.log(Data);
 
   const handleCreateNewProject = async () => {
     localStorage.removeItem("projectId");
@@ -98,26 +141,51 @@ function AssignNewProjectStep2({
         ...Data,
         userId: userId,
         isSaveAs: isSaveAs,
-        projectId: projectId,
+        projectId: backButtonProjectId ? backButtonProjectId : projectId,
+        organizationId: organizationId,
       };
-
+ 
       // Call the assignProject function and wait for the result
-      const res = await assignProject(FormData).unwrap();
+      // console.log(backButtonProjectId)
+      if (backButtonProjectId) {
+        // console.log(backButtonProjectId)
+        const res = await editAssignProject(FormData).unwrap();
 
-      // If successful, store the project ID in local storage
-      localStorage.setItem("projectId", res.project.id);
-      setProjectId(res.project.id);
-      await refetch();
+        // If successful, store the project ID in local storage
+        localStorage.setItem("projectId", res.project.id);
+        setProjectId(res.project.id);
+        dispatch(setBackButtonProjectId(res.project.id));
+        onNextStep();
+      } else {
+        const res = await assignProject(FormData).unwrap();
+        // console.log(res)
+        // localStorage.setItem("userInfo", JSON.stringify({...userInfo, incompleteProject: res?.incompleteProject}));
+        if(res.message === "Existing User is not part of the organization."){
+          toast.error(
+       "Existing user is not part of the organization."
+          );
+          return;
+        }
+        // If successful, store the project ID in local storage
+        localStorage.setItem("projectId", res?.project?.id);
+        setProjectId(res?.project?.id);
+        dispatch(setBackButtonProjectId(res?.project?.id));
+        onNextStep();
+      }
+
+      // await refetch();
       // localStorage.setItem("projectId", res.project.id);
       // setProjectId(res.project.id);
       // await refetch();
-      onNextStep();
-      dispatch(resetUserAndRoleEmail());
     } catch (error) {
-      toast.error(error?.data?.message || error?.data?.error || 'Something went wrong!');
+      console.log(error);
+      toast.error(
+        error?.data?.message || error?.data?.error || error?.message || "Something went wrong!"
+      );
       return;
     }
   };
+  // console.log("Assign Error", assignProject?.message)
   const removeIndex = (index) => {
     // Input validation (optional but recommended)
     if (index < 0 || index >= users.length) {
@@ -129,21 +197,22 @@ function AssignNewProjectStep2({
     // console.log(users);
     // // Efficient removal using splice
     // console.log(users.slice(0, index).concat(users.slice(index + 1)));
-    dispatch(removeUser(index))
+    dispatch(removeUser(index));
   };
-  console.log(showSkipInvite);
+  // console.log(showSkipInvite);
   return (
     <>
       <StepTitles
-        stepHeading={"Step 2 of 3"}
-        Heading={"Invite Your Team to"}
+        stepHeading={t("AssignNewProjectStep2.title1")}
+        Heading={t("AssignNewProjectStep2.title2")}
         projectName={projectName}
-        stepDiscription={`Accepting the invitation grants access to a secure project workspace in Builder Builder Pro`}
+        stepDiscription={t("AssignNewProjectStep2.title3")}
       />
 
       {users.map((user, index) => (
         <StepFormField
           removeIndex={removeIndex}
+          usersLength={users.length}
           key={index}
           index={index}
           email={user.email}
@@ -157,8 +226,7 @@ function AssignNewProjectStep2({
         sx={{
           ...buttonBox,
           justifyContent: "space-evenly",
-          marginTop: "-1rem",
-          
+          // marginTop: "-1rem",
         }}
       >
         <Button
@@ -166,7 +234,7 @@ function AssignNewProjectStep2({
           startIcon={<AddCircleOutlineIcon />}
           onClick={handleAddUser}
         >
-          Add Another Email
+          {t("AssignNewProjectStep2.addAnotherEmail")}
         </Button>
         {/* <Button
           sx={buttonLnks}
@@ -179,14 +247,21 @@ function AssignNewProjectStep2({
       </Box>
       <Box sx={{ ...buttonBox, ...buttoncontainer }}>
         <Button
-          disabled={isLoading}
-          sx={{ ...YellowBtn, ...buttonStyle }}
-          onClick={handleNextStep}
+          disabled={isLoading || isEditLoading}
+          sx={{ ...YellowBtn, ...buttonStyle}}
+          onClick={() => {  
+               handleNextStep();
+
+          }}
         >
-          {isLoading ? <CircularProgress size={"1.25rem"} /> : "Next"}
+          {isLoading || isEditLoading ? (
+            <CircularProgress size={"1.25rem"} />
+          ) : (
+            t("Button.next")
+          )}
         </Button>
         <Button sx={{ ...YellowBtn, ...buttonStyle }} onClick={handleSkip}>
-          Skip
+          {t("Button.skip")}
         </Button>
       </Box>
 
@@ -198,12 +273,14 @@ function AssignNewProjectStep2({
           handleOpen={handleOpen}
           handleClose={handleClose}
           handleNextStep={() => {
-            handleCreateNewProject();
+
+              handleCreateNewProject();
+
+
           }}
           isTab={isTab}
           isMobile={isMobile}
-          isLoading={isLoading}
-        
+          isLoading={isLoading || isEditLoading}
         />
       )}
     </>
@@ -214,7 +291,6 @@ const buttonBox = {
   flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "1.5rem",
   gap: "3rem",
 };
 
@@ -233,10 +309,11 @@ const buttonStyle = {
 };
 
 const buttonLnks = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontWeight: 500,
   height: "50%",
-  marginTop: "2rem",
+  marginTop: "1rem",
+  marginBottom: "1rem",
   textTransform: "none",
   color: "#4C8AB1",
   fontSize: { lg: "0.9rem", md: "0.9rem", sm: "0.8rem", xs: "0.6rem" },
@@ -253,7 +330,7 @@ const inputStyle = {
   border: "1px solid #ccc",
   borderRadius: "12px",
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   paddingLeft: "-1.5rem",
 };
 

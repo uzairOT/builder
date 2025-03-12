@@ -59,7 +59,7 @@ const style = {
     color: "#4C8AB1",
     fontSize: {xs:"9px",sm:"11px",md:"16px",},
     fontWeight: 600,
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     padding: {md:"16px 50px 16px 50px",xs:"10px 20px 10px 20px",sm:"15px 50px 15px 50px"},
     borderRadius: "20px",
   },

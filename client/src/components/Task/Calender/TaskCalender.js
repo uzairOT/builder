@@ -1,19 +1,19 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-
 import moment from 'moment-timezone'; // or .min.js
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "../../../App.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalenderWrapper from "./calender.style";
-import CustomToolbar from "./CustomToolbar";
-import {DateFormat} from "./DateFormat";
-import {CustomEventDayNotes, CustomEventDayTasks, CustomEventMonthTasks, CustomEventMonthWeatherNotes, CustomEventWeek, CustomEventWeekOnModal} from "./CustomEvent";
-import TimeGutterHeader from "./TimeGutterHeader";
-import MonthCellWapper from "./MonthCellWapper";
-import CustomToolbarProjects from "./CustomToolbarProjects";
+import { DateFormat } from "./DateFormat";
 import { useParams } from "react-router-dom";
+import { useGetProjectWeatherMutation } from "../../../redux/apis/Project/projectApiSlice";
+import useCalendarComponents from "./useCalendarComponents";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsLoadingProjectWeather, setProjectWeather } from "../../../redux/slices/Project/projectWeather";
+import { GanttChartSection } from "../../UI/Charts/GanttChartSection";
+
 
 
 
@@ -21,199 +21,115 @@ import { useParams } from "react-router-dom";
 moment.tz.setDefault("UTC");
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
-const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClient, eventsArr }) => {
-  console.log("Current time: "); console.log(moment().format());
-  console.log("Currrent timezone after updating: "); console.log(moment().tz());
-  const {id}= useParams();
+const TaskCalender = ({ dailyForecast, isDrawerOpen, isProjectPage, bgColorClient, eventsArr, coordinates , selectedProjectData}) => {
+  const { id } = useParams();
   const [monthEventView, setMonthEventView] = useState(true);
   const [eventView, setEventView] = useState('Work Order')
+  const [monthRange, setMonthRange] = useState({
+    startDate: '', endDate: ''
+  })
+  const dispatch = useDispatch()
+
+
+  const [getProjectWeather] =   useGetProjectWeatherMutation()
+
+
+  const handleMonthRange = (startDate, endDate) => {
+    const formatStartDate = moment(startDate).format('YYYY/MM/DD');
+    const formatEndDate = moment(endDate).format('YYYY/MM/DD');
+    getWeatherFunction(formatStartDate, formatEndDate);
+    setMonthRange({ startDate: formatStartDate, endDate: formatEndDate });
+
+  }
+
+  const getWeatherFunction  = async (startDate, endDate)=>{
+    try{
+      dispatch(setIsLoadingProjectWeather(true))
+      const data = await getProjectWeather({projectId: id, startDate: startDate, endDate:endDate});
+      dispatch(setProjectWeather(data.data.data));
+      dispatch(setIsLoadingProjectWeather(false))
+    }catch(error){
+      console.error(error)
+    }
+  }
+
+  // useEffect(() => {
+  //   getWeatherFunction();
+  // }, [monthRange.startDate])
   const eventViewRef = useRef(eventView);
   eventViewRef.current = eventView;
-  const currentDate = moment();
 
+  const currentDate = moment();
+  const chart = () => <GanttChartSection selectedProjectData={selectedProjectData}/>;
+  chart.title = () => 'Chart';
+  const views = {
+    month: true,
+    week: true,
+    day: true,
+    chart: chart, // Add the custom empty view
+  };
   const startTime = moment(currentDate).set({ hour: 12, minute: 0, second: 0, millisecond: 0 }).toDate();
   const endTime = moment(currentDate).set({ hour: 23, minute: 59, second: 59, millisecond: 999 }).toDate();
-  // console.log(eventsArr)
 
-    const events = Array.isArray(eventsArr) ? eventsArr?.map((item)=>{
+  const events = useMemo(() => {
 
-//CHANGES MADE TO PREVENT CRASHING OF CODE
-     const parsedStart = moment(item.start).toDate();
-      const parsedEnd =  moment(item.end).toDate();
-      // const utcParsedStart = parsedStart.utc();
-      // const utcParsedEnd = parsedEnd.utc();
-      // const dateParsedStart = utcParsedStart.toDate();
-      // const dateParseEnd = utcParsedEnd.toDate();
-      
-      return{
+    return Array.isArray(eventsArr) ? eventsArr?.map((item) => {
+
+      //CHANGES MADE TO PREVENT CRASHING OF CODE
+      const parsedStart = moment(item.start).toDate();
+      const parsedEnd = moment(item.end).toDate();
+
+      return {
         ...item,
-        start:  parsedStart,
+        start: parsedStart,
         end: parsedEnd,
       }
-    }) : [];
-    console.log(id);
-
-  // console.log("In Task Calender View: ", eventsArr);
-
-  // const [events, setEvents] = useState([
-  //   {
-  //     start: moment('2024-03-26T09:00:00').toDate(),
-  //     end: moment('2024-03-26T11:00:00').toDate(),
-  //     title: "Event 1",
-  //     data: {
-  //       task: "Distributed tertiary system engine",
-  //       weather: {
-  //         icon: 'sunny',
-  //         temp: '23',
-  //         description: 'Cloudy',
-  //       },
-  //       note: 'The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive'
-  //     }
-  //   },
-  //   {
-  //     start: moment('2024-03-27T12:00:00').toDate(),
-  //     end: moment('2024-03-27T13:00:00').toDate(),
-  //     title: "Event 2",
-  //     data: {
-  //       task: "Distributed tertiary system engine",
-  //       weather: {
-  //         icon: 'sunny',
-  //         temp: '25',
-  //         description: 'Partially Sunny',
-  //       },
-  //       note: 'The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive'
-  //     }
-  //   },
-  //   {
-  //     start: moment('2024-03-27T14:00:00').toDate(),
-  //     end: moment('2024-03-27T15:00:00').toDate(),
-  //     title: "Event 2",
-  //     data: {
-  //       task: "Distributed tertiary system engine",
-  //       weather: {
-  //         icon: 'sunny',
-  //         temp: '25',
-  //         description: 'Partially Sunny',
-  //       },
-  //       note: 'The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive'
-  //     }
-  //   },
-  //   {
-  //     start: moment('2024-03-28T12:00:00').toDate(),
-  //     end: moment('2024-03-28T13:00:00').toDate(),
-  //     title: "Event 2",
-  //     data: {
-  //       task: "Distributed tertiary system engine",
-  //       weather: {
-  //         icon: 'sunny',
-  //         temp: '25',
-  //         description: 'Partially Sunny',
-  //       },
-  //       note: 'The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive'
-  //     }
-  //   },
-  //   {
-  //     start: moment('2024-03-28T16:00:00').toDate(),
-  //     end: moment('2024-03-28T18:00:00').toDate(),
-  //     title: "Event 3",
-  //     data: {
-  //       task: "Distributed tertiary system engine",
-  //       weather: {
-  //         icon: 'sunny',
-  //         temp: '25',
-  //         description: 'Partially Sunny',
-  //       },
-  //       note: 'The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive'
-  //     }
-  //   },
-  //   {
-  //     start: moment('2024-04-03T13:00:00').toDate(),
-  //     end: moment('2024-04-04T16:00:00').toDate(),
-  //     title: "Long Event",
-  //     data: {
-  //       task: "Distributed tertiary system engine",
-  //       weather: {
-  //         icon: 'sunny',
-  //         temp: '25',
-  //         description: 'Partially Sunny',
-  //       },
-  //       note: 'The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive'
-  //     }
-  //   },
-  //   {
-  //     start: moment('2024-04-04T13:00:00').toDate(),
-  //     end: moment('2024-04-05T18:00:00').toDate(),
-  //     title: "Event 3",
-  //     data: {
-  //       task: "Distributed tertiary system engine",
-  //       weather: {
-  //         icon: 'sunny',
-  //         temp: '25',
-  //         description: 'Partially Sunny',
-  //       },
-  //       note: 'The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive'
-  //     }
-  //   },
-  // ]);
-  //console.log(events)
-  //console.log("Inside Task Calender: ", monthEventView);
+    }) : []
+  }, [eventsArr]);
   const toolbarKey = dailyForecast ? 'withForecast' : 'withoutForecast';
-  //console.log("Inside Task Calender dailyForecast: ", dailyForecast, " toolbar key: ", toolbarKey);
+  const components = useCalendarComponents({
+    handleMonthRange,
+    bgColorClient,
+    dailyForecast,
+    setEventView,
+    setMonthEventView,
+    monthEventView,
+    isProjectPage,
+    id,
+    isDrawerOpen,
+    eventViewRef,
+    monthRange,
+    coordinates,
+    toolbarKey,
+  });
 
-  const components = useCallback(() => ({
-
-    toolbar: (props) => (isProjectPage ? 
-    <CustomToolbarProjects bgColorClient={bgColorClient} toolbar={props} setEventView={setEventView} setMonthEventView={setMonthEventView} monthEventView={monthEventView} key={toolbarKey} /> : 
-    <CustomToolbar dailyForecast={dailyForecast} toolbar={props} setEventView={setEventView} setMonthEventView={setMonthEventView} monthEventView={monthEventView} key={toolbarKey} />),
-    day: {
-      event: (props) => (eventViewRef.current === 'Work Order' ? <CustomEventDayTasks {...props} projectId={id} isProjectPage={isProjectPage} /> : <CustomEventDayNotes {...props} projectId={id} isProjectPage={isProjectPage}  />)
-    },
-    week: {
-      timeGutterHeader: TimeGutterHeader,
-      event: (props) => (isDrawerOpen ? <CustomEventWeekOnModal projectId={id} isProjectPage={isProjectPage}  {...props} /> : <CustomEventWeek {...props} projectId={id} isProjectPage={isProjectPage}  />)
-      // isDrawerOpen ? (props) => <CustomEventWeekOnModal {...props}/> :(props) => <CustomEventWeek {...props} />
-    },
-    month: {
-      dateCellWrapper: (props) => (eventViewRef.current === 'Work Order' ? <MonthCellWapper props={props} isDrawerOpen={isDrawerOpen} monthView={'tasks'} isProjectPage={isProjectPage} /> : <MonthCellWapper props={props} isDrawerOpen={isDrawerOpen} monthView={'weather/notes'} isProjectPage={isProjectPage} />),
-      event: (props) => {
-        //console.log("Month Event View current Function rerendered: ", eventViewRef.current);
-        if (eventViewRef.current === 'Work Order') {
-          return <CustomEventMonthTasks {...props} projectId={id} monthEventView={monthEventView.current} isProjectPage={isProjectPage}  />
-        } else {
-          return <CustomEventMonthWeatherNotes {...props} projectId={id} isDrawerOpen={isDrawerOpen} isProjectPage={isProjectPage} />
-        }
-      }
-
-    }
-
-  }), [monthEventView, setMonthEventView, isDrawerOpen, isProjectPage, bgColorClient,dailyForecast,toolbarKey, id])
   const messages = {
     allDay: 'Week'
   }
-  const filteredEvents = isProjectPage ? events.filter(event => !isProjectPage || event.data.projectId === id) : events;
-
+  const filteredEvents = useMemo(() => isProjectPage ? events.filter(event => !isProjectPage || event.data.projectId === id) : events, [id, isProjectPage, events]);
+  
   return (
 
-        <>
-            <CalenderWrapper className="calendar-wrapper" style={{height:'100%' }}>
-          <DnDCalendar
-            defaultDate={moment()}
-            defaultView="day"
-            views={["day", "week", "month"]}
-            events={filteredEvents}
-            localizer={localizer}
-            resizable={false}
-            style={{ height: "100% " }}
-            components={components()}
-            formats={DateFormat}
-            messages={messages}
-            min={startTime}
-            max={endTime}
-           
-          />
-          </CalenderWrapper>
-        </>
-      );
+    <>
+      <CalenderWrapper className="calendar-wrapper" style={{ height: '100%' }}>
+        <DnDCalendar
+          defaultDate={moment()}
+          defaultView="day"
+          views={views}
+          events={filteredEvents}
+          localizer={localizer}
+          resizable={false}
+          style={{ height: "100% " }}
+          components={components()}
+          formats={DateFormat}
+          messages={messages}
+          min={startTime}
+          max={endTime}
+
+        />
+      </CalenderWrapper>
+    </>
+  );
 }
 
 export default TaskCalender;

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Grid, IconButton, Paper, Stack, useMediaQuery, useTheme } from "@mui/material";
+import { Grid, Paper, Stack, useMediaQuery, useTheme } from "@mui/material";
 import SideBar from "../Settings/SideBar/SideBar";
 import { Outlet } from "react-router";
-import Navbar from "../../components/Navbar/Navbar.js";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useLocation } from "react-router-dom";
 import {
   useAddAssignRoleMutation,
@@ -77,7 +75,8 @@ function Layout3() {
   };
   const navLinks = [
     { path: "/settings", title: "Profile" },
-    { path: "/settings/materline", title: "Master Line Items" },
+    // { path: "/settings/permissions", title: "Permission Access" },
+    { path: "/settings/masterline", title: "Master Line Items" },
     { path: "/settings/units", title: "Units" },
     { path: "/settings/admin", title: "Admin" },
     { path: "/settings/projectManager", title: "Project Manager" },

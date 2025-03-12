@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -8,23 +8,16 @@ import {
   TableRow,
   Paper,
   IconButton,
-  Avatar,
   Stack,
+  Typography,
 } from "@mui/material";
-// import EditIcon from "../../../../assets/settings/edit.png";
-// import DeleteIcon from "../../../assets/settings/delete.png";
-// import EmailIcon from "../../../assets/settings/email.png";
-// import EditIcon from "@mui/icons-material/Edit";
-
 import { useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
 import {
   useDeleteAssignRoleMutation,
-  useGetAssignedRolesQuery,
 } from "../../../../redux/apis/Admin/assignRoleApiSlice";
-import { useGetUserCouponsMutation } from "../../../../redux/apis/Coupon/CouponApiSlice";
 import EditIcon from "../../../../assets/settings/edit.png";
 import DeleteIcon from "../../../../assets/settings/delete.png";
+import { useTranslation } from "react-i18next";
 
 const dummyData = [
   {
@@ -73,6 +66,7 @@ function CustomTable({
   isError,
   deleteCoupon,
 }) {
+  const {t} = useTranslation();
   const showEmailAndRecords = title === "subcontractor";
   const [assignRoleDelete] = useDeleteAssignRoleMutation();
   const local = localStorage.getItem("userInfo");
@@ -111,15 +105,15 @@ function CustomTable({
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell sx={tableCellStyle}>Coupon Id</TableCell>
-            <TableCell sx={tableCellStyle}>Coupon Code</TableCell>
-            <TableCell sx={tableCellStyle}>Off Amount</TableCell>
+            <TableCell sx={tableCellStyle}>{t("Settings.Coupon.table.couponId")}</TableCell>
+            <TableCell sx={tableCellStyle}>{t("Settings.Coupon.table.couponCode")}</TableCell>
+            <TableCell sx={tableCellStyle}>{t("Settings.Coupon.table.offAmount")}</TableCell>
             <TableCell></TableCell>
-            <TableCell sx={tableCellStyle}>Action</TableCell>
+            <TableCell sx={tableCellStyle}>{t("Settings.Coupon.table.action")}</TableCell>
           </TableRow>
         </TableHead>
         {isError ? (
-          <Stack p={2}>{"Something went wrong!"}</Stack>
+          <Stack p={2}>{t("Settings.Coupon.table.error")}</Stack>
         ) : (
           <TableBody>
             {isLoading ? (
@@ -179,9 +173,15 @@ function CustomTable({
               <TableRow>
                 <TableCell
                   colSpan={10}
-                  sx={{ textAlign: "center", borderBottom: "none" }}
+                  sx={{
+                    textAlign: "center",
+                    borderBottom: "none",
+                    fontFamily: "var(--main-font-family)",
+                  }}
                 >
-                  No Records
+                  <Typography paddingTop={30} paddingBottom={30}>
+                  {t("Settings.Coupon.table.noRecords")}
+                  </Typography>
                 </TableCell>
               </TableRow>
             ) : (
@@ -268,7 +268,7 @@ const tableCellStyle = {
   overflow: "hidden",
   fontWeight: 500,
   fontSize: "14px",
-  fontFamily: "inherit",
+  fontFamily: "var(--main-font-family)",
 };
 
 const tableCellValueStyle = {
@@ -278,6 +278,6 @@ const tableCellValueStyle = {
   overflow: "hidden",
   fontWeight: 400,
   borderBottom: "none",
-  fontFamily: "Montserrat",
+  fontFamily: "var(--main-font-family)",
   color: "#000000",
 };

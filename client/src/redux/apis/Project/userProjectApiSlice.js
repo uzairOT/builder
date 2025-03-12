@@ -1,8 +1,8 @@
 import UpdateMasterLine from "../../../components/dialogues/UpdateMasterLine/UpdateMasterLine";
 import { apiSlice } from "../apiSlice";
 
-const USER_PROJECTS_URL = "http://3.135.107.71/user";
-const PROJECTS_URL = "http://3.135.107.71/project";
+const USER_PROJECTS_URL = "https://builderbuilder.net/user";
+const PROJECTS_URL = "https://builderbuilder.net/project";
 
 export const userProjectsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -33,27 +33,27 @@ export const userProjectsApiSlice = apiSlice.injectEndpoints({
     }),
     getUnits : builder.query({
       query: (data) => ({
-        url: `http://3.135.107.71/units/${data.userId}?query=${data.q !== undefined ? data.q : ''}&page=${data.page !== undefined ? data.page : ''}`,
+        url: `https://builderbuilder.net/units/${data.userId}?query=${data.q !== undefined ? data.q : ''}&page=${data.page !== undefined ? data.page : ''}`,
         method: 'GET'
       })
     }),
     addUnit : builder.mutation({
       query: (data) => ({
-        url: `http://3.135.107.71/units`,
+        url: `https://builderbuilder.net/units`,
         method: 'POST',
         body: data
       })
     }),
     editUnit:  builder.mutation({
       query: (data) => ({
-        url: `http://3.135.107.71/units/${data.id}`,
+        url: `https://builderbuilder.net/units/${data.id}`,
         method: 'PUT',
         body: data
       })
     }),
     deleteUnit:  builder.mutation({
       query: (data) => ({
-        url: `http://3.135.107.71/units/${data.id}`,
+        url: `https://builderbuilder.net/units/${data.id}`,
         method: 'DELETE',
         body: data
       })
@@ -83,7 +83,13 @@ export const userProjectsApiSlice = apiSlice.injectEndpoints({
         url: `${USER_PROJECTS_URL}/projects/${data.id}`,
         method: 'DELETE'
       })
-    })
+    }),
+    getUserPinnedProject: builder.query({
+      query: (data) => ({
+        url: `${USER_PROJECTS_URL}/pinnedProject/${data.userId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -99,5 +105,6 @@ export const {
   useGetProjectUserRoleMutation,
   useGetUserNotificationQuery,
   useSetProjectToIncompleteMutation,
-  useDeleteUserProjectMutation
+  useDeleteUserProjectMutation,
+  useGetUserPinnedProjectQuery
 } = userProjectsApiSlice;

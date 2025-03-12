@@ -1,21 +1,16 @@
 import React, { useState } from "react";
 import {
   useMediaQuery,
-  Button,
   Box,
   Typography,
   TextField,
   MenuItem,
-  FormControl,
-  formControlStyle,
-  Select,
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import "../../../App.css";
 import "./StepFormField.css";
-import { toast } from "react-toastify";
-
+import { useTranslation } from "react-i18next";
 function ProjectFormFields({
   index,
   email,
@@ -24,28 +19,30 @@ function ProjectFormFields({
   onUpdateRole,
   removeIndex,
   userInfo,
+  usersLength
 }) {
+  const { t } = useTranslation();
   const MAX_EMAIL_LENGTH = 50;
   const isSmallMobile = useMediaQuery("(max-width:500px)");
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTab = useMediaQuery("(max-width:900px)");
-  const formWidth = { width: isMobile ? "75%" : isTab ? "65%" : "48%" };
+  const formWidth = { width: isMobile ? "90%" : isTab ? "65%" : "48%" };
   const borderRadiusResponsive = {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
   const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
   const placeholderText =
-    !isTab && !isMobile ? "e.g. johndoe@workmail.com" : "@mail";
+    !isTab && !isMobile ? "ex: johndoe@workmail.com" : "@mail";
 
   const handleEmailChange = (event) => {
-    const userEmail = userInfo.user.email;
+    // const userEmail = userInfo.user.email;
     const { value } = event.target;
-    if (value === userEmail) {
-      toast.warning("You can't invite yourself to the project", {
-        toastId: "invitationValidation",
-      });
-      return;
-    }
+    // if (value === userEmail) {
+    //   toast.warning("You can't invite yourself to the project", {
+    //     toastId: "invitationValidation",
+    //   });
+    //   return;
+    // }
     if (value.length <= MAX_EMAIL_LENGTH) {
       onUpdateEmail(value);
     }
@@ -88,17 +85,20 @@ function ProjectFormFields({
               )}
             </Box>
 
-            <Box sx={{ flex: 1 }}>
+            <Box sx={{ flex: 1,display:'flex' ,flexDirection:'row', minWidth:'190px' }}>
               <TextField
                 sx={{
                   ...inputStyle,
                   ...borderRadiusResponsive,
+                 
                   "& input": {
                     borderBottom: "none", // Remove bottom border of the input
+                     
                   },
 
                   ".MuiInput-input": {
                     color: role === "none" ? "lightgray" : "#202227",
+                    fontSize: "12px",
                   },
                 }}
                 inputProps={{ maxLength: 50 }}
@@ -111,33 +111,32 @@ function ProjectFormFields({
                 // helperText={'Select user role'}
               >
                 <MenuItem sx={{ ...menuItem }} value={"none"} disabled>
-                  Select Role
+                  {t("AssignNewProjectStep2.SelectRole")}
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"admin"}>
-                  Admin
+                  {t("ProjectPermissions.roles.admin")}
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"projectManager"}>
-                  Project Manager
+                  {t("ProjectPermissions.roles.projectManager")}
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"client"}>
-                  Client
+                  {t("ProjectPermissions.roles.client")}
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"subcontractor"}>
-                  Subcontractor
+                  {t("ProjectPermissions.roles.subcontractor")}
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"supplier"}>
-                  Supplier
+                  {t("ProjectPermissions.roles.supplier")}
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"employee"}>
-                  Employee
+                  {t("ProjectPermissions.roles.employee")}
                 </MenuItem>
                 <MenuItem sx={menuItem} value={"others"}>
-                  Others
+                  {t("ProjectPermissions.roles.others")}
                 </MenuItem>
               </TextField>
-            </Box>
             <Box display={"flex"} alignItems={"center"} pb={"8px"}>
-              {!(index === 0) ? (
+              {( usersLength > 1)? (
                 <IconButton
                   onClick={() => {
                     removeIndex(index);
@@ -149,6 +148,7 @@ function ProjectFormFields({
                 <Box width={"40px"}></Box>
               )}
             </Box>
+            </Box>
           </Box>
         </form>
       </Box>
@@ -157,7 +157,7 @@ function ProjectFormFields({
 }
 
 const inputStyle = {
-  width: "100%", // Set width to 100% for responsiveness
+  width: "calc(100% - 16px)", // Set width to 100% for responsiveness
   height: "2rem",
   marginBottom: "0.5rem",
   alignSelf: "center",
@@ -165,17 +165,17 @@ const inputStyle = {
   fontSize: "14px",
   border: "1px solid #ccc",
   borderRadius: "12px",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   paddingLeft: "-1.5rem",
 };
 const formBox = {
-  width: "100%",
+  // width: "100%",
   display: "flex",
   flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",
   marginTop: "0.5rem",
-  marginLeft: "2.5rem",
+  // marginLeft: "2rem",
 };
 
 const formInnerBox = {
@@ -187,8 +187,8 @@ const formInnerBox = {
 const fieldBox1 = {
   justifyContent: "space-between",
   flex: 4,
-  marginRight: "1rem",
-  marginLeft: "-1rem",
+  // marginRight: "1rem",
+  // marginLeft: "-1rem",
   position: "relative",
 };
 
@@ -198,15 +198,15 @@ const formStyle = {
 
 const counterTypo = {
   position: "absolute",
-  right: "-0.2rem",
+  right: "1rem",
   bottom: "1.5rem",
   fontSize: "0.8rem",
   color: "#B8B8B8",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: 500,
 };
 
 const menuItem = {
-  fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem", xs: "0.7rem" },
+  fontSize: { lg: "0.8rem", md: "0.7rem", sm: "0.7rem", xs: "0.7rem" },
 };
 export default ProjectFormFields;

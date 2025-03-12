@@ -7,10 +7,11 @@ const initialState = {
     dailyForecast: [],
     temperatureUnit: 'imperial',
     query: {
-        lat: '',
-        lon: '',
+        lat: '37.269175000000004',
+        lon: '-119.30661',
         temperatureUnit: 'imperial'
-    }
+    },
+    defaultLocation: true
 } 
 
 const eventsSlice = createSlice({
@@ -35,12 +36,16 @@ const eventsSlice = createSlice({
                 lat: action.payload.lat,
                 lon: action.payload.lon,
             }
+        },
+        setDefaultLocation: (state, action) => {
+            state.defaultLocation = action.payload
         }
     }
 })
 
-export const {setForecastLoading, setForecastError, setDailyForecast, setTemperatureUnit,setLatLon } = eventsSlice.actions;
+export const {setForecastLoading, setForecastError, setDailyForecast, setTemperatureUnit,setLatLon, setDefaultLocation } = eventsSlice.actions;
 
 export const getForecast = state => state.dailyForecast;
+export const getTempUnit = state => state.dailyForecast.query.temperatureUnit;
 
 export default eventsSlice.reducer;

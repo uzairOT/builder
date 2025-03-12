@@ -1,26 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-
-const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
+import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setMonth } from "../../../redux/slices/Project/projectWeather";
+import { useTranslation } from "react-i18next";
+const CustomToolbarProjects = ({
+  toolbar,
+  setEventView,
+  bgColorClient,
+  handleMonthRange,
+  projectWeather,
+}) => {
   const [activeButton, setActiveButton] = useState("day");
   const [activeHeader, setActiveHeader] = useState("Work Order");
-  const goToDayView = (view) => {
+  const [showGanttChart, setShowGanttChart] = useState(false);
+  const dispatch = useDispatch();
+  const {t} = useTranslation();
+  // const goToDayView = (view) => {
+  //   setShowGanttChart(false)
+  //   toolbar.onView(view);
+  //   setActiveButton(view);
+  // };
+  // const goToWeekView = (view) => {
+  //   setShowGanttChart(false)
+  //   toolbar.onView(view);
+  //   setShowGanttChart(false)
+  //   setActiveButton(view);
+  // };
+  // const goToMonthView = (view) => {
+  //   setShowGanttChart(false)
+  //   toolbar.onView(view);
+  //   setActiveButton(view);
+  // };
+
+  const handelViewChange = (view) => {
+    setActiveHeader("Work Order");
+    setShowGanttChart(false)
     toolbar.onView(view);
     setActiveButton(view);
-  };
-  const goToWeekView = (view) => {
-    toolbar.onView(view);
-    setActiveButton(view);
-  };
-  const goToMonthView = (view) => {
-    toolbar.onView(view);
-    setActiveButton(view);
-  };
+  }
+
   const handleNavigate = (action) => {
+    // Get the current date from the toolbar label or a reference
     toolbar.onNavigate(action);
   };
+  useEffect(() => {
+    if (toolbar.view === "month") {
+      const currentDate = new Date(toolbar.date);
+      dispatch(setMonth(toolbar.label));
+      const startOfMonth = toolbar.localizer.startOf(currentDate, "month");
+      const endOfMonth = toolbar.localizer.endOf(currentDate, "month");
+      handleMonthRange(startOfMonth, endOfMonth);
+    }
+  }, [toolbar.date, toolbar.view]);
   //   const handleMonthEventTasks =() => {
   //     setMonthEventView(prevState => {
   //       //console.log('Tasks Clicked');
@@ -41,22 +75,35 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
   const handleActiveHeader = (view) => {
     setEventView(() => {
       setActiveHeader(view);
+      setShowGanttChart((showGanttChart) => {
+        if(view === "Chart"){
+          toolbar.onView("chart")
+          setActiveButton("chart");
+          return true
+        } else{
+          return showGanttChart
+        }
+        
+      });
       return view;
     });
   };
+
+  const location = useLocation();
+  const pathCheck = location.pathname;
 
   // Styles
   const themeStyle = {
     toolbarTitle: {
       color: bgColorClient ? "black" : "white",
-      fontFamily: "inherit",
+      fontFamily: "var(--main-font-family)",
       fontSize: { xl: "20px", lg: "16px", md: "20px", xs: "16px" },
       fontStyle: "normal",
       fontWeight: 500,
     },
     toolbarButton: {
       textAlign: "center",
-      fontFamily: "inherit",
+      fontFamily: "var(--main-font-family)",
       fontSize: { xl: "12px", lg: "12px", md: "12px", xs: "11px" },
       fontStyle: "normal",
       fontWeight: 500,
@@ -69,7 +116,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
       padding: "5px",
     },
     toolbarLabel: {
-      fontFamily: "Arial Rounded MT, sans-serif",
+      fontFamily: "var(--main-font-family)",
       color: "#484848",
       fontWeight: "500",
     },
@@ -83,7 +130,7 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
       lineHeight: "32px",
     },
     button: {
-      fontFamily: "inherit",
+      fontFamily: "var(--main-font-family)",
       fontSize: "12px",
       fontStyle: "normal",
       fontWeight: 500,
@@ -98,7 +145,6 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
     monthEventHeader: {},
   };
   //
-
   return (
     <>
       <div className="rbc-toolbar">
@@ -113,12 +159,18 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
         >
           {" "}
           <Stack direction={"row"} alignItems={"center"}>
-            <Typography sx={themeStyle.toolbarTitle} pl={2}>
-              Work Order
-            </Typography>
+            {pathCheck.includes("/change-order") ? (
+              <Typography sx={themeStyle.toolbarTitle} pl={2}>
+                {t('CustomProjectToolbar.title1')}
+              </Typography>
+            ) : (
+              <Typography sx={themeStyle.toolbarTitle} pl={2}>
+                {t('CustomProjectToolbar.title2')}
+              </Typography>
+            )}
             {toolbar.view === "month" && (
               <Stack
-                direction={{sm:"row", xs:"column"}}
+                direction={{ sm: "row", xs: "column" }}
                 spacing={2}
                 pr={0.5}
                 pl={5}
@@ -126,15 +178,11 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                 alignItems={"center"}
               >
                 <Button
-                 sx={{
-                  fontSize: {
-                    xl: "12px !important",
-                    lg: "10px !important",
-                    md: "12px !important",
-                    xs: "11px !important",
-                  },
-                }}
+                  sx={{
+                    fontSize: "0.7rem",
+                  }}
                   style={{
+                    textTransform: "capitalize",
                     ...themeStyle.toolbarButton,
                     backgroundColor:
                       activeHeader === "Work Order" ? "white" : "",
@@ -150,50 +198,57 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                     handleActiveHeader("Work Order");
                   }}
                 >
-                  Work Order
+                  {t('CustomProjectToolbar.title2')}
                 </Button>
                 <Button
-                 sx={{
-                  fontSize: {
-                    xl: "12px !important",
-                    lg: "10px !important",
-                    md: "12px !important",
-                    xs: "11px !important",
-                  },
-                }}
+                  sx={{
+                    fontSize: "0.7rem",
+                  }}
                   style={{
+                    textTransform: "capitalize",
                     ...themeStyle.toolbarButton,
                     backgroundColor: activeHeader === "Notes" ? "white" : "",
                     color: activeHeader === "Notes" ? "#4C8AB1" : "white",
-
                   }}
                   onClick={() => {
                     handleActiveHeader("Notes");
                   }}
                 >
-                  Weather/notes
+                  {t('CustomProjectToolbar.title3')}
+                </Button>
+                <Button
+                  sx={{
+                    fontSize: "0.7rem",
+                  }}
+                  style={{
+                    textTransform: "capitalize",
+                    ...themeStyle.toolbarButton,
+                    backgroundColor: activeHeader === "Chart" ? "white" : "",
+                    color: activeHeader === "Chart" ? "#4C8AB1" : "white",
+                  }}
+                  onClick={() => {
+                    handleActiveHeader("Chart");
+                  }}
+                >
+                  {t('CustomProjectToolbar.title4')}
                 </Button>
               </Stack>
             )}
             {toolbar.view === "day" && (
               <Stack
-              direction={{sm:"row", xs:"column"}}
-              spacing={2}
+                direction={{ sm: "row", xs: "column" }}
+                spacing={2}
                 pr={0.5}
                 pl={5}
                 justifyContent={"center"}
                 alignItems={"center"}
               >
                 <Button
-                 sx={{
-                  fontSize: {
-                    xl: "12px !important",
-                    lg: "10px !important",
-                    md: "12px !important",
-                    xs: "11px !important",
-                  },
-                }}
+                  sx={{
+                    fontSize: "0.7rem",
+                  }}
                   style={{
+                    textTransform: "capitalize",
                     ...themeStyle.toolbarButton,
                     backgroundColor:
                       activeHeader === "Work Order" ? "white" : "",
@@ -203,61 +258,119 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                     handleActiveHeader("Work Order");
                   }}
                 >
-                  Work Order
+                  {t('CustomProjectToolbar.title2')}
                 </Button>
                 <Button
                   sx={{
-                    fontSize: {
-                      xl: "12px !important",
-                      lg: "10px !important",
-                      md: "12px !important",
-                      xs: "11px !important",
-                    },
+                    fontSize: "0.7rem",
                   }}
                   style={{
+                    textTransform: "capitalize",
                     ...themeStyle.toolbarButton,
                     backgroundColor: activeHeader === "Notes" ? "white" : "",
                     color: activeHeader === "Notes" ? "#4C8AB1" : "white",
-
                   }}
                   onClick={() => {
                     handleActiveHeader("Notes");
                   }}
                 >
-                  Weather/ Notes
+                  {t('CustomProjectToolbar.title3')}
+                </Button>
+                <Button
+                  sx={{
+                    fontSize: "0.7rem",
+                  }}
+                  style={{
+                    textTransform: "capitalize",
+                    ...themeStyle.toolbarButton,
+                    backgroundColor: activeHeader === "Chart" ? "white" : "",
+                    color: activeHeader === "Chart" ? "#4C8AB1" : "white",
+                  }}
+                  onClick={() => {
+                    handleActiveHeader("Chart");
+                  }}
+                >
+                  {t('CustomProjectToolbar.title4')}
+                </Button>
+              </Stack>
+            )}
+            {toolbar.view === "chart" && (
+              <Stack
+                direction={{ sm: "row", xs: "column" }}
+                spacing={2}
+                pr={0.5}
+                pl={5}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <Button
+                  sx={{
+                    fontSize: "0.7rem",
+                  }}
+                  style={{
+                    textTransform: "capitalize",
+                    ...themeStyle.toolbarButton,
+                    backgroundColor: activeHeader === "Chart" ? "white" : "",
+                    color: activeHeader === "Chart" ? "#4C8AB1" : "white",
+                  }}
+                  onClick={() => {
+                    handleActiveHeader("Chart");
+                  }}
+                >
+                  {t('CustomProjectToolbar.title4')}
+                </Button>
+              </Stack>
+            )}
+            {toolbar.view === "week" && (
+              <Stack
+                direction={{ sm: "row", xs: "column" }}
+                spacing={2}
+                pr={0.5}
+                pl={5}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <Button
+                  sx={{
+                    fontSize: "0.7rem",
+                  }}
+                  style={{
+                    textTransform: "capitalize",
+                    ...themeStyle.toolbarButton,
+                    backgroundColor: activeHeader === "Chart" ? "white" : "",
+                    color: activeHeader === "Chart" ? "#4C8AB1" : "white",
+                  }}
+                  onClick={() => {
+                    handleActiveHeader("Chart");
+                  }}
+                >
+                  {t('CustomProjectToolbar.title4')}
                 </Button>
               </Stack>
             )}
           </Stack>
+          {/* {!showGanttChart && ( */}
           <Box element="div" style={themeStyle.toolbarButtonGroup}>
             <Button
               sx={{
-                fontSize: {
-                  xl: "12px !important",
-                  lg: "10px !important",
-                  md: "12px !important",
-                  xs: "11px !important",
-                },
+                fontSize: "0.7rem",
               }}
               style={{
+                textTransform: "capitalize",
                 ...themeStyle.toolbarButton,
                 backgroundColor: activeButton === "day" ? "#FFF" : "",
                 color: activeButton === "day" ? "black" : "#FFF",
               }}
-              onClick={() => goToDayView("day")}
+              onClick={() => handelViewChange("day")}
             >
-              Day
+              {t('CustomProjectToolbar.title5')}
             </Button>
             <Button
               sx={{
-                fontSize: {
-                  xl: "12px !important",
-                  lg: "10px !important",
-                  md: "12px !important",
-                  xs: "11px !important",
-                },
+                fontSize: "0.7rem",
               }}
               style={{
+                textTransform: "capitalize",
                 ...themeStyle.toolbarButton,
                 backgroundColor: activeButton === "week" ? "#FFF" : "",
                 color: activeButton === "week" ? "#000000" : "#FFF",
@@ -265,53 +378,55 @@ const CustomToolbarProjects = ({ toolbar, setEventView, bgColorClient }) => {
                   backgroundColor: "none",
                 },
               }}
-              onClick={() => goToWeekView("week")}
+              onClick={() => handelViewChange("week")}
             >
-              Week
+              {t('CustomProjectToolbar.title6')}
             </Button>
             <Button
               sx={{
-                fontSize: {
-                  xl: "12px !important",
-                  lg: "10px !important",
-                  md: "12px !important",
-                  xs: "11px !important",
-                },
+                fontSize: "0.7rem",
               }}
               style={{
+                textTransform: "capitalize",
                 ...themeStyle.toolbarButton,
                 backgroundColor: activeButton === "month" ? "#FFF" : "",
                 color: activeButton === "month" ? "#000000" : "#FFF",
               }}
-              onClick={() => goToMonthView("month")}
+              onClick={() => handelViewChange("month")}
             >
-              Month
+              {t('CustomProjectToolbar.title7')}
             </Button>
           </Box>
+          {/* )} */}
         </Stack>
-        <Stack
-          width={"100%"}
-          direction={"row"}
-          justifyContent={"space-between"}
-        >
-          <Stack direction={"row"} alignItems={"center"} spacing={2} pl={1}>
-            <IconButton
-              style={themeStyle.toolbarIcon}
-              aria-label="Left Arrow Icon"
-              onClick={() => handleNavigate("PREV")}
-            >
-              <ArrowLeftIcon style={{ color: "#797979" }} />
-            </IconButton>
-            <p style={themeStyle.toolbarLabel}>{toolbar.label}</p>
-            <IconButton
-              style={themeStyle.toolbarIcon}
-              aria-label="Left Arrow Icon"
-              onClick={() => toolbar.onNavigate("NEXT")}
-            >
-              <ArrowRightIcon style={{ color: "#797979" }} />
-            </IconButton>
+        
+          <Stack
+            display={showGanttChart ? "none" : "flex"}
+            width={"100%"}
+            direction={"row"}
+            justifyContent={"space-between"}
+          >
+            <Stack direction={"row"} alignItems={"center"} spacing={2} pl={1}>
+              <IconButton
+                style={themeStyle.toolbarIcon}
+                aria-label="Left Arrow Icon"
+                onClick={() => handleNavigate("PREV")}
+              >
+                <ArrowLeftIcon style={{ color: "#797979" }} />
+              </IconButton>
+
+              <p style={themeStyle.toolbarLabel}>{toolbar.label}</p>
+
+              <IconButton
+                style={themeStyle.toolbarIcon}
+                aria-label="Left Arrow Icon"
+                onClick={() => handleNavigate("NEXT")}
+              >
+                <ArrowRightIcon style={{ color: "#797979" }} />
+              </IconButton>
+            </Stack>
           </Stack>
-        </Stack>
+        
       </div>
     </>
   );

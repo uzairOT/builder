@@ -15,34 +15,34 @@ import { useSelector } from "react-redux";
 import EditIcon from "../../../assets/settings/edit.png";
 import {
   useDeleteUnitMutation,
-  useGetUnitsQuery,
 } from "../../../redux/apis/Project/userProjectApiSlice";
-import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import DeleteIcon from "../../../assets/settings/delete.png";
 import { toast } from "react-toastify";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
+import { useTranslation } from "react-i18next";
 
 const tableCellStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
-  textOverflow:'ellipsis',
-  overflow:'hidden',
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 500,
   fontSize: "14px",
-  fontFamily: "inherit",
+  fontFamily: "var(--main-font-family)",
   padding: "4px",
 };
 
 const tableCellValueStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
-  textOverflow:'ellipsis',
-  overflow:'hidden',
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 400,
   borderBottom: "none",
-  fontFamily: "Montserrat",
+  fontFamily: "var(--main-font-family)",
   color: "#000000",
   padding: "4px",
+  textTransform: "capitalize",
 };
 
 function UnitsTable({
@@ -56,10 +56,12 @@ function UnitsTable({
   page,
   error,
 }) {
+  const {t} = useTranslation()
   const userInfo = useSelector((state) => state.auth.userInfo);
   const [open, setOpen] = useState(false);
   const [deleteUnitId, setDeleteUnitId] = useState(null);
-  const [deleteUnit, {isLoading: isDeleteUnitLoading}] = useDeleteUnitMutation();
+  const [deleteUnit, { isLoading: isDeleteUnitLoading }] =
+    useDeleteUnitMutation();
 
   const handleUpdateOpen = (row) => {
     setUnit(row);
@@ -87,11 +89,11 @@ function UnitsTable({
   };
 
   const handleDelete = async (row) => {
-    console.log(row);
+    // console.log(row);
     if (row.id) {
       try {
         const res = await deleteUnit({ id: row.id });
-        toast.success('Unit deleted successfully.');
+        toast.success("Unit deleted successfully.");
         await refetch({
           userId: userInfo.user.id,
           q: debouncedValue,
@@ -101,7 +103,7 @@ function UnitsTable({
         console.log(error);
       }
     } else {
-      toast.info("Default Unit can't be deleted");
+      toast.info("Default unit can't be deleted");
     }
   };
   console.log(error);
@@ -118,12 +120,12 @@ function UnitsTable({
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={tableCellStyle}>Unit</TableCell>
-              <TableCell sx={tableCellStyle}>Action</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.UnitsTable.unit")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.UnitsTable.action")}</TableCell>
             </TableRow>
           </TableHead>
           {error ? (
-            <Stack p={2}>{"Something went wrong!"}</Stack>
+            <Stack p={2}>{t("Settings.UnitsTable.error")}</Stack>
           ) : (
             <TableBody>
               {isLoading ? (
@@ -173,12 +175,12 @@ function UnitsTable({
         </Table>
       </TableContainer>
       <AreYouSureModal
-          open={open}
-          handleClose={handleClose}
-          handleConfirmDelete={handleConfirmDelete}
-          isLoading={isDeleteUnitLoading}
-          text={"unit"}
-        />
+        open={open}
+        handleClose={handleClose}
+        handleConfirmDelete={handleConfirmDelete}
+        isLoading={isDeleteUnitLoading}
+        text={t("Settings.UnitsTable.areYouSure")}
+      />
     </Grid>
   );
 }

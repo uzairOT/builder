@@ -1,25 +1,34 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import YellowBtn from "../../UI/button";
 import {
-  useLoginMutation,
   useRegisterMutation,
 } from "../../../redux/apis/usersApiSlice";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { setCredentials } from "../../../redux/slices/authSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { Password } from "@mui/icons-material";
-import { Grid, Checkbox, useMediaQuery, MenuItem, Select } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { Grid, useMediaQuery } from "@mui/material";
 import builder1 from "../../Signup/Assets/pngs/builderProYellowLogo.png";
 import downloadForMob from "../../Signup/Assets/pngs/downloadForMob.png";
 import googlePlay from "../../Signup/Assets/pngs/googlePlay.png";
 import appStore from "../../Signup/Assets/pngs/appStore.png";
+import { PhoneInput } from "react-international-phone";
+import { useFormik } from "formik";
+import { PhoneNumberUtil } from "google-libphonenumber";
+import "react-international-phone/style.css";
+
+const phoneUtil = PhoneNumberUtil.getInstance();
+
+const isPhoneValid = (phone) => {
+  try {
+    return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone));
+  } catch (error) {
+    return false;
+  }
+};
+
 
 const CompanyForm = () => {
   const [companyName, setCompanyName] = useState("");
@@ -29,19 +38,34 @@ const CompanyForm = () => {
   const password = "87872";
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [phoneIsValid, setPhoneIsValid] = useState(true);
   const [register, { isLoading }] = useRegisterMutation();
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
-
+  const [phone, setPhone] = useState("");
   const isMobile = useMediaQuery("(max-width:600px)");
   const lableResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const borderRadiusResponsive = {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const linkResponsiveColor = { color: isMobile ? "#FFAC00" : "#4C8AB1" };
+
+const validate = () => {
+  const newErrors = {};
+
+  const isValid = isPhoneValid(phone);
+  // Add more validation rules as needed
+  setPhoneIsValid(isValid);
+  // if(!isValid){
+  //   newErrors.phoneNumber = 'notValid';
+  // }
+  // Return true if no errors
+  return Object.keys(newErrors).length === 0 && isValid;
+};
+
+
+
   useEffect(() => {
     // Retrieve user data from localStorage on component mount
     const storedUserData = localStorage.getItem("userData");
@@ -50,17 +74,11 @@ const CompanyForm = () => {
     }
   }, []);
   const handleFormSubmit = async () => {
-    if (!companyName.trim() || !phoneNumber.trim()) {
+    if (!companyName.trim() || !phoneIsValid) {
       setFormError("Please fill out all fields.");
       return;
     }
 
-    // Validate phone number (basic check)
-    const phoneRegex = /^\d{10}$/;
-    if (!phoneRegex.test(phoneNumber)) {
-      setFormError("Please enter a valid phone number.");
-      return;
-    }
 
     // Process form submission here (e.g., API call)
     const { firstName, lastName, id, email } = userData;
@@ -70,25 +88,43 @@ const CompanyForm = () => {
         lastName,
         email,
         company: companyName,
-        phone: phoneNumber,
+        phoneNumber: phone,
         password,
+        withGoogle: true
       },
     };
 
     try {
       const res = await register(formData.data).unwrap();
-      console.log("Sign up: ", res);
-      dispatch(setCredentials({ ...res }));
-      navigate("/assignproject");
+        console.log(res);
+      dispatch(setCredentials({ ...res.data }));
+      if(res.data.user.hasValidSubscription){
+        setTimeout(() => {
+          window.location.href = "/assignproject";
+        }, 1000);
+      }else{
+       setTimeout(() => {
+         window.location.href = "/subscription";
+       }, 1000);
+      }
     } catch (err) {
       console.log("Login Error:", err);
-      alert(err?.data?.message || err.error); // Display error message to the user
+      // alert(err?.data?.message || err.error); // Display error message to the user
     }
     // Clear form and state after submission if needed
     setCompanyName("");
     setPhoneNumber("");
     setFormError("");
   };
+  
+  const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
+  useFormik({
+    initialValues: {
+      phoneNumber: "",
+    },
+    onSubmit: handleFormSubmit,
+  });
+
 
   return (
     <>
@@ -97,7 +133,7 @@ const CompanyForm = () => {
           display: "flex",
           justifyContent: "center",
           mt: 4,
-          fontFamily: "GT Walsheim Trial",
+          fontFamily: 'var(--main-font-family)',
           backgroundColor: "#4c8ab1",
           minHeight: "100vh",
         }}
@@ -160,7 +196,7 @@ const CompanyForm = () => {
           </Typography>
           <Typography sx={thirdHeading}>Log in to your account</Typography>
           <Box sx={downloadForMobBox}>
-            <img src={downloadForMob} width={DoMobWidth} alt="" />
+            <img src={downloadForMob}  alt="" />
           </Box>
           <Box sx={googleAppImgsBox}>
             <img src={googlePlay} width={widthValue} alt="" />
@@ -215,7 +251,7 @@ const CompanyForm = () => {
                 >
                   Phone Number
                 </label>
-                <Box sx={{ position: "relative" }}>
+                {/* <Box sx={{ position: "relative" }}>
                   <input
                     required
                     type="text"
@@ -229,7 +265,53 @@ const CompanyForm = () => {
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     placeholder="Enter phone number"
                   />
+                </Box> */}
+                
+              <PhoneInput
+                // disableDialCodePrefill
+                style={{ ...customPhoneStyles }}
+                defaultCountry="us"
+                name={"phoneNumber"}
+                value={phone}
+                onBlur={(e) => {
+                  handleBlur(e);
+                  validate(phone);
+                }}
+                onChange={(phone) => setPhone(phone)}
+                countrySelectorStyleProps={{
+                  style: {
+                    "--react-international-phone-country-selector-background-color":
+                      "#EDF2F6",
+                    "--react-international-phone-country-selector-background-color-hover":
+                      "#EDF2F6",
+                  },
+                  buttonStyle: {
+                    filter: "none",
+                  },
+                }}
+                inputStyle={{ ...customeInputStyles }}
+                inputProps={{
+                  border: "none",
+                  // placeholder: "+1 (123) 456-7890",
+                }}
+                required
+              />
+                   {!phoneIsValid && (
+                <Box>
+                  <Typography
+                    sx={{
+                      color: "#d32f2f",
+                      fontSize: "12px",
+                      marginLeft: "4px",
+                      marginRight: "14px",
+                      marginTop: "3px",
+                      fontFamily: "var(--main-font-family)",
+                    }}
+                  >
+                    Phone is not valid
+                  </Typography>
                 </Box>
+              )}
               </Box>
               {formError && (
               <Typography variant="body2" color="error" sx={{ mt: 1 }}>
@@ -357,87 +439,6 @@ const logoBox = {
   display: { lg: "none", md: "none", sm: "none", xs: "flex" },
 };
 
-const passwordEyeBox = {
-  position: "absolute",
-  top: "50%",
-  right: "10px",
-  transform: "translateY(-50%)",
-  cursor: "pointer",
-  opacity: "50%",
-  display: "flex",
-  alignItems: "center",
-};
-const linkBox = {
-  display: "flex",
-  justifyContent: "space-between",
-  gap: { lg: "1rem", md: "5rem", sm: "3.5rem", xs: "5rem" },
-  marginTop: { lg: "2rem", md: "2rem", sm: "2rem", xs: "0.5rem" },
-  marginBottom: {
-    lg: "2rem",
-    md: "2rem",
-    sm: "2rem",
-    xs: "3rem",
-  },
-};
-const checkBox = {
-  whiteSpace: "nowrap",
-  fontFamily: "Arial Rounded MT, sans-serif",
-  marginTop: "1rem",
-};
-const forgetPassTypo = {
-  whiteSpace: "nowrap",
-  fontFamily: "Arial Rounded MT, sans-serif",
-  fontWeight: 600,
-  paddingTop: "1rem",
-};
-
-const accountLinkText = {
-  color: "#202227",
-  marginBottom: {
-    lg: "1rem",
-    md: "1rem",
-    sm: "1rem",
-    xs: "2rem",
-  },
-  fontFamily: "Arial Rounded MT, sans-serif",
-  fontSize: {
-    lg: "1rem",
-    md: "1rem",
-    sm: "0.9rem",
-    xs: "0.8rem",
-  },
-  fontWeight: 400,
-  lineHeight: "normal",
-  display: "flex",
-  justifyContent: {
-    lg: "start",
-    md: "start",
-    sm: "start",
-    xs: "center",
-  },
-  marginTop: "1.5rem",
-};
-const signupLink = {
-  fontFamily: "Arial Rounded MT, sans-serif",
-  fontWeight: 600,
-};
-
-const continueWithBox = {
-  position: "relative",
-  marginTop: {
-    lg: "2.5rem",
-    md: "2.5rem",
-    sm: "2.5rem",
-    xs: "3rem",
-  },
-};
-const hrLine = {
-  width: "100%",
-  border: 0,
-  height: "2px",
-  backgroundColor: "rgba(32, 34, 39, 0.12)",
-};
-
 const bottomGrid = {
   display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
   flexDirection: "row",
@@ -452,32 +453,6 @@ const selectLanguageBox = {
   justifyContent: "flex-start",
   backgroundColor: "#4C8AB1",
 };
-const selectStyle = {
-  "&.MuiSelect-selectMenu": {
-    paddingY: "12px", // Adjust padding to center text vertically
-  },
-  "& .MuiSelect-icon": {
-    color: "white", // Set the arrow color to white
-  },
-  "&:before": {
-    border: "none", // Hide the before border
-  },
-  "&:after": {
-    border: "none", // Hide the after border
-  },
-  "&:hover:not(.Mui-disabled):before": {
-    border: "none", // Hide the hover border
-  },
-  boxShadow: "none",
-  ".MuiOutlinedInput-notchedOutline": { border: 0 },
-  color: "white",
-  border: "none",
-  fontFamily: "Arial Rounded MT, sans-serif",
-  fontSize: "1rem",
-  fontStyle: "normal",
-  fontWeight: "400",
-  lineHeight: "normal",
-};
 
 const hptLinksBox = {
   display: "flex",
@@ -489,18 +464,33 @@ const hptLinksBox = {
 };
 const firstHeading = {
   color: "#FFF",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   marginTop: { lg: "6rem", md: "5rem", sm: "1rem" },
   fontSize: { lg: "2.7rem", md: "2rem", sm: "1.5rem" },
   fontWeight: 400,
   lineHeight: "4.25rem",
 };
 
+const customPhoneStyles = {
+  borderRadius: "12px",
+  border: "1px solid #D8D8D8",
+  background: "#FFF",
+  width: "calc(100% - 8px)",
+  // height: heightValue,
+  alignSelf: "stretch",
+  paddingLeft: "8px",
+  height: "2.8rem",
+  display: "flex",
+  alignItems: "center",
+  // paddingTop: "0.5rem",
+  // padding: "0.5rem",
+};
+
 const secondHeading = {
   color: "rgba(255, 255, 255, 0.80)",
   width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
   fontWeight: 400,
 };
@@ -508,7 +498,7 @@ const secondHeading = {
 const thirdHeading = {
   color: "#FFF",
   marginTop: "2rem",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontWeight: 400,
@@ -517,7 +507,7 @@ const thirdHeading = {
 const formHeadingStyle = {
   color: "#4C8AB1",
   textAlign: "center",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "2.1875rem",
   fontWeight: 700,
 };
@@ -529,13 +519,13 @@ const inputStyle = {
   fontSize: "14px",
   border: "1px solid #ccc",
   borderRadius: "0.75rem",
-  marginBottom: { lg: "1rem", md: "1rem", sm: "1rem", xs: "1rem" },
+  marginBottom: "1rem",
 };
 
 const placeholderStyle = {
   color: "#B8B8B8",
   padding: "8px",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1rem",
   fontWeight: 400,
 };
@@ -544,15 +534,20 @@ const labelStyle = {
   display: "block",
   marginBottom: "1rem",
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.75rem" },
   fontWeight: 400,
+};
+const customeInputStyles = {
+  width: "85%",
+  border: "none",
+  padding: "0px 10px 0px 0px",
 };
 
 const hptLinksStyle = {
   color: "#FFF",
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem" },
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: 400,
   lineHeight: "normal",
   cursor: "pointer", // Ensure cursor changes on hover
@@ -569,48 +564,8 @@ const hptLinksStyle = {
   },
 };
 
-const googleBtnStyle = {
-  marginBottom: { lg: "6rem", md: "5rem", sm: "4rem", xs: "2rem" },
-  display: "flex",
-  flexDirection: "row",
-  gap: "0.3rem",
-  marginTop: { lg: "2.5rem", md: "2rem", sm: "2rem", xs: "3rem" },
-  borderRadius: "2.5rem",
-  border: "1px solid rgba(6, 32, 72, 0.11)",
-  background: "#FFF",
-  color: "#333",
-  fontFamily: "Arial Rounded MT, sans-serif",
-  fontSize: { lg: "1.25rem", md: "1.25rem", sm: "1.1rem", xs: "1rem" },
-  fontWeight: 400,
-  cursor: "pointer",
-  width: { lg: "auto", md: "auto", sm: "auto", xs: "100%" },
-  minWidht: "15rem",
-  padding: {
-    lg: "0.96875rem 2rem",
-    md: "0.96875rem 1rem",
-    sm: "0.8rem 1rem",
-    xs: "0.96875rem 2rem",
-  },
-  justifyContent: "center",
-  alignItems: "center",
-  flexShrink: 0,
-  textTransform: "none",
-};
 
-const ContinuewithTextStyle = {
-  color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
-  fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
-  fontWeight: 400,
-  display: "flex",
-  justifyContent: "start",
-  marginTop: "-1.2rem",
-  position: "absolute",
-  left: { lg: "17%", md: "20%", sm: "30%", xs: "50%" },
-  transform: "translateX(-50%)",
-  backgroundColor: "#FFFFFF",
-  padding: "0 10px",
-};
+
 
 const loginButton = {
   width: { lg: "19rem", md: "auto", sm: "auto", xs: "100%" },

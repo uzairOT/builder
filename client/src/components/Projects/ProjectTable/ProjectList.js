@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  ButtonGroup,
   IconButton,
   Pagination,
   Paper,
@@ -13,8 +12,8 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import logo from "../../Signup/Assets/pngs/builderProYellowLogo.png";
@@ -25,13 +24,13 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchBar from "../../UI/SearchBar/SearchBar";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import EditProjectModal from "../../dialogues/EditProject/EditProjectModal";
 import moment from "moment-timezone";
 import {
   useDeleteUserProjectMutation,
   useGetUserProjectsQuery,
+  userProjectsApiSlice,
 } from "../../../redux/apis/Project/userProjectApiSlice";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
 import { useDispatch } from "react-redux";
@@ -44,6 +43,10 @@ import {
 } from "../../../redux/slices/Project/userProjectsSlice";
 import { setError } from "../../../redux/slices/Notifications/notificationSlice";
 import { toast } from "react-toastify";
+import XLSX from "xlsx-js-style";
+import { currencyFormatter, headerFormatter } from "../../../utils/Formatters/excelFormatters";
+import { Excel } from "../../../assets/FileSvg/excel";
+import { useTranslation } from "react-i18next";
 
 const ProjectList = ({
   rows,
@@ -53,16 +56,16 @@ const ProjectList = ({
   totalCount,
   currentUserId,
 }) => {
-  console.log(rows);
   const navigate = useNavigate();
+  const {t} = useTranslation();
   const [deleteProject, { isLoading: deletingProjectLoading }] =
     useDeleteUserProjectMutation();
   const dispatch = useDispatch();
   const tableHeader = [
-    { id: "clientName", title: "Client" },
-    { id: "projectName", title: "Project" },
-    { id: "start_time", title: "Start Date" },
-    { id: "end_time", title: "End Date" },
+    { id: "clientName", title: t("ProjectList.table.Client") },
+    { id: "projectName", title: t("ProjectList.table.Project") },
+    { id: "start_time", title: t("ProjectList.table.StartDate") },
+    { id: "end_time", title: t("ProjectList.table.EndDate") },
     // { id: "phoneNumber", title: "" },
     // { id: "approvedPrice", title: "" },
     // { id: "collected", title: "" },
@@ -78,7 +81,6 @@ const ProjectList = ({
   const [page, setPage] = useState(1);
   const [openModal, setOpenModal] = useState(false);
   const [selectedProjectId, setSelectProjectId] = useState("");
-  const rowsPerPage = 7;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const {
     refetch,
@@ -92,10 +94,7 @@ const ProjectList = ({
     filter: "",
     page: 1,
   });
-  useEffect(() => {
-    console.log("Fetching projects: ", isSuccess);
-    console.log("Fetching data: ", data);
-  }, [data]);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -138,7 +137,7 @@ const ProjectList = ({
       const res = await deleteProject({
         id: id,
       });
-      console.log(res);
+      // console.log(res);
       if (res?.error?.data?.message) {
         toast.error(res?.error?.data?.message);
         return;
@@ -150,7 +149,7 @@ const ProjectList = ({
         filter: "",
         page: 1,
       });
-      console.log("REFETCHED DATA: ", refetchRes);
+      // console.log("REFETCHED DATA: ", refetchRes);
       if (data) {
         dispatch(addProjects(data?.projects));
         dispatch(setTotalCount(data?.totalCount));
@@ -171,6 +170,53 @@ const ProjectList = ({
     setPage(newPage);
   };
 
+  const handleExportProject = async () => {
+    try {
+      const response = await dispatch(
+        userProjectsApiSlice.endpoints.getUserProjects.initiate({
+          userId: currentUserId,
+          all: "",
+        })
+      );
+
+      /* Checking for response */
+      if (response.data && response.data.projects) {
+        const date = moment().format("MM_DD_YY");
+        const projects = response.data.projects;
+
+        const formattedData = projects.map((project) => ({
+          "Project Name": project.projectName,
+          "Build Type": project.buildType,
+          "Client Name": project.clientName || "N/A",
+          "Start Date": project.start_time ? moment(project.start_time).format("MM/DD/YYYY") : "N/A",
+          "End Date": project.end_time ? moment(project.end_time).format("MM/DD/YYYY") : "N/A",
+          "Location": project.location,
+          "Total Profit": project.totalProfit || "N/A",
+          "Total Project Cost": project.totalProjectCost || "N/A",
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(formattedData);
+
+        const currencyColumns = ["Total Profit", "Total Project Cost"]
+        currencyFormatter(currencyColumns, formattedData, worksheet);
+        headerFormatter(worksheet);
+
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          `Projects_Export_${date}`
+        );
+
+        XLSX.writeFile(workbook, `Projects_Export_${date}.xlsx`);
+        console.log("Excel file exported successfully!");
+      }
+    } catch (error) {
+      console.error("Error exporting projects:", error);
+    }
+  };
+
+
   let startIndex = 1;
   let endIndex = limit;
   if (page === 1) {
@@ -186,26 +232,6 @@ const ProjectList = ({
       endIndex = startIndex + endIndex - 1;
     }
   }
-  // const emptyRows =
-  //   rowsPerPage - Math.min(rowsPerPage, rows?.length - page * rowsPerPage);
-
-  // useEffect(() => {
-  //   fetch("https://my.api.mockaroo.com/bui.json?key=64d2dd90")
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! Status: ${response.status}`);
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       setRows(data);
-  //     })
-  //     .catch((err) => console.error("Error fetching data: ", err))
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // }, []); // Empty dependency array to execute the effect only once on component mount
-  // console.log(rows);
   return (
     <Stack width={"100%"} height={"inherit"}>
       {/* Project List Header */}
@@ -232,23 +258,32 @@ const ProjectList = ({
           <Stack pl={{ xl: 8, lg: 8, md: 8, sm: 1, xs: 1 }}>
             <Typography
               color={"#4C8AB1"}
-              fontFamily={"inherit"}
+              fontFamily={'var(--main-font-family)'}
               fontSize={{ md: "22px", xs: "18px" }}
               fontWeight={"600"}
             >
-              Project List
+              {t("ProjectList.heading1")}
             </Typography>
             <Typography
               color={"#4C8AB1"}
-              fontFamily={"inherit"}
+              fontFamily={'var(--main-font-family)'}
               fontSize={{ md: "14px", xs: "11px" }}
               fontWeight={"400"}
             >
-              All projects are displayed here
+              {t("ProjectList.heading2")}
             </Typography>
           </Stack>
           {/* Buttons Remodel And Filter */}
           <Stack direction={"row"} height={"35px"}>
+            <Tooltip title={t("ProjectList.export")} placement="top">
+              <Box sx={{ cursor: "pointer" }} onClick={handleExportProject}>
+                <Excel
+                  fill={"#4C8AB1"}
+                  width={"30px"}
+                  height={"30px"}
+                />
+              </Box>
+            </Tooltip>
             <Box display={{ md: "flex", xs: "none" }}>
               {selectedFilters?.map((filter) => (
                 <BuilderProButton
@@ -262,11 +297,11 @@ const ProjectList = ({
                 >
                   <Typography
                     color={"#272727"}
-                    fontFamily={"inherit"}
+                    fontFamily={'var(--main-font-family)'}
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
-                    {filter}
+                    {t(`ProjectList.${filter}`)}
                   </Typography>
                 </BuilderProButton>
               ))}
@@ -275,7 +310,7 @@ const ProjectList = ({
               variant={"contained"}
               backgroundColor={"#FFAC00"}
               Icon={FilterListIcon}
-              fontFamily={"inherit"}
+              fontFamily={'var(--main-font-family)'}
               fontSize={"12px"}
               handleOnClick={handleClick}
               marginLeft={"16px"}
@@ -284,7 +319,7 @@ const ProjectList = ({
                 fontSize={"14px"}
                 display={{ md: "inline-block", xs: "none" }}
               >
-                Filter
+                {t("Button.filter")}
               </Typography>
             </BuilderProButton>
             <Popover
@@ -322,11 +357,11 @@ const ProjectList = ({
                   }
                 >
                   <Typography
-                    fontFamily={"inherit"}
+                    fontFamily={'var(--main-font-family)'}
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
-                    Remodel
+                    {t("ProjectList.remodel")}
                   </Typography>
                 </Button>
                 <Button
@@ -344,11 +379,11 @@ const ProjectList = ({
                   }
                 >
                   <Typography
-                    fontFamily={"inherit"}
+                    fontFamily={'var(--main-font-family)'}
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
-                    New Build
+                    {t("ProjectList.newbuild")}
                   </Typography>
                 </Button>
                 <Button
@@ -366,11 +401,11 @@ const ProjectList = ({
                   }
                 >
                   <Typography
-                    fontFamily={"inherit"}
+                    fontFamily={'var(--main-font-family)'}
                     fontSize={"12px"}
                     fontWeight={"500"}
                   >
-                    Commercial
+                    {t("ProjectList.commercial")}
                   </Typography>
                 </Button>
               </Stack>
@@ -400,6 +435,7 @@ const ProjectList = ({
               selectedFilters={selectedFilters}
               page={page}
               setPage={setPage}
+              projectsPage={true}
             />
           </Stack>
           <Stack
@@ -410,14 +446,15 @@ const ProjectList = ({
             <BuilderProButton
               variant={"contained"}
               backgroundColor={"#FFAC00"}
-              fontFamily={"inherit"}
+              fontFamily={'var(--main-font-family)'}
               fontSize={"12px"}
               marginLeft={"0px"}
               handleOnClick={() => {
                 navigate("/assignproject");
               }}
+            // disabled={open}
             >
-              Add{" "}
+              {t("Button.add")}{" "}
               <Box
                 component={"span"}
                 sx={{
@@ -425,7 +462,7 @@ const ProjectList = ({
                   marginLeft: { md: "3px", xs: "0px" },
                 }}
               >
-                New
+                {t("Button.new")}
               </Box>
             </BuilderProButton>
           </Stack>
@@ -492,7 +529,7 @@ const ProjectList = ({
                     sx={themeStyle.tableCell}
                     style={{ borderBottom: "1px solid #A1A1A1" }}
                   >
-                    Profile Picture
+                    {t("ProjectList.table.ProfilePicture")}
                   </TableCell>
                   {tableHeader.map((header) => (
                     <TableCell
@@ -507,8 +544,8 @@ const ProjectList = ({
                     sx={themeStyle.tableCell}
                     style={{ borderBottom: "1px solid #A1A1A1" }}
                   >
-                    Action
-                  </TableCell>
+                    {t("ProjectList.table.Action")}
+                    </TableCell>
                   <TableCell
                     sx={themeStyle.tableCell}
                     style={{ borderBottom: "1px solid #A1A1A1" }}
@@ -534,7 +571,7 @@ const ProjectList = ({
                           />
                         </TableCell>
                         <TableCell sx={themeStyle.tableCell}>
-                          {row.clientName ? row.clientName : "No Client Name"}
+                          {row.clientName ? row.clientName : t("ProjectList.noClient")}
                         </TableCell>
                         <TableCell sx={themeStyle.tableCell}>
                           {row.projectName}
@@ -580,12 +617,12 @@ const ProjectList = ({
                             {row.userId === currentUserId && (
                               <Paper>
                                 <IconButton
-                                  
+
                                   variant={"contained"}
                                   onClick={() => handleOpenEditModel(row)}
                                 >
                                   <EditOutlinedIcon
-                                  sx={{fontSize:{md:'20px', xs:'14px'}}}
+                                    sx={{ fontSize: { md: '20px', xs: '14px' } }}
                                     style={{ color: "#4C8AB1" }}
                                   />
                                 </IconButton>
@@ -597,7 +634,7 @@ const ProjectList = ({
                                   onClick={() => handleDeleteFlow(row.id)}
                                 >
                                   <DeleteOutlineOutlinedIcon
-                                   sx={{fontSize:{md:'20px', xs:'14px'}}}
+                                    sx={{ fontSize: { md: '20px', xs: '14px' } }}
                                     style={{ color: "#DF0404" }}
                                   />
                                 </IconButton>
@@ -623,36 +660,21 @@ const ProjectList = ({
                               pl={1}
                               width={"80px"}
                             >
-                              View Details
+                              {t("ProjectList.table.ViewDetails")}
                             </Typography>
                           </Link>
                         </TableCell>
                       </TableRow>
                     );
                   })}
-                {/* {emptyRows > 0 && (
-                  <TableRow sx={themeStyle.tableCell} style={{ height: 60 * emptyRows }}>
-                    <TableCell rowSpan={6} />
-                  </TableRow>
-                )} */}
               </TableBody>
             </Table>
           )}
         </TableContainer>
-
-        {/* <TablePagination
-          page={page}
-          rowsPerPage={rowsPerPage}
-          component={"div"}
-          onPageChange={handlePageChange}
-          count={isLoading ?  0 : rows.length}
-          labelRowsPerPage={true}
-          rowsPerPageOptions={[1]}
-        ></TablePagination> */}
       </Stack>
       <Stack pl={1}>
         <Typography variant="body1" sx={paginationTextStyle}>
-          Showing data {startIndex} to {endIndex} of {totalCount} entries
+          {t("ProjectList.footer1")} {startIndex} {t("ProjectList.footer2")} {endIndex} {t("ProjectList.footer3")} {totalCount} {t("ProjectList.footer4")}
         </Typography>
       </Stack>
       <Stack justifyContent={"flex-end"} alignItems={"flex-end"} p={1}>
@@ -677,7 +699,7 @@ const ProjectList = ({
         handleClose={handleOpenModalClose}
         handleConfirmDelete={handleConfirmDelete}
         isLoading={deletingProjectLoading}
-        text={"project"}
+        text={t("ProjectList.areYouSure")}
       />
     </Stack>
   );
@@ -687,13 +709,13 @@ export default ProjectList;
 
 const themeStyle = {
   tableCell: {
+    fontFamily: 'var(--main-font-family)',
     maxWidth: { xl: "40px", lg: "30px", md: "70px", xs: "100%" },
     minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
     textOverflow: "ellipsis",
     overflow: "hidden",
     fontWeight: 500,
     fontSize: { md: "14px", xs: "11px" },
-    fontFamily: "Montserrat, sans serif",
     color: "#8C8C8C",
     padding: "4px",
     border: "none",
@@ -704,7 +726,7 @@ const themeStyle = {
     backgroundColor: "#FFC8C8",
     color: "#F03434",
     fontSize: "12px",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     width: "80px",
     textAlign: "center",
   },
@@ -714,7 +736,7 @@ const themeStyle = {
     backgroundColor: "#16C09821",
     color: "#008767",
     fontSize: "12px",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     width: "80px",
     textAlign: "center",
   },
@@ -741,6 +763,6 @@ const paginationTextStyle = {
   },
   fontWeight: 400,
   fontSize: "14px",
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   color: "#8C8C8C",
 };

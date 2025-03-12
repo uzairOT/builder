@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -10,16 +10,13 @@ import {
   IconButton,
   Stack,
   Grid,
+  Typography,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import EditIcon from "../../../assets/settings/edit.png";
-import {
-  useDeleteUnitMutation,
-  useGetUnitsQuery,
-} from "../../../redux/apis/Project/userProjectApiSlice";
-import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import DeleteIcon from "../../../assets/settings/delete.png";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const tableCellStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
@@ -28,8 +25,7 @@ const tableCellStyle = {
   overflow: "hidden",
   fontWeight: 500,
   fontSize: "14px",
-  fontFamily: "inherit",
-  
+  fontFamily: "var(--main-font-family)",
 };
 
 const tableCellValueStyle = {
@@ -39,7 +35,7 @@ const tableCellValueStyle = {
   overflow: "hidden",
   fontWeight: 400,
   borderBottom: "none",
-  fontFamily: "Montserrat",
+  fontFamily: "var(--main-font-family)",
   color: "#000000",
 };
 
@@ -55,6 +51,7 @@ function AmountTable({
   deleteUserAccount,
   error,
 }) {
+  const {t} = useTranslation()
   const userInfo = useSelector((state) => state.auth.userInfo);
 
   const handleUpdateOpen = (row) => {
@@ -65,7 +62,7 @@ function AmountTable({
     setAddModalOpen(true);
   };
   const handleDelete = async (row) => {
-    console.log(row);
+    // console.log(row);
     if (row.id) {
       try {
         const res = await deleteUserAccount({ id: row.id });
@@ -73,7 +70,7 @@ function AmountTable({
         console.log(error);
       }
     } else {
-      toast.info("Default Unit can't be deleted");
+      toast.info("Default unit can't be deleted");
     }
   };
   return (
@@ -89,16 +86,16 @@ function AmountTable({
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={tableCellStyle}>Account Image</TableCell>
-              <TableCell sx={tableCellStyle}>Account Name</TableCell>
-              <TableCell sx={tableCellStyle}>Account Details</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.Accounts.table.accountImg")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.Accounts.table.accountName")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.Accounts.table.accountDetails")}</TableCell>
               {/* <TableCell sx={tableCellStyle}>Account Number</TableCell> */}
-              <TableCell sx={tableCellStyle}>Account Link</TableCell>
-              <TableCell sx={tableCellStyle}>Action</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.Accounts.table.accountLink")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.Accounts.table.action")}</TableCell>
             </TableRow>
           </TableHead>
           {error ? (
-            <Stack p={2}>{"Something went wrong!"}</Stack>
+            <Stack p={2}>{t("Settings.Accounts.table.error")}</Stack>
           ) : (
             <TableBody>
               {isLoading ? (
@@ -128,10 +125,19 @@ function AmountTable({
                 </>
               ) : data?.accounts < 1 ? (
                 <TableRow>
-                <TableCell colSpan={10} sx={{ textAlign: "center", borderBottom:'none' }}>
-                  No Records
-                </TableCell>
-              </TableRow>
+                  <TableCell
+                    colSpan={10}
+                    sx={{
+                      textAlign: "center",
+                      borderBottom: "none",
+                      fontFamily: "var(--main-font-family)",
+                    }}
+                  >
+                    <Typography paddingTop={30} paddingBottom={30}>
+                    {t("Settings.Accounts.table.noRecords")}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
               ) : (
                 data?.accounts.map((row, index) => (
                   <TableRow key={index}>

@@ -1,8 +1,9 @@
 const actionButton = {
-  fontSize: 18,
+  fontFamily: "var(--main-font-family)",
+  fontSize:"1rem",
   display: "flex",
   height: "2.375rem",
-  padding: { lg: "0.75rem 1.5rem" },
+  padding: { lg: "0.75rem 1.5rem", },
   justifyContent: "center",
   alignItems: "center",
   flexShrink: 0,

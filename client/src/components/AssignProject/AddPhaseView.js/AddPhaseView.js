@@ -102,7 +102,7 @@
 //     >
 //       {/* <Stack direction={'row'} justifyContent={'space-between'}>
 //         <Stack>
-//             {adminProjectView && <Typography pl={3} pt={1} color={'#4C8AB1'} fontFamily={'Poppins, san serif'} fontSize={'22px'} fontWeight={'600'}>
+//             {adminProjectView && <Typography pl={3} pt={1} color={'#4C8AB1'} fontFamily={'var(--main-font-family)'} fontSize={'22px'} fontWeight={'600'}>
 //                     {view}
 //                 </Typography>} 
 //         </Stack>

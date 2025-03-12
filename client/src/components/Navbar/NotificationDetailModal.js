@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { json, useLocation, useParams } from "react-router-dom";
 import moment from "moment";
 import {
   useGetTeamMembersQuery,
-  useGetWorkOrderDetailsMutation,
 } from "../../redux/apis/Project/projectApiSlice";
 import {
   Avatar,
   Box,
-  Button,
   Divider,
   FormControl,
   IconButton,
   List,
   ListItem,
-  ListItemText,
-  MenuItem,
   Modal,
-  Select,
   Stack,
   Typography,
 } from "@mui/material";
@@ -30,12 +24,8 @@ import {
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import AssignTeamMembers from "../dialogues/RequestWorkOrder/AssignTeamMembers";
-import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import GenerateInvoiceDone from "../dialogues/GenerateInvoice/GenerateInvoiceDone";
-import WorkOrder from "../Projects/ProjectsWorkOrder/WorkOrder";
 import LineItemDetailModal from "../dialogues/LineItemDetailModal/LineItemDetailModal";
-import { projectUserRoleAuth } from "../Projects/ProjectsInitialProposal/InitialProposalView";
 import axios from "axios";
 import { getTokenFromLocalStorage } from "../../redux/apis/apiSlice";
 import { useUpdateRequestWorkOrderMutation } from "../../redux/apis/Project/workOrderApiSlice";
@@ -44,6 +34,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice";
 import { fetchEvents } from "../../redux/slices/Events/eventsSlice";
 import CloseIcon from "@mui/icons-material/Close";
+import AutoDeleteIcon from "@mui/icons-material/AutoDelete";
+import { useTranslation } from "react-i18next";
 
 const NotificationDetailModal = ({
   rowCheckboxes,
@@ -57,7 +49,7 @@ const NotificationDetailModal = ({
   data1,
 }) => {
   const { data } = useGetTeamMembersQuery(notification.WorkOrderReq.projectId);
-
+  const {t} = useTranslation()
   const [done, setDone] = useState(false);
   const [disable, setDisable] = useState(true);
   const [updateWorkOrder] = useUpdateRequestWorkOrderMutation();
@@ -70,9 +62,7 @@ const NotificationDetailModal = ({
   const user = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(user);
   const userId = currentUser.user.id;
-  console.log(data1);
   const [assignedCheckboxes, setAssignedCheckboxes] = useState([]);
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -90,7 +80,7 @@ const NotificationDetailModal = ({
         workOrder_id: notification.WorkOrderReq.id,
         status: "complete",
       }).unwrap();
-      toast.success("Work Order Completed!");
+      toast.success("Work order completed!");
       handleClose();
       dispatch(fetchEvents({ userId: userId, dailyForecast: dailyForecast }));
     } catch (err) {
@@ -103,7 +93,7 @@ const NotificationDetailModal = ({
       setDisable(true);
       try {
         const response = await axios.post(
-          "http://3.135.107.71/project/getUserProjectRole",
+          "https://builderbuilder.net/project/getUserProjectRole",
           {
             projectId: notification.WorkOrderReq.projectId,
             userId: userId,
@@ -116,12 +106,13 @@ const NotificationDetailModal = ({
         );
         if (
           response.data.role === "superadmin" ||
+          response.data.role === "admin" ||
           response.data.role === "client" ||
           response.data.role === "projectManager"
         ) {
           setDisable(false);
         }
-        console.log(response);
+        // console.log(response);
       } catch (error) {
         console.log(error);
       }
@@ -137,7 +128,7 @@ const NotificationDetailModal = ({
             variant={"contained"}
             backgroundColor={"#4C8AB1"}
             fontSize={"11px"}
-            fontFamily={"inherit"}
+            fontFamily={'var(--main-font-family)'}
             marginLeft={"5px"}
             handleOnClick={handleOnClick}
           >
@@ -164,11 +155,13 @@ const NotificationDetailModal = ({
           >
             <Typography
               color={"#4C8AB1"}
-              fontFamily={"inherit"}
+              fontFamily={"var(--main-font-family)"}
               sx={{ fontSize: { xl: 22, md: 16, lg: 18, sm: 14, xs: 14 } }}
               fontWeight={"600"}
             >
-              {notification?.WorkOrderReq?.changeOrder ? "Change Order Details" :"Work Order Details"}
+              {notification?.WorkOrderReq?.changeOrder
+                ? t("NotificationDetailModal.Heading1")
+                : t("NotificationDetailModal.Heading2")}
             </Typography>
             <IconButton onClick={handleClose}>
               <CloseIcon />
@@ -185,12 +178,12 @@ const NotificationDetailModal = ({
               xs: "column",
             }}
           >
-            <Stack p={3} pr={0} spacing={1} width={"100%"}>
+            <Stack p={3} pr={0} spacing={1} width={"calc(100% - 24px)"}>
               <Typography
                 fontSize={{ xl: 16, md: 14, lg: 14, sm: 12, xs: 12 }}
-                fontFamily={"inherit"}
+                fontFamily={"var(--main-font-family)"}
               >
-                <strong>Subject: </strong>{" "}
+                <strong>{t("NotificationDetailModal.Subject")}: </strong>{" "}
                 <label style={{ wordBreak: "break-all", maxWidth: "90%" }}>
                   {notification.WorkOrderReq.subject}
                 </label>
@@ -198,10 +191,10 @@ const NotificationDetailModal = ({
               <Typography
                 pb={1}
                 fontSize={{ xl: 16, md: 14, lg: 14, sm: 12, xs: 12 }}
-                fontFamily={"inherit"}
+                fontFamily={"var(--main-font-family)"}
                 fontWeight={"200"}
               >
-                <strong>Description: </strong>{" "}
+                <strong>{t("NotificationDetailModal.Description")}: </strong>{" "}
                 <label style={{ wordBreak: "break-all", maxWidth: "90%" }}>
                   {notification.WorkOrderReq.description}
                 </label>
@@ -227,7 +220,7 @@ const NotificationDetailModal = ({
               >
                 <Stack>
                   <Typography sx={themeStyle.headingText}>
-                    Phases
+                  {t("NotificationDetailModal.Phases")}
                     <Typography
                       sx={{
                         ...themeStyle.headingText,
@@ -256,7 +249,7 @@ const NotificationDetailModal = ({
                 </Stack>
                 <Stack>
                   <Typography sx={themeStyle.headingText}>
-                    Line Item
+                  {t("NotificationDetailModal.LineItem")}
                     <Typography
                       sx={{
                         ...themeStyle.headingText,
@@ -274,7 +267,7 @@ const NotificationDetailModal = ({
                     }}
                   >
                     {notification?.WorkOrderReq?.changeOrder &&
-                    data1?.changeOrderItems?.length > 1 ? (
+                      data1?.changeOrderItems?.length > 1 ? (
                       <>
                         {data1?.changeOrderItems?.map((lineItem) => (
                           <ListItem
@@ -303,6 +296,14 @@ const NotificationDetailModal = ({
                             >
                               {lineItem?.title}
                             </label>
+                            <IconButton
+                              disabled
+                              key={`delete-${lineItem.id}`}
+                              edge="end"
+                              aria-label="delete"
+                            >
+                              {lineItem.shouldDelete && <AutoDeleteIcon sx={{ color: "red", fontSize:"16px" }}  />}
+                            </IconButton>
                           </ListItem>
                         ))}
                       </>
@@ -341,6 +342,24 @@ const NotificationDetailModal = ({
                                 >
                                   {lineItem?.title}
                                 </label>
+
+                                {/* Check if the lineItem should have a delete icon */}
+                                {data1?.changeOrderItems
+                                  ?.filter(
+                                    (orderItem) =>
+                                      orderItem.lineItemId === lineItem.id &&
+                                      orderItem.shouldDelete
+                                  )
+                                  .map((orderItem) => (
+                                    <IconButton
+                                      disabled
+                                      key={`delete-${orderItem.id}`}
+                                      edge="end"
+                                      aria-label="delete"
+                                    >
+                                      <AutoDeleteIcon sx={{ color: "red" }} />
+                                    </IconButton>
+                                  ))}
                               </ListItem>
                             ))}
                           </React.Fragment>
@@ -351,96 +370,104 @@ const NotificationDetailModal = ({
                 </Stack>
               </Stack>
               <Divider />
-              <Stack spacing={1}>
-                <Typography pt={1} sx={themeStyle.headingText}>
-                  Date Started
-                </Typography>
-                <Typography
-                  sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
-                >
-                  <Box sx={themeStyle.dateBox}>
-                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                      <DemoContainer components={["DateTimePicker"]}>
-                        <DateTimePicker
-                          disabled
-                          value={moment(
-                            notification.WorkOrderReq.start_day
-                          ).utc()}
-                          format="MMM D, YYYY, h:mm a"
-                          viewRenderers={{
-                            hours: renderTimeViewClock,
-                            minutes: renderTimeViewClock,
-                            seconds: renderTimeViewClock,
-                          }}
-                          // defaultValue={moment("2024-04-17T15:30")}
-                          slotProps={{
-                            // Targets the `IconButton` component.
-                            openPickerButton: {
-                              color: "#5B5B5B",
-                            },
-                            // Targets the `InputAdornment` component.
-                            inputAdornment: {
-                              position: "start",
-                            },
-                          }}
-                          sx={{
-                            input: {
-                              fontFamily: "Arial Rounded MT, sans serif",
-                            },
-                          }}
-                        />
-                      </DemoContainer>
-                    </LocalizationProvider>
-                  </Box>
-                </Typography>
-              </Stack>
-              <Stack spacing={1} pt={2}>
-                <Typography pt={1} sx={themeStyle.headingText}>
-                  Date Ended
-                </Typography>
-                <Typography
-                  sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
-                >
-                  <Box sx={themeStyle.dateBox}>
-                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                      <DemoContainer components={["DateTimePicker"]}>
-                        <DateTimePicker
-                          disabled
-                          value={moment(
-                            notification.WorkOrderReq.end_day
-                          ).utc()}
-                          format="MMM D, YYYY, h:mm a"
-                          viewRenderers={{
-                            hours: renderTimeViewClock,
-                            minutes: renderTimeViewClock,
-                            seconds: renderTimeViewClock,
-                          }}
-                          // defaultValue={moment("2024-04-17T15:30")}
-                          slotProps={{
-                            // Targets the `IconButton` component.
-                            openPickerButton: {
-                              color: "#5B5B5B",
-                            },
-                            // Targets the `InputAdornment` component.
-                            inputAdornment: {
-                              position: "start",
-                            },
-                          }}
-                          sx={{
-                            input: {
-                              fontFamily: "Arial Rounded MT, sans serif",
-                            },
-                          }}
-                        />
-                      </DemoContainer>
-                    </LocalizationProvider>
-                  </Box>
-                </Typography>
-                <Stack width={"80%"} pt={4}>
-                  {/* <BuilderProButton
+              {notification?.WorkOrderReq?.changeOrder ? (
+                <></>
+              ) : (
+                <>
+                  <Stack spacing={1}>
+                    <Typography pt={1} sx={themeStyle.headingText}>
+                    {t("NotificationDetailModal.dateStarted")}
+                    </Typography>
+                    <Typography
+                      sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
+                    >
+                      <Box sx={themeStyle.dateBox}>
+                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                          <DemoContainer components={["DateTimePicker"]}>
+                            <DateTimePicker
+                              disabled
+                              value={moment(
+                                notification.WorkOrderReq.start_day
+                              ).utc()}
+                              format="MM/DD/YYYY h:mm a"
+                              viewRenderers={{
+                                hours: renderTimeViewClock,
+                                minutes: renderTimeViewClock,
+                                seconds: renderTimeViewClock,
+                              }}
+                              // defaultValue={moment("2024-04-17T15:30")}
+                              slotProps={{
+                                // Targets the `IconButton` component.
+                                openPickerButton: {
+                                  color: "#5B5B5B",
+                                },
+                                // Targets the `InputAdornment` component.
+                                inputAdornment: {
+                                  position: "start",
+                                },
+                              }}
+                              sx={{
+                                input: {
+                                  fontFamily: "var(--main-font-family)",
+                                },
+                                width: 'calc(100% - 16px)',
+                                minWidth: "250px"
+                              }}
+                            />
+                          </DemoContainer>
+                        </LocalizationProvider>
+                      </Box>
+                    </Typography>
+                  </Stack>
+                  <Stack spacing={1} pt={2}>
+                    <Typography pt={1} sx={themeStyle.headingText}>
+                    {t("NotificationDetailModal.dateEnded")}
+                    </Typography>
+                    <Typography
+                      sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
+                    >
+                      <Box sx={themeStyle.dateBox}>
+                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                          <DemoContainer components={["DateTimePicker"]}>
+                            <DateTimePicker
+                              disabled
+                              value={moment(
+                                notification.WorkOrderReq.end_day
+                              ).utc()}
+                              format="MM/DD/YYYY h:mm a"
+                              viewRenderers={{
+                                hours: renderTimeViewClock,
+                                minutes: renderTimeViewClock,
+                                seconds: renderTimeViewClock,
+                              }}
+                              // defaultValue={moment("2024-04-17T15:30")}
+                              slotProps={{
+                                // Targets the `IconButton` component.
+                                openPickerButton: {
+                                  color: "#5B5B5B",
+                                },
+                                // Targets the `InputAdornment` component.
+                                inputAdornment: {
+                                  position: "start",
+                                },
+                              }}
+                              sx={{
+                                input: {
+                                  fontFamily: "var(--main-font-family)",
+                                },
+                                width: 'calc(100% - 16px)',
+                                 minWidth: "250px"
+                              }}
+                            />
+                          </DemoContainer>
+                        </LocalizationProvider>
+                      </Box>
+                    </Typography>
+                    <Stack width={"80%"} pt={4}>
+                      {/* <BuilderProButton
                     backgroundColor={"#4C8AB1"}
                     variant={"contained"}
-                    fontFamily={"inherit"}
+                    fontFamily={'var(--main-font-family)'}
                     fontSize={"16px"}
                     fontWeight={"600"}
                     padding={"6px 32px 6px 32px"}
@@ -449,9 +476,12 @@ const NotificationDetailModal = ({
                   >
                     Close
                   </BuilderProButton> */}
-                </Stack>
-              </Stack>
+                    </Stack>
+                  </Stack>
+                </>
+              )}
             </Stack>
+
             <Stack
               backgroundColor={"#EFF5FF"}
               width={"100%"}
@@ -464,7 +494,7 @@ const NotificationDetailModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Created By
+                  {t("NotificationDetailModal.createdBy")}
                 </Typography>
                 <Box sx={themeStyle.avatarBox}>
                   <Avatar
@@ -473,12 +503,18 @@ const NotificationDetailModal = ({
                     src={notification.WorkOrderReq.User.image}
                   />
 
-                  <Typography fontFamily={"inherit"} alignSelf={"end"} pl={1}>
+                  <Typography
+                    fontFamily={"var(--main-font-family)"}
+                    alignSelf={"end"}
+                    pl={1}
+                  >
                     {notification.WorkOrderReq.User.firstName}
                   </Typography>
                 </Box>
                 {/* Divider  */}
-                <hr style={themeStyle.hrLine} />
+               {!notification?.WorkOrderReq?.changeOrder &&
+               <>
+               <hr style={themeStyle.hrLine} />
 
                 <Typography
                   sx={{
@@ -486,19 +522,11 @@ const NotificationDetailModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Assigned
+                  {t("NotificationDetailModal.assigned")}
                 </Typography>
                 <Box sx={themeStyle.avatarBox}>
                   <Stack direction={"row"} pr={1}>
-                    {data?.team?.map((user, idx) => {
-                      console.log(notification.WorkOrderReq.team);
-                      console.log(String(user.userId));
-                      console.log(
-                        notification.WorkOrderReq.team.includes(
-                          `${user.userId}`
-                        )
-                      );
-
+                    {data?.team?.filter((user) => user.role !== "Superadmin").map((user, idx) => {
                       if (user.userId === notification.WorkOrderReq.createdby) {
                         return <></>;
                       } else if (
@@ -525,9 +553,12 @@ const NotificationDetailModal = ({
                     assignedCheckboxes={assignedCheckboxes}
                     setAssignedCheckboxes={setAssignedCheckboxes}
                     workOrderTeam={notification.WorkOrderReq?.team}
+                    createdBy={notification.WorkOrderReq.createdby}
                     data={data}
                   />
                 </Box>
+                </>
+                }
                 {/* Divider  */}
                 <hr style={themeStyle.hrLine} />
 
@@ -537,11 +568,11 @@ const NotificationDetailModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Notes
+                  {t("NotificationDetailModal.notes")}
                 </Typography>
                 <Typography
                   style={{ wordBreak: "break-all", maxWidth: "90%" }}
-                  fontFamily={"inherit"}
+                  fontFamily={"var(--main-font-family)"}
                   pb={4}
                   pl={2}
                 >
@@ -555,9 +586,13 @@ const NotificationDetailModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Status
+                  {t("NotificationDetailModal.status")}
                 </Typography>
-                <Typography fontFamily={"inherit"} pb={4} pl={2}>
+                <Typography
+                  fontFamily={"var(--main-font-family)"}
+                  pb={4}
+                  pl={2}
+                >
                   {notification.WorkOrderReq.status}
                 </Typography>
                 <hr style={themeStyle.hrLine} />
@@ -567,10 +602,10 @@ const NotificationDetailModal = ({
                     ...themeStyle.rightheadings,
                   }}
                 >
-                  Priority
+                  {t("NotificationDetailModal.priority")}
                 </Typography>
                 <Typography
-                  fontFamily={"inherit"}
+                  fontFamily={"var(--main-font-family)"}
                   pb={4}
                   pl={2}
                   color={
@@ -579,7 +614,7 @@ const NotificationDetailModal = ({
                       : "#4C8AB1"
                   }
                 >
-                  {notification.WorkOrderReq.priority}
+                  {t(`NotificationDetailModal.${notification.WorkOrderReq.priority}`)}
                 </Typography>
 
                 <hr style={themeStyle.hrLine} />
@@ -590,16 +625,19 @@ const NotificationDetailModal = ({
                     sx={{ paddingBottom: { md: 0, lg: 0, sm: 2, xs: 2 } }}
                   >
                     <BuilderProButton
-                      sx={{ fontSize: { md: 16, lg: 16, sm: 14, xs: 14 } }}
+                      sx={{
+                        fontSize: { md: 16, lg: 16, sm: 14, xs: 14 },
+                        minWidth: "5rem",
+                      }}
                       backgroundColor={"#4C8AB1"}
                       variant={"contained"}
-                      fontFamily={"inherit"}
+                      fontFamily={"var(--main-font-family)"}
                       fontWeight={"600"}
                       padding={"6px 32px 6px 32px"}
                       disabled={disable}
                       handleOnClick={handleCompleteWorkOrder}
                     >
-                      Complete Work Order
+                      {t("NotificationDetailModal.button")}
                     </BuilderProButton>
                   </Stack>
                 )}
@@ -657,7 +695,7 @@ const themeStyle = {
     padding: 4,
   },
   typoTitle: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     fontSize: "1.5rem",
     fontWeight: 500,
     color: "#4C8AB1",
@@ -697,13 +735,13 @@ const themeStyle = {
   },
 
   typoText: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     fontSize: "1rem",
     color: "#202227",
   },
   sendButton: {
     width: { lg: "35%", md: "35%", sm: "40%", xs: "60%" },
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
   },
   declineButton: {
     background: "#FFF",
@@ -714,7 +752,7 @@ const themeStyle = {
     },
   },
   time: {
-    fontFamily: "inherit",
+    fontFamily: "var(--main-font-family)",
     fontSize: "1rem",
     fontStyle: "italic",
     color: "#484848",
@@ -728,7 +766,7 @@ const themeStyle = {
   },
   radioText: {
     color: "#3D3D3D",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
   },
   radioChecked: {
     "&, &.Mui-checked": {
@@ -736,7 +774,7 @@ const themeStyle = {
     },
   },
   headingText: {
-    fontFamily: "inherit",
+    fontFamily: "var(--main-font-family)",
     color: "#000000",
     fontWeight: 600,
     marginTop: "0.5rem",
@@ -750,7 +788,7 @@ const themeStyle = {
     margin: "1rem 0rem 0rem 1rem",
   },
   linkButton: {
-    fontFamily: "Inter",
+    fontFamily: "var(--main-font-family)",
     fontWeight: 500,
     textTransform: "none",
     color: "#858585",
@@ -785,7 +823,7 @@ const themeStyle = {
   },
   dateBox: {
     display: "flex",
-    paddingLeft: "1.5rem",
+    paddingLeft: {sm:"1.5rem", xs: "0rem"},
     marginTop: "-1rem",
   },
 };

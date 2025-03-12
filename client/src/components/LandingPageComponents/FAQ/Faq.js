@@ -12,8 +12,36 @@ import {
 } from "@mui/material";
 import { FaqCloseIcn, FaqExtendIcn } from "../assets/svg";
 import { faqData } from "./FaqData";
+import { useTranslation } from "react-i18next";
 
 const FAQ = () => {
+  const { t } = useTranslation();
+  const faqData = [
+    {
+      question: `${t("faqs.drawer1.title")}`,
+      answer: `${t("faqs.drawer1.desc")}`,
+    },
+    {
+      question: `${t("faqs.drawer2.title")}`,
+      answer: `${t("faqs.drawer2.desc")}`, 
+    },
+    {
+      question: `${t("faqs.drawer3.title")}`,
+      answer: `${t("faqs.drawer3.desc")}`,
+    },
+    {
+      question: `${t("faqs.drawer4.title")}`,
+      answer: `${t("faqs.drawer4.desc")}`,
+    },
+    {
+      question: `${t("faqs.drawer5.title")}`,
+      answer: `${t("faqs.drawer5.desc")}`,
+    },
+    {
+      question: `${t("faqs.drawer6.title")}`,
+      answer: `${t("faqs.drawer6.desc")}`,
+    },
+  ];
   const [expanded, setExpanded] = useState(null);
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -21,75 +49,96 @@ const FAQ = () => {
   };
 
   return (
-    <Container style={styles.container}>
-      <Typography
-        sx={{
-          marginBottom: "20px",
-          fontFamily: "Arial Rounded MT, sans-serif",
-          fontWeight: 600,
-          fontSize: "16px",
-          color: "#2E728F",
-          textAlign: "center",
-        }}
-      >
-        FAQ's
-      </Typography>
+    <Box component={'section'}>
+      <Container style={styles.container}>
+        <Typography component={'h1'} sx={styles.titleFont}>{t("faqs.title1")}</Typography>
 
-      <Typography variant="h4" align="center" gutterBottom>
-        Frequently Asked Questions
-      </Typography>
-      <Typography variant="body1" align="center" paragraph>
-        Everything you need to know about the product and billing.
-      </Typography>
-      {faqData.map((item, index) => (
-        <Accordion
-          key={index}
-          expanded={expanded === `panel${index}`}
-          onChange={handleChange(`panel${index}`)}
-          style={styles.accordion}
-        >
-          <AccordionSummary
-            expandIcon={
-              expanded === `panel${index}` ? (
-                <FaqCloseIcn style={styles.expandIcon} />
-              ) : (
-                <FaqExtendIcn style={styles.expandIcon} />
-              )
-            }
-            aria-controls={`panel${index}-content`}
-            id={`panel${index}-header`}
+        <Typography component={'h2'} sx={styles.SubtitleFont} align="center" gutterBottom>
+          {t("faqs.title2")}
+        </Typography>
+        <Typography component={'h5'} sx={styles.SubtitleFont} align="center" paragraph>
+          {t("faqs.title3")}
+        </Typography>
+        {faqData.map((item, index) => (
+          <Accordion
+            key={index}
+            expanded={expanded === `panel${index}`}
+            onChange={handleChange(`panel${index}`)}
+            style={styles.accordion}
           >
-            <Typography style={styles.question}>{item.question}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography style={styles.answer}>{item.answer}</Typography>
-          </AccordionDetails>
-        </Accordion>
-      ))}
-      <Box style={styles.contactSection}>
-        <AvatarGroup max={4} style={styles.avatarGroup}>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-          <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-          <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-        </AvatarGroup>
-        <Typography sx={styles.contactFirstHeading} align="center" gutterBottom>
-          Still have questions?
-        </Typography>
-        <Typography sx={styles.Contactsecondheading} align="center">
-          Can't find the answer you're looking for? Please chat to our friendly
-          team.
-        </Typography>
+            <AccordionSummary
+              expandIcon={
+                expanded === `panel${index}` ? (
+                  <FaqCloseIcn style={styles.expandIcon} />
+                ) : (
+                  <FaqExtendIcn style={styles.expandIcon} />
+                )
+              }
+              aria-controls={`panel${index}-content`}
+              id={`panel${index}-header`}
+            >
+              <Typography style={styles.question}>{item.question}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography style={styles.answer}>{item.answer}</Typography>
+            </AccordionDetails>
+          </Accordion>
+        ))}
+        <Box component={'aside'} style={styles.contactSection}>
+          <AvatarGroup max={4} style={styles.avatarGroup}>
+            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+            <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+          </AvatarGroup>
+          <Typography
+          component={'h3'}
+            sx={styles.contactFirstHeading}
+            align="center"
+            gutterBottom
+          >
+            {t("faqs.title4")}
+          </Typography>
+          <Typography component={'h5'} sx={styles.Contactsecondheading} align="center">
+            {t("faqs.title5")}
+          </Typography>
 
-        <Button style={styles.button}>Get in touch</Button>
-      </Box>
-    </Container>
+          <Button component={'p'} style={styles.button} href="/#contact">
+            {t("faqs.title6")}
+          </Button>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 
 export default FAQ;
 
 const styles = {
+  titleFont: {
+    marginBottom: "20px",
+    fontFamily: "var(--main-font-family)",
+    fontWeight: 600,
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    color: "#2E728F",
+    textAlign: "center",
+  },
+  SubtitleFont: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "36px", sm: "36px", xs: "18px" },
+    fontWeight: 500,
+    marginBottom: 2,
+    textAlign: "jutiify",
+    hyphens: "auto",
+    wordBreak: "break-all"
+  },
+  DecsFont: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    fontWeight: 400,
+    color: "#454245",
+  },
   container: {
+    marginTop: 40,
     padding: "32px 16px",
   },
   accordion: {
@@ -100,10 +149,18 @@ const styles = {
     color: "#1976D2",
   },
   question: {
-    fontWeight: "bold",
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    fontWeight: 700,
   },
   answer: {
-    color: "#555",
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    fontWeight: 400,
+    color: "#454245",
+    textAlign: "justify",
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   contactSection: {
     marginTop: "32px",
@@ -113,12 +170,12 @@ const styles = {
     textAlign: "center",
   },
   contactFirstHeading: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     fontWeight: 900,
     fontSize: "20px",
   },
   Contactsecondheading: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     fontWeight: 400,
     fontSize: "18px",
   },
@@ -131,7 +188,13 @@ const styles = {
     backgroundColor: "#2E728F",
     color: "white",
     fontSize: "14px",
-    fontFamily: "Arial Rounded MT, sans-serif",
-    fontWeight: 600,
+    fontFamily: "var(--main-font-family)",
+    fontWeight: 500,
+    "&:hover": {
+      backgroundColor: "grey",
+      color: "white",
+    },
+    borderRadius: "8px",
+    textTransform: "none",
   },
 };

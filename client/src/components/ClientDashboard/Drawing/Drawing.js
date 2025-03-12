@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
-import FileBox from '../FileBox/FileBox'
+import React from 'react'
 import { Paper } from '@mui/material'
 import Permit from '../../Projects/Permit'
-import { Height } from '@mui/icons-material'
 
 function Drawing() {
 

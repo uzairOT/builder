@@ -4,22 +4,36 @@ import WeatherAppDailyForecast from "./WeatherAppDailyForecast";
 import WeatherAppCurrentForecast from "./WeatherAppCurrentForecast";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useSelector } from "react-redux";
+import { InfoOutlined } from "@mui/icons-material";
+import { useTranslation } from 'react-i18next';
 
 const WeatherView = ({
   dailyForecast,
   loading,
   error,
   userGreetings = "Admin",
+  isDefaultLocation
 }) => {
+  const { t } = useTranslation();
   //console.log(dailyForecast)
   const userInfo = useSelector((state) => state.auth.userInfo);
   const firstName = userInfo?.user?.firstName;
+  const currentHour = new Date().getHours();
+  let greeting;
+
+  if (currentHour < 12) {
+    greeting = `${t('userProject.weather.title1')}`;
+  } else if (currentHour < 18) {
+    greeting = `${t('userProject.weather.title2')}`;
+  } else {
+    greeting = `${t('userProject.weather.title3')}`;
+  }
 
   return (
     <Stack
       direction={{
         xs: "column-reverse",
-        sm: "row",
+        sm: "colum-reverse",
         md: "row",
         lg: "row",
         xl: "row",
@@ -27,45 +41,60 @@ const WeatherView = ({
       spacing={2}
       padding={2}
     >
-      <Box flex={{md:2, xs:0}}>
-        <Typography display={{md:'block', xs:'none'}} sx={themeStyle.title}>
-          Good Morning, {firstName ? `${firstName}` : userGreetings}
-        </Typography>
-        <Stack
-          direction="row"
-          justifyContent={{ xl: "flex-start", lg: "space-evenly", md: "center" }}
-          alignItems={"center"}
-          height={"50%"}
-          spacing={1}
-          pl={3}
-          pr={2.5}
-          flexWrap={"wrap"}
-          display={{md:'flex', xs:'none'}}
-        >
-          {(!loading && Array.isArray(dailyForecast)) ? (
-            dailyForecast?.map((forecast, index) => (
-              <React.Fragment key={index}>
-                <WeatherAppDailyForecast
-                  key={index}
-                  forecast={forecast}
-                />
-                {error}
-              </React.Fragment>
-            ))
-          ) : (
-            <Stack
-              width={"100%"}
-              justifyContent={"center"}
-              alignItems={"center"}
-            >
-              <CircularProgress></CircularProgress>
-            </Stack>
-          )}
+      <Stack flex={{ md: 2, xs: 0 }} justifyContent={'space-between'} gap={1}>
+        <Box>
+          <Typography display={{ md: 'block', xs: 'none' }} sx={themeStyle.title}>
+            {greeting}, {firstName ? `${firstName}` : userGreetings}
+          </Typography>
+          <Stack
+            direction="row"
+            justifyContent={{ xl: "flex-start", lg: "space-evenly", md: "center" }}
+            alignItems={"center"}
+            height={"50%"}
+            spacing={1}
+            pl={3}
+            pr={2.5}
+            flexWrap={"wrap"}
+            display={{ md: 'flex', xs: 'none' }}
+          >
+            {(!loading && Array.isArray(dailyForecast)) ? (
+              dailyForecast?.map((forecast, index) => (
+                <React.Fragment key={index}>
+                  <WeatherAppDailyForecast
+                    key={index}
+                    forecast={forecast}
+                  />
+                  {error}
+                </React.Fragment>
+              ))
+            ) : (
+              <Stack
+                width={"100%"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <CircularProgress></CircularProgress>
+              </Stack>
+            )}
+          </Stack>
+        </Box>
+       {isDefaultLocation && <Stack direction="row" alignItems="center" justifyContent={'flex-end'} spacing={0.5}>
+          <InfoOutlined style={{ color: 'lightgray', fontSize: '16px' }} />
+          <Typography
+            style={{
+              fontStyle: 'italic',
+              color: 'lightgray',
+              fontSize: '13px'
+            }}
+          >
+            {t('userProject.weather.title4')}
+          </Typography>
         </Stack>
-      </Box>
-      <Box flex={1} display={"flex"} flexDirection={'column'} width={"100%"}>
-      <Typography display={{md:'none', xs:'block'}} sx={themeStyle.title}>
-          Good Morning, {firstName ? `${firstName}` : userGreetings}
+}
+      </Stack>
+      <Box flex={1} display={"flex"} flexDirection={'column'} width={"100%"} justifyContent={'center'}>
+        <Typography display={{ md: 'none', xs: 'block' }} sx={themeStyle.title}>
+          {greeting}, {firstName ? `${firstName}` : userGreetings}
         </Typography>
         <WeatherAppCurrentForecast />
       </Box>
@@ -78,8 +107,8 @@ export default WeatherView;
 const themeStyle = {
   title: {
     color: "var(--Link-Text, #4C8AB1)",
-    fontFamily: "inherit",
-    fontSize: {xs:'18px',sm:'18px', md:'18px',lg:'22px',xl:"22px"},
+    fontFamily: 'var(--main-font-family)',
+    fontSize: { xs: '18px', sm: '18px', md: '18px', lg: '22px', xl: "22px" },
     fontStyle: "normal",
     fontWeight: "400",
     lineHeight: "20px" /* 90.909% */,

@@ -27,6 +27,7 @@ import TabPanel from "@mui/joy/TabPanel";
 import Tabs from "@mui/joy/Tabs";
 import Tab from "@mui/joy/Tab";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
+import { useTranslation } from 'react-i18next';
 let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
 const currentUser = userInfo?.user;
@@ -41,18 +42,22 @@ const ConversationList = ({
   data,
   handleChatUserChange,
   setConversationId,
-  refetchConverstations,
+  refetchConversations,
   chatUser,
   setIsLoading,
 }) => {
-  const [projectName] = useOutletContext();
+  const {t} = useTranslation()
+  const [projectName,
+    projectLocation,
+    SuperAdminId,
+    selectedProjectData,
+    projectOrganizationId ] = useOutletContext();
   const userId = currentUser?.id;
   const { data: team, isLoading: teamIsLoading } = useGetProjectTeamQuery(id);
   const [createConverstaion] = useCreateConverstaionMutation();
   const [tabValue, setTableValue] = useState(0);
 
-  const handleTabChange = (event, newValue) => {
-    console.log(newValue);
+  const handleTabChange = async (event, newValue) => {
     setTableValue(newValue);
   };
   const CustomTabPanel = (props) => {
@@ -84,9 +89,9 @@ const ConversationList = ({
         });
         setConversationId(res?.data?.conversation?.id);
         if (res?.data?.message === "Conversation created successfully!") {
-          await refetchConverstations();
+          await refetchConversations();
         }
-        console.log(res);
+        // console.log(res);
       } catch (error) {
         console.log(error);
       }
@@ -99,8 +104,8 @@ const ConversationList = ({
   useEffect(() => {
     const handleRefetch = async () => {
       try {
-        await refetchConverstations({ userId: userId });
-        console.log("socket run!");
+        await refetchConversations({ userId: userId });
+
       } catch (error) {
         console.error("Error refetching conversations:", error);
       }
@@ -114,17 +119,27 @@ const ConversationList = ({
       socket.off(`conversation${userId}`, handleRefetch);
     };
   }, [userId]);
-  // console.log(conversationId);
+
+  useEffect(() => {
+    const handleRefetch = async () => {
+      try {
+        await refetchConversations({ userId: userId });
+
+      } catch (error) {
+        console.error("Error refetching conversations:", error);
+      }
+    };
+    handleRefetch();
+  }, [tabValue])
 
   return (
     <Stack>
-      <Typography fontFamily={"inherit"} variant="h6" pl={2}>
-        Chat
+      <Typography fontFamily={"var(--main-font-family)"} variant="h6" pl={2}>
+        {t("ProjectChat.title1")}
       </Typography>
       <Stack direction={"row"} width={"100%"}>
         <Button
           sx={{
-            fontSize: 12,
             borderRadius: 15,
             fontSize: "14px !important",
             backgroundColor: "#FFAC00",
@@ -165,18 +180,22 @@ const ConversationList = ({
               value=""
             >
               <Typography
-                fontSize={{ xl: "11px", lg: "9px" }}
+                textTransform={"capitalize"}
+                fontFamily={'var(--main-font-family)'}
+                fontSize={{ xl: "13px", lg: "11px" }}
                 pt={0.5}
                 ml={0.6}
                 color={"white"}
               >
-                Start New Converstion
+                {t("ProjectChat.dropDown")}
               </Typography>
             </MenuItem>
             <MenuItem value={id} disabled={value === id}>
-              <Typography>Project Chat: {projectName}</Typography>
+              <Typography fontFamily={"var(--main-font-family)"}>
+                {t("ProjectChat.title2")} {projectName}
+              </Typography>
             </MenuItem>
-            {team?.team?.map((user, index) => {
+            {team?.team?.filter((user) => user.role !== "Superadmin").map((user, index) => {
               if (user.userId === userId) {
                 return null;
               }
@@ -208,10 +227,24 @@ const ConversationList = ({
       <Tabs aria-label="Basic tabs" value={tabValue} onChange={handleTabChange}>
         <TabList>
           <Tab style={{ width: "100%", padding: "0px" }}>
-            <Typography fontSize={"14px"}>Group Chat</Typography>
+            <Typography
+              fontSize={"14px"}
+              sx={{
+                fontFamily: "var(--main-font-family)",
+              }}
+            >
+              {t("ProjectChat.tab1")}
+            </Typography>
           </Tab>
           <Tab sx={{ width: "100%" }}>
-            <Typography fontSize={"14px"}>Private Chat</Typography>
+            <Typography
+              fontSize={"14px"}
+              sx={{
+                fontFamily: "var(--main-font-family)",
+              }}
+            >
+              {t("ProjectChat.tab2")}
+            </Typography>
           </Tab>
         </TabList>
         <TabPanel style={{ padding: 0 }} value={0}>
@@ -225,6 +258,7 @@ const ConversationList = ({
             <ListItem
               alignItems="flex-start"
               style={{
+                fontFamily: "var(--main-font-family)",
                 cursor: "pointer",
                 marginBottom: "1px",
                 backgroundColor: value === id ? "#e0e0e0" : "inherit",
@@ -236,9 +270,10 @@ const ConversationList = ({
               onClick={() => handleValueChange(id)}
             >
               <ListItemAvatar>
-                <Avatar alt={""} src={""} />
+                <Avatar alt={"Project Picture"} src={selectedProjectData?.image} />
               </ListItemAvatar>
               <ListItemText
+                fontFamily={"var(--main-font-family)"}
                 // sx={{overflow:'hidden', textOverflow:'ellipsis'}}
                 primaryTypographyProps={{
                   overflow: "hidden",
@@ -247,7 +282,10 @@ const ConversationList = ({
                 primary={
                   <React.Fragment>
                     <Typography
-                      sx={{ display: "flex" }}
+                      sx={{
+                        display: "flex",
+                        fontFamily: "var(--main-font-family)",
+                      }}
                       component="span"
                       variant="body1"
                       color="text.primary"
@@ -265,6 +303,7 @@ const ConversationList = ({
         <TabPanel style={{ padding: 0 }} value={1}>
           <List
             sx={{
+              fontFamily: "var(--main-font-family)",
               width: "100%",
               maxWidth: { xl: 360 },
               bgcolor: "background.paper",

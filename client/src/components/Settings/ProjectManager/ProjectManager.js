@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Divider, Typography } from "@mui/material";
-import ChatView from "../../Chat/ChatView";
 import Header from "../Header/Header";
 import CustomTable from "../Tables/Table";
 import Pagination from "@mui/material/Pagination";
@@ -9,9 +8,10 @@ import UpdateModal from '../../dialogues/Settings/UpdateModal';
 import { useOutletContext } from 'react-router-dom';
 import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 function ProjectManager() {
 
-
+  const {t} = useTranslation()
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
   const [userInfo, setUserInfo, handleAssignRoleButton, userId, setUserId, handleUpdateAssignRole] = useOutletContext();
@@ -64,7 +64,7 @@ function ProjectManager() {
 
   return (
     <div style={{padding:"20px"}}>
-      <Header title="Project manager"   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
+      <Header title={t("Settings.projectManager")}   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
       <CustomTable refreshData={refreshData} setUpdateModalOpen={setUpdateModalOpen} setUserId={setUserId} searchInput={debouncedValue} setTotalEntries={setTotalEntries} setTotalPages={setTotalPages} page={page}/>
 
       <Box mt={2} mb={2}>
@@ -82,8 +82,8 @@ function ProjectManager() {
         </Typography>
         <Pagination count={totalPages} variant="outlined" shape="rounded" page={page}  onChange={handlePageChange}  sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Project manager"} refreshData={refreshData} setRefreshData={setRefreshData} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} />
-      <UpdateModal title={"Project manager"} refreshData={refreshData} setRefreshData={setRefreshData} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo} />
+      <AddModal title={t("Settings.projectManager")} refreshData={refreshData} setRefreshData={setRefreshData} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} />
+      <UpdateModal title={t("Settings.projectManager")} refreshData={refreshData} setRefreshData={setRefreshData} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} handleUpdateAssignRole={handleUpdateAssignRole}  userInfo={userInfo}  setUserInfo={setUserInfo} />
     </div>
   );
 }
@@ -112,7 +112,7 @@ const paginationTextStyle = {
   },
   fontWeight: 400,
   fontSize: "14px",
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   color: "#8C8C8C",
 
 };

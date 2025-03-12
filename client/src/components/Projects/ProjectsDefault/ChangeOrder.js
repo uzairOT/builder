@@ -6,14 +6,14 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Tab,
   Typography,
 } from "@mui/material";
 import { useGetProjectChangeOrderQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { useParams } from "react-router-dom";
-import Button from "../../UI/CustomButton";
+import { useTranslation } from "react-i18next";
 
-const ChangeOrder = ({value}) => {
+const ChangeOrder = ({ value }) => {
+  const { t } = useTranslation();
   const params = useParams();
   const { id: currentProjectId } = params;
   const currentUser = localStorage.getItem("userInfo");
@@ -22,23 +22,27 @@ const ChangeOrder = ({value}) => {
   const { data } = useGetProjectChangeOrderQuery({
     projectId: currentProjectId,
     userId: user.user.id,
-    
+    changeOrder: true,
   });
   //console.log(data);
 
   return (
     <TableContainer
-      style={{ paddingLeft: "4px", paddingRight: "4px", width: "95%", height:'calc(92vh - 400px)' }}
-      
+      style={{
+        paddingLeft: "4px",
+        paddingRight: "4px",
+        width: "95%",
+        height: "calc(92vh - 400px)",
+      }}
     >
       <Table size="small" aria-label="Change Order Table">
         <TableHead>
           <TableRow>
             {/* <TableCell sx={themeStyle.tableHeader}></TableCell> */}
-            <TableCell sx={themeStyle.tableHeader}>Subject</TableCell>
-            <TableCell sx={themeStyle.tableHeader}>Description</TableCell>
+            <TableCell sx={themeStyle.tableHeader}>{t("ProjectLayoutChangeOrder.table1")}</TableCell>
+            <TableCell sx={themeStyle.tableHeader}>{t("ProjectLayoutChangeOrder.table2")}</TableCell>
             {/* <TableCell sx={tableCellStyle}>Margin</TableCell> */}
-            <TableCell sx={themeStyle.tableHeader}>priority</TableCell>
+            <TableCell sx={themeStyle.tableHeader}>{t("ProjectLayoutChangeOrder.table3")}</TableCell>
             {/* <TableCell sx={themeStyle.tableHeader}>Total</TableCell> */}
             {/* <TableCell sx={themeStyle.tableHeader}>Start</TableCell> */}
             {/* <TableCell sx={themeStyle.tableHeader}>End</TableCell> */}
@@ -49,48 +53,70 @@ const ChangeOrder = ({value}) => {
           </TableRow>
         </TableHead>
         <TableBody style={{ paddingLeft: "4px", paddingRight: "4px" }}>
-          {data?.data?.workOrderReqs.map((row,index) => { 
-            if(value === 1 && row.status === 'pending') {
-            return(
-            <TableRow key={row.id}>
-              {/* <TableCell sx={themeStyle.tableBody}>{index+1}.</TableCell> */}
-              <TableCell sx={themeStyle.tableBody}>{row.subject}</TableCell>
-              <TableCell sx={{ ...themeStyle.tableBody }}>
-                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} fontSize={'12px'} fontFamily={'Arial Rounded MT, sans-serif'} >
-                {row.description}
-                </Typography>
-              </TableCell>
-              <TableCell sx={themeStyle.tableBody}>{row.priority}</TableCell>
-            </TableRow>
-          )}
-            if(value === 0 && row.status === 'approved') {
-            return(
-            <TableRow key={row.id}>
-              {/* <TableCell sx={themeStyle.tableBody}>{index+1}.</TableCell> */}
-              <TableCell sx={themeStyle.tableBody}>{row.subject}</TableCell>
-              <TableCell sx={{ ...themeStyle.tableBody }}>
-                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} fontSize={'12px'} fontFamily={'Arial Rounded MT, sans-serif'} >
-                {row.description}
-                </Typography>
-              </TableCell>
-              <TableCell sx={themeStyle.tableBody}>{row.priority}</TableCell>
-            </TableRow>
-          )}
-            if(value === 2 && row.status === 'declined') {
-            return(
-            <TableRow key={row.id}>
-              {/* <TableCell sx={themeStyle.tableBody}>{index+1}.</TableCell> */}
-              <TableCell sx={themeStyle.tableBody}>{row.subject}</TableCell>
-              <TableCell sx={{ ...themeStyle.tableBody }}>
-                <Typography p={"4px 8px 4px 8px"} borderRadius={'28px'} fontSize={'12px'} fontFamily={'Arial Rounded MT, sans-serif'} >
-                {row.description}
-                </Typography>
-              </TableCell>
-              <TableCell sx={themeStyle.tableBody}>{row.priority}</TableCell>
-            </TableRow>
-          )}
-          
-          
+          {data?.data?.workOrderReqs.map((row, index) => {
+            if (value === 1 && row.status === "pending") {
+              return (
+                <TableRow key={row.id}>
+                  {/* <TableCell sx={themeStyle.tableBody}>{index+1}.</TableCell> */}
+                  <TableCell sx={themeStyle.tableBody}>{row.subject}</TableCell>
+                  <TableCell sx={{ ...themeStyle.tableBody }}>
+                    <Typography
+                      p={"4px 8px 4px 8px"}
+                      borderRadius={"28px"}
+                      fontSize={"12px"}
+                      fontFamily={"var(--main-font-family)"}
+                    >
+                      {row.description}
+                    </Typography>
+                  </TableCell>
+                  <TableCell sx={themeStyle.tableBody}>
+                    {row.priority}
+                  </TableCell>
+                </TableRow>
+              );
+            }
+            if (value === 0 && row.status === "approved") {
+              return (
+                <TableRow key={row.id}>
+                  {/* <TableCell sx={themeStyle.tableBody}>{index+1}.</TableCell> */}
+                  <TableCell sx={themeStyle.tableBody}>{row.subject}</TableCell>
+                  <TableCell sx={{ ...themeStyle.tableBody }}>
+                    <Typography
+                      p={"4px 8px 4px 8px"}
+                      borderRadius={"28px"}
+                      fontSize={"12px"}
+                      fontFamily={"var(--main-font-family)"}
+                    >
+                      {row.description}
+                    </Typography>
+                  </TableCell>
+                  <TableCell sx={themeStyle.tableBody}>
+                    {row.priority}
+                  </TableCell>
+                </TableRow>
+              );
+            }
+            if (value === 2 && row.status === "declined") {
+              return (
+                <TableRow key={row.id}>
+                  {/* <TableCell sx={themeStyle.tableBody}>{index+1}.</TableCell> */}
+                  <TableCell sx={themeStyle.tableBody}>{row.subject}</TableCell>
+                  <TableCell sx={{ ...themeStyle.tableBody }}>
+                    <Typography
+                      p={"4px 8px 4px 8px"}
+                      borderRadius={"28px"}
+                      fontSize={"12px"}
+                      fontFamily={"var(--main-font-family)"}
+                    >
+                      {row.description}
+                    </Typography>
+                  </TableCell>
+                  <TableCell sx={themeStyle.tableBody}>
+                    {row.priority}
+                  </TableCell>
+                </TableRow>
+              );
+            }
           })}
         </TableBody>
       </Table>
@@ -106,22 +132,22 @@ const themeStyle = {
     minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
     textOverflow: "ellipsis",
     overflow: "hidden",
-    textAlign:"Left",
-    fontSize: "12px",
-    fontFamily: "inherit",
+    textAlign: "Left",
+    fontSize: "13px",
+    fontFamily: "var(--main-font-family)",
     color: "#5B5B5B",
     whiteSpace: "nowrap",
-    border: 'none'
+    border: "none",
   },
   tableBody: {
-        maxWidth: { xl: "40px", lg: "30px", md: "70px", xs: "100%" },
+    maxWidth: { xl: "40px", lg: "30px", md: "70px", xs: "100%" },
     minWidth: { xl: "20px", lg: "20px", md: "40px", xs: "20px" },
     textOverflow: "ellipsis",
     overflow: "hidden",
-    textAlign:"Left",
-    fontSize: "12px",
+    textAlign: "Left",
+    fontSize: "13px",
     fontWeight: "500",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     color: "#000000",
     // padding: "8px 4px 4px 4px",
   },

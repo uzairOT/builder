@@ -1,0 +1,1165 @@
+import {
+  Avatar,
+  Box,
+  Divider,
+  Modal,
+  Stack,
+  Typography,
+  Select,
+  MenuItem,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
+import React, { useCallback, useEffect, useState } from "react";
+import BuilderProButton from "../../UI/Button/BuilderProButton";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import Avatarimg from "../Assets/pngs/woman.png";
+import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
+import moment from "moment";
+import { useSelector, useDispatch } from "react-redux";
+import GenerateInvoiceDone from "../GenerateInvoice/GenerateInvoiceDone";
+import { toast } from "react-toastify";
+//import "react-toastify/dist/ReactToastify.css";
+import { useGetUserEventsMutation } from "../../../redux/apis/usersApiSlice";
+import { getForecast } from "../../../redux/slices/DailyForecast/dailyForecastSlice";
+import {
+  addEvents,
+  setIsLoading,
+} from "../../../redux/slices/Events/eventsSlice";
+import {
+  useGetPhasesAndLineItemsByIdMutation,
+} from "../../../redux/apis/Project/projectApiSlice";
+import { useLocation } from "react-router-dom";
+import {
+  MobileDateTimePicker,
+} from "@mui/x-date-pickers";
+import UpdateLineDialogue from "../UpdateLineDialogue/UpdateLineDialogue";
+import CloseIcon from "@mui/icons-material/Close";
+import { socket } from "../../../socket";
+import AddPhaseView from "../../AssignProject/AddPhaseView/AddPhaseView";
+import {
+  clearPhases,
+  removeLineItems,
+  updateCheckedItems,
+} from "../../../redux/slices/Project/projectInitialProposal";
+import { useProjectPermissionCheck } from "../../Projects/ProjectPermissions/ProjectsPermissionCheck";
+import { useTranslation } from "react-i18next";
+
+
+const ChangeOrderRequestModal = ({
+  rowCheckboxes,
+  checkedRow,
+  changeOrder,
+  refetch,
+  phaseItems,
+  setPhaseItems,
+  fetchData,
+  refetchChangeOrder,
+  setRowCheckboxes,
+  changeOrderView,
+  selectedProjectData,
+}) => {
+  const location = useLocation();
+  const projectId = location.pathname.split("/")[2];
+  const [open, setOpen] = useState(false);
+  const [done, setDone] = useState(false);
+  const [updateRow, setUpdateRow] = useState(rowCheckboxes);
+  const [priority, setPriority] = useState("normal");
+  const [subject, setSubject] = useState(
+    changeOrder ? checkedRow?.subject : ""
+  );
+
+  // const [startDate, setStartDate] = useState(null);
+  // const [endDate, setEndDate] = useState(null);
+  const [description, setDescription] = useState(
+    changeOrder ? checkedRow?.description : ""
+  );
+  const { t } = useTranslation();
+  // const {  refetch: refetchProjectTeam } =
+  //   useGetTeamMembersQuery(projectId);
+  // const [superAdminId, setSuperAdminId] = useState();
+  const userInfo = localStorage.getItem("userInfo");
+  const user = JSON.parse(userInfo);
+  const userId = user?.user.id;
+  const [notes, setNotes] = useState("");
+  const forecast = useSelector(getForecast);
+  const dailyForecast = forecast.dailyForecast || [];
+  const [getEvents] = useGetUserEventsMutation();
+  const dispatch = useDispatch();
+  // const { emit } = useSocket();
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [showUpdateLine, setShowUpdateLine] = useState(false);
+  const phaseId = rowCheckboxes[0]?.rows[0]?.phase_id;
+  const [getPhasesAndLineItems] = useGetPhasesAndLineItemsByIdMutation();
+  const [lineItemIndex, setLineItemIndex] = useState();
+  const [lineItem, setLineItem] = useState();
+  const [addPhaseId, setAddPhaseId] = useState();
+  const [loading, setLoading] = useState(false);
+  const pathCheck = location.pathname;
+  // const changeOrderSelected = useSelector(
+  //   (state) => state.projectInitialProposal.changeOrderLineItems
+  // );
+  // console.log(updateRow);
+  const hasMoreThanTwoItems = Object.values(rowCheckboxes).some(
+    (phaseData) => phaseData.rows.length > 2
+  );
+
+  let counter = 0;
+  let lineItemIds = [];
+  let lineItemCounter = 0;
+  let totalWorkOrder = 0;
+
+  //console.log("sokect: ", socket);
+  // console.log("START DATE", endDate);
+  // const fetchPhasesAndLineItems = async (data) => {
+  //   try{
+
+  //     const res = await getPhasesAndLineItems(data).unwrap();
+  //     const response = await res;
+  //     console.log(response)
+  //     return response;
+  //   } catch (error){
+  //     console.log(error);
+  //   }
+  // }
+
+  if (changeOrder) {
+    checkedRow?.phaseItems?.forEach((phase) => {
+      lineItemCounter += phase.lineItemId.length;
+    });
+  } else {
+    Object?.keys(rowCheckboxes)?.forEach((phaseData) => {
+      lineItemCounter += rowCheckboxes[phaseData].rows.length;
+      const lineItemGroup = {
+        phaseId: phaseData,
+        lineItemId: rowCheckboxes[phaseData].rows.map((row) => row.id),
+      };
+      lineItemIds.push(lineItemGroup);
+      rowCheckboxes[phaseData].rows.forEach((lineItem) => {
+        totalWorkOrder += parseInt(lineItem.total);
+      });
+    });
+  }
+
+  // });
+
+
+  const isButtonDisabled = changeOrder
+    ? checkedRow === null
+    : Object?.keys(rowCheckboxes)?.length === 0 ||
+      selectedProjectData?.initialProposalApproved === false;
+  const handleNotesChange = (e) => {
+    setNotes(e.target.value);
+  };
+  const handleClose = () => {
+    setSelectedItems([]);
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handlePriorityChange = (event) => {
+    setPriority(event.target.value);
+  };
+  // const handleStatusChange = (event) => {
+  //   setStatus(event.target.value);
+  // };
+  const handleSubjectChange = (event) => {
+    setSubject(event.target.value);
+  };
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
+  };
+  // const handlePhaseRadioChange = (event) => {
+  //   setPhase(event.target.value);
+  // };
+  // const handleLineItemRadioChange = (event) => {
+  //   setLineItems(event.target.value);
+  // };
+
+  const handlePhaseChange = (phaseId) => {
+    const existingPhase = selectedItems.find(
+      (item) => item.phaseId === phaseId
+    );
+
+    if (existingPhase) {
+      const updatedItems = selectedItems.filter(
+        (item) => item.phaseId !== phaseId
+      );
+      setSelectedItems(updatedItems);
+    } else {
+      const phaseItems = checkedRow.phaseItems.find(
+        (item) => item.phaseId === phaseId
+      );
+      const updatedItems = [
+        ...selectedItems,
+        { phaseId, lineItemId: phaseItems.lineItemId },
+      ];
+      setSelectedItems(updatedItems);
+    }
+  };
+
+  const handleLineItemChange = (phaseId, lineItemId) => {
+    const existingPhaseIndex = selectedItems.findIndex(
+      (item) => item.phaseId === phaseId
+    );
+
+    if (existingPhaseIndex !== -1) {
+      const existingLineItemIndex =
+        selectedItems[existingPhaseIndex].lineItemId.indexOf(lineItemId);
+
+      if (existingLineItemIndex !== -1) {
+        // Remove the line item
+        const updatedItems = [...selectedItems];
+        updatedItems[existingPhaseIndex] = {
+          ...updatedItems[existingPhaseIndex],
+          lineItemId: updatedItems[existingPhaseIndex].lineItemId.filter(
+            (id) => id !== lineItemId
+          ),
+        };
+
+        // If no line items are selected for the phase, remove the phase
+        if (updatedItems[existingPhaseIndex].lineItemId.length === 0) {
+          updatedItems.splice(existingPhaseIndex, 1);
+        }
+
+        setSelectedItems(updatedItems);
+      } else {
+        // Add the line item
+        const updatedItems = [...selectedItems];
+        updatedItems[existingPhaseIndex] = {
+          ...updatedItems[existingPhaseIndex],
+          lineItemId: [
+            ...updatedItems[existingPhaseIndex].lineItemId,
+            lineItemId,
+          ],
+        };
+
+        setSelectedItems(updatedItems);
+      }
+    } else {
+      // Add new phase and line item
+      const updatedItems = [
+        ...selectedItems,
+        {
+          phaseId,
+          lineItemId: [lineItemId],
+        },
+      ];
+
+      setSelectedItems(updatedItems);
+    }
+  };
+
+  const handleUpdateOpen = (lineItem, index) => {
+    // setUpdateRow(() => rowCheckboxes);
+    // console.log("RUN", index, lineItem);
+    setLineItemIndex(index);
+    setLineItem(lineItem);
+    setShowUpdateLine(true);
+  };
+  const handleDeleteOpen = (lineItem, index) => {
+    const lineItemId = lineItem.id;
+    if (lineItemId) {
+      markLineItemForDeletion(lineItem.phase_id, index);
+    } else {
+      // console.log("I RAN!", index);
+      setUpdateRow((prevState) => {
+        if (
+          index !== -1 &&
+          prevState[lineItem.phase_id] &&
+          prevState[lineItem.phase_id].rows
+        ) {
+          const updatedRows = [...prevState[lineItem.phase_id].rows].filter(
+            (_, i) => i !== index
+          );
+          dispatch(removeLineItems({ phaseId: lineItem.phase_id, index }));
+          return {
+            ...prevState,
+            [lineItem.phase_id]: {
+              ...prevState[lineItem.phase_id],
+              rows: updatedRows,
+            },
+          };
+        }
+        return prevState;
+      });
+    }
+  };
+
+  const markLineItemForDeletion = useCallback(
+    (phaseId, lineItemIndex) => {
+      setUpdateRow((prevState) => {
+        if (
+          lineItemIndex !== -1 &&
+          prevState[phaseId] &&
+          prevState[phaseId].rows
+        ) {
+          const updatedRows = [...prevState[phaseId].rows];
+          updatedRows[lineItemIndex] = {
+            ...updatedRows[lineItemIndex],
+            shouldDelete: updatedRows[lineItemIndex].shouldDelete
+              ? false
+              : true, // Flag to indicate this item should be deleted
+          };
+
+          // Dispatch to Redux
+          dispatch(
+            updateCheckedItems({
+              phaseId,
+              phaseName: prevState[phaseId].phaseName, // Use existing phase name
+              lineItems: updatedRows, // Update the entire list of lineItems
+            })
+          );
+
+          return {
+            ...prevState,
+            [phaseId]: {
+              ...prevState[phaseId],
+              rows: updatedRows,
+            },
+          };
+        }
+        return prevState;
+      });
+    },
+    [setUpdateRow, dispatch]
+  );
+
+  const handleAddOpen = (phaseId) => {
+    setAddPhaseId(phaseId);
+    setShowUpdateLine(true);
+  };
+
+  const handleUpdateClose = () => {
+    setAddPhaseId(null);
+    setLineItemIndex(null);
+    setLineItem(null);
+    setShowUpdateLine(false);
+  };
+  const handleLineItemClick = (e, row) => {
+    e.preventDefault();
+    // console.log(row);
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      //console.log("in useEffect changerOrder: ", changeOrder);
+      //console.log("in useEffect checkRow.phaseItems: ", checkedRow?.phaseItems);
+      if (changeOrder && checkedRow?.phaseItems && phaseItems === null) {
+        try {
+          //console.log(phaseItems, " in useEffect rerender");
+          const res = await getPhasesAndLineItems(
+            checkedRow?.phaseItems
+          ).unwrap();
+          setPhaseItems(res); // Set phaseItems after the async operation is complete
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    if (changeOrder) {
+      setSubject(checkedRow?.subject);
+      setDescription(checkedRow?.description);
+      // setStartDate(moment(checkedRow?.start_day));
+      // setEndDate(moment(checkedRow?.end_day));
+    }
+
+    fetchData(); // Call the fetchData function
+  }, [changeOrder, checkedRow, phaseItems]);
+
+  const handleRequest = async () => {
+    if (subject === "") {
+      toast.warning("Please complete the request change order form");
+      return;
+    }
+    // if (!startDate || !endDate) {
+    //   toast.warning("Please enter a date");
+    //   return;
+    // }
+    setLoading(true);
+    const fixedStartDate = "Sep 1, 2024, 10:00 am";
+    const fixedEndDate = "Sep 2, 2024, 10:00 am";
+
+    const formattedStartDate = moment(fixedStartDate, "MMM D, YYYY, h:mm a")
+      .utc()
+      .format("MMM D, YYYY, h:mm a");
+    const formattedEndDate = moment(fixedEndDate, "MMM D, YYYY, h:mm a")
+      .utc()
+      .format("MMM D, YYYY, h:mm a");
+
+    //added superadmin id to the workorder
+    const requestForm = {
+      workOrder_id: changeOrder ? checkedRow.id : "",
+      subject: subject,
+      description: description,
+      startDate: formattedStartDate,
+      endDate: formattedEndDate,
+      priority: priority,
+      status: "pending",
+      phase: phaseId,
+      lineItem: changeOrder
+        ? checkedRow.LineItem_id
+        : lineItemIds[0].lineItemId[0],
+      phaseItems: changeOrder ? selectedItems : lineItemIds,
+      createdby: userId,
+      teamIds: [ userId],
+      notes: notes,
+      projectId: projectId,
+      total: changeOrder ? checkedRow?.total : totalWorkOrder,
+      changeOrder: changeOrderView ? true : false,
+      changeOrderItems: updateRow,
+    };
+    //console.log(requestForm);
+    if (requestForm.teamIds.length === 0) {
+      toast.error("Team member must be assigned");
+    } else {
+      //await requestWorkOrderPut(requestForm);
+      socket.emit("join", userId);
+      if (changeOrder) {
+        if (selectedItems?.length < 1) {
+          toast.warning("Please select a line item");
+          setLoading(false);
+          return;
+        }
+        //console.log("update");
+        //Changes implemented
+        await socket.emit("updateWorkOrder", requestForm, (response) => {
+          //console.log("update", response);
+          if (response.success) {
+            setDone(true);
+            toast.success("Change order request sent!");
+
+            refetch({ projectId, userId: userId });
+          } else {
+            toast.error(
+              response?.data?.message ||
+                response.error ||
+                response?.data?.error ||
+                response.message ||
+                "Something went wrong!"
+            );
+          }
+        });
+      } else {
+        //console.log("work");
+        const socketRes = await socket.emit(
+          "notification",
+          requestForm,
+          async (response) => {
+            if (response.success) {
+              // console.log("work order",response);
+              setDone(true);
+              dispatch(clearPhases());
+              toast.success("Change order request sent!");
+              if (refetchChangeOrder) {
+                await refetchChangeOrder({ projectId, userId: userId });
+              }
+              await fetchData();
+              return response;
+            } else {
+              //console.log(response);
+              toast.error(
+                response?.data?.message ||
+                  response.error ||
+                  response?.data?.error ||
+                  response.message ||
+                  "Something went wrong!"
+              );
+              dispatch(clearPhases());
+              return response;
+            }
+          }
+        );
+
+        // console.log(socketRes)
+        setRowCheckboxes({});
+      }
+      setLoading(false);
+      dispatch(setIsLoading(true));
+      const res = await getEvents({ userId, dailyForecast });
+      const data = res?.data?.formattedWorkOrders;
+      dispatch(addEvents(data));
+      dispatch(setIsLoading(false));
+      // setDone(true);
+      setSubject("");
+      setDescription("");
+      setNotes("");
+    }
+    handleClose();
+  };
+  // const refetchTeam = async () => {
+  //   const res = await refetchProjectTeam();
+  // };
+  const showToast = () => {
+    if (selectedProjectData?.initialProposalApproved === false) {
+      toast.warning(
+        "Please approve initial line items to request a work order."
+      );
+      return;
+    }
+    toast.warning("Please select a line item to request a work order.");
+  };
+
+  useEffect(() => {
+    if (changeOrderView) {
+      setUpdateRow(rowCheckboxes);
+    }
+  }, [rowCheckboxes]);
+
+  // useEffect(() => {
+  //   if (open) {
+  //     refetchTeam();
+  //   }
+  // }, [open]);
+  // console.log(rowCheckboxes);
+
+  const permissionsState = useSelector(
+    (state) => state?.permissions?.permissions
+  );
+
+  const changeOrderPermission = useProjectPermissionCheck(
+    "change-order",
+    permissionsState
+  );
+  // console.log("selectedProjectData", selectedProjectData);
+  return (
+    <>
+      {pathCheck.includes("initial-proposal") ? (
+        <></>
+      ) : (
+        <>
+          <Tooltip
+            title={
+              !changeOrderPermission
+                ? t("PermisionsMessage.submitChangeOrder")
+                : ""
+            }
+            arrow
+          >
+            <span>
+              <Stack
+                alignItems={"flex-end"}
+                justifyContent={{ xs: "flex-end" }}
+                pr={2}
+                ml={-1.8}
+              >
+                <BuilderProButton
+                  disabled={!changeOrderPermission}
+                  backgroundColor={"#FFAC00"}
+                  variant={"contained"}
+                  fontFamily={"var(--main-font-family)"}
+                  fontSize={{ lg: "16px", xs: "11px" }}
+                  fontWeight={"600"}
+                  padding={{ sm: "6px 32px 6px 32px", xs: "5px 20px 5px 20px" }}
+                  handleOnClick={isButtonDisabled ? showToast : handleOpen}
+                >
+                  {t("RequestWorkOrder.title2")}
+                </BuilderProButton>
+              </Stack>
+            </span>
+          </Tooltip>
+        </>
+      )}
+      <Modal open={open} onClose={handleClose}>
+        <Stack
+          sx={{
+            ...style,
+            ...themeStyle.scrollable,
+            height: { xl: "90%", lg: "90%", md: "90%", sm: "90%", xs: "90%" },
+            width: "80%",
+          }}
+          overflow={"scroll"}
+        >
+          <Stack
+            direction={"row"}
+            p={2}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Typography
+              color={"#4C8AB1"}
+              fontFamily={"var(--main-font-family)"}
+              fontSize={"22px"}
+              fontWeight={"600"}
+            >
+              {t("RequestWorkOrder.title2")}
+            </Typography>
+            <IconButton onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Stack>
+          <Divider />
+          <Stack
+            direction={{
+              xl: "row",
+              lg: "row",
+              md: "row",
+              sm: "column",
+              xs: "column",
+            }}
+            height={"100%"}
+          >
+            <Stack
+              p={3}
+              flex={changeOrderView ? 2 : 1}
+              spacing={1}
+              width={"calc(100% - 48px)"}
+            >
+              <Stack
+                direction={{ xl: "row", lg: "row", md: "row", xs: "row" }}
+                justifyContent={"space-around"}
+                spacing={0.2}
+                // p={1}
+              >
+                <Stack
+                  // maxWidth={"80%"}
+                 
+                  //  maxHeight={"30%"}
+                  flex={1}
+                >
+                  {changeOrderView && (
+                    <Stack maxHeight={"50%"}>
+                      <AddPhaseView
+                        // changeOrderSelected={changeOrderSelected}
+                        refetchChangeOrder={refetch}
+                        adminProjectView={true}
+                        view={t("RequestWorkOrder.title3")}
+                        changeOrderSelectedView={true}
+                        handleUpdateOpen={handleUpdateOpen}
+                        handleAddOpen={handleAddOpen}
+                        handleDeleteOpen={handleDeleteOpen}
+                      />
+                    </Stack>
+                  )}
+                </Stack>
+              </Stack>
+              {/* <Divider /> */}
+            </Stack>
+            <Stack flex={1} backgroundColor={"#EFF5FF"} width={"100%"}>
+              <Box>
+                <Box >
+                  <Typography fontFamily={"var(--main-font-family)"}>
+                    <Typography
+                      sx={{
+                        textAlign: "left !important",
+                        ...themeStyle.headingText,
+                        ...themeStyle.rightheadings,
+                      }}
+                    >
+                      {t("RequestWorkOrder.form.title1")}:{" "}
+                    </Typography>{" "}
+                    <input
+                      maxlength="50"
+                      required
+                      value={subject}
+                      placeholder={t("RequestWorkOrder.form.placeholder")}
+                      type="text"
+                      style={{
+                        ...themeStyle.inputFields,
+                        backgroundColor: "#EFF5FF",
+                        marginLeft:'12px'
+                      }}
+                      onChange={handleSubjectChange}
+                    ></input>
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography
+                    pb={1}
+                    fontFamily={"var(--main-font-family)"}
+                    fontWeight={"200"}
+                  >
+                    <Typography
+                      sx={{
+                        ...themeStyle.headingText,
+                        ...themeStyle.rightheadings,
+                      }}
+                    >
+                      {t("RequestWorkOrder.form.title2")}:{" "}
+                    </Typography>{" "}
+                    <input
+                      maxlength="50"
+                      value={description}
+                      placeholder={t("RequestWorkOrder.form.placeholder1")}
+                      type="text"
+                      multiple
+                      style={{
+                        ...themeStyle.inputFields,
+                        backgroundColor: "#EFF5FF",
+                         marginLeft:'12px'
+                      }}
+                      onChange={handleDescriptionChange}
+                    ></input>
+                  </Typography>
+                </Box>
+
+                <Typography
+                  sx={{
+                    ...themeStyle.headingText,
+                    ...themeStyle.rightheadings,
+                  }}
+                >
+                  {t("RequestWorkOrder.form.title3")}
+                </Typography>
+                <Box sx={themeStyle.avatarBox}>
+                  {changeOrder ? (
+                    checkedRow?.team.map((user) => {
+                      if (checkedRow?.createdby == user?.userId) {
+                        return (
+                          <Avatar
+                            sx={themeStyle.AvatarStyle}
+                            src={user.image}
+                          />
+                        );
+                      }
+                    })
+                  ) : (
+                    <Avatar
+                      sx={themeStyle.AvatarStyle}
+                      src={user.user.image ? user?.user?.image : Avatarimg}
+                    />
+                  )}
+                  <Typography
+                    fontFamily={"var(--main-font-family)"}
+                    alignSelf={"end"}
+                    pl={1}
+                  >
+                    {changeOrder
+                      ? checkedRow?.team.map((user) => {
+                          if (checkedRow?.createdby == user?.userId) {
+                            return <>{user?.firstName}</>;
+                          }
+                          return null; // Return null for users that don't match
+                        })
+                      : user?.user?.firstName}
+                  </Typography>
+                </Box>
+
+                <Typography
+                  sx={{
+                    ...themeStyle.headingText,
+                    ...themeStyle.rightheadings,
+                  }}
+                >
+                  {t("RequestWorkOrder.form.title5")}
+                </Typography>
+                <Typography
+                  fontFamily={"var(--main-font-family)"}
+                  pb={4}
+                  pl={'12px'}
+                >
+                  <input
+                    maxlength="50"
+                    value={notes}
+                    placeholder={t("RequestWorkOrder.form.placeholder2")}
+                    type="text"
+                    multiple
+                    style={{
+                      ...themeStyle.inputFields,
+                      backgroundColor: "#EFF5FF",
+                    }}
+                    onChange={handleNotesChange}
+                  ></input>
+                </Typography>
+
+                <hr style={themeStyle.hrLine} />
+                <Typography
+                  sx={{
+                    ...themeStyle.headingText,
+                    ...themeStyle.rightheadings,
+                  }}
+                >
+                  {t("RequestWorkOrder.form.title6")}
+                </Typography>
+                <Select
+                  displayEmpty
+                  renderValue={(value) => {
+                    return (
+                      <Stack direction={"row"} gap={1}>
+                        <FlagOutlinedIcon
+                          sx={{
+                            color:
+                              priority === "urgent" ? "#EB1717" : "#4C8AB1",
+                          }}
+                        />
+                        <Typography
+                          color={priority === "urgent" ? "#EB1717" : "#4C8AB1"}
+                          textTransform={"capitalize"}
+                          fontFamily={"var(--main-font-family)"}
+                          fontWeight={"500"}
+                          fontSize={{
+                            lg: "0.9rem",
+                            md: "0.9rem",
+                            sm: "0.8rem",
+                            xs: "0.6rem",
+                          }}
+                        >
+                          {value}
+                        </Typography>
+                      </Stack>
+                    );
+                  }}
+                  value={t(`RequestWorkOrder.form.${priority}`)}
+                  onChange={handlePriorityChange}
+                  IconComponent={KeyboardArrowDownIcon}
+                  sx={{
+                    ...themeStyle.linkButton,
+                    ...themeStyle.priorityButton,
+                    input: {
+                      fontFamily: "var(--main-font-family)",
+                      "&::after": {
+                        borderBottom: "none",
+                        outline: "none",
+                      },
+                      "&:before": {
+                        borderBottom: "none",
+                        outline: "none",
+                      },
+                      "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before":
+                        {
+                          borderBottom: "none",
+                          outline: "none",
+                        },
+                    },
+                  }}
+                  startIcon={
+                    <FlagOutlinedIcon
+                      sx={{
+                        color: priority === "urgent" ? "#EB1717" : "#4C8AB1",
+                      }}
+                    />
+                  }
+                >
+                  <MenuItem value={"urgent"}>{t("RequestWorkOrder.form.urgent")}</MenuItem>
+                  <MenuItem value={"normal"}>{t("RequestWorkOrder.form.normal")}</MenuItem>
+                </Select>
+                <hr style={themeStyle.hrLine} />
+              </Box>
+
+              <Stack spacing={1} pt={2} ml={2}>
+                <Typography pt={1} sx={themeStyle.headingText}>
+                  {t("RequestWorkOrder.form.title11")}
+                </Typography>
+                <Typography
+                  sx={{ ...themeStyle.typoTitle, ...themeStyle.costText }}
+                >
+                  <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <DemoContainer components={["DateTimePicker"]}>
+                      <MobileDateTimePicker
+                        disabled
+                        value={moment()} // Sets current date and time
+                        format="MMM D, YYYY, h:mm a"
+                        viewRenderers={{
+                          hours: renderTimeViewClock,
+                          minutes: renderTimeViewClock,
+                          seconds: renderTimeViewClock,
+                        }}
+                        slotProps={{
+                          // Targets the `IconButton` component.
+                          openPickerButton: {
+                            color: "#5B5B5B",
+                          },
+                          // Targets the `InputAdornment` component.
+                          inputAdornment: {
+                            position: "start",
+                          },
+                        }}
+                        sx={{
+                          input: {
+                            fontFamily: "var(--main-font-family)",
+                            "&::after": {
+                              borderBottom: "none",
+                              outline: "none",
+                            },
+                            "&:before": {
+                              borderBottom: "none",
+                              outline: "none",
+                            },
+                            "&.MuiInput-root:hover:not(.Mui-disabled, Mui-error):before":
+                              {
+                                borderBottom: "none",
+                                outline: "none",
+                              },
+                            },
+                            marginRight: "16px !important"
+                        }}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                </Typography>
+
+                <Stack
+                  width={"80%"}
+                  pt={4}
+                  display={{ md: "flex", xs: "none" }}
+                >
+                  <Tooltip
+                    title={
+                      !changeOrderPermission
+                        ? t("PermisionsMessage.submitChangeOrder")
+                        : ""
+                    }
+                    arrow
+                  >
+                    <span>
+                      <BuilderProButton
+                        disabled={loading || !changeOrderPermission}
+                        backgroundColor={"#4C8AB1"}
+                        variant={"contained"}
+                        fontFamily={"var(--main-font-family)"}
+                        fontSize={"0.9rem"}
+                        fontWeight={"600"}
+                        padding={"6px 32px 6px 32px"}
+                        handleOnClick={handleRequest}
+                        marginLeft={"0px"}
+                      >
+                        {t("RequestWorkOrder.title2")}
+                      </BuilderProButton>
+                    </span>
+                  </Tooltip>
+                </Stack>
+              </Stack>
+
+              <Stack
+                width={"100%"}
+                pt={4}
+                pb={4}
+                display={{ md: "none", xs: "flex" }}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <Tooltip
+                  title={
+                    !changeOrderPermission
+                      ? t("PermisionsMessage.submitChangeOrder")
+                      : ""
+                  }
+                  arrow
+                >
+                  <span>
+                    <BuilderProButton
+                      backgroundColor={"#4C8AB1"}
+                      variant={"contained"}
+                      fontFamily={"var(--main-font-family)"}
+                      fontSize={"0.9rem"}
+                      fontWeight={"600"}
+                      padding={"6px 32px 6px 32px"}
+                      handleOnClick={handleRequest}
+                      marginLeft={"0px"}
+                      disabled={loading}
+                    >
+                      {t("RequestWorkOrder.title2")}
+                    </BuilderProButton>
+                  </span>
+                </Tooltip>
+              </Stack>
+            </Stack>
+          </Stack>
+        </Stack>
+      </Modal>
+      {showUpdateLine && (
+        <UpdateLineDialogue
+          handleUpdateOpen={handleUpdateOpen}
+          setPhaseItems={setPhaseItems}
+          handleUpdateClose={handleUpdateClose}
+          LineItem={lineItem}
+          addPhaseId={addPhaseId}
+          lineItemIndex={lineItemIndex}
+          reqWorkOrderModal={true}
+          updateRow={updateRow}
+          setUpdateRow={setUpdateRow}
+        />
+      )}
+      {done && <GenerateInvoiceDone setDone={setDone} />}
+    </>
+  );
+};
+
+export default ChangeOrderRequestModal;
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  bgcolor: "background.paper",
+  border: "0px solid #000",
+  boxShadow: 24,
+  p: 0,
+  borderRadius: "14px",
+  width: { md: "700px", xs: "80%" },
+};
+const themeStyle = {
+  scrollable: {
+    scrollbarWidth: "none", // For Firefox
+    "-ms-overflow-style": "none", // For IE and Edge
+    "&::-webkit-scrollbar": {
+      width: "6px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "transparent",
+      transition: "background-color 0.3s",
+    },
+    "&:hover::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ddd",
+    },
+    overflowY: "scroll",
+  },
+  inputFields: {
+    border: "0px solid #FFF",
+    outline: "none",
+    width: "calc(100% - 16px)",
+    padding: 4,
+  },
+  typoTitle: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: "1.5rem",
+    fontWeight: 500,
+    color: "#4C8AB1",
+    marginLeft: "-1rem",
+  },
+  buttonBox: {
+    display: "flex",
+    flexDirection: { lg: "row", sm: "row", xs: "column" },
+    justifyContent: "flex-start",
+    marginTop: "3rem",
+    marginBottom: "2rem",
+    gap: "1rem",
+  },
+  dialogcontentBox: {
+    display: "flex",
+    flexDirection: { lg: "row", sm: "column", xs: "column" },
+    padding: "0rem",
+    margin: "-0.5rem -1rem -1rem 0rem",
+  },
+  leftBox: {
+    width: { lg: "55%", md: "100%", xs: "100%" },
+    display: "flex",
+    flexDirection: "column",
+    paddingLeft: "1.5rem",
+  },
+  rightBox: {
+    width: { lg: "45%", md: "100%", xs: "100%" },
+    background: "#EFF5FF",
+    display: "flex",
+    flexDirection: "column",
+  },
+  paperPropsStyle: {
+    borderRadius: "1rem",
+    width: { lg: "90%", md: "60%", sm: "60%", xs: "70%" },
+    maxWidth: { lg: "50%", md: "60%", sm: "60%", xs: "70%" },
+    padding: "1rem 1rem", // Change background color here
+  },
+
+  typoText: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: "1rem",
+    color: "#202227",
+  },
+  sendButton: {
+    width: { lg: "35%", md: "35%", sm: "40%", xs: "60%" },
+    fontFamily: "var(--main-font-family)",
+  },
+  declineButton: {
+    background: "#FFF",
+    color: "#4C8AB1",
+    border: "1px solid #4C8AB1",
+    ":hover": {
+      background: "#FAF9F6",
+    },
+  },
+  time: {
+    fontFamily: "var(--main-font-family)",
+    fontSize: "1rem",
+    fontStyle: "italic",
+    color: "#484848",
+    marginTop: "1.5rem",
+    whiteSpace: "nowrap",
+  },
+  hrLine: {
+    border: "1px solid #CCCCCC",
+    width: "98%",
+    marginTop: "-0.7rem",
+  },
+  radioText: {
+    color: "#3D3D3D",
+    fontFamily: "var(--main-font-family)",
+  },
+  radioChecked: {
+    "&, &.Mui-checked": {
+      color: "#000",
+    },
+  },
+  headingText: {
+    fontFamily: "var(--main-font-family)",
+    color: "#000000",
+    fontWeight: 600,
+    marginTop: "0.5rem",
+    fontSize: "1.1rem",
+    display: "flex",
+    gap: "1rem",
+  },
+  rightheadings: {
+    fontSize: "0.9rem",
+    color: "#636363",
+    margin: "1rem 0rem 0rem 1rem",
+  },
+  linkButton: {
+    fontFamily: "var(--main-font-family)",
+    fontWeight: 500,
+    textTransform: "none",
+    color: "#858585",
+    fontSize: { lg: "0.9rem", md: "0.9rem", sm: "0.8rem", xs: "0.6rem" },
+    justifyContent: "flex-start",
+    marginLeft: "-0.3rem",
+    marginBottom: "1rem",
+  },
+  costText: {
+    marginLeft: "0rem",
+    fontSize: "1.2rem",
+    fontWeight: 700,
+  },
+  pendingbutton: {
+    margin: "0rem 0rem 1rem 1.5rem",
+    color: "#D92525",
+  },
+  priorityButton: {
+    margin: "0rem 0rem 1rem 1rem",
+    color: "#636363",
+  },
+  avatarBox: {
+    display: "flex",
+    margin: "0.2rem 0rem 1rem 1.5rem",
+    justifyContent: "flex-start",
+  },
+  AvatarStyle: {
+    width: 30,
+    height: 30,
+    ml: "-5px",
+    mt: 1,
+  },
+  dateBox: {
+    display: "flex",
+    paddingLeft: "0.8rem",
+    marginTop: "-1rem",
+  },
+
+  scrollable: {
+    scrollbarWidth: "none", // For Firefox
+    "-ms-overflow-style": "none", // For IE and Edge
+    "&::-webkit-scrollbar": {
+      width: "6px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "transparent",
+      transition: "background-color 0.3s",
+    },
+    "&:hover::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ddd",
+    },
+  },
+};

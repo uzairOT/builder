@@ -3,21 +3,23 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import RadialBarsChart from "../../UI/Charts/RadialBarsChart";
 import React from "react";
 import { formatMoney } from "../../../utils/Formatters/moneyFormat";
+import { useTranslation } from 'react-i18next';
 import { Textarea } from "@mui/joy";
 import { valueFormatter } from "../../../utils/Formatters/valueFormatter";
 
 const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectCost }) => {
+  const { t } = useTranslation();
   const percentage = (parseFloat(TotalProfit)/parseFloat(totalProjectCost)) * 100;
   return (
     <Stack pt={2} justifyContent={"center"}>
       <Typography pl={4} textAlign={"left"} sx={themeStyle.title}>
-        Profit Details
+         {t('userProject.processcard.title7')}
       </Typography>
       <Stack pl={0} direction={"row"} justifyContent={"center"} width={"100%"} pt={2}>
         <Box>
           <Stack direction={"row"} sx={themeStyle.innerStackLayout}>
             <Typography textAlign={"left"} sx={themeStyle.innerTitle}>
-              Projected Profit
+            {t('userProject.processcard.title8')}
             </Typography>
             <Typography textAlign={"left"} sx={{...themeStyle.innerSubtitle, maxWidth:'300px', overflow:'hidden', textOverflow:'ellipsis'}}>
               ${formatMoney(TotalProfit)}
@@ -33,7 +35,7 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
           </Stack> */}
           <Stack direction={"row"} sx={themeStyle.innerStackLayout}>
             <Typography textAlign={"left"} sx={themeStyle.innerTitle}>
-              Margin
+            {t('userProject.processcard.title9')}
             </Typography>
             <Typography textAlign={"left"} sx={themeStyle.innerSubtitle}>
               {isNaN(percentage)  ? 0 : percentage?.toFixed(2)}%
@@ -93,17 +95,17 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
                   fontSize={"9px"}
                   fontWeight={"700"}
                   pl={0.2}
-                  fontFamily={"inherit"}
+                  fontFamily={'var(--main-font-family)'}
                 
                 >
                   ${formatMoney(TotalProfit)}
                 </Typography> */}
                 <Typography
-                  fontSize={"9px"}
-                  fontFamily={"inherit"}
+                  fontSize={"0.6rem"}
+                  fontFamily={'var(--main-font-family)'}
                  
                 >
-                  Projected Profit
+                  {t('userProject.processcard.title8')}
                 </Typography>
               </Stack>
             </Stack>
@@ -133,14 +135,14 @@ const ProfitDetails = ({ TotalProfit, totalProfitFromPaidInvoices, totalProjectC
                   fontSize={"9px"}
                   fontWeight={"700"}
                   pl={0.2}
-                  fontFamily={"inherit"}
+                  fontFamily={'var(--main-font-family)'}
                   
                  
                 >
                   ${formatMoney(totalProfitFromPaidInvoices)}
                 </Typography> */}
-                <Typography fontSize={"9px"} fontFamily={"inherit"}>
-                  Margin
+                <Typography fontSize={"9px"} fontFamily={'var(--main-font-family)'}>
+                {t('userProject.processcard.title9')}
                 </Typography>
               </Stack>
             </Stack>
@@ -155,7 +157,7 @@ export default ProfitDetails;
 
 const themeStyle = {
   title: {
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     color: "#202224",
     opacity: "0.7",
   },
@@ -169,16 +171,16 @@ const themeStyle = {
     maxWidth: 80,
     minWidth: 80,
     textAlign: "left",
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     color: "#202227",
-    fontSize: "10px",
+    fontSize: "0.6rem",
     paddingRight: "32px",
   },
   innerSubtitle: {
     maxWidth: 10,
     minWidth: 10,
     textAlign: "left",
-    fontFamily: "inherit",
+    fontFamily: 'var(--main-font-family)',
     color: "#202227",
     fontSize: {xl:"20px",lg:"20px"},
   },

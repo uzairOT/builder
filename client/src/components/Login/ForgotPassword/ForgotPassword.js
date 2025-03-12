@@ -15,7 +15,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import YellowBtn from "../../UI/button";
 import { useNavigate } from "react-router-dom";
 import { useForgetPasswordMutation } from "../../../redux/apis/usersApiSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setForgetPasswordEmail } from "../../../redux/slices/authSlice";
 import { toast } from "react-toastify";
 
@@ -23,9 +23,7 @@ const ForgotPassword = () => {
   const [forgetPassword] = useForgetPasswordMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const forgetPasswordEmail = useSelector(
-    (state) => state.auth.forgetPasswordEmail
-  );
+
 
   const formik = useFormik({
     initialValues: {
@@ -104,7 +102,7 @@ const ForgotPassword = () => {
                 <ArrowBackIosIcon sx={{ fontSize: 16 }} />
               </div>
               <Typography sx={{ fontSize: 14 }} color="#4C8AB1" gutterBottom>
-                Back To Log in
+                Back to log in
               </Typography>
             </Box>
             <Container
@@ -117,7 +115,7 @@ const ForgotPassword = () => {
                   sx={{
                     color: "#000000",
                     fontSize: "20px",
-                    fontFamily: "GT Walsheim Trial",
+                    fontFamily: 'var(--main-font-family)',
                     fontWeight: 550,
                   }}
                 >
@@ -135,7 +133,7 @@ const ForgotPassword = () => {
                     color: "#202227",
                     fontWeight: 500,
                     fontSize: "16px",
-                    fontFamily: "GT Walsheim Trial",
+                    fontFamily: 'var(--main-font-family)',
                   }}
                 >
                   Email

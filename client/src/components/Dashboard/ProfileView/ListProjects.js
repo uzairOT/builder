@@ -5,17 +5,15 @@ import {
   Stack,
   CircularProgress,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
 import ProjectCard from "../../UI/Card/ProjectCard";
 import projects from "./assets/data/projects.json";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  useGetProjectUserRoleMutation,
-  useGetUserProjectsQuery,
-} from "../../../redux/apis/Project/userProjectApiSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   addProjects,
+  getPinnedProject,
   projectsPackage,
 } from "../../../redux/slices/Project/userProjectsSlice";
 import { Height } from "@mui/icons-material";
@@ -23,10 +21,12 @@ import { authUserRole } from "../../../redux/slices/auth/userRoleSlice";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
 
 const ListProjects = () => {
+  const { t } = useTranslation();
   const userRole = useSelector(authUserRole);
   const navigate = useNavigate();
   const [activeBtn, setActiveBtn] = useState("remodel");
   const { projects, error, isLoading } = useSelector(projectsPackage);
+  const pinnedProject = useSelector(getPinnedProject);
   //console.log('LIST PROJECTS:', currentUserId)
   // const { data, isLoading, error } = useGetUserProjectsQuery({
   //   userId: currentUserId,
@@ -56,10 +56,10 @@ const ListProjects = () => {
           fontSize: "16px",
           fontWeight: "400",
           padding: 1,
-          fontFamily: "Arial Rounded MT, sans-serif",
+          fontFamily: "var(--main-font-family)",
         }}
       >
-        User Projects
+        {t("userProject.title1")}
       </Typography>
       <Divider variant="middle" />
       <Typography
@@ -67,11 +67,11 @@ const ListProjects = () => {
           fontSize: "12px",
           color: "var(--textField, rgba(83, 83, 83, 0.79))",
           padding: 2,
-          fontFamily: "Arial Rounded MT, sans-serif",
+          fontFamily: "var(--main-font-family)",
           fontWeight: "400",
         }}
       >
-        All Listed Projects
+        {t("userProject.title2")}
       </Typography>
       <Stack
         direction={"row"}
@@ -90,13 +90,13 @@ const ListProjects = () => {
           }}
         >
           <Typography
-            fontSize={{ xl: "11px", lg: "9px", md: "9px", xs: "11px" }}
+            fontSize={"0.7rem"}
             fontWeight={"600"}
             color={"black"}
-            fontFamily={"inherit"}
+            fontFamily={"var(--main-font-family)"}
             width={"100%"}
           >
-            Remodel
+            {t("userProject.title3")}
           </Typography>
         </BuilderProButton>
         <BuilderProButton
@@ -109,13 +109,13 @@ const ListProjects = () => {
           }}
         >
           <Typography
-            fontSize={{ xl: "11px", lg: "9px", md: "9px", xs: "11px" }}
+            fontSize={"0.7rem"}
             fontWeight={"600"}
             color={"black"}
-            fontFamily={"inherit"}
+            fontFamily={"var(--main-font-family)"}
             width={"100%"}
           >
-            New Build
+            {t("userProject.title4")}
           </Typography>
         </BuilderProButton>
         <BuilderProButton
@@ -128,12 +128,12 @@ const ListProjects = () => {
           }}
         >
           <Typography
-            fontSize={{ xl: "11px", lg: "9px", md: "9px", xs: "11px" }}
+            fontSize={"0.7rem"}
             fontWeight={"600"}
             color={"black"}
-            fontFamily={"inherit"}
+            fontFamily={"var(--main-font-family)"}
           >
-            Commercial
+            {t("userProject.title5")}
           </Typography>
         </BuilderProButton>
       </Stack>
@@ -156,13 +156,28 @@ const ListProjects = () => {
             {/* removed error message to prompt user to refresh if error occurs */}
           </>
         ) : (
-          <Stack spacing={2} pl={"5px"} pr={"5px"}>
+          <Stack
+            spacing={2}
+            pl={{ xl: "5px", lg: "0px", xs: "5px" }}
+            pr={{ xl: "5px", lg: "0px", xs: "5px" }}
+          >
             {isLoading ? (
               <Stack justifyContent={"center"} alignItems={"center"}>
                 <CircularProgress />
               </Stack>
             ) : (
               <>
+                {pinnedProject?.id && <Link
+                  key={pinnedProject.id}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    // handleClick(projectProfileCard.id, e);
+                  }}
+                  // to={`projects/${projectProfileCard.id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <ProjectCard handleClick={handleClick} projectProfileCard={pinnedProject} pinnedProject={true} />
+                </Link>}
                 {projects[0]?.map((projectProfileCard) => {
                   if (projectProfileCard.buildType === activeBtn) {
                     return (
@@ -170,12 +185,12 @@ const ListProjects = () => {
                         key={projectProfileCard.id}
                         onClick={(e) => {
                           e.preventDefault();
-                          handleClick(projectProfileCard.id, e);
+                          // handleClick(projectProfileCard.id, e);
                         }}
                         // to={`projects/${projectProfileCard.id}`}
                         style={{ textDecoration: "none" }}
                       >
-                        <ProjectCard projectProfileCard={projectProfileCard} />
+                        <ProjectCard handleClick={handleClick} projectProfileCard={projectProfileCard} />
                       </Link>
                     );
                   } else {
@@ -187,20 +202,20 @@ const ListProjects = () => {
           </Stack>
         )}
       </Box>
-      <Stack justifyContent={'center'}>
+      <Stack justifyContent={"center"}>
         <Stack pt={0.5} pb={0.5} width={"90%"} alignSelf={"center"}>
           <BuilderProButton
             variant={"contained"}
             backgroundColor={"#FFAC00"}
-            fontFamily={"inherit"}
-            fontSize={"16px"}
+            fontFamily={"var(--main-font-family)"}
+            fontSize={"0.8rem"}
             marginLeft={0}
             fontWeight={600}
             handleOnClick={() => {
               navigate("/assignproject");
             }}
           >
-            Add New Project
+            {t('userProject.title10')}
           </BuilderProButton>
         </Stack>
       </Stack>

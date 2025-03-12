@@ -2,7 +2,6 @@ import {
   Container,
   Typography,
   Box,
-  TextField,
   Button,
   CircularProgress,
   Paper,
@@ -15,8 +14,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import React, { useEffect, useState } from "react";
 import CheckoutForm from "../../PaymentModal/CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useLocation, useParams } from "react-router-dom";
 import { useGetUserAccountsMutation } from "../../../../redux/apis/Account/AccountApiSlice";
 import { fetchUserCoupons } from "../../../Settings/Cupon/apis/fetchUserCoupon";
 import { toast } from "react-toastify";
@@ -24,25 +22,27 @@ import { getTokenFromLocalStorage } from "../../../../redux/apis/apiSlice";
 
 const InvoicePayment = () => {
   const { invoiceId, totalAmount, adminId } = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const token = queryParams.get('token') || getTokenFromLocalStorage();
+  const invoiceCheckString = localStorage.getItem("invoice")
+  const invoiceCheck = JSON.parse(invoiceCheckString)
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
-  // const [amount, setAmount] = useState(10);
   const [message, setMessage] = useState("");
-  const userInfo = useSelector((state) => state.auth.userInfo);
-  const userId = userInfo?.user?.id;
   const [getUserAccounts, { data, isLoading, isError }] =
-    useGetUserAccountsMutation({ userId: userId });
+    useGetUserAccountsMutation();
   const [loading, setLoading] = useState(true);
   const [selectedAccountId, setSelectedAccountId] = useState(null);
-
   const handleChange = (event) => {
     setSelectedAccountId(event.target.value);
   };
-  console.log(selectedAccountId);
+  // console.log(selectedAccountId);
   const handleNext = async () => {
+    const qtoken = token ? token : getTokenFromLocalStorage();
     if (selectedAccountId) {
       // Call the appropriate API when payment succeeds
-      const apiUrl = "http://3.135.107.71/invoice/payInvoice";
+      const apiUrl = "https://builderbuilder.net/invoice/payInvoice";
 
       const apiPayload = {
         invoiceId,
@@ -55,7 +55,7 @@ const InvoicePayment = () => {
           selectedAccountId === "Cash"
             ? ""
             : data?.accounts[selectedAccountId]?.accountName,
-        paymentMethod: selectedAccountId === "Cash" ? "Cash" : "Bank",
+        paymentMethod: selectedAccountId === "Cash" ? "Cash" : data?.accounts[selectedAccountId]?.accountName,
       };
 
       // Call the API with the payload when payment succeeds
@@ -64,23 +64,23 @@ const InvoicePayment = () => {
           method: "POST",
           headers: new Headers({
             "Content-Type": "application/json",
-            Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+            Authorization: `Bearer ${qtoken}`,
           }),
           body: JSON.stringify(apiPayload),
         });
-        console.log(response);
+        // console.log(response);
         if (response.ok) {
           setMessage("Complete");
           const responseData = await response.json();
-          console.log("API Response:", responseData);
+          // console.log("API Response:", responseData);
           window.location.href = `${window.location.origin}/completion`;
         } else {
           const responseData = await response.json();
           setMessage("Payment can't be completed");
-          console.log(
-            "API Response Error:-=-=-=-=-=-==-=",
-            responseData?.message
-          );
+          // console.log(
+          //   "API Response Error:-=-=-=-=-=-==-=",
+          //   responseData?.message
+          // );
           toast.warning(`${responseData?.message}`);
         }
       } catch (apiError) {
@@ -90,18 +90,27 @@ const InvoicePayment = () => {
     }
   };
 
-  console.log(adminId);
+  // console.log(adminId);
 
   useEffect(() => {
     fetchUserCoupons(getUserAccounts, { userId: adminId });
   }, []);
+  
+  useEffect(()=>{
+    if(invoiceCheck?.alertShown){
+      localStorage.removeItem("invoice")
+    } else if(!token){
+      window.location.href = `${window.location.origin}/login`;
+    }
+  },[invoiceCheck, token])
 
   useEffect(() => {
-    fetch("http://3.135.107.71/payment/create-payment-intent", {
+    const qtoken = token ? token : getTokenFromLocalStorage();
+    fetch("https://builderbuilder.net/payment/create-payment-intent", {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json",
-        Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+        Authorization: `Bearer ${qtoken}`,
       }),
       body: JSON.stringify({ amount: totalAmount }),
     }).then(async (result) => {
@@ -111,10 +120,11 @@ const InvoicePayment = () => {
   }, [totalAmount]);
 
   useEffect(() => {
-    fetch("http://3.135.107.71/payment/config", {
+    const qtoken = token ? token : getTokenFromLocalStorage();
+    fetch("https://builderbuilder.net/payment/config", {
       headers: new Headers({
         "Content-Type": "application/json",
-        Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+        Authorization: `Bearer ${qtoken}`,
       }),
     }).then(async (r) => {
       const { publishableKey } = await r.json();
@@ -142,7 +152,7 @@ const InvoicePayment = () => {
             stripePromise && (
               <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <CheckoutForm
-                  currentPlan={totalAmount}
+                  paymentAmount={totalAmount}
                   isInvoicePayment={true}
                   invoiceId={invoiceId}
                 />

@@ -2,8 +2,13 @@ import {
   Autocomplete,
   Button,
   CircularProgress,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
   OutlinedInput,
   Paper,
+  Radio,
+  RadioGroup,
   Stack,
   TextField,
   Typography,
@@ -23,6 +28,8 @@ import { Elements, PaymentElement } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import { useVerifyCouponMutation } from "../../../redux/apis/Coupon/CouponApiSlice";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -42,66 +49,90 @@ let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
 const currentUser = userInfo?.user;
 
-const PaymentModal = ({ currentPlan, currentPakage }) => {
+const PaymentModal = ({
+  currentPlan,
+  currentPakage,
+  selectedPlan,
+  setSelectedPlan,
+  currentPayment
+}) => {
   const [values, setValues] = useState(initialValues);
   const [countries, setCountries] = useState([]);
   const [selectedTab, setSelectedTab] = useState(0);
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
-  const [promoCode, setPromoCode] = useState('');
-  const [discounted, setDiscounted] = useState('');
+  const [promoCode, setPromoCode] = useState("");
+  const [discounted, setDiscounted] = useState("");
   const [newAmount, setNewAmount] = useState(0);
-  const [percentageOff, setPercentageOff] = useState(0)
-  const [verifyCoupon, {isLoading}] = useVerifyCouponMutation();
-
-  const handlePromoCodeChange = (e) =>{
+  const [percentageOff, setPercentageOff] = useState(0);
+  const [paymentType, setPaymentType] = useState("Monthly");
+  const [verifyCoupon, { isLoading }] = useVerifyCouponMutation();
+  const [amount, setAmount] = useState();
+  const {t} = useTranslation()
+  const handlePaymentTypeChange = (event) => {
+    setPaymentType(event.target.value);
+  };
+// console.log(currentPlan);
+  const handlePromoCodeChange = (e) => {
     setPromoCode(e.target.value);
-  }
+  };
   const handlePromoCode = async () => {
-      try{
-        const res = await verifyCoupon({couponCode: promoCode, amount:currentPlan}).unwrap().then(res=>{
-          console.log(res)
+    try {
+      if(!amount){
+        toast.warning("Select a plan");
+        return;
+      }
+      const res = await verifyCoupon({
+        couponCode: promoCode,
+        amount: amount,
+      })
+        .unwrap()
+        .then((res) => {
+          // console.log(res);
           setNewAmount(res.newAmount);
           setDiscounted(res.discount);
           setPercentageOff(res.discountPercentage);
-        })
-
-      }catch(error){
-        console.error(error)
-      }
-  }
-  const amount = currentPlan;
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
-    console.log("==============1111111111 ", currentUser);
-    fetch("http://3.135.107.71/payment/config", {
+    // console.log("==============1111111111 ", currentUser);
+    fetch("https://builderbuilder.net/payment/config", {
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: `Bearer ${getTokenFromLocalStorage()}`,
       }),
-    }).then(async (r) => {
-      const { publishableKey } = await r.json();
-      setStripePromise(loadStripe(publishableKey));
-    }).catch(error => {
-      console.log(error)
-    });
+    })
+      .then(async (r) => {
+        const { publishableKey } = await r.json();
+        setStripePromise(loadStripe(publishableKey));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   useEffect(() => {
-    fetch("http://3.135.107.71/payment/create-payment-intent", {
+    setClientSecret('');
+    fetch("https://builderbuilder.net/payment/create-payment-intent", {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json",
         Authorization: `Bearer ${getTokenFromLocalStorage()}`,
       }),
-      body: JSON.stringify({ amount: amount }),
-    }).then(async (result) => {
-      // console.log("-=-=-=-result ", result);
-      var { clientSecret } = await result.json();
-      setClientSecret(clientSecret);
-    }).catch(error => {
-      console.log(error)
-    });
+      body: JSON.stringify({ amount }),
+    })
+      .then(async (result) => {
+        var { clientSecret } = await result.json();
+        setClientSecret(clientSecret);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [amount]);
+
 
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -127,17 +158,25 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
     fetchData();
   }, []);
 
-  useEffect(()=>{
-    console.log(promoCode)
-  }, [promoCode])
-  useEffect(()=>{
-    if(discounted === ''){
+  useEffect(() => {
+    if (currentPakage === "Business Pro") {
+      setAmount(
+        paymentType === "Yearly" ? 2799 : paymentType === "Monthly" ? 319 : ""
+      );
+    } else if (currentPakage === "Business +") {
+      setAmount(
+        paymentType === "Yearly" ? 399 : paymentType === "Monthly" ? 39.99 : ""
+      );
+    }
+  }, [currentPakage, paymentType]);
 
-    }else{
 
-      setDiscounted('')
-      }
-  },[currentPakage])
+  useEffect(() => {
+    if (discounted === "") {
+    } else {
+      setDiscounted("");
+    }
+  }, [currentPakage]);
 
   const themeStyle = {
     promoCode: {
@@ -145,6 +184,7 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
       width: "100%",
     },
     inputLabels: {
+      fontFamily: "var(--main-font-family)",
       fontSize: "14px",
       color: "gray",
     },
@@ -160,18 +200,23 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
       <form>
         <Stack p={3} px={4}>
           <Typography
-            fontFamily={"inherit"}
+            fontFamily={"var(--main-font-family)"}
             fontSize={"18px"}
             fontWeight={"500"}
           >
-            1. Organization info
+            {t("Subscription.form.orgInfo")}
           </Typography>
           <Stack pt={2} spacing={1}>
             <label id="organizationName" style={themeStyle.inputLabels}>
-              Organization Name
+              {t("Subscription.form.orgName")}
             </label>
             <TextField
-            inputProps={{ maxLength: 50 }}
+              sx={{
+                "& .MuiInputBase-input::placeholder": {
+                  fontFamily: "var(--main-font-family)",
+                },
+              }}
+              inputProps={{ maxLength: 50 }}
               id="organizationName"
               label=""
               variant="outlined"
@@ -201,14 +246,19 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
               )}
             ></Autocomplete> */}
             <label id="address" style={themeStyle.inputLabels}>
-              Address Line 1
+            {t("Subscription.form.address")}
             </label>
             <OutlinedInput
-            inputProps={{ maxLength: 50 }}
-            // inputProps={{maxLength:1}}
+              sx={{
+                "& .MuiInputBase-input::placeholder": {
+                  fontFamily: "var(--main-font-family)",
+                },
+              }}
+              inputProps={{ maxLength: 50 }}
+              // inputProps={{maxLength:1}}
               id="address"
               name="address"
-              placeholder={"Street address"}
+              placeholder={t("Subscription.form.placeholder")}
               variant="outlined"
               size="small"
               value={values.address}
@@ -217,7 +267,9 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
           </Stack>
           <Stack p={1} py={4} spacing={1}>
             <Stack flex={1} direction={"row"} spacing={1}>
-              <Typography color={"gray"}>Have a promo code?</Typography>
+              <Typography fontFamily={"var(--main-font-family)"} color={"gray"}>
+              {t("Subscription.form.promo")}
+              </Typography>
               <HelpIcon
                 fontSize={"small"}
                 sx={{ color: "GrayText", "&:hover": { color: "black" } }}
@@ -226,15 +278,36 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
             <Stack flex={1} direction={"row"} spacing={1}>
               <OutlinedInput
                 variant={"outlined"}
-                placeholder="Enter promo code"
+                placeholder={t("Subscription.form.placeholder1")}
                 size="small"
-                style={{ width: "67%", backgroundColor: "#F5F5F5" }}
+                sx={{
+                  width: "67%",
+                  backgroundColor: "#F5F5F5",
+                  "& .MuiInputBase-input::placeholder": {
+                    fontFamily: "var(--main-font-family)",
+                  },
+                }}
                 value={promoCode}
                 onChange={(e) => handlePromoCodeChange(e)}
               ></OutlinedInput>
-              <PromoCodeButton  width={"30%"} variant="contained" disabled={isLoading} onClick={handlePromoCode}>
-                
-                {isLoading ? <CircularProgress sx={{fontSize:'14px'}} /> :<Typography  fontSize={{xl:14,lg:11}}>Apply Code </Typography> }
+              <PromoCodeButton
+                width={"30%"}
+                variant="contained"
+                disabled={isLoading}
+                onClick={handlePromoCode}
+              >
+                {isLoading ? (
+                  <CircularProgress sx={{ fontSize: "14px" }} />
+                ) : (
+                  <Typography
+                    sx={{
+                      fontFamily: "var(--main-font-family)",
+                    }}
+                    fontSize={{ xl: 14, lg: 11 }}
+                  >
+                    {t("Subscription.form.button")}{" "}
+                  </Typography>
+                )}
               </PromoCodeButton>
             </Stack>
           </Stack>
@@ -245,11 +318,11 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
             py={1}
           >
             <Typography
-              fontFamily={"inherit"}
+              fontFamily={"var(--main-font-family)"}
               fontSize={"18px"}
               fontWeight={"500"}
             >
-              2. Payment Method
+              {t("Subscription.form.paymentMethod")}
             </Typography>
             <Stack direction={"row"} alignItems={"center"} spacing={0.5}>
               <LockIcon fontSize="12px" />
@@ -262,29 +335,70 @@ const PaymentModal = ({ currentPlan, currentPakage }) => {
             direction={"row"}
             alignItems={"center"}
             py={0.1}
+            sx={{ gap: 2 }}
           >
-            <Typography>
-              <b>Choosen Plan: </b>
+            <Typography fontFamily={"var(--main-font-family)"}>
+              <b
+                style={{
+                  fontFamily: "var(--main-font-family)",
+                }}
+              >
+                {t("Subscription.form.choosePlan")}:{" "}
+              </b>
               {currentPakage}
             </Typography>
-            <Typography>{amount}$</Typography>
+            <Typography>{amount ?  `$${amount}`:''}</Typography>
+
             {/* <Typography fontSize={'14px'} color={'tomato'}>{discounted ? ` -${((discounted/amount) *100)}% off` : ''}</Typography> */}
+
+            <FormControl>
+              <RadioGroup
+                row
+                aria-labelledby="payment-type-group-label"
+                name="payment-type-group"
+                value={paymentType}
+                onChange={handlePaymentTypeChange}
+              >
+                <FormControlLabel
+                  value="Monthly"
+                  control={<Radio size="small" />}
+                  label={t("Subscription.form.monthly")}
+                />
+                <FormControlLabel
+                  value="Yearly"
+                  control={<Radio size="small" />}
+                  label={t("Subscription.form.yearly")}
+                />
+              </RadioGroup>
+            </FormControl>
           </Stack>
-          {discounted && <Stack direction={'row'} justifyContent={'space-between'} >
-            <Stack direction={'row'} gap={1}>
-            <Typography><b>Discounted price: </b></Typography>
-            <Typography>{discounted ? `${newAmount}$    ` : ''}</Typography>
+
+          {discounted && (
+            <Stack direction={"row"} justifyContent={"space-between"}>
+              <Stack direction={"row"} gap={1}>
+                <Typography>
+                  <b>{t("Subscription.form.discount")}: </b>
+                </Typography>
+                <Typography>{discounted ? `${newAmount}$    ` : ""}</Typography>
+              </Stack>
+              <Typography fontSize={"14px"} color={"tomato"}>
+                {discounted ? ` -${percentageOff}%` : ""}
+              </Typography>
             </Stack>
-            <Typography fontSize={'14px'} color={'tomato'}>{discounted ? ` -${percentageOff}%` : ''}</Typography>
-          </Stack>}
+          )}
           {clientSecret && stripePromise && (
             <Elements stripe={stripePromise} options={{ clientSecret }}>
               <CheckoutForm
+                selectedPlan={selectedPlan}
                 address={values.address}
-                currentPlan={discounted ? newAmount : amount}
+                paymentAmount={discounted ? newAmount : amount}
                 currentPakage={currentPakage}
                 orgName={currentUser.companyName}
+                orgId={currentUser?.organization?.organizationId}
                 userId={currentUser.id}
+                paymentType={paymentType}
+                currentPlan={currentPlan}
+                currentPayment={currentPayment}
               />
             </Elements>
           )}

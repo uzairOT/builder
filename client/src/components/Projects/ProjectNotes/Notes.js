@@ -1,11 +1,6 @@
 import { Paper, Stack, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import BuilderProButton from '../../UI/Button/BuilderProButton'
-import SearchBar from '../../UI/SearchBar/SearchBar'
-import EventNoteIcon from '@mui/icons-material/EventNote';
-import SelectMenuBarChart from '../../Reports/SelectMenuBarChart';
 import VerticalTabs from './VerticalTabs';
-import ButtonGroup from '@mui/joy/ButtonGroup';
 import OpenNotes from './OpenNotes';
 import NotesModal from './NotesModal';
 import { useParams } from "react-router-dom";
@@ -14,13 +9,17 @@ import  Search  from '../../UI/CustomSearchInput';
 import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
 import { useEffect } from 'react';
 
+// import { usePermissionCheck } from '../../Settings/PermissionAccess/PermissionCheck';
+import { useTranslation } from 'react-i18next';
+
 const Notes = () => {
+    const {t} = useTranslation()
     const [selectedButton, setSelectedButton] = useState(-1);
     const { id } = useParams();
     const [searchInput, setSearchInput] = useState('');
     const debouncedValue = QueryDebouncer(searchInput, 500)
     const { data, refetch } = useGetProjectNotesQuery({ projectId: id, q:debouncedValue ? debouncedValue : '' });
-
+  
   
       const handleSelectedButton = (index) =>{
         setSelectedButton(index);
@@ -40,7 +39,7 @@ const Notes = () => {
     <Stack flex={1}>
     <Paper sx={{borderRadius:'14px', height:'99%'}} >
       <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} p={2} >
-        <Typography fontSize={{xl:'22px', lg:"18px",md:'22px',xs:'22px',}} fontFamily={'inherit'} fontWeight={'600'} color={'#4C8AB1'}>Notes</Typography>
+        <Typography fontSize={{xl:'22px', lg:"18px",md:'22px',xs:'22px',}} fontFamily={'var(--main-font-family)'} fontWeight={'600'} color={'#4C8AB1'}>{t("ProjectNotes.title1")}</Typography>
         <Stack direction={'row'} alignItems={'center'}>
             <NotesModal q={debouncedValue}/>
         </Stack>
@@ -48,7 +47,7 @@ const Notes = () => {
       <Search
           value={searchInput}
           onChange={handleSearchInputChange}
-          placeholder={`Search Notes`}
+          placeholder={t("ProjectNotes.placeholder")}
           backgroundColor="#E7E7E7"
         />
       <Stack direction={'row'} justifyContent={'flex-start'} alignItems={'center'} p={2}>
@@ -62,7 +61,7 @@ const Notes = () => {
 
         <Stack flex={2}  >
          <Paper sx={{ borderRadius:'14px', height:'98.88%'}}>
-           <OpenNotes notes={data?.notes[selectedButton]} setSelectedButton={setSelectedButton} refetchNotes={refetchNotes}/>
+           <OpenNotes  notes={data?.notes[selectedButton]} setSelectedButton={setSelectedButton} refetchNotes={refetchNotes}/>
         </Paper>
           </Stack>
 

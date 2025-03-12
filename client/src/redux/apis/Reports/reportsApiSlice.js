@@ -1,6 +1,6 @@
 import { apiSlice } from "../apiSlice";
 
-const REPORTS_URL = "http://3.135.107.71/report";
+const REPORTS_URL = "https://builderbuilder.net/report";
 
 const reportsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -66,7 +66,28 @@ const reportsApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data
       })
-    })
+    }),
+    getLineItemMargins: builder.mutation({
+      query: (data) => ({
+        url: `${REPORTS_URL}/getLineItemMargins`,
+        method: 'POST',
+        body: data
+      }),
+    }),
+    getSubcontractorInvoices: builder.mutation({
+      query: (data) => ({
+        url: `${REPORTS_URL}/getSubcontractorInvoices`,
+        method: 'POST',
+        body: data
+      }),
+    }),
+    getMonthlyMargin: builder.mutation({
+      query: (data) => ({
+        url: `${REPORTS_URL}/generateMonthlyMargins`,
+        method: 'POST',
+        body: data
+      }),
+    }),
   }),
 });
 
@@ -79,5 +100,8 @@ export const {
   useGetTotalProjectProfitMarginMutation,
   useGetAllProjectsLineItemsMutation,
   useGetOutstandingInvoicesMutation,
-  useGetWorkOrdersLineItemsProgressMutation
+  useGetWorkOrdersLineItemsProgressMutation,
+  useGetLineItemMarginsMutation,
+  useGetSubcontractorInvoicesMutation,
+  useGetMonthlyMarginMutation
 } = reportsApiSlice;

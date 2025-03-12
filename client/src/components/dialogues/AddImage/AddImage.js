@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import {
   Button,
-  TextField,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Box,
   Typography,
@@ -13,24 +11,33 @@ import {
   Stack,
   IconButton,
   TextareaAutosize,
-  ToggleButton,
   Switch,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
 import upload from "./assets/upload.png";
 import "../../../App.css";
-import { getPresignedUrl, uploadToS3 } from "../../../utils/S3";
+import { uploadToS3 } from "../../../utils/S3";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { fileTypeIcons } from "./assets/fileTypes";
 import filePlaceHolder from "../../../assets/FileSvg/file.svg";
 import CloseIcon from "@mui/icons-material/Close";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import CheckIcon from "@mui/icons-material/Check";
-
-function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelete, setShowDelete }) {
+import { useTranslation } from 'react-i18next'
+function AddImage({
+  handleOpen,
+  handleClose,
+  heading,
+  type,
+  fetchData,
+  showDelete,
+  setShowDelete,
+  projectOrganizationId,
+  view
+}) {
   const [open, setOpen] = useState(false);
+  const {t} = useTranslation()
   const [image, setImage] = useState(null);
   const [primary, setPrimary] = useState(null);
   const objectFit = { objectFit: image ? "cover" : "none" };
@@ -41,11 +48,15 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
   const [selectedFile, setSelectedFile] = useState("");
   const { id } = useParams();
   const [notes, setNotes] = useState("");
+  let data = localStorage.getItem("userInfo");
+  let userInfo = JSON.parse(data);
+  const currentUser = userInfo?.user;
+
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://3.135.107.71/project/file",
+          "https://builderbuilder.net/project/file",
           {
             fileName,
             fileType,
@@ -78,7 +89,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     const fileSizeLimit = 25 * 1024 * 1024;
-    if(!file)return
+    if (!file) return;
     if (file?.size > fileSizeLimit) {
       toast.warning("Please upload file size less than 25mb.");
       return;
@@ -97,8 +108,8 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
       toast.warning("Please upload an image.");
       return;
     }
-    console.log(fileType);
-    console.log(heading);
+    // console.log(fileType);
+    // console.log(heading);
     setFileName(file.name);
     setFileType(file.type);
     setSelectedFile(file);
@@ -115,7 +126,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    if(!file)return
+    if (!file) return;
     const fileSizeLimit = 25 * 1024 * 1024;
     if (file.size > fileSizeLimit) {
       toast.warning("Please upload file size less than 25mb.");
@@ -135,8 +146,8 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
       toast.warning("Please upload an image.");
       return;
     }
-    console.log(fileType);
-    console.log(heading);
+    // console.log(fileType);
+    // console.log(heading);
     setFileName(file.name);
     setFileType(file.type);
     setSelectedFile(file);
@@ -155,8 +166,8 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if(showDelete){
-      setShowDelete(false)
+    if (showDelete) {
+      setShowDelete(false);
     }
     if (!selectedFile) {
       toast.warning("Please select a file");
@@ -167,19 +178,21 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
       const formData = new FormData(event.currentTarget);
       const formJson = Object.fromEntries(formData.entries());
       const fileUrl = await uploadFileToServer(selectedFile);
-      console.log(fileUrl);
+      // console.log(fileUrl);
       const uploadedFileUrl = await uploadToS3(fileUrl, selectedFile);
       const fileType = getFileType(heading);
-      const apiUrl = `http://3.135.107.71/project/files/${id}`;
+      const apiUrl = `https://builderbuilder.net/project/files/${id}`;
       if (!uploadedFileUrl) {
-        toast.error("Error uploading Image.");
+        toast.error("Error uploading image.");
         return;
       }
       const requestBody = {
         fileUrl: uploadedFileUrl,
         fileType: fileType,
+        fileName: fileName,
         notes: notes,
         primary: primary,
+        organizationId: projectOrganizationId,
       };
       const response = await axios
         .post(apiUrl, requestBody, {
@@ -194,12 +207,15 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
           handleClickClose();
           fetchData();
         });
-        console.log(response);
+      // console.log(response);
       if (response.status !== 201) {
         throw new Error("Failed to save file URL");
       }
     } catch (error) {
-      toast.error(error?.response?.data?.error)
+      // console.log("Error Check",error);
+      toast.error(
+        error?.response?.data?.message || error?.response?.data?.error
+      );
       // console.error("Error:", error.response.data.error);
     }
   };
@@ -215,9 +231,9 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
     }
     return null;
   };
-  console.log(heading);
-  console.log(fileTypeIcons);
-  console.log(fileTypeIcons.get(selectedFile?.name?.split(".").pop()));
+  // console.log(heading);
+  // console.log(fileTypeIcons);
+  // console.log(fileTypeIcons.get(selectedFile?.name?.split(".").pop()));
   return (
     <div className="App">
       <Dialog
@@ -234,7 +250,9 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
           justifyContent={"space-between"}
           alignItems={"center"}
         >
-          <DialogTitle sx={themeStyle.typoTitle}><span style={{textTransform:'capitalize'}}>Add {heading}</span></DialogTitle>
+          <DialogTitle sx={themeStyle.typoTitle}>
+            <span style={{ textTransform: "capitalize" }}>{t("ProjectFiles.button1")} {view}</span>
+          </DialogTitle>
           <IconButton onClick={handleClickClose}>
             <CloseIcon />
           </IconButton>
@@ -286,7 +304,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
                   </>
                 )}
                 <Typography sx={themeStyle.avatarText}>
-                  {image ? "" : "Click or Drag your file here"}
+                  {image ? "" : t("ProjectFiles.clickOrDragFileHere")}
                 </Typography>
               </div>
             </label>
@@ -298,7 +316,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
               maxLength={1000}
               style={themeStyle.inputStyle}
               // required
-              placeholder="Type Note Here ....."
+              placeholder={t("ProjectFiles.addImagePlaceholder")}
               margin="dense"
               id="notes"
               name="notes"
@@ -309,42 +327,42 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
           </Box>
           {heading === "image" && (
             <>
-            <Stack
-              direction={"row"}
-              justifyContent={"start"}
-              alignItems={"center"}
-              gap={4}
-            >
               <Stack
                 direction={"row"}
                 justifyContent={"start"}
                 alignItems={"center"}
+                gap={4}
               >
-                <Typography
-                  textAlign={"left"}
-                  fontFamily={"inherit"}
-                  fontSize={"12px"}
-                  pl={primary ? "" : "13px"}
+                <Stack
+                  direction={"row"}
+                  justifyContent={"start"}
+                  alignItems={"center"}
                 >
-                  {primary ? "Unset" : "Set"} Primary
-                </Typography>
+                  <Typography
+                    textAlign={"left"}
+                    fontFamily={"var(--main-font-family)"}
+                    fontSize={"12px"}
+                    pl={primary ? "" : "13px"}
+                  >
+                    {primary ? t("ProjectFiles.unset") : t("ProjectFiles.set")} {t("ProjectFiles.primary")}
+                  </Typography>
 
-                <Switch
-                  value="primary"
-                  selected={primary}
-                  onChange={() => {
-                    setPrimary((prev) => !prev);
-                  }}
-                ></Switch>
+                  <Switch
+                    value="primary"
+                    selected={primary}
+                    onChange={() => {
+                      setPrimary((prev) => !prev);
+                    }}
+                  ></Switch>
+                </Stack>
+                <Stack>
+                  {primary ? (
+                    <CheckIcon sx={{ color: "green" }} />
+                  ) : (
+                    <CloseIcon sx={{ color: "red" }} />
+                  )}
+                </Stack>
               </Stack>
-              <Stack>
-                {primary ? (
-                  <CheckIcon sx={{ color: "green" }} />
-                ) : (
-                  <CloseIcon sx={{ color: "red" }} />
-                )}
-              </Stack>
-            </Stack>
             </>
           )}
         </DialogContent>
@@ -357,7 +375,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
             {loading ? (
               <CircularProgress size={"20px"} sx={{ color: "white" }} />
             ) : (
-              "Add"
+              t("ProjectFiles.button1")
             )}
           </Button>
         </DialogActions>
@@ -368,7 +386,7 @@ function AddImage({ handleOpen, handleClose, heading, type, fetchData, showDelet
 
 const themeStyle = {
   typoTitle: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     fontSize: "1.5rem",
     color: "#4C8AB1",
     marginLeft: "-1rem",
@@ -381,7 +399,7 @@ const themeStyle = {
     border: "1px solid #D8D8D8",
     borderRadius: "0.5rem",
     color: "#202227",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     backgroundColor: "#FAFAFA",
   },
   generalBox: {
@@ -395,7 +413,7 @@ const themeStyle = {
     padding: "1rem 2rem",
   },
   typoText: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     fontSize: "1rem",
     color: "#202227",
   },
@@ -424,7 +442,7 @@ const themeStyle = {
     position: "relative",
   },
   avatarText: {
-    fontFamily: "inherit",
+    fontFamily: "var(--main-font-family)",
     fontWeight: 600,
     fontSize: "0.8rem",
     color: "#121212",

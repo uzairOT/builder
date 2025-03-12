@@ -1,21 +1,20 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+
 import AddPhaseView from "../AddPhaseView/AddPhaseView";
-import Footer from "../Footer/Footer";
 import StepTitles from "../StepTitles/StepTitles";
 import { Grid } from "@mui/material";
-
+import { useTranslation } from "react-i18next";
 function AssignNewProjectStep3({ projectId, onNextStep }) {
-  const navigate = useNavigate();
-  console.log(projectId);
+  const { t } = useTranslation();
+  // console.log(projectId);
 
   return (
     <div>
       <StepTitles
-        stepHeading={"Step 3 of 3"}
-        Heading={"Plan your project"}
+        stepHeading={t("AssignNewProjectStep3.title1")}
+        Heading={t("AssignNewProjectStep3.title2")}
         // projectName={projectName}
-        stepDiscription={`Divide your project in phases and add line items against phases.`}
+        stepDiscription={t("AssignNewProjectStep3.title3")}
       />
       <Grid m={"0px 6px 0px 6px"} >
         <AddPhaseView

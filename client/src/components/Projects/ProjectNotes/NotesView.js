@@ -1,4 +1,4 @@
-import { Paper, Stack } from "@mui/material";
+import { Paper, Stack, CircularProgress } from "@mui/material";
 import React from "react";
 import TaskCalenderView from "../../Dashboard/TaskCalenderView/TaskCalenderView";
 import Notes from "./Notes";
@@ -9,15 +9,9 @@ import { getForecast } from "../../../redux/slices/DailyForecast/dailyForecastSl
 const NotesView = () => {
   const allEvent = useSelector(allEvents);
   const forecast = useSelector(getForecast);
-  const local = localStorage.getItem("userInfo");
-  const currentUser = JSON.parse(local);
-  const { id } = currentUser.user;
   const loading = allEvent.isLoading;
-  const error = allEvent.error;
   const events = allEvent.events;
-  const dailyForecast = forecast.dailyForecast;
-  const forecastIsLoading = forecast.isLoading;
-  const forecastError = forecast.error;
+  const dailyForecast = forecast.dailyForecast;;
   //console.log( "IN DASHBOARD EVENTS: ", events)
   return (
     <Stack
@@ -34,7 +28,7 @@ const NotesView = () => {
       <Stack flex={1}>
         <Paper sx={{ borderRadius: "14px", height: "calc(92vh - 70px)" }}>
           {loading ? (
-            <>Loading</>
+            <><CircularProgress /></>
           ) : (
             <TaskCalenderView
               dailyForecast={dailyForecast}

@@ -113,12 +113,12 @@ const themeStyle = {
     },
     heading: {
         color: "#4C8AB1",
-        fontFamily: 'Arial Rounded MT, sans-serif',
+        fontFamily: 'var(--main-font-family)',
         fontSize: "1.3rem",
     },
     viewAllButton: {
         color: "#FFAC00",
-        fontFamily: 'Arial Rounded MT, sans-serif',
+        fontFamily: 'var(--main-font-family)',
         fontSize: "0.9rem",
         marginRight: "1rem",
         textTransform: "none"
@@ -132,7 +132,7 @@ const themeStyle = {
     buttonStyle: {
         width: '54px',
         height: '21px',
-        fontFamily: 'Arial Rounded MT, sans-serif',
+        fontFamily: 'var(--main-font-family)',
         borderRadius: '26px',
         border: '1px solid #DBDBDB',
         backgroundColor: '#F7F9FC',
@@ -153,7 +153,7 @@ const themeStyle = {
         textAlign: "center",
         paddingTop: "0.3rem",
         fontSize: "1.2rem",
-        fontFamily: 'Arial Rounded MT, sans-serif',
+        fontFamily: 'var(--main-font-family)',
 
     },
     hrLine: {
@@ -174,12 +174,12 @@ const themeStyle = {
         background: "#FFE4E4", borderRight: "none"
     },
     dayTypo: {
-        fontFamily: 'Arial Rounded MT, sans-serif',
+        fontFamily: 'var(--main-font-family)',
         fontStyle: 'italic',
         color: "#000000"
     },
     dayCount: {
-        fontFamily: 'Poppins',
+        fontFamily: 'var(--main-font-family)',
         fontWeight: 500,
         fontSize: '14px',
         color: "#676161",
@@ -193,7 +193,7 @@ const themeStyle = {
         },
     },
     degreeCount: {
-        fontFamily: 'Arial Rounded MT, sans-serif',
+        fontFamily: 'var(--main-font-family)',
         fontWeight: 500,
         fontSize: '19px',
         color: '#202227',
@@ -201,7 +201,7 @@ const themeStyle = {
         paddingLeft: "0.5rem"
     },
     noWorkingDay: {
-        fontFamily: 'Arial Rounded MT, sans-serif',
+        fontFamily: 'var(--main-font-family)',
         fontSize: "0.7rem",
         marginTop: "-1rem",
         zIndex: 1

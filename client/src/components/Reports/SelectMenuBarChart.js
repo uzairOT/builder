@@ -94,7 +94,7 @@ Button.propTypes = {
 
 const StyledButton = styled(Button, { shouldForwardProp: () => true })(
   ({ theme, ownerState }) => `
-  font-family: 'Arial Rounded MT', sans-serif;
+  font-family: var(--main-font-family);
   font-size: 0.875rem;
   box-sizing: border-box;
   width: 120px;

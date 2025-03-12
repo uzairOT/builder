@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import GoogleLogin from "react-google-login";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -8,8 +8,6 @@ import {
   Checkbox,
   useMediaQuery,
   Button,
-  MenuItem,
-  Select,
   CircularProgress,
   Stack,
 } from "@mui/material";
@@ -22,7 +20,6 @@ import "react-international-phone/style.css";
 import YellowBtn from "../UI/button";
 import "../../App.css";
 import "./Signup.css";
-import axios from "axios";
 //import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -52,15 +49,10 @@ const isPhoneValid = (phone) => {
 };
 
 const SignupComp = () => {
-  const isLG = useMediaQuery("(min-width: 1280px)");
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
   const [phoneIsValid, setPhoneIsValid] = useState(true);
-
-  const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
-  const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
-
   let heightValue;
   if (isMobile) {
     heightValue = "1rem";
@@ -80,7 +72,7 @@ const SignupComp = () => {
     fontSize: "14px",
     border: "1px solid #ccc",
     borderRadius: "12px",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     paddingLeft: "-1.5rem",
   };
   const customPhoneStyles = {
@@ -110,9 +102,14 @@ const SignupComp = () => {
   const [googleLogin] = useGoogleLoginMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [register, { isLoading }] = useRegisterMutation();
   const { userInfo } = useSelector((state) => state.auth);
+  const passwordInputField = useRef();
+  let IsValidSub = userInfo?.user?.hasValidSubscription;
+
+  const openInNewTab = (url) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   // const handleChange = (e) => {
   //   const { name, value } = e.target || e;
@@ -150,20 +147,27 @@ const SignupComp = () => {
       //
       try {
         const res = await googleLogin({ email }).unwrap();
-        if (res.message === "Login Successful!") {
-          dispatch(setCredentials({ ...res }));
+
+        if (res.message === "Login successful!") {
+          dispatch(setCredentials({ ...res.data }));
           setTimeout(() => {
-            window.location.href = "/";
+            window.location.href = "/dashboard";
           }, 1000);
-        } else if (res.message === "notFound!") {
+        } else if (res.message === "Not found!") {
           toast.warning("User not found");
           navigate("/signup");
-        } else {
+        }
+        // else if (IsValidSub === false) {
+        //   setTimeout(() => {
+        //     window.location.href = "/settings/subscription";
+        //   }, 1000);
+        // }
+        else {
           toast.warning("Something went wrong");
           navigate("/signup");
         }
       } catch (err) {
-        if (err?.data?.message === "notFound!") {
+        if (err?.data?.message === "Not found!") {
           toast.warning("Please enter following information");
           navigate("/userinfo");
         } else {
@@ -171,7 +175,7 @@ const SignupComp = () => {
           //navigate("/signup");
         }
 
-        console.log("+(+(+++", err);
+        // console.log("+(+(+++", err);
         // alert("---",err?.data?.message || "---",err.error);
       }
       //
@@ -192,10 +196,10 @@ const SignupComp = () => {
       return;
     }
     if (checked) {
-      const data = { ...values, phoneNumber: phone };
+      const data = { ...values, phoneNumber: phone, withGoogle: false };
       try {
         const res = await register(data).unwrap();
-        console.log("Sign up: ", res);
+        // console.log("Sign up: ", res);
         // dispatch(setCredentials({ ...res }));
         // navigate("/assignproject");
         if (res.redirectTo === "verifyOtp") {
@@ -209,17 +213,17 @@ const SignupComp = () => {
           toast.error(res.message || "Something went wrong!");
           return;
         }
-        console.log("hi");
+        // console.log("hi");
       } catch (err) {
         console.log(err);
         if (err.status === "FETCH_ERROR") {
-          toast.error("Network Issues");
+          toast.error("Network issues");
           return;
         }
         toast.error(err?.data?.error || err.error || "Something went wrong!");
       }
     } else {
-      toast("Please agree to our Terms of use");
+      toast("Please agree to our terms of use and privacy policy to continue");
     }
   };
 
@@ -257,18 +261,23 @@ const SignupComp = () => {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
 
-  useEffect(() => {
-    console.log(values);
-  }, [values]);
   return (
     <Grid container sx={{ ...firstGrid }}>
       <ToastContainer />
-      <Grid item container lg={6} md={6} sm={12} xs={12} sx={{...SecondGrid, mt:"1rem"}}>
-      <img
-            style={{ height: "236px",width:"435px", paddingLeft:'8px' }}
-            src={builderproicon}
-            alt="Builder Pro"
-          />
+      <Grid
+        item
+        container
+        lg={6}
+        md={6}
+        sm={12}
+        xs={12}
+        sx={{ ...SecondGrid, mt: "1rem" }}
+      >
+        <img
+          style={{ height: "236px", width: "435px", paddingLeft: "8px" }}
+          src={builderproicon}
+          alt="Builder Pro"
+        />
         <Box
           sx={{
             display: "flex",
@@ -276,10 +285,9 @@ const SignupComp = () => {
             marginTop: { xl: "0rem", lg: "0rem", md: "0rem", sm: "0rem" },
           }}
         >
-         
           {/* <Typography sx={firstHeading}>BuilderBUILDER PRO</Typography> */}
           <Box>
-            <Typography component="p"  sx={secondHeading}>
+            <Typography component="p" sx={secondHeading}>
               On schedule.
             </Typography>
             <Typography component="p" sx={secondHeading}>
@@ -297,23 +305,23 @@ const SignupComp = () => {
 
         {/* Button */}
 
-        <Box sx={downloadForMobBox} pl={'4px'}>
+        <Box sx={downloadForMobBox} pl={"4px"}>
           <img
             src={downloadForMob}
-            width={'100%'}
+            // width={"100%"}
             alt=""
             style={{ height: "120px" }}
           />
         </Box>
         <Box sx={googleAppImgsBox}>
           <a
-            href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
+            href="https://play.google.com/store/apps/details?id=com.npisoftware.builder_builder_pro"
             target="blank"
           >
             <img src={googlePlay} style={{ cursor: "pointer" }} alt="" />
           </a>
 
-          <a href="https://testflight.apple.com/join/Fejy1iQ6" target="blank">
+          <a href="https://apps.apple.com/us/app/builderbuilder-pro/id6714458398" target="blank">
             <img src={appStore} style={{ cursor: "pointer" }} alt="" />
           </a>
         </Box>
@@ -359,7 +367,7 @@ const SignupComp = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                   {errors.firstName && touched.firstName
                     ? errors.firstName
                     : ""}
@@ -390,7 +398,7 @@ const SignupComp = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                   {errors.lastName && touched.lastName ? errors.lastName : ""}
                 </Typography>
               </Box>
@@ -411,7 +419,7 @@ const SignupComp = () => {
                 name="email"
                 style={{
                   ...inputStyle,
-                  fontFamily: "GTWalsheimTrial",
+                  fontFamily: "var(--main-font-family)",
                   paddingLeft: "-1.5rem",
                   fontSize: isMobile ? "0.8rem" : "1rem",
                   border:
@@ -425,7 +433,7 @@ const SignupComp = () => {
                 onChange={handleEmailChange}
                 onBlur={handleBlur}
               />
-              <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+              <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                 {errors.email && touched.email ? errors.email : ""}
               </Typography>
             </Box>
@@ -443,14 +451,14 @@ const SignupComp = () => {
               </label>
 
               <PhoneInput
-                disableDialCodePrefill
+                // disableDialCodePrefill
                 style={{ ...customPhoneStyles }}
-                defaultCountry=""
+                defaultCountry="us"
                 name={"phoneNumber"}
                 value={phone}
                 onBlur={(e) => {
                   handleBlur(e);
-                  validate(phone); 
+                  validate(phone);
                 }}
                 onChange={(phone) => setPhone(phone)}
                 countrySelectorStyleProps={{
@@ -467,7 +475,7 @@ const SignupComp = () => {
                 inputStyle={{ ...customeInputStyles }}
                 inputProps={{
                   border: "none",
-                  placeholder: "+1 (123) 456-7890",
+                  // placeholder: "+1 (123) 456-7890",
                 }}
                 required
               />
@@ -478,10 +486,10 @@ const SignupComp = () => {
                     sx={{
                       color: "#d32f2f",
                       fontSize: "12px",
-                      marginLeft: "14px",
+                      marginLeft: "4px",
                       marginRight: "14px",
                       marginTop: "3px",
-                      fontFamily: 'inherit',
+                      fontFamily: "var(--main-font-family)",
                     }}
                   >
                     Phone is not valid
@@ -503,7 +511,7 @@ const SignupComp = () => {
               <input
                 type="text"
                 name="company"
-                placeholder="Builder Builder Pro"
+                placeholder="BuilderBUILDER PRO"
                 style={{
                   ...inputStyle,
                   border:
@@ -515,7 +523,7 @@ const SignupComp = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+              <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                 {errors.company && touched.company ? errors.company : ""}
               </Typography>
             </Box>
@@ -541,6 +549,8 @@ const SignupComp = () => {
 
               <Box style={{ position: "relative" }}>
                 <input
+                  autocomplete="off"
+                  ref={passwordInputField}
                   placeholder="Enter your password"
                   style={{
                     ...inputStyle,
@@ -555,10 +565,10 @@ const SignupComp = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                   {errors.password && touched.password ? errors.password : ""}
                 </Typography>
-                <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
+                <Box style={passwordEyeBox(errors.password ? 6 : 0)} onClick={togglePasswordVisibility}>
                   {passwordVisible ? <VisibilityOff /> : <Visibility />}
                   {!isMobile && (
                     <span style={{ marginLeft: "5px" }}>
@@ -588,6 +598,7 @@ const SignupComp = () => {
               </label>
               <Box style={{ position: "relative" }}>
                 <input
+                  autocomplete="off" 
                   placeholder="Confirm your password"
                   style={{
                     ...inputStyle,
@@ -602,12 +613,12 @@ const SignupComp = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                   {errors.confirmPassword && touched.confirmPassword
                     ? errors.confirmPassword
                     : ""}
                 </Typography>
-                <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
+                <Box style={passwordEyeBox(errors.confirmPassword ? 6 : 0)} onClick={togglePasswordVisibility}>
                   {passwordVisible ? <VisibilityOff /> : <Visibility />}
                   {!isMobile && (
                     <span style={{ marginLeft: "5px" }}>
@@ -638,18 +649,33 @@ const SignupComp = () => {
               />
 
               <label htmlFor="agreeTerms" style={checkBoxText}>
-                <label
-                  onClick={() => {
-                    navigate("/privacyandterms");
-                  }}
-                 style={{fontSize:'11px'}}
-                >
+                <label style={{ fontSize: "11px" }}>
                   By creating an account, I agree to{" "}
-                  <Link style={{ ...linkStyle, ...lableResponsiveFont,fontSize:'11px' }}>
-                    Terms of use
+                  <Link
+                    onClick={() => {
+                      openInNewTab("/terms");
+                    }}
+                    style={{
+                      ...linkStyle,
+                      ...lableResponsiveFont,
+                      fontSize: "11px",
+                      textDecoration: "none",
+                    }}
+                  >
+                    Terms of Use
                   </Link>{" "}
                   and{" "}
-                  <Link style={{ ...linkStyle, ...lableResponsiveFont,fontSize:'11px' }}>
+                  <Link
+                    onClick={() => {
+                      openInNewTab("/privacypolicy");
+                    }}
+                    style={{
+                      ...linkStyle,
+                      ...lableResponsiveFont,
+                      fontSize: "11px",
+                      textDecoration: "none",
+                    }}
+                  >
                     Privacy Policy
                   </Link>
                 </label>
@@ -675,6 +701,7 @@ const SignupComp = () => {
                     ...loginLink,
                     ...linkResponsiveColor,
                     ...lableResponsiveFont,
+                    textDecoration: "none",
                   }}
                 >
                   Log in
@@ -692,7 +719,7 @@ const SignupComp = () => {
             </Box>
             <Stack alignItems={"center"} justifyContent={"center"}>
               <GoogleLogin
-                clientId="960267013158-g1avbe0m8oe44tcflp4urhe4gkh5olb1.apps.googleusercontent.com"
+                clientId="928001550940-g7ihssmag34eb686v0rtceot3bb0qudh.apps.googleusercontent.com"
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
                 cookiePolicy={"single_host_origin"}
@@ -719,7 +746,7 @@ const SignupComp = () => {
               <MenuItem value={3}>Chinese (China)</MenuItem>
             </Select> */}
           </Box>
-          <Box sx={{ ...hptLinksBox, cursor: "pointer", paddingBottom:'8px' }}>
+          <Box sx={{ ...hptLinksBox, cursor: "pointer", paddingBottom: "8px" }}>
             <Typography
               sx={hptLinksStyle}
               onClick={() => {
@@ -731,7 +758,7 @@ const SignupComp = () => {
             <Typography
               sx={hptLinksStyle}
               onClick={() => {
-                navigate("/privacyandterms");
+                openInNewTab("/privacypolicy");
               }}
             >
               Privacy & Terms
@@ -766,14 +793,14 @@ const firstGrid = {
     xs: "0rem 0rem 0rem 0rem",
   },
   justifyContent: "center",
-  alignItems:"start",
+  alignItems: "start",
   backgroundColor: "#4C8AB1",
   // marginTop: { lg: "0rem", sm: "0rem", xs: "0rem" },
 };
 
 const SecondGrid = {
   // marginTop:{xl:-28,lg:-28,sm:0, xs:0,md:0},
-  gap: { xl:"4.5rem",lg: "3.5rem", md:"3.5rem", sm: "1rem", xs: "1rem" },
+  gap: { xl: "4.5rem", lg: "3.5rem", md: "3.5rem", sm: "1rem", xs: "1rem" },
   alignItems: { lg: "center", md: "center", sm: "center", xs: "center" },
   justifyContent: {
     lg: "start",
@@ -849,36 +876,37 @@ const namesFieldBox = {
 
 const subtitleStyle = {
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "0.75rem",
   fontWeight: 400,
   marginBottom: "0.2rem",
   marginTop: "0.2rem",
 };
-const passwordEyeBox = {
+const passwordEyeBox =  (value) => ({
   position: "absolute",
-  top: "45%",
+  top: `calc(45% - ${value}px)`,
   right: "10px",
   transform: "translateY(-50%)",
   cursor: "pointer",
   opacity: "50%",
   display: "flex",
   alignItems: "center",
-};
+});
 const linkBox = {
   display: "flex",
   paddingBottom: "1rem",
   marginLeft: "-0.5rem",
   color: "#202227",
-  fontFamily: "inherit",
+  fontFamily: "var(--main-font-family)",
   fontSize: "1rem",
   fontStyle: "normal",
   fontWeight: 400,
   lineHeight: "normal",
+  alignItems: "center",
 };
 const linkStyle = {
   color: "#4C8AB1",
-  fontFamily: "inherit",
+  fontFamily: "var(--main-font-family)",
   fontWeight: 600,
   lineHeight: "normal",
   width: "100%",
@@ -892,12 +920,11 @@ const checkBox = {
 const checkBoxText = {
   gap: 3,
   display: "flex",
-  marginTop: "0.8rem",
   fontSize: { lg: "11px", md: "11px", sm: "0.8rem", xs: "0.75rem" },
 };
 const alreadyHaveAccountTypo = {
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.8rem" },
   fontWeight: 400,
   lineHeight: "normal",
@@ -908,7 +935,7 @@ const alreadyHaveAccountTypo = {
 
 const loginLink = {
   fontWeight: 600,
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
 };
 
 const continueWithBox = {
@@ -966,7 +993,7 @@ const selectStyle = {
   ".MuiOutlinedInput-notchedOutline": { border: 0 },
   color: "white",
   border: "none",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "1rem",
   fontWeight: "400",
   lineHeight: "normal",
@@ -983,7 +1010,7 @@ const hptLinksBox = {
 
 const firstHeading = {
   color: "#FFF",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
   // marginTop: "1rem",
   fontSize: { xl: "2rem", lg: "2rem", md: "1.9rem", sm: "1rem" },
@@ -997,14 +1024,14 @@ const secondHeading = {
   color: "rgba(255, 255, 255, 0.80)",
   // width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: { xl: "1.5rem", lg: "1.5rem", md: "1.5rem", sm: "1rem" },
   fontWeight: 400,
 };
 
 const thirdHeading = {
   color: "#FFF",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   marginTop: "1rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontSize: { xl: "2rem", lg: "1.5rem", md: "1rem", sm: "1rem" },
@@ -1014,7 +1041,7 @@ const thirdHeading = {
 const formHeadingStyle = {
   color: "#4C8AB1",
   textAlign: "center",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "2.1875rem",
   fontWeight: 700,
   lineHeight: "normal",
@@ -1029,7 +1056,7 @@ const customeInputStyles = {
 
 const placeholderStyle = {
   color: "#B8B8B8",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "1rem",
   paddingLeft: "0.5rem",
   fontWeight: 400,
@@ -1039,7 +1066,7 @@ const labelStyle = {
   display: "block",
   marginBottom: "5px",
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "1rem",
   fontWeight: 400,
   lineHeight: "normal",
@@ -1048,7 +1075,7 @@ const labelStyle = {
 const hptLinksStyle = {
   color: "#FFF",
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem" },
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontWeight: 400,
   lineHeight: "normal",
   cursor: "pointer", // Ensure cursor changes on hover
@@ -1074,7 +1101,7 @@ const googleBtnStyle = {
   border: "1px solid rgba(6, 32, 72, 0.11)",
   background: "#FFF",
   color: "#333",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   width: { lg: "19rem", md: "19rem", sm: "19rem", xs: "100%" },
   fontSize: { lg: "1.1rem", md: "1.1rem", sm: "1rem", xs: "0.9rem" },
   fontWeight: 400,
@@ -1093,7 +1120,7 @@ const googleBtnStyle = {
 
 const ContinuewithTextStyle = {
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
   fontWeight: 400,
   display: "flex",

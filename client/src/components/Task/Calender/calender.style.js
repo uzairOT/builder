@@ -30,7 +30,7 @@ const calenderWrapper = styled.div`
   }
   .rbc-label {
     // padding: 8px 6px;
-    // font-family: "muli-semi-bold";
+    // font-family: 'var(--main-font-family)';
   }
   .rbc-toolbar button.rbc-active{
     background-color: #4C8AB1;
@@ -63,7 +63,7 @@ const calenderWrapper = styled.div`
     text-align: center;
     font-size: 13px;
     span {
-      font-family: Inter, sans-serif;
+      font-family: 'var(--main-font-family)';
       white-space: pre-line !important;
     }
   }
@@ -84,7 +84,7 @@ const calenderWrapper = styled.div`
   }
   .rbc-time-gutter {
     border-top: 0px solid #dae5f0;
-    font-family: Montserrat, sans-serif;
+    font-family: 'var(--main-font-family)';
     color: #6A6A6A;
   }
   rbc-time-gutter rbc-time-column{
@@ -112,7 +112,7 @@ const calenderWrapper = styled.div`
     padding: 4px;
     text-align: center;
     color: #9B9B9B;
-    font-family: "Inter", sans-serif !important;
+    font-family: 'var(--main-font-family)';
     font-weight: 600 !important;
     font-size: 12px;
   }

@@ -1,11 +1,8 @@
 import React from "react";
 import {
-  useMediaQuery,
   Button,
   Box,
   Typography,
-  TextField,
-  MenuItem,
 } from "@mui/material";
 import "../StepFormField/StepFormField.css";
 import FooterCircles from "../FooterCircles/FooterCircles";
@@ -15,12 +12,14 @@ import shallowButton from "../../UI/shallowButton";
 import "../../../App.css";
 import StepTitles from "../StepTitles/StepTitles";
 import ProjectFormFields from "../ProjectFormFields/ProjectFormFields";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectProjectForm } from "../../../redux/slices/projectFormSlice";
 import { toast } from "react-toastify";
 import { useCheckProjectDuplicationMutation } from "../../../redux/apis/Project/projectApiSlice";
+import { setIsSaveAs } from "../../../redux/slices/Project/handlingProjectFlowSlice";
 //import "react-toastify/dist/ReactToastify.css";
-function SaveAsProject({ onSaveStep, onNextStep, setIsSaveAs, currentUserId }) {
+function SaveAsProject({ onSaveStep, onNextStep, currentUserId }) {
+  const dispatch = useDispatch();
   const { projectName, location, projectColor } =
     useSelector(selectProjectForm);
   const [checkProjectDuplication, { isLoading }] =
@@ -38,10 +37,11 @@ function SaveAsProject({ onSaveStep, onNextStep, setIsSaveAs, currentUserId }) {
       };
       try {
         const res = await checkProjectDuplication(data);
-        console.log(res);
+        // console.log(res);
         if (res?.data?.success) {
           onSaveStep();
-          setIsSaveAs(true);
+          dispatch(setIsSaveAs(true))
+          // setIsSaveAs(true);
         } else {
           toast.error(res.error.data.message || "Project name error");
         }
@@ -54,7 +54,7 @@ function SaveAsProject({ onSaveStep, onNextStep, setIsSaveAs, currentUserId }) {
 
   return (
     <div>
-      <StepTitles Heading={"Save as Project with New Name"} />
+      <StepTitles Heading={"Save as project with new name"} />
       <Box sx={typoBox}>
         <Typography sx={typoText}>Select your type.</Typography>
       </Box>
@@ -102,7 +102,7 @@ const typoBox = {
 };
 
 const typoText = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   letterSpacing: "0.01em",
   color: "#202227",
   textAlign: "center",

@@ -1,11 +1,11 @@
 import React from 'react'
 import ColorPickerElement from '../ColorPickerElement/ColorPickerElement'
-
-function AddPhaseDialogue({ handleAddOpen, handleAddClose,  setPhaseData, onSubmit,adminProjectView, InitialProposalView }) {
-    
+import { useTranslation } from 'react-i18next'
+function AddPhaseDialogue({ handleAddOpen, handleAddClose,  setPhaseData, onSubmit,adminProjectView, InitialProposalView, formattedView }) {
+    const { t } = useTranslation()
     return (
         <div>
-            <ColorPickerElement InitialProposalView={InitialProposalView} adminProjectView={adminProjectView} PhaseHeading={"Add Phase"} handleAddOpen={handleAddOpen} handleAddClose={handleAddClose}  setPhaseData={setPhaseData} onSubmit={onSubmit} />
+            <ColorPickerElement InitialProposalView={InitialProposalView} adminProjectView={adminProjectView} PhaseHeading={t("PhaseModal.addPhase")} handleAddOpen={handleAddOpen} handleAddClose={handleAddClose}  setPhaseData={setPhaseData} onSubmit={onSubmit} formattedView={formattedView} />
         </div>
     )
 }

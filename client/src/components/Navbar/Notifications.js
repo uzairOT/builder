@@ -16,12 +16,14 @@ import BuilderProButton from "../UI/Button/BuilderProButton";
 import { useUpdateRequestWorkOrderMutation } from "../../redux/apis/Project/workOrderApiSlice";
 import NotificationDetailModal from "./NotificationDetailModal";
 import { useGetWorkOrderDetailsMutation } from "../../redux/apis/Project/projectApiSlice";
-import moment from 'moment';
+import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEvents } from "../../redux/slices/Events/eventsSlice";
 import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice";
 import { toggleWorkOrderDeclineRecall } from "../../redux/slices/Notifications/notificationSlice";
-import {socket} from "../../socket"
+import { socket } from "../../socket";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 function Notification({
   notification,
@@ -30,25 +32,27 @@ function Notification({
   index,
   setExpanded,
   expanded,
-
 }) {
+  const { t } = useTranslation()
   const [updateWorkOrder] = useUpdateRequestWorkOrderMutation();
-  
+
   const [checkedRow, setCheckedRow] = useState(null);
   const [open, setOpen] = useState(false);
   const [data1, setData1] = useState(null);
-  const [getWorkOrder, {isLoading, data}] = useGetWorkOrderDetailsMutation()
+  const [getWorkOrder, { isLoading, data }] = useGetWorkOrderDetailsMutation();
   const forecast = useSelector(getForecast);
   const dailyForecast = forecast.dailyForecast || [];
   const dispatch = useDispatch();
   const handleOnClick = async () => {
-      const res = await getWorkOrder({workOrderId:notification.WorkOrderReq.id});
-      console.log("after handleonclick",res)
-      setData1(res.data);
-      setOpen(true)
-  }
+    const res = await getWorkOrder({
+      workOrderId: notification.WorkOrderReq.id,
+    });
+    // console.log("after handleonclick", res);
+    setData1(res.data);
+    setOpen(true);
+  };
 
-  console.log(notification);
+  // console.log(notification);
   const handleAccordionChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : -1);
   };
@@ -60,7 +64,10 @@ function Notification({
         status: "approved",
       });
       await refetch(userId);
-      dispatch(fetchEvents({userId: userId, dailyForecast: dailyForecast}));
+      dispatch(fetchEvents({ userId: userId, dailyForecast: dailyForecast }));
+      toast.success("Work order approved sucessfully!");
+      // window.location.reload();
+
       // socket.emit('statusDoneNotification', {
       //   userId: userId,
       //   client:true,
@@ -71,8 +78,8 @@ function Notification({
       //   phaseId: notification?.WorkOrderReq?.phaseItems[0]?.phaseId,
       // }, (response) => {
       //   console.log(response.data);
-      //   // dispatch(toggleWorkOrderDeclineRecall());
       // })
+      dispatch(toggleWorkOrderDeclineRecall());
       // window.location.reload();
     } catch (err) {
       // console.log(err);
@@ -99,13 +106,16 @@ function Notification({
       //   // dispatch(toggleWorkOrderDeclineRecall());
       // })
       dispatch(toggleWorkOrderDeclineRecall());
+      toast.info("Work order declined sucessfully!");
+      // window.location.reload();
+
       // window.location.reload();
     } catch (err) {
       // console.log(err);
     }
   };
   const isExpanded = expanded === index;
-  const handleModalClick = () => {};
+  const handleModalClick = () => { };
   const rowCheckboxes = {
     phase: {
       id: 2,
@@ -130,7 +140,7 @@ function Notification({
       ],
     },
   };
-  console.log(notification)
+  // console.log(notification);
   return (
     <Accordion
       disableGutters
@@ -139,30 +149,47 @@ function Notification({
     >
       <AccordionSummary>
         <Stack>
-        {index === 0 &&  <Typography display={'block'} fontFamily={'inherit'} fontSize={'12px'} sx={{textDecoration:'underline', fontWeight:'600'}}>Work Order Notifications:</Typography>}
-        
-        <Stack
-          direction={"row"}
-          justifyContent={"center"}
-          alignItems={"center"}
-        >
-          <Avatar
-            src={`${notification.WorkOrderReq.User.image}`}
-            alt="User Avatar"
-          />
+          {index === 0 && (
+            <Typography
+              display={"block"}
+              fontFamily={"var(--main-font-family)"}
+              fontSize={"12px"}
+              sx={{ textDecoration: "underline", fontWeight: "600" }}
+            >
+              {t("WorkOrderNotification.title")}:
+            </Typography>
+          )}
 
-          <Typography fontFamily={"inherit"} fontSize={"12px"}>
-            {notification.WorkOrderReq.User.firstName} &nbsp;
-          </Typography>
-
-          <Typography fontFamily={"inherit"} fontSize={"12px"}>
-            Sent you a{" "}
-            {notification.WorkOrderReq.changeOrder
-              ? "change order request"
-              : "work order request"}{" "}
-            of project: {notification.projectName}
-          </Typography>
-        </Stack>
+          <Stack
+            direction={"row"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <Avatar
+              src={`${notification.WorkOrderReq.User.image}`}
+              alt="User Avatar"
+            />
+            <Typography
+              fontFamily={"var(--main-font-family)"}
+              fontSize={"12px"}
+              fontWeight={700}
+            >
+              {notification.WorkOrderReq.User.firstName} &nbsp; &nbsp; &nbsp;
+            </Typography>
+            <Typography
+              fontFamily={"var(--main-font-family)"}
+              fontSize={"12px"}
+            >
+              {t("WorkOrderNotification.subtitle.part1")}
+              {notification.WorkOrderReq.changeOrder
+                ? t("WorkOrderNotification.subtitle.changeOrder")
+                : t("WorkOrderNotification.subtitle.workOrder")}{" "}
+              {t("WorkOrderNotification.subtitle.part2")}:
+              <span style={{ fontWeight: 700 }}>
+                {notification.projectName}{" "}
+              </span>
+            </Typography>
+          </Stack>
         </Stack>
       </AccordionSummary>
       <AccordionDetails>
@@ -175,10 +202,10 @@ function Notification({
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
-                        Subject
+                        {t("WorkOrderNotification.table.subject")}
                       </Typography>
                     }
-                    secondaryTypographyProps={{sx:textSecondaryStyle}}
+                    secondaryTypographyProps={{ sx: textSecondaryStyle }}
                     secondary={notification.WorkOrderReq.subject}
                   />
                 </ListItem>
@@ -186,10 +213,10 @@ function Notification({
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
-                        Description
+                        {t("WorkOrderNotification.table.description")}
                       </Typography>
                     }
-                    secondaryTypographyProps={{sx:textSecondaryStyle}}
+                    secondaryTypographyProps={{ sx: textSecondaryStyle }}
                     secondary={notification.WorkOrderReq.description}
                   />
                 </ListItem>
@@ -197,14 +224,14 @@ function Notification({
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
-                        Priority
+                        {t("WorkOrderNotification.table.priority")}
                       </Typography>
                     }
-                    secondaryTypographyProps={{sx:textSecondaryStyle}}
+                    secondaryTypographyProps={{ sx: textSecondaryStyle }}
                     secondary={notification.WorkOrderReq.priority}
                   />
                 </ListItem>
-                <ListItem sx={listItemStyle}>
+                {/* <ListItem sx={listItemStyle}>
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
@@ -214,7 +241,7 @@ function Notification({
                     secondaryTypographyProps={{sx:textSecondaryStyle}}
                     secondary={notification.WorkOrderReq.total}
                   />
-                </ListItem>
+                </ListItem> */}
               </List>
             </Grid>
             <Grid item xs={6}>
@@ -223,32 +250,36 @@ function Notification({
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
-                        Start
+                        {t("WorkOrderNotification.table.start")}
                       </Typography>
                     }
-                    secondaryTypographyProps={{sx:textSecondaryStyle}}
-                    secondary={moment(notification.WorkOrderReq.start_day).format('MMM, D,YYYY HH:mm a')}
+                    secondaryTypographyProps={{ sx: textSecondaryStyle }}
+                    secondary={moment(
+                      notification.WorkOrderReq.start_day
+                    ).format("MM/DD/YYYY HH:mm a")}
                   />
                 </ListItem>
                 <ListItem sx={listItemStyle}>
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
-                        End
+                        {t("WorkOrderNotification.table.end")}
                       </Typography>
                     }
-                    secondaryTypographyProps={{sx:textSecondaryStyle}}
-                    secondary={moment(notification.WorkOrderReq.end_day).format('MMM, D,YYYY HH:mm a')}
+                    secondaryTypographyProps={{ sx: textSecondaryStyle }}
+                    secondary={moment(notification.WorkOrderReq.end_day).format(
+                      "MM/DD/YYYY HH:mm a"
+                    )}
                   />
                 </ListItem>
                 <ListItem sx={listItemStyle}>
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
-                        Status
+                        {t("WorkOrderNotification.table.status")}
                       </Typography>
                     }
-                    secondaryTypographyProps={{sx:textSecondaryStyle}}
+                    secondaryTypographyProps={{ sx: textSecondaryStyle }}
                     secondary={notification.WorkOrderReq.status}
                   />
                 </ListItem>
@@ -256,10 +287,10 @@ function Notification({
                   <ListItemText
                     primary={
                       <Typography variant="subtitle1" sx={textStyle}>
-                        Notes
+                        {t("WorkOrderNotification.table.notes")}
                       </Typography>
                     }
-                    secondaryTypographyProps={{sx:textSecondaryStyle}}
+                    secondaryTypographyProps={{ sx: textSecondaryStyle }}
                     secondary={notification.WorkOrderReq.notes}
                   />
                 </ListItem>
@@ -272,41 +303,47 @@ function Notification({
                 variant={"outlined"}
                 backgroundColor={"#4C8AB1"}
                 fontSize={"11px"}
-                fontFamily={"inherit"}
+                fontFamily={"var(--main-font-family)"}
                 handleOnClick={handleDecline}
               >
-                Decline
+                {t("WorkOrderNotification.actions.decline")}
               </BuilderProButton>
               <BuilderProButton
                 variant={"contained"}
                 backgroundColor={"#4C8AB1"}
                 fontSize={"11px"}
-                fontFamily={"inherit"}
+                fontFamily={"var(--main-font-family)"}
                 marginLeft={"5px"}
                 handleOnClick={handleAccept}
               >
-                Approve
+                {t("WorkOrderNotification.actions.approve")}
               </BuilderProButton>
               <BuilderProButton
-                      variant={"contained"}
-                      backgroundColor={"#4C8AB1"}
-                      fontSize={"11px"}
-                      fontFamily={"inherit"}
-                      marginLeft={"5px"}
-                      handleOnClick={() => handleOnClick(notification.WorkOrderReq.workOrderId)}
-                    >
-                      Detail
-                    </BuilderProButton>
-              {open ?  <NotificationDetailModal
-                rowCheckboxes={rowCheckboxes}
-                checkedRow={checkedRow}
-                changeOrder={true}
-                notification={notification}
-                data1={data1}
-                open={open}
-                setOpen={setOpen}
-                handleOnClick={handleOnClick}
-              /> :<></>}
+                variant={"contained"}
+                backgroundColor={"#4C8AB1"}
+                fontSize={"11px"}
+                fontFamily={"var(--main-font-family)"}
+                marginLeft={"5px"}
+                handleOnClick={() =>
+                  handleOnClick(notification.WorkOrderReq.workOrderId)
+                }
+              >
+                {t("WorkOrderNotification.actions.detail")}
+              </BuilderProButton>
+              {open ? (
+                <NotificationDetailModal
+                  rowCheckboxes={rowCheckboxes}
+                  checkedRow={checkedRow}
+                  changeOrder={true}
+                  notification={notification}
+                  data1={data1}
+                  open={open}
+                  setOpen={setOpen}
+                  handleOnClick={handleOnClick}
+                />
+              ) : (
+                <></>
+              )}
             </Stack>
           </Stack>
         </div>
@@ -323,17 +360,17 @@ const listItemStyle = {
 };
 
 const textStyle = {
-  fontFamily: "inherit",
+  fontFamily: "var(--main-font-family)",
   fontWeight: "bold",
   fontSize: "14px",
-  width:{sm:'25ch', xs:'10ch'}
+  width: { sm: "20ch", xs: "10ch" },
 };
 const textSecondaryStyle = {
-  fontFamily: "inherit",
+  fontFamily: "var(--main-font-family)",
   fontSize: "14px",
-  width:{sm:'25ch', xs:'10ch'},
-  overflow:'hidden',
-  textOverflow:'ellipsis'
+  width: { sm: "20ch", xs: "10ch" },
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 };
 
 /* 
@@ -393,19 +430,19 @@ function Notification({ notification, refetch, userId }) {
     <div style={style}>
       <p></p>
       <div>
-        <Typography sx={{fontFamily: 'Arial Rounded MT, sans-serif',}} p={1}>You have {notification.WorkOrderReq.version > 1 ? 'change order request':  'work order request'} of project: {notification.projectName}</Typography>
+        <Typography sx={{fontFamily: 'var(--main-font-family)',}} p={1}>You have {notification.WorkOrderReq.version > 1 ? 'change order request':  'work order request'} of project: {notification.projectName}</Typography>
         <Divider />
         <Stack direction={"row"} gap={1} p={1} alignItems={'center'}>
           <Avatar src={`${notification.User.image}`} alt="User Avatar"></Avatar>
           <Stack>
-            <Typography sx={{fontFamily: 'Arial Rounded MT, sans-serif',}}>{notification.User.firstName}</Typography>
+            <Typography sx={{fontFamily: 'var(--main-font-family)',}}>{notification.User.firstName}</Typography>
           </Stack>
           <Stack direction={'row'} sx={{height:'35px'}}>
           <BuilderProButton
             variant={"outlined"}
             backgroundColor={"#4C8AB1"}
             fontSize={"11px"}
-            fontFamily={"inherit"}
+            fontFamily={'var(--main-font-family)'}
             handleOnClick={handleDecline}
           >
             Decline
@@ -414,7 +451,7 @@ function Notification({ notification, refetch, userId }) {
             variant={"contained"}
             backgroundColor={"#4C8AB1"}
             fontSize={"11px"}
-            fontFamily={"inherit"}
+            fontFamily={'var(--main-font-family)'}
             marginLeft={'5px'}
             handleOnClick={handleAccept}
             >

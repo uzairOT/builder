@@ -1,13 +1,15 @@
-import { Box, Container, Modal, Stack, Typography } from '@mui/material';
-import React, { useRef } from 'react'
+import { Box, CircularProgress, Container, Modal, Stack, Typography } from '@mui/material';
+import React, { useRef, useState } from 'react'
 import BuilderProButton from '../../UI/Button/BuilderProButton';
 import generatePDF,  { Resolution, Margin } from "react-to-pdf";
 import GenerateInvoiceTable from './GenerateInvoiceTable';
 import BuilderProNavbarLogo from "../../Navbar/assets/svgs/builder-pro-logo-navbar.svg";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 const options = {
   // default is `save`
-  method: 'open',
+  method: 'save',
   // default is Resolution.MEDIUM = 3, which should be enough, higher values
   // increases the image quality but also the size of the PDF, so be careful
   // using values higher than 10 when having multiple pages generated, it
@@ -43,18 +45,40 @@ const options = {
 
 
 const GenerateInvoice = ({open, handleClose,invoiceData}) => {
+  const { t } = useTranslation()
+  const [loading, setLoading] = useState(false)
   const isInvoiceData = Boolean(invoiceData)
   const targetRef = useRef();
   const handleInvoicePrint = () => {
-    generatePDF(targetRef, {...options, filename:`Invoice-${invoiceData?.invoiceCompleteObj?.InvoiceNumber}.pdf`});
-    console.log("Invoice Generated Successfully");
+    setLoading(true); // Start loading
+
+    try {
+      generatePDF(targetRef, {
+        ...options,
+        filename: `Invoice-${invoiceData?.invoiceCompleteObj?.InvoiceNumber || 'Unknown'}.pdf`,
+      }).then(() => {
+        setLoading(false); // Stop loading
+        toast.success('Invoice generated successfully!', { position: toast.POSITION.TOP_RIGHT });
+      }).catch((error) => {
+        setLoading(false); // Stop loading
+        toast.error('Error generating invoice PDF', { position: toast.POSITION.TOP_RIGHT });
+        console.error("Error generating invoice PDF:", error);
+      });
+    } catch (error) {
+      setLoading(false); // Stop loading in case of synchronous error
+      toast.error('Error generating invoice PDF', { position: toast.POSITION.TOP_RIGHT });
+      console.error("Error generating invoice PDF:", error);
+    }
   };
+
+
+  
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     const options = { year: "numeric", month: "long", day: "numeric" };
     return date.toLocaleDateString(undefined, options);
   };
-  console.log(invoiceData)
+  // console.log(invoiceData)
   return (
     <>
        <Modal
@@ -79,11 +103,11 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
             >
               <Typography
                 fontSize={"24px"}
-                fontFamily={"inherit"}
+                fontFamily={'var(--main-font-family)'}
                 fontWeight={"600"}
                 color={"#4C8AB1"}
               >
-                Invoice
+                {t("InvoiceModal.title1")}
               </Typography>
               <Stack
                 direction={"row"}
@@ -94,14 +118,14 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
                   variant={"contained"}
                   backgroundColor={"#4C8AB1"}
                   fontSize={"16px"}
-                  fontFamily={"inherit"}
+                  fontFamily={'var(--main-font-family)'}
                   handleOnClick={() => {
                     // console.log("Click Chala");
                     handleInvoicePrint();
                   }}
-                  disabled={!isInvoiceData}
+                  disabled={!isInvoiceData || loading}
                 >
-                  Download Invoice
+                  {loading ? <Stack direction={'row'} justifyContent={'center'} alignItems={'center'} gap={2}>{t("InvoiceModal.GenerateInvoice.generating")} <CircularProgress size={'16px'} sx={{color:'white'}}/></Stack>: t("InvoiceModal.GenerateInvoice.downloadInvoice")}
                 </BuilderProButton>
               </Stack>
             </Stack>
@@ -166,11 +190,14 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
                 >
                   <Stack spacing={1}>
                     <Typography sx={modalStyle}>
-                      Company:{" "}
+                      {t("InvoiceModal.GenerateInvoice.form.title1")}:{" "}
                       {invoiceData?.invoiceCompleteObj?.Admin?.companyName}
                     </Typography>
                     <Typography sx={modalStyle}>
-                      Name: {invoiceData?.invoiceCompleteObj?.Client?.firstName}
+                      {t("InvoiceModal.GenerateInvoice.form.title2")}: {invoiceData?.invoiceCompleteObj?.Client ? invoiceData?.invoiceCompleteObj?.Client?.firstName : invoiceData?.invoiceCompleteObj?.email}
+                    </Typography>
+                    <Typography sx={modalStyle}>
+                      {t("InvoiceModal.GenerateInvoice.form.title3")}: {invoiceData?.invoiceCompleteObj?.Admin?.firstName}
                     </Typography>
                     {/* <Typography sx={modalStyle}>Company Address</Typography>
                 <Typography sx={modalStyle}>City,State Zip</Typography>
@@ -179,13 +206,13 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
                   <Stack direction={"row"} spacing={4}>
                     <Stack spacing={1}>
                       <Typography sx={modalStyle} fontWeight={"bold"}>
-                        Invoice#
+                        {t("InvoiceModal.GenerateInvoice.form.Invoice#")}
                       </Typography>
                       <Typography sx={modalStyle} fontWeight={"bold"}>
-                        Invoice Date
+                        {t("InvoiceModal.GenerateInvoice.form.invoiceDate")}
                       </Typography>
                       <Typography sx={modalStyle} fontWeight={"bold"}>
-                        Due Date
+                        {t("InvoiceModal.GenerateInvoice.form.dueDate")}
                       </Typography>
                     </Stack>
                     <Stack spacing={1}>
@@ -249,18 +276,18 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
                 >
                   <Stack>
                     <Typography sx={modalStyle} fontWeight={"bold"}>
-                      Notes
+                      {t("InvoiceModal.GenerateInvoice.form.Notes")}
                     </Typography>
                     <Typography sx={modalStyle}>
-                      It was great doing business with you
+                      {t("InvoiceModal.GenerateInvoice.form.footer.footer1")}
                     </Typography>
                   </Stack>
                   <Stack>
                     <Typography sx={modalStyle} fontWeight={"bold"}>
-                      Terms and Condition
+                      {t("InvoiceModal.GenerateInvoice.form.footer.footer2")}
                     </Typography>
                     <Typography sx={modalStyle}>
-                      Please make payments before the due date
+                      {t("InvoiceModal.GenerateInvoice.form.footer.footer3")}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -278,12 +305,12 @@ const GenerateInvoice = ({open, handleClose,invoiceData}) => {
                 sx={{
                   backgroundColor: "#4C8AB1",
                   borderRadius: "28px",
-                  fontFamily: "inherit",
+                  fontFamily: 'var(--main-font-family)',
                   textTransform: "capitalize",
                   fontSize: "16px",
                 }}
                 fontSize={"16px"}
-                fontFamily={"inherit"}
+                fontFamily={'var(--main-font-family)'}
                 onClick={() => {
                   handleClose();
                   handleGenerateInvoice();

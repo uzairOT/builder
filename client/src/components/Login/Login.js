@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link, useFetcher, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   useGoogleLoginMutation,
   useLoginMutation,
 } from "../../redux/apis/usersApiSlice";
-import { setCredentials } from "../../redux/slices/authSlice";
+import {
+  setCredentials,
+  setForgetPasswordEmail,
+} from "../../redux/slices/authSlice";
 import { toast } from "react-toastify";
 import { gapi } from "gapi-script";
 import GoogleLogin from "react-google-login";
@@ -16,19 +19,13 @@ import {
   Checkbox,
   useMediaQuery,
   Button,
-  MenuItem,
-  Select,
   CircularProgress,
   Stack,
-  Container,
 } from "@mui/material";
 import builder1 from "../Signup/Assets/pngs/builderProYellowLogo.png";
 import downloadForMob from "../Signup/Assets/pngs/downloadForMob.png";
-import { Circle, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { ReactComponent as GoogleLogo } from "../Signup/Assets/svgs/GoogleIcon.svg";
-import builderProLargeIcon, {
-  BuilderProIcon,
-} from "../../assets/FileSvg/builderPro";
 import YellowBtn from "../UI/button";
 import "../../App.css";
 import { useFormik } from "formik";
@@ -43,6 +40,8 @@ const Login = () => {
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
+    const invoiceCheckString = localStorage.getItem("invoice")
+    const invoiceCheck = JSON.parse(invoiceCheckString)
 
   // const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "70%" : "100%";
@@ -53,16 +52,13 @@ const Login = () => {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [login, { isLoading, error }] = useLoginMutation();
   const [googleLogin] = useGoogleLoginMutation();
-
-  const { userInfo } = useSelector((state) => state.auth);
 
   // useEffect(() => {
   //   if (userInfo) {
@@ -82,7 +78,18 @@ const Login = () => {
       });
     });
   }, []);
+  useEffect(()=>{
+    if( invoiceCheck && !invoiceCheck?.alertShown){
+      invoiceCheck.alertShown = true;
+      const prepareInvoiceCheckObj  = JSON.stringify(invoiceCheck)
+      localStorage.setItem("invoice", prepareInvoiceCheckObj)
+      toast.info("Please login to complete payment")
+    }
+  },[invoiceCheck])
 
+  const openInNewTab = (url) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
   const responseGoogle = async (response) => {
     // const auth2 = gapi.auth2.getAuthInstance();
     if (response?.profileObj) {
@@ -104,19 +111,23 @@ const Login = () => {
       try {
         const res = await googleLogin({ email }).unwrap();
 
-        if (res.message === "Login Successful!") {
+        if (res.message === "Login successful!") {
           localStorage.setItem("login", Date.now()); // Use this key to trigger the storage event
-          dispatch(setCredentials({ ...res }));
-          if (res?.incompleteProject?.incomplete) {
+          dispatch(setCredentials({ ...res.data }));
+          if(invoiceCheck && invoiceCheck?.currentPath){
+            setTimeout(() => {
+              window.location.href = invoiceCheck.currentPath;
+            }, 1000);
+          } else if (res?.data?.incompleteProject?.incomplete) {
             setTimeout(() => {
               window.location.href = "/assignproject";
             }, 1000);
           } else {
             setTimeout(() => {
-              window.location.href = "/";
+              window.location.href = "/dashboard";
             }, 1000);
           }
-        } else if (res.message === "notFound!") {
+        } else if (res.message === "Not found!") {
           toast.warning("User not found");
           navigate("/signup");
         } else {
@@ -124,7 +135,7 @@ const Login = () => {
           navigate("/signup");
         }
       } catch (err) {
-        if (err.data.message === "notFound!") {
+        if (err.data.message === "Not found!") {
           toast.warning("Profile doesn't exist");
           navigate("/signup");
         } else {
@@ -150,17 +161,24 @@ const Login = () => {
         password: values.password,
       }).unwrap();
       // console.log("login :", res);
-      // localStorage.setItem('userInfo', JSON.stringify({...res}));
+      localStorage.setItem("userInfo", JSON.stringify({ ...res }));
       localStorage.setItem("login", Date.now()); // Use this key to trigger the storage event
-      dispatch(setCredentials({ ...res }));
-      // navigate("/");
-      if (res?.incompleteProject?.incomplete) {
+
+      dispatch(setCredentials({ ...res.data }));
+      if(invoiceCheck){
+        console.log(invoiceCheck)
+        setTimeout(() => {
+          window.location.href = invoiceCheck.currentPath;
+        }, 1000);
+      } else if (
+        res?.data?.incompleteProject?.incomplete
+      ) {
         setTimeout(() => {
           window.location.href = "/assignproject";
         }, 1000);
       } else {
         setTimeout(() => {
-          window.location.href = "/";
+          window.location.href = "/dashboard";
         }, 1000);
       }
     } catch (err) {
@@ -175,6 +193,11 @@ const Login = () => {
           err?.data?.message ||
           "Something went wrong!"
       );
+
+      if (err?.data?.user?.isVerified === false) {
+        dispatch(setForgetPasswordEmail(values.email));
+        navigate("/verifycode", { state: { data: "signup" } });
+      }
     }
   };
   const { values, handleBlur, handleChange, errors, touched } = useFormik({
@@ -185,9 +208,9 @@ const Login = () => {
     validationSchema: loginSchemea,
     onSubmit: submitHandler,
   });
-  useEffect(() => {
-    console.log(values);
-  }, [values]);
+  // useEffect(() => {
+  //   console.log(values);
+  // }, [values]);
 
   return (
     <Grid container sx={firstGrid}>
@@ -195,7 +218,7 @@ const Login = () => {
         <img
           style={{ height: "236px", width: "435px", paddingLeft: "8px" }}
           src={builderproicon}
-          alt="Builder Pro"
+          alt="BuilderBUILDER PRO"
         />
         <Box
           sx={{
@@ -226,20 +249,20 @@ const Login = () => {
         <Box sx={downloadForMobBox}>
           <img
             src={downloadForMob}
-            width={"100%"}
+            // width={"100%"}
             alt=""
             style={{ height: "120px", paddingLeft: "4px" }}
           />
         </Box>
         <Box sx={googleAppImgsBox}>
           <a
-            href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
+            href="https://play.google.com/store/apps/details?id=com.npisoftware.builder_builder_pro"
             target="blank"
           >
             <img src={googlePlay} style={{ cursor: "pointer" }} alt="" />
           </a>
 
-          <a href="https://testflight.apple.com/join/Fejy1iQ6" target="blank">
+          <a href="https://apps.apple.com/us/app/builderbuilder-pro/id6714458398" target="blank">
             <img src={appStore} style={{ cursor: "pointer" }} alt="" />
           </a>
         </Box>
@@ -287,7 +310,7 @@ const Login = () => {
                 }}
                 placeholder="JohnDoe@gmail.com"
               />
-              <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+              <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                 {errors.email && touched.email ? errors.email : ""}
               </Typography>
             </Box>
@@ -323,7 +346,7 @@ const Login = () => {
                   onBlur={handleBlur}
                   placeholder="Enter your password"
                 />
-                <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
+                <Box style={passwordEyeBox(errors.password ? 6 : 0)} onClick={togglePasswordVisibility}>
                   {passwordVisible ? <VisibilityOff /> : <Visibility />}
                   {!isMobile && (
                     <span style={{ marginLeft: "5px" }}>
@@ -331,14 +354,14 @@ const Login = () => {
                     </span>
                   )}
                 </Box>
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-0.5rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-0.5rem"}>
                   {errors.password && touched.password ? errors.password : ""}
                 </Typography>
               </Box>
             </Box>
 
             <Box sx={linkBox}>
-              <Box sx={{ display: "flex" }}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Checkbox
                   id="agreeTerms"
                   sx={{
@@ -352,7 +375,7 @@ const Login = () => {
                   style={{
                     ...checkBox,
                     ...lableResponsiveFont,
-                    marginTop: "12px",
+                    marginTop: "3px",
                   }}
                 >
                   Remember Me
@@ -373,6 +396,7 @@ const Login = () => {
                     ...signupLink,
                     ...lableResponsiveFont,
                     ...linkResponsiveColor,
+                    textDecoration: "none",
                   }}
                 >
                   Forgot Password?
@@ -393,7 +417,7 @@ const Login = () => {
                 ) : isMobile ? (
                   "Log in"
                 ) : (
-                  "Log in with Email"
+                  "Log in"
                 )}
               </Button>
 
@@ -405,6 +429,7 @@ const Login = () => {
                     ...signupLink,
                     ...lableResponsiveFont,
                     ...linkResponsiveColor,
+                    textDecoration: "none",
                   }}
                 >
                   Sign up
@@ -421,7 +446,7 @@ const Login = () => {
             </Box>
             <Stack alignItems={"center"} justifyContent={"center"}>
               <GoogleLogin
-                clientId="960267013158-g1avbe0m8oe44tcflp4urhe4gkh5olb1.apps.googleusercontent.com"
+                clientId="928001550940-g7ihssmag34eb686v0rtceot3bb0qudh.apps.googleusercontent.com"
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
                 cookiePolicy={"single_host_origin"}
@@ -461,7 +486,7 @@ const Login = () => {
             <Typography
               sx={hptLinksStyle}
               onClick={() => {
-                navigate("/privacyandterms");
+                openInNewTab("/privacypolicy");
               }}
             >
               Privacy & Terms
@@ -575,20 +600,20 @@ const logoBox = {
   display: "flex",
 };
 
-const passwordEyeBox = {
+const passwordEyeBox =  (value) => ({
   position: "absolute",
-  top: "50%",
+  top: `calc(45% - ${value}px)`,
   right: "10px",
   transform: "translateY(-50%)",
   cursor: "pointer",
   opacity: "50%",
   display: "flex",
   alignItems: "center",
-};
+});
 const linkBox = {
   display: "flex",
   justifyContent: "space-between",
-  gap: { lg: "1rem", md: "5rem", sm: "3.5rem", xs: "5rem" },
+  gap: { lg: "1rem", md: "5rem", sm: "3.5rem", xs: "0rem" },
   marginTop: { lg: "2rem", md: "2rem", sm: "2rem", xs: "0.5rem" },
   marginBottom: {
     lg: "2rem",
@@ -599,12 +624,12 @@ const linkBox = {
 };
 const checkBox = {
   whiteSpace: "nowrap",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   marginTop: "1rem",
 };
 const forgetPassTypo = {
   whiteSpace: "nowrap",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontWeight: 600,
   paddingTop: "1rem",
 };
@@ -617,7 +642,7 @@ const accountLinkText = {
     sm: "1rem",
     xs: "2rem",
   },
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: {
     lg: "1rem",
     md: "1rem",
@@ -636,7 +661,7 @@ const accountLinkText = {
   marginTop: "1.5rem",
 };
 const signupLink = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontWeight: 600,
 };
 
@@ -692,7 +717,7 @@ const selectStyle = {
   ".MuiOutlinedInput-notchedOutline": { border: 0 },
   color: "white",
   border: "none",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "1rem",
   fontStyle: "normal",
   fontWeight: "400",
@@ -709,7 +734,7 @@ const hptLinksBox = {
 };
 const firstHeading = {
   color: "#FFF",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   mt: 2,
   ml: 2,
   // marginTop: { xl: "5rem", lg: "3rem", md: "2rem", sm: "0rem" },
@@ -724,7 +749,7 @@ const secondHeading = {
   color: "rgba(255, 255, 255, 0.80)",
   // width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: { xl: "1.5rem", lg: "1.5rem", md: "1.5rem", sm: "1rem" },
   fontWeight: 400,
 };
@@ -732,7 +757,7 @@ const secondHeading = {
 const thirdHeading = {
   color: "#FFF",
   marginTop: "2rem",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: { xl: "2rem", lg: "1.5rem", md: "1rem", sm: "1rem" },
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontWeight: 400,
@@ -741,7 +766,7 @@ const thirdHeading = {
 const formHeadingStyle = {
   color: "#4C8AB1",
   textAlign: "center",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "2.1875rem",
   fontWeight: 700,
 };
@@ -759,7 +784,7 @@ const inputStyle = {
 const placeholderStyle = {
   color: "black",
   padding: "8px",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "1rem",
   fontWeight: 400,
 };
@@ -768,7 +793,7 @@ const labelStyle = {
   display: "block",
   marginBottom: "1rem",
   color: "#16181B",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: { lg: "1rem", md: "1rem", sm: "0.9rem", xs: "0.75rem" },
   fontWeight: 400,
 };
@@ -776,7 +801,7 @@ const labelStyle = {
 const hptLinksStyle = {
   color: "#FFF",
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem" },
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontWeight: 400,
   lineHeight: "normal",
   cursor: "pointer", // Ensure cursor changes on hover
@@ -803,7 +828,7 @@ const googleBtnStyle = {
   border: "1px solid rgba(6, 32, 72, 0.11)",
   background: "#FFF",
   color: "#333",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: { lg: "1rem", md: "1rem", sm: "0.85rem", xs: "0.85rem" },
   fontWeight: 400,
   cursor: "pointer",
@@ -823,7 +848,7 @@ const googleBtnStyle = {
 
 const ContinuewithTextStyle = {
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: { lg: "0.875rem", md: "0.875rem", sm: "0.875rem", xs: "0.875rem" },
   fontWeight: 400,
   display: "flex",

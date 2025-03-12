@@ -21,21 +21,23 @@ import {
 } from "../../../utils/Validation/settingsPageSchema";
 import { useEditUnitMutation } from "../../../redux/apis/Project/userProjectApiSlice";
 import { Close } from "@mui/icons-material";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const EditUnitModal = ({ open, onClose, unit, refetch, userId }) => {
-  console.log(unit);
-
+  const {t} = useTranslation()
   const [editUnit] = useEditUnitMutation();
   const onSubmit = async (values, action) => {
-    console.log(unit);
+    // console.log(unit);
     const put = {
       ...unit,
-      label: values.label,
-      value: values.label,
+      label: values.label ? values.label.toLowerCase() : "",
+      value: values.label ? values.label.toLowerCase() : "",
     };
     const res = await editUnit(put);
     await refetch({ userId: userId });
-    console.log(res);
+    // console.log(res);
+    toast.success("Unit updated successfully!");
   };
   const {
     values,
@@ -68,7 +70,7 @@ const EditUnitModal = ({ open, onClose, unit, refetch, userId }) => {
           alignItems={"center"}
           mr={1}
         >
-          <DialogTitle sx={headingStyle}>Edit Unit</DialogTitle>
+          <DialogTitle sx={headingStyle}>{t("Settings.UnitsTable.modal.editUnit")}</DialogTitle>
           <IconButton
             style={{ width: "30px", height: "30px" }}
             onClick={onClose}
@@ -81,10 +83,10 @@ const EditUnitModal = ({ open, onClose, unit, refetch, userId }) => {
         >
           <Grid container>
             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-              <Typography variant="body1">Unit</Typography>
+              <Typography variant="body1">{t("Settings.UnitsTable.modal.unit")}</Typography>
               <TextField
                 error={errors.label ? true : false}
-                placeholder="Unit"
+                placeholder={t("Settings.UnitsTable.modal.placeholder1")}
                 name={"label"}
                 value={values.label}
                 onChange={handleChange}
@@ -126,7 +128,7 @@ const EditUnitModal = ({ open, onClose, unit, refetch, userId }) => {
               >
                 <Button
                   type={"submit"}
-                  buttonText="Edit Unit"
+                  buttonText={t("Settings.UnitsTable.modal.button1")}
                   color="#ffffff"
                   backgroundColor={isSubmitting ? "gray" : "#4C8AB1"}
                   width="150px"
@@ -146,7 +148,7 @@ const EditUnitModal = ({ open, onClose, unit, refetch, userId }) => {
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: "var(--main-font-family)",
   border: "1px solid #E0E4EC",
   padding: "10px",
   width: { xl: "250px", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
@@ -161,7 +163,7 @@ const headingStyle = {
   marginTop: "20px",
   // marginBottom: "10px",
   marginLeft: "25px",
-  fontFamily: "inherit",
+  fontFamily: "var(--main-font-family)",
   fontWeight: "500",
   fontSize: "22px",
   color: "#4C8AB1",

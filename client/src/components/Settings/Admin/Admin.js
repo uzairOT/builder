@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Divider, Typography } from "@mui/material";
-import ChatView from "../../Chat/ChatView";
 import Header from "../Header/Header";
 import CustomTable from "../Tables/Table";
 import Pagination from "@mui/material/Pagination";
 import AddModal from '../../dialogues/Settings/AddModal';
 import UpdateModal from '../../dialogues/Settings/UpdateModal';
-
-import { useOutletContext } from 'react-router-dom';
 import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
+import { useTranslation } from 'react-i18next';
 
 
 
 
 function Admin() {
   
-
+  const {t} = useTranslation()
   const [userId, setUserId] = useState();
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
@@ -74,7 +72,7 @@ function Admin() {
 //console.log(userId)
   return (
     <div style={{padding:"20px"}}> 
-      <Header title="Admin"   OpenAddModal={OpenAddModal} setSearchInput={setSearchInput} searchInput={searchInput}/>
+      <Header title={t("Settings.admin")}   OpenAddModal={OpenAddModal} setSearchInput={setSearchInput} searchInput={searchInput}/>
       <CustomTable setUpdateModalOpen={setUpdateModalOpen} refreshData={refreshData} page={page} userId={userId} setTotalEntries={setTotalEntries} setTotalPages={setTotalPages}  setUserId={setUserId} searchInput={debouncedValue}/>
 
       <Box mt={2} mb={2}>
@@ -92,8 +90,8 @@ function Admin() {
         </Typography>
         <Pagination count={totalPages} variant="outlined" shape="rounded" onChange={handlePageChange} page={page}  sx={paginationStyle}/>
       </Box>
-      <AddModal title={"Admin"} open={isAddModalOpen} refreshData={refreshData} setRefreshData={setRefreshData} onClose={handleCloseAddModal} />
-      <UpdateModal title={"Admin"} open={isUpdateModalOpen} refreshData={refreshData} setRefreshData={setRefreshData} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} />
+      <AddModal title={t("Settings.admin")} open={isAddModalOpen} refreshData={refreshData} setRefreshData={setRefreshData} onClose={handleCloseAddModal} />
+      <UpdateModal title={t("Settings.admin")} open={isUpdateModalOpen} refreshData={refreshData} setRefreshData={setRefreshData} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} />
     </div>
   );
 }
@@ -122,7 +120,7 @@ const paginationTextStyle = {
   },
   fontWeight: 400,
   fontSize: "14px",
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   color: "#8C8C8C",
 
 };

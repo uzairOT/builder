@@ -15,8 +15,10 @@ import { useGetWorkOrdersLineItemsProgressMutation } from "../../../redux/apis/R
 import { useEffect } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 function ProjectCard() {
+  const {t} = useTranslation()
   const { id } = useParams();
   const [projectName, projectLocation] = useOutletContext();
   const userInfo = useSelector((state) => state.auth.userInfo);
@@ -30,10 +32,10 @@ function ProjectCard() {
         projectId,
       }).unwrap();
       // setProjects(result);
-      console.log(
-        "Success useGetTotalProjectProfitMarginMutation Results Results Results:",
-        result
-      );
+      // console.log(
+      //   "Success useGetTotalProjectProfitMarginMutation Results Results Results:",
+      //   result
+      // );
     } catch (err) {
       console.error("Failed to fetch reports stats:", err);
     }
@@ -46,7 +48,7 @@ function ProjectCard() {
   const totalLineItems = data?.totalLineItems;
   const activeWorkOrders = data?.workOrders;
   const percentage = Math.round((totalCompletedLineItems / totalLineItems) * 100);
-  console.log(percentage);
+  // console.log(percentage);
 
 
 
@@ -54,9 +56,9 @@ function ProjectCard() {
 
   return (
     <div style={{display: 'flex', flexDirection:'column', height:'306px'}}>
-      <Typography sx={themeStyle.heading}>Project</Typography>
-      <Typography sx={themeStyle.descriptionText}>Project Name: {projectName}</Typography>
-      <Typography sx={themeStyle.descriptionText}>Project Location: {projectLocation}</Typography>
+      <Typography sx={themeStyle.heading}>{t("ClientLayout.ClientDefault.project")}</Typography>
+      <Typography sx={themeStyle.descriptionText}>{t("ClientLayout.ClientDefault.projectName")}: {projectName}</Typography>
+      <Typography sx={themeStyle.descriptionText}>{t("ClientLayout.ClientDefault.projectLocation")}: {projectLocation}</Typography>
 
       {/* 
             {data1.map((item, index) => (
@@ -71,9 +73,9 @@ function ProjectCard() {
             ))} */}
 
       <Box sx={{ ...themeStyle.box, marginTop: "1.5rem" }}>
-        <Typography sx={themeStyle.listItem}>Start</Typography>
+        <Typography sx={themeStyle.listItem}>{t("ClientLayout.ClientDefault.start")}</Typography>
         <Typography sx={{ ...themeStyle.listItem, marginRight: "3rem" }}>
-          End
+        {t("ClientLayout.ClientDefault.end")}
         </Typography>
       </Box>
       <Box sx={{ ...themeStyle.box, marginBottom: "1.3rem" }}>
@@ -94,7 +96,7 @@ function ProjectCard() {
         </Typography>
       </Box>
 
-          <Typography sx={themeStyle.descriptionText} pb={1}>Active workorders:</Typography>
+          <Typography sx={themeStyle.descriptionText} pb={1}>{t("ClientLayout.ClientDefault.activeWork")}:</Typography>
           <Stack justifyContent={'center'} pl={2} pr={2}>
       {activeWorkOrders?.map((workOrder) => {
           return (
@@ -137,13 +139,13 @@ function ProjectCard() {
 const themeStyle = {
   heading: {
     color: "#4C8AB1",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "1.3rem",
     marginBottom: "1rem",
   },
   descriptionText: {
     color: "#202227",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     padding: "0rem 1rem",
   },
   box: {
@@ -158,14 +160,14 @@ const themeStyle = {
   listItem: {
     color: "#2F2F2F",
     fontSize: "0.7rem",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     opacity: "70%",
     paddingLeft: "1rem",
     fontWeight: 300,
   },
   costText: {
     color: "#4C8AB1",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "0.7rem",
     marginRight: "1rem",
     fontWeight: 600,
@@ -177,7 +179,7 @@ const themeStyle = {
     mt: 1,
   },
   text: {
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: 'var(--main-font-family)',
     fontSize: "14px",
     width: "160px",
     color: "#202227",

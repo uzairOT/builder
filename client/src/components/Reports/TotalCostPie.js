@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { styled } from "@mui/material/styles";
 
@@ -9,19 +9,26 @@ const StyledText = styled("text")(({ theme, color }) => ({
   textAnchor: "middle",
   dominantBaseline: "central",
   fontSize: "20px",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   color: theme.palette.text.color,
   fontWeight: "600",
 }));
 
 function PieCenterLabel({ children }) {
   return (
-    <StyledText x={156} y={95} color="#F9C74F">
+    <StyledText x={156} y={85} color="#F9C74F">
       {children}
     </StyledText>
   );
 }
 function PieCenterLabel2({ children }) {
+  return (
+    <StyledText x={156} y={110} color="#90BE6D">
+      {children}
+    </StyledText>
+  );
+}
+function PieCenterLabel3({ children }) {
   return (
     <StyledText x={156} y={135} color="#2D9CDB">
       {children}
@@ -29,7 +36,7 @@ function PieCenterLabel2({ children }) {
   );
 }
 
-const TotalCostPie = ({ spent, remaning, total }) => {
+const TotalCostPie = ({ spent, remaning, total, currentExpectedMargin }) => {
   const remainingAmount = (remaning / total) * 100;
   const spentPercent = Number.isNaN((spent / total) * 100)
     ? 0
@@ -37,11 +44,14 @@ const TotalCostPie = ({ spent, remaning, total }) => {
   const remaininPercent = Number.isNaN((remaning / total) * 100)
     ? 0
     : (remaning / total) * 100;
+  const currentExpectedMarginPercent = Number.isNaN((currentExpectedMargin / total) * 100)
+    ? 0
+    : (currentExpectedMargin / total) * 100;
   const data = [
     { id: 0, value: 25, color: "#1F9EF3, #1B59F800" },
     { id: 1, value: 75, color: "#eff5ff" },
   ];
-  console.log("first:", "+ remaning", remainingAmount, remaning, spent, total);
+
   return (
     <Stack
       width={"100%"}
@@ -54,7 +64,8 @@ const TotalCostPie = ({ spent, remaning, total }) => {
           {
             data: [
               { id: 0, value: spent ? spent : 0, color: "#F9C74F, #1B59F800" },
-              { id: 1, value: remaning ? remaning : 0, color: "#2D9CDB" },
+              { id: 1, value: currentExpectedMargin ? currentExpectedMargin : 0, color: "#90BE6D" },
+              { id: 2, value: remaning ? remaning : 0, color: "#2D9CDB" },
             ],
             innerRadius: 55,
             outerRadius: 95,
@@ -70,7 +81,8 @@ const TotalCostPie = ({ spent, remaning, total }) => {
         width={290}
       >
         <PieCenterLabel>{spentPercent.toFixed(2)}%</PieCenterLabel>
-        <PieCenterLabel2>{remaininPercent.toFixed(2)}%</PieCenterLabel2>
+        <PieCenterLabel2>{currentExpectedMarginPercent.toFixed(2)}%</PieCenterLabel2>
+        <PieCenterLabel3>{remaininPercent.toFixed(2)}%</PieCenterLabel3>
       </PieChart>
     </Stack>
   );

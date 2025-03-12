@@ -9,8 +9,10 @@ import {
 import React from "react";
 import BuilderProButton from "../UI/Button/BuilderProButton";
 import { useUpdateTeamStatusNotificationsMutation } from "../../redux/apis/Project/workOrderApiSlice";
+import { useTranslation } from "react-i18next";
 
 const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
+  const { t } = useTranslation();
   const [updateRead] = useUpdateTeamStatusNotificationsMutation();
 
   const handleMarkRead = async () => {
@@ -24,7 +26,7 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
       console.log(error);
     }
   };
-  console.log(teamNotification)
+  // console.log(teamNotification);
   return (
     <>
       <Accordion disableGutters>
@@ -39,11 +41,11 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                 {index === 0 && (
                   <Typography
                     display={"block"}
-                    fontFamily={"inherit"}
+                    fontFamily={"var(--main-font-family)"}
                     fontSize={"12px"}
                     sx={{ textDecoration: "underline", fontWeight: "600" }}
                   >
-                    Team Notifications:
+                    {t("TeamNotifications.title")}:
                   </Typography>
                 )}
                 <Stack
@@ -62,8 +64,11 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                     style={{ marginLeft: "0px" }}
                     className="notification-text"
                   >
-                    <Typography fontFamily={"inherit"} fontSize={"13px"}>
-                      You have a notification for project{" "}
+                    <Typography
+                      fontFamily={"var(--main-font-family)"}
+                      fontSize={"13px"}
+                    >
+                      {t("TeamNotifications.body")}{" "}
                       <b>{teamNotification.projectName}</b>
                     </Typography>
                   </div>
@@ -71,27 +76,23 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
               </Stack>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography fontFamily={"inherit"} fontSize={"12px"}>
-                <b>{teamNotification.user?.firstName}</b>(
-                {teamNotification.user?.ProjectMembers[0]?.role}) {teamNotification?.workOrderVersion < 0 ? 'declined' : 'approved'}{" "}
-                {teamNotification?.workOrderVersion > 1 ? "change" : "work"}{" "}
-                order
+              <Typography fontFamily="var(--main-font-family)" fontSize="12px">
+                <b>{teamNotification.user?.firstName}</b>
+                ({teamNotification.user?.ProjectMembers[0]?.role})
+                {teamNotification?.workOrderVersion < 0 ? t("TeamNotifications.declined") : t("TeamNotifications.approved")}
+                {teamNotification?.workOrderVersion > 1 ? t("TeamNotifications.changeOrder") : t("TeamNotifications.workOrder")}
               </Typography>
-              {/* <Typography fontFamily={"inherit"} fontSize={"12px"}>
-                <b>{teamNotification?.phase?.LineItems[0]?.title || ""}</b> of
-                phase <b>{teamNotification?.phase.phase_name}</b>.
-              </Typography> */}
               <Stack alignItems={"flex-end"}>
                 <BuilderProButton
                   variant={"contained"}
                   backgroundColor={"#4C8AB1"}
                   fontSize={"11px"}
-                  fontFamily={"inherit"}
+                  fontFamily={"var(--main-font-family)"}
                   marginLeft={"5px"}
                   alignSelf={"right"}
                   handleOnClick={handleMarkRead}
                 >
-                  Mark as Read
+                  {t("TeamNotifications.button")}
                 </BuilderProButton>
               </Stack>
             </AccordionDetails>
@@ -107,11 +108,11 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                 {index === 0 && (
                   <Typography
                     display={"block"}
-                    fontFamily={"inherit"}
+                    fontFamily={"var(--main-font-family)"}
                     fontSize={"12px"}
                     sx={{ textDecoration: "underline", fontWeight: "600" }}
                   >
-                    Team Notifications:
+                    {t("TeamNotifications.title")}:
                   </Typography>
                 )}
                 <Stack
@@ -130,8 +131,11 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
                     style={{ marginLeft: "0px" }}
                     className="notification-text"
                   >
-                    <Typography fontFamily={"inherit"} fontSize={"13px"}>
-                      You have a notification for project{" "}
+                    <Typography
+                      fontFamily={"var(--main-font-family)"}
+                      fontSize={"13px"}
+                    >
+                      {t("TeamNotifications.title")}{" "}
                       <b>{teamNotification.projectName}</b>
                     </Typography>
                   </div>
@@ -139,26 +143,31 @@ const TeamNotifications = ({ teamNotification, index, userId, refetch }) => {
               </Stack>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography fontFamily={"inherit"} fontSize={"12px"}>
+              <Typography
+                fontFamily={"var(--main-font-family)"}
+                fontSize={"12px"}
+              >
                 <b>{teamNotification.user?.firstName}</b>(
-                {teamNotification.user?.ProjectMembers[0]?.role}) completed the
-                assigned task
+                {t(`ProjectTeam.role.${teamNotification.user?.ProjectMembers[0]?.role}`)}) {t("TeamNotifications.body2")}
               </Typography>
-              <Typography fontFamily={"inherit"} fontSize={"12px"}>
-                <b>{teamNotification?.phase?.LineItems[0]?.title || ""}</b> of
-                phase <b>{teamNotification?.phase.phase_name}</b>.
+              <Typography
+                fontFamily={"var(--main-font-family)"}
+                fontSize={"12px"}
+              >
+                <b>{teamNotification?.phase?.LineItems[0]?.title || ""}</b> {t("TeamNotifications.body3")}
+                <b>{teamNotification?.phase.phase_name}</b>.
               </Typography>
               <Stack alignItems={"flex-end"}>
                 <BuilderProButton
                   variant={"contained"}
                   backgroundColor={"#4C8AB1"}
                   fontSize={"11px"}
-                  fontFamily={"inherit"}
+                  fontFamily={"var(--main-font-family)"}
                   marginLeft={"5px"}
                   alignSelf={"right"}
                   handleOnClick={handleMarkRead}
                 >
-                  Mark as Read
+                  {t("TeamNotifications.button")}
                 </BuilderProButton>
               </Stack>
             </AccordionDetails>

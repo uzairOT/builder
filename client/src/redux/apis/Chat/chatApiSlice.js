@@ -1,7 +1,7 @@
 import { apiSlice } from "../apiSlice";
 
-const CHAT_URL = "http://3.135.107.71/projectChat";
-const USER_CHAT_URL = "http://3.135.107.71/chat";
+const CHAT_URL = "https://builderbuilder.net/projectChat";
+const USER_CHAT_URL = "https://builderbuilder.net/chat";
 
 const chatApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

@@ -1,32 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
-  TextField,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
-  Box,
-  Typography,
-  MenuItem,
-  Avatar,
-  IconButton,
-  Stack,
   CircularProgress,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import YellowBtn from "../../UI/button";
-import { useDispatch } from "react-redux";
-import { resetUserAndRoleEmail } from "../../../redux/slices/projectFormSlice";
-
+import { useTranslation } from "react-i18next";
 function AreYouSureModal({
   open,
   handleClose,
   handleConfirmDelete,
   isLoading,
   text,
+  question = ""
 }) {
+  const {t} = useTranslation()
+  const defaultQuestion = t("AreYouSureModal.title1");
   const handleClickClose = () => {
     handleClose();
   };
@@ -51,7 +43,7 @@ function AreYouSureModal({
         {/* </Stack> */}
         <DialogContent>
           <DialogContentText sx={typoTect} id="alert-dialog-slide-description">
-            Are you sure you want to delete this {text}?
+          <span dangerouslySetInnerHTML={{ __html: question || defaultQuestion }} /> {text}?
           </DialogContentText>
         </DialogContent>
 
@@ -80,7 +72,7 @@ function AreYouSureModal({
             }}
             onClick={() => handleConfirmDelete(false)}
           >
-            Cancel
+            {t("Button.cancel")}
           </Button>
           <Button
             sx={{
@@ -95,7 +87,7 @@ function AreYouSureModal({
             }}
             onClick={() => handleConfirmDelete(true)}
           >
-            {isLoading ? <CircularProgress size={"1.25rem"} /> : "Yes"}
+            {isLoading ? <CircularProgress size={"1.25rem"} /> : t("Button.yes")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -123,7 +115,7 @@ const crossIcon = {
   top: 8,
 };
 const typoTitle = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: 600,
   fontSize: "1.5rem",
   color: "#202227",
@@ -131,7 +123,7 @@ const typoTitle = {
 };
 
 const typoTect = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: 500,
   fontSize: "1rem",
   color: "#575757",

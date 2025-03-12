@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -10,15 +10,12 @@ import {
   Select,
   MenuItem,
   FormControl,
-  InputLabel,
   FormHelperText,
-  Autocomplete,
   Stack,
   IconButton,
 } from "@mui/material";
-import UploadIcon from "../../../assets/settings/uploadimg.svg";
 import Button from "../../UI/CustomButton";
-import { useFormik, useFormikContext } from "formik";
+import { useFormik } from "formik";
 import { settingsSchema } from "../../../utils/Validation/settingsPageSchema";
 import { useLocation } from "react-router-dom";
 import {
@@ -27,19 +24,19 @@ import {
 } from "../../../redux/apis/Admin/assignRoleApiSlice";
 import { toast } from "react-toastify";
 //import "react-toastify/dist/ReactToastify.css";
-import { allUserProjects } from "../../../redux/slices/Project/userProjectsSlice";
 import { useSelector } from "react-redux";
 import {
   useGetFilteredUserProjectsQuery,
-  useGetUserProjectsQuery,
 } from "../../../redux/apis/Project/userProjectApiSlice";
 import { createFilterOptions } from "@mui/material/Autocomplete";
 import { uploadToS3 } from "../../../utils/S3";
 import axios from "axios";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import { Close } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
+  const {t} = useTranslation()
   const [image, setImage] = useState(null);
   const local = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(local);
@@ -55,12 +52,16 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
   const { data, isLoading, error } = useGetFilteredUserProjectsQuery({
     userId: currentUserId,
   });
+  const organizationId = useSelector(
+    (state) => state.auth.userInfo.user.organization.organizationId
+  );
 
-  console.log(data);
+  // console.log(data);
   const projectNames = data
     ? data?.projects.map((project) => ({
         id: project.id,
         projectName: project.projectName,
+        organizationId: project.User?.Organizations[0]?.organizationId
       }))
     : [];
   //console.log(projectNames);
@@ -73,7 +74,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://3.135.107.71/project/file",
+          "https://builderbuilder.net/project/file",
           {
             fileName,
             fileType,
@@ -101,24 +102,27 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
       //console.log(uploadedFileUrl);
       const post = {
         ...values,
+        project: values.project.id,
         userRole: userRole,
         userId: currentUserId,
         companyName: currentUser.user.companyName,
+        organizationId: values?.project?.organizationId,
       };
       //console.log(post);
       const res = await assignRolePost(post).unwrap();
-      console.log(res);
-      toast.info("Email Invitation sent!");
+      // console.log(res);
+      toast.info("Email invitation sent!");
       setRefreshData(!refreshData);
       action.resetForm();
       setImage(null);
     } catch (err) {
       console.log(err);
       toast.error(
-        err?.data?.message ||
-        error.error ||
-        error?.data?.error ||
-        err?.message ||
+        err?.data?.error ||
+          err?.data?.message ||
+          error.error ||
+          error?.data?.error ||
+          err?.message ||
           "Something went wrong!"
       );
     }
@@ -188,9 +192,9 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
           alignItems={"center"}
           mr={5}
         >
-          <DialogTitle sx={headingStyle}>Add {title}</DialogTitle>
+          <DialogTitle sx={headingStyle}>{t("Button.add")} {title}</DialogTitle>
           <IconButton
-            style={{ width: "30px", height: "30px" }}
+            style={{ width: "30px", height: "30px", marginTop: "20px" }}
             onClick={onClose}
           >
             <Close />
@@ -296,7 +300,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
             </Grid> */}
             <Grid item xs={12} sm={6}>
               {/* Projects input */}
-              <Typography variant="body1">Project</Typography>
+              <Typography variant="body1">{t("Settings.modal.project")}</Typography>
               {/* <TextField
               select 
                 error={Boolean(errors.project)} // Simplified error handling
@@ -337,17 +341,18 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
                   name="project"
                   fullWidth
                   renderValue={(selected) => {
+                    console.log(selected)
                     if (selected.length === 0) {
                       return (
                         <Typography
                           style={{ fontSize: "1rem", color: "#969a9c" }}
                         >
-                          Project
+                          {t("Settings.modal.project")}
                         </Typography>
                       );
                     }
                     const selectedProject = projectNames.find(
-                      (project) => project.id === selected
+                      (project) => project.id === selected.id
                     );
                     return selectedProject ? selectedProject.projectName : "";
                   }}
@@ -358,11 +363,11 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
                       errors.project && touched.project
                         ? "1px solid #d32f2f"
                         : "1px solid #E0E4EC",
-                    placeholder: "Project",
+                    placeholder: t("Settings.modal.project"),
                   }}
                 >
                   {projectNames?.map((projectName) => (
-                    <MenuItem key={projectName.id} value={projectName.id}>
+                    <MenuItem key={projectName.id} value={projectName}>
                       {projectName.projectName}
                     </MenuItem>
                   ))}
@@ -407,10 +412,11 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
             </Grid> */}
             <Grid item xs={12} sm={6}>
               {/* Email input */}
-              <Typography variant="body1">Email</Typography>
+              <Typography variant="body1">{t("Settings.modal.email")}</Typography>
               <TextField
+                sx={{ mr: 3 }}
                 error={errors.email ? true : false}
-                placeholder="Email"
+                placeholder={t("Settings.modal.email")}
                 name={"email"}
                 value={values.email}
                 onChange={handleChange}
@@ -480,6 +486,7 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
           sx={{
             display: "flex",
             justifyContent: "center",
+            alignItems: "center",
             mb: 2,
             flexDirection: { xs: "column", sm: "row" },
             gap: { xs: 1, sm: 0 },
@@ -488,19 +495,20 @@ function AddModal({ title, open, onClose, setRefreshData, refreshData }) {
           <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center" }}>
             <Button
               type={"submit"}
-              buttonText="Add New"
+              buttonText={t("Button.addNew")}
               color="#ffffff"
               backgroundColor={isSubmitting ? "gray" : "#4C8AB1"}
               width="150px"
               height="44px"
               borderRadius="50px"
+              fontSize={"13px"}
               onClick={handleSubmit}
               disabled={isSubmitting}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center" }}>
+          <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center", margin:'0px' }}>
             <Button
-              buttonText="Reset"
+              buttonText={t("Button.reset")}
               color="#4C8AB1"
               border={"1px solid #4C8AB1"}
               width="150px"
@@ -520,7 +528,7 @@ export default AddModal;
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: "var(--main-font-family)",
   border: "1px solid #E0E4EC",
   padding: "10px",
   width: { xl: "250px", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
@@ -535,14 +543,15 @@ const headingStyle = {
   marginTop: "20px",
   // marginBottom: "10px",
   marginLeft: "25px",
-  fontFamily: "inherit",
+  fontFamily: "var(--main-font-family)",
   fontWeight: "500",
   fontSize: "22px",
   color: "#4C8AB1",
+  width:'17ch'
 };
 const labelStyle = {
   marginTop: "10px",
-  fontFamily: "inherit",
+  fontFamily: "var(--main-font-family)",
   fontWeight: "400",
   fontSize: "13px",
   color: "#535353C9",

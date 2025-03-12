@@ -26,6 +26,7 @@ import {
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Close } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 const CouponModal = ({
   open,
@@ -40,6 +41,7 @@ const CouponModal = ({
   couponCode,
   couponValue,
 }) => {
+  const {t} = useTranslation()
   const handleClose = () => {
     if (updateOpen) {
       updateClose();
@@ -122,7 +124,7 @@ const CouponModal = ({
             mr={5}
           >
             <DialogTitle sx={headingStyle}>
-              {open ? "Add" : updateOpen ? "Update" : ""} {title}
+              {open ? t("Button.add") : updateOpen ? t("Button.update") : ""} {title}
             </DialogTitle>
             <IconButton
               style={{ width: "30px", height: "30px" }}
@@ -136,7 +138,7 @@ const CouponModal = ({
           >
             <Grid container spacing={4}>
               <Grid item xs={12} sm={6}>
-                <Typography variant="body1">Coupon Code</Typography>
+                <Typography variant="body1">{t("Settings.Coupon.table.couponCode")}</Typography>
                 <TextField
                   error={errors.couponCode ? true : false}
                   value={values.couponCode}
@@ -163,7 +165,7 @@ const CouponModal = ({
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography variant="body1">Amount</Typography>
+                <Typography variant="body1">{t("Settings.Coupon.table.amount")}</Typography>
                 <TextField
                   type="number"
                   error={errors.couponValue ? true : false}
@@ -208,15 +210,15 @@ const CouponModal = ({
               sm={12}
               md={6}
               lg={6}
-              sx={{ textAlign: "center" }}
+              sx={{ textAlign: "center", margin:'0px' }}
             >
               <Button
                 buttonText={
                   isSubmitting
-                    ? "Submitting"
+                    ? t("Button.submitting")
                     : open
-                    ? "Add Code"
-                    : "Update Code"
+                    ? `${t("Button.add")} ${t("Settings.Coupon.code")}`
+                    : `${t("Button.update")} ${t("Settings.Coupon.code")}`
                 }
                 color="#ffffff"
                 backgroundColor={isSubmitting ? "gray" : "#4C8AB1"}
@@ -233,10 +235,10 @@ const CouponModal = ({
               sm={12}
               md={6}
               lg={6}
-              sx={{ textAlign: "center" }}
+              sx={{ textAlign: "center", margin:'0px' }}
             >
               <Button
-                buttonText="Reset"
+                buttonText={t("Button.reset")}
                 color="#4C8AB1"
                 border={"1px solid #4C8AB1"}
                 width="150px"
@@ -255,7 +257,7 @@ const CouponModal = ({
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   border: "1px solid #E0E4EC",
   padding: "10px",
   width: { xl: "250px", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
@@ -270,7 +272,7 @@ const headingStyle = {
   marginTop: "20px",
   // marginBottom: "10px",
   marginLeft: "25px",
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "500",
   fontSize: "22px",
   color: "#4C8AB1",

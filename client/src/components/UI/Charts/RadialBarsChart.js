@@ -18,7 +18,7 @@ const RedialBarsChart = ({ TotalProfit, totalProfitFromPaidInvoices }) => {
           show: true,
           name: {
             show: true,
-            fontSize: "16px",
+            fontSize: "0.7rem",
             // fontFamily: undefined,
             fontWeight: 600,
             // color: undefined,

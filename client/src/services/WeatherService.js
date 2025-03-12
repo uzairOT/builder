@@ -54,10 +54,8 @@ const formatFiveDayWeather = async (forecastData) => {
         const forecastDate  = forecast.dt_txt.split(' ')[0];
         const forecastTime  = forecast.dt_txt.split(' ')[1];
 
-        const formattedDay = moment(forecastDate).format('ddd'); // Formats day to 'Mon', 'Tue', etc.
-     
+        const formattedDay = moment(forecastDate).format('YYYY-MM-DD'); // Formats day to 'Mon', 'Tue', etc.
         const  {main , weather} = forecast;
-
         const {temp} = main;
         const {main: weatherDetails} = weather[0];
         if(forecastTime === '09:00:00' && forecastDate !== currentDate && formattedData.length <= 4){

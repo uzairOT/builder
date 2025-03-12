@@ -11,7 +11,7 @@ const StyledText = styled("text")(({ theme }) => ({
   textAnchor: "middle",
   dominantBaseline: "central",
   fontSize: 12,
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   color: "#000000B2",
   fontWeight: "600",
   textLength: 100,

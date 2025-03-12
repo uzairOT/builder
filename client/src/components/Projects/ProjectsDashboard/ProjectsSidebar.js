@@ -11,19 +11,17 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   addProjects,
+  getPinnedProject,
   projectsPackage,
 } from "../../../redux/slices/Project/userProjectsSlice";
 import { addInitialPhase } from "../../../redux/slices/Project/projectInitialProposal";
 import { authUserRole } from "../../../redux/slices/auth/userRoleSlice";
+import { useTranslation } from "react-i18next";
 
 const ProjectsSidebar = ({ reports }) => {
   const [activeBtn, setActiveBtn] = useState("remodel");
   const dispatch = useDispatch();
-  const [getUserRole] = useGetProjectUserRoleMutation();
-  const local = localStorage.getItem("userInfo");
   const userRole = useSelector(authUserRole);
-  const currentUser = JSON.parse(local);
-  const currentUserId = currentUser.user.id;
   const location = useLocation();
   const path =
     !location.pathname.split("/")[3] ||
@@ -33,18 +31,22 @@ const ProjectsSidebar = ({ reports }) => {
   const handleListedProjectsButton = (btn) => {
     setActiveBtn(btn);
   };
+  const pinnedProject  = useSelector(getPinnedProject);
   const navigate = useNavigate();
-
-  const handleClick = async (projectId, path, e) => {
-    console.log(path);
-    dispatch(addInitialPhase([]));
+  const { t } = useTranslation();
+  const handleClick = async (projectId, pathTo, e) => {
+    // console.log(path);
+    // console.log(pathTo);
+    if (path !== pathTo) {
+      dispatch(addInitialPhase([]));
+    }
     // const res = await getUserRole({projectId, userId: currentUserId});
     // // console.log(res)
     // dispatch(authUserRole(res.data.role));
     if (userRole.userRole === "client") {
       navigate(`/projects/${projectId}/client`);
     } else {
-      navigate(`/projects/${projectId}/${path}`);
+      navigate(`/projects/${projectId}/${pathTo}`);
     }
   };
   const { id } = useParams();
@@ -59,7 +61,7 @@ const ProjectsSidebar = ({ reports }) => {
       (projectProfileCard) => Number(projectProfileCard.id) === Number(id)
     );
     if (selectedProject) {
-      setActiveBtn(selectedProject?.buildType);
+      setActiveBtn(selectedProject?.buildType.toLowerCase());
     }
   }, [id]);
 
@@ -72,7 +74,7 @@ const ProjectsSidebar = ({ reports }) => {
       <Stack p={2}>
         {/* PROJECT DASHBOARD */}
         <Typography sx={themeStyle.subtile} pb={1.5}>
-          User Projects
+          {t("userProject.title1")}
         </Typography>
         <Divider
           variant="fullWidth"
@@ -81,7 +83,7 @@ const ProjectsSidebar = ({ reports }) => {
 
         {/* LIST OF PROJECTS */}
         <Typography sx={themeStyle.listTitle} pt={1.5} pb={4}>
-          All listed Projects
+          {t("userProject.title2")}
         </Typography>
 
         {/* BUTTON STACK */}
@@ -102,13 +104,13 @@ const ProjectsSidebar = ({ reports }) => {
             }}
           >
             <Typography
-              fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
+              fontSize={"0.6rem"}
               fontWeight={"500"}
               color={"black"}
-              fontFamily={"Inter, sans-serif"}
+              fontFamily={"var(--main-font-family)"}
               width={"100%"}
             >
-              Remodel
+              {t("userProject.title3")}
             </Typography>
           </BuilderProButton>
           <BuilderProButton
@@ -121,13 +123,13 @@ const ProjectsSidebar = ({ reports }) => {
             }}
           >
             <Typography
-              fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
+              fontSize={"0.6rem"}
               fontWeight={"500"}
               color={"black"}
-              fontFamily={"Inter, sans-serif"}
+              fontFamily={"var(--main-font-family)"}
               width={"100%"}
             >
-              New build
+              {t("userProject.title4")}
             </Typography>
           </BuilderProButton>
           <BuilderProButton
@@ -140,12 +142,12 @@ const ProjectsSidebar = ({ reports }) => {
             }}
           >
             <Typography
-              fontSize={{ xl: "11px", lg: "9px", md: "8px", xs: "11px" }}
+              fontSize={"0.6rem"}
               fontWeight={"500"}
               color={"black"}
-              fontFamily={"Inter, sans-serif"}
+              fontFamily={"var(--main-font-family)"}
             >
-              Commercial
+              {t("userProject.title5")}
             </Typography>
           </BuilderProButton>
         </Stack>
@@ -157,11 +159,28 @@ const ProjectsSidebar = ({ reports }) => {
         <Box
           sx={{
             ...themeStyle.scrollable,
-            height: reports ? "calc(92vh - 278px)" : "calc(92vh - 225px)",
+            height: reports ? "calc(85vh - 278px)" : "calc(85vh - 225px)",
           }}
         >
-          <Stack spacing={1} pl={2} pr={2} pt={1}>
+          <Stack spacing={1} pl={{xl:2, lg:'0px', xs:2}} pr={{xl:2, lg:'0px', xs:2}} pt={1}>
             <>
+            {pinnedProject?.id && <React.Fragment key={pinnedProject.id}>
+                      <Link
+                        key={pinnedProject.id}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleClick(pinnedProject.id, path, e);
+                        }}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <ProjectCard
+                          handleClick={()=>{}}
+                          projectProfileCard={pinnedProject}
+                          selected={Number(pinnedProject.id) === Number(id)}
+                          pinnedProject={true}
+                        />
+                      </Link>
+                    </React.Fragment>}
               {projects[0]?.map((projectProfileCard) => {
                 const selected = Number(projectProfileCard.id) === Number(id);
                 if (projectProfileCard.buildType === activeBtn) {
@@ -176,6 +195,7 @@ const ProjectsSidebar = ({ reports }) => {
                         style={{ textDecoration: "none" }}
                       >
                         <ProjectCard
+                          handleClick={()=>{}}
                           projectProfileCard={projectProfileCard}
                           selected={selected}
                         />
@@ -189,6 +209,23 @@ const ProjectsSidebar = ({ reports }) => {
             </>
           </Stack>
         </Box>
+        <Stack justifyContent={"center"}>
+          <Stack pt={0.5} pb={0.5} width={"90%"} alignSelf={"center"}>
+            <BuilderProButton
+              variant={"contained"}
+              backgroundColor={"#FFAC00"}
+              fontFamily={"var(--main-font-family)"}
+              fontSize={"0.8rem"}
+              marginLeft={0}
+              fontWeight={600}
+              handleOnClick={() => {
+                navigate("/assignproject");
+              }}
+            >
+              {t("userProject.title10")}
+            </BuilderProButton>
+          </Stack>
+        </Stack>
       </Stack>
     </>
   );
@@ -200,19 +237,19 @@ const themeStyle = {
   title: {
     fontSize: "22px",
     fontWeight: "500",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     color: "#000000",
   },
   subtile: {
     fontSize: "16px",
     fontWeight: "500",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     color: "#4C8AB1",
   },
   listTitle: {
     fontSize: "12px",
     fontWeight: "500",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     color: "#535353C9",
   },
   scrollable: {

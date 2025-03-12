@@ -8,25 +8,22 @@ import {
   Modal,
   Button,
   LinearProgress,
-  Select,
-  MenuItem,
   Divider,
 } from "@mui/material";
-import { animateScroll as scroll, Events, scrollSpy } from "react-scroll";
 import { TextField, IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { io } from "socket.io-client";
-import { useOutletContext, useParams } from "react-router-dom";
-import {
-  useCreateConverstaionMutation,
-  useGetChatMessagesMutation,
-} from "../../redux/apis/Chat/chatApiSlice";
-import moment from 'moment-timezone';
+import { useOutletContext } from "react-router-dom";
+import { useGetChatMessagesMutation } from "../../redux/apis/Chat/chatApiSlice";
+import moment from "moment-timezone";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import axios from "axios";
 import { uploadToS3 } from "../../utils/S3";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import DescriptionIcon from "@mui/icons-material/Description";
+import TableChartIcon from "@mui/icons-material/TableChart";
+import ArchiveIcon from "@mui/icons-material/Archive";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { socket } from "../../socket";
 import { getUserRoleFromRedux } from "../../redux/slices/auth/userRoleSlice";
@@ -41,7 +38,8 @@ import {
   setTotalCount,
   setTotalPages,
 } from "../../redux/slices/Project/userProjectsSlice";
-import { useGetProjectTeamQuery } from "../../redux/apis/Project/projectApiSlice";
+import { Chat } from "@mui/icons-material";
+import { useTranslation } from 'react-i18next';
 let data = localStorage.getItem("userInfo");
 let userInfo = JSON.parse(data);
 const currentUser = userInfo?.user;
@@ -59,8 +57,10 @@ function ChatView({
   id,
   refetchConverstations,
   isLoadingChat,
-  setIsLoadingChat
+  setIsLoadingChat,
+  projectImage,
 }) {
+  const {t} = useTranslation()
   const userRoleProject = useSelector(getUserRoleFromRedux);
   const [openModal, setOpenModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -78,17 +78,12 @@ function ChatView({
   const [image, setImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState("");
   const [s3Url, setS3Url] = useState("");
-  // const { id } = useParams();
-  const messageBoxRef = useRef(null);
   const [usersOnline, setUsersOnline] = useState({}); // State to store online status of users
   const [recipientType, setRecipentType] = useState("team+client");
   const [projectName] = useOutletContext();
   const [offset, setOffset] = useState(0);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const boxRef = useRef(null);
-
-  // const [chatUser, setChatUser] = useState();
-  const [createConverstaion] = useCreateConverstaionMutation();
   const [scrollingUp, setScrollingUp] = useState(false);
   const userId = currentUser?.id;
   const dispatch = useDispatch();
@@ -126,15 +121,14 @@ function ChatView({
         fileName: fileName,
         fileType: fileType,
       });
-    } else{
-      console.log(chatUser)
-      if(messages?.length < 1){
-        await socket.emit('conversation',{
+    } else {
+      // console.log(chatUser);
+      if (messages?.length < 1) {
+        await socket.emit("conversation", {
           userId: chatUser?.userId,
-       
-        })
+        });
       }
-      
+
       await socket.emit("privateMessage", {
         content: message,
         userId: currentUser?.id,
@@ -161,7 +155,7 @@ function ChatView({
   async function markMessagesAsRead(id, userId) {
     try {
       const response = await axios.post(
-        "http://3.135.107.71/projectChat/markMessagesAsRead",
+        "https://builderbuilder.net/projectChat/markMessagesAsRead",
         {
           projectId: id,
           userId: userId,
@@ -173,7 +167,7 @@ function ChatView({
           },
         }
       );
-      console.log("Messages marked as read successfully", response.data);
+      // console.log("Messages marked as read successfully", response.data);
       dispatch(setIsLoading(isLoading));
       await refetch({ userId: userId, q: "", filter: "", page: 1 });
       if (data) {
@@ -195,7 +189,7 @@ function ChatView({
   //
   const projectRole = userRoleProject.userRole;
   const fetchProjectChat = async (newOffset, direction, project) => {
-    console.log("conversation Id: ",conversationId);
+    // console.log("conversation Id: ", conversationId);
     try {
       const res = await getChatMessages({
         projectId: project === "project" ? id : null,
@@ -203,15 +197,14 @@ function ChatView({
         offset: newOffset,
         recipientType: recipientType,
       }).unwrap();
-      console.log("messages length: ", res)
-      console.log('has more messages: ', hasMoreMessages)
+      // console.log("messages length: ", res);
+      // console.log("has more messages: ", hasMoreMessages);
       if (res.data.length === 0 && direction === "up") {
         setHasMoreMessages(false);
         setMsgLoading(false);
         return;
-      }else{
-        if(!hasMoreMessages)
-        setHasMoreMessages(true);
+      } else {
+        if (!hasMoreMessages) setHasMoreMessages(true);
         // setMsgLoading(false);
       }
       if (direction === "up") {
@@ -233,7 +226,7 @@ function ChatView({
         return;
       } else {
         setMessages([...res.data].reverse());
-        setIsLoadingChat(false)
+        setIsLoadingChat(false);
         if (boxRef.current) {
           boxRef.current.scrollIntoView({ behavior: "smooth" });
         }
@@ -246,8 +239,8 @@ function ChatView({
   //
   useEffect(() => {
     // console.log("run");
-    console.log("scrollHeight : ",boxRef.current.scrollHeight);
-    console.log("scrollTop: ",boxRef.current.scrollTop);
+    // console.log("scrollHeight : ", boxRef.current.scrollHeight);
+    // console.log("scrollTop: ", boxRef.current.scrollTop);
     boxRef.current.scrollTop = boxRef.current.scrollHeight;
 
     setScrollingUp(false);
@@ -282,16 +275,15 @@ function ChatView({
         //   duration: 300,
         //   smooth: true,
         // });
-        
+
         return newMessages;
       });
     };
     if (value === id) {
-      
       socket.on("message", messageListener);
-    }else{
+    } else {
       socket.on("privateMessage", messageListener);
-      }
+    }
 
     const userStatusListener = (data) => {
       setUsersOnline((prevUsersOnline) => ({
@@ -300,7 +292,7 @@ function ChatView({
       }));
     };
     socket.on("userStatusChanged", userStatusListener);
- 
+
     return () => {
       socket.off("message", messageListener);
       socket.off("privateMessage", messageListener);
@@ -325,18 +317,18 @@ function ChatView({
       reader.readAsDataURL(file);
     }
   };
-  const isToday = (date) =>{
-    const today = moment().startOf('day');
-    return moment(date).isSame(today, 'day');
-  }
+  const isToday = (date) => {
+    const today = moment().startOf("day");
+    return moment(date).isSame(today, "day");
+  };
   const formatDate = (date) => {
-    console.log(date)
-    if(isToday(date)){
+    // console.log(date);
+    if (isToday(date)) {
       return moment.utc(date).tz(moment.tz.guess()).format("HH:mm A");
-    }else{
-      return moment.utc(date).tz(moment.tz.guess()).format("MMM DD, YYYY")
+    } else {
+      return moment.utc(date).tz(moment.tz.guess()).format("MMM DD, YYYY");
     }
-  }
+  };
 
   useEffect(() => {
     if (selectedFile) {
@@ -360,7 +352,7 @@ function ChatView({
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://3.135.107.71/project/file",
+          "https://builderbuilder.net/project/file",
           {
             fileName,
             fileType,
@@ -402,12 +394,12 @@ function ChatView({
   //   }
   // };
   useEffect(() => {
-    console.log(messages);
+    // console.log(messages);
     // console.log("scrollHeight : ",boxRef.current.scrollHeight);
     // console.log("scrollTop: ",boxRef.current.scrollTop);
     if (boxRef.current && !scrollingUp) {
       boxRef.current.scrollTop = boxRef.current.scrollHeight;
-      console.log("scrollTop2: ",boxRef.current.scrollTop);
+      // console.log("scrollTop2: ", boxRef.current.scrollTop);
     }
   }, [messages, id, conversationId]);
 
@@ -418,20 +410,28 @@ function ChatView({
     setImage(null);
     setS3Url("");
   };
-console.log('conversationId: ',conversationId, 'value: ', value)
-
-
+  // console.log("conversationId: ", conversationId, "value: ", value);
 
   useEffect(() => {
     const boxElement = boxRef.current;
-    console.log('Inside useEffect conversationId: ',conversationId, 'value: ', value)
+    // console.log(
+    //   "Inside useEffect conversationId: ",
+    //   conversationId,
+    //   "value: ",
+    //   value
+    // );
     const handleLoadOld = () => {
-      console.log('Inside handleLoadOld conversationId: ',conversationId, 'value: ', value)
+      // console.log(
+      //   "Inside handleLoadOld conversationId: ",
+      //   conversationId,
+      //   "value: ",
+      //   value
+      // );
       // const newOffset = offset + 10;
       // setOffset(newOffset);
       // fetchProjectChat(newOffset, "up");
       // setScrollingUp(true);
-      console.log('scroll up!', value)
+      // console.log("scroll up!", value);
       setOffset((prev) => {
         const newOffset = offset + 10;
         if (!(value === id)) {
@@ -443,12 +443,12 @@ console.log('conversationId: ',conversationId, 'value: ', value)
         return newOffset;
       });
     };
-  
+
     const handleScroll = () => {
       if (!boxRef.current) return;
-  
+
       const { scrollTop, scrollHeight, clientHeight } = boxRef.current;
-      console.log('scrolling up', scrollTop , hasMoreMessages)
+      // console.log("scrolling up", scrollTop, hasMoreMessages);
       if (scrollTop === 0 && hasMoreMessages) {
         handleLoadOld();
       }
@@ -460,7 +460,7 @@ console.log('conversationId: ',conversationId, 'value: ', value)
       };
     }
   }, [offset, hasMoreMessages, conversationId, value]);
-  // console.log(boxRef.current)
+  console.log(messages.length);
 
   return (
     <>
@@ -468,10 +468,16 @@ console.log('conversationId: ',conversationId, 'value: ', value)
         <Stack justifyContent={"space-between"} direction={"row"}>
           <Box sx={{ ...headerStyle }}>
             <Avatar
-              src={!(value === id) ? chatUser?.image : currentUser?.image}
+              src={!(value === id) ? chatUser?.image : projectImage}
               sx={{ marginRight: "1rem" }}
             ></Avatar>
-            <Typography sx={{ fontSize: {xl:"15px", lg:"12px",md:"15px",xs:"15px",}, fontWeight: 600 }}>
+            <Typography
+              sx={{
+                fontFamily: "var(--main-font-family)",
+                fontSize: { xl: "15px", lg: "12px", md: "14px", xs: "14px" },
+                fontWeight: 600,
+              }}
+            >
               {/* This value greater than 0 checks whether it's a group chat or a one-on-one chat */}
               {!(value === id)
                 ? `${chatUser?.firstName} ${chatUser?.lastName}`
@@ -502,7 +508,7 @@ console.log('conversationId: ',conversationId, 'value: ', value)
             })}
           </Select> */}
         </Stack>
-        <Divider sx={{marginBottom:'1px'}} />
+        <Divider sx={{ marginBottom: "1px" }} />
         <Box
           ref={boxRef}
           sx={{
@@ -527,7 +533,15 @@ console.log('conversationId: ',conversationId, 'value: ', value)
             )}
           </Box>
           {/* <Button onClick={handleLoadMore}>Load More</Button> */}
-          {isLoadingChat ? (<Stack height={'90%'} justifyContent={'flex-end'} alignItems={'center'}><CircularProgress /></Stack>) :image ? (
+          {isLoadingChat ? (
+            <Stack
+              height={"90%"}
+              justifyContent={"flex-end"}
+              alignItems={"center"}
+            >
+              <CircularProgress />
+            </Stack>
+          ) : image ? (
             <Box
               height={"95%"}
               style={{
@@ -564,7 +578,19 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                     download="document"
                     aria-label="download"
                   >
-                    <Typography  sx={{ fontSize: {xl:"15px", lg:"12px",md:"15px",xs:"15px",}}} variant="body2" component="span">
+                    <Typography
+                      sx={{
+                        fontFamily: "var(--main-font-family)",
+                        fontSize: {
+                          xl: "15px",
+                          lg: "12px",
+                          md: "15px",
+                          xs: "15px",
+                        },
+                      }}
+                      variant="body2"
+                      component="span"
+                    >
                       <Box sx={{ color: "primary.main" }}>
                         {loading ? (
                           <CircularProgress />
@@ -580,16 +606,28 @@ console.log('conversationId: ',conversationId, 'value: ', value)
             </Box>
           ) : (
             <>
-              {!messages || !Array?.isArray(messages) ? (
-                <div
-                  style={{
+              {!messages ||
+              !Array?.isArray(messages) ||
+              messages.length === 0 ? (
+                <Box
+                  sx={{
+                    fontFamily: "var(--main-font-family)",
                     marginLeft: "1rem",
-                    justifyContent: "center",
                     display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "inherit",
+                    textAlign: "center",
+                    padding: "2rem", // Add padding for spacing
                   }}
                 >
-                  No chat available...
-                </div>
+                  <Chat sx={{ fontSize: 50, color: "gray", mb: 2 }} />{" "}
+                  {/* Chat icon */}
+                  <Typography variant="h6" sx={{ color: "gray" }}>
+                    {t("ProjectChat.noChatAvailable")}
+                  </Typography>
+                </Box>
               ) : (
                 messages?.map((msg, index) => {
                   const isSender = msg?.User?.id === currentUser?.id;
@@ -627,7 +665,7 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                             ? "flex-end"
                             : "  flex-start",
                           overflow: "hidden",
-                          gap:'4px'
+                          gap: "4px",
                         }}
                       >
                         {!isSender && (
@@ -644,69 +682,142 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                           // ref={messageBoxRef}
                         >
                           <>
-                            {[
-                              ".png",
-                              ".jpg",
-                              ".jpeg",
-                              ".gif",
-                              ".webp",
-                              ".bmp",
-                              ".tiff",
-                            ].some((ext) => msg?.fileUrl?.endsWith(ext)) ? (
-                              <>
-                                <img
-                                  src={msg.fileUrl}
-                                  onClick={() => handleOpenModal(msg.fileUrl)}
-                                  download="image"
-                                  alt="file"
-                                  style={{
-                                    width: "220px",
-                                    height: "220px",
-                                    objectFit: "contain",
-                                    wordWrap: "break-word",
-                                  }}
-                                />
-                                <br />
-                              </>
-                            ) : msg?.fileUrl?.endsWith(".pdf") ||
-                              msg?.fileUrl?.endsWith(".txt") ||
-                              msg?.fileUrl?.endsWith(".docx") ||
-                              msg?.fileUrl?.endsWith(".doc") ||
-                              msg?.fileUrl?.endsWith(".zip") ? (
-                              <>
-                                <IconButton
-                                  href={msg.fileUrl}
-                                  download="document"
-                                  aria-label="download"
-                                >
-                                  <Typography sx={{ fontSize: {xl:"12px", lg:"10px",md:"12px",xs:"12px",}}}  variant="body2" component="span">
-                                    <Box sx={{ color: "primary.main" }}>
-                                      <InsertDriveFileIcon />
-                                    </Box>
-                                    {msg.ChatFiles &&
-                                    msg.ChatFiles.length > 0 ? (
-                                      msg.ChatFiles.map((file, index) => (
-                                        <span key={index}>
-                                          {file.fileName}{" "}
-                                          {/* Display each file's name */}
-                                        </span>
-                                      ))
-                                    ) : (
-                                      <span>File</span>
-                                    )}
-                                  </Typography>
-                                </IconButton>
-                                <br />
-                              </>
-                            ) : (
-                              <></>
-                            )}
+                            {/* Image File Rendering */}
+                            {(() => {
+                              const imageExtensions = [
+                                ".png",
+                                ".jpg",
+                                ".jpeg",
+                                ".gif",
+                                ".webp",
+                                ".bmp",
+                                ".tiff",
+                              ];
+                              const isImage = imageExtensions.some((ext) =>
+                                msg?.fileUrl?.toLowerCase().endsWith(ext)
+                              );
+
+                              if (isImage) {
+                                return (
+                                  <>
+                                    <img
+                                      src={msg.fileUrl}
+                                      onClick={() =>
+                                        handleOpenModal(msg.fileUrl)
+                                      }
+                                      alt="Uploaded content"
+                                      style={{
+                                        width: "100%",
+                                        maxHeight: "400px",
+                                        objectFit: "contain",
+                                        cursor: "pointer",
+                                        borderRadius: "8px",
+                                        // boxShadow: theme.shadows[2],
+                                      }}
+                                    />
+                                    <br />
+                                  </>
+                                );
+                              }
+                            })()}
+
+                            {/* Document File Rendering */}
+                            {(() => {
+                              const documentExtensions = {
+                                ".pdf": {
+                                  Icon: PictureAsPdfIcon,
+                                  color: "error.main",
+                                },
+                                ".doc": {
+                                  Icon: DescriptionIcon,
+                                  color: "info.main",
+                                },
+                                ".docx": {
+                                  Icon: DescriptionIcon,
+                                  color: "info.main",
+                                },
+                                ".xlsx": {
+                                  Icon: TableChartIcon,
+                                  color: "success.main",
+                                },
+                                ".csv": {
+                                  Icon: TableChartIcon,
+                                  color: "success.main",
+                                },
+                                ".txt": {
+                                  Icon: InsertDriveFileIcon,
+                                  color: "text.secondary",
+                                },
+                                ".zip": {
+                                  Icon: ArchiveIcon,
+                                  color: "warning.main",
+                                },
+                              };
+
+                              const fileExt = Object.keys(
+                                documentExtensions
+                              ).find((ext) =>
+                                msg?.fileUrl?.toLowerCase().endsWith(ext)
+                              );
+
+                              if (fileExt) {
+                                const { Icon, color } =
+                                  documentExtensions[fileExt];
+                                const fileName =
+                                  msg.ChatFiles?.[0]?.fileName || msg?.fileName ||
+                                  msg.fileUrl
+                                    ?.split("/")
+                                    .pop()
+                                    ?.split("#")[0]
+                                    ?.split("?")[0] ||
+                                  "Download File";
+
+                                return (
+                                  <Box
+                                    component="a"
+                                    href={msg.fileUrl}
+                                    download
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: 1,
+                                      p: 1.5,
+                                      // my: 1,
+                                      borderRadius: 1,
+                                      textDecoration: "none",
+                                      backgroundColor: "action.hover",
+                                      "&:hover": {
+                                        backgroundColor: "action.selected",
+                                      },
+                                    }}
+                                  >
+                                    <Icon sx={{ color, fontSize: "28px" }} />
+                                    <Typography
+                                      variant="body2"
+                                      sx={{
+                                        color: "text.primary",
+                                        fontWeight: 500,
+                                        fontSize: {md:"0.875rem", xs: "0.75rem"},
+                                        maxWidth: "250px",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        whiteSpace: "nowrap",
+                                      }}
+                                    >
+                                      {fileName}
+                                    </Typography>
+                                  </Box>
+                                );
+                              }
+                            })()}
                           </>
 
                           {/* Time:{moment
                           .utc(msg.createdAt).tz(moment.tz.guess())
                           .format("MMM, D, YYYY HH:mm A")} || mesg:   */}
+                          <Typography fontSize={{md:"14px", xs:"12px"}}>
                           {msg.content}
+                          </Typography>
                           {/* <div ref={messageBoxRef} /> */}
                         </Box>
                         {isSender && (
@@ -725,8 +836,7 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                           marginBottom: 2,
                         }}
                       >
-                        {activeName}{" "}
-                        {formatDate(msg.createdAt)}
+                        {activeName} {formatDate(msg.createdAt)}
                       </Box>
                     </>
                   );
@@ -737,12 +847,12 @@ console.log('conversationId: ',conversationId, 'value: ', value)
           {/* <Button onClick={handleLoadOld}>Load Below</Button> */}
         </Box>
         <Box
-         component={'form'}
-         onSubmit={handleSend}
+          component={"form"}
+          onSubmit={handleSend}
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent:'space-between',
+            justifyContent: "space-between",
             mb: 2,
             ml: 2,
             mr: 2,
@@ -763,26 +873,25 @@ console.log('conversationId: ',conversationId, 'value: ', value)
           />
           <TextField
             name="message"
-            placeholder="Please enter message"
+            placeholder={t("ProjectChat.placeholder")}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             sx={InputStyle}
           />
-          {projectRole !== "client" &&  value === id && (
+          {projectRole !== "client" && value === id && (
             <Box
               sx={{
                 display: "flex",
-                flexDirection:{sm:"row", xs:"column"},
+                flexDirection: { sm: "row", xs: "column" },
                 columnGap: 1.5,
-                gap:{md:"12px", xs:"2px"},
+                gap: { md: "12px", xs: "2px" },
                 margin: "0 4px 0 4px",
                 justifyContent: "center",
                 alignItems: "center",
-               
               }}
             >
               <Button
-              type="button"
+                type="button"
                 onClick={handleTeamClick}
                 style={{
                   ...buttonStyle,
@@ -790,13 +899,18 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                     recipientType === "team" ? "#4C8AB1" : "#FFFFFF",
                   color: recipientType === "team" ? "#FFF" : "#4C8AB1",
                   margin: 0,
+                  textTransform: "capitalize",
                 }}
-                sx={{paddingY:{sm:"12px",xs:"4px"},fontSize:{sm:"11px", xs:"8px"},paddingX:{sm:"18px",xs:"10px"}}}
+                sx={{
+                  paddingY: { sm: "12px", xs: "4px" },
+                  fontSize: { sm: "11px", xs: "8px" },
+                  paddingX: { sm: "18px", xs: "10px" },
+                }}
               >
-                Team
+                {t("ProjectChat.team")}
               </Button>
               <Button
-              type="button"
+                type="button"
                 onClick={handleTeamClientClick}
                 style={{
                   ...buttonStyle,
@@ -804,29 +918,31 @@ console.log('conversationId: ',conversationId, 'value: ', value)
                     recipientType === "team+client" ? "#4C8AB1" : "#FFFFFF",
                   color: recipientType === "team+client" ? "#FFF" : "#4C8AB1",
                   margin: 0,
+                  textTransform: "capitalize",
                 }}
-                sx={{paddingY:{sm:"12px",xs:"4px"},fontSize:{sm:"11px", xs:"8px"},paddingX:{sm:"18px",xs:"10px"}}}
-
+                sx={{
+                  paddingY: { sm: "12px", xs: "4px" },
+                  fontSize: { sm: "11px", xs: "8px" },
+                  paddingX: { sm: "18px", xs: "10px" },
+                }}
               >
-                Team + Client
+                {t("ProjectChat.team+client")}
               </Button>
             </Box>
           )}
-          
+
           <IconButton
             color="primary"
             aria-label="send"
-            
             type="submit"
             disabled={loading}
             sx={{
               paddingBottom: "16px",
-              }}
-              >
+            }}
+          >
             <SendIcon sx={{ transform: "rotate(-35deg)" }} />
           </IconButton>
-            </Box>
-       
+        </Box>
       </Stack>
 
       {/* Image Show Modal */}
@@ -863,10 +979,14 @@ console.log('conversationId: ',conversationId, 'value: ', value)
 export default ChatView;
 
 const InputStyle = {
+  "& .MuiInputBase-input::placeholder": {
+    fontFamily: "var(--main-font-family)",
+    fontSize: {sm: "14px", xs:'12px'}
+  },
   width: "60%",
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: "var(--main-font-family)",
   "& input": {
     border: "1px solid #E0E4EC",
     borderRadius: "8px",
@@ -886,12 +1006,13 @@ const headerStyle = {
   alignItems: "center",
 };
 const buttonStyle = {
+  fontFamily: "var(--main-font-family)",
   border: "1px solid #4C8AB1",
   borderRadius: "10px",
   whiteSpace: "nowrap",
   // padding: "13.2px",
   cursor: "pointer",
-  width:'100%'
+  width: "100%",
 };
 
 const scrollable = {

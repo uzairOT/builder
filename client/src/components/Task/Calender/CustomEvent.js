@@ -3,6 +3,7 @@ import {
   CircularProgress,
   Skeleton,
   Stack,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -13,10 +14,23 @@ import NotificationDetailModal from "../../Navbar/NotificationDetailModal";
 import { useGetWorkOrderDetailsMutation } from "../../../redux/apis/Project/projectApiSlice";
 import { useParams } from "react-router-dom";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
+import { useSelector } from "react-redux";
+import { getTempUnit } from "../../../redux/slices/DailyForecast/dailyForecastSlice";
+import { getWeatherIcon } from "../../../utils/weatherFunctions";
+import { useTranslation } from "react-i18next";
+import getContrastColor from "../../../utils/ColorContrast/getContrastColor";
 
 const CustomEventDayTasks = ({ event, isProjectPage }) => {
   const { id } = useParams();
   const projectId = id;
+  const {t} = useTranslation();
+  const temperatureUnit = useSelector(getTempUnit)
+  const tempUnit = temperatureUnit === 'imperial' ? 'F' : 'C'
+  let temperature = event?.data?.weather?.temp ? event?.data?.weather?.temp : 'N/A'
+  if(temperatureUnit === 'imperial' && temperature !== 'N/A'){
+    temperature = ((temperature * 9/5) + 32).toFixed(2);
+  }
+  const formattedTemperature = temperature !== 'N/A' ? `${temperature}°${tempUnit}` :'N/A';
   const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation({
     workOrderId: event?.data?.workOrderId,
   });
@@ -53,7 +67,7 @@ const CustomEventDayTasks = ({ event, isProjectPage }) => {
                 alignItems={"center"}
                 justifyContent={"center"}
                 flex={1}
-                spacing={-0.5}
+                gap={"2px"}
               >
                 {isLoading ? (
                   <Box p={1.75}>
@@ -62,17 +76,17 @@ const CustomEventDayTasks = ({ event, isProjectPage }) => {
                 ) : (
                   <>
                     {" "}
+                    <Typography sx={themeStyle.eventText(event?.data?.projectColor)} fontSize={"10px"}>
+                      {formattedTemperature}
+                    </Typography>
                     <img
-                      src={PartlySunny}
+                      src={getWeatherIcon(event?.data?.weather?.description)}
                       alt={PartlySunny}
                       style={themeStyle.eventIcon}
                       fontSize={"10px"}
                     ></img>
                     
-                    <Typography sx={themeStyle.eventText} fontSize={"10px"}>
-                      {event?.data?.weather?.temp}
-                    </Typography>
-                    <Typography sx={themeStyle.eventText} fontSize={"10px"}>
+                    <Typography sx={themeStyle.eventText(event?.data?.projectColor)} fontSize={"10px"}>
                       {event?.data?.weather?.description}
                     </Typography>
                   
@@ -92,7 +106,7 @@ const CustomEventDayTasks = ({ event, isProjectPage }) => {
                   color={"#454545"}
                   fontWeight={"300"}
                 >
-                  Work Order:
+                  {t('CustomEvent.title1')}
                 </Typography>
                 <Typography
                   sx={themeStyle.eventTask}
@@ -146,7 +160,7 @@ const CustomEventDayTasks = ({ event, isProjectPage }) => {
               alignItems={"center"}
               justifyContent={"center"}
               flex={1}
-              spacing={-0.5}
+              gap={"2px"}
             >
               {isLoading ? (
                 <Box p={1.75}>
@@ -154,16 +168,16 @@ const CustomEventDayTasks = ({ event, isProjectPage }) => {
                 </Box>
               ) : (
                 <>
+                  <Typography sx={themeStyle.eventText(event?.data?.projectColor)} fontSize={"10px"}>
+                    {formattedTemperature}
+                  </Typography>
                   <img
-                    src={PartlySunny}
+                    src={getWeatherIcon(event?.data?.weather?.description)}
                     alt={PartlySunny}
                     style={themeStyle.eventIcon}
                     fontSize={"10px"}
                   ></img>
-                  <Typography sx={themeStyle.eventText} fontSize={"10px"}>
-                    {event?.data?.weather?.temp}
-                  </Typography>
-                  <Typography sx={themeStyle.eventText} fontSize={"10px"}>
+                  <Typography sx={themeStyle.eventText(event?.data?.projectColor)} fontSize={"10px"}>
                     {event?.data?.weather?.description}
                   </Typography>
                 </>
@@ -182,7 +196,7 @@ const CustomEventDayTasks = ({ event, isProjectPage }) => {
                 color={"#454545"}
                 fontWeight={"300"}
               >
-                Work Order:
+                {t('CustomEvent.title1')}
               </Typography>
               <Typography
                 sx={themeStyle.eventTask}
@@ -218,6 +232,14 @@ const CustomEventDayTasks = ({ event, isProjectPage }) => {
 const CustomEventDayNotes = ({ event, isProjectPage }) => {
   const { id } = useParams();
   const projectId = id;
+  const {t} = useTranslation();
+  const temperatureUnit = useSelector(getTempUnit)
+  const tempUnit = temperatureUnit === 'imperial' ? 'F' : 'C'
+  let temperature = event?.data?.weather?.temp ? event?.data?.weather?.temp : 'N/A'
+  if(temperatureUnit === 'imperial'  && temperature !== 'N/A'){
+    temperature = ((temperature * 9/5) + 32).toFixed(2);
+  }
+  const formattedTemperature = temperature !== 'N/A' ? `${temperature}°${tempUnit}` :'N/A';
   const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation({
     workOrderId: event?.data?.workOrderId,
   });
@@ -254,7 +276,7 @@ const CustomEventDayNotes = ({ event, isProjectPage }) => {
                 alignItems={"center"}
                 justifyContent={"center"}
                 flex={1}
-                spacing={-0.5}
+                gap={"2px"}
               >
                 {isLoading ? (
                   <Box p={1.75}>
@@ -262,16 +284,16 @@ const CustomEventDayNotes = ({ event, isProjectPage }) => {
                   </Box>
                 ) : (
                   <>
+                    <Typography sx={themeStyle.eventText(event?.data?.projectColor)} fontSize={"10px"}>
+                      {formattedTemperature}
+                    </Typography>
                     <img
-                      src={PartlySunny}
+                      src={getWeatherIcon(event?.data?.weather?.description)}
                       alt={PartlySunny}
                       style={themeStyle.eventIcon}
                       fontSize={"10px"}
                     ></img>
-                    <Typography sx={themeStyle.eventText} fontSize={"10px"}>
-                      {event?.data?.weather?.temp}
-                    </Typography>
-                    <Typography sx={themeStyle.eventText} fontSize={"10px"}>
+                    <Typography sx={themeStyle.eventText(event?.data?.projectColor)} fontSize={"10px"}>
                       {event?.data?.weather?.description}
                     </Typography>
                   </>
@@ -285,7 +307,7 @@ const CustomEventDayNotes = ({ event, isProjectPage }) => {
                   color={"#454545"}
                   fontWeight={"300"}
                 >
-                  Note:
+                  {t('CustomEvent.title2')}
                 </Typography>
                 <Typography
                   sx={{ ...themeStyle.eventNote, ...themeStyle.scrollable }}
@@ -339,7 +361,7 @@ const CustomEventDayNotes = ({ event, isProjectPage }) => {
               alignItems={"center"}
               justifyContent={"center"}
               flex={1}
-              spacing={-0.5}
+              gap={"2px"}
             >
               {isLoading ? (
                 <Box p={1.75}>
@@ -347,16 +369,16 @@ const CustomEventDayNotes = ({ event, isProjectPage }) => {
                 </Box>
               ) : (
                 <>
+                  <Typography sx={themeStyle.eventText(event?.data?.projectColor)} fontSize={"10px"}>
+                    {formattedTemperature}
+                  </Typography>
                   <img
-                    src={PartlySunny}
+                    src={getWeatherIcon(event?.data?.weather?.description)}
                     alt={PartlySunny}
                     style={themeStyle.eventIcon}
                     fontSize={"10px"}
                   ></img>
-                  <Typography sx={themeStyle.eventText} fontSize={"10px"}>
-                    {event?.data?.weather?.temp}
-                  </Typography>
-                  <Typography sx={themeStyle.eventText} fontSize={"10px"}>
+                  <Typography sx={themeStyle.eventText(event?.data?.projectColor)} fontSize={"10px"}>
                     {event?.data?.weather?.description}
                   </Typography>
                 </>
@@ -370,7 +392,7 @@ const CustomEventDayNotes = ({ event, isProjectPage }) => {
                 color={"#454545"}
                 fontWeight={"300"}
               >
-                Note:
+                {t('CustomEvent.title2')}
               </Typography>
               <Typography
                 sx={{ ...themeStyle.eventNote, ...themeStyle.scrollable }}
@@ -454,7 +476,7 @@ const CustomEventWeek = ({ event, isProjectPage }) => {
                 </Box>
                 <Box width={"fit-content"}>
                   <img
-                    src={PartlySunny}
+                    src={getWeatherIcon(event?.data?.weather?.description)}
                     alt={PartlySunny}
                     width={"fit-content"}
                     style={themeStyle.eventIcon}
@@ -516,7 +538,7 @@ const CustomEventWeek = ({ event, isProjectPage }) => {
               </Box>
               <Box width={"fit-content"}>
                 <img
-                  src={PartlySunny}
+                  src={getWeatherIcon(event?.data?.weather?.description)}
                   alt={PartlySunny}
                   width={"fit-content"}
                   style={themeStyle.eventIcon}
@@ -554,9 +576,17 @@ const CustomEventWeek = ({ event, isProjectPage }) => {
 
 const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
   const { id } = useParams();
+  const {t} = useTranslation();
   const projectId = id;
   const start = moment(event.start).format("HH:mm");
   const end = moment(event.end).format("HH:mm");
+  const temperatureUnit = useSelector(getTempUnit)
+  const tempUnit = temperatureUnit === 'imperial' ? 'F' : 'C'
+  let temperature = event?.data?.weather?.temp ? event?.data?.weather?.temp : 'N/A'
+  if(temperatureUnit === 'imperial'  && temperature !== 'N/A'){
+    temperature = ((temperature * 9/5) + 32).toFixed(2);
+  }
+  const formattedTemperature = temperature !== 'N/A' ? `${temperature}°${tempUnit}` :'N/A';
   const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation({
     workOrderId: event?.data?.workOrderId,
   });
@@ -636,7 +666,7 @@ const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
                 </Stack>
                 <Box>
                   <img
-                    src={PartlySunny}
+                    src={getWeatherIcon(event?.data?.weather?.description)}
                     alt={PartlySunny}
                     style={themeStyle.eventIcon}
                     fontSize={"8px"}
@@ -652,17 +682,17 @@ const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
                     pt={1}
                     textOverflow={"ellipsis"}
                     fontSize={"6px"}
-                  >{`Note: ${event?.data?.note}`}</Typography>
+                  >{`${t('CustomEvent.title2')} ${event?.data?.note}`}</Typography>
                 </Box>
                 <Box flex={1} textAlign={"right"}>
                   <Typography
                     overflow={"hidden"}
                     textOverflow={"ellipsis"}
                     fontSize={"10px"}
-                  >{`${event?.data?.weather?.description}`}</Typography>
+                  >{`${event?.data?.weather?.description ? event?.data?.weather?.description : ''}`}</Typography>
                   <Typography fontSize={"12px"}>
                     {" "}
-                    {`${event?.data?.weather?.temp}°`}
+                    {formattedTemperature}
                   </Typography>
                 </Box>
               </Stack>
@@ -746,7 +776,7 @@ const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
               </Stack>
               <Box>
                 <img
-                  src={PartlySunny}
+                  src={getWeatherIcon(event?.data?.weather?.description)}
                   alt={PartlySunny}
                   style={themeStyle.eventIcon}
                   fontSize={"8px"}
@@ -762,17 +792,17 @@ const CustomEventWeekOnModal = ({ event, isProjectPage }) => {
                   pt={1}
                   textOverflow={"ellipsis"}
                   fontSize={"6px"}
-                >{`Note: ${event?.data?.note}`}</Typography>
+                >{`${t('CustomEvent.title2')} ${event?.data?.note}`}</Typography>
               </Box>
               <Box flex={1} textAlign={"right"}>
                 <Typography
                   overflow={"hidden"}
                   textOverflow={"ellipsis"}
                   fontSize={"10px"}
-                >{`${event?.data?.weather?.description}`}</Typography>
+                >{`${event?.data?.weather?.description ? event?.data?.weather?.description : ''}`}</Typography>
                 <Typography fontSize={"12px"}>
                   {" "}
-                  {`${event?.data?.weather?.temp}°`}
+                  {formattedTemperature}
                 </Typography>
               </Box>
             </Stack>
@@ -816,6 +846,7 @@ const CustomEventMonthTasks = ({ event, isProjectPage, projectId }) => {
               sx={{ background: event?.data?.projectColor }}
               height={"100%"}
               onClick={handleOnClick}
+              borderRadius={"6px 0px 0px 6px"}
             >
               {isLoading ? (
                 <>
@@ -829,15 +860,17 @@ const CustomEventMonthTasks = ({ event, isProjectPage, projectId }) => {
                   ></Skeleton>
                 </>
               ) : (
-                <Stack direction={"row"} justifyContent={"space-between"}>
-                  <Typography fontSize={"10px"} color={"#454545"} overflow={'hidden'} textOverflow={'ellipsis'} backgroundColor={'#F7F9FC'} width={'70px'} ml={'8px'}>
+                <Stack direction={"row"} justifyContent={"space-between"} >
+                  <Typography fontSize={"12px"} color={getContrastColor(event?.data?.projectColor)} overflow={'hidden'} textOverflow={'ellipsis'}  maxWidth={"calc(100% - 16px)" } ml={'8px'}>
                     {event?.data?.task}
                   </Typography>
                   <Stack alignItems={"end"} justifyContent={"end"}>
-                    {event?.data?.priority === "urgent" && (
+                    {event?.data?.priority !== "urgent" && (
+                      <Tooltip title="Status: urgent">
                       <FlagOutlinedIcon
-                        sx={{ color: "#EB1717", fontSize: "14px" }}
-                      />
+                        sx={{ color: getContrastColor(event?.data?.projectColor), fontSize: "14px" }}
+                        />
+                      </Tooltip>
                     )}
                   </Stack>
                 </Stack>
@@ -862,12 +895,13 @@ const CustomEventMonthTasks = ({ event, isProjectPage, projectId }) => {
             sx={{ background: event?.data?.projectColor }}
             height={"100%"}
             onClick={handleOnClick}
+            borderRadius={"6px 0px 0px 6px"}
           >
             {isLoading ? (
               <>
                 <Skeleton
                   sx={{
-                    bgcolor: `rgba(${event?.data?.projectColor}, 0.6)`, // Set background color dynamically
+                    // bgcolor: `rgba(${event?.data?.projectColor}, 0.1)`, // Set background color dynamically
                     animation: "wave 1s infinite", // Make the wave animation more prominent and continuous
                   }}
                   animation="wave"
@@ -875,7 +909,7 @@ const CustomEventMonthTasks = ({ event, isProjectPage, projectId }) => {
                 ></Skeleton>
               </>
             ) : (
-              <Typography fontSize={"10px"} color={"#454545"} overflow={'hidden'} textOverflow={'ellipsis'} backgroundColor={'#F7F9FC'} width={'70px'} ml={'8px'}>
+              <Typography fontSize={"12px"} color={getContrastColor(event?.data?.projectColor)} fontWeight={'bold'} overflow={'hidden'} textOverflow={'ellipsis'} maxWidth={"calc(100% - 16px)" } ml={'8px'}>
                 {event?.data?.task}
               </Typography>
             )}
@@ -896,19 +930,26 @@ const CustomEventMonthTasks = ({ event, isProjectPage, projectId }) => {
     </>
   );
 };
-const CustomEventMonthWeatherNotes = ({ event, isDrawerOpen }) => {
-  const start = moment(event.start).format("HH:mm");
-  const end = moment(event.end).format("HH:mm");
-  const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation({
-    workOrderId: event?.data?.workOrderId,
-  });
-  const [open, setOpen] = useState(false);
-  const [data, setData] = useState(null);
-  const handleOnClick = async () => {
-    const res = await getWorkOrder({ workOrderId: event?.data?.workOrderId });
-    setData(res.data);
-    setOpen(true);
-  };
+const CustomEventMonthWeatherNotes = ({ event, isDrawerOpen, setMonthEventView, props }) => {
+  const {t} = useTranslation();
+  // const start = moment(event.start).format("HH:mm");
+  // const end = moment(event.end).format("HH:mm");
+
+  // const [getWorkOrder, { isLoading }] = useGetWorkOrderDetailsMutation({
+  //   workOrderId: event?.data?.workOrderId,
+  // });
+  // const [open, setOpen] = useState(false);
+  // const [data, setData] = useState(null);
+  // // const handleOnClick = async () => {
+  // //   const res = await getWorkOrder({ workOrderId: event?.data?.workOrderId });
+  // //   setData(res.data);
+  // //   setOpen(true);
+  // // };
+  // const handleClose = (close) => {
+  //   setMonthEventView('Work Order');
+  //   setMonthEventView('Weather/Notes');
+  //   setOpen(close);
+  // }
   return (
     <>
       <Stack
@@ -917,20 +958,19 @@ const CustomEventMonthWeatherNotes = ({ event, isDrawerOpen }) => {
         alignItems={"flex-end"}
         pl={1}
         pt={4}
-        onClick={handleOnClick}
+        // onClick={handleOnClick}
       >
         <Typography
-          fontSize={"10px"}
           sx={themeStyle.eventNote}
           overflow={"hidden"}
           height={"47px"}
           width={isDrawerOpen ? "100%" : "42px"}
           color={event?.data?.priority === "urgent" ? "#EB1717" : "#1C1C1C"}
         >
-          Note: {event?.data?.note}
+          {t('CustomEvent.title2')} {event?.data?.note}
         </Typography>
       </Stack>
-      {data === null ? (
+      {/* {data === null ? (
         <></>
       ) : (
         <NotificationDetailModal
@@ -938,9 +978,9 @@ const CustomEventMonthWeatherNotes = ({ event, isDrawerOpen }) => {
           notification={data}
           isEvent={true}
           open={open}
-          setOpen={setOpen}
+          setOpen={handleClose}
         />
-      )}
+      )} */}
     </>
   );
 };
@@ -954,24 +994,31 @@ export {
   CustomEventMonthWeatherNotes,
 };
 
+
+
 const themeStyle = {
   eventTask: {
     fontSize: "10px",
     textOverflow: "ellipsis",
     color: "#454545",
-    fontFamily: "Inter, sans-serif",
+    fontFamily: 'var(--main-font-family)',
+    maxWidth:'103px',
+    wordBreak: 'break-word',
+    hyphens: 'auto'
   },
-  eventText:{
-    color:'black',
-    backgroundColor:'white',
+  eventText: (bgColor) =>({
+    color: getContrastColor(bgColor),
     borderRadius:'4px',
-    width:'45px'
-  },
+    maxWidth:'60px',
+  }),
   eventNote: {
     fontSize: "10px",
     textOverflow: "ellipsis",
     fontStyle: "italic",
-    fontFamily: "Inter, sans-serif",
+    fontFamily: 'var(--main-font-family)',
+    maxWidth:'103px',
+    wordBreak: 'break-word',
+    hyphens: 'auto'
   },
   weather: {
     color: "#FFF",

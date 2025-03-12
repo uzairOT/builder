@@ -1,12 +1,12 @@
 import { Divider, Paper, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import OverBudgetPie from "./OverBudgetPie";
 import CircleIcon from "@mui/icons-material/Circle";
 import { useGetProjectDeadlineStatsMutation } from "../../redux/apis/Reports/reportsApiSlice";
 import moment from "moment";
 import { useParams } from "react-router-dom";
-
+import { useTranslation } from 'react-i18next';
 const OverBudgetPieChart = () => {
+  const {t} = useTranslation()
   let dataUser = localStorage.getItem("userInfo");
   let userInfo = JSON.parse(dataUser);
   const currentUser = userInfo?.user;
@@ -24,7 +24,7 @@ const OverBudgetPieChart = () => {
         projectId,
       }).unwrap();
       setProjects(result);
-      console.log("Success GetProjectDeadlineStats:", result);
+      // console.log("Success GetProjectDeadlineStats:", result);
     } catch (err) {
       console.error("Failed to fetch reports stats:", err);
     }
@@ -38,20 +38,20 @@ const OverBudgetPieChart = () => {
     <Paper sx={{ height: "100%", borderRadius: "14px" }}>
       <Stack p={2}>
         <Typography
-          fontFamily={"inherit"}
+          fontFamily={"var(--main-font-family)"}
           fontWeight={"500"}
           fontSize={{ xl: "18px", lg: "15px", md: "18px", xs: "18px" }}
         >
-          Upcoming DeadLines
+          {t("ProjectReports.UpcomingDeadlines.title1")}
         </Typography>
         {/* <Typography
-          fontFamily={"inherit"}
+          fontFamily={'var(--main-font-family)'}
           fontWeight={"500"}
           fontSize={"28px"}
         >
           25
         </Typography> */}
-        {/* <Typography fontFamily={'inherit'} fontWeight={'400'} fontSize={'12px'} color={'#4F4F4F'}>
+        {/* <Typography fontFamily={'var(--main-font-family)'} fontWeight={'400'} fontSize={'12px'} color={'#4F4F4F'}>
                US Dollars
             </Typography> */}
       </Stack>
@@ -85,21 +85,21 @@ const OverBudgetPieChart = () => {
           />
           <Stack direction={"column"}>
             <Typography
-              fontFamily={"inherit"}
+              fontFamily={"var(--main-font-family)"}
               fontSize={{ xl: "14px", lg: "12px", md: "14px", xs: "14px" }}
               fontWeight="bold"
             >
-              Project Name
+              {t("ProjectReports.UpcomingDeadlines.title2")}
             </Typography>
             {projects.map((project, index) => (
               <Typography
                 key={index}
-                fontFamily={"inherit"}
+                fontFamily={"var(--main-font-family)"}
                 fontSize={"14px"}
                 width={"25ch"}
-                overflow={'hidden'}
-                whiteSpace={'nowrap'}
-                textOverflow={'ellipsis'}
+                overflow={"hidden"}
+                whiteSpace={"nowrap"}
+                textOverflow={"ellipsis"}
               >
                 {project.projectName}
               </Typography>
@@ -116,17 +116,17 @@ const OverBudgetPieChart = () => {
           />
           <Stack direction={"column"}>
             <Typography
-              fontFamily={"inherit"}
+              fontFamily={"var(--main-font-family)"}
               fontSize={{ xl: "14px", lg: "12px", md: "14px", xs: "14px" }}
               fontWeight="bold"
             >
-              DeadLine
+              {t("ProjectReports.UpcomingDeadlines.title3")}
             </Typography>
             {projects.map((project, index) => (
               <Typography
                 key={index}
-                fontFamily={"inherit"}
-                fontSize={{ xl: "14px", lg: "14px", md: "14px", xs: "14px" }}
+                fontFamily={"var(--main-font-family)"}
+                fontSize={{ xl: "13px", lg: "12px", md: "13px", xs: "13px" }}
               >
                 {moment(project.end_time).format("YYYY-MM-DD")}
               </Typography>

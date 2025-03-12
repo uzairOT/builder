@@ -13,17 +13,17 @@ import {
   Stack,
   IconButton
 } from "@mui/material";
-import UploadIcon from "../../../assets/settings/uploadimg.svg";
 import Button from "../../UI/CustomButton";
 import { useFormik } from "formik";
 import { useLocation } from "react-router-dom";
 import FormHelperText from '@mui/material/FormHelperText';
 import { settingsSchema } from "../../../utils/Validation/settingsPageSchema";
 import { useGetAssignedRolesQuery, useUpdateAssignRoleMutation } from "../../../redux/apis/Admin/assignRoleApiSlice";
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 import { Close } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 function UpdateModal({
   title,
@@ -33,6 +33,7 @@ function UpdateModal({
   setRefreshData,
   refreshData
 }) {
+  const {t} = useTranslation()
   const [image, setImage] = useState(null);
   const local = localStorage.getItem('userInfo');
   const currentUser = JSON.parse(local);
@@ -132,9 +133,9 @@ function UpdateModal({
           alignItems={"center"}
           mr={5}
         >
-          <DialogTitle sx={headingStyle}>Update {title}</DialogTitle>
+          <DialogTitle sx={headingStyle}>{t("Button.update")} {title}</DialogTitle>
           <IconButton
-            style={{ width: "30px", height: "30px" }}
+            style={{ width: "30px", height: "30px", marginTop: "20px"  }}
             onClick={onClose}
           >
             <Close />
@@ -225,7 +226,7 @@ function UpdateModal({
             </Grid> */}
             <Grid item xs={12}  sm={6}>
               {/* Projects input */}
-              <Typography variant="body1">Project</Typography>
+              <Typography variant="body1">{t("Settings.modal.project")}</Typography>
               {/* <TextField
                 error={errors.project ? true : false}
                 value={values.project}
@@ -258,7 +259,7 @@ function UpdateModal({
                         <Typography
                           style={{ fontSize: "1rem", color: "#969a9c" }}
                         >
-                          Project
+                          {t("Settings.modal.project")}
                         </Typography>
                       );
                     }
@@ -274,7 +275,7 @@ function UpdateModal({
                       errors.project && touched.project
                         ? "1px solid #d32f2f"
                         : "1px solid #E0E4EC",
-                    placeholder: "Project",
+                    placeholder: t("Settings.modal.project"),
                   }}
                 >
                   {projectNames?.map((projectName) => (
@@ -313,7 +314,7 @@ function UpdateModal({
             </Grid> */}
             <Grid item xs={12}  sm={6}>
               {/* Email input */}
-              <Typography variant="body1">Email</Typography>
+              <Typography variant="body1">{t("Settings.modal.email")}</Typography>
               <TextField
                 error={errors.email ? true : false}
                 value={values.email}
@@ -378,7 +379,7 @@ function UpdateModal({
         <DialogActions
           sx={{ display: "flex", justifyContent: "center", mb: 2, flexDirection: {xs:'column', sm:'row'}, gap: {xs: 1, sm:0} }}
         >
-          <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center" }}>
+          <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center", margin:'0px' }}>
             <Button
               buttonText={isSubmitting ? "Submitting" : "Update"}
               color="#ffffff"
@@ -391,9 +392,9 @@ function UpdateModal({
              
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center" }}>
+          <Grid item xs={12} sm={12} md={6} lg={6} sx={{ textAlign: "center", margin:'0px' }}>
             <Button
-              buttonText="Reset"
+              buttonText={t("Button.reset")}
               color="#4C8AB1"
               border={"1px solid #4C8AB1"}
               width="150px"
@@ -413,7 +414,7 @@ export default UpdateModal;
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: 'var(--main-font-family)',
     border: "1px solid #E0E4EC",
     padding: "10px",
     width: {xl:'250px' ,lg:'100%',md: '100%', sm: '100%', xs:'100%'},
@@ -428,14 +429,15 @@ const headingStyle = {
   marginTop: "20px",
   // marginBottom: "10px",
   marginLeft: "25px",
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "500",
   fontSize: "22px",
   color: "#4C8AB1",
+  width:'17ch'
 };
 const labelStyle = {
   marginTop: "10px",
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "400",
   fontSize: "13px",
   color: "#535353C9",

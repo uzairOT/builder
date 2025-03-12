@@ -1,16 +1,11 @@
 import {
   Box,
-  Snackbar,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
-  FormHelperText,
   Grid,
   IconButton,
-  MenuItem,
-  Select,
   Stack,
   TextField,
   Typography,
@@ -22,19 +17,13 @@ import Button from "../../UI/CustomButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { useGetUserProjectsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
-import {
-  useAddAssignRoleMutation,
-  useGetAssignedRolesQuery,
-} from "../../../redux/apis/Admin/assignRoleApiSlice";
 import { useFormik } from "formik";
 import {
   projectSchema,
-  settingsSchema,
 } from "../../../utils/Validation/settingsPageSchema";
 import axios from "axios";
 import { uploadToS3 } from "../../../utils/S3";
 import { useProjectUpdateMutation } from "../../../redux/apis/Project/projectApiSlice";
-import { PhoneInput } from "react-international-phone";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import UploadIcon from "../../../assets/settings/uploadimg.svg";
 import { useDispatch } from "react-redux";
@@ -51,8 +40,10 @@ import {
 } from "../../../redux/slices/Project/userProjectsSlice";
 import CloseIcon from "@mui/icons-material/Close";
 import ColorPicker from "../ColorPickerProject/ColorPicker";
+import { useTranslation } from "react-i18next";
 
 function EditProjectModal({ title, open, onClose, project, page }) {
+  const {t} = useTranslation();
   const [image, setImage] = useState(null);
   const [phone, setPhone] = useState("");
   const local = localStorage.getItem("userInfo");
@@ -94,13 +85,13 @@ function EditProjectModal({ title, open, onClose, project, page }) {
   const handleNavigation = () => {
     navigate(`${project.id}/initial-proposal`);
   };
-  console.log(project);
+  // console.log(project);
 
   const uploadFileToServer = async (selectedFile) => {
     if (selectedFile) {
       try {
         const res = await axios.post(
-          "http://3.135.107.71/project/file",
+          "https://builderbuilder.net/project/file",
           {
             fileName,
             fileType,
@@ -240,13 +231,13 @@ function EditProjectModal({ title, open, onClose, project, page }) {
       }
     });
   }, [project]); // Dependency array
-  console.log(errors);
+  // console.log(errors);
   return (
     <form onSubmit={handleSubmit}>
       <ToastContainer />
       <Dialog open={open} onClose={onClose} maxWidth="md" sx={{}}>
         <DialogTitle sx={headingStyle}>
-          <Typography sx={headingStyleText}>Edit Project</Typography>
+          <Typography sx={headingStyleText}>{t("ProjectList.editModal.title1")}</Typography>
           <IconButton onClick={onClose}>
             <CloseIcon />
           </IconButton>
@@ -267,10 +258,11 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                 justifyContent: "center",
                 margin: "20px",
                 height: "180px",
+                padding: "0px !important",
               }}
             >
               <div
-                style={{ textAlign: "center", width: "100%", height: "100%" }}
+                style={{ textAlign: "center", width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}
                 onDragOver={(e) => e.preventDefault()}
                 onDragEnter={(e) => e.preventDefault()}
                 onDrop={handleDrop}
@@ -294,14 +286,14 @@ function EditProjectModal({ title, open, onClose, project, page }) {
 
                   {/* Text */}
                   <Typography variant="body1" sx={labelStyle}>
-                    {image ? <></> : "Upload your photo"}
+                    {image ? <></> : t("ProjectList.editModal.uploadPhoto")}
                   </Typography>
                 </label>
               </div>
             </Grid>
             <Grid item xs={12} sm={6} xl={6} lg={6}>
               {/* Projects input */}
-              <Typography variant="body1">Project Name</Typography>
+              <Typography variant="body1">{t("ProjectList.editModal.title2")}</Typography>
               <TextField
                 error={Boolean(errors.project)} // Simplified error handling
                 placeholder="Skyscraper"
@@ -309,6 +301,9 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                 value={values.project}
                 onChange={handleChange}
                 fullWidth
+                sx={{
+                  width: "calc(100% - 20px)",
+                }}
                 inputProps={{
                   style: {
                     ...InputStyle,
@@ -329,13 +324,17 @@ function EditProjectModal({ title, open, onClose, project, page }) {
 
             <Grid item xs={12} sm={6}>
               {/* Name input */}
-              <Typography variant="body1">Location</Typography>
+              <Typography variant="body1">{t("ProjectList.editModal.title3")}</Typography>
               <TextField
+              disabled
                 error={errors.location ? true : false}
                 placeholder="San Francisco"
                 name={"location"}
                 value={values.location}
                 fullWidth
+                sx={{
+                  width: "calc(100% - 20px)",
+                }}
                 inputProps={{
                   style: {
                     ...InputStyle,
@@ -355,22 +354,22 @@ function EditProjectModal({ title, open, onClose, project, page }) {
             </Grid>
 
             <Grid item xs={12} sm={6} xl={6} lg={6}>
-              <Typography variant="body1">Start Time</Typography>
+              <Typography variant="body1">{t("ProjectList.editModal.title4")}</Typography>
               <Box
                 sx={{
-                  width: "100%", // Set width to 100% for responsiveness
+                  width: "100%",// Set width to 100% for responsiveness
                   alignSelf: "center",
                   fontSize: "14px",
                   // border: "1px solid #ccc",
                   // borderRadius: "12px",
                   color: "#202227",
-                  fontFamily: "Arial Rounded MT, sans-serif",
+                  fontFamily: 'var(--main-font-family)',
                 }}
               >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <MobileDatePicker
                     sx={{
-                      width: "100%",
+                      width: "calc(100% - 20px)",
                       ".MuiOutlinedInput-notchedOutline ": {
                         border: "1px solid #ccc !important",
                         borderRadius: "12px",
@@ -385,16 +384,16 @@ function EditProjectModal({ title, open, onClose, project, page }) {
               </Box>
             </Grid>
             <Grid item xs={12} sm={6} xl={6} lg={6}>
-              <Typography variant="body1">End Time</Typography>
+              <Typography variant="body1">{t("ProjectList.editModal.title5")}</Typography>
               <Box
                 sx={{
-                  width: "100%", // Set width to 100% for responsiveness
+                  width: "calc(100% - 20px)", // Set width to 100% for responsiveness
                   alignSelf: "center",
                   fontSize: "14px",
                   // border: "1px solid #ccc",
                   // borderRadius: "12px",
                   color: "#202227",
-                  fontFamily: "Arial Rounded MT, sans-serif",
+                  fontFamily: 'var(--main-font-family)',
                 }}
               >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -569,7 +568,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
                     color={"#4C8AB1"}
                     sx={styles.link}
                   >
-                    Edit phases
+                    {t("ProjectList.editModal.title8")}
                   </Typography>
                 </Stack>
               </Stack>
@@ -589,7 +588,7 @@ function EditProjectModal({ title, open, onClose, project, page }) {
           >
             <Button
               type={"submit"}
-              buttonText="Update Project"
+              buttonText={t("ProjectList.editModal.title7")}
               color="#ffffff"
               backgroundColor={isSubmitting ? "gray" : "#4C8AB1"}
               width="150px"
@@ -609,7 +608,7 @@ export default EditProjectModal;
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   border: "1px solid #E0E4EC",
   padding: "10px",
 
@@ -643,14 +642,14 @@ const headingStyle = {
   justifyContent: "space-between",
 };
 const headingStyleText = {
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "500",
   fontSize: "22px",
   color: "#4C8AB1",
 };
 const labelStyle = {
   marginTop: "10px",
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "400",
   fontSize: "13px",
   color: "#535353C9",

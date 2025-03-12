@@ -1,34 +1,34 @@
-import { Box, Paper, Stack } from "@mui/material";
+import { Box, Paper, Stack, Tab, Tabs } from "@mui/material";
 import React, { useState } from "react";
 import ProjectsChangeOrder from "../../components/Projects/ProjectsChangeOrder/ProjectsChangeOrder";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { useGetProjectChangeOrderQuery } from "../../redux/apis/Project/projectApiSlice";
-import BuilderProButton from "../../components/UI/Button/BuilderProButton";
-import TaskCalender from "../../components/Task/Calender/TaskCalender";
 import AddPhaseView from "../../components/AssignProject/AddPhaseView/AddPhaseView";
 import { useSelector } from "react-redux";
-import { allEvents } from "../../redux/slices/Events/eventsSlice";
-import { getForecast } from "../../redux/slices/DailyForecast/dailyForecastSlice";
 import { getUserRoleFromRedux } from "../../redux/slices/auth/userRoleSlice";
-
+import { useTranslation } from "react-i18next";
 const ChangeOrder = () => {
   const params = useParams();
   const { id: currentProjectId } = params;
   const [changeView, setChangeView] = useState(false);
   const currentUser = localStorage.getItem("userInfo");
   const user = JSON.parse(currentUser);
-  const authUserRole= useSelector(getUserRoleFromRedux);
-  const allEvent = useSelector(allEvents);
-  const forecast = useSelector(getForecast);
-  const events = allEvent.events;
-  const dailyForecast = forecast.dailyForecast;
+  const authUserRole = useSelector(getUserRoleFromRedux);
+  const { t } = useTranslation();
+  // const { project } = useGetProjectDataQuery({ projectId: currentProjectId });
   const { data, refetch } = useGetProjectChangeOrderQuery({
     projectId: currentProjectId,
     userId: user.user.id,
     changeOrder: true,
   });
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [projectName, projectLocation, SuperAdminId, selectedProjectData] =
+    useOutletContext();
   const handleChangeView = () => {
     setChangeView(!changeView);
+  };
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
   };
   return (
     <Paper
@@ -41,11 +41,11 @@ const ChangeOrder = () => {
         ...themeStyle.scrollable,
       }}
     >
-      <Box pt={1} pl={1} pb={0}>
+      {/* <Box pt={1} pl={1} pb={0}>
         <BuilderProButton
           backgroundColor={"#FFAC00"}
           variant={"contained"}
-          fontFamily={"inherit"}
+          fontFamily={'var(--main-font-family)'}
           fontSize={{ xl: "16px", lg: 12, md: "16px", xs: "16px" }}
           fontWeight={"600"}
           padding={{ md: "6px 32px 6px 32px" }}
@@ -54,12 +54,65 @@ const ChangeOrder = () => {
         >
           {changeView ? "Submit Change Order" : "View Change Order Logs"}
         </BuilderProButton>
-      </Box>
-      <Stack pt={1} width={'inherit'}>
-        <Stack justifyContent={"flex-start"} height={"95%"}>
+      </Box> */}
 
-      {changeView ? (<ProjectsChangeOrder data={data} refetch={refetch} />) : (<>
-              <Box
+<Box padding={0}>
+          <Tabs
+            value={selectedTab}
+            onChange={handleTabChange}
+            sx={{
+              fontFamily: "var(--main-font-family)",
+              color: "black",
+              borderBottom: "0.2px solid #FFB300",
+              "& .MuiTabs-indicator": {
+                backgroundColor: "#FFB300",
+              },
+            }}
+          >
+            <Tab
+              label={t("ProjectChangeOrder.title1")}
+              sx={{
+                textTransform: "capitalize",
+                fontFamily: "var(--main-font-family)",
+                backgroundColor: selectedTab === 0 ? "#FFAC00" : "#F2F2F2",
+                color: selectedTab === 0 ? "white !important" : "black !important",
+                border:
+                  selectedTab === 0 ? "1px solid #FFAC00" : "1px solid #FFAC00",
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                padding: 0.5,
+                fontWeight: "600",
+              }}
+            />
+            <Tab
+              label={t("ProjectChangeOrder.title2")}
+              sx={{
+                textTransform: "capitalize",
+                fontFamily: "var(--main-font-family)",
+                ml: 0.5,
+                backgroundColor: selectedTab === 1 ? "#FFAC00" : "#F2F2F2",
+                color: selectedTab === 1 ? "white !important" : "black !importants",
+                border:
+                  selectedTab === 1 ? "1px solid #FFAC00" : "1px solid #FFAC00",
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                padding: 0.5,
+                fontWeight: "600",
+              }}
+            />
+          </Tabs>
+        </Box>
+      <Stack pt={1} width={"inherit"}>
+        <Stack justifyContent={"flex-start"} height={"95%"}>
+          {/* {changeView ? ( */}
+            <>
+              {selectedTab === 1 && (
+                <ProjectsChangeOrder data={data} refetch={refetch} />
+              )}
+            </>
+          {/* ) : ( */}
+            <>
+              {/* <Box
                 height= '600px'
                 bgcolor={"white"}
               >
@@ -69,20 +122,24 @@ const ChangeOrder = () => {
                   isProjectPage={true}
                   isDrawerOpen={true}
                 />
-              </Box>
-              <Stack p={1} borderRadius={"14px"} width={'99%'}>
-                <AddPhaseView
-                  refetchChangeOrder={refetch}
-                  projectId={currentProjectId}
-                  adminProjectView={true}
-                  view={"Change Order"}
-                  authUserRole={authUserRole.userRole}
-                  changeOrderView={true}
-                />
+              </Box> */}
+              <Stack p={1} borderRadius={"14px"} width={"99%"}>
+                {selectedTab === 0 && (
+                  <AddPhaseView
+                    selectedProjectData={selectedProjectData}
+                    refetchChangeOrder={refetch}
+                    projectId={currentProjectId}
+                    adminProjectView={true}
+                    view={t("ProjectInitialProposal.title2")}
+                    authUserRole={authUserRole.userRole}
+                    changeOrderView={true}
+                  />
+                )}
               </Stack>
-            </>)}
+            </>
+          {/* )} */}
         </Stack>
-          </Stack>
+      </Stack>
     </Paper>
   );
 };
@@ -94,19 +151,19 @@ const themeStyle = {
     borderRadius: "14px",
   },
   scrollable: {
-    scrollbarWidth: 'none',  // For Firefox
-    '-ms-overflow-style': 'none',  // For IE and Edge
-    '&::-webkit-scrollbar': {
-      width: '6px'
+    scrollbarWidth: "none", // For Firefox
+    "-ms-overflow-style": "none", // For IE and Edge
+    "&::-webkit-scrollbar": {
+      width: "6px",
     },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'transparent',
-      transition: 'background-color 0.3s',
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "transparent",
+      transition: "background-color 0.3s",
     },
-    '&:hover::-webkit-scrollbar-thumb': {
-      backgroundColor: '#ddd',
+    "&:hover::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ddd",
     },
-    overflowY: 'scroll'
+    overflowY: "scroll",
   },
   border: {
     borderRadius: "14px",

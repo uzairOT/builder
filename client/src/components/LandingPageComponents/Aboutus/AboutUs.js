@@ -1,20 +1,38 @@
 import React from "react";
 import { Grid, Container, Box, Typography } from "@mui/material";
-import { DotSvg, MissionSvg, VisionSvg } from "../assets/svg";
+import {
+  ColabAbtIcn,
+  DotSvg,
+  InnIcn,
+  MissionSvg,
+  SolutionIcn,
+  VisionSvg,
+} from "../assets/svg";
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+
+// Define the hover effect animation variants
+const popEffect = {
+  hidden: { scale: 1 },
+  hover: {
+    scale: 1.05,
+    transition: { type: "spring", stiffness: 300, damping: 15 },
+  },
+};
 
 const SectionTitle = ({ subtitle, title, description }) => {
   return (
-    <Box sx={styles.sectionTitleContainer}>
-      <Typography variant="subtitle2" sx={styles.sectionSubtitle}>
+    <Container maxWidth="lg" sx={styles.sectionTitleContainer}>
+      <Typography component={'h2'} variant="subtitle2" sx={styles.sectionSubtitle}>
         {subtitle}
       </Typography>
-      <Typography variant="h5" sx={styles.sectionTitle}>
+      <Typography component={'h5'}  variant="h5" sx={styles.sectionTitle}>
         {title}
       </Typography>
-      <Typography variant="body1" sx={styles.sectionDescription}>
+      <Typography component={'p'}  variant="body1" sx={styles.sectionDescription}>
         {description}
       </Typography>
-    </Box>
+    </Container>
   );
 };
 
@@ -45,33 +63,104 @@ const InfoCard = ({ icon, title, description, position }) => {
 };
 
 const AboutSection = () => {
+  const { t } = useTranslation();
+  const features = [
+    {
+      icon: <SolutionIcn />,
+      title: `${t('aboutus.features.title1')}`,
+      description:
+        `${t('aboutus.features.desc1')}`,
+    },
+    {
+      icon: <ColabAbtIcn />,
+      title: `${t('aboutus.features.title2')}`,
+      description:
+        `${t('aboutus.features.desc2')}`,
+    },
+    {
+      icon: <InnIcn />,
+      title: `${t('aboutus.features.title3')}`,
+      description:
+        `${t('aboutus.features.desc3')}`,
+    },
+  ];
+
   return (
-    <Box sx={styles.container}>
+    <Box component={'section'} sx={styles.container}>
       <Container>
-        <SectionTitle
-          subtitle="About Us"
-          title="Personalized Primary Care at Your Doorstep"
-          description="At Builder Pro, we understand the complexities and challenges of managing construction projects. Our mission is to empower construction professionals with the tools they need to succeed in an ever-evolving industry."
-        />
+          <SectionTitle
+            subtitle="About Us"
+            title={t('aboutus.text1')}
+            description={t('aboutus.text2')}
+          />
         <Grid container spacing={4} sx={styles.gridContainer}>
-          <Grid item xs={12} md={6}>
-            <InfoCard
-              icon={<VisionSvg />}
-              title="Vision"
-              description="We envision a world where construction projects are completed on time, within budget, and to the highest standards. Builder Pro aims to be the leading platform for construction management by continually innovating and adapting to the needs of our users."
-              position="topLeft"
-            />
+          <Grid component={'article'} item xs={12} md={6}>
+            <motion.div
+              initial="hidden"
+              whileHover="hover"
+              variants={popEffect}
+            >
+              <InfoCard
+                icon={<VisionSvg />}
+                title={t('aboutus.cards.title1')}
+                description={t('aboutus.cards.desc1')}
+                position="topLeft"
+              />
+            </motion.div>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <InfoCard
-              icon={<MissionSvg />}
-              title="Mission"
-              description="At Builder Pro, we believe that every construction project, big or small, deserves to be managed with excellence, precision, and efficiency. Our mission is to empower construction professionals with the tools they need to succeed, streamline their workflows, and bring their visions to life."
-              position="bottomRight"
-            />
+          <Grid component={'article'} item xs={12} md={6}>
+            <motion.div
+              initial="hidden"
+              whileHover="hover"
+              variants={popEffect}
+            >
+              <InfoCard
+                icon={<MissionSvg />}
+                title={t('aboutus.cards.title2')}
+                description={t('aboutus.cards.desc2')}
+                position="bottomRight"
+              />
+            </motion.div>
           </Grid>
         </Grid>
       </Container>
+      <Grid
+        container
+        justifyContent="space-between"
+        mt={20}
+        gap={0}
+        sx={{
+          alignItems: "center",
+          // padding: { lg: , xs: 2 },
+          width: "100%",
+          maxWidth: '1200px',
+          // backgroundColor: "#F7FAFC",
+        }}
+      >
+        {features.map((feature, index) => (
+          <>
+            <Grid component={'article'} item xs={12} lg={4} key={index} width={'100%'}>
+              <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", padding: 3 }}>
+                <motion.div
+                  initial="hidden"
+                  whileHover="hover"
+                  variants={popEffect}
+                >
+                  <Box>{feature.icon} </Box>
+                  <Box>
+                    <Typography component={'h2'} sx={styles.featureTitle} gutterBottom>
+                      {feature.title}
+                    </Typography>
+                    <Typography component={'p'} sx={styles.featureDesc}>
+                      {feature.description}
+                    </Typography>
+                  </Box>
+                </motion.div>
+              </Box>
+            </Grid>
+          </>
+        ))}
+      </Grid>
     </Box>
   );
 };
@@ -80,36 +169,68 @@ export default AboutSection;
 
 const styles = {
   container: {
-    padding: { lg: 8, md: 10, xs: 4 },
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: { lg: 8, md: 10, sm: 4, xs: 0 },
     backgroundColor: "#ffffff",
-    mt: { xl: 30, lg: 48, md: 20, xs: 2 },
+    mt: { xl: 20, lg: 40, md: 2, xs: 2 },
   },
   sectionTitleContainer: {
     textAlign: "center",
-    marginBottom: 4,
+    marginBottom: 1,
+    width: "100%",
+    padding: { sm: 2, xs: 1 },
   },
   sectionSubtitle: {
-    marginBottom: "20px",
-    fontFamily: "Arial Rounded MT, sans-serif",
-    fontWeight: 600,
-    fontSize: "16px",
-    color: "#2E728F",
+    fontFamily: "var(--main-font-family)",
+    fontWeight: 500,
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    mb: 3,
+    color: "#4C8AB1",
+  },
+  featureTitle: {
+    textAlign: { md: "left", xs: "left" },
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "24px", sm: "24px", xs: "22px" },
+    fontWeight: 500,
+  },
+  featureDesc: {
+
+    textAlign: { md: "justify", xs: "justify" },
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    fontWeight: 400,
+    color: "#454245",
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   sectionTitle: {
-    fontWeight: "bold",
-    fontSize: "1.5rem",
+    fontFamily: "var(--main-font-family)",
+    fontSize: { md: "36px", sm: "32px", xs: "18px" },
+    fontWeight: 500,
     marginBottom: 2,
+    textAlign: 'justify',
+     hyphens: "auto",
+    wordBreak: "break-all"
   },
   sectionDescription: {
-    maxWidth: "600px",
+    maxWidth: "100%",
+    fontFamily: "var(--main-font-family)",
+    fontWeight: 400,
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
     margin: "0 auto",
     color: "#666666",
+    textAlign: 'justify',
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   gridContainer: {
-    marginTop: 4,
+    marginTop: 10,
   },
   card: {
-    height: { md: "250px", xs: "80%" },
+    height: { md: "280px", xs: "80%" },
     width: { md: "400px", xs: "80%" },
     padding: 3,
     backgroundColor: "#E4EEF4",
@@ -122,12 +243,21 @@ const styles = {
     color: "#2E728E",
   },
   cardTitle: {
-    fontWeight: "bold",
+    textAlign: { md: "left", xs: "center" },
+    fontSize: { md: "36px", sm: "36px", xs: "20px" },
+    fontWeight: 500,
+    fontFamily: "var(--main-font-family)",
     marginTop: 2,
   },
   cardDescription: {
+    textAlign: { md: "justify", xs: "justify" },
     marginTop: 1,
+    fontSize: { md: "16px", sm: "16px", xs: "14px" },
+    fontWeight: 400,
+    fontFamily: "var(--main-font-family)",
     color: "#666666",
+    hyphens: "auto",
+    wordBreak: "break-all"
   },
   decorationTopLeft: {
     position: "absolute",

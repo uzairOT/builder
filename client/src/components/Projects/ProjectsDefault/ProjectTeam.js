@@ -16,7 +16,9 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Avatar,
+  Tooltip,
 } from "@mui/material";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import React, { useEffect, useState } from "react";
 import data1 from "./assests/data/data.json";
 import BuilderProButton from "../../UI/Button/BuilderProButton";
@@ -24,28 +26,35 @@ import CloseIcon from "@mui/icons-material/Close";
 import { ReactComponent as BuilderProNavbarShare } from "./assests/svgs/builder-pro-navbar-share.svg";
 import users from "./assests/data/users.json";
 import LinkIcon from "@mui/icons-material/Link";
-import { useGetProjectTeamQuery } from "../../../redux/apis/Project/projectApiSlice";
+import { useDeleteInvitationMutation, useGetProjectTeamQuery } from "../../../redux/apis/Project/projectApiSlice";
 import { useLocation } from "react-router-dom";
 import { useCheckUserOnInvitationMutation } from "../../../redux/apis/usersApiSlice";
 import { useAddAssignRoleMutation } from "../../../redux/apis/Admin/assignRoleApiSlice";
 import { toast } from "react-toastify";
-import { SupervisorAccountRounded } from "@mui/icons-material";
+import {  SupervisorAccountRounded } from "@mui/icons-material";
+// import { usePermissionCheck } from "../../Settings/PermissionAccess/PermissionCheck";
+import { useSelector } from "react-redux";
 //import "react-toastify/dist/ReactToastify.css";
+import { useTranslation } from "react-i18next";
 
-const ProjectTeam = () => {
+const ProjectTeam = ({ SuperAdminId, projectOrganizationId }) => {
   const [open, setOpen] = useState(null);
   const [openPending, setOpenPending] = useState(null);
   const [userType, setUserType] = useState("");
   const openShare = Boolean(open);
   const openPendingInvitations = Boolean(openPending);
   const [email, setEmail] = useState("");
+  const [error, setError] = useState(false);
+  const {t} = useTranslation();
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
+  const role = useSelector((state) => state.userRole.userRole);
   const local = localStorage.getItem("userInfo");
   const projectId = pathSegments[2];
   const currentUser = JSON.parse(local);
   const currentUserId = currentUser.user.id;
   const [assignRolePost] = useAddAssignRoleMutation();
+  const [deleteInvitation, {isLoading: deleteLoading}] = useDeleteInvitationMutation();
   //console.log(pathSegments)
   const { data, isLoading, isError, refetch } =
     useGetProjectTeamQuery(projectId);
@@ -53,6 +62,7 @@ const ProjectTeam = () => {
   const pendingInvitationsLength = data?.invitation?.length;
   const team = data?.team;
   const id = openShare ? "simple-popover" : undefined;
+
   const groupedData = isLoading ? (
     <>Loading...</>
   ) : (
@@ -79,9 +89,26 @@ const ProjectTeam = () => {
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
+    // Simple email validation regex
   };
+  const handleDeleteInvitation = async (id) => {
+    if(!id){
+      toast.warning("No ID found");
+    }
+    try{
+      const deletedInvitation = await deleteInvitation({invitationId:id});
+      handleClosePendingInvitations();
+      toast.success("Invitation deleted.")
+      await refetch();
+    }catch(error){
+      console.error(error);
+      toast.error("Something went wrong!");
+    }
+  }
   const handleInviteUser = async () => {
     const userRole = userType;
     const userId = currentUserId;
@@ -92,27 +119,34 @@ const ProjectTeam = () => {
       email,
       userId,
       companyName,
+      organizationId: projectOrganizationId,
     };
     try {
       if (userRole === "") {
-        toast.warning("Please Select Role.");
+        toast.warning("Please select role.");
         return false;
       }
       if (email === "") {
-        toast.warning("Please Enter An Email.");
+        toast.warning("Please enter an email.");
+        return false;
+      }
+      if (!emailRegex.test(email)) {
+        toast.error("Please enter a valid email.");
         return false;
       }
       const res = await assignRolePost(userInviteBody).unwrap();
-      console.log(res);
+      // console.log(res);
       toast.info(res?.data?.message || res?.message || "Success");
       refetch();
     } catch (error) {
-      toast.error(error?.data?.message || "Something went wrong!");
+      toast.error(
+        error?.data?.error || error?.data?.message || "Something went wrong!"
+      );
     }
   };
-  console.log(pendingInvitations);
+  // console.log(pendingInvitations);
   const roleFormat = (role) => {
-    switch (role){
+    switch (role) {
       case "Superadmin":
         return "Super Admin";
       case "Subcontractor":
@@ -120,11 +154,14 @@ const ProjectTeam = () => {
       default:
         return role;
     }
-  }
+  };
+  // const canInvite = usePermissionCheck("invite-users", role, SuperAdminId)
+  // console.log("cantInvite: ", canInvite, role, SuperAdminId)
   return (
-    <Stack pl={{ xl: 5, lg: 5, md: 1 }}>
-      <Stack direction={"row"} sx={{ justifyContent: "space-between" }} pr={1}>
-        <Typography sx={themeStyle.title}>Project Team</Typography>
+    <Stack pl={{ xl: 3, lg: 3, md: 1 }}>
+      <Stack direction={{xl:"row", lg:"column", xs:"row"}} sx={{ justifyContent: "space-between" }} pr={1}>
+        <Typography sx={themeStyle.title}>{t("ProjectTeam.title1")}</Typography>
+
         <Stack
           direction={"row"}
           justifyContent={"center"}
@@ -133,12 +170,13 @@ const ProjectTeam = () => {
           {pendingInvitationsLength >= 1 ? (
             <Badge badgeContent={pendingInvitationsLength} color="warning">
               <BuilderProButton
+                marginLeft={"2px"}
                 variant={"outlined"}
                 handleOnClick={handleOpenPendingInvitations}
-                fontFamily={"inherit"}
-                fontSize={"15px"}
+                fontFamily={"var(--main-font-family)"}
+                fontSize={{xl:"15px",lg:"12px",sm:"12px", xs:"11px"}}
               >
-                Pending Invitations
+                {t("ProjectTeam.title2")}
               </BuilderProButton>
             </Badge>
           ) : (
@@ -149,10 +187,11 @@ const ProjectTeam = () => {
             backgroundColor={"#FFAC00"}
             variant={"contained"}
             Icon={BuilderProNavbarShare}
+            marginLeft={{sm:"15px", xs:"8px"}}
             handleOnClick={handleShare}
             sx={{ fontSize: { xl: 12, lg: 10, m: 12, xs: 12 } }}
           >
-            {true ? "Add" : ""}
+            {true ? <Typography sx={{ fontSize: { xl: 14, lg: 12, md: 14, xs: 12 }, marginLeft: "4px" }}>{t("ProjectTeam.title5")}</Typography> : ""}
           </BuilderProButton>
         </Stack>
       </Stack>
@@ -171,108 +210,112 @@ const ProjectTeam = () => {
           ) : isLoading ? (
             <>Loading...</>
           ) : (
-            Object?.keys(groupedData)?.map((role) => {
-              let acc = 0;
-              return (
-                <Stack
-                  direction={"row"}
-                  justifyContent={{
-                    xl: "space-between",
-                    lg: "space-between",
-                    md: "flex-start",
-                    sm: "flex-start",
-                    xs: "flex-start",
-                  }}
-                >
+            Object?.keys(groupedData)
+              ?.filter((role) => role !== "Superadmin")
+              ?.map((role) => {
+                let acc = 0;
+                return (
                   <Stack
                     direction={"row"}
-                    width={{
-                      xl: "100%",
-                      lg: "100%",
-                      md: "100%",
-                      sm: "100%",
-                      xs: "380px",
+                    justifyContent={{
+                      xl: "space-between",
+                      lg: "space-between",
+                      md: "flex-start",
+                      sm: "flex-start",
+                      xs: "flex-start",
                     }}
-                    justifyContent={"space-between"}
                   >
                     <Stack
                       direction={"row"}
-                      pl={{md:0, xs:2}}
-                      flex={{ xl: 5, lg: 5, md: 5, sm: 5, xs: 5 }}
-                      gap={1}
+                      width={'100%'}
                       justifyContent={"space-between"}
                     >
-                      <Typography sx={themeStyle.subTitle}>{roleFormat(role)}</Typography>
                       <Stack
                         direction={"row"}
-                        width={{ xl: "270px", lg: "220px",md:"300px",sm:"250px", xs: "190px" }}
+                        pl={{ md: 0, xs: 2 }}
+                        flex={1}
+                        gap={1}
+                        justifyContent={"space-between"}
                       >
-                        {groupedData[role].map((person, index) => {
-                          let firstName = person.firstName;
-                          let lastName = person.lastName;
-                          let fullName = `${firstName} ${lastName}`;
+                        <Typography sx={themeStyle.subTitle}>
+                          {t(`ProjectTeam.role.${role}`)}
+                        </Typography>
+                        {/* <Stack
+                          direction={"row"}
+                          width={{
+                            xl: "270px",
+                            lg: "220px",
+                            md: "300px",
+                            sm: "250px",
+                            xs: "190px",
+                          }}
+                        >
+                          {groupedData[role].map((person, index) => {
+                            let firstName = person.firstName;
+                            let lastName = person.lastName;
+                            let fullName = `${firstName} ${lastName}`;
 
-                          // Truncate the name if it exceeds the max length
-                          if (fullName.length > 20) {
-                            fullName = fullName.substring(0, 20 - 3) + "...";
-                          }
+                            // Truncate the name if it exceeds the max length
+                            if (fullName.length > 11) {
+                              fullName = fullName.substring(0, 11 - 3) + "...";
+                            }
 
-                          if (index > 1) {
-                            acc++;
-                            if (index === groupedData[role]?.length - 1) {
+                            if (index > 1) {
+                              acc++;
+                              if (index === groupedData[role]?.length - 1) {
+                                return (
+                                  <Typography
+                                    sx={{ ...themeStyle.subTitle }}
+                                    style={{ color: "#636363" }}
+                                    position={"relative"}
+                                    top={"-2px"}
+                                    pl={0.5}
+                                  >
+                                    +{acc}
+                                  </Typography>
+                                );
+                              } else {
+                                return <></>;
+                              }
+                            } else {
                               return (
-                                <Typography
-                                  sx={{ ...themeStyle.subTitle }}
-                                  style={{ color: "#636363" }}
-                                  position={"relative"}
-                                  top={"-2px"}
-                                  pl={0.5}
-                                >
-                                  +{acc}
+                                <Typography sx={themeStyle.subTitle}>
+                                  {fullName}
+                                  {groupedData[role].length > 1 && index === 0
+                                    ? ","
+                                    : ""}
                                 </Typography>
                               );
-                            } else {
-                              return <></>;
                             }
-                          } else {
-                            return (
-                              <Typography sx={themeStyle.subTitle}>
-                                {fullName}
-                                {groupedData[role].length > 1 && index === 0
-                                  ? ","
-                                  : ""}
-                              </Typography>
-                            );
+                          })}
+                        </Stack> */}
+                      </Stack>
+                      <Stack direction={"row"} flex={1} justifyContent={'flex-end'} mr={'10px'}>
+                        {groupedData[role].map((person, index) => {
+                          if (index > 6) {
+                            return <></>;
                           }
+                          return (
+                            <Tooltip title={`${person.firstName} ${person.lastName}`} placement="top">
+                              <Avatar
+                                key={index}
+                                src={person.image}
+                                alt="profile"
+                                style={{
+                                  borderRadius: "50px",
+                                  marginLeft: "-5px",
+                                  width: "30px",
+                                  height: "30px",
+                                }}
+                              ></Avatar>
+                            </Tooltip>
+                          );
                         })}
                       </Stack>
                     </Stack>
-                    <Stack direction={"row"} flex={1}>
-                      {groupedData[role].map((person, index) => {
-                        if (index > 3) {
-                          return <></>;
-                        }
-                        return (
-                          <>
-                            <Avatar
-                              key={index}
-                              src={person.image}
-                              alt="profile"
-                              style={{
-                                borderRadius: "50px",
-                                marginLeft: "-10px",
-                                width: "30px",
-                                height: "30px",
-                              }}
-                            ></Avatar>
-                          </>
-                        );
-                      })}
-                    </Stack>
                   </Stack>
-                </Stack>
-              );
-            })
+                );
+              })
           )}
         </Stack>
       </Stack>
@@ -303,8 +346,8 @@ const ProjectTeam = () => {
           justifyContent={"space-between"}
           alignItems={"center"}
         >
-          <Typography sx={{ p: 2 }} color={"#4C8AB1"}>
-            Invite
+          <Typography sx={{ p: 2, fontSize: {sm:16, xs:14} }} color={"#4C8AB1"}>
+            {t("ProjectTeam.title4")}
           </Typography>
           <IconButton onClick={handleClose}>
             <CloseIcon sx={{ p: 2, color: "#535353", fontSize: "19px" }} />
@@ -323,7 +366,7 @@ const ProjectTeam = () => {
               onChange={(e) => {
                 handleEmailChange(e);
               }}
-              placeholder="Enter an Email to invite"
+              placeholder="Enter an email"
               aria-describedby="my-helper-text"
               sx={{
                 "&::after": {
@@ -338,26 +381,34 @@ const ProjectTeam = () => {
                   borderBottom: "none",
                   outline: "none",
                 },
+                "& input::placeholder": {
+                  fontSize: {
+                    xs: "12px", // Smallest screens
+                    sm: "14px", // Small screens
+                    md: "16px", // Medium and up
+                  },
+                  color: "#A9A9A9", // Optional: control placeholder color
+                  opacity: 1, // Ensure it's fully visible
+                },
               }}
               disableUnderline={true}
             />
             <FormControl
-              style={{ marginLeft: "5px", width: "120px" }}
+              style={{ marginLeft: "5px", width: "145px" }}
               size="small"
             >
               {userType ? null : (
                 <InputLabel
                   id="demo-simple-select-label"
-                  style={{
-                    fontSize: "12px",
-                    top: "3px",
-                    fontFamily: "Arial Rounded MT, sans-serif",
-                    color: "#202227",
-                  }}
                   sx={{
                     "&.Mui-focused": {
-                      transform: "translate(14px, -6px) scale(0.75)",
+                      display: "none",
                     },
+                    fontSize: {sm:"12px", xs:"9px"},
+                    top: "3px",
+                    fontFamily: "var(--main-font-family)",
+                    color: "#202227",
+                    display: {sm:"block", xs:"none"},
                   }}
                 >
                   Select Role
@@ -375,6 +426,7 @@ const ProjectTeam = () => {
                   "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                     borderWidth: "0px !important",
                   },
+                  fontSize: "0.8rem",
                 }}
               >
                 <MenuItem value={"admin"}>Admin</MenuItem>
@@ -396,7 +448,7 @@ const ProjectTeam = () => {
                 style={{
                   fontSize: "12px",
                   top: "3px",
-                  fontFamily: "Arial Rounded MT, sans-serif",
+                  fontFamily: 'var(--main-font-family)',
                   color: "#202227",
                 }}
                 sx={{
@@ -434,51 +486,54 @@ const ProjectTeam = () => {
             variant={"contained"}
             handleOnClick={handleInviteUser}
           >
-            <Typography>Invite</Typography>
+            <Typography sx={{ fontSize: { xl: 14, lg: 14, md: 14, xs: 12, marginLeft: "4px" } }}>{t("ProjectTeam.title4")}</Typography>
           </BuilderProButton>
         </Stack>
 
-        {team?.map((user, index) => (
-          <Stack key={index} p={0.5} pl={2.5} pr={2.5}>
-            <Stack
-              id={user.userId}
-              direction={"row"}
-              justifyContent={"space-between"}
-              alignItems={"center"}
-              pb={1}
-            >
+        {team
+          ?.filter((user) => user.role !== "Superadmin")
+          ?.map((user, index) => (
+            <Stack key={index} p={0.5} pl={2.5} pr={2.5}>
               <Stack
+                id={user.userId}
                 direction={"row"}
                 justifyContent={"space-between"}
                 alignItems={"center"}
-                pl={2}
+                pb={1}
               >
-                <img
-                  src={user.image}
-                  alt="User Profile Pic"
-                  width={"32px"}
-                  height={"32px"}
-                  style={{ borderRadius: "50px" }}
-                ></img>
-                <Typography
-                  color={"#202227"}
-                  fontSize={"14px"}
+                <Stack
+                  direction={"row"}
+                  justifyContent={"space-between"}
+                  alignItems={"center"}
                   pl={2}
-                  fontFamily={"Arial Rounded MT, sans-serif"}
                 >
-                  {user.firstName}
+                  <img
+                    src={user.image}
+                    alt="User Profile Pic"
+                    width={"32px"}
+                    height={"32px"}
+                    style={{ borderRadius: "50px" }}
+                  ></img>
+                  <Typography
+                    color={"#202227"}
+                    fontSize={{sm:"14px", xs:"12px"}}
+                    pl={2}
+                    fontFamily={"var(--main-font-family)"}
+                  >
+                    {user.firstName}
+                  </Typography>
+                </Stack>
+                <Typography
+                  fontFamily={"var(--main-font-family)"}
+                  fontSize={{sm:"14px", xs:"12px"}}
+                  width={'110px'}
+                >
+                  {roleFormat(user.role)}
                 </Typography>
               </Stack>
-              <Typography
-                fontFamily={"Arial Rounded MT, sans-serif"}
-                fontSize={"14px"}
-              >
-               {roleFormat(user.role)}
-              </Typography>
+              {team?.length - 1 === index ? <></> : <Divider />}
             </Stack>
-            {team?.length - 1 === index ? <></> : <Divider />}
-          </Stack>
-        ))}
+          ))}
         <Divider />
         <Stack direction={"row"} p={2} pl={3}>
           {/* <BuilderProButton
@@ -492,7 +547,7 @@ const ProjectTeam = () => {
       </Popover>
       <Popover
         id={id}
-        open={openPendingInvitations}
+        open={openPendingInvitations && pendingInvitations?.length > 0}
         anchorEl={openPending}
         onClose={handleClosePendingInvitations}
         anchorOrigin={{
@@ -514,8 +569,8 @@ const ProjectTeam = () => {
       >
         {pendingInvitations?.length > 0 && (
           <>
-            <Typography variant="h6" sx={{ padding: "7px" }}>
-              Pending Invitations
+            <Typography fontSize={{sm:"16px", xs:"14px"}} sx={{ padding: "7px" }}>
+              {t("ProjectTeam.title2")}
             </Typography>
             <Divider />
             <List>
@@ -523,12 +578,15 @@ const ProjectTeam = () => {
                 <ListItem key={pending.id}>
                   <ListItemText
                     primary={pending.userEmail}
+                    primaryTypographyProps={{
+                      fontSize: {sm:"14px", xs:"12px"},
+                    }}
                     secondary={
                       <>
-                        <Typography variant="body2" component="span">
-                          Project Manager ({pending.userRole})
+                        <Typography fontSize={{sm:"14px", xs:"12px"}} component="span">
+                          ({pending.userRole})
                         </Typography>
-                        <Typography variant="body2" component="span">
+                        <Typography fontSize={{sm:"14px", xs:"12px"}} component="span">
                           {pending.userCompany}
                         </Typography>
                       </>
@@ -536,8 +594,8 @@ const ProjectTeam = () => {
                   />
                   {/* Add "Accept" and "Reject" buttons if needed */}
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
-                      {/* Replace with your "Accept" or "Reject" icon */}
+                    <IconButton edge="end" aria-label="delete" onClick={()=> handleDeleteInvitation(pending.id)} disabled={deleteLoading}>
+                     <DeleteOutlinedIcon color='error' />
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -547,7 +605,7 @@ const ProjectTeam = () => {
         )}
         {pendingInvitations?.length === 0 && (
           <Typography variant="body2" sx={{ padding: "10px" }}>
-            No pending invitations.
+            {t("ProjectTeam.title3")}
           </Typography>
         )}
       </Popover>
@@ -559,15 +617,16 @@ export default ProjectTeam;
 
 const themeStyle = {
   title: {
-    fontSize: "16px",
+    fontSize: {xl:"16px", lg:"14px", xs:"14px"},
     color: "#4C8AB1",
-    fontFamily: "Arial Rounded MT, sans-serif",
-    pl:{md:0,xs:2.5}
+    fontFamily: "var(--main-font-family)",
+    pl: { md: 0, xs: 2.5 },
   },
   subTitle: {
-    fontSize: { xl: "13px", lg: "11px", xs: "11px" },
+    fontSize: { xl: "14px", lg: "14px", xs: "13px" },
     color: "#202227",
-    fontFamily: "Arial Rounded MT, sans-serif",
+    fontFamily: "var(--main-font-family)",
     textAlign: "left",
+    // width:'60px'
   },
 };

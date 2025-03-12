@@ -2,12 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 import {
-  updateFormData,
-  resetFormData,
-} from "../../../redux/slices/addLineSlice";
-import {
   useAddPhaseLineMutation,
-  useGetLineItemQuery,
   useUpdatePhaseLineMutation,
 } from "../../../redux/apis/Project/projectApiSlice";
 import {
@@ -16,34 +11,27 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Box,
   Typography,
-  MenuItem,
   Autocomplete,
   Stack,
   IconButton,
   InputAdornment,
   CircularProgress,
-  MenuList,
+  Chip,
 } from "@mui/material";
 import actionButton from "../../UI/actionButton";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "../../../App.css";
 import "./LineItemElement.css";
 import {
   addInitialPhase,
   addPhase,
-  updateLineItem,
+  updateCheckedItems,
 } from "../../../redux/slices/Project/projectInitialProposal";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
-import { DemoItem } from "@mui/x-date-pickers/internals/demo";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import utc from "dayjs/plugin/utc"; // Optional if you need UTC handling
 import Close from "@mui/icons-material/Close";
 import CreateableSelect from "react-select/creatable";
 import { components } from "react-select";
@@ -51,11 +39,9 @@ import {
   useAddUnitMutation,
   useGetUnitsQuery,
 } from "../../../redux/apis/Project/userProjectApiSlice";
-import { isPlainObject } from "@reduxjs/toolkit";
 import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
-import { authUserRole } from "../../../redux/slices/auth/userRoleSlice";
 import { toggleWorkOrderDeclineRecall } from "../../../redux/slices/Notifications/notificationSlice";
-
+import { useTranslation } from "react-i18next";
 function AddLineElement({
   phaseData,
   handleAddOpen,
@@ -78,11 +64,14 @@ function AddLineElement({
   showAddLine,
   updateRow,
   setUpdateRow,
-  lineItemIndex
+  lineItemIndex,
+  addPhaseId,
+  changeOrderView,
 }) {
   // const { data, isLoading, isSuccess } = useGetLineItemQuery({
   //   lineItemId: LineItem,
   // });
+  const {t} = useTranslation()
   const [open, setOpen] = useState(false);
   const [addPhaseLine, { isLoading: addIsLoading }] = useAddPhaseLineMutation();
   const [updatePhaseLine, { isLoading: updateIsLoading }] =
@@ -139,7 +128,13 @@ function AddLineElement({
     q: "",
   });
   const [addUnit] = useAddUnitMutation();
-  //console.log(userInfo)
+  const existingPhases = useSelector(
+    (state) => state.projectInitialProposal.phases[0]
+  );
+  const changeOrderSelected = useSelector(
+    (state) => state.projectInitialProposal.changeOrderLineItems
+  );
+  // console.log("Change Order Selected", changeOrderSelected);
 
   const formData = {
     phaseName,
@@ -149,15 +144,15 @@ function AddLineElement({
     unitPrice,
     total,
     longDescription,
-    margin,
-    percentage,
+    margin: margin || 0,
+    percentage: percentage || 0,
   };
 
   useEffect(() => {
     const getData = setTimeout(() => {
       axios
         .get(
-          `http://3.135.107.71/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`,
+          `https://builderbuilder.net/user/masterLine/${userInfo.user.id}?query=${formData.phaseName}`,
           {
             headers: {
               Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -186,7 +181,7 @@ function AddLineElement({
   };
 
   const handleClickClose = () => {
-    if (LineHeading === "Update Line Item") {
+    if (LineHeading === t("LineItem.updateLineItem")) {
       handleUpdateClose();
     } else {
       handleAddClose();
@@ -208,24 +203,143 @@ function AddLineElement({
       setAutoCompleteEvent(null);
     }
   }, [quantity, unitPrice]);
-  const updateLineItem = useCallback((phaseId, lineItemIndex, formData) => {
-    setUpdateRow(prevState => {
-      // const index = prevState[phaseId].rows.findIndex(row => row.id === lineItemId);
-      if (lineItemIndex !== -1) {
-        const updatedRows = [...prevState[phaseId].rows];
-        updatedRows[lineItemIndex] = {...prevState[phaseId].rows[lineItemIndex],title:formData.phaseName, unit_price:formData.unitPrice, ...formData};
-        console.log(updatedRows)
+  const updateLineItem = useCallback(
+    (phaseId, lineItemIndex, formData) => {
+      setUpdateRow((prevState) => {
+        if (lineItemIndex !== -1) {
+          const updatedRows = [...prevState[phaseId].rows];
+          updatedRows[lineItemIndex] = {
+            ...prevState[phaseId].rows[lineItemIndex],
+            title: formData.phaseName,
+            unit_price: formData.unitPrice,
+            ...formData, // Add other fields from formData
+          };
+          // // Check for existing line items with the same name but different id
+          // const phase = existingPhases.find((phase) => phase.id === phaseId);
+          // if (phase) {
+          //   const itemExists = phase.LineItems.some(
+          //     (item) =>
+          //       item.title === formData.phaseName && // Same name
+          //       item.id !== formData.id // Different id
+          //   );
+          // if (itemExists) {
+          //   // Show a toast if the line item with the same name already exists
+          //   toast.error("Line item with the same name already exists!");
+          //   return prevState; // Exit without setting the state
+          // }
+          // }
+
+          // // Check for existing line items with the same name but different id
+          // const selectedPhase = changeOrderSelected.find(
+          //   (phase) => phase.id === phaseId
+          // );
+          // if (selectedPhase) {
+          //   const itemExists = selectedPhase.LineItems.some(
+          //     (item) => item.title === formData.phaseName
+          //   );
+          //   if (itemExists) {
+          //     // Show a toast if the line item with the same name already exists
+          //     toast.error("Line item with the same name already exists!");
+          //     return prevState; // Exit without setting the state
+          //   }
+          // }
+
+          // Dispatch to Redux
+          dispatch(
+            updateCheckedItems({
+              phaseId,
+              phaseName: formData.phaseName, // Or use existing phaseName if unchanged
+              lineItems: updatedRows, // Assuming you want to update the entire list of lineItems
+            })
+          );
+
+          return {
+            ...prevState,
+            [phaseId]: {
+              ...prevState[phaseId],
+              rows: updatedRows,
+            },
+          };
+        }
+        return prevState;
+      });
+    },
+    [setUpdateRow, dispatch]
+  );
+  const addLineItem = useCallback(
+    (phaseId, formData, margin, percentage) => {
+      const newLineItem = {
+        phase_id: phaseId,
+        title: formData.phaseName, // Using phaseName as title
+        description: formData.description,
+        unit: formData.unit,
+        quantity: formData.quantity,
+        unit_price: formData.unitPrice,
+        total: formData.total,
+        notes: formData.longDescription,
+        margin: margin || 0,
+        percentage: percentage || 0,
+        status: "Not Requested",
+        shouldAdd: true, // Flag to indicate this is a new item to be added
+        // Add other default fields as needed
+      };
+
+      // // Check if a line item with the same name already exists for the given phase
+      // const phase = existingPhases.find((phase) => phase.id === phaseId);
+      // if (phase) {
+      //   const itemExists = phase.LineItems.some(
+      //     (item) => item.title === formData.phaseName
+      //   );
+      //   if (itemExists) {
+      //     // Show a toast if the line item already exists
+      //     toast.error("Line item with the same name already exists!");
+      //     return; // Exit without setting the state
+      //   }
+      // }
+
+      // // Check if a line item with the same name already exists for the given phase
+      // const selectedPhase = changeOrderSelected.find(
+      //   (phase) => phase.id === phaseId
+      // );
+      // if (selectedPhase) {
+      //   const itemExists = selectedPhase.LineItems.some(
+      //     (item) => item.title === formData.phaseName
+      //   );
+      //   if (itemExists) {
+      //     // Show a toast if the line item already exists
+      //     toast.error("Line item with the same name already exists!");
+      //     return; // Exit without setting the state
+      //   }
+      // }
+
+      setUpdateRow((prevState) => {
+        const updatedPhase = prevState[phaseId] || {
+          rows: [],
+          phaseName: "New Phase",
+        };
+        const updatedRows = [...updatedPhase.rows, newLineItem];
+
+        // Dispatch to Redux
+        dispatch(
+          updateCheckedItems({
+            phaseId,
+            phaseName: updatedPhase.phaseName,
+            lineItems: updatedRows,
+          })
+        );
+
         return {
           ...prevState,
           [phaseId]: {
-            ...prevState[phaseId],
-            rows: updatedRows
-          }
+            ...updatedPhase,
+            rows: updatedRows,
+          },
         };
-      }
-      return prevState;
-    });
-  }, [setUpdateRow]);
+      });
+    },
+    [dispatch]
+  );
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // if (start === null) {
@@ -245,20 +359,24 @@ function AddLineElement({
     //   return;
     // }
     if (reqWorkOrderModal) {
-      const phaseId = LineItem.phase_id;
-      // const lineItemId = LineItem.id;
+      if (LineItem) {
+        const phaseId = LineItem.phase_id;
+        // const lineItemId = LineItem.id;
 
-      updateLineItem(phaseId, lineItemIndex, formData);
+        updateLineItem(phaseId, lineItemIndex, formData);
+      } else {
+        addLineItem(addPhaseId, formData, margin, percentage);
+      }
       handleClickClose();
       return;
     }
     setRowCheckboxes({});
-    if (quantity <= 0 || unitPrice <= 0) {
-      toast.warning("Enter value greater than 0");
+    if (quantity < 0 || unitPrice < 0) {
+      toast.warning("Enter a valid value");
       return;
     }
 
-    if (LineHeading === "Update Line Item") {
+    if (LineHeading === t("LineItem.updateLineItem")) {
       //console.log("updading..")
       const lineItemId = LineItem.id;
       const data1 = {
@@ -282,7 +400,7 @@ function AddLineElement({
         }
 
         //   handleUpdateClose();
-        toast.success("Line Item Edited successfully");
+        toast.success("Line item updated successfully!");
         handleUpdateClose();
       } catch (error) {
         toast.error(
@@ -316,8 +434,9 @@ function AddLineElement({
         total,
         longDescription,
         userId: userInfo.user.id,
-        margin,
-        percentage,
+        margin: margin || 0,
+        percentage: percentage || 0,
+        changeFlag: changeOrderView ? true : false,
       };
       if (!newLineItem.unit) {
         toast.warning("Please enter unit");
@@ -325,7 +444,7 @@ function AddLineElement({
       }
       try {
         const response = await addPhaseLine(newLineItem);
-        console.log(response);
+        // console.log(response);s
         if (
           response?.error?.data?.message ===
           "LineItem already exists against this phase!"
@@ -334,7 +453,7 @@ function AddLineElement({
           handleAddClose();
           return;
         }
-        toast.success("Line Item Added successfully");
+        // toast.success("Line Item added successfully");
         if (InitialProposalView) {
           dispatch(addInitialPhase(response?.data?.allPhases));
         } else {
@@ -357,6 +476,10 @@ function AddLineElement({
   };
   const handleTotalCostChange1 = (e) => {
     const value = e.target.value;
+    if (value < 0) {
+      toast.error("Negative values are not allowed.", { toastId: "no" });
+      return;
+    }
     setTotalCost(() => {
       if (total) {
         handleMarginAndPercentageChange(value);
@@ -374,10 +497,10 @@ function AddLineElement({
   };
 
   const handleMarginAndPercentageChange = (value) => {
-    console.log("run");
+    // console.log("run");
     const margin = parseFloat(value - total);
     const percentage = parseFloat((margin / total) * 100);
-    console.log(total);
+    // console.log(total);
     setMargin(margin);
     setPercentage(percentage);
   };
@@ -477,17 +600,17 @@ function AddLineElement({
   //   }
   // }, [isSuccess, data]);
   const handleSetUnit = async (selectedOption, actionType) => {
-    console.log(actionType);
-    console.log(selectedOption);
+    // console.log(actionType);
+    // console.log(selectedOption);
     if (selectedOption === null || selectedOption?.value === LineItem?.unit) {
       return;
     }
     const existingUnit = Array.isArray(data?.allUnits)
       ? data?.allUnits?.some((unit) => unit?.value === selectedOption?.value)
       : null;
-    console.log(existingUnit);
-    console.log(selectedOption);
-    console.log(data);
+    // console.log(existingUnit);
+    // console.log(selectedOption);
+    // console.log(data);
     if (existingUnit) {
       setUnit(selectedOption.value);
     } else if (selectedOption.value) {
@@ -512,8 +635,8 @@ function AddLineElement({
   // }
   const setUnitOnAutoComplete = (unit) => {
     const obj = findValueInData(unit);
-    console.log(obj);
-    console.log(creatableRef);
+    // console.log(obj);
+    // console.log(creatableRef);
     creatableRef.current.setValue(obj);
   };
 
@@ -521,14 +644,14 @@ function AddLineElement({
     if (LineItem) {
       const obj = findValueInData(LineItem.unit);
       const unit = creatableRef.current?.props.value;
-      console.log(obj);
-      console.log(unit);
-      console.log(LineItem?.unit);
+      // console.log(obj);
+      // console.log(unit);
+      // console.log(LineItem?.unit);
       if (unit?.value === LineItem?.unit) {
         return;
       } else if (obj) {
         creatableRef.current?.setValue(obj);
-        console.log(creatableRef.current);
+        // console.log(creatableRef.current);
       } else {
         creatableRef.current?.setValue(LineItem.unit);
       }
@@ -548,7 +671,7 @@ function AddLineElement({
         return percentage ? percentage : 0;
       });
     } else {
-      toast.error(`Add Client Cost`);
+      toast.error(`Add client cost`);
       setMargin(0);
     }
   };
@@ -566,7 +689,7 @@ function AddLineElement({
       });
       setTotalCost(actualCost + margin);
     } else {
-      toast.error(`Add Actual Cost`, {
+      toast.error(`Add actual cost`, {
         toastId: "percentageValidation",
       });
       setPercentage(0);
@@ -633,7 +756,13 @@ function AddLineElement({
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <DialogTitle sx={typoTitle}>{LineHeading}</DialogTitle>
+            <DialogTitle sx={typoTitle}>
+              {reqWorkOrderModal
+                ? addPhaseId
+                  ? "Add Line Item"
+                  : LineHeading
+                : LineHeading}
+            </DialogTitle>
             <IconButton
               style={{ width: "40px", height: "40px" }}
               onClick={handleClickClose}
@@ -641,8 +770,8 @@ function AddLineElement({
               <Close />
             </IconButton>
           </Stack>
-          <DialogContent sx={{ padding: "0rem 3rem 0rem 3rem" }}>
-            <Typography sx={typoText}>Line Item</Typography>
+          <DialogContent sx={{ padding: {sm:"0rem 3rem 0rem 3rem", xs: "0rem 1.5rem 0rem 1.5rem"} }}>
+            <Typography sx={typoText}>{t("LineItem.lineItem")}</Typography>
             <>
               <Autocomplete
                 disabled={isLoading}
@@ -651,14 +780,45 @@ function AddLineElement({
                 id="phaseName"
                 // maxLength={}
                 // openOnFocus
+                  getOptionLabel={(option) =>
+                    typeof option === "string"
+                      ? option
+                      : option?.template
+                      ? `${option.title}`
+                      : option.title
+                  }
                 options={
-                  autoComplete ? autoComplete.map((option) => option.title) : []
+                  autoComplete ? autoComplete.map((option) => option) : []
                 } // Add your options here
+                renderOption={(props, option) => (
+                  <Box
+                    component="li"
+                    {...props}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      width: "100%",
+                      paddingY: 0.5,
+                    }}
+                  >
+                    <span>{option.title}</span>
+                    {option.template && (
+                      <Chip
+                        label="Template"
+                        color="primary"
+                        size="small"
+                        variant="outlined"
+                        sx={{ marginLeft: 1 }}
+                      />
+                    )}
+                  </Box>
+                )}
                 value={phaseName}
                 name="phaseName"
                 onChange={(event, newValue) => {
                   const selectedOption = autoComplete?.find(
-                    (option) => option.title === newValue
+                    (option) => option.title === newValue.title
                   );
                   if (selectedOption) {
                     setAutoCompleteEvent(event);
@@ -684,7 +844,7 @@ function AddLineElement({
                   } else {
                     // Handle case where newValue is not found in autoComplete
                   }
-                  setPhaseName(newValue);
+                  setPhaseName(newValue.title);
                 }}
                 renderInput={(params) => (
                   <TextField
@@ -693,7 +853,7 @@ function AddLineElement({
                     // label="Line Item Name"
                     margin="dense"
                     variant="standard"
-                    placeholder="e.g: Demolition"
+                    placeholder="ex: Demolition"
                     // value={formData.phaseName}
                     // onFocus={() => {}}
                     onChange={(event) => setPhaseName(event.target.value)} // Assuming setPhaseName is your state updater function
@@ -721,7 +881,7 @@ function AddLineElement({
                 onChange={(e) => setPhaseName(e.target.value)}
               /> */}
 
-              <Typography sx={typoText}>Description</Typography>
+              <Typography sx={typoText}>{t("LineItem.description")}</Typography>
               <TextField
                 sx={{ ...inputStyle }}
                 margin="dense"
@@ -730,20 +890,20 @@ function AddLineElement({
                 type="text"
                 variant="standard"
                 value={formData.description}
-                placeholder="Enter description"
+                placeholder={t("LineItem.placeholder")}
                 onChange={(e) => setDescription(e.target.value)}
                 inputProps={{ maxLength: 50 }}
               />
               <Box sx={parallelBox}>
                 <Box sx={innerBox}>
-                  <Typography sx={{ ...typoText }}>Unit</Typography>
+                  <Typography sx={{ ...typoText }}>{t("LineItem.unit")}</Typography>
                   <Box mt={"8px"} mb={"8px"}>
                     <CreateableSelect
                       ref={creatableRef}
                       defaultInputValue={LineItem ? LineItem?.unit : unit}
                       // value={findValueInData(unit)}
                       inputProps={{ maxLength: 10 }}
-                      placeholder={"Select Unit"}
+                      placeholder={t("LineItem.placeholder1")}
                       styles={selectStyles}
                       // defaultValue={unit}
                       onChange={handleSetUnit}
@@ -778,7 +938,7 @@ function AddLineElement({
                   </TextField> */}
                 </Box>
                 <Box sx={innerBox}>
-                  <Typography sx={typoText}>Quantity</Typography>
+                  <Typography sx={typoText}>{t("LineItem.quantity")}</Typography>
                   <TextField
                     inputProps={{
                       maxLength: 50,
@@ -794,16 +954,21 @@ function AddLineElement({
                     type="number"
                     variant="standard"
                     value={formData.quantity}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value < 0) {
+                        toast.error("Negative values are not allowed.");
+                        return;
+                      }
                       setQuantity((prev) => {
-                        setTotal(e.target.value * unitPrice);
-                        return e.target.value;
-                      })
-                    }
+                        setTotal(value * unitPrice);
+                        return value;
+                      });
+                    }}
                   />
                 </Box>
               </Box>
-              <Typography sx={typoText}>Unit Price</Typography>
+              <Typography sx={typoText}>{t("LineItem.unitPrice")}</Typography>
               <TextField
                 inputProps={{
                   maxLength: 50,
@@ -823,15 +988,20 @@ function AddLineElement({
                     <InputAdornment position="start">$</InputAdornment>
                   ),
                 }}
-                onChange={(e) =>
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value < 0) {
+                    toast.error("Negative values are not allowed.");
+                    return;
+                  }
                   setUnitPrice((prev) => {
-                    setTotal(e.target.value * quantity);
-                    return e.target.value;
-                  })
-                }
+                    setTotal(value * quantity);
+                    return value;
+                  });
+                }}
               />
 
-              <Typography sx={typoText}>Actual Cost</Typography>
+              <Typography sx={typoText}>{t("LineItem.actualCost")}</Typography>
               <TextField
                 inputProps={{
                   onWheel: (event) => event.target.blur(),
@@ -851,7 +1021,7 @@ function AddLineElement({
                   ),
                 }}
               />
-              <Typography sx={typoText}>Client Cost</Typography>
+              <Typography sx={typoText}>{t("LineItem.clientCost")}</Typography>
               <TextField
                 inputProps={{
                   onWheel: (event) => event.target.blur(),
@@ -874,7 +1044,7 @@ function AddLineElement({
               />
               <Box sx={parallelBox}>
                 <Box sx={innerBox}>
-                  <Typography sx={typoText}>Profit</Typography>
+                  <Typography sx={typoText}>{t("LineItem.profit")}</Typography>
 
                   <TextField
                     sx={{ ...inputStyle, marginLeft: "18px" }}
@@ -895,7 +1065,7 @@ function AddLineElement({
                   />
                 </Box>
                 <Box sx={innerBox}>
-                  <Typography sx={typoText}>Percentage</Typography>
+                  <Typography sx={typoText}>{t("LineItem.percentage")}</Typography>
                   <TextField
                     sx={{ ...inputStyle, marginLeft: "18px" }}
                     placeholder="2"
@@ -944,7 +1114,7 @@ function AddLineElement({
                       border: "1px solid #ccc",
                       borderRadius: "12px",
                       color: "#202227",
-                      fontFamily: "Arial Rounded MT, sans-serif",
+                       fontFamily: "var(--main-font-family)",
                       backgroundColor: "#EDF2F6",
                       ...leftSpace,
                     }}
@@ -968,7 +1138,7 @@ function AddLineElement({
                       border: "1px solid #ccc",
                       borderRadius: "12px",
                       color: "#202227",
-                      fontFamily: "Arial Rounded MT, sans-serif",
+                       fontFamily: "var(--main-font-family)",
                       backgroundColor: "#EDF2F6",
                       ...leftSpace,
                     }}
@@ -985,17 +1155,17 @@ function AddLineElement({
                 </Box>
               </Box> */}
 
-              <Typography sx={typoText}>Notes</Typography>
+              <Typography sx={typoText}>{t("LineItem.notes")}</Typography>
               <TextField
-                inputProps={{ maxLength: 1000 }}
-                sx={{ ...inputStyle, height: "5rem" }}
-                placeholder="Enter your Notes"
+                inputProps={{ maxLength: 150 }}
+                sx={{ ...inputStyle, height: "3.5rem" }}
+                placeholder={t("LineItem.placeholder2")}
                 margin="dense"
                 id="longDescription"
                 name="longDescription"
                 type="text"
                 multiline
-                rows={3}
+                rows={2}
                 variant="standard"
                 value={formData.longDescription}
                 onChange={(e) => setLongDescription(e.target.value)}
@@ -1014,7 +1184,7 @@ function AddLineElement({
                   sx={{ fontSize: "14px", color: "white" }}
                 />
               ) : (
-                "Done"
+                t("Button.done")
               )}
             </Button>
           </DialogActions>
@@ -1025,7 +1195,7 @@ function AddLineElement({
 }
 
 const typoTitle = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "1.5rem",
   color: "#4C8AB1",
 };
@@ -1039,7 +1209,7 @@ const inputStyle = {
   border: "1px solid #ccc",
   borderRadius: "12px",
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   paddingLeft: "-1.5rem",
   backgroundColor: "#EDF2F6",
   outline: "none !important",
@@ -1061,7 +1231,7 @@ const paperPropsStyle = {
 };
 
 const typoText = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "0.8rem",
   color: "#202227",
 };

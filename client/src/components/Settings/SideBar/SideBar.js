@@ -3,12 +3,14 @@ import { Box, Typography, List, ListItemText, ListItem } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "../../../App.css";
+import { useTranslation } from "react-i18next";
 function SideBar() {
+  const {t} = useTranslation()
   const location = useLocation();
 
   const paths = [
     "/settings",
-    "/settings/materline",
+    "/settings/masterline",
     "/settings/units",
     "/settings/admin",
     "/settings/projectManager",
@@ -19,6 +21,8 @@ function SideBar() {
     "/settings/others",
     "/settings/accounts",
     "/settings/coupon",
+    // "/settings/permissions",
+
   ];
 
   const selectedItem = paths.findIndex((path) => path === location.pathname);
@@ -33,15 +37,15 @@ function SideBar() {
           selected={selectedItem === 0}
           sx={listItemStyle}
         >
-          Profile
+          {t("Settings.SideBar.profile")}
         </ListItem>
         <ListItem
           component={Link}
-          to="/settings/materline"
+          to="/settings/masterline"
           selected={selectedItem === 1}
           sx={listItemStyle}
         >
-          Master Line Items
+          {t("Settings.SideBar.master")}
         </ListItem>
         <ListItem
           component={Link}
@@ -49,7 +53,7 @@ function SideBar() {
           selected={selectedItem === 2}
           sx={listItemStyle}
         >
-          Units
+          {t("Settings.SideBar.units")}
         </ListItem>
         <ListItem
           component={Link}
@@ -57,7 +61,7 @@ function SideBar() {
           selected={selectedItem === 3}
           sx={listItemStyle}
         >
-          Admin
+          {t("Settings.SideBar.admin")}
         </ListItem>
         <ListItem
           component={Link}
@@ -65,7 +69,7 @@ function SideBar() {
           selected={selectedItem === 4}
           sx={listItemStyle}
         >
-          Project Manager
+          {t("Settings.SideBar.projectManager")}
         </ListItem>
         <ListItem
           component={Link}
@@ -73,7 +77,7 @@ function SideBar() {
           selected={selectedItem === 5}
           sx={listItemStyle}
         >
-          Clients
+          {t("Settings.SideBar.client")}
         </ListItem>
         <ListItem
           component={Link}
@@ -81,7 +85,7 @@ function SideBar() {
           selected={selectedItem === 6}
           sx={listItemStyle}
         >
-          Employee
+          {t("Settings.SideBar.employee")}
         </ListItem>
         <ListItem
           component={Link}
@@ -89,7 +93,7 @@ function SideBar() {
           selected={selectedItem === 7}
           sx={listItemStyle}
         >
-          Subcontractor
+          {t("Settings.SideBar.subcontractor")}
         </ListItem>
         <ListItem
           component={Link}
@@ -97,7 +101,7 @@ function SideBar() {
           selected={selectedItem === 8}
           sx={listItemStyle}
         >
-          Supplier
+          {t("Settings.SideBar.supplier")}
         </ListItem>
         <ListItem
           component={Link}
@@ -105,7 +109,7 @@ function SideBar() {
           selected={selectedItem === 9}
           sx={listItemStyle}
         >
-          Others
+          {t("Settings.SideBar.others")}
         </ListItem>
         <ListItem
           component={Link}
@@ -113,7 +117,7 @@ function SideBar() {
           selected={selectedItem === 10}
           sx={listItemStyle}
         >
-          Accounts
+          {t("Settings.SideBar.account")}
         </ListItem>
         <ListItem
           component={Link}
@@ -121,14 +125,22 @@ function SideBar() {
           selected={selectedItem === 11}
           sx={listItemStyle}
         >
-          Coupon
+          {t("Settings.SideBar.coupon")}
         </ListItem>
+        {/* <ListItem
+          component={Link}
+          to="/settings/permissions"
+          selected={selectedItem === 12}
+          sx={listItemStyle}
+        >
+          Permission Access
+        </ListItem> */}
       </List>
     </Box>
   );
 }
 const listHeading = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1.5rem",
   color: "#000",
 };

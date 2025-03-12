@@ -49,7 +49,6 @@ const isPhoneValid = (phone) => {
 };
 
 const Invitation = () => {
-  const isLG = useMediaQuery("(min-width: 1280px)");
   const isMD = useMediaQuery("(min-width: 900px) and (max-width: 1279px)");
   const isSM = useMediaQuery("(min-width: 600px) and (max-width: 900px)");
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -58,7 +57,7 @@ const Invitation = () => {
   // const role = userRole;
   const [checkUser] = useCheckUserOnInvitationMutation();
   const params = { invitationId };
-  console.log(params);
+  // console.log(params);
   const DoMobWidth = isSM ? "50%" : isMD ? "70%" : "100%";
   const widthValue = isSM ? "35%" : isMD ? "40%" : "100%";
 
@@ -118,7 +117,7 @@ const Invitation = () => {
   const timeoutRef = useRef(); // Store timeout ID
   const memoizedCheckUser = useCallback(async () => {
     const res = await checkUser(params);
-    console.log(res); // Log response
+    // console.log(res); // Log response
     if (res?.data?.success) {
       window.location.href = "/login";
     } else {
@@ -145,7 +144,7 @@ const Invitation = () => {
 
     try {
       // Make POST request using Axios
-      await axios.post("http://3.135.107.71/auth/addme", data, {
+      await axios.post("https://builderbuilder.net/auth/addme", data, {
         headers: {
           "Content-Type": "application/json",
           // Authorization: `Bearer ${getTokenFromLocalStorage()}`,
@@ -197,9 +196,9 @@ const Invitation = () => {
     borderRadius: isMobile ? "0.5rem" : "0.75rem",
   };
 
-  useEffect(() => {
-    console.log(values);
-  }, [values]);
+  // useEffect(() => {
+  //   console.log(values);
+  // }, [values]);
   return (
     <Grid container sx={firstGrid}>
       <Grid item container lg={6} md={6} sm={12} xs={12} sx={SecondGrid}>
@@ -239,20 +238,20 @@ const Invitation = () => {
         <Box sx={downloadForMobBox}>
           <img
             src={downloadForMob}
-            width={"100%"}
+            
             alt=""
             style={{ height: "143px" }}
           />
         </Box>
         <Box sx={googleAppImgsBox}>
           <a
-            href="https://play.google.com/store/apps/details?id=com.octathorn.builder_builder_pro&pcampaignid=web_share"
+            href="https://play.google.com/store/apps/details?id=com.npisoftware.builder_builder_pro"
             target="blank"
           >
             <img src={googlePlay} style={{ cursor: "pointer" }} alt="" />
           </a>
 
-          <a href="https://testflight.apple.com/join/Fejy1iQ6" target="blank">
+          <a href="https://apps.apple.com/us/app/builderbuilder-pro/id6714458398" target="blank">
             <img src={appStore} style={{ cursor: "pointer" }} alt="" />
           </a>
         </Box>
@@ -298,7 +297,7 @@ const Invitation = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-1rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-1rem"}>
                   {errors.firstName && touched.firstName
                     ? errors.firstName
                     : ""}
@@ -329,7 +328,7 @@ const Invitation = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-1rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-1rem"}>
                   {errors.lastName && touched.lastName ? errors.lastName : ""}
                 </Typography>
               </Box>
@@ -360,7 +359,7 @@ const Invitation = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-1rem"}>
+              <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-1rem"}>
                 {errors.email && touched.email ? errors.email : ""}
               </Typography>
             </Box>
@@ -378,9 +377,9 @@ const Invitation = () => {
               </label>
 
               <PhoneInput
-                disableDialCodePrefill
+                // disableDialCodePrefill
                 style={{ ...customPhoneStyles }}
-                defaultCountry=""
+                defaultCountry="us"
                 name={"phoneNumber"}
                 value={phone}
                 onChange={(phone) => setPhone(phone)}
@@ -402,7 +401,7 @@ const Invitation = () => {
                 inputStyle={{ ...customeInputStyles }}
                 inputProps={{
                   border: "none",
-                  placeholder: "+1 (123) 456-7890",
+                  // placeholder: "+1 (123) 456-7890",
                 }}
                 required
               />
@@ -412,10 +411,10 @@ const Invitation = () => {
                     sx={{
                       color: "#d32f2f",
                       fontSize: "12px",
-                      marginLeft: "14px",
+                      marginLeft: "4px",
                       marginRight: "14px",
                       marginTop: "3px",
-                      fontFamily: 'inherit',
+                      fontFamily: 'var(--main-font-family)',
                     }}
                   >
                     Phone is not valid
@@ -458,7 +457,7 @@ const Invitation = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-1rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-1rem"}>
                   {errors.password && touched.password ? errors.password : ""}
                 </Typography>
                 <Box style={passwordEyeBox} onClick={togglePasswordVisibility}>
@@ -507,7 +506,7 @@ const Invitation = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Typography fontSize={"10px"} color={"#d32f2f"} mt={"-1rem"}>
+                <Typography fontSize={"12px"} color={"#d32f2f"} mt={"-1rem"}>
                   {errors.confirmPassword && touched.confirmPassword
                     ? errors.confirmPassword
                     : ""}
@@ -664,7 +663,7 @@ const namesFieldBox = {
 
 const subtitleStyle = {
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "0.75rem",
   fontWeight: 400,
   marginBottom: "0.2rem",
@@ -718,7 +717,7 @@ const selectStyle = {
   ".MuiOutlinedInput-notchedOutline": { border: 0 },
   color: "white",
   border: "none",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1rem",
   fontWeight: "400",
   lineHeight: "normal",
@@ -735,7 +734,7 @@ const hptLinksBox = {
 
 const firstHeading = {
   color: "#FFF",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   display: { lg: "flex", md: "flex", sm: "flex", xs: "none" },
   marginTop: "1rem",
   fontSize: { xl: "2rem", lg: "2rem", md: "1.9rem", sm: "1rem" },
@@ -750,14 +749,14 @@ const secondHeading = {
   // width: { lg: "31.125rem", md: "28rem", sm: "auto" },
   marginTop: "0.5rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: { xl: "1.5rem", lg: "1.5rem", md: "1.5rem", sm: "1rem" },
   fontWeight: 400,
 };
 
 const thirdHeading = {
   color: "#FFF",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   marginTop: "1rem",
   display: { lg: "flex", md: "flex", sm: "none", xs: "none" },
   fontSize: { lg: "2rem", md: "1.5rem", sm: "1.2rem" },
@@ -767,7 +766,7 @@ const thirdHeading = {
 const formHeadingStyle = {
   color: "#4C8AB1",
   textAlign: "center",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "2.1875rem",
   fontWeight: 700,
   lineHeight: "normal",
@@ -798,7 +797,7 @@ const inputStyle = {
   fontSize: "14px",
   border: "1px solid #ccc",
   borderRadius: "12px",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   paddingLeft: "-1.5rem",
 };
 
@@ -806,7 +805,7 @@ const labelStyle = {
   display: "block",
   marginBottom: "0.5rem",
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontSize: "1rem",
   fontWeight: 400,
   lineHeight: "normal",
@@ -815,7 +814,7 @@ const labelStyle = {
 const hptLinksStyle = {
   color: "#FFF",
   fontSize: { lg: "1rem", md: "0.9rem", sm: "0.8rem" },
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: 400,
   lineHeight: "normal",
 };

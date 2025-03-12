@@ -1,8 +1,6 @@
 import React from 'react'
-import FileBox from '../FileBox/FileBox'
 import { Paper } from '@mui/material'
 import Permit from '../../Projects/Permit'
-import { Height } from '@mui/icons-material'
 
 
 function PermitClient() {

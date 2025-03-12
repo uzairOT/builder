@@ -9,7 +9,6 @@ import {
   CircularProgress,
 } from "@mui/material";
 import Button from "../../UI/CustomButton";
-import { useTheme } from "@mui/material/styles";
 import {
   useResetProfilePasswordMutation,
   useUpdateUserNotificationsMutation,
@@ -19,11 +18,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 import { useGetUserNotificationQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 import { useEffect } from "react";
-import { duration } from "moment-timezone";
+import { t } from "i18next";
 
 export default function MyApp() {
-  const theme = useTheme();
-  const isXs = theme.breakpoints.down("xs");
   const user = useSelector((state) => state.auth.userInfo);
   const { data, refetch } = useGetUserNotificationQuery({
     userId: user.user.id,
@@ -41,18 +38,17 @@ export default function MyApp() {
   const [confrimPassword, setConfrimPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [errorConfirmPassword, setErrorConfirmPassword] = useState(false)
-  const [errorNewPassword, setErrorNewPassword] = useState(false)
-  
+  const [errorConfirmPassword, setErrorConfirmPassword] = useState(false);
+  const [errorNewPassword, setErrorNewPassword] = useState(false);
+
   const handleConfirmPasswordBlur = () => {
     const passwordMatch = newPassword === confrimPassword;
-    setErrorConfirmPassword(!passwordMatch)
-    
-    }
-    const handleNewPasswordBlur = () => {
-    const isPasswordValidLength = newPassword.length >= 8
-    setErrorNewPassword(!isPasswordValidLength)
-  }
+    setErrorConfirmPassword(!passwordMatch);
+  };
+  const handleNewPasswordBlur = () => {
+    const isPasswordValidLength = newPassword.length >= 8;
+    setErrorNewPassword(!isPasswordValidLength);
+  };
   const validationStyle = {
     "& input": {
       border: !errorConfirmPassword ? "1px solid #E0E4EC" : "1px solid #D02E2E",
@@ -93,7 +89,13 @@ export default function MyApp() {
 
   const handleSubmit = async () => {
     if (errorConfirmPassword || errorNewPassword) {
-      toast.error(`${errorConfirmPassword ? "Passwords don't match!" : "Password must be at least 8 characters long"}`);
+      toast.error(
+        `${
+          errorConfirmPassword
+            ? "Passwords don't match!"
+            : "Password must be at least 8 characters long"
+        }`
+      );
       return false;
     } else {
       try {
@@ -165,15 +167,15 @@ export default function MyApp() {
     <div>
       {/* Password Section */}
       <Typography sx={passwordHeadings} variant="h5" gutterBottom>
-        Password
+        {t("Settings.Password.heading1")}
       </Typography>
       <Grid container spacing={2} alignItems="center">
-        <Grid item  md={6} xs={12}>
-          <Typography sx={subHeadings}>Current Password</Typography>
+        <Grid item md={6} xs={12}>
+          <Typography sx={subHeadings}>{t("Settings.Password.currentPassword")}</Typography>
           <TextField
             inputProps={{ maxLength: 50 }}
             fullWidth
-            placeholder="Enter Current Password"
+            placeholder={t("Settings.Password.placeholder")}
             variant="outlined"
             type="password"
             sx={InputStyle}
@@ -183,17 +185,14 @@ export default function MyApp() {
             }}
           />
         </Grid>
-        <Grid item md={6} xs={0}>
-         
-        </Grid>
+        <Grid item md={6} xs={0}></Grid>
 
- 
         <Grid item md={6} xs={12}>
-          <Typography sx={subHeadings}>New Password</Typography>
+          <Typography sx={subHeadings}>{t("Settings.Password.newPassword")}</Typography>
           <TextField
             inputProps={{ maxLength: 50 }}
             fullWidth
-            placeholder="Enter New Password"
+            placeholder={t("Settings.Password.placeholder1")}
             variant="outlined"
             type="password"
             sx={{ ...InputStyle, ...validationStyleNewPassword }}
@@ -203,22 +202,19 @@ export default function MyApp() {
             }}
             onBlur={handleNewPasswordBlur}
           />
-          {errorNewPassword && 
-          (
+          {errorNewPassword && (
             <Typography fontSize={"11px"} color={"#D02E2E"}>
-              Password must be at least 8 characters long
+              {t("Settings.Password.validation1")}
             </Typography>
           )}
         </Grid>
-        <Grid item md={6} xs={0}>
-         
-         </Grid>
+        <Grid item md={6} xs={0}></Grid>
         <Grid item md={6} xs={12}>
-          <Typography sx={subHeadings}>Confirm Password</Typography>
+          <Typography sx={subHeadings}>{t("Settings.Password.confirmPassword")}</Typography>
           <TextField
             inputProps={{ maxLength: 50 }}
             fullWidth
-            placeholder="Confirm your password here"
+            placeholder={t("Settings.Password.placeholder2")}
             variant="outlined"
             type="password"
             sx={{ ...InputStyle, ...validationStyle }}
@@ -230,12 +226,10 @@ export default function MyApp() {
           />
           {errorConfirmPassword && (
             <Typography fontSize={"11px"} color={"#D02E2E"}>
-              Passwords dont match
+              {t("Settings.Password.validation2")}
             </Typography>
           )}
-          
         </Grid>
-      
       </Grid>
 
       {/* Divider */}
@@ -249,7 +243,7 @@ export default function MyApp() {
             alignItems={"center"}
           >
             <Typography sx={headings} variant="h5" gutterBottom>
-              Notifications
+            {t("Settings.Password.heading2")}
             </Typography>
             {isLoadingNotifications && <CircularProgress size={"20px"} />}
           </Stack>
@@ -275,14 +269,14 @@ export default function MyApp() {
         </Grid> */}
         <Grid item xs={12} md={5}>
           <Typography sx={subHeadings} variant="body1" gutterBottom>
-            Team Notification
+          {t("Settings.Password.subheading1")}
           </Typography>
         </Grid>
         <Grid item xs={12}>
           <Grid item xs={12} md={6} lg={8} xl={5} sx={{ display: "flex" }}>
             <Grid item xs={12} md={6} lg={8} xl={5}>
               <Typography sx={switchLabelstyles} variant="body1">
-                Employee
+              {t("Settings.Password.list1")}
               </Typography>
             </Grid>
             <Switch
@@ -297,7 +291,7 @@ export default function MyApp() {
           <Grid item xs={12} md={6} lg={8} xl={5} sx={{ display: "flex" }}>
             <Grid item xs={12} md={6} lg={8} xl={5}>
               <Typography sx={switchLabelstyles} variant="body1">
-                Supplier
+              {t("Settings.Password.list2")}
               </Typography>
             </Grid>
             <Switch
@@ -312,7 +306,7 @@ export default function MyApp() {
           <Grid item xs={12} md={6} lg={8} xl={5} sx={{ display: "flex" }}>
             <Grid item xs={12} md={6} lg={8} xl={5}>
               <Typography sx={switchLabelstyles} variant="body1">
-                Subcontractor
+              {t("Settings.Password.list3")}
               </Typography>
             </Grid>
             <Switch
@@ -345,10 +339,13 @@ export default function MyApp() {
           sx={{ display: "flex", justifyContent: "flex-start", gap: 1, my: 6 }}
         >
           <Button
-            buttonText="Update Profile"
+          sx={{  
+            fontFamily: 'var(--main-font-family)',
+          }}
+            buttonText={t("Settings.Password.button1")}
             color="#ffffff"
             backgroundColor="#4C8AB1"
-            width="112px"
+            width="140px"
             height="38px"
             borderRadius="50px"
             onClick={handleSubmit}
@@ -371,7 +368,7 @@ export default function MyApp() {
 }
 
 const switchLabelstyles = {
-  fontFamily: "GT Walsheim Trial",
+  fontFamily: "var(--main-font-family)",
   fontWeight: "400",
   color: "#2022279C",
   marginLeft: "15px",
@@ -379,14 +376,14 @@ const switchLabelstyles = {
 const passwordHeadings = {
   marginTop: "20px",
   marginBottom: "20px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontWeight: "400",
   color: "#4C8AB1",
 };
 const headings = {
   marginTop: "10px",
   marginBottom: "10px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontWeight: "400",
   color: "#4C8AB1",
 };
@@ -400,11 +397,15 @@ const subHeadings = {
 const InputStyle = {
   backgroundColor: "#EDF2F6",
   borderRadius: "8px",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: "var(--main-font-family)",
   "& input": {
     border: "1px solid #E0E4EC",
     borderRadius: "8px",
     padding: "10px",
+    fontFamily: "var(--main-font-family)",
+  },
+  "& .MuiInputBase-input::placeholder": {
+    fontFamily: "var(--main-font-family)",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {

@@ -8,22 +8,17 @@ import {
   TableRow,
   Paper,
   IconButton,
-  Avatar,
-  Select,
-  MenuItem,
-  Input,
   Stack,
   Grid,
+  Typography,
+  Chip,
+  Tooltip,
 } from "@mui/material";
 import EditIcon from "../../../assets/settings/edit.png";
-import DeleteIcon from "../../../assets/settings/delete.png";
-import EmailIcon from "../../../assets/settings/email.png";
-import Button from "../../UI/CustomButton";
 import { useGetMasterLineItemsQuery } from "../../../redux/apis/Project/userProjectApiSlice";
 import { useSelector } from "react-redux";
-import UpdateLineDialogue from "../../dialogues/UpdateLineDialogue/UpdateLineDialogue";
-import moment from "moment";
 import UpdateMasterLine from "../../dialogues/UpdateMasterLine/UpdateMasterLine";
+import { useTranslation } from "react-i18next";
 
 const dummyData = [
   {
@@ -90,6 +85,7 @@ function MasterLineTable({
   setTotalEntries,
   setTotalPages,
 }) {
+  const { t } = useTranslation();
   const userInfo = useSelector((state) => state.auth.userInfo);
   const { data, isLoading, refetch, error } = useGetMasterLineItemsQuery({
     userId: userInfo.user.id,
@@ -98,7 +94,7 @@ function MasterLineTable({
   });
   const [showUpdateLine, setShowUpdateLine] = useState(false);
   const [masterLine, setMasterLine] = useState();
-  console.log(data);
+  // console.log(data);
 
   const handleUpdateOpen = (row) => {
     setMasterLine(row);
@@ -141,10 +137,10 @@ function MasterLineTable({
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={tableCellStyle}>Name</TableCell>
-              <TableCell sx={tableCellStyle}>Description</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.name")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.description")}</TableCell>
               <TableCell sx={tableCellStyle}>
-                Unit
+                {t("Settings.masterTable.unit")}
                 {/* <IconButton>
                 <Select
                   value={""}
@@ -161,19 +157,19 @@ function MasterLineTable({
               </IconButton> */}
               </TableCell>
 
-              <TableCell sx={tableCellStyle}>Quantity</TableCell>
-              <TableCell sx={tableCellStyle}>Unit Price</TableCell>
-              <TableCell sx={tableCellStyle}>Total</TableCell>
-              <TableCell sx={tableCellStyle}>Profit</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.quantity")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.unitPrice")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.quantity")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.profit")}</TableCell>
               {/* <TableCell sx={tableCellStyle}>Start</TableCell>
             <TableCell sx={tableCellStyle}>End</TableCell> */}
-              <TableCell sx={tableCellStyle}>Total Cost</TableCell>
-              <TableCell sx={tableCellStyle}>Notes</TableCell>
-              <TableCell sx={tableCellStyle}>Action</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.totalCost")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.notes")}</TableCell>
+              <TableCell sx={tableCellStyle}>{t("Settings.masterTable.action")}</TableCell>
             </TableRow>
           </TableHead>
           {error ? (
-            <Stack p={2}>{"Something went wrong!"}</Stack>
+            <Stack p={2}>{t("Settings.masterTable.error")}</Stack>
           ) : (
             <TableBody>
               {isLoading ? (
@@ -200,13 +196,22 @@ function MasterLineTable({
                     </TableCell>
                   </TableRow>
                 </>
-                ) : data?.MasterLines?.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={10} sx={{ textAlign: "center", borderBottom:'none' }}>
-                      No Records
-                    </TableCell>
-                  </TableRow>
-                ) : (
+              ) : data?.MasterLines?.length === 0 ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={10}
+                    sx={{
+                      textAlign: "center",
+                      borderBottom: "none",
+                      fontFamily: "var(--main-font-family)",
+                    }}
+                  >
+                    <Typography paddingTop={30} paddingBottom={30}>
+                      {t("Settings.masterTable.noRecords")}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              ) : (
                 data?.MasterLines?.map((row) => (
                   <TableRow key={row.id}>
                     <TableCell sx={tableCellValueStyle}>{row.title}</TableCell>
@@ -222,22 +227,28 @@ function MasterLineTable({
                     </TableCell>
                     <TableCell sx={tableCellValueStyle}>${row.total}</TableCell>
                     <TableCell sx={tableCellValueStyle}>
-                      ${row?.margin}
+                      ${row?.margin ? row?.margin : 0}
                     </TableCell>
                     {/* <TableCell sx={tableCellValueStyle}>{moment(row.start_day).format('YYYY-MM-DD')}</TableCell>
               <TableCell sx={tableCellValueStyle}>{moment(row.end_day).format('YYYY-MM-DD')}</TableCell> */}
                     <TableCell sx={tableCellValueStyle}>
-                      ${Number(row?.total) + Number(row?.margin)}
+                      ${isNaN(Number(row?.total) + Number(row?.margin)) ? 0 : Number(row?.total) + Number(row?.margin)}
                     </TableCell>
-                    <TableCell sx={tableCellValueStyle}>{row.notes}</TableCell>
+                    <TableCell sx={tableCellNotesStyle}>{row.notes}</TableCell>
                     <TableCell sx={tableCellValueStyle}>
-                      <IconButton
+                      {row?.template ? <Tooltip title="Template"><Chip
+                        label="Template"
+                        color="primary"
+                        size="small"
+                        variant="outlined"
+
+                      /></Tooltip> : <IconButton
                         aria-label="edit"
                         size="small"
                         onClick={() => handleUpdateOpen(row)} // Pass row data to the function
                       >
                         <img src={EditIcon} alt="" style={{ width: "35px" }} />
-                      </IconButton>
+                      </IconButton>}
                       {/* <IconButton aria-label="delete" size="small">
                   <img src={DeleteIcon} alt="" style={{width:'35px'}} />
                 </IconButton> */}
@@ -267,20 +278,30 @@ export default MasterLineTable;
 const tableCellStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
-  textOverflow:'ellipsis',
-  overflow:'hidden',
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 500,
   fontSize: "14px",
-  fontFamily: "inherit",
+  fontFamily: "var(--main-font-family)",
 };
 
 const tableCellValueStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
-  textOverflow:'ellipsis',
-  overflow:'hidden',
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 400,
   borderBottom: "none",
-  fontFamily: "Montserrat",
+  fontFamily: "var(--main-font-family)",
+  color: "#000000",
+};
+
+const tableCellNotesStyle = {
+  maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
+  minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
+  overflow: "auto",
+  fontWeight: 400,
+  borderBottom: "none",
+  fontFamily: "var(--main-font-family)",
   color: "#000000",
 };

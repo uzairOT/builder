@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Typography, Box, TextField ,Hidden,IconButton, Menu, MenuItem } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
+import React, { useState } from "react";
+import { Typography, Box ,Hidden } from "@mui/material";
 import Button from "../../UI/CustomButton";
 import Search from "../../UI/CustomSearchInput";
-import AddIcon from '@mui/icons-material/Add';
-import  axios  from "axios";
-
+import { useTranslation } from "react-i18next";
 function Header({ title, OpenAddModal, searchInput, setSearchInput }) {
- 
+  const { t } = useTranslation();
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -69,19 +66,11 @@ function Header({ title, OpenAddModal, searchInput, setSearchInput }) {
           value={searchInput}
           onChange={handleSearchInputChange}
           onKeyPress={handleKeyPress}
-          placeholder={`Search ${title}`}
+          placeholder={`${t("Search.placeholder")} ${title}`}
           backgroundColor="#E7E7E7"
         />
 
-        {!(title ==='Master Line Item') && <Button
-          onClick={OpenAddModal}
-          buttonText="Add"
-          color="#ffffff"
-          backgroundColor="#FFAC00"
-          width="112px"
-          height="38px"
-          borderRadius="50px"
-        />}
+
 {/* 
         <Button
           buttonText="Block"
@@ -92,6 +81,15 @@ function Header({ title, OpenAddModal, searchInput, setSearchInput }) {
           borderRadius="50px"
         /> */}
       </Hidden>
+      {!(title ===t("Settings.master") || title==="Permission Access" || title===t("ProjectPermissions.header")) && <Button
+          onClick={OpenAddModal}
+          buttonText={t("Button.add")}
+          color="#ffffff"
+          backgroundColor="#FFAC00"
+          // width="112px"
+          height="38px"
+          borderRadius="50px"
+        />}
       </Box>
     </Box>
   );
@@ -103,7 +101,7 @@ export default Header;
 const headingStyle = {
   marginTop: "20px",
   marginBottom: "10px",
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   fontWeight: "600",
   fontSize: "22px",
   color: "#4C8AB1",

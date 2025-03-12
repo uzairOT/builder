@@ -4,6 +4,7 @@ const initialState = {
   notifications: [],
   notificationsArr: [],
   teamNotifications: [],
+  approvalNotifications:[],
   error: null,
   workOrderDeclineRecall : true,
 };
@@ -21,11 +22,17 @@ const notificationsSlice = createSlice({
     addTeamNotifications: (state, action) => {
       state.teamNotifications = [...state.teamNotifications, action.payload]
     },
+    addApprovalNotifications:(state, action) =>{
+      state.approvalNotifications=[...state.approvalNotifications, action.payload]
+    },
     setNotificationsArr: (state, action) => {
       state.notificationsArr = action.payload;
     },
     setTeamNotifications: (state, action) => {
       state.teamNotifications = action.payload;
+    },
+    setApprovalNotifications: (state, action) => {
+      state.approvalNotifications = action.payload;
     },
     setError: (state, action) => {
       state.error = action.payload;
@@ -36,12 +43,14 @@ const notificationsSlice = createSlice({
   },
 });
 
-export const { setNotifications, addTeamNotifications, setNotificationsArr, setError, addNotifications, toggleWorkOrderDeclineRecall, setTeamNotifications } = notificationsSlice.actions;
+export const { setNotifications, addTeamNotifications, setNotificationsArr, setError, addNotifications, toggleWorkOrderDeclineRecall, setTeamNotifications, addApprovalNotifications, setApprovalNotifications } = notificationsSlice.actions;
 
 export const selectNotifications = (state) => state.notifications.notifications;
 export const selectTeamNotifications = (state) => state.notifications.teamNotifications;
 export const selectNotificationsArr = (state) => state.notifications.notificationsArr;
 export const selectError = (state) => state.notifications.error;
 export const selectWorkOrderDeclineRecall = (state) => state.notifications.workOrderDeclineRecall;
+export const selectApprovalNotifications = (state) => state.notifications.approvalNotifications;
+
 
 export default notificationsSlice.reducer;

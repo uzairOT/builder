@@ -3,9 +3,6 @@ import {
   useMediaQuery,
   Button,
   Box,
-  Typography,
-  TextField,
-  MenuItem,
 } from "@mui/material";
 
 import "../../App.css";
@@ -13,24 +10,24 @@ import FooterCircles from "../../components/AssignProject/FooterCircles/FooterCi
 import YellowBtn from "../../components/UI/button";
 import StepTitles from "../../components/AssignProject/StepTitles/StepTitles";
 import StepBoxes from "../../components/AssignProject/StepBoxes/StepBoxes";
-import { useNavigate } from "react-router-dom";
 import Header from "../../components/AssignProject/Header/Header";
 import NewProject from "../../components/AssignProject/NewProject/NewProject";
-import ExistingProject from "../../components/AssignProject/ExistingProject/ExistingProject";
 import ProjectFormFields from "../../components/AssignProject/ProjectFormFields/ProjectFormFields";
 import { useExistingProjectMutation } from "../../redux/apis/usersApiSlice";
 import { selectProjectForm } from "../../redux/slices/projectFormSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import { authUserRole } from "../../redux/slices/auth/userRoleSlice";
-import AssignNewProjectStep3 from "../../components/AssignProject/AssignNewProjectStep3/AssignNewProjectStep3";
 import { useCheckProjectDuplicationMutation } from "../../redux/apis/Project/projectApiSlice";
+import { getBackButtonProjectId } from "../../redux/slices/Project/handlingProjectFlowSlice";
+import { useTranslation } from "react-i18next";
 
 function AssignProject() {
+  const { t } = useTranslation();
   const local = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(local);
-  console.log(currentUser);
+  // console.log(currentUser);
   const currentUserId = currentUser?.user.id;
   const [projectType, setProjectType] = useState(null);
   const { projectName, location, projectColor, start_time, end_time } =
@@ -38,11 +35,14 @@ function AssignProject() {
   const [postExistingProject] = useExistingProjectMutation();
   const isMobile = useMediaQuery("(max-width:600px)");
   const labelResponsiveFont = { fontSize: isMobile ? "0.8rem" : "1rem" };
+  const backButtonProjectId = useSelector(getBackButtonProjectId);
   // const notify = () => toast.success("Wow so easy!");
   const dispatch = useDispatch();
+  const [showLocationWarning, setShowLocationWarning] = useState(false)
   const [checkProjectDuplication, { isLoading }] =
     useCheckProjectDuplicationMutation();
   dispatch(authUserRole(""));
+
   const handleProjectChange = async (value) => {
     if (value === "Existing") {
       const data = {
@@ -62,11 +62,12 @@ function AssignProject() {
       // console.log("Please enter project name");
       return;
     }
-    // else if (location === "") {
-    //   toast.warning("Please enter project location");
-    //   // console.log("Please enter project location");
-    //   return;
-    // }
+    else if (location === "") {
+      toast.warning("Please enter project location");
+      setShowLocationWarning(true)
+      // console.log("Please enter project location");
+      return;
+    }
     // else if (projectColor === "") {
     //   toast.warning("Please select project color");
     //   return;
@@ -86,13 +87,18 @@ function AssignProject() {
     //   return;
     // }
     else if (projectName !== "") {
+      if (backButtonProjectId) {
+        setProjectType(value);
+        return;
+      }
       const data = {
         userId: currentUserId,
         projectName: projectName,
       };
       try {
         const res = await checkProjectDuplication(data);
-        console.log(res);
+
+        // console.log(res);
         if (res?.data?.success) {
           setProjectType(value);
         } else {
@@ -127,13 +133,13 @@ function AssignProject() {
           <div>
             <Header handlePreviousStep={handlePreviousStep} step={0} />
             <StepTitles
-              stepHeading={"Step 1 of 3"}
-              Heading={"Add New Project"}
-              stepDiscription={"Select your project type"}
+              stepHeading={t("AssignProject.step1")}
+              Heading={t("AssignProject.title1")}
+              stepDiscription={t("AssignProject.title2")}
             />
             <StepBoxes />
 
-            <ProjectFormFields />
+            <ProjectFormFields showLocationWarning={showLocationWarning} />
             {!isMobile ? (
               <Box sx={buttonBox}>
                 <Button
@@ -146,7 +152,7 @@ function AssignProject() {
                     handleProjectChange("New");
                   }}
                 >
-                  New Project
+                  {t("AssignProject.newProject")}
                 </Button>
                 {/* <Typography sx={orTypo}>OR</Typography>
                 <Button
@@ -174,7 +180,7 @@ function AssignProject() {
                   }}
                   onClick={() => handleProjectChange("New")}
                 >
-                  New Project
+                  {t("AssignProject.newProject")}
                 </Button>
               </Box>
             )}
@@ -214,7 +220,7 @@ const buttonStyle = {
   padding: "1rem 0.5rem",
 };
 const orTypo = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "0.8rem",
 };
 

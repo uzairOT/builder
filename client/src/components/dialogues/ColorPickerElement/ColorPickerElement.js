@@ -29,27 +29,16 @@ import "../../../App.css";
 
 import "./ColorPickerElement.css";
 import { yellow } from "@mui/material/colors";
-import { useDispatch,useSelector  } from 'react-redux';
-import { addInitialPhase, addPhase } from '../../../redux/slices/Project/projectInitialProposal'; 
-import {useParams} from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addInitialPhase,
+  addPhase,
+} from "../../../redux/slices/Project/projectInitialProposal";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Close from "@mui/icons-material/Close";
-//import "react-toastify/dist/ReactToastify.css";
-const colors = [
-  "#FFF",
-  "#93D0EC",
-  "#9BDFEB",
-  "#9FF2CA",
-  "#E5F29F",
-  "#F3DE9E",
-  "#F5C79F",
-  "#F9B4A1",
-  "#FBA8A4",
-  "#F9A0CB",
-  "#FCA8F1",
-  "#DA9CF0",
-  "#ADA1F5",
-];
+import { useTranslation } from 'react-i18next'
+
 
 function ColorPickerElement({
   handleUpdateOpen,
@@ -61,39 +50,43 @@ function ColorPickerElement({
   PhaseHeading,
   onSubmit,
   adminProjectView,
-  InitialProposalView
+  InitialProposalView,
+  formattedView,
 }) {
+  const { t } = useTranslation()
   const dispatch = useDispatch();
   const localUser = localStorage.getItem("userInfo");
   const currentUser = JSON.parse(localUser);
-  const local = localStorage.getItem('projectId');
-  const projectId = currentUser?.incompleteProject?.incomplete ? currentUser?.incompleteProject?.projectId : parseInt(local);
-  
-  const {id} = useParams();
+  const local = localStorage.getItem("projectId");
+  const projectId = currentUser?.incompleteProject?.incomplete
+    ? currentUser?.incompleteProject?.projectId
+    : parseInt(local);
+  const { id } = useParams();
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState(phaseData ? phaseData.color : "#FFF");
   const [colorMode, setColorMode] = useState("");
   const [phaseName, setPhaseName] = useState(
     phaseData?.phase_name ? phaseData.phase_name : ""
   );
-  const [updateProjectPhase, { isLoading: updateLoading, }] = useUpdateProjectPhaseMutation();
-  const [addProjectPhase, {isLoading }] = useAddProjectPhaseMutation();
+  const [updateProjectPhase, { isLoading: updateLoading }] =
+    useUpdateProjectPhaseMutation();
+  const [addProjectPhase, { isLoading }] = useAddProjectPhaseMutation();
   const toggleColorMode = () => {
     setColorMode((prevMode) => (prevMode === "rgba" ? "hex" : "rgba"));
   };
 
-  const handleClickOpen = () => {
-    //console.log('handle Click open run')
-    if (PhaseHeading === "Update Phase") {
-      handleUpdateOpen();
-    } else {
-      handleAddOpen();
-    }
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   //console.log('handle Click open run')
+  //   if (PhaseHeading === "Update Phase") {
+  //     handleUpdateOpen();
+  //   } else {
+  //     handleAddOpen();
+  //   }
+  //   setOpen(true);
+  // };
 
   const handleClickClose = () => {
-    if (PhaseHeading === "Update Phase") {
+    if (PhaseHeading === t("PhaseModal.updatePhase")) {
       handleUpdateClose();
     } else {
       handleAddClose();
@@ -103,63 +96,82 @@ function ColorPickerElement({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if(phaseName === ''){
-      toast.warning('Please enter a phase name')
-      return
+
+    if (phaseName === "") {
+      toast.warning("Please enter a phase name");
+      return;
     }
-    if (PhaseHeading === "Update Phase") {
-      const updatedPhaseData = {
-        phaseName,
-        color,
-      };
-      //console.log('clicked! phaseName: ', phaseName, ' color : ', color, ' updatedPhaseData: ', updatedPhaseData)
-      await updateProjectPhase({ id: phaseData?.id, updatedData: updatedPhaseData });
-      setPhaseData((phaseData) => ({ ...phaseData, ...updatedPhaseData }));
-      //console.log(updatedPhaseData);
-      //console.log(phaseData);
-      onSubmit(phaseName, color);
-      setPhaseName(phaseName);
-      handleUpdateClose();
+
+    const updatedPhaseData = {};
+    const lowerCasePhaseName = phaseName.toLowerCase();
+
+    if (PhaseHeading === t("PhaseModal.updatePhase")) {
+      if (phaseData.phaseName !== lowerCasePhaseName) {
+        updatedPhaseData.phaseName = lowerCasePhaseName;
+      }
+      if (phaseData.color !== color) {
+        updatedPhaseData.color = color;
+      }
+
+      if (Object.keys(updatedPhaseData).length === 0) {
+        toast.info("Same phase data.");
+        return;
+      }
+
+      try {
+        const res = await updateProjectPhase({
+          id: phaseData?.id,
+          updatedData: updatedPhaseData,
+        });
+
+        if (res?.data?.success === true) {
+          setPhaseData((prevPhaseData) => ({
+            ...prevPhaseData,
+            ...updatedPhaseData,
+          }));
+          onSubmit(phaseName, color);
+          setPhaseName(phaseName);
+          toast.success("Phase updated successfully!");
+          handleUpdateClose();
+        } else {
+          toast.error(res?.error?.data?.error || "Failed to update phase.");
+        }
+      } catch (e) {
+        console.log("New Error", e);
+        toast.error(e?.error?.data?.error || "Something went wrong!");
+      }
     } else {
-      // onSubmit(phaseName, color);
       const data = {
-        phaseName,
+        phaseName: lowerCasePhaseName,
         color,
         colorMode,
         projectId: adminProjectView ? id : projectId,
         initial: InitialProposalView ? true : adminProjectView ? false : true,
       };
-      //console.log(data)
-      const res = await addProjectPhase(data).unwrap().then((res)=>{
-        console.log(res)
-        if(InitialProposalView){
 
-          dispatch(addInitialPhase(res.phase))
-        } else{
-  
-          dispatch(addPhase(res.phase))
+      try {
+        const res = await addProjectPhase(data, formattedView).unwrap();
+        toast.success("Phase added successfully!");
+        if (InitialProposalView) {
+          dispatch(addInitialPhase(res.phase));
+        } else {
+          dispatch(addPhase(res.phase));
         }
-      }).catch(e=>{ toast.error(e.message || e.data.message || e.error || 'Something went wrong!')});
-      //console.log('Response:', res.phase);
-      setPhaseData((phaseData) => ({ ...phaseData, ...data }));
-      //console.log(data);
-      // if(InitialProposalView){
-
-      //   dispatch(addInitialPhase(res.phase))
-      // } else{
-
-      //   dispatch(addPhase(res.phase))
-      // }
-      handleAddClose();
+        setPhaseData((prevPhaseData) => ({ ...prevPhaseData, ...data }));
+        handleAddClose();
+      } catch (e) {
+        toast.error(
+          e.message || e.data.message || e.error || "Something went wrong!"
+        );
+      }
     }
   };
 
   const handlePhaseName = (e) => {
     setPhaseName((prev) => {
       return e.target.value;
-    })
-  }
-
+    });
+  };
 
   return (
     <div className="App">
@@ -173,30 +185,41 @@ function ColorPickerElement({
             onSubmit: handleSubmit,
           }}
         >
-          <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-          <DialogTitle  sx={typoTitle} >{PhaseHeading}</DialogTitle>
-          <IconButton style={{width: '40px', height:'40px'}} onClick={handleClickClose}>
-            <Close />
-          </IconButton>
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <DialogTitle sx={typoTitle}>{PhaseHeading}</DialogTitle>
+            <IconButton
+              style={{ width: "40px", height: "40px" }}
+              onClick={handleClickClose}
+            >
+              <Close />
+            </IconButton>
           </Stack>
           <DialogContent sx={{ padding: "0rem 1.5rem 3rem 1.5rem" }}>
-            <Typography sx={typoText}>Phase</Typography>
+            <Typography sx={typoText}>{t("PhaseModal.phase")}</Typography>
             <TextField
-            inputProps={{ maxLength: 50 }}
-              sx={inputStyle}         
+              inputProps={{ maxLength: 50 }}
+              sx={{
+                ...inputStyle,
+                "& .MuiInputBase-input::placeholder": {
+                  fontFamily: "var(--main-font-family)",
+                },
+              }}
               margin="dense"
               id="phaseName"
               name="phaseName"
-              placeholder={'eg: Site Preparation'}
+              placeholder={"ex: Site Preparation"}
               // label="Email Address"
               type="text"
               variant="standard"
               value={phaseName}
               onChange={handlePhaseName}
-             
             />
-            <Typography sx={typoText}>Select Color</Typography>
-              {/* Req change to display an array of 12 colors */}
+            <Typography sx={typoText}>{t("PhaseModal.selectColor")}</Typography>
+            {/* Req change to display an array of 12 colors */}
             {/* <Stack direction={"row"} alignItems={"center"} flexWrap={'wrap'} justifyContent={'center'} gap={2} p={1}>
                 {colors.map((color1) => {
                   return (
@@ -247,10 +270,16 @@ function ColorPickerElement({
           </DialogContent>
           <DialogActions sx={generalBox}>
             <Button
-              sx={{ ...actionButton, ...addPhaseButton }}
+              sx={{
+                ...actionButton,
+                ...addPhaseButton,
+                minWidth: "10rem !important",
+              }}
               type="submit"
               onClick={handleSubmit}
-              disabled={PhaseHeading === "Update Phase" ? updateLoading : isLoading}
+              disabled={
+                PhaseHeading === t("PhaseModal.updatePhase") ? updateLoading : isLoading
+              }
             >
               {PhaseHeading}
             </Button>
@@ -262,7 +291,7 @@ function ColorPickerElement({
 }
 
 const typoTitle = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "1.5rem",
   color: "#4C8AB1",
 };
@@ -276,7 +305,7 @@ const inputStyle = {
   border: "1px solid #ccc",
   borderRadius: "12px",
   color: "#202227",
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   paddingLeft: "-1.5rem",
   backgroundColor: "#EDF2F6",
 };
@@ -294,7 +323,7 @@ const paperPropsStyle = {
 };
 
 const typoText = {
-  fontFamily: "Arial Rounded MT, sans-serif",
+  fontFamily: "var(--main-font-family)",
   fontSize: "1rem",
   color: "#202227",
 };

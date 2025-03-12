@@ -1,8 +1,8 @@
 import { apiSlice } from "../apiSlice";
 
-const PROJECTS_URL = "http://3.135.107.71/project";
-const INVOICE_URL = "http://3.135.107.71/invoice";
-const EVENT_URL = "http://3.135.107.71/user/events";
+const PROJECTS_URL = "https://builderbuilder.net/project";
+const INVOICE_URL = "https://builderbuilder.net/invoice";
+const EVENT_URL = "https://builderbuilder.net/user/events";
 const projectId = 47;
 
 const projectApiSlice = apiSlice.injectEndpoints({
@@ -18,7 +18,7 @@ const projectApiSlice = apiSlice.injectEndpoints({
 
     // Phase ApiSlices ................. //
     addProjectPhase: builder.mutation({
-      query: (data) => ({
+      query: (data, formattedView) => ({
         url: `${PROJECTS_URL}/addPhase/${data.projectId}`,
         method: "POST",
         body: data,
@@ -91,7 +91,7 @@ const projectApiSlice = apiSlice.injectEndpoints({
 
     getProjectInvoices: builder.query({
       query: (data) => ({
-        url: `${INVOICE_URL}/getallInvoices/${data.projectId}/${data.userId}/${data.client}`,
+        url: `${INVOICE_URL}/getallInvoices/${data.projectId}/${data.userId}`,
         method: "GET",
       }),
     }),
@@ -222,13 +222,41 @@ const projectApiSlice = apiSlice.injectEndpoints({
         body: data
       })
     }),
+    deleteInvitation: builder.mutation({
+      query: (data) => ({
+        url:`${PROJECTS_URL}/deleteInvitation`,
+        method: 'DELETE',
+        body: data
+      })
+    }),
     deleteProjectFile: builder.mutation({
       query: (data) => ({
         url: `${PROJECTS_URL}/files/${data.fileId}/${data.projectId}`,
         method: 'DELETE',
         body: data
       })
-    })
+    }),
+    getProjectWeather: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/weather`,
+        method: 'POST',
+        body: data
+      })
+    }),
+    projectGenAI: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/projectGenAI`,
+        method: 'POST',
+        body: data
+      }),
+    }),
+    projectGanttChart: builder.mutation({
+      query: (data) => ({
+        url: `${PROJECTS_URL}/projectGanttChart`,
+        method: 'POST',
+        body: data
+      }),
+    }),
   }),
 });
 
@@ -263,5 +291,9 @@ export const {
   useGetPhasesAndLineItemsByIdMutation,
   useUpdateUserLineItemStatusMutation,
   useCheckProjectDuplicationMutation,
-  useDeleteProjectFileMutation
+  useDeleteProjectFileMutation,
+  useDeleteInvitationMutation,
+  useGetProjectWeatherMutation,
+  useProjectGenAIMutation,
+  useProjectGanttChartMutation
 } = projectApiSlice;

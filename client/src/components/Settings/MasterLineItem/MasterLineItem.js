@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Divider, Typography } from "@mui/material";
-import ChatView from "../../Chat/ChatView";
 import Header from "../Header/Header";
 import Table from "../Tables/MasterLineTable";
 import Pagination from "@mui/material/Pagination";
-import AddModal from '../../dialogues/Settings/AddModal';
-import UpdateModal from '../../dialogues/Settings/UpdateModal';
-
-import { useOutletContext } from 'react-router-dom';
 import QueryDebouncer from '../../../utils/QueryDebouncer/QueryDebouncer';
+import { t } from 'i18next';
 
 function MasterLine() {
 
@@ -16,7 +12,6 @@ function MasterLine() {
   const [isAddModalOpen, setAddModalOpen] = useState(false); 
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
   const [page, setPage]= useState(1);
-  const [userInfo, setUserInfo, handleAssignRoleButton, userId, setUserId, handleUpdateAssignRole] = useOutletContext();
   const [searchInput, setSearchInput] = useState("");
   const [totalEntries, setTotalEntries] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
@@ -52,7 +47,7 @@ function MasterLine() {
 
   return (
     <div style={{padding:"20px"}}>
-      <Header title="Master Line Item"   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
+      <Header title={t("Settings.master")}   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
       <Table setUpdateModalOpen={setUpdateModalOpen} page={page} setTotalEntries={setTotalEntries} setTotalPages={setTotalPages} searchInput={debouncedValue} />
 
       <Box mt={2} mb={2}>
@@ -101,7 +96,7 @@ const paginationTextStyle = {
   },
   fontWeight: 400,
   fontSize: "14px",
-  fontFamily: "inherit",
+  fontFamily: 'var(--main-font-family)',
   color: "#8C8C8C",
 
 };

@@ -8,51 +8,26 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { styled } from "@mui/material/styles";
-import ShareIcon from "@mui/icons-material/Share";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import BuilderProButton from "../../UI/Button/BuilderProButton";
-import pdf from "./assets/images/pdf.png";
-import p from "./assets/images/imagepng.png";
-import deletebtn from "./assets/images/delete.png";
 import download from "./assets/images/download.png";
-import DownloadSharpIcon from "@mui/icons-material/DownloadSharp";
-import LinearProgress, {
-  linearProgressClasses,
-} from "@mui/material/LinearProgress";
-import CloseIcon from "@mui/icons-material/Close";
 import NotesModal from "./NotesModal";
-import { useParams } from "react-router-dom";
 import {
   useDeleteProjectNotesMutation,
-  useGetProjectNotesQuery,
 } from "../../../redux/apis/Project/projectApiSlice";
 import { toast } from "react-toastify";
 import { fileTypeIcons } from "../../dialogues/AddImage/assets/fileTypes";
 import { handleDownload } from "../../../utils/S3";
-//import "react-toastify/dist/ReactToastify.css";
+import { useTranslation } from 'react-i18next';
 
 const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
+  const {t} = useTranslation()
   const isNoteSelected = Boolean(notes);
-  const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-    height: 10,
-    borderRadius: 5,
-    [`&.${linearProgressClasses.colorPrimary}`]: {
-      backgroundColor: "#D7D7D7",
-    },
-    [`& .${linearProgressClasses.bar}`]: {
-      borderRadius: 5,
-      backgroundColor: "#00B65E",
-    },
-    width: "100%",
-  }));
   const [showEditModal, setShowEditModal] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
-  const { id } = useParams();
   const [deleteProjectNote] = useDeleteProjectNotesMutation();
   const noteId = notes?.id;
-  const { refetch } = useGetProjectNotesQuery({ projectId: id });
+  // const { refetch } = useGetProjectNotesQuery({ projectId: id });
   const handleEdit = () => {
     setShowEditModal(!showEditModal);
   };
@@ -65,6 +40,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
     setSelectedButton(-1);
     refetchNotes();
   };
+
   return (
     <Stack>
       <Stack direction={"row"} justifyContent={"space-between"} p={2}>
@@ -75,7 +51,9 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
           spacing={6}
         >
           {/* <ShareIcon style={{ color: "#3F3F3F" }} /> */}
-          <ButtonGroup
+
+
+         <ButtonGroup
             disableElevation
             variant="contained"
             aria-label="Disabled button group"
@@ -128,6 +106,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
         pt={2}
         justifyContent={"space-between"}
         height={{xl:"calc(92vh - 165px)", lg:"calc(92vh - 207px)", md:'calc(92vh - 203px)', sm:'calc(92vh - 203px)', xs:'calc(92vh - 203px)' }}
+        width={'inherit'}
       >
         {isNoteSelected ? (
           <>
@@ -148,6 +127,8 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                 fontSize={"24px"}
                 fontWeight={"700"}
                 color={"#202227"}
+                sx={{wordBreak:'break-all', hyphens:'auto'}}
+                
               >
                 {notes?.subject}
               </Typography>
@@ -233,7 +214,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                               fontSize={"0.7rem"}
                               fontWeight={"500"}
                               color={"#324054"}
-                              fontFamily={"inherit"}
+                              fontFamily={'var(--main-font-family)'}
                               overflow={"hidden"}
                             >
                               {fileName}
@@ -243,7 +224,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                               fontSize={"12px"}
                               fontWeight={"500"}
                               color={"#71839B"}
-                              fontFamily={"inherit"}
+                              fontFamily={'var(--main-font-family)'}
                             ></Typography>
                           </Stack>
                         </Stack>
@@ -276,7 +257,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                         fontSize={"14px"}
                         fontWeight={"500"}
                         color={"#324054"}
-                        fontFamily={"inherit"}
+                        fontFamily={'var(--main-font-family)'}
                         pb={1}
                         >File Title.png</Typography>
                         <BorderLinearProgress variant="determinate" value={45}/>
@@ -285,7 +266,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                         fontSize={"12px"}
                         fontWeight={"500"}
                         color={"#71839B"}
-                        fontFamily={"inherit"}
+                        fontFamily={'var(--main-font-family)'}
                         >45% Complete</Typography>
                     </Stack>
                 </Stack>
@@ -307,10 +288,10 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
               textAlign={"center"}
             >
               <Typography fontSize={"24px"} fontWeight={"700"}>
-                No Notes Added
+                {t("ProjectNotes.noNotesAdded")}
               </Typography>
               <Typography fontSize={"15px"} fontWeight={"500"} pt={2}>
-                Please add a note to view its details.
+                {t("ProjectNotes.pleaseAddNote")}
               </Typography>
             </Stack>
           </>

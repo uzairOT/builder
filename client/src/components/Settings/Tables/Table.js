@@ -11,11 +11,10 @@ import {
   Avatar,
   Stack,
   Grid,
+  Typography,
 } from "@mui/material";
 import EditIcon from "../../../assets/settings/edit.png";
 import DeleteIcon from "../../../assets/settings/delete.png";
-import EmailIcon from "../../../assets/settings/email.png";
-import Button from "../../UI/CustomButton";
 import {
   useDeleteAssignRoleMutation,
   useGetAssignedRolesQuery,
@@ -24,6 +23,8 @@ import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import AreYouSureModal from "../../dialogues/AreYouSureModal/AreYouSureModal";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const dummyData = [
   {
@@ -70,6 +71,7 @@ function CustomTable({
   setTotalPages,
   refreshData,
 }) {
+  const {t} = useTranslation()
   const showEmailAndRecords = title === "subcontractor";
   const [assignRoleDelete, { isLoading: deleteUserLoading }] =
     useDeleteAssignRoleMutation();
@@ -125,17 +127,17 @@ function CustomTable({
         userId: user.userId,
         superAdminId: currentUserId,
         projectId: user.projectId,
-        userRole: userRole
+        userRole: userRole,
       };
       const res = await assignRoleDelete(deleteUser);
-      if(res?.error?.data?.success === false){
+      if (res?.error?.data?.success === false) {
         toast.error(res?.error?.data?.error || "something went wrong");
       }
       if (res?.data?.success) {
         refetch();
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
       toast.error(e?.error?.data?.error || "something went wrong");
     }
   };
@@ -148,7 +150,7 @@ function CustomTable({
       setTotalEntries(data?.totalCount);
       setTotalPages(data?.totalPages);
     }
-    console.log(data);
+    // console.log(data);
   }, [data]);
 
   useEffect(() => {
@@ -169,11 +171,11 @@ function CustomTable({
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={tableCellStyle}>Profile Pic</TableCell>
-                <TableCell sx={tableCellStyle}>Name</TableCell>
-                <TableCell sx={tableCellStyle}>Job/Project</TableCell>
-                <TableCell sx={tableCellStyle}>Phone Number</TableCell>
-                <TableCell sx={tableCellStyle}>Email</TableCell>
+                <TableCell sx={tableCellStyle}>{t("Settings.Table.picture")}</TableCell>
+                <TableCell sx={tableCellStyle}>{t("Settings.Table.name")}</TableCell>
+                <TableCell sx={tableCellStyle}>{t("Settings.Table.project")}</TableCell>
+                <TableCell sx={tableCellStyle}>{t("Settings.Table.phone")}</TableCell>
+                <TableCell sx={tableCellStyle}>{t("Settings.Table.email")}</TableCell>
                 {/* <TableCell sx={tableCellStyle}>Country</TableCell> */}
                 {/* <TableCell sx={tableCellStyle}>Project Status</TableCell> */}
                 {/* {showEmailAndRecords && (
@@ -181,11 +183,11 @@ function CustomTable({
                   Email <br /> Records
                 </TableCell>
               )} */}
-                <TableCell sx={tableCellStyle}>Action</TableCell>
+                <TableCell sx={tableCellStyle}>{t("Settings.Table.action")}</TableCell>
               </TableRow>
             </TableHead>
             {error ? (
-              <Stack p={2}>{"Something went wrong!"}</Stack>
+              <Stack p={2}>{t("Settings.Table.error")}</Stack>
             ) : (
               <TableBody>
                 {isLoading ? (
@@ -251,35 +253,42 @@ function CustomTable({
                   </TableRow>
                 ) : data?.message === "no records" ? (
                   <TableRow>
-                    <TableCell colSpan={10} sx={{ textAlign: "center", borderBottom:'none' }}>
-                      No Records
+                    <TableCell
+                      colSpan={10}
+                      sx={{
+                        textAlign: "center",
+                        borderBottom: "none",
+                        fontFamily: "var(--main-font-family)",
+                      }}
+                    >
+                      <Typography paddingTop={30} paddingBottom={30}>
+                      {t("Settings.Table.noRecords")}
+                      </Typography>
                     </TableCell>
                   </TableRow>
                 ) : (
-                  data?.users?.map((row, index) => { 
-                    if(row === null)
-                      return <></>;
-                    
-                    return(
-                   
-                    <TableRow key={index}>
-                      <TableCell sx={tableCellValueStyle}>
-                        <Avatar alt="Avatar" src={row?.image} />
-                      </TableCell>
-                      <TableCell sx={tableCellValueStyle}>
-                        {row?.firstName}
-                      </TableCell>
-                      <TableCell sx={tableCellValueStyle}>
-                        {row?.projectName}
-                      </TableCell>
-                      <TableCell sx={tableCellValueStyle}>
-                        {row?.phoneNumber}
-                      </TableCell>
-                      <TableCell sx={tableCellValueStyle}>
-                        {row?.email}
-                      </TableCell>
-                      {/* <TableCell sx={tableCellValueStyle}>{row.country}</TableCell> */}
-                      {/* <TableCell sx={tableCellValueStyle}>
+                  data?.users?.map((row, index) => {
+                    if (row === null) return <></>;
+
+                    return (
+                      <TableRow key={index}>
+                        <TableCell sx={tableCellValueStyle}>
+                          <Avatar alt="Avatar" src={row?.image} />
+                        </TableCell>
+                        <TableCell sx={tableCellValueStyle}>
+                          {row?.firstName}
+                        </TableCell>
+                        <TableCell sx={tableCellValueStyle}>
+                          {row?.projectName}
+                        </TableCell>
+                        <TableCell sx={tableCellValueStyle}>
+                          {row?.phoneNumber}
+                        </TableCell>
+                        <TableCell sx={tableCellValueStyle}>
+                          {row?.email}
+                        </TableCell>
+                        {/* <TableCell sx={tableCellValueStyle}>{row.country}</TableCell> */}
+                        {/* <TableCell sx={tableCellValueStyle}>
                   {" "}
                   <Button
                     buttonText={row.status}
@@ -292,7 +301,7 @@ function CustomTable({
                     borderRadius="45px"
                   />
                 </TableCell> */}
-                      {/* {showEmailAndRecords && (
+                        {/* {showEmailAndRecords && (
                       <TableCell sx={tableCellValueStyle}>
                         <IconButton
                           aria-label="email"
@@ -303,38 +312,39 @@ function CustomTable({
                         </IconButton>
                       </TableCell>
                     )} */}
-                      <TableCell sx={tableCellValueStyle}>
-                        <IconButton
-                          aria-label="edit"
-                          size="small"
-                          onClick={() => handleUserId(row)}
-                        >
-                          <img
-                            src={EditIcon}
-                            alt=""
-                            style={{ width: "35px" }}
-                          />
-                        </IconButton>
-                        <IconButton
-                          aria-label="delete"
-                          size="small"
-                          // onClick={() => handleDelete(row.id)}
-                          onClick={() =>
-                            handleDeleteFlow({
-                              userId: row.id,
-                              projectId: row.projectId,
-                            })
-                          }
-                        >
-                          <img
-                            src={DeleteIcon}
-                            alt=""
-                            style={{ width: "35px" }}
-                          />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  )})
+                        <TableCell sx={tableCellValueStyle}>
+                          <IconButton
+                            aria-label="edit"
+                            size="small"
+                            onClick={() => handleUserId(row)}
+                          >
+                            <img
+                              src={EditIcon}
+                              alt=""
+                              style={{ width: "35px" }}
+                            />
+                          </IconButton>
+                          <IconButton
+                            aria-label="delete"
+                            size="small"
+                            // onClick={() => handleDelete(row.id)}
+                            onClick={() =>
+                              handleDeleteFlow({
+                                userId: row.id,
+                                projectId: row.projectId,
+                              })
+                            }
+                          >
+                            <img
+                              src={DeleteIcon}
+                              alt=""
+                              style={{ width: "35px" }}
+                            />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
                 )}
               </TableBody>
             )}
@@ -345,7 +355,7 @@ function CustomTable({
           handleClose={handleClose}
           handleConfirmDelete={handleConfirmDelete}
           isLoading={deleteUserLoading}
-          text={"user"}
+          text={t("Settings.Table.areYouSureUser")}
         />
       </Grid>
     </>
@@ -357,21 +367,21 @@ export default CustomTable;
 const tableCellStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minWidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
-  textOverflow:'ellipsis',
-  overflow:'hidden',
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 500,
   fontSize: "14px",
-  fontFamily: "inherit",
+  fontFamily: "var(--main-font-family)",
 };
 
 const tableCellValueStyle = {
   maxWidth: { xl: "20px", lg: "30px", md: "70px", xs: "100%" },
   minwidth: { xl: "10px", lg: "20px", md: "40px", xs: "20px" },
-  textOverflow:'ellipsis',
-  overflow:'hidden',
+  textOverflow: "ellipsis",
+  overflow: "hidden",
   fontWeight: 400,
   borderBottom: "none",
-  fontFamily: "Montserrat",
+  fontFamily: "var(--main-font-family)",
   color: "#000000",
   whiteSpace: "wrap",
 };
