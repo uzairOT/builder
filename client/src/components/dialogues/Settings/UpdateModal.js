@@ -428,10 +428,10 @@ const InputStyle = {
 const headingStyle = {
   marginTop: "20px",
   // marginBottom: "10px",
-  marginLeft: "25px",
+  marginLeft: {sm:"25px", xs:"12px"},
   fontFamily: 'var(--main-font-family)',
   fontWeight: "500",
-  fontSize: "22px",
+  fontSize: {sm:"22px", xs: "16px"},
   color: "#4C8AB1",
   width:'17ch'
 };

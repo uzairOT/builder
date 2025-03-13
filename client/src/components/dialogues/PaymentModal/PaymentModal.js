@@ -5,6 +5,7 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  InputLabel,
   OutlinedInput,
   Paper,
   Radio,
@@ -68,17 +69,17 @@ const PaymentModal = ({
   const [paymentType, setPaymentType] = useState("Monthly");
   const [verifyCoupon, { isLoading }] = useVerifyCouponMutation();
   const [amount, setAmount] = useState();
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const handlePaymentTypeChange = (event) => {
     setPaymentType(event.target.value);
   };
-// console.log(currentPlan);
+  // console.log(currentPlan);
   const handlePromoCodeChange = (e) => {
     setPromoCode(e.target.value);
   };
   const handlePromoCode = async () => {
     try {
-      if(!amount){
+      if (!amount) {
         toast.warning("Select a plan");
         return;
       }
@@ -185,7 +186,7 @@ const PaymentModal = ({
     },
     inputLabels: {
       fontFamily: "var(--main-font-family)",
-      fontSize: "14px",
+      fontSize: { sm: "16px", xs: "12px" },
       color: "gray",
     },
     getTabColor: (index) => ({
@@ -201,21 +202,26 @@ const PaymentModal = ({
         <Stack p={3} px={4}>
           <Typography
             fontFamily={"var(--main-font-family)"}
-            fontSize={"18px"}
+            fontSize={{ sm: "18px", xs: "14px" }}
             fontWeight={"500"}
           >
             {t("Subscription.form.orgInfo")}
           </Typography>
           <Stack pt={2} spacing={1}>
-            <label id="organizationName" style={themeStyle.inputLabels}>
+            <InputLabel id="organizationName" sx={themeStyle.inputLabels}>
               {t("Subscription.form.orgName")}
-            </label>
+            </InputLabel>
             <TextField
               sx={{
+                "& .MuiInputBase-input": {
+                  fontSize: { sm: "15px", xs: '12px' }
+                },
                 "& .MuiInputBase-input::placeholder": {
                   fontFamily: "var(--main-font-family)",
+                  fontSize: { sm: "14px", xs: '12px' }
                 },
               }}
+
               inputProps={{ maxLength: 50 }}
               id="organizationName"
               label=""
@@ -245,11 +251,14 @@ const PaymentModal = ({
                 <TextField {...params} label="Country" />
               )}
             ></Autocomplete> */}
-            <label id="address" style={themeStyle.inputLabels}>
-            {t("Subscription.form.address")}
-            </label>
+            <InputLabel id="address" sx={themeStyle.inputLabels}>
+              {t("Subscription.form.address")}
+            </InputLabel>
             <OutlinedInput
               sx={{
+                "& .MuiInputBase-input": {
+                  fontSize: { sm: "15px", xs: '12px' }
+                },
                 "& .MuiInputBase-input::placeholder": {
                   fontFamily: "var(--main-font-family)",
                 },
@@ -267,24 +276,26 @@ const PaymentModal = ({
           </Stack>
           <Stack p={1} py={4} spacing={1}>
             <Stack flex={1} direction={"row"} spacing={1}>
-              <Typography fontFamily={"var(--main-font-family)"} color={"gray"}>
-              {t("Subscription.form.promo")}
+              <Typography fontFamily={"var(--main-font-family)"} fontSize={{ sm: "16px", xs: "14px" }} color={"gray"}>
+                {t("Subscription.form.promo")}
               </Typography>
               <HelpIcon
                 fontSize={"small"}
                 sx={{ color: "GrayText", "&:hover": { color: "black" } }}
               />
             </Stack>
-            <Stack flex={1} direction={"row"} spacing={1}>
+            <Stack flex={1} direction={{sm:"row", xs:"column"}} spacing={1}>
               <OutlinedInput
                 variant={"outlined"}
                 placeholder={t("Subscription.form.placeholder1")}
                 size="small"
                 sx={{
-                  width: "67%",
-                  backgroundColor: "#F5F5F5",
+                  width: {sm:"67%", xs:"100%"},
+                  backgroundColor: "#F5F5F5", 
+                  "& .MuiInputBase-input": { fontSize: { sm: "14px", xs: "12px" } },
                   "& .MuiInputBase-input::placeholder": {
                     fontFamily: "var(--main-font-family)",
+                    fontSize: { sm: "14px", xs: "11px" }
                   },
                 }}
                 value={promoCode}
@@ -303,7 +314,7 @@ const PaymentModal = ({
                     sx={{
                       fontFamily: "var(--main-font-family)",
                     }}
-                    fontSize={{ xl: 14, lg: 11 }}
+                    fontSize={{ xl: 14, lg: 11, xs:11  }}
                   >
                     {t("Subscription.form.button")}{" "}
                   </Typography>
@@ -319,14 +330,14 @@ const PaymentModal = ({
           >
             <Typography
               fontFamily={"var(--main-font-family)"}
-              fontSize={"18px"}
+              fontSize={{sm:"18px", xs:"14px"}}
               fontWeight={"500"}
             >
               {t("Subscription.form.paymentMethod")}
             </Typography>
             <Stack direction={"row"} alignItems={"center"} spacing={0.5}>
               <LockIcon fontSize="12px" />
-              <Typography fontSize={"12px"}>Secure form</Typography>
+              <Typography fontSize={{sm:"12px", xs:"11px"}}>Secure form</Typography>
             </Stack>
           </Stack>
           <Stack
@@ -337,7 +348,7 @@ const PaymentModal = ({
             py={0.1}
             sx={{ gap: 2 }}
           >
-            <Typography fontFamily={"var(--main-font-family)"}>
+            <Typography fontFamily={"var(--main-font-family)"} sx={{ fontSize: { sm: "16px", xs: "13px" } }}>
               <b
                 style={{
                   fontFamily: "var(--main-font-family)",
@@ -347,7 +358,7 @@ const PaymentModal = ({
               </b>
               {currentPakage}
             </Typography>
-            <Typography>{amount ?  `$${amount}`:''}</Typography>
+            <Typography>{amount ? `$${amount}` : ''}</Typography>
 
             {/* <Typography fontSize={'14px'} color={'tomato'}>{discounted ? ` -${((discounted/amount) *100)}% off` : ''}</Typography> */}
 
@@ -363,11 +374,25 @@ const PaymentModal = ({
                   value="Monthly"
                   control={<Radio size="small" />}
                   label={t("Subscription.form.monthly")}
+                  slotProps={{
+                    typography: {
+                      sx: {
+                        fontSize: { sm: "16px", xs: "13px" }
+                      }
+                    }
+                  }}
                 />
                 <FormControlLabel
                   value="Yearly"
                   control={<Radio size="small" />}
                   label={t("Subscription.form.yearly")}
+                  slotProps={{
+                    typography: {
+                      sx: {
+                        fontSize: { sm: "16px", xs: "13px" }
+                      }
+                    }
+                  }}
                 />
               </RadioGroup>
             </FormControl>

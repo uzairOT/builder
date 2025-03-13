@@ -756,7 +756,7 @@ const style = {
   p: 1,
   borderRadius: "14px",
   width:{md:"fit-content",xs:'95%'},
-  height:'600px'
+  height:{sm:"600px",xs:"95%"}
   // overflowX: "auto",
 };
 

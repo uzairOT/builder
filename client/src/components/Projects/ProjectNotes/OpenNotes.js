@@ -110,7 +110,7 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
       >
         {isNoteSelected ? (
           <>
-            <Stack>
+            <Stack overflow={"auto"}>
               <Typography
                 textAlign={"right"}
                 fontSize={"15px"}
@@ -127,7 +127,8 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                 fontSize={"24px"}
                 fontWeight={"700"}
                 color={"#202227"}
-                sx={{wordBreak:'break-all', hyphens:'auto'}}
+                width={{lg:"100%", md:"100%" ,xs:"100%"}}
+                sx={{wordBreak:'break-word', hyphens:'auto'}}
                 
               >
                 {notes?.subject}
@@ -136,16 +137,18 @@ const OpenNotes = ({ notes, refetchNotes, setSelectedButton }) => {
                 textAlign={"left"}
                 fontSize={"15px"}
                 fontWeight={"500"}
+                width={{lg:"100%", md:"100%" ,xs:"100%"}}
+                sx={{wordBreak:'break-word', hyphens:'auto'}}
                 color={"#535353"}
                 pt={2}
               >
                 {notes?.content}
               </Typography>
             </Stack>
-            <Box>
+            <Box sx={{display: notes?.files?.length ? "block" : "none"}}>
               <Box>
-                <Typography>
-                  {notes?.files?.length ? "attachments:" : ""}
+                <Typography fontStyle={"italic"}>
+                  {notes?.files?.length ? `Attachments: ${notes?.files?.length}` : ""}
                 </Typography>
               </Box>
               <Grid

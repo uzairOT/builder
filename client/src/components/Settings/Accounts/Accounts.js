@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import QueryDebouncer from "../../../utils/QueryDebouncer/QueryDebouncer";
 import { useSelector } from "react-redux";
-import { Box, Divider, Pagination, Typography } from "@mui/material";
+import { Box, Divider, Pagination, PaginationItem, Typography } from "@mui/material";
 import {
   useCreateUserAccountMutation,
   useDeleteUserAccountMutation,
@@ -118,6 +118,12 @@ const Accounts = () => {
           Showing data {startIndex} to {endIndex} of {data?.totalCount} entries
         </Typography>
         <Pagination
+        renderItem={(item) => (
+          <PaginationItem
+          sx={{margin:"1px 3px"}}
+            {...item}
+          />
+        )}
           count={data?.totalPages}
           variant="outlined"
           shape="rounded"

@@ -411,7 +411,7 @@ const NotificationDetailModal = ({
                                   fontFamily: "var(--main-font-family)",
                                 },
                                 width: 'calc(100% - 16px)',
-                                minWidth: "250px"
+                                minWidth: "220px !important"
                               }}
                             />
                           </DemoContainer>
@@ -456,7 +456,7 @@ const NotificationDetailModal = ({
                                   fontFamily: "var(--main-font-family)",
                                 },
                                 width: 'calc(100% - 16px)',
-                                 minWidth: "250px"
+                                 minWidth: "220px !important"
                               }}
                             />
                           </DemoContainer>

@@ -3,6 +3,7 @@ import {
   Button,
   IconButton,
   Pagination,
+  PaginationItem,
   Paper,
   Popover,
   Skeleton,
@@ -679,6 +680,12 @@ const ProjectList = ({
       </Stack>
       <Stack justifyContent={"flex-end"} alignItems={"flex-end"} p={1}>
         <Pagination
+          renderItem={(item) => (
+            <PaginationItem
+            sx={{margin:"1px 3px"}}
+              {...item}
+            />
+          )}
           size="small"
           count={totalPages}
           variant="outlined"

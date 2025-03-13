@@ -185,7 +185,7 @@ const ProfitMarginBarChartCard = () => {
           onChange={handleSelectValue}
           size="small"
           sx={{
-            fontSize: { xl: "20px", lg: "16px", md: "20px", xs: "20px" },
+            fontSize: { xl: "20px", lg: "16px", md: "20px", xs: "16px" },
             fontFamily: "var(--main-font-family)",
             fontWeight: 500,
             color: "#4C8AB1",
@@ -240,7 +240,7 @@ const ProfitMarginBarChartCard = () => {
             <Stack direction={"column"}>
               <Typography
                 fontFamily={"var(--main-font-family)"}
-                fontSize={{ xl: 16, lg: 14, md: 16, xs: 16 }}
+                fontSize={{ xl: 16, lg: 14, md: 16, sm:16, xs: 13 }}
                 sx={{ textAlign: "left" }}
               >
                 {t("ProjectReports.ProfitMarginBarChartCard.title4")}
@@ -249,7 +249,7 @@ const ProfitMarginBarChartCard = () => {
                 // textAlign={"center"}
                 fontFamily={"var(--main-font-family)"}
                 fontWeight={"500"}
-                fontSize={{ xl: 18, lg: 15, md: 18, xs: 18 }}
+                fontSize={{ xl: 18, lg: 15, md: 18, sm: 16, xs: 14 }}
                 sx={{ whiteSpace: "nowrap", textAlign: "left" }}
               >
                 ${formatMoney(chartValues?.totalCost)}
@@ -263,7 +263,7 @@ const ProfitMarginBarChartCard = () => {
             <Stack direction={"column"}>
               <Typography
                 fontFamily={"var(--main-font-family)"}
-                fontSize={{ xl: 16, lg: 14, md: 16, xs: 16 }}
+                fontSize={{ xl: 16, lg: 14, md: 16, sm: 16, xs: 13 }}
                 sx={{ textAlign: "left" }}
               >
                 {t("ProjectReports.ProfitMarginBarChartCard.title3")}
@@ -272,14 +272,14 @@ const ProfitMarginBarChartCard = () => {
                 sx={{ whiteSpace: "nowrap", textAlign: "left" }}
                 fontFamily={"var(--main-font-family)"}
                 fontWeight={"500"}
-                fontSize={{ xl: 18, lg: 15, md: 18, xs: 18 }}
+                fontSize={{ xl: 18, lg: 15, md: 18, sm: 16 ,xs: 14 }}
               >
                 ${formatMoney(chartValues?.totalMargin)}
               </Typography>
               <Typography
                 textAlign={"center"}
                 color={chartValues?.marginPercentage < 0 ? "#F94144" : "#90BE6D"}
-                fontSize={{ xl: 26, lg: 23, md: 26, xs: 26 }}
+                fontSize={{ xl: 26, lg: 23, md: 26, sm: 23 ,xs: 18 }}
                 fontWeight={"600"}
                 fontFamily={"var(--main-font-family)"}
               >

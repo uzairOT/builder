@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Divider, PaginationItem, Typography } from "@mui/material";
 import Header from "../Header/Header";
 import Table from "../Tables/MasterLineTable";
 import Pagination from "@mui/material/Pagination";
@@ -9,13 +9,13 @@ import { t } from 'i18next';
 function MasterLine() {
 
 
-  const [isAddModalOpen, setAddModalOpen] = useState(false); 
-  const [isUpdateModalOpen, setUpdateModalOpen] = useState(false); 
-  const [page, setPage]= useState(1);
+  const [isAddModalOpen, setAddModalOpen] = useState(false);
+  const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
+  const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const [totalEntries, setTotalEntries] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
-  const debouncedValue =  QueryDebouncer(searchInput,500);
+  const debouncedValue = QueryDebouncer(searchInput, 500);
 
   // Function to open the Add Modal
   const OpenAddModal = () => {
@@ -28,26 +28,26 @@ function MasterLine() {
 
   let startIndex = 1;
   let endIndex = 6;
-  if(page===1){
+  if (page === 1) {
     startIndex = 1;
-    if(totalEntries < 6){
+    if (totalEntries < 6) {
       endIndex = totalEntries;
     }
   }
-  else{
-    startIndex = 1 + (6*(page-1));
-    endIndex = 6*page;
-    if(endIndex > totalEntries){
+  else {
+    startIndex = 1 + (6 * (page - 1));
+    endIndex = 6 * page;
+    if (endIndex > totalEntries) {
       endIndex = totalEntries
     }
   }
-  useEffect(()=>{
+  useEffect(() => {
     setPage(1)
-  },[debouncedValue])
+  }, [debouncedValue])
 
   return (
-    <div style={{padding:"20px"}}>
-      <Header title={t("Settings.master")}   OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput}/>
+    <div style={{ padding: "20px" }}>
+      <Header title={t("Settings.master")} OpenAddModal={OpenAddModal} searchInput={searchInput} setSearchInput={setSearchInput} />
       <Table setUpdateModalOpen={setUpdateModalOpen} page={page} setTotalEntries={setTotalEntries} setTotalPages={setTotalPages} searchInput={debouncedValue} />
 
       <Box mt={2} mb={2}>
@@ -57,13 +57,18 @@ function MasterLine() {
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: {xs:"center",md:"space-between"} ,
+          justifyContent: { xs: "center", md: "space-between" },
         }}
       >
         <Typography variant="body1" sx={paginationTextStyle}>
           Showing data {startIndex} to {endIndex} of {totalEntries} entries
         </Typography>
-        <Pagination count={totalPages} variant="outlined" shape="rounded" page={page} onChange={handlePageChange}  sx={paginationStyle}/>
+        <Pagination renderItem={(item) => (
+          <PaginationItem
+          sx={{margin:"1px 3px"}}
+            {...item}
+          />
+        )} count={totalPages} variant="outlined" shape="rounded" page={page} onChange={handlePageChange} sx={paginationStyle} />
       </Box>
       {/* <AddModal title={"Master Line Item"} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} /> */}
 
@@ -89,10 +94,10 @@ const paginationStyle = {
   },
 };
 const paginationTextStyle = {
- 
+
   display: {
-    xs: 'none', 
-    md: 'block', 
+    xs: 'none',
+    md: 'block',
   },
   fontWeight: 400,
   fontSize: "14px",

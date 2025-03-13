@@ -79,7 +79,7 @@ const CustomToolbar = ({
       borderRadius: "37px",
       backgroundColor: "#EDEDED",
       color: "#202227",
-      padding: "5px",
+      padding: {xl:"5px", lg:"0px", xs:"5px"},
     },
     toolbarLabel: {
       fontFamily: "var(--main-font-family)",
@@ -131,11 +131,11 @@ const CustomToolbar = ({
         >
           <Typography
             sx={themeStyle.toolbarTitle}
-            pl={{ xl: 1, lg: 2, md: 3, xs: 3 }}
+            pl={{ xl: 1, lg: 1, md: 3, xs: 3 }}
           >
             {t('CustomToolbar.title1')}
           </Typography>
-          <Box element="div" style={themeStyle.toolbarButtonGroup}>
+          <Box element="div" sx={themeStyle.toolbarButtonGroup}>
             <Button
               sx={{
                 fontSize: "0.7rem",

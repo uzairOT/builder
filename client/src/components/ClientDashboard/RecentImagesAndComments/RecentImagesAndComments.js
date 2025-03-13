@@ -9,44 +9,44 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 function RecentImagesAndComments() {
-    const {t} = useTranslation()
+    const { t } = useTranslation()
     const theme = useTheme();
     const { id } = useParams();
     const [recentFilesUrls, setRecentFilesUrls] = useState([]);
     const fetchData = async () => {
         try {
-          const response = await axios.get(
-            `https://builderbuilder.net/project/files/image/${id}`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${getTokenFromLocalStorage()}`,
-              },
-            }
-          );
-          //replace 123 with the project id
-          // Assuming the response data is an array of file URLs
-          setRecentFilesUrls(response.data);
-        //   setOlderFilesUrls(response.data.olderFiles);
+            const response = await axios.get(
+                `https://builderbuilder.net/project/files/image/${id}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+                    },
+                }
+            );
+            //replace 123 with the project id
+            // Assuming the response data is an array of file URLs
+            setRecentFilesUrls(response.data);
+            //   setOlderFilesUrls(response.data.olderFiles);
         } catch (error) {
-          console.error("Error fetching file URLs:", error);
-          // Handle errors, such as displaying an error message
+            console.error("Error fetching file URLs:", error);
+            // Handle errors, such as displaying an error message
         }
-      };
-      useEffect(() => {
+    };
+    useEffect(() => {
         fetchData();
-      }, [id]);
+    }, [id]);
     //   console.log(recentFilesUrls);
-      const slicedUrls = recentFilesUrls?.recentFiles?.slice(0, 4);
+    const slicedUrls = recentFilesUrls?.recentFiles?.slice(0, 4);
     return (
-        <Box display={{lg:'initial', xs:'none'}}>
+        <Box display={{ lg: 'initial', xs: 'none' }}>
 
             <Box sx={themeStyle.box}>
                 <Avatar
                     alt="Avatar"
                     src={recentFilesUrls?.primaryImg?.fileUrl ? recentFilesUrls?.primaryImg?.fileUrl : NoImg}
                     style={themeStyle.imgBox} // Adjust size as needed
-              
+
                 />
 
 
@@ -56,14 +56,19 @@ function RecentImagesAndComments() {
             </Typography>
             <Grid container justifyContent={'flex-start'} alignItems={'center'}>
                 {slicedUrls?.map((url, index) => {
-                    return(
-                        <Grid item xl={5.5}>
-                <Avatar
-                    alt="Avatar"
-                    src={url.fileUrl}
-                    sx={themeStyle.smallimgBox} // Adjust size as needed
-                />
-                </Grid>
+                    return (
+                        <Grid item xl={6}>
+                            <Avatar
+                                alt="Avatar"
+                                src={url.fileUrl}
+                                sx={{
+                                    ...themeStyle.smallimgBox,
+                                    ".MuiAvatar-img": {
+                                        width: "95%"
+                                    }
+                                }} // Adjust size as needed
+                            />
+                        </Grid>
                     )
                 })}
                 {/* <Avatar

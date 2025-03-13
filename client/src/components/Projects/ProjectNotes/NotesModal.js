@@ -26,10 +26,10 @@ import { getTokenFromLocalStorage } from "../../../redux/apis/apiSlice";
 import { useTranslation } from 'react-i18next';
 //import "react-toastify/dist/ReactToastify.css";
 
-const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
+const NotesModal = ({ showEditModal, setShowEditModal, notes, q, }) => {
   const [open, setOpen] = useState(false);
   const { id } = useParams();
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const [noteSubject, setNoteSubject] = useState(notes ? notes?.subject : "");
   const [noteBody, setNoteBody] = useState(notes ? notes?.content : "");
 
@@ -39,7 +39,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
   const [addProjectNote] = useAddProjectNotesMutation();
   const [editProjectNotes] = useEditProjectNotesMutation();
 
-  const { refetch } = useGetProjectNotesQuery({ projectId: id, q: q ? q: '' });
+  const { refetch } = useGetProjectNotesQuery({ projectId: id, q: q ? q : '' });
   const handleOpen = () => {
     setOpen(true);
   };
@@ -53,13 +53,13 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
     setNoteSubject(e.target.value);
   };
   const handleNoteBody = (e) => {
-    const contentBody  = e.target.value;
+    const contentBody = e.target.value;
 
-    if(contentBody.length > 1500){
+    if (contentBody.length > 1500) {
       setNoteBody(contentBody.substring(0, 1500));
       return;
     }
-    if(noteBody.length >1500){
+    if (noteBody.length > 1500) {
       return;
     }
     setNoteBody(contentBody);
@@ -183,17 +183,17 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
   return (
     <>
 
-{!showEditModal && (
-  <BuilderProButton
-    variant={"contained"}
-    backgroundColor={"#4C8AB1"}
-    fontSize={{ xl: "13px", lg: "13px", md: "12px", xs: "12px" }}
-    fontFamily={'var(--main-font-family)'}
-    handleOnClick={handleOpen}
-  >
-    {t("ProjectNotes.addNotes")}
-  </BuilderProButton>
-)}
+      {!showEditModal && (
+        <BuilderProButton
+          variant={"contained"}
+          backgroundColor={"#4C8AB1"}
+          fontSize={{ xl: "13px", lg: "13px", md: "12px", xs: "12px" }}
+          fontFamily={'var(--main-font-family)'}
+          handleOnClick={handleOpen}
+        >
+          {t("ProjectNotes.addNotes")}
+        </BuilderProButton>
+      )}
 
       <Modal open={showEditModal ? showEditModal : open} onClose={handleClose}>
         <Stack sx={style}>
@@ -221,16 +221,16 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
               onChange={handleNoteSubject}
               placeholder={t("ProjectNotes.placeholder1")}
               slotProps={{
-                input:{
+                input: {
                   maxLength: 150
                 }
               }}
               sx={{
-                '.MuiInput-input':{
-                  marginBottom:'0px'
+                '.MuiInput-input': {
+                  marginBottom: '0px'
                 }
               }}
-              // mb={'-8px'}
+            // mb={'-8px'}
             />
             <Textarea
               minRows={8}
@@ -241,7 +241,7 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
               placeholder={t("ProjectNotes.placeholder2")}
             />
           </Stack>
-            <Typography component='p' fontSize={'10px'} p={0} m={0} mt={0} textAlign={'right'}>{noteBody?.length}/1500</Typography>
+          <Typography component='p' fontSize={'10px'} p={0} m={0} mt={0} textAlign={'right'}>{noteBody?.length}/1500</Typography>
           <Stack
             direction={"row"}
             width={"300px"}
@@ -274,7 +274,10 @@ const NotesModal = ({ showEditModal, setShowEditModal, notes, q , }) => {
                       width: "0px",
                     }}
                   >
-                    <CancelRoundedIcon color="disabled" />
+                    <CancelRoundedIcon sx={{
+                      color: '#f28b82', transition: 'color 0.2s',
+                      '&:hover': { color: '#ef5350' },
+                    }} />
                   </IconButton>
                   {isImage ? (
                     <img

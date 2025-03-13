@@ -14,7 +14,7 @@ import {
 import actionButton from "../../UI/actionButton";
 import "../../../App.css";
 import Close from "@mui/icons-material/Close";
-import { useProjectGenAIMutation } from "../../../redux/apis/Project/projectApiSlice";
+import { useProjectOpenAIMutation } from "../../../redux/apis/Project/projectApiSlice";
 import { GoogleGenerativeAI } from "@google/generative-ai"; // Adjust based on the actual package name
 import { toast } from "react-toastify";
 import loader from "../../../assets/gifs/loader.gif";
@@ -50,7 +50,7 @@ Generate accurate phase and line item data for construction projects in valid JS
 ### Phase Creation
 1. Create 2-5 logical construction phases
 2. Phase Names: Use standard construction terminology (e.g., "Site Preparation", "Foundation Work")
-3. Colors: Random dark hex colors (#000000 to #7F7F7F)
+3. Colors: Random dark hex colors
 4. Language: the name of the phases and line item should be in ${language}
 
 ### Line Items
@@ -115,8 +115,8 @@ function GenerativeAiDialogue({ closeGenAiDialogue, projectId, fetchData }) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [projectSize, setProjectSize] = useState("");
   const [projectProfit, setProjectProfit] = useState("");
-  const [generateWithAI] = useProjectGenAIMutation();
-  const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEN_AI_KEY);
+  const [generateWithAI] = useProjectOpenAIMutation();
+  
   const handleSetProjectSize = (e) => {
     setProjectSize(e.target.value);
   };
@@ -139,19 +139,19 @@ function GenerativeAiDialogue({ closeGenAiDialogue, projectId, fetchData }) {
         setIsGenerating(false);
         return;
       }
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-001" });
+      // const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-001" });
       const userPrompt = createConstructionPrompt(aiPrompt, projectSize, projectProfit, i18n.language);
-      const result = await model.generateContent([userPrompt]);
-      const response = await result.response;
-      const text = await response.text();
-      const cleanedText = text
-      .replace(/```json|```/g, "") // Remove code block markers
-      .replace(/'/g, '"')         // Replace single quotes with double quotes
-      .replace(/`/g, "")          // Remove backticks
-      .trim();                    // Remove any extra whitespace or newlines
-      const genAIResponse = JSON.parse(cleanedText);
-      const phases = genAIResponse.phases || genAIResponse.error;
-      const data = { phases, projectId };
+      // const result = await model.generateContent([userPrompt]);
+      // const response = await result.response;
+      // const text = await response.text();
+      // const cleanedText = text
+      // .replace(/```json|```/g, "") // Remove code block markers
+      // .replace(/'/g, '"')         // Replace single quotes with double quotes
+      // .replace(/`/g, "")          // Remove backticks
+      // .trim();                    // Remove any extra whitespace or newlines
+      // const genAIResponse = JSON.parse(cleanedText);
+      // const phases = genAIResponse.phases || genAIResponse.error;
+      const data = { userPrompt, projectId };
       const responseAi = await generateWithAI(data);
       if (responseAi?.error) {
         toast.error(responseAi?.error?.data.message);
@@ -196,9 +196,11 @@ function GenerativeAiDialogue({ closeGenAiDialogue, projectId, fetchData }) {
           <DialogContent sx={{ padding: "0rem 1.5rem 3rem 1.5rem" }}>
             <Typography sx={typoText}>{t("GenerativeAiDialogue.title2")}</Typography>
             <TextField
-              inputProps={{ maxLength: 150 }}
+              inputProps={{ maxLength: 1024 }}
+              multiline={true}
+              maxRows={4}
               sx={{
-                ...inputStyle,
+                ...inputStyle1,
                 width: "calc(100% - 16px)",
                 "& .MuiInputBase-input::placeholder": {
                   fontFamily: "var(--main-font-family)",
@@ -297,6 +299,19 @@ const typoTitle = {
 const inputStyle = {
   width: "100%", // Set width to 100% for responsiveness
   height: "2rem",
+  marginBottom: "1rem",
+  alignSelf: "center",
+  padding: "8px",
+  fontSize: "14px",
+  border: "1px solid #ccc",
+  borderRadius: "12px",
+  color: "#202227",
+  fontFamily: "var(--main-font-family)",
+  paddingLeft: "-1.5rem",
+  backgroundColor: "#EDF2F6",
+};
+const inputStyle1 = {
+  width: "100%", // Set width to 100% for responsiveness
   marginBottom: "1rem",
   alignSelf: "center",
   padding: "8px",

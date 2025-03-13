@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Divider, PaginationItem, Typography } from "@mui/material";
 import Header from "../Header/Header";
 import Pagination from "@mui/material/Pagination";
 import UnitsTable from '../Tables/UnitsTable';
@@ -73,7 +73,14 @@ function Units() {
         <Typography variant="body1" sx={paginationTextStyle}>
           Showing data {startIndex} to {endIndex} of {data?.totalCount} entries
         </Typography>
-        <Pagination count={data?.totalPages} variant="outlined" shape="rounded" page={page} onChange={handlePageChange}  sx={paginationStyle}/>
+        <Pagination
+        renderItem={(item) => (
+          <PaginationItem
+          sx={{margin:"1px 3px"}}
+            {...item}
+          />
+        )}
+        count={data?.totalPages} variant="outlined" shape="rounded" page={page} onChange={handlePageChange}  sx={paginationStyle}/>
       </Box>
       {/* <AddModal title={"Master Line Item"} open={isAddModalOpen} onClose={handleCloseAddModal}  userInfo={userInfo}  setUserInfo={setUserInfo} addAdminButton={handleAssignRoleButton} /> */}
     <AddUnitModal  open={isAddModalOpen} onClose={handleCloseAddModal} refetch={refetch}/>

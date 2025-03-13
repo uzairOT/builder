@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Divider, PaginationItem, Typography } from "@mui/material";
 import Header from "../Header/Header";
 import CustomTable from "../Tables/Table";
 import Pagination from "@mui/material/Pagination";
@@ -84,7 +84,14 @@ function Employee() {
         <Typography variant="body1" sx={paginationTextStyle}>
           Showing data {startIndex} to {endIndex} of {totalEntries} entries
         </Typography>
-        <Pagination count={totalPages} variant="outlined" shape="rounded" page={page}  onChange={handlePageChange} sx={paginationStyle}/>
+        <Pagination
+        renderItem={(item) => (
+          <PaginationItem
+          sx={{margin:"1px 3px"}}
+            {...item}
+          />
+        )}
+        count={totalPages} variant="outlined" shape="rounded" page={page}  onChange={handlePageChange} sx={paginationStyle}/>
       </Box>
       <AddModal title={t("Settings.employee")} refreshData={refreshData} setRefreshDat={setRefreshData} open={isAddModalOpen} onClose={handleCloseAddModal} />
       <UpdateModal title={t("Settings.employee")} refreshData={refreshData} setRefreshData={setRefreshData} open={isUpdateModalOpen} onClose={handleCloseUpdateModal} userId={userId} setUserId={setUserId} />

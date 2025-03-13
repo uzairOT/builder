@@ -18,7 +18,7 @@ function ProfileView() {
 
   const getTabStyle = (key) => ({
     color: currentState === key ? '#4C8AB1' : '#535353C9',
-    fontSize: '18px',
+    fontSize: {sm:'18px', xs: "14px"},
     fontWeight: currentState === key ? 700 : 500,
     fontFamily: 'Manrope',
     cursor: 'pointer',

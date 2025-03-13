@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Divider, PaginationItem, Typography } from "@mui/material";
 import Header from "../Header/Header";
 import Pagination from "@mui/material/Pagination";
 import CustomTable from "./table/Table";
@@ -11,18 +11,18 @@ import QueryDebouncer from "../../../utils/QueryDebouncer/QueryDebouncer";
 import { useTranslation } from "react-i18next";
 
 function Coupon() {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const [searchInput, setSearchInput] = useState("");
-  const debouncedValue =  QueryDebouncer(searchInput,500);
+  const debouncedValue = QueryDebouncer(searchInput, 500);
   const user = useSelector(state => state.auth.userInfo);
-  const [page, setPage]= useState(1);
+  const [page, setPage] = useState(1);
   const userId = user.user.id
   const [getUserCoupons, { data, isLoading, isError }] =
-  useGetUserCouponsMutation({ userId: userId, q:debouncedValue, page:page });
+    useGetUserCouponsMutation({ userId: userId, q: debouncedValue, page: page });
   const [couponId, setCouponId] = useState();
-  const [addCoupon, {isSuccess: addedCouponSucces}] = useGetCreateUserCouponsMutation();
-  const [updateCoupon, {isSuccess: updatedCouponSuccess}] = useUpdateUserCouponsMutation();
-  const [deleteCoupon, {isSuccess: deletedCoupon}] = useDeleteUserCouponsMutation()
+  const [addCoupon, { isSuccess: addedCouponSucces }] = useGetCreateUserCouponsMutation();
+  const [updateCoupon, { isSuccess: updatedCouponSuccess }] = useUpdateUserCouponsMutation();
+  const [deleteCoupon, { isSuccess: deletedCoupon }] = useDeleteUserCouponsMutation()
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [couponValue, setCouponValue] = useState("");
@@ -34,13 +34,13 @@ function Coupon() {
 
   useEffect(() => {
     // setPage(1)
-    fetchUserCoupons(getUserCoupons, { userId: userId, q:debouncedValue, page:page});
+    fetchUserCoupons(getUserCoupons, { userId: userId, q: debouncedValue, page: page });
   }, [addedCouponSucces, updatedCouponSuccess, deletedCoupon, debouncedValue]);
 
   // Function to open the Add Modal
   const OpenAddModal = () => {
     setAddModalOpen(true);
-    
+
   };
 
   const handleCloseAddModal = () => {
@@ -49,24 +49,24 @@ function Coupon() {
   const handleCloseUpdateModal = () => {
     setUpdateModalOpen(false);
   };
-  
+
   const handlePageChange = (event, newValue) => {
     setPage(newValue)
   }
- 
+
   let startIndex = 1;
   let endIndex = data?.limit;
-  if(page===1){
+  if (page === 1) {
     startIndex = 1;
-    if(data?.totalCount < data?.limit){
+    if (data?.totalCount < data?.limit) {
       endIndex = data?.totalCount;
     }
-  }else{
-    startIndex = 1 + (data?.limit*(page-1));
-    endIndex = data?.limit*page;
-    if(endIndex > data?.totalCount){
-      endIndex = endIndex -data?.totalCount;
-      endIndex = (startIndex + endIndex) -1;
+  } else {
+    startIndex = 1 + (data?.limit * (page - 1));
+    endIndex = data?.limit * page;
+    if (endIndex > data?.totalCount) {
+      endIndex = endIndex - data?.totalCount;
+      endIndex = (startIndex + endIndex) - 1;
     }
   }
 
@@ -86,7 +86,7 @@ function Coupon() {
         isLoading={isLoading}
         isError={isError}
         deleteCoupon={deleteCoupon}
-        // setUserId={setUserId}
+      // setUserId={setUserId}
       />
 
       <Box mt={2} mb={2}>
@@ -102,7 +102,14 @@ function Coupon() {
         <Typography variant="body1" sx={paginationTextStyle}>
           Showing data {startIndex} to {endIndex} of {data?.totalCount} entries
         </Typography>
-        <Pagination count={data?.totalPages} variant="outlined" shape="rounded"  page={page} onChange={handlePageChange} sx={paginationStyle}/>
+        <Pagination
+          renderItem={(item) => (
+            <PaginationItem
+              sx={{ margin: "1px 3px" }}
+              {...item}
+            />
+          )}
+          count={data?.totalPages} variant="outlined" shape="rounded" page={page} onChange={handlePageChange} sx={paginationStyle} />
       </Box>
       <CouponModal
         title={t("Settings.coupon")}
